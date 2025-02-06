@@ -696,8 +696,31 @@ LargeElectrolyzerRecipeType=电解机
 Tooltip_LargeElectrolyzer_Casing=任意电解机机械方块
 
 NameLargeElectromagnet=大型电磁工厂
-LargeElectromagnetRecipeType=两级磁化机
+LargeElectromagnetRecipeType=电磁离析机 / 两级磁化机
+LargeElectromagnet_Mode_0=电磁离析机
+LargeElectromagnet_Mode_1=两级磁化机
 Tooltip_LargeElectromagnet_Casing=任意电解机机械方块
+
+NameLargeChemicalBath=大型化学浸洗机
+LargeChemicalBathRecipeType=洗矿池 / 简易洗矿池 / 化学浸洗机
+LargeChemicalBath_Mode_0=洗矿池
+LargeChemicalBath_Mode_1=简易洗矿池
+LargeChemicalBath_Mode_2=化学浸洗机
+Tooltip_LargeChemicalBath_Casing=任意洗矿厂机械方块
+
+NameLargeAutoclave=大型高压结晶釜
+LargeAutoclaveRecipeType=高压釜
+Tooltip_LargeAutoclave_Casing=任意洗矿厂机械方块
+
+NameLargeAutoclave=大型固化阵列
+LargeAutoclaveRecipeType=流体固化器 / 工具铸形机
+Tooltip_LargeAutoclave_Casing=任意洗矿厂机械方块
+
+NameLargeExtractor=大型提取机
+LargeExtractorRecipeType=提取机 / 流体提取机
+LargeExtractor_Mode_0=提取机
+LargeExtractor_Mode_1=流体提取机
+Tooltip_LargeExtractor_Casing=任意洗矿厂机械方块
 
 NameLargeCentrifuge=大型离心机组
 LargeCentrifugeRecipeType=离心机 / 热力离心机
@@ -994,6 +1017,17 @@ Tooltip_IndustrialArcaneAssembler_00=§d§o通过强大的科技手段，我们�
 Tooltip_IndustrialArcaneAssembler_01=固定并行为2147483647
 Tooltip_IndustrialArcaneAssembler_02=需要在控制器放入魔导源质存储元件来成型！
 Tooltip_EnergeticIndustrialArcaneAssembler_Casing=任意超维度机械方块
+
+NameLibraryOfRuina=§e废墟图书馆
+gtnl.recipe.TheTwilightForestRecipes=永夜暮色
+LibraryOfRuinaRecipeType=永夜暮色
+Tooltip_LibraryOfRuina_00=§8§o打破了那暮色森林的永夜
+Tooltip_LibraryOfRuina_01=§8§o一件件事物变成了一本本书籍
+Tooltip_LibraryOfRuina_02=§8§o图书馆将永存
+Tooltip_LibraryOfRuina_03=§8§o光耀，孤寂，无尽
+Tooltip_LibraryOfRuina_04=§8§o满腹稀世书籍
+Tooltip_LibraryOfRuina_05=§8§o无用，不灭，隐秘
+Tooltip_LibraryOfRuina_06=§8§o正于此地，愿您找到想要的书。
 
 NameEnergeticPhotovoltaicPowerStation=充能光伏电站
 NameAdvancedPhotovoltaicPowerStation=高级光伏电站

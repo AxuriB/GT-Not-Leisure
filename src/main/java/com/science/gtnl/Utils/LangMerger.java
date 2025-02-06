@@ -169,19 +169,18 @@ public class LangMerger {
         }
 
         StringBuilder content = new StringBuilder();
+
         if (!hasConfigFileHeader) {
             content.append("# Configuration file\n");
-        }
-
-        if (!header.toString()
-            .contains(CONFLICT_MARKER)) {
-            content.append(CONFLICT_MARKER)
-                .append("\n");
         } else {
             content.append(header);
         }
 
-        content.append("\n");
+        if (!hasConflictMarker) {
+            content.append(CONFLICT_MARKER)
+                .append("\n");
+        }
+
         if (!hasLanguageBlock) {
             content.append("languagefile {\n");
         }
@@ -191,7 +190,13 @@ public class LangMerger {
             newEntries.forEach((k, v) -> mergedEntries.putIfAbsent(k, v));
             existingEntries.forEach(mergedEntries::putIfAbsent);
         } else {
-            newEntries.forEach((k, v) -> mergedEntries.put(k, v));
+            newEntries.forEach((k, v) -> {
+                if (existingEntries.containsKey(k)) {
+                    mergedEntries.put(k, v);
+                } else {
+                    mergedEntries.put(k, v);
+                }
+            });
             existingEntries.forEach((k, v) -> mergedEntries.putIfAbsent(k, v));
         }
 
@@ -204,9 +209,7 @@ public class LangMerger {
                     .append("\n");
             });
 
-        if (!hasLanguageBlock) {
-            content.append("}\n");
-        } else if (!hasClosingBracket) {
+        if (!hasClosingBracket) {
             content.append("}\n");
         }
 

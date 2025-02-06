@@ -561,9 +561,10 @@ public class MaterialPool implements Runnable {
         offsetID_01 + 48,
         TextureSet.SET_FLUID);
 
-    public static final Werkstoff DepletedExcitedNaquadah = new Werkstoff(
+    public static final Werkstoff ExcitedNaquadahFuel = new Werkstoff(
         new short[] { 15, 2, 2 },
-        "DepletedExcitedNaquadah",
+        "ExcitedNaquadahFuel",
+        subscriptNumbers("❖◈❖"),
         new Werkstoff.Stats(),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().disable()
@@ -904,7 +905,7 @@ public class MaterialPool implements Runnable {
     public static final Werkstoff Stargate = new Werkstoff(
         new short[] { 148, 182, 189 },
         "Stargate",
-        subscriptNumbers("\uD81A\uDD55"),
+        subscriptNumbers("⨷"),
         new Werkstoff.Stats().setToxic(true),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().onlyDust()

@@ -230,7 +230,12 @@ public enum GTNLItemList {
     LargeAssembler,
     LargeMixer,
     LargeCentrifuge,
+    LargeChemicalBath,
+    LargeAutoclave,
+    LargeSolidifier,
+    LargeExtractor,
 
+    LibraryOfRuina,
     MatterFabricator,
     LargeBrewer,
     HandOfJohnDavisonRockefeller,

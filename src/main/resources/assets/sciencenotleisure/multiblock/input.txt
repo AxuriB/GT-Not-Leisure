@@ -1,9 +1,5 @@
-    " BBB "
-    "BB~BB"
-    " BBB "
-},{
     "BBBBB"
-    "B A B"
+    "BB~BB"
     "BBBBB"
 },{
     "BBBBB"
@@ -11,10 +7,6 @@
     "BBBBB"
 },{
     "BBBBB"
-    "B A B"
     "BBBBB"
-},{
-    " BBB "
     "BBBBB"
-    " BBB "
 }}

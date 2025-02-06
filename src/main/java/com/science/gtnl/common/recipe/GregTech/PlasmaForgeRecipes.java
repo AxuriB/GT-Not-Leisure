@@ -25,7 +25,7 @@ public class PlasmaForgeRecipes implements IRecipePool {
                 GTModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 16, 34),
                 GTModHandler.getModItem("Avaritia", "Singularity", 2, 0),
                 GTModHandler.getModItem("GoodGenerator", "fluidCore", 2, 7))
-            .fluidInputs(MaterialPool.DepletedExcitedNaquadah.getFluidOrGas(1000))
+            .fluidInputs(MaterialPool.ExcitedNaquadahFuel.getFluidOrGas(1000))
             .itemOutputs(GTNLItemList.DepletedExcitedNaquadahFuelRod.get(1))
             .noOptimize()
             .duration(20)

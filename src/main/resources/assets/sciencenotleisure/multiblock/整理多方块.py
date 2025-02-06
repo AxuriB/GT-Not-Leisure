@@ -17,4 +17,4 @@ def merge_lines(file_path, output_path, n):
             new_file.write(line + '\n')
 
 # 示例用法
-merge_lines('output.txt', 'new_file.txt', 3)
+merge_lines('output.txt', 'new_file.txt', 4)

@@ -1,12 +1,10 @@
 package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.GregTechAPI.sBlockCasings2;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_EMS_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gtPlusPlus.core.block.ModBlocks.blockCasingsMisc;
-import static gtnhlanth.common.register.LanthItemList.ELECTRODE_CASING;
+import static gtPlusPlus.core.block.ModBlocks.blockCasings2Misc;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -41,33 +39,33 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class LargeElectromagnet extends GTMMultiMachineBase<LargeElectromagnet> implements ISurvivalConstructable {
+public class LargeExtractor extends GTMMultiMachineBase<LargeExtractor> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeElectromagnet> STRUCTURE_DEFINITION = null;
-    public static final String LEM_STRUCTURE_FILE_PATH = "sciencenotleisure:multiblock/large_electromagnet";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(5);
-    private static final int MACHINEMODE_ELECTROMAGNETIC = 0;
-    private static final int MACHINEMODE_POLARIZER = 1;
+    private static IStructureDefinition<LargeExtractor> STRUCTURE_DEFINITION = null;
+    public static final String LC_STRUCTURE_FILE_PATH = "sciencenotleisure:multiblock/large_cutter";
+    private static final int MACHINEMODE_EXTRA = 0;
+    private static final int MACHINEMODE_FLUID = 1;
     public final int horizontalOffSet = 2;
     public final int verticalOffSet = 1;
     public final int depthOffSet = 0;
     public static String[][] shape;
 
-    public LargeElectromagnet(int aID, String aName, String aNameRegional) {
+    public LargeExtractor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        shape = StructureUtils.readStructureFromFile(LEM_STRUCTURE_FILE_PATH);
+        shape = StructureUtils.readStructureFromFile(LC_STRUCTURE_FILE_PATH);
     }
 
-    public LargeElectromagnet(String aName) {
+    public LargeExtractor(String aName) {
         super(aName);
-        shape = StructureUtils.readStructureFromFile(LEM_STRUCTURE_FILE_PATH);
+        shape = StructureUtils.readStructureFromFile(LC_STRUCTURE_FILE_PATH);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new LargeElectromagnet(this.mName);
+        return new LargeExtractor(this.mName);
     }
 
     @Override
@@ -76,48 +74,37 @@ public class LargeElectromagnet extends GTMMultiMachineBase<LargeElectromagnet> 
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EMS_ACTIVE)
+                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
                     .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EMS_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EMS)
+                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
                     .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EMS_GLOW)
-                    .extFacing()
-                    .glow()
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return (byte) TAE.GTPP_INDEX(11);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_ELECTROMAGNETIC) ? RecipeMaps.electroMagneticSeparatorRecipes
-            : RecipeMaps.polarizerRecipes;
+        return (machineMode == MACHINEMODE_EXTRA) ? RecipeMaps.extractorRecipes : RecipeMaps.fluidExtractionRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.electroMagneticSeparatorRecipes, RecipeMaps.polarizerRecipes);
+        return Arrays.asList(RecipeMaps.extractorRecipes, RecipeMaps.fluidExtractionRecipes);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(TextLocalization.LargeElectromagnetRecipeType)
+        tt.addMachineType(TextLocalization.LargeExtractorRecipeType)
             .addInfo(TextLocalization.Tooltip_GTMMultiMachine_00)
             .addInfo(TextLocalization.Tooltip_GTMMultiMachine_01)
             .addInfo(TextLocalization.Tooltip_GTMMultiMachine_02)
@@ -125,75 +112,39 @@ public class LargeElectromagnet extends GTMMultiMachineBase<LargeElectromagnet> 
             .addSeparator()
             .addInfo(TextLocalization.StructureTooComplex)
             .addInfo(TextLocalization.BLUE_PRINT_INFO)
-            .beginStructureBlock(5, 3, 4, true)
-            .addInputBus(TextLocalization.Tooltip_LargeElectromagnet_Casing)
-            .addOutputBus(TextLocalization.Tooltip_LargeElectromagnet_Casing)
-            .addEnergyHatch(TextLocalization.Tooltip_LargeElectromagnet_Casing)
-            .addMaintenanceHatch(TextLocalization.Tooltip_LargeElectromagnet_Casing)
+            .beginStructureBlock(5, 3, 3, true)
+            .addInputHatch(TextLocalization.Tooltip_LargeExtractor_Casing)
+            .addOutputHatch(TextLocalization.Tooltip_LargeExtractor_Casing)
+            .addInputBus(TextLocalization.Tooltip_LargeExtractor_Casing)
+            .addOutputBus(TextLocalization.Tooltip_LargeExtractor_Casing)
+            .addEnergyHatch(TextLocalization.Tooltip_LargeExtractor_Casing)
+            .addMaintenanceHatch(TextLocalization.Tooltip_LargeExtractor_Casing)
             .toolTipFinisher(TextUtils.SNL + TextUtils.SRP);
         return tt;
     }
 
     @Override
-    public IStructureDefinition<LargeElectromagnet> getStructureDefinition() {
+    public IStructureDefinition<LargeExtractor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeElectromagnet>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<LargeExtractor>builder()
                 .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
+                .addElement('A', ofBlock(sBlockCasings2, 13))
                 .addElement(
                     'B',
-                    buildHatchAdder(LargeElectromagnet.class).casingIndex(CASING_INDEX)
+                    buildHatchAdder(LargeExtractor.class).casingIndex(getCasingTextureID())
                         .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy)
-                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(blockCasingsMisc, 5))))
+                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(blockCasings2Misc, 4))))
                 .build();
         }
         return STRUCTURE_DEFINITION;
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCasing = 0;
-        ParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet) && checkHatch()) {
-            return false;
-        }
-
-        ParallelTier = getParallelTier(aStack);
-        return mCasing >= 30;
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (mMachine) return -1;
-        return survivialBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            horizontalOffSet,
-            verticalOffSet,
-            depthOffSet,
-            elementBudget,
-            env,
-            false,
-            true);
-    }
-
-    @Override
-    public boolean supportsMachineModeSwitch() {
-        return true;
-    }
-
-    @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
-        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
 
     @Override
@@ -218,13 +169,50 @@ public class LargeElectromagnet extends GTMMultiMachineBase<LargeElectromagnet> 
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         this.machineMode = (byte) ((this.machineMode + 1) % 2);
-        GTUtility
-            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("LargeElectromagnet_Mode_" + this.machineMode));
+        GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("LargeExtractor_Mode_" + this.machineMode));
     }
 
     @Override
     public String getMachineModeName() {
-        return StatCollector.translateToLocal("LargeElectromagnet_Mode_" + machineMode);
+        return StatCollector.translateToLocal("LargeExtractor_Mode_" + machineMode);
     }
 
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        mCasing = 0;
+        ParallelTier = 0;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet) && checkHatch()) {
+            return false;
+        }
+
+        ParallelTier = getParallelTier(aStack);
+        return mCasing >= 60;
+    }
+
+    // 启用机器模式切换
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, horizontalOffSet, verticalOffSet, depthOffSet);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            horizontalOffSet,
+            verticalOffSet,
+            depthOffSet,
+            elementBudget,
+            env,
+            false,
+            true);
+    }
 }

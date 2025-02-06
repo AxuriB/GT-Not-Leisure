@@ -145,6 +145,7 @@ public class CrystalSword extends ItemSword {
             Math.max(start.zCoord, end.zCoord) + width);
     }
 
+    // 这里的粒子生成无法超过长度22格
     @SideOnly(Side.CLIENT)
     private void spawnClientParticles(World world, EntityPlayer player) {
         Vec3 lookVec = player.getLookVec();

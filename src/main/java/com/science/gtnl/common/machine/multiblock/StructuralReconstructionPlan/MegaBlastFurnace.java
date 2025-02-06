@@ -10,8 +10,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAS
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.util.GTStructureUtility.*;
 
-import java.util.ArrayList;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -43,8 +40,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -54,16 +49,12 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.blocks.BlockCasings8;
 import gtPlusPlus.core.block.ModBlocks;
 
 public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> implements ISurvivalConstructable {
 
     private HeatingCoilLevel mCoilLevel;
-    protected final ArrayList<MTEHatchOutput> mPollutionOutputHatches = new ArrayList<>();
-    protected final FluidStack[] pollutionFluidStacks = { Materials.CarbonDioxide.getGas(1000),
-        Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
     private int mHeatingCapacity = 0;
     private static IStructureDefinition<MegaBlastFurnace> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
@@ -101,15 +92,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
                         .casingIndex(TAE.GTPP_INDEX(15))
                         .dot(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
-                .addElement(
-                    'B',
-                    buildHatchAdder(MegaBlastFurnace.class)
-                        .atLeast(
-                            OutputHatch.withAdder(MegaBlastFurnace::addOutputHatchToTopList)
-                                .withCount(t -> t.mPollutionOutputHatches.size()))
-                        .casingIndex(((BlockCasings2) sBlockCasings2).getTextureIndex(0))
-                        .dot(1)
-                        .buildAndChain(sBlockCasings2, 0))
+                .addElement('B', ofBlock(sBlockCasings2, 0))
                 .addElement('S', Muffler.newAny(((BlockCasings8) sBlockCasings8).getTextureIndex(10), 2))
                 .addElement('C', ofBlock(sBlockCasings2, 12))
                 .addElement('D', ofBlock(sBlockCasings2, 13))
@@ -235,22 +218,6 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     }
 
     @Override
-    public int getPollutionPerTick(ItemStack aStack) {
-        return 256;
-    }
-
-    public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return this.mPollutionOutputHatches.add((MTEHatchOutput) aMetaTileEntity);
-        }
-        return false;
-    }
-
-    @Override
     public ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -261,7 +228,8 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
                     .setMachineHeat(MegaBlastFurnace.this.mHeatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(true)
-                    .setSpeedBoost(0.2);
+                    .setEUtDiscount(0.8 - (ParallelTier / 50.0))
+                    .setSpeedBoost(Math.max(0.05, 0.2 - (ParallelTier / 200.0)));
             }
 
             @Override
@@ -304,32 +272,10 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     }
 
     @Override
-    public boolean addOutput(FluidStack aLiquid) {
-        if (aLiquid == null) return false;
-        FluidStack tLiquid = aLiquid.copy();
-        boolean isOutputPollution = false;
-        for (FluidStack pollutionFluidStack : this.pollutionFluidStacks) {
-            if (!tLiquid.isFluidEqual(pollutionFluidStack)) continue;
-
-            isOutputPollution = true;
-            break;
-        }
-        ArrayList<MTEHatchOutput> tOutputHatches;
-        if (isOutputPollution) {
-            tOutputHatches = this.mPollutionOutputHatches;
-            tLiquid.amount = tLiquid.amount * Math.min(100 - getAveragePollutionPercentage(), 100) / 100;
-        } else {
-            tOutputHatches = this.mOutputHatches;
-        }
-        return dumpFluid(tOutputHatches, tLiquid, true) || dumpFluid(tOutputHatches, tLiquid, false);
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         this.mHeatingCapacity = 0;
         mCasing = 0;
         this.setCoilLevel(HeatingCoilLevel.None);
-        this.mPollutionOutputHatches.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffSet, verticalOffSet, depthOffSet)) return false;
 
@@ -340,7 +286,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
         this.mHeatingCapacity = (int) this.getCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
 
-        return mCasing <= 3500 && checkHatch();
+        return mCasing >= 3500 && checkHatch();
     }
 
     @Override

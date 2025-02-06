@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.Explosion;
+package com.science.gtnl.common.machine.Special;
 
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;

@@ -28,7 +28,7 @@ public class TranscendentPlasmaMixerRecipes implements IRecipePool {
                 FluidRegistry.getFluidStack("naquadah based liquid fuel mkv", 1000),
                 FluidRegistry.getFluidStack("naquadah based liquid fuel mkvi", 1000),
                 FluidRegistry.getFluidStack("liquidair", 85200))
-            .fluidOutputs(MaterialPool.DepletedExcitedNaquadah.getFluidOrGas(1000))
+            .fluidOutputs(MaterialPool.ExcitedNaquadahFuel.getFluidOrGas(1000))
             .noOptimize()
             .duration(20)
             .eut(31457280)

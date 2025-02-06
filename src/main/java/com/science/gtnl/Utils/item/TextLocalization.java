@@ -517,6 +517,14 @@ public class TextLocalization {
         "Any Centrifuge Casing",
         "Tooltip_LargeSiftingFunnel_Casing");
 
+    public static final String NameLargeExtractor = texter("Large Extractor", "NameLargeExtractor");
+    public static final String LargeExtractorRecipeType = texter(
+        "Extractor / Fluid Extractor",
+        "LargeExtractorRecipeType");
+    public static final String Tooltip_LargeExtractor_Casing = texter(
+        "Any Wash Plant Casing",
+        "Tooltip_LargeExtractor_Casing");
+
     public static final String NameLargeCutter = texter("Large Cutter", "NameLargeCutter");
     public static final String LargeCutterRecipeType = texter(
         "Cutting Machine / Slicing Machine",
@@ -524,6 +532,14 @@ public class TextLocalization {
     public static final String Tooltip_LargeCutter_Casing = texter(
         "Any Cutting Factory Frame",
         "Tooltip_LargeCutter_Casing");
+
+    public static final String NameLargeChemicalBath = texter("Large Chemical Bath", "NameLargeChemicalBath");
+    public static final String LargeChemicalBathRecipeType = texter(
+        "Ore Washer / Simple Washer / Chemical Bath",
+        "LargeChemicalBathRecipeType");
+    public static final String Tooltip_LargeChemicalBath_Casing = texter(
+        "Any Wash Plant Casing",
+        "Tooltip_LargeChemicalBath_Casing");
 
     public static final String NameLargeCentrifuge = texter("Large Centrifuge", "NameLargeCentrifuge");
     public static final String LargeCentrifugeRecipeType = texter(
@@ -552,6 +568,20 @@ public class TextLocalization {
     public static final String Tooltip_LargeMaterialPress_Casing = texter(
         "Any Inconel Reinforced Casing",
         "Tooltip_LargeMaterialPress_Casing");
+
+    public static final String NameLargeSolidifier = texter("Large Solidifier", "NameLargeSolidifier");
+    public static final String LargeSolidifierRecipeType = texter(
+        "Fluid Solidifier / Tool Casting Machine",
+        "LargeSolidifierRecipeType");
+    public static final String Tooltip_LargeSolidifier_Casing = texter(
+        "Any Wash Plant Casing",
+        "Tooltip_LargeSolidifier_Casing");
+
+    public static final String NameLargeAutoclave = texter("Large Autoclave", "NameLargeAutoclave");
+    public static final String LargeAutoclaveRecipeType = texter("Autoclave", "LargeAutoclaveRecipeType");
+    public static final String Tooltip_LargeAutoclave_Casing = texter(
+        "Any Wash Plant Casing",
+        "Tooltip_LargeAutoclave_Casing");
 
     public static final String NameLargeWiremill = texter("Large Wiremill", "NameLargeWiremill");
     public static final String LargeWiremillRecipeType = texter("Wiremill", "LargeWiremillRecipeType");
@@ -882,6 +912,33 @@ public class TextLocalization {
     public static final String Tooltip_BlazeBlastFurnace_Casing_02 = texter(
         "Top center Volcanus Casing",
         "Tooltip_BlazeBlastFurnace_Casing_02");
+
+    public static final String NameLibraryOfRuina = texter("§eLibrary Of Ruina", "NameLibraryOfRuina");
+    public static final String LibraryOfRuinaRecipeType = texter("Eternal Twilight", "LibraryOfRuinaRecipeType");
+    public static final String Tooltip_LibraryOfRuina_00 = texter(
+        "§8§oBroke the eternal night of the Twilight Forest.",
+        "Tooltip_LibraryOfRuina_00");
+    public static final String Tooltip_LibraryOfRuina_01 = texter(
+        "§8§oEach object turned into a book.",
+        "Tooltip_LibraryOfRuina_01");
+    public static final String Tooltip_LibraryOfRuina_02 = texter(
+        "§8§oThe library will endure.",
+        "Tooltip_LibraryOfRuina_02");
+    public static final String Tooltip_LibraryOfRuina_03 = texter(
+        "§8§oRadiance, solitude, infinity.",
+        "Tooltip_LibraryOfRuina_03");
+    public static final String Tooltip_LibraryOfRuina_04 = texter(
+        "§8§oFilled with rare books.",
+        "Tooltip_LibraryOfRuina_04");
+    public static final String Tooltip_LibraryOfRuina_05 = texter(
+        "§8§oUseless, Undying, Hidden.",
+        "Tooltip_LibraryOfRuina_05");
+    public static final String Tooltip_LibraryOfRuina_06 = texter(
+        "§8§oHere and now, may you find the book you seek.",
+        "Tooltip_LibraryOfRuina_06");
+    public static final String Tooltip_LibraryOfRuina_Casing = texter(
+        "Any Frost Proof Machine Casing",
+        "Tooltip_LibraryOfRuina_Casing");
 
     public static final String NameColdIceFreezer = texter("Cold Ice Freezer", "NameColdIceFreezer");
     public static final String FluidIceInputHatch = texter("Fluid Ice Input Hatch", "FluidIceInputHatch");

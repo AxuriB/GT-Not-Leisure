@@ -25,6 +25,7 @@ import com.science.gtnl.common.machine.multiblock.LargeSteamCircuitAssembler;
 import com.science.gtnl.common.machine.multiblock.LargeSteamCrusher;
 import com.science.gtnl.common.machine.multiblock.LargeSteamFurnace;
 import com.science.gtnl.common.machine.multiblock.LargeSteamThermalCentrifuge;
+import com.science.gtnl.common.machine.multiblock.LibraryOfRuina;
 import com.science.gtnl.common.machine.multiblock.MatterFabricator;
 import com.science.gtnl.common.machine.multiblock.MeteorMiner;
 import com.science.gtnl.common.machine.multiblock.NeutroniumWireCutting;
@@ -42,11 +43,14 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.C
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.ElectricImplosionCompressor;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeArcSmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeAssembler;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeAutoclave;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeBender;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeCentrifuge;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeChemicalBath;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeCutter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeElectrolyzer;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeElectromagnet;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeExtractor;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeExtruder;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeForming;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeIndustrialLathe;
@@ -54,6 +58,7 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.L
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeMaterialPress;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeMixer;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeSiftingFunnel;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeSolidifier;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeWiremill;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MegaBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumFreezer;
@@ -123,6 +128,11 @@ public class MachineLoader {
     public static ItemStack LargeAssembler;
     public static ItemStack LargeMixer;
     public static ItemStack LargeCentrifuge;
+    public static ItemStack LibraryOfRuina;
+    public static ItemStack LargeChemicalBath;
+    public static ItemStack LargeAutoclave;
+    public static ItemStack LargeSolidifier;
+    public static ItemStack LargeExtractor;
 
     public static void loadMachines() {
 
@@ -406,6 +416,28 @@ public class MachineLoader {
         LargeCentrifuge = new LargeCentrifuge(21056, "NameLargeCentrifuge", TextLocalization.NameLargeCentrifuge)
             .getStackForm(1);
         GTNLItemList.LargeCentrifuge.set(LargeCentrifuge);
+
+        LibraryOfRuina = new LibraryOfRuina(21057, "NameLibraryOfRuina", TextLocalization.NameLibraryOfRuina)
+            .getStackForm(1);
+        GTNLItemList.LibraryOfRuina.set(LibraryOfRuina);
+
+        LargeChemicalBath = new LargeChemicalBath(
+            21058,
+            "NameLargeChemicalBath",
+            TextLocalization.NameLargeChemicalBath).getStackForm(1);
+        GTNLItemList.LargeChemicalBath.set(LargeChemicalBath);
+
+        LargeAutoclave = new LargeAutoclave(21059, "NameLargeAutoclave", TextLocalization.NameLargeAutoclave)
+            .getStackForm(1);
+        GTNLItemList.LargeAutoclave.set(LargeAutoclave);
+
+        LargeSolidifier = new LargeSolidifier(21060, "NameLargeSolidifier", TextLocalization.NameLargeSolidifier)
+            .getStackForm(1);
+        GTNLItemList.LargeSolidifier.set(LargeSolidifier);
+
+        LargeExtractor = new LargeExtractor(21061, "NameLargeExtractor", TextLocalization.NameLargeExtractor)
+            .getStackForm(1);
+        GTNLItemList.LargeExtractor.set(LargeExtractor);
 
         CheatOreProcessingFactory = new CheatOreProcessingFactory(
             21919,

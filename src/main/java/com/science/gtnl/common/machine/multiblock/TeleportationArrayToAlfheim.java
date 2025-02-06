@@ -35,7 +35,7 @@ import com.science.gtnl.Utils.item.TextLocalization;
 import com.science.gtnl.Utils.item.TextUtils;
 import com.science.gtnl.Utils.rewrites.GTNL_ItemID;
 import com.science.gtnl.common.hatch.MTEHatchCustomFluid;
-import com.science.gtnl.common.machine.Explosion.PortalToAlfheimExplosion;
+import com.science.gtnl.common.machine.Special.PortalToAlfheimExplosion;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.common.recipe.RecipeRegister;
 import com.science.gtnl.config.MainConfig;
