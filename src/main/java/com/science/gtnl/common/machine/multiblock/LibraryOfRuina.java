@@ -24,7 +24,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
@@ -150,7 +149,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
                 .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
                 .addElement('A', ofBlockAnyMeta(gravityStabilizationCasing))
                 .addElement('B', ofBlock(BlockLoader.MetaCasing, 13))
-                .addElement('C', ofBlock(IGBlocks.SpaceElevatorCasing, 1))
+                .addElement('C', ofBlock(sBlockCasingsSE, 1))
                 .addElement(
                     'D',
                     buildHatchAdder(LibraryOfRuina.class)
@@ -193,7 +192,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
         int realBudget = elementBudget >= 500 ? elementBudget : Math.min(500, elementBudget * 5);
 
         if (stackSize.stackSize > 1) {
-            return this.survivialBuildPiece(
+            return this.survivalBuildPiece(
                 STRUCTURE_PIECE_MAIN,
                 stackSize,
                 HORIZONTAL_OFF_SET,

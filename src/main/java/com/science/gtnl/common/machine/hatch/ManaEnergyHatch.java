@@ -32,14 +32,7 @@ public class ManaEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets {
     private static int mAmp;
 
     public ManaEnergyHatch(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_00"),
-                StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_01"),
-                StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_02"), "" });
+        super(aID, aName, aNameRegional, aTier);
         mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_03") + getCapacity() + "L";
         mAmp = aAmp;
     }
@@ -53,6 +46,19 @@ public class ManaEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new ManaEnergyHatch(mName, mTier, mDescriptionArray, mTextures, mAmp);
+    }
+
+    @Override
+    public String[] getDescription() {
+
+        ArrayList<String> desc = new ArrayList<>();
+
+        desc.add(StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_00"));
+        desc.add(StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_01"));
+        desc.add(StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_02"));
+        desc.add(StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_03") + getCapacity() + "L");
+
+        return desc.toArray(new String[] {});
     }
 
     @Override

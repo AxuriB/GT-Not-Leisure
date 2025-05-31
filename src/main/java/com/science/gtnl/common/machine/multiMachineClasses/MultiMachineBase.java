@@ -43,7 +43,8 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.api.mixinHelper.IOverclockCalculatorExtension;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
@@ -71,7 +72,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
@@ -83,13 +83,13 @@ import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MteHatchSteamBusInput;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 
 public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MTEExtendedPowerMultiBlockBase<T>
     implements IConstructable, ISurvivalConstructable {
 
     protected int tCountCasing;
-    protected byte mGlassTier = 0;
+    protected int mGlassTier = 0;
     protected int mParallelTier;
     protected int energyHatchTier;
     protected int mMaxParallel = 0;
@@ -130,7 +130,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     // region new methods
     public void repairMachine() {
         mHardHammer = true;
-        mSoftHammer = true;
+        mSoftMallet = true;
         mScrewdriver = true;
         mCrowbar = true;
         mSolderingTool = true;
@@ -180,7 +180,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      */
     @ApiStatus.OverrideOnly
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -193,10 +193,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                OverclockCalculator calc = super.createOverclockCalculator(recipe);
-                ((IOverclockCalculatorExtension) calc).setMoreSpeedBoost(configSpeedBoost);
-                return calc;
+            public GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost);
             }
 
         }.setMaxParallelSupplier(this::getLimitedMaxParallel);
@@ -233,7 +231,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      * @return The value (or a method to get the value) of Max Parallel (dynamically) .
      */
     @ApiStatus.OverrideOnly
-    protected abstract int getMaxParallelRecipes();
+    public abstract int getMaxParallelRecipes();
 
     public abstract int getCasingTextureID();
 
@@ -709,7 +707,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             return false;
         }
         if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus
-            || aTileEntity instanceof MteHatchSteamBusInput) {
+            || aTileEntity instanceof MTEHatchSteamBusInput) {
             if (aTileEntity instanceof MTEHatchInput) {
                 ((MTEHatchInput) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInput) aTileEntity).mRecipeMap = aMap;
@@ -727,8 +725,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                     log("Cleared Input Bus.");
                 }
             } else {
-                ((MteHatchSteamBusInput) aTileEntity).mRecipeMap = null;
-                ((MteHatchSteamBusInput) aTileEntity).mRecipeMap = aMap;
+                ((MTEHatchSteamBusInput) aTileEntity).mRecipeMap = null;
+                ((MTEHatchSteamBusInput) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
                     log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
                 } else {
@@ -932,14 +930,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
-
-    /**
-     * If it explodes when the Component has to be replaced.
-     */
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     /**
