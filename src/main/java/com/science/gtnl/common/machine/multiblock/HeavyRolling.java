@@ -212,7 +212,7 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
                     .setDurationModifier(
                         1.0 / 10.0 * Math.pow(0.75, mParallelTier) * Math.pow(0.85, getCoilLevel().getTier()));
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     public HeatingCoilLevel getCoilLevel() {

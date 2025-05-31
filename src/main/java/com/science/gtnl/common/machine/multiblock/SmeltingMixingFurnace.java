@@ -313,7 +313,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
                     .setDurationModifier(1 * Math.pow(0.75, mParallelTier))
                     .setExtraDurationModifier(configSpeedBoost);
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

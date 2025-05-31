@@ -7,7 +7,6 @@ import static goodgenerator.loader.Loaders.gravityStabilizationCasing;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.*;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.common.register.LanthItemList.SHIELDED_ACCELERATOR_CASING;
 
@@ -78,26 +77,31 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(StructureUtils.getTextureIndex(sBlockCasings1, 14)),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
+            return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(StructureUtils.getTextureIndex(sBlockCasings1, 14)),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[1][14] };
+        return new ITexture[] {
+            Textures.BlockIcons.getCasingTextureForId(StructureUtils.getTextureIndex(sBlockCasings1, 14)) };
     }
 
     @Override

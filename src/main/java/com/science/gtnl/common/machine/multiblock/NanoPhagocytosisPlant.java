@@ -544,7 +544,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, getMaxInputVoltage()))
                     .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, getMaxInputVoltage()));
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

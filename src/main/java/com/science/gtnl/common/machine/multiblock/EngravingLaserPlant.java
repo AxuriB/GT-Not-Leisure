@@ -234,7 +234,7 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
                     .setDurationModifier(
                         0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier) * Math.pow(0.95, casingTier));
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

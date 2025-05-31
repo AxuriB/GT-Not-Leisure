@@ -242,7 +242,7 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier))
                     .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier));
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Nonnull

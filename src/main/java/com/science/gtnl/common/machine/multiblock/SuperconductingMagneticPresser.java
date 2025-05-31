@@ -90,7 +90,6 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
             .addInputBus(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
-            .addOutputHatch(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
             .toolTipFinisher();
         return tt;
@@ -131,7 +130,7 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
                 .addElement(
                     'E',
                     buildHatchAdder(SuperconductingMagneticPresser.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                        .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                         .casingIndex(getCasingTextureID())
                         .dot(1)
                         .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
@@ -228,7 +227,7 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
                         .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier))
                         .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier));
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

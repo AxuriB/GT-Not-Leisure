@@ -174,7 +174,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
                     .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier))
                     .setExtraDurationModifier(configSpeedBoost);
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Nonnull

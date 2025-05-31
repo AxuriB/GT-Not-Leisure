@@ -236,7 +236,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.80, coilTier))
                     .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.80, coilTier));
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     public HeatingCoilLevel getCoilLevel() {
