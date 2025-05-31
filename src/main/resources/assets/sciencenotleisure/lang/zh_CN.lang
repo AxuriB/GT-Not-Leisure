@@ -1509,6 +1509,7 @@ Tooltip_SteamFlightModule_04=生效范围: 64 * 超频次数
 NameSteamWeatherModule=蒸汽天气更替模块
 gtnl.recipe.SteamWeatherModuleFakeRecipes=天气更替
 SteamWeatherModuleRecipeType=天气更替
+Tooltip_SteamWeatherModule_00=恩里克·普奇...这就是我的替身...「Weather Report! 」
 Tooltip_SteamWeatherModule_01=将天气更替功能添加到蒸汽楼梯
 
 NameSteamBeaconModuleI=蒸汽信标模块 I

@@ -1506,6 +1506,12 @@ Tooltip_SteamFlightModule_02=Consumes steam to grant you the power of free fligh
 Tooltip_SteamFlightModule_03=Adjust overclock count to consume more steam and expand the range
 Tooltip_SteamFlightModule_04=Effective range: 64 * overclock count
 
+NameSteamWeatherModule=Steam Weather Module
+gtnl.recipe.SteamWeatherModuleFakeRecipes=Weather Changes
+SteamWeatherModuleRecipeType=Weather Changes
+Tooltip_SteamWeatherModule_00=§a§lEnrique Pucci... so that's my stand-in... "Weather Report!"
+Tooltip_SteamWeatherModule_01=Adds weather changes module to the Steam Stairway
+
 NameSteamBeaconModuleI=Steam Elevator Beacon Module I
 NameSteamBeaconModuleII=Steam Elevator Beacon Module II
 NameSteamBeaconModuleIII=Steam Elevator Beacon Module III
