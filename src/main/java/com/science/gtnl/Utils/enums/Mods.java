@@ -80,6 +80,10 @@ public enum Mods {
         return this.modLoaded;
     }
 
+    public String getModId() {
+        return this.ID;
+    }
+
     public String getResourcePath(String... path) {
         return this.getResourceLocation(path)
             .toString();

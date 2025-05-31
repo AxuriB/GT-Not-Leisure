@@ -34,14 +34,14 @@ import cpw.mods.fml.relauncher.Side;
     acceptedMinecraftVersions = "1.7.10")
 public class ReAvaritia {
 
-    @Mod.Instance(Mods.Names.REAVARITIA)
+    @Mod.Instance(Mods.ModIds.REAVARITIA)
     public static ReAvaritia instance;
 
-    public static final String MODID = Mods.Names.REAVARITIA;
+    public static final String MODID = Mods.ModIds.REAVARITIA;
     public static final String MODNAME = "ReAvaritia";
     public static final String VERSION = "1.0.0";
     public static final String Arthor = "HFstudio";
-    public static final String RESOURCE_ROOT_ID = Mods.Names.REAVARITIA;
+    public static final String RESOURCE_ROOT_ID = Mods.ModIds.REAVARITIA;
     public static final Logger LOG = LogManager.getLogger(MODID);
 
     public static SimpleNetworkWrapper network;

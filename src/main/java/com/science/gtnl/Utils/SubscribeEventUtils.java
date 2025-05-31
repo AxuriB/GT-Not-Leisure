@@ -82,7 +82,7 @@ public class SubscribeEventUtils {
 
                 if (MainConfig.enableShowAddMods) {
                     for (Mods mod : Mods.values()) {
-                        if (mod.isModLoaded() && !MOD_BLACKLIST.contains(mod.name())) {
+                        if (mod.isModLoaded() && !MOD_BLACKLIST.contains(mod.getModId())) {
                             String translatedPrefix = StatCollector.translateToLocal("Welcome_GTNL_ModInstall");
                             player.addChatMessage(
                                 new ChatComponentText(mod.displayName + translatedPrefix)

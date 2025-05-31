@@ -33,13 +33,11 @@ public class ManaEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets {
 
     public ManaEnergyHatch(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier);
-        mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_03") + getCapacity() + "L";
         mAmp = aAmp;
     }
 
     public ManaEnergyHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, int aAmp) {
         super(aName, aTier, aDescription, aTextures);
-        mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_ManaEnergyHatch_03") + getCapacity() + "L";
         mAmp = aAmp;
     }
 

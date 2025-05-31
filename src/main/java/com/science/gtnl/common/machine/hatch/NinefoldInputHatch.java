@@ -46,9 +46,6 @@ public class NinefoldInputHatch extends MTEHatchMultiInput implements IAddUIWidg
         this.mStoredFluid = new FluidStack[aSlot];
         fluidTanks = new FluidStackTank[aSlot];
         mCapacityPer = getCapacityPerTank(aTier, aSlot);
-        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_NinefoldInputHatch_01")
-            + GTUtility.formatNumbers(mCapacityPer)
-            + "L";
     }
 
     public NinefoldInputHatch(String aName, int aSlot, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -63,9 +60,6 @@ public class NinefoldInputHatch extends MTEHatchMultiInput implements IAddUIWidg
                 fluid -> mStoredFluid[index] = fluid,
                 mCapacityPer);
         }
-        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_NinefoldInputHatch_01")
-            + GTUtility.formatNumbers(mCapacityPer)
-            + "L";
     }
 
     @Override

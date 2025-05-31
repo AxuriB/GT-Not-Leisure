@@ -73,7 +73,7 @@ public class CircuitIntegratedPlus extends Item implements INetworkUpdatableItem
         GTModHandler.addShapelessCraftingRecipe(
             GTNLItemList.CircuitIntegratedPlus.getWithDamage(1L, 0L),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
-            new Object[] { OrePrefixes.circuit.get(Materials.LV) });
+            new Object[] { OrePrefixes.circuit.get(Materials.HV) });
         long bits = GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE;
         GTModHandler.addCraftingRecipe(
             GTNLItemList.CircuitIntegratedPlus.getWithDamage(1L, 1L),
