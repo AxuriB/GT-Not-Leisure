@@ -94,7 +94,7 @@ public class SubscribeEventClientUtils {
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Text event) {
         if (ticksRemaining > 0 && currentTitle != null && !currentTitle.isEmpty()) {
-
+            GL11.glPushMatrix();
             Minecraft mc = Minecraft.getMinecraft();
             ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
             FontRenderer fr = mc.fontRenderer;
@@ -112,7 +112,6 @@ public class SubscribeEventClientUtils {
 
             int argb = getArgb();
 
-            GL11.glPushMatrix();
             GL11.glTranslated(x, y, 0);
             GL11.glScaled(scale, scale, 1);
 

@@ -28,6 +28,7 @@ public class LateMixinPlugin implements ILateMixinLoader {
         mixins.add("Gregtech.MTEIntegratedOreFactory_Mixin");
         mixins.add("Gregtech.MTEBetterJukebox_Mixin");
         mixins.add("Gregtech.MTEDigitalTankBase_Mixin");
+        mixins.add("Gregtech.MTEHatchAccessor");
 
         if (MainConfig.enableDebugMode) {
             mixins.add("Gregtech.MachineBlockRenderer_Mixin");

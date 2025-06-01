@@ -197,6 +197,11 @@ public class SteamWoodcutter extends SteamMultiMachineBase<SteamWoodcutter> impl
     }
 
     @Override
+    protected int getCasingTextureID() {
+        return GTUtility.getTextureId((byte) 116, (byte) 24);
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }

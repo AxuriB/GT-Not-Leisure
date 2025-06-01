@@ -15,6 +15,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,7 @@ import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.StructureError;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -801,6 +803,17 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         mSteamWirelessInputFluids.clear();
         mSteamInputs.clear();
         mSteamOutputs.clear();
+    }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
+        super.validateStructure(errors, context);
+
+        if (mSteamInputFluids.isEmpty() && mSteamBigInputFluids.isEmpty() && mSteamWirelessInputFluids.isEmpty()) {
+            errors.add(StructureError.MISSING_STEAM_HATCH);
+        } else {
+            errors.remove(StructureError.MISSING_STEAM_HATCH);
+        }
     }
 
     @Override
