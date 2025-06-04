@@ -3,6 +3,7 @@ package com.science.gtnl.Utils;
 import static com.science.gtnl.common.packet.ClientSoundHandler.PLAYING_SOUNDS;
 import static com.science.gtnl.common.packet.ClientTitleDisplayHandler.*;
 import static com.science.gtnl.common.render.PlayerDollRenderManager.*;
+import static com.science.gtnl.common.render.PlayerDollRenderManagerClient.textureCache;
 
 import java.util.Map;
 import java.util.Random;
@@ -150,10 +151,6 @@ public class SubscribeEventClientUtils {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
-        offlineMode = false;
-        BLACKLISTED_UUIDS.clear();
-        BLACKLISTED_SKIN_URLS.clear();
-        BLACKLISTED_CAPE_URLS.clear();
         textureCache.clear();
     }
 
