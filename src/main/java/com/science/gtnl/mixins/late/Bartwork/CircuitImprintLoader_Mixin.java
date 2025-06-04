@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.science.gtnl.loader.RecipeLoaderServerStart;
+import com.science.gtnl.loader.RecipeLoader;
 
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
@@ -30,7 +30,7 @@ public abstract class CircuitImprintLoader_Mixin {
             target = "Lbartworks/system/material/CircuitGeneration/CircuitImprintLoader;exchangeRecipesInList(Ljava/util/HashSet;Ljava/util/HashSet;)V",
             shift = At.Shift.BEFORE))
     private static void injectCustomRecipeLoader(CallbackInfo ci) {
-        RecipeLoaderServerStart.loadRecipesServerStart();
+        RecipeLoader.loadRecipesServerStart();
     }
 
     /**
