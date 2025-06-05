@@ -39,6 +39,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 
 public class HighPressureSteamFusionReactor extends SteamMultiMachineBase<HighPressureSteamFusionReactor>
     implements ISurvivalConstructable {
@@ -149,6 +150,7 @@ public class HighPressureSteamFusionReactor extends SteamMultiMachineBase<HighPr
             .beginStructureBlock(47, 7, 47, true)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_HighPressureSteamFusionReactor_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_HighPressureSteamFusionReactor_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

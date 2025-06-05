@@ -75,6 +75,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -323,6 +324,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
             .addOutputBus(StatCollector.translateToLocal("Tooltip_MeteorMiner_Casing_02_02"), 3)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_MeteorMiner_Casing_02_02"), 3)
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_MeteorMiner_Casing_02_02"), 3)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

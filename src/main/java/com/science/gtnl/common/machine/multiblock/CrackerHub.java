@@ -40,6 +40,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
@@ -93,6 +94,7 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_CrackerHub_Casing"), 1)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_CrackerHub_Casing"), 1)
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_CrackerHub_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

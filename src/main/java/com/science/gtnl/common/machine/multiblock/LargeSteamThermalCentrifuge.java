@@ -40,6 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeSteamThermalCentrifuge>
@@ -118,8 +119,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamThermalCentrifuge::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -128,28 +128,31 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        LargeSteamThermalCentrifuge::getTierPipeCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                        -1,
-                        (t, m) -> t.tierPipeCasing = m,
-                        t -> t.tierPipeCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamThermalCentrifuge::getTierPipeCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                            -1,
+                            (t, m) -> t.tierPipeCasing = m,
+                            t -> t.tierPipeCasing)))
                 .addElement(
                     'C',
-                    ofBlocksTiered(
-                        LargeSteamThermalCentrifuge::getTierFireboxCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                        -1,
-                        (t, m) -> t.tierFireboxCasing = m,
-                        t -> t.tierFireboxCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamThermalCentrifuge::getTierFireboxCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                            -1,
+                            (t, m) -> t.tierFireboxCasing = m,
+                            t -> t.tierFireboxCasing)))
                 .addElement(
                     'D',
-                    ofBlocksTiered(
-                        LargeSteamThermalCentrifuge::getTierFrameCasing,
-                        ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
-                        -1,
-                        (t, m) -> t.tierFrameCasing = m,
-                        t -> t.tierFrameCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamThermalCentrifuge::getTierFrameCasing,
+                            ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
+                            -1,
+                            (t, m) -> t.tierFrameCasing = m,
+                            t -> t.tierFrameCasing)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -273,6 +276,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
             .beginStructureBlock(7, 5, 7, false)
             .addInputBus(StatCollector.translateToLocal("Tooltip_LargeSteamThermalCentrifuge_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamThermalCentrifuge_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }

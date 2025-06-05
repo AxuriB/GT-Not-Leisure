@@ -5,6 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import javax.annotation.Nonnull;
 
@@ -40,6 +41,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompressor>
     implements ISurvivalConstructable {
@@ -117,8 +119,7 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamCompressor::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -127,29 +128,32 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        LargeSteamCompressor::getTierGearCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
-                        -1,
-                        (t, m) -> t.tierGearCasing = m,
-                        t -> t.tierGearCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamCompressor::getTierGearCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                            -1,
+                            (t, m) -> t.tierGearCasing = m,
+                            t -> t.tierGearCasing)))
                 .addElement(
                     'C',
-                    ofBlocksTiered(
-                        LargeSteamCompressor::getTierFrameCasing,
-                        ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
-                        -1,
-                        (t, m) -> t.tierFrameCasing = m,
-                        t -> t.tierFrameCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamCompressor::getTierFrameCasing,
+                            ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
+                            -1,
+                            (t, m) -> t.tierFrameCasing = m,
+                            t -> t.tierFrameCasing)))
                 .addElement(
                     'D',
-                    ofBlocksTiered(
-                        LargeSteamCompressor::getTierMaterialBlockCasing,
-                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(sBlockMetal6, 13)),
-                        -1,
-                        (t, m) -> t.tierMaterialBlock = m,
-                        t -> t.tierMaterialBlock))
-                .addElement('E', ofBlockAnyMeta(Blocks.glass))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamCompressor::getTierMaterialBlockCasing,
+                            ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(sBlockMetal6, 13)),
+                            -1,
+                            (t, m) -> t.tierMaterialBlock = m,
+                            t -> t.tierMaterialBlock)))
+                .addElement('E', chainAllGlasses())
                 .build();
 
         }
@@ -276,6 +280,8 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_Casing"), 1)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

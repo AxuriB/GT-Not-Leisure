@@ -40,6 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteamCircuitAssembler>
     implements ISurvivalConstructable {
@@ -119,8 +120,7 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamCircuitAssembler::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -130,12 +130,13 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
 
                 .addElement(
                     'C',
-                    ofBlocksTiered(
-                        LargeSteamCircuitAssembler::getTierPipeCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                        -1,
-                        (t, m) -> t.tierPipeCasing = m,
-                        t -> t.tierPipeCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamCircuitAssembler::getTierPipeCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                            -1,
+                            (t, m) -> t.tierPipeCasing = m,
+                            t -> t.tierPipeCasing)))
                 .build();
 
         }
@@ -249,6 +250,7 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
             .addInputBus(StatCollector.translateToLocal("Tooltip_LargeSteamCircuitAssembler_Casing"), 1)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamCircuitAssembler_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamCircuitAssembler_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }

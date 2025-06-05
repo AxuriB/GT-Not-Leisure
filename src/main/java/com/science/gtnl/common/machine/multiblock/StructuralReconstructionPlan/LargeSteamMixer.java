@@ -6,10 +6,10 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -43,6 +43,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -122,8 +123,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamMixer::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -132,29 +132,32 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        LargeSteamMixer::getTierGearCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
-                        -1,
-                        (t, m) -> t.tierGearCasing = m,
-                        t -> t.tierGearCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamMixer::getTierGearCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                            -1,
+                            (t, m) -> t.tierGearCasing = m,
+                            t -> t.tierGearCasing)))
                 .addElement(
                     'C',
-                    ofBlocksTiered(
-                        LargeSteamMixer::getTierPipeCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                        -1,
-                        (t, m) -> t.tierPipeCasing = m,
-                        t -> t.tierPipeCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamMixer::getTierPipeCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                            -1,
+                            (t, m) -> t.tierPipeCasing = m,
+                            t -> t.tierPipeCasing)))
                 .addElement(
                     'D',
-                    ofBlocksTiered(
-                        LargeSteamMixer::getTierFireboxCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                        -1,
-                        (t, m) -> t.tierFireboxCasing = m,
-                        t -> t.tierFireboxCasing))
-                .addElement('E', ofBlockAnyMeta(Blocks.glass))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamMixer::getTierFireboxCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                            -1,
+                            (t, m) -> t.tierFireboxCasing = m,
+                            t -> t.tierFireboxCasing)))
+                .addElement('E', chainAllGlasses())
                 .addElement(
                     'F',
                     ofBlocksTiered(
@@ -311,6 +314,8 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamMixer_Casing"), 1)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamMixer_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamMixer_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

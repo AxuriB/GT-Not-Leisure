@@ -5,13 +5,13 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.util.Arrays;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -47,6 +47,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWasher> implements ISurvivalConstructable {
@@ -140,8 +141,7 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamOreWasher::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -150,13 +150,14 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        LargeSteamOreWasher::getTierPipeCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                        -1,
-                        (t, m) -> t.tierPipeCasing = m,
-                        t -> t.tierPipeCasing))
-                .addElement('C', ofBlockAnyMeta(Blocks.glass))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamOreWasher::getTierPipeCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                            -1,
+                            (t, m) -> t.tierPipeCasing = m,
+                            t -> t.tierPipeCasing)))
+                .addElement('C', chainAllGlasses())
                 .build();
 
         }
@@ -266,6 +267,8 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
             .beginStructureBlock(9, 5, 9, false)
             .addInputBus(StatCollector.translateToLocal("Tooltip_LargeSteamOreWasher_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamOreWasher_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

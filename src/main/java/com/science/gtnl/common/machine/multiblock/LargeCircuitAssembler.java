@@ -34,6 +34,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssembler>
@@ -118,6 +119,7 @@ public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssem
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeCircuitAssembler_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_LargeCircuitAssembler_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_LargeCircuitAssembler_Casing"))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

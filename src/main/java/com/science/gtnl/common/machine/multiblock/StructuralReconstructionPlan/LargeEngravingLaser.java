@@ -40,6 +40,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser> implements ISurvivalConstructable {
@@ -133,6 +134,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeEngravingLaser_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_LargeEngravingLaser_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_LargeEngravingLaser_Casing"))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

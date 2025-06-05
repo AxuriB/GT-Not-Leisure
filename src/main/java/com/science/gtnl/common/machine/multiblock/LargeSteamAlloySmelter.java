@@ -39,6 +39,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class LargeSteamAlloySmelter extends SteamMultiMachineBase<LargeSteamAlloySmelter>
     implements ISurvivalConstructable {
@@ -116,8 +117,7 @@ public class LargeSteamAlloySmelter extends SteamMultiMachineBase<LargeSteamAllo
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamAlloySmelter::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -126,12 +126,13 @@ public class LargeSteamAlloySmelter extends SteamMultiMachineBase<LargeSteamAllo
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        LargeSteamAlloySmelter::getTierFireboxCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                        -1,
-                        (t, m) -> t.tierFireboxCasing = m,
-                        t -> t.tierFireboxCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamAlloySmelter::getTierFireboxCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                            -1,
+                            (t, m) -> t.tierFireboxCasing = m,
+                            t -> t.tierFireboxCasing)))
                 .build();
 
         }
@@ -246,6 +247,7 @@ public class LargeSteamAlloySmelter extends SteamMultiMachineBase<LargeSteamAllo
             .beginStructureBlock(3, 4, 3, false)
             .addInputBus(StatCollector.translateToLocal("Tooltip_LargeSteamAlloySmelter_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamAlloySmelter_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }

@@ -41,6 +41,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implements ISurvivalConstructable {
@@ -125,6 +126,7 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeAssembler_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_LargeAssembler_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_LargeAssembler_Casing"))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

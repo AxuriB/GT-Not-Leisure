@@ -40,6 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implements ISurvivalConstructable {
 
@@ -117,8 +118,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             SteamCracking::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -127,20 +127,22 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        SteamCracking::getTierFireboxCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                        -1,
-                        (t, m) -> t.tierFireboxCasing = m,
-                        t -> t.tierFireboxCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            SteamCracking::getTierFireboxCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                            -1,
+                            (t, m) -> t.tierFireboxCasing = m,
+                            t -> t.tierFireboxCasing)))
                 .addElement(
                     'C',
-                    ofBlocksTiered(
-                        SteamCracking::getTierPlatedCasing,
-                        ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
-                        -1,
-                        (t, m) -> t.tierPlatedCasing = m,
-                        t -> t.tierPlatedCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            SteamCracking::getTierPlatedCasing,
+                            ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierPlatedCasing = m,
+                            t -> t.tierPlatedCasing)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -260,6 +262,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
             .beginStructureBlock(7, 4, 4, false)
             .addInputBus(StatCollector.translateToLocal("Tooltip_SteamCracking_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_SteamCracking_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }

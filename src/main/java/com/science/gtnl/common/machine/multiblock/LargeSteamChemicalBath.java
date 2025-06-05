@@ -6,10 +6,10 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -42,6 +42,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChemicalBath>
     implements ISurvivalConstructable {
@@ -122,8 +123,7 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamChemicalBath::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -132,13 +132,14 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'C',
-                    ofBlocksTiered(
-                        LargeSteamChemicalBath::getTierFrameCasing,
-                        ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
-                        -1,
-                        (t, m) -> t.tierFrameCasing = m,
-                        t -> t.tierFrameCasing))
-                .addElement('D', ofBlock(Blocks.glass, 0))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamChemicalBath::getTierFrameCasing,
+                            ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
+                            -1,
+                            (t, m) -> t.tierFrameCasing = m,
+                            t -> t.tierFrameCasing)))
+                .addElement('D', chainAllGlasses())
                 .build();
 
         }
@@ -255,6 +256,8 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamChemicalBath_Casing"), 1)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamChemicalBath_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamChemicalBath_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

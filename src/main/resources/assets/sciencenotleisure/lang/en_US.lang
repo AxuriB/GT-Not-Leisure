@@ -1622,7 +1622,7 @@ Tooltip_GrandAssemblyLine_05=If the power of a certain recipe exceeds the maximu
 Tooltip_GrandAssemblyLine_06=If the total recipe power exceeds the power of the energy storage, the total power is halved and the time is doubled
 Tooltip_GrandAssemblyLine_07=If the energy storage power is greater than the total recipe power * 4, destructive overclocking will be performed
 Tooltip_GrandAssemblyLine_08=Insert a programming circuit to limit the number of overclocking attempts
-Tooltip_GrandAssemblyLine_09=Install parallel control cores of UEV or above to remove the energy storage limit
+Tooltip_GrandAssemblyLine_09=Install parallel control cores of UHV or above to remove the energy storage limit
 Tooltip_GrandAssemblyLine_10=Install parallel control cores of UIV or above to unlock §cLossless Overclocking§7
 Tooltip_GrandAssemblyLine_11=Install parallel control cores of UMV or above to provide an additional 500% power consumption reduction and 1900% acceleration (multiplied cumulatively)
 Tooltip_GrandAssemblyLine_12=Installing a parallel control core of UMV tier or higher without an energy hatch will automatically activate wireless mode
@@ -1903,6 +1903,7 @@ SteamLavaMakerRecipeType=Superheater
 Tooltip_SteamLavaMaker_00=Can melt up to 4 stones at a time
 Tooltip_SteamLavaMaker_01=§b§oTurning up the heat
 Tooltip_SteamLavaMaker_02=Author: §d§oSteam§f§oIs§d§oThe§f§oNumber
+Tooltip_SteamLavaMaker_Casing=Any Copper Plated Bricks or Deoxidized Steel Machine Block
 
 NameSteamManufacturer=Steam Manufacturer
 gtnl.recipe.SteamManufacturer=Hydraulic Manufacturing
@@ -1919,6 +1920,7 @@ Tooltip_SteamRockBreaker_01=Cog 1 = Cobblestone, Cog 2 = Stone, Cog 3 = Obsidian
 Tooltip_SteamRockBreaker_02=Processes up to 8 recipes at once
 Tooltip_SteamRockBreaker_03=§b§oSTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONE
 Tooltip_SteamRockBreaker_04=§b§oKeep an eye for Wallsharing :>
+Tooltip_SteamRockBreaker_Casing=Any Copper Plated Bricks or Deoxidized Steel Machine Block
 
 NameSteamWoodcutter=Steam Woodcutter
 gtnl.recipe.SteamWoodcutter=Vapor Gardening
@@ -2622,7 +2624,7 @@ Tooltip_MegaBlastFurnace_01=For every 1800K above the recipe temperature, it wil
 Tooltip_MegaBlastFurnace_02=For every voltage level above MV, temperature will increase by 100K
 Tooltip_MegaBlastFurnace_03=Parallel Control Core provides 4x additional parallel!
 Tooltip_MegaBlastFurnace_04=400% faster than the Industrial Blast Furnace
-Tooltip_MegaBlastFurnace_05=Install a UHV or higher Parallel Control Core to unlock §cperfect overclock§7
+Tooltip_MegaBlastFurnace_05=Install a UEV or higher Parallel Control Core to unlock §cperfect overclock§7
 Tooltip_MegaBlastFurnace_Casing_00=Any Smelting Furnace Mechanical Block
 Tooltip_MegaBlastFurnace_Casing_01=Top center radioactive silicon alloy mechanical block
 

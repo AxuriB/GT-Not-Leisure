@@ -50,6 +50,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> implements ISurvivalConstructable {
 
@@ -135,8 +136,7 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamFurnace::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -145,12 +145,13 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        SteamRockBreaker::getTierPipeCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                        -1,
-                        (t, m) -> t.tierPipeCasing = m,
-                        t -> t.tierPipeCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            SteamRockBreaker::getTierPipeCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                            -1,
+                            (t, m) -> t.tierPipeCasing = m,
+                            t -> t.tierPipeCasing)))
                 .addElement('C', ofBlock(sBlockCasings4, 15))
                 .addElement('D', ofBlock(Blocks.iron_block, 0))
                 .addElement('E', ofChain(ofBlockAnyMeta(Blocks.lava), ofBlockAnyMeta(Blocks.flowing_lava)))
@@ -266,6 +267,9 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
             .beginStructureBlock(11, 6, 11, true)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_SteamRockBreaker_Casing"), 1)
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_SteamRockBreaker_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }

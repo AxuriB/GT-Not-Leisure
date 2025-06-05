@@ -38,6 +38,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellRegulator>
@@ -137,6 +138,7 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
             .addOutputBus(StatCollector.translateToLocal("Tooltip_FlotationCellRegulator_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_FlotationCellRegulator_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_FlotationCellRegulator_Casing"))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

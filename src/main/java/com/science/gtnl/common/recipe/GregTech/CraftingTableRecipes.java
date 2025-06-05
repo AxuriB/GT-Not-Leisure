@@ -3,6 +3,7 @@ package com.science.gtnl.common.recipe.GregTech;
 import static com.science.gtnl.loader.IScriptLoader.missing;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.addCraftingRecipe;
+import static gregtech.api.util.GTModHandler.addShapelessCraftingRecipe;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -386,15 +387,15 @@ public class CraftingTableRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L), 'E',
                 ItemList.Casing_Firebox_TungstenSteel.get(1) });
 
-        addCraftingRecipe(
+        addShapelessCraftingRecipe(
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 2L),
-            new Object[] { "AB ", "   ", "   ", 'A', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L), 'B',
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L) });
 
-        addCraftingRecipe(
+        addShapelessCraftingRecipe(
             GTOreDictUnificator.get(OrePrefixes.dust, Materials.Electrotine, 8L),
-            new Object[] { "AB ", "   ", "   ", 'A', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
-                'B', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 1L) });
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Electrum, 1L) });
 
         addCraftingRecipe(
             GTNLItemList.PlayerDoll.get(1),
@@ -545,5 +546,13 @@ public class CraftingTableRecipes implements IRecipePool {
             GTNLItemList.SaplingBrickuoia.get(1),
             new Object[] { "AAA", "ABA", "ACA", 'A', new ItemStack(Blocks.brick_block, 1), 'B',
                 new ItemStack(BOPBlockRegistrator.sapling_Rainforest, 1), 'C', new ItemStack(Items.dye, 1, 15) });
+
+        addShapelessCraftingRecipe(
+            GTNLItemList.DebugEnergyHatch.get(1),
+            new Object[] { tectech.thing.CustomItemList.Machine_DebugGenny.get(1) });
+
+        addShapelessCraftingRecipe(
+            tectech.thing.CustomItemList.Machine_DebugGenny.get(1),
+            new Object[] { GTNLItemList.DebugEnergyHatch.get(1) });
     }
 }

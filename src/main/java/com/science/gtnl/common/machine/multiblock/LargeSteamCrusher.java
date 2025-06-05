@@ -41,6 +41,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> implements ISurvivalConstructable {
 
@@ -116,8 +117,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
+                                    GTStructureChannels.TIER_MACHINE_CASING.use(
                                         ofBlocksTiered(
                                             LargeSteamCrusher::getTierMachineCasing,
                                             ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -126,37 +126,41 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
                                             t -> t.tierMachineCasing))))))
                 .addElement(
                     'B',
-                    ofBlocksTiered(
-                        LargeSteamCrusher::getTierGearCasing,
-                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
-                        -1,
-                        (t, m) -> t.tierGearCasing = m,
-                        t -> t.tierGearCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamCrusher::getTierGearCasing,
+                            ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                            -1,
+                            (t, m) -> t.tierGearCasing = m,
+                            t -> t.tierGearCasing)))
                 .addElement(
                     'C',
-                    ofBlocksTiered(
-                        LargeSteamCrusher::getTierFrameCasing,
-                        ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
-                        -1,
-                        (t, m) -> t.tierFrameCasing = m,
-                        t -> t.tierFrameCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamCrusher::getTierFrameCasing,
+                            ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
+                            -1,
+                            (t, m) -> t.tierFrameCasing = m,
+                            t -> t.tierFrameCasing)))
                 .addElement(
                     'D',
-                    ofBlocksTiered(
-                        LargeSteamCrusher::getTierPlatedCasing,
-                        ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
-                        -1,
-                        (t, m) -> t.tierPlatedCasing = m,
-                        t -> t.tierPlatedCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamCrusher::getTierPlatedCasing,
+                            ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
+                            -1,
+                            (t, m) -> t.tierPlatedCasing = m,
+                            t -> t.tierPlatedCasing)))
                 .addElement(
                     'E',
-                    ofBlocksTiered(
-                        LargeSteamCrusher::getTierBrickCasing,
-                        ImmutableList
-                            .of(Pair.of(BlockLoader.MetaBlockColumn, 0), Pair.of(BlockLoader.MetaBlockColumn, 1)),
-                        -1,
-                        (t, m) -> t.tierBrickCasing = m,
-                        t -> t.tierBrickCasing))
+                    GTStructureChannels.TIER_MACHINE_CASING.use(
+                        ofBlocksTiered(
+                            LargeSteamCrusher::getTierBrickCasing,
+                            ImmutableList
+                                .of(Pair.of(BlockLoader.MetaBlockColumn, 0), Pair.of(BlockLoader.MetaBlockColumn, 1)),
+                            -1,
+                            (t, m) -> t.tierBrickCasing = m,
+                            t -> t.tierBrickCasing)))
                 .build();
 
         }
@@ -287,6 +291,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
             .beginStructureBlock(7, 8, 11, false)
             .addInputBus(StatCollector.translateToLocal("Tooltip_LargeSteamCrusher_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamCrusher_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }

@@ -40,6 +40,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -91,6 +92,7 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
             .addOutputBus(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

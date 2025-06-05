@@ -38,6 +38,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 
 public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implements ISurvivalConstructable {
 
@@ -75,6 +76,9 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
             .beginStructureBlock(3, 5, 3, true)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_SteamLavaMaker_Casing"), 1)
+            .addOutputHatch(StatCollector.translateToLocal("Tooltip_SteamLavaMaker_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

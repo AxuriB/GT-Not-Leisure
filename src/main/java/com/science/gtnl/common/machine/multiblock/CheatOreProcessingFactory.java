@@ -9,8 +9,7 @@ import static com.science.gtnl.Utils.Utils.setStackSize;
 import static com.science.gtnl.common.machine.OreProcessing.OP_Values.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.*;
 import static gtPlusPlus.core.block.ModBlocks.blockCasingsMisc;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -50,6 +48,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -277,7 +276,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
                             .dot(1)
                             .build(),
                         ofBlock(BWBlockCasingsAdvanced, 32066)))
-                .addElement('H', ofBlockAnyMeta(Blocks.glass))
+                .addElement('H', chainAllGlasses())
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -291,6 +290,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
             .beginStructureBlock(41, 26, 18, false)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

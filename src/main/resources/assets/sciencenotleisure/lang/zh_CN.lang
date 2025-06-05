@@ -1622,7 +1622,7 @@ Tooltip_GrandAssemblyLine_05=如果某一配方功率大于能源仓最大功率
 Tooltip_GrandAssemblyLine_06=如果配方总功率大于能源仓功率, 则总功率减半, 时间加倍
 Tooltip_GrandAssemblyLine_07=如果能源仓功率大于配方总功率 * 4, 则执行有损超频
 Tooltip_GrandAssemblyLine_08=放入编程电路来限制可超频次数
-Tooltip_GrandAssemblyLine_09=安装UEV及以上的并行控制核心解除能源仓限制
+Tooltip_GrandAssemblyLine_09=安装UHV及以上的并行控制核心解除能源仓限制
 Tooltip_GrandAssemblyLine_10=安装UIV及以上的并行控制核心解锁§c无损超频§7
 Tooltip_GrandAssemblyLine_11=安装UMV及以上的并行控制核心将额外提供500%的耗电减免和1900%的加速(乘算叠加)
 Tooltip_GrandAssemblyLine_12=安装UMV及以上的并行控制核心且未不安装能源仓将自动进入无线模式
@@ -1903,6 +1903,7 @@ SteamLavaMakerRecipeType=超级加热
 Tooltip_SteamLavaMaker_00=可一次熔化最多 4 块石头
 Tooltip_SteamLavaMaker_01=§b§o提高温度
 Tooltip_SteamLavaMaker_02=作者: §d§oSteam§f§oIs§d§oThe§f§oNumber
+Tooltip_SteamLavaMaker_Casing=任意镀铜砖块或脱氧钢机械方块
 
 NameSteamManufacturer=蒸汽制造商
 gtnl.recipe.SteamManufacturer=液压制造
@@ -1919,6 +1920,7 @@ Tooltip_SteamRockBreaker_01=电路板1 = 圆石, 电路板2 = 石头, 电路板3
 Tooltip_SteamRockBreaker_02=一次可处理多达8配方
 Tooltip_SteamRockBreaker_03=§b§o石石石石石石石石石石石石石石石石石石石石头头头头头头头头头头头头头头头头头头头头
 Tooltip_SteamRockBreaker_04=§b§o注意结构共用 :>
+Tooltip_SteamRockBreaker_Casing=任意镀铜砖块或脱氧钢机械方块
 
 NameSteamWoodcutter=蒸汽树场
 gtnl.recipe.SteamWoodcutter=蒸汽园艺
@@ -2633,7 +2635,7 @@ Tooltip_MegaBlastFurnace_01=每超过配方温度1800K, 将进行一次无损超
 Tooltip_MegaBlastFurnace_02=超过MV后的每一级电压, 都会将温度提高100K
 Tooltip_MegaBlastFurnace_03=并行控制核心额外提供4倍并行!
 Tooltip_MegaBlastFurnace_04=比工业高炉快400%
-Tooltip_MegaBlastFurnace_05=安装UHV及以上的并行控制核心解锁§c无损超频§7
+Tooltip_MegaBlastFurnace_05=安装UEV及以上的并行控制核心解锁§c无损超频§7
 Tooltip_MegaBlastFurnace_Casing_00=任意冶炼炉机械方块
 Tooltip_MegaBlastFurnace_Casing_01=顶部中心放射硅岩合金机械方块
 

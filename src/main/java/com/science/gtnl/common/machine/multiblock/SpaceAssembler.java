@@ -37,6 +37,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import tectech.thing.casing.BlockGTCasingsTT;
 
@@ -132,6 +133,7 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
             .addOutputBus(StatCollector.translateToLocal("Tooltip_SpaceAssembler_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_SpaceAssembler_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_SpaceAssembler_Casing"))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

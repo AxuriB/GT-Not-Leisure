@@ -983,7 +983,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         energyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
 
-        if (mParallelTier < 10 && MainConfig.enableMachineAmpLimit) {
+        if (mParallelTier < 9 && MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
                     return false;

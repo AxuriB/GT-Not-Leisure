@@ -49,6 +49,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.register.LanthItemList;
 
 public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements ISurvivalConstructable {
@@ -115,6 +116,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             .addInputHatch(StatCollector.translateToLocal("Tooltip_LargeIncubator_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_LargeIncubator_Casing"), 1)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_LargeIncubator_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

@@ -41,6 +41,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 
 public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemicalCoupling>
     implements ISurvivalConstructable {
@@ -116,6 +117,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
             .addOutputBus(StatCollector.translateToLocal("Tooltip_ShallowChemicalCoupling_Casing_00"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_ShallowChemicalCoupling_Casing_00"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_ShallowChemicalCoupling_Casing_00"))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

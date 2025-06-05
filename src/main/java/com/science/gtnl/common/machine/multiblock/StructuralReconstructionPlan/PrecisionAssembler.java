@@ -59,6 +59,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> implements ISurvivalConstructable {
@@ -158,6 +159,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
             .addOutputBus(StatCollector.translateToLocal("Tooltip_PreciseAssembler_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_PreciseAssembler_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_PreciseAssembler_Casing"))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

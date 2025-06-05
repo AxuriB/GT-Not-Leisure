@@ -44,6 +44,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -91,6 +92,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
             .addOutputBus(StatCollector.translateToLocal("Tooltip_IsaMill_Casing"), 1)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_IsaMill_Casing"), 1)
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_IsaMill_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
