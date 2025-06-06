@@ -43,7 +43,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class SteamWoodcutter extends SteamMultiMachineBase<SteamWoodcutter> implements ISurvivalConstructable {
 
-    private static IStructureDefinition<SteamWoodcutter> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SW_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_wood_cutter";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SW_STRUCTURE_FILE_PATH);
@@ -66,41 +65,36 @@ public class SteamWoodcutter extends SteamMultiMachineBase<SteamWoodcutter> impl
 
     @Override
     public IStructureDefinition<SteamWoodcutter> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamWoodcutter>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 23))
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildSteamWirelessInput(SteamWoodcutter.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamWoodcutter.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamWoodcutter.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamWoodcutter.class)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                InputBus,
-                                SteamHatchElement.OutputBus_Steam,
-                                OutputBus)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(BlockLoader.MetaCasing, 24)))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 25))
-                .addElement('D', chainAllGlasses())
-                .addElement('E', ofBlock(Blocks.dirt, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamWoodcutter>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 23))
+            .addElement(
+                'B',
+                ofChain(
+                    buildSteamWirelessInput(SteamWoodcutter.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamWoodcutter.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamWoodcutter.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamWoodcutter.class)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            InputBus,
+                            SteamHatchElement.OutputBus_Steam,
+                            OutputBus)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(BlockLoader.MetaCasing, 24)))
+            .addElement('C', ofBlock(BlockLoader.MetaCasing, 25))
+            .addElement('D', chainAllGlasses())
+            .addElement('E', ofBlock(Blocks.dirt, 0))
+            .build();
     }
 
     @Override

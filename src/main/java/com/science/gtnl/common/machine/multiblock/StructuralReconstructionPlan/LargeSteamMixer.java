@@ -22,6 +22,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
@@ -61,7 +62,6 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
 
     private static boolean enableHVRecipe = false;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeSteamMixer> STRUCTURE_DEFINITION = null;
     private static final String LSMi_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_mixer";
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSMi_STRUCTURE_FILE_PATH);
     private static final int HORIZONTAL_OFF_SET = 3;
@@ -96,11 +96,12 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
 
     @Override
     public IStructureDefinition<LargeSteamMixer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeSteamMixer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
+        return StructureDefinition.<LargeSteamMixer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                StructureUtility.withChannel(
+                    "machine_casing",
                     ofChain(
                         buildSteamWirelessInput(LargeSteamMixer.class).casingIndex(getCasingTextureID())
                             .dot(1)
@@ -123,53 +124,54 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
-                                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                                        ofBlocksTiered(
-                                            LargeSteamMixer::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing))))))
-                .addElement(
-                    'B',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            LargeSteamMixer::getTierGearCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
-                            -1,
-                            (t, m) -> t.tierGearCasing = m,
-                            t -> t.tierGearCasing)))
-                .addElement(
-                    'C',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            LargeSteamMixer::getTierPipeCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                            -1,
-                            (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing)))
-                .addElement(
-                    'D',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            LargeSteamMixer::getTierFireboxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                            -1,
-                            (t, m) -> t.tierFireboxCasing = m,
-                            t -> t.tierFireboxCasing)))
-                .addElement('E', chainAllGlasses())
-                .addElement(
-                    'F',
+                                    ofBlocksTiered(
+                                        LargeSteamMixer::getTierMachineCasing,
+                                        ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                        -1,
+                                        (t, m) -> t.tierMachineCasing = m,
+                                        t -> t.tierMachineCasing))))))
+            .addElement(
+                'B',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        LargeSteamMixer::getTierGearCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
+                        -1,
+                        (t, m) -> t.tierGearCasing = m,
+                        t -> t.tierGearCasing)))
+            .addElement(
+                'C',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        LargeSteamMixer::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing)))
+            .addElement(
+                'D',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        LargeSteamMixer::getTierFireboxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                        -1,
+                        (t, m) -> t.tierFireboxCasing = m,
+                        t -> t.tierFireboxCasing)))
+            .addElement('E', chainAllGlasses())
+            .addElement(
+                'F',
+                StructureUtility.withChannel(
+                    "machine_casing",
                     ofBlocksTiered(
                         LargeSteamMixer::getTierAdvancedCasing,
                         ImmutableList.of(Pair.of(BWBlockCasings, 32066), Pair.of(BWBlockCasings, 32071)),
                         -1,
                         (t, m) -> t.tierAdvancedCasing = m,
-                        t -> t.tierAdvancedCasing))
-                .build();
-
-        }
-        return STRUCTURE_DEFINITION;
+                        t -> t.tierAdvancedCasing)))
+            .build();
     }
 
     @Override

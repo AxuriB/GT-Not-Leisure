@@ -52,7 +52,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeBrewer> STRUCTURE_DEFINITION = null;
     public static final String LB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_brewer";
     private static final int MACHINEMODE_FREWERY = 0;
     private static final int MACHINEMODE_FERMENTER = 1;
@@ -141,21 +140,18 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
 
     @Override
     public IStructureDefinition<LargeBrewer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeBrewer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 8))
-                .addElement('B', ofBlock(sBlockCasings2, 13))
-                .addElement(
-                    'C',
-                    buildHatchAdder(LargeBrewer.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 1))))
-                .addElement('D', Muffler.newAny(TAE.GTPP_INDEX(1), 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeBrewer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement('B', ofBlock(sBlockCasings2, 13))
+            .addElement(
+                'C',
+                buildHatchAdder(LargeBrewer.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 1))))
+            .addElement('D', Muffler.newAny(TAE.GTPP_INDEX(1), 1))
+            .build();
     }
 
     @Override

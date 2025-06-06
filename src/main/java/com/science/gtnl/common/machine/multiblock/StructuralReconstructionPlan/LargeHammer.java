@@ -42,7 +42,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeHammer extends GTMMultiMachineBase<LargeHammer> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeHammer> STRUCTURE_DEFINITION = null;
     public static final String LB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_hammer";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     public final int HORIZONTAL_OFF_SET = 2;
@@ -116,23 +115,20 @@ public class LargeHammer extends GTMMultiMachineBase<LargeHammer> implements ISu
 
     @Override
     public IStructureDefinition<LargeHammer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeHammer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockMetal2, 0))
-                .addElement('B', ofBlock(sBlockMetal2, 15))
-                .addElement('C', ofBlock(sBlockCasings3, 10))
-                .addElement('D', ofFrame(Materials.TungstenSteel))
-                .addElement('E', ofBlock(sBlockMetal7, 12))
-                .addElement(
-                    'F',
-                    buildHatchAdder(LargeHammer.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeHammer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockMetal2, 0))
+            .addElement('B', ofBlock(sBlockMetal2, 15))
+            .addElement('C', ofBlock(sBlockCasings3, 10))
+            .addElement('D', ofFrame(Materials.TungstenSteel))
+            .addElement('E', ofBlock(sBlockMetal7, 12))
+            .addElement(
+                'F',
+                buildHatchAdder(LargeHammer.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
+            .build();
     }
 
     @Override

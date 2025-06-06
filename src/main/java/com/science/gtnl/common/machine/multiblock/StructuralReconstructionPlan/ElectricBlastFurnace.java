@@ -47,7 +47,6 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
 
     private HeatingCoilLevel mCoilLevel;
     private int mHeatingCapacity = 0;
-    private static IStructureDefinition<ElectricBlastFurnace> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/electric_blast_furnace";
     public static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(11);
@@ -71,27 +70,24 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
 
     @Override
     public IStructureDefinition<ElectricBlastFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ElectricBlastFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(ElectricBlastFurnace.class)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 11))))
-                .addElement('B', ofBlock(sBlockCasings2, 0))
-                .addElement('C', ofBlock(sBlockCasings3, 10))
-                .addElement('D', ofBlock(sBlockCasings4, 1))
-                .addElement(
-                    'E',
-                    withChannel("coil", ofCoil(ElectricBlastFurnace::setCoilLevel, ElectricBlastFurnace::getCoilLevel)))
-                .addElement('F', ofFrame(Materials.StainlessSteel))
-                .addElement('G', Muffler.newAny(CASING_INDEX, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ElectricBlastFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(ElectricBlastFurnace.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 11))))
+            .addElement('B', ofBlock(sBlockCasings2, 0))
+            .addElement('C', ofBlock(sBlockCasings3, 10))
+            .addElement('D', ofBlock(sBlockCasings4, 1))
+            .addElement(
+                'E',
+                withChannel("coil", ofCoil(ElectricBlastFurnace::setCoilLevel, ElectricBlastFurnace::getCoilLevel)))
+            .addElement('F', ofFrame(Materials.StainlessSteel))
+            .addElement('G', Muffler.newAny(CASING_INDEX, 1))
+            .build();
     }
 
     @Override

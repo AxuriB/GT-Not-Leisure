@@ -40,7 +40,6 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
     protected static final int CONFIG_WINDOW_ID = 10;
     public static final int CASING_INDEX = StructureUtils.getTextureIndex(sBlockCasings2, 0);
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<SteamElevatorModule> STRUCTURE_DEFINITION = null;
     private static final String SEM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_elevator_module";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SEM_STRUCTURE_FILE_PATH);
 
@@ -84,35 +83,31 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
 
     @Override
     public IStructureDefinition<SteamElevatorModule> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamElevatorModule>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildSteamWirelessInput(SteamElevatorModule.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamElevatorModule.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamElevatorModule.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamElevatorModule.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                SteamHatchElement.OutputBus_Steam,
-                                InputBus,
-                                OutputBus,
-                                InputHatch,
-                                OutputHatch)
-                            .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0)))))
-                .build();
-
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamElevatorModule>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamWirelessInput(SteamElevatorModule.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamElevatorModule.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamElevatorModule.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamElevatorModule.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            SteamHatchElement.OutputBus_Steam,
+                            InputBus,
+                            OutputBus,
+                            InputHatch,
+                            OutputHatch)
+                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0)))))
+            .build();
     }
 
     @Override

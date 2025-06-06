@@ -36,7 +36,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeAutoclave extends GTMMultiMachineBase<LargeAutoclave> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeAutoclave> STRUCTURE_DEFINITION = null;
     public static final String LA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_autoclave";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(11);
     public final int HORIZONTAL_OFF_SET = 1;
@@ -110,19 +109,16 @@ public class LargeAutoclave extends GTMMultiMachineBase<LargeAutoclave> implemen
 
     @Override
     public IStructureDefinition<LargeAutoclave> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeAutoclave>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 13))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargeAutoclave.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 4))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeAutoclave>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 13))
+            .addElement(
+                'B',
+                buildHatchAdder(LargeAutoclave.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 4))))
+            .build();
     }
 
     @Override

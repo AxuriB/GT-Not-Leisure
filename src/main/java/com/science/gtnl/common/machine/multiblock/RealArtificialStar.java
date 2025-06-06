@@ -69,7 +69,6 @@ import tectech.thing.casing.TTCasingsContainer;
 public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<RealArtificialStar> STRUCTURE_DEFINITION = null;
     public static final String RAS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/real_artificial_star";
     public static String[][] shape = StructureUtils.readStructureFromFile(RAS_STRUCTURE_FILE_PATH);
     protected static long MaxOfDepletedExcitedNaquadahFuelRod = MainConfig.euEveryDepletedExcitedNaquadahFuelRod;
@@ -413,87 +412,84 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
 
     @Override
     public IStructureDefinition<RealArtificialStar> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<RealArtificialStar>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    withChannel(
-                        "tiertimefield",
-                        ofBlocksTiered(
-                            RealArtificialStar::getTierTimeFieldBlockFromBlock,
-                            ImmutableList.of(
-                                Pair.of(sBlockCasingsTT, 14),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 0),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 1),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 2),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 3),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 4),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 5),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 6),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 7),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)),
-                            -1,
-                            (t, m) -> t.tierTimeField = m,
-                            t -> t.tierTimeField)))
-                .addElement('B', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('C', ofBlock(compactFusionCoil, 4))
-                .addElement(
-                    'D',
-                    buildHatchAdder(RealArtificialStar.class).atLeast(InputBus, OutputBus)
-                        .adder(RealArtificialStar::addInputBusOrOutputBusToMachineList)
-                        .dot(1)
-                        .casingIndex(13)
-                        .buildAndChain(sBlockCasings1, 13))
-                .addElement(
-                    'E',
-                    withChannel(
-                        "tierdimensionfield",
-                        ofBlocksTiered(
-                            RealArtificialStar::getTierDimensionFieldBlockFromBlock,
-                            ImmutableList.of(
-                                Pair.of(GregTechAPI.sBlockCasings1, 14),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 0),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 1),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 3),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 4),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 5),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 6),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 7),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 8)),
-                            -1,
-                            (t, m) -> t.tierDimensionField = m,
-                            t -> t.tierDimensionField)))
-                .addElement('F', ofBlock(sBlockCasings10, 11))
-                .addElement('G', ofBlock(sBlockCasings8, 10))
-                .addElement(
-                    'H',
-                    withChannel(
-                        "tierstabilisationfield",
-                        ofBlocksTiered(
-                            RealArtificialStar::getTierStabilisationFieldBlockFromBlock,
-                            ImmutableList.of(
-                                Pair.of(sBlockCasingsTT, 9),
-                                Pair.of(StabilisationFieldGenerators, 0),
-                                Pair.of(StabilisationFieldGenerators, 1),
-                                Pair.of(StabilisationFieldGenerators, 2),
-                                Pair.of(StabilisationFieldGenerators, 3),
-                                Pair.of(StabilisationFieldGenerators, 4),
-                                Pair.of(StabilisationFieldGenerators, 5),
-                                Pair.of(StabilisationFieldGenerators, 6),
-                                Pair.of(StabilisationFieldGenerators, 7),
-                                Pair.of(StabilisationFieldGenerators, 8)),
-                            -1,
-                            (t, m) -> t.tierStabilisationField = m,
-                            t -> t.tierStabilisationField)))
-                .addElement('I', ofBlock(sBlockCasingsDyson, 0))
-                .addElement('J', ofBlock(sBlockCasingsDyson, 5))
-                .addElement('K', ofBlock(sBlockCasingsDyson, 8))
-                .addElement('L', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<RealArtificialStar>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                withChannel(
+                    "tiertimefield",
+                    ofBlocksTiered(
+                        RealArtificialStar::getTierTimeFieldBlockFromBlock,
+                        ImmutableList.of(
+                            Pair.of(sBlockCasingsTT, 14),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 0),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 1),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 2),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 3),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 4),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 5),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 6),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 7),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)),
+                        -1,
+                        (t, m) -> t.tierTimeField = m,
+                        t -> t.tierTimeField)))
+            .addElement('B', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('C', ofBlock(compactFusionCoil, 4))
+            .addElement(
+                'D',
+                buildHatchAdder(RealArtificialStar.class).atLeast(InputBus, OutputBus)
+                    .adder(RealArtificialStar::addInputBusOrOutputBusToMachineList)
+                    .dot(1)
+                    .casingIndex(13)
+                    .buildAndChain(sBlockCasings1, 13))
+            .addElement(
+                'E',
+                withChannel(
+                    "tierdimensionfield",
+                    ofBlocksTiered(
+                        RealArtificialStar::getTierDimensionFieldBlockFromBlock,
+                        ImmutableList.of(
+                            Pair.of(GregTechAPI.sBlockCasings1, 14),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 0),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 1),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 3),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 4),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 5),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 6),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 7),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 8)),
+                        -1,
+                        (t, m) -> t.tierDimensionField = m,
+                        t -> t.tierDimensionField)))
+            .addElement('F', ofBlock(sBlockCasings10, 11))
+            .addElement('G', ofBlock(sBlockCasings8, 10))
+            .addElement(
+                'H',
+                withChannel(
+                    "tierstabilisationfield",
+                    ofBlocksTiered(
+                        RealArtificialStar::getTierStabilisationFieldBlockFromBlock,
+                        ImmutableList.of(
+                            Pair.of(sBlockCasingsTT, 9),
+                            Pair.of(StabilisationFieldGenerators, 0),
+                            Pair.of(StabilisationFieldGenerators, 1),
+                            Pair.of(StabilisationFieldGenerators, 2),
+                            Pair.of(StabilisationFieldGenerators, 3),
+                            Pair.of(StabilisationFieldGenerators, 4),
+                            Pair.of(StabilisationFieldGenerators, 5),
+                            Pair.of(StabilisationFieldGenerators, 6),
+                            Pair.of(StabilisationFieldGenerators, 7),
+                            Pair.of(StabilisationFieldGenerators, 8)),
+                        -1,
+                        (t, m) -> t.tierStabilisationField = m,
+                        t -> t.tierStabilisationField)))
+            .addElement('I', ofBlock(sBlockCasingsDyson, 0))
+            .addElement('J', ofBlock(sBlockCasingsDyson, 5))
+            .addElement('K', ofBlock(sBlockCasingsDyson, 8))
+            .addElement('L', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .build();
     }
 
     @Nullable

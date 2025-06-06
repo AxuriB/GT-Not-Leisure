@@ -50,7 +50,6 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
     private static final int HORIZONTAL_OFF_SET = 6;
     private static final int VERTICAL_OFF_SET = 5;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<SuperconductingMagneticPresser> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SMP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/superconducting_magnetic_presser";
@@ -122,40 +121,37 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
 
     @Override
     public IStructureDefinition<SuperconductingMagneticPresser> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SuperconductingMagneticPresser>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings9, 12))
-                .addElement('B', ofBlock(sBlockCasings10, 8))
-                .addElement('C', ofBlock(sBlockCasings10, 7))
-                .addElement('D', ofBlock(sBlockCasings1, 15))
-                .addElement(
-                    'E',
-                    buildHatchAdder(SuperconductingMagneticPresser.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .addElement('F', ofBlock(sBlockCasings1, 13))
-                .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('H', ofBlock(sBlockCasingsTT, 6))
-                .addElement('I', ofBlock(sBlockCasingsTT, 4))
-                .addElement('J', ofBlock(sBlockCasings8, 10))
-                .addElement('K', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('L', ofBlock(sBlockCasings3, 11))
-                .addElement('M', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement(
-                    'N',
-                    ofBlockAnyMeta(
-                        BlockGTCasingsTT.getBlockFromItem(
-                            MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(1)
-                                .getItem())))
-                .addElement('O', ofFrame(Materials.Naquadria))
-                .addElement('P', ofBlock(BlockLoader.MetaCasing, 2))
-                .addElement('Q', ofBlock(sBlockMetal5, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SuperconductingMagneticPresser>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings9, 12))
+            .addElement('B', ofBlock(sBlockCasings10, 8))
+            .addElement('C', ofBlock(sBlockCasings10, 7))
+            .addElement('D', ofBlock(sBlockCasings1, 15))
+            .addElement(
+                'E',
+                buildHatchAdder(SuperconductingMagneticPresser.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('F', ofBlock(sBlockCasings1, 13))
+            .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('H', ofBlock(sBlockCasingsTT, 6))
+            .addElement('I', ofBlock(sBlockCasingsTT, 4))
+            .addElement('J', ofBlock(sBlockCasings8, 10))
+            .addElement('K', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('L', ofBlock(sBlockCasings3, 11))
+            .addElement('M', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement(
+                'N',
+                ofBlockAnyMeta(
+                    BlockGTCasingsTT.getBlockFromItem(
+                        MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(1)
+                            .getItem())))
+            .addElement('O', ofFrame(Materials.Naquadria))
+            .addElement('P', ofBlock(BlockLoader.MetaCasing, 2))
+            .addElement('Q', ofBlock(sBlockMetal5, 2))
+            .build();
     }
 
     @Override

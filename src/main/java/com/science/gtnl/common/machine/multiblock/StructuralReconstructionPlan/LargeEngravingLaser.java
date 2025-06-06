@@ -46,7 +46,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeEngravingLaser> STRUCTURE_DEFINITION = null;
     public static final String LEL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_engraving_laser";
     public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(1);
     public final int HORIZONTAL_OFF_SET = 2;
@@ -141,21 +140,18 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
 
     @Override
     public IStructureDefinition<LargeEngravingLaser> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeEngravingLaser>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargeEngravingLaser.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 1))))
-                .addElement('C', ofBlock(sBlockCasings2, 15))
-                .addElement('D', ofBlock(sBlockCasings3, 10))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeEngravingLaser>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement(
+                'B',
+                buildHatchAdder(LargeEngravingLaser.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 1))))
+            .addElement('C', ofBlock(sBlockCasings2, 15))
+            .addElement('D', ofBlock(sBlockCasings3, 10))
+            .build();
     }
 
     @Override

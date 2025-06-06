@@ -21,6 +21,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
@@ -57,7 +58,6 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeSteamThermalCentrifuge> STRUCTURE_DEFINITION = null;
     private static final String LSTC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/large_steam_thermal_centrifuge"; // 文件路径
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSTC_STRUCTURE_FILE_PATH);
@@ -94,68 +94,69 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
 
     @Override
     public IStructureDefinition<LargeSteamThermalCentrifuge> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeSteamThermalCentrifuge>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildSteamWirelessInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                SteamHatchElement.OutputBus_Steam,
-                                InputBus,
-                                OutputBus)
-                            .buildAndChain(
-                                onElementPass(
-                                    x -> ++x.tCountCasing,
-                                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                                        ofBlocksTiered(
-                                            LargeSteamThermalCentrifuge::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing))))))
-                .addElement(
-                    'B',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            LargeSteamThermalCentrifuge::getTierPipeCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                            -1,
-                            (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing)))
-                .addElement(
-                    'C',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            LargeSteamThermalCentrifuge::getTierFireboxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                            -1,
-                            (t, m) -> t.tierFireboxCasing = m,
-                            t -> t.tierFireboxCasing)))
-                .addElement(
-                    'D',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            LargeSteamThermalCentrifuge::getTierFrameCasing,
-                            ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
-                            -1,
-                            (t, m) -> t.tierFrameCasing = m,
-                            t -> t.tierFrameCasing)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeSteamThermalCentrifuge>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamWirelessInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            SteamHatchElement.OutputBus_Steam,
+                            InputBus,
+                            OutputBus)
+                        .buildAndChain(
+                            onElementPass(
+                                x -> ++x.tCountCasing,
+                                StructureUtility.withChannel(
+                                    "machine_casing",
+                                    ofBlocksTiered(
+                                        LargeSteamThermalCentrifuge::getTierMachineCasing,
+                                        ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                        -1,
+                                        (t, m) -> t.tierMachineCasing = m,
+                                        t -> t.tierMachineCasing))))))
+            .addElement(
+                'B',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        LargeSteamThermalCentrifuge::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing)))
+            .addElement(
+                'C',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        LargeSteamThermalCentrifuge::getTierFireboxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                        -1,
+                        (t, m) -> t.tierFireboxCasing = m,
+                        t -> t.tierFireboxCasing)))
+            .addElement(
+                'D',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        LargeSteamThermalCentrifuge::getTierFrameCasing,
+                        ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
+                        -1,
+                        (t, m) -> t.tierFrameCasing = m,
+                        t -> t.tierFrameCasing)))
+            .build();
     }
 
     @Override

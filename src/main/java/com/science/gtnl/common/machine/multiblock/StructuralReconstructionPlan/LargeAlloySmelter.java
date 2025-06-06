@@ -42,7 +42,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeAlloySmelter> STRUCTURE_DEFINITION = null;
     public static final String LAS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_alloy_smelter";
     public static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(11);
     public final int HORIZONTAL_OFF_SET = 2;
@@ -116,24 +115,21 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
 
     @Override
     public IStructureDefinition<LargeAlloySmelter> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeAlloySmelter>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(LargeAlloySmelter.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 11))))
-                .addElement('B', ofBlock(sBlockCasings2, 0))
-                .addElement('C', ofBlock(sBlockCasings2, 13))
-                .addElement(
-                    'D',
-                    withChannel("coil", ofCoil(LargeAlloySmelter::setCoilLevel, LargeAlloySmelter::getCoilLevel)))
-                .addElement('E', Muffler.newAny(CASING_INDEX, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeAlloySmelter>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(LargeAlloySmelter.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 11))))
+            .addElement('B', ofBlock(sBlockCasings2, 0))
+            .addElement('C', ofBlock(sBlockCasings2, 13))
+            .addElement(
+                'D',
+                withChannel("coil", ofCoil(LargeAlloySmelter::setCoilLevel, LargeAlloySmelter::getCoilLevel)))
+            .addElement('E', Muffler.newAny(CASING_INDEX, 1))
+            .build();
     }
 
     @Override

@@ -48,7 +48,6 @@ import gregtech.common.misc.GTStructureChannels;
 public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatment> implements ISurvivalConstructable {
 
     private HeatingCoilLevel mCoilLevel;
-    private static IStructureDefinition<PlatinumBasedTreatment> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String PBT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/platinum_based_treatment";
@@ -73,39 +72,34 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
 
     @Override
     public IStructureDefinition<PlatinumBasedTreatment> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<PlatinumBasedTreatment>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(sBlockCasings1, 11))
-                .addElement('C', ofBlock(sSolenoidCoilCasings, 3))
-                .addElement('D', ofBlock(sBlockCasings10, 13))
-                .addElement('E', ofBlock(sBlockCasings10, 14))
-                .addElement('F', ofBlock(sBlockCasings4, 0))
-                .addElement('G', ofBlock(sBlockCasings4, 1))
-                .addElement(
-                    'H',
-                    withChannel(
-                        "coil",
-                        ofCoil(PlatinumBasedTreatment::setCoilLevel, PlatinumBasedTreatment::getCoilLevel)))
-                .addElement('I', ofBlock(sBlockCasings8, 0))
-                .addElement('J', ofBlock(sBlockCasings8, 1))
-                .addElement('K', ofFrame(Materials.BlackSteel))
-                .addElement('L', ofBlock(blockCasings2Misc, 5))
-                .addElement('M', ofBlock(blockCasings2Misc, 6))
-                .addElement('N', ofBlock(blockCasings2Misc, 11))
-                .addElement(
-                    'O',
-                    buildHatchAdder(PlatinumBasedTreatment.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, InputBus, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 2))))
-                .addElement('P', ofBlock(blockCasingsMisc, 0))
-                .addElement('Q', ofBlock(blockCasingsMisc, 5))
-                .addElement('R', Muffler.newAny(((BlockCasings1) sBlockCasings1).getTextureIndex(11), 6))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<PlatinumBasedTreatment>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(sBlockCasings1, 11))
+            .addElement('C', ofBlock(sSolenoidCoilCasings, 3))
+            .addElement('D', ofBlock(sBlockCasings10, 13))
+            .addElement('E', ofBlock(sBlockCasings10, 14))
+            .addElement('F', ofBlock(sBlockCasings4, 0))
+            .addElement('G', ofBlock(sBlockCasings4, 1))
+            .addElement(
+                'H',
+                withChannel("coil", ofCoil(PlatinumBasedTreatment::setCoilLevel, PlatinumBasedTreatment::getCoilLevel)))
+            .addElement('I', ofBlock(sBlockCasings8, 0))
+            .addElement('J', ofBlock(sBlockCasings8, 1))
+            .addElement('K', ofFrame(Materials.BlackSteel))
+            .addElement('L', ofBlock(blockCasings2Misc, 5))
+            .addElement('M', ofBlock(blockCasings2Misc, 6))
+            .addElement('N', ofBlock(blockCasings2Misc, 11))
+            .addElement(
+                'O',
+                buildHatchAdder(PlatinumBasedTreatment.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, InputBus, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 2))))
+            .addElement('P', ofBlock(blockCasingsMisc, 0))
+            .addElement('Q', ofBlock(blockCasingsMisc, 5))
+            .addElement('R', Muffler.newAny(((BlockCasings1) sBlockCasings1).getTextureIndex(11), 6))
+            .build();
     }
 
     @Override

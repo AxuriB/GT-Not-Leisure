@@ -58,7 +58,6 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
     private static final long usedEuPerDurability = 1000;
     private static final int usedUumPerDurability = 1;
     private int tCountCasing;
-    private static IStructureDefinition<EnergyInfuser> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EI_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/energy_infuser";
     public static String[][] shape = StructureUtils.readStructureFromFile(EI_STRUCTURE_FILE_PATH);
@@ -68,25 +67,22 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
 
     @Override
     public IStructureDefinition<EnergyInfuser> getStructure_EM() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<EnergyInfuser>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
-                .addElement(
-                    'C',
-                    buildHatchAdder(EnergyInfuser.class)
-                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(1028)
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(x -> ++x.tCountCasing, ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))))
-                .addElement('D', ofBlock(TTCasingsContainer.sBlockCasingsTT, 7))
-                .addElement('E', ofFrame(Materials.Osmiridium))
-                .addElement('F', ofBlock(lscLapotronicEnergyUnit, 6))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<EnergyInfuser>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
+            .addElement(
+                'C',
+                buildHatchAdder(EnergyInfuser.class)
+                    .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .casingIndex(1028)
+                    .dot(1)
+                    .buildAndChain(
+                        onElementPass(x -> ++x.tCountCasing, ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))))
+            .addElement('D', ofBlock(TTCasingsContainer.sBlockCasingsTT, 7))
+            .addElement('E', ofFrame(Materials.Osmiridium))
+            .addElement('F', ofBlock(lscLapotronicEnergyUnit, 6))
+            .build();
     }
 
     public EnergyInfuser(int aID, String aName, String aNameRegional) {

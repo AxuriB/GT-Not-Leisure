@@ -58,7 +58,6 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
 
     private HeatingCoilLevel mCoilLevel;
     private int mHeatingCapacity = 0;
-    private static IStructureDefinition<MegaBlastFurnace> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_blast_furnace";
     public static String[][] shape = StructureUtils.readStructureFromFile(MBF_STRUCTURE_FILE_PATH);
@@ -81,46 +80,43 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
 
     @Override
     public IStructureDefinition<MegaBlastFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MegaBlastFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(MegaBlastFurnace.class)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            ParallelCon)
-                        .casingIndex(TAE.GTPP_INDEX(15))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
-                .addElement('B', ofBlock(sBlockCasings2, 0))
-                .addElement('S', Muffler.newAny(((BlockCasings8) sBlockCasings8).getTextureIndex(10), 2))
-                .addElement('C', ofBlock(sBlockCasings2, 12))
-                .addElement('D', ofBlock(sBlockCasings2, 13))
-                .addElement('E', ofBlock(sBlockCasings2, 14))
-                .addElement('F', ofBlock(sBlockCasings2, 15))
-                .addElement('G', ofBlock(sBlockCasings3, 13))
-                .addElement('H', ofBlock(sBlockCasings3, 14))
-                .addElement('I', ofBlock(sBlockCasings3, 15))
-                .addElement('J', ofBlock(sBlockCasings4, 3))
-                .addElement('K', ofBlock(sBlockCasings4, 13))
-                .addElement(
-                    'L',
-                    withChannel("coil", ofCoil(MegaBlastFurnace::setCoilLevel, MegaBlastFurnace::getCoilLevel)))
-                .addElement('M', ofBlock(sBlockCasings8, 1))
-                .addElement('N', ofBlock(sBlockCasings8, 2))
-                .addElement('O', ofBlock(Loaders.FRF_Casings, 0))
-                .addElement('P', ofBlock(sBlockCasings8, 4))
-                .addElement('Q', ofBlock(sBlockCasings8, 10))
-                .addElement('R', ofFrame(Materials.Naquadah))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MegaBlastFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(MegaBlastFurnace.class)
+                    .atLeast(
+                        InputHatch,
+                        OutputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
+                    .casingIndex(TAE.GTPP_INDEX(15))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
+            .addElement('B', ofBlock(sBlockCasings2, 0))
+            .addElement('S', Muffler.newAny(((BlockCasings8) sBlockCasings8).getTextureIndex(10), 2))
+            .addElement('C', ofBlock(sBlockCasings2, 12))
+            .addElement('D', ofBlock(sBlockCasings2, 13))
+            .addElement('E', ofBlock(sBlockCasings2, 14))
+            .addElement('F', ofBlock(sBlockCasings2, 15))
+            .addElement('G', ofBlock(sBlockCasings3, 13))
+            .addElement('H', ofBlock(sBlockCasings3, 14))
+            .addElement('I', ofBlock(sBlockCasings3, 15))
+            .addElement('J', ofBlock(sBlockCasings4, 3))
+            .addElement('K', ofBlock(sBlockCasings4, 13))
+            .addElement(
+                'L',
+                withChannel("coil", ofCoil(MegaBlastFurnace::setCoilLevel, MegaBlastFurnace::getCoilLevel)))
+            .addElement('M', ofBlock(sBlockCasings8, 1))
+            .addElement('N', ofBlock(sBlockCasings8, 2))
+            .addElement('O', ofBlock(Loaders.FRF_Casings, 0))
+            .addElement('P', ofBlock(sBlockCasings8, 4))
+            .addElement('Q', ofBlock(sBlockCasings8, 10))
+            .addElement('R', ofFrame(Materials.Naquadah))
+            .build();
     }
 
     @Override

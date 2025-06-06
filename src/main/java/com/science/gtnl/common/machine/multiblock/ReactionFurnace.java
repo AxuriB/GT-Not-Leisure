@@ -48,7 +48,6 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
     private static final long RECIPE_EUT = 4;
     private static final int RECIPE_DURATION = 128;
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<ReactionFurnace> STRUCTURE_DEFINITION = null;
     public static final String RF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/reaction_furnace";
     public static final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7);
     public final int HORIZONTAL_OFF_SET = 15;
@@ -121,23 +120,20 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
 
     @Override
     public IStructureDefinition<ReactionFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ReactionFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings9, 11))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 14))
-                .addElement('C', ofBlock(sBlockCasings9, 7))
-                .addElement('D', ofBlock(sBlockCasings10, 3))
-                .addElement('E', ofBlock(sBlockCasings8, 10))
-                .addElement(
-                    'F',
-                    buildHatchAdder(ReactionFurnace.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ReactionFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings9, 11))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 14))
+            .addElement('C', ofBlock(sBlockCasings9, 7))
+            .addElement('D', ofBlock(sBlockCasings10, 3))
+            .addElement('E', ofBlock(sBlockCasings8, 10))
+            .addElement(
+                'F',
+                buildHatchAdder(ReactionFurnace.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+            .build();
     }
 
     @Override

@@ -63,7 +63,6 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     private int mSievert;
     private int mNeededSievert;
     private boolean isVisibleFluid = false;
-    public static IStructureDefinition<LargeIncubator> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String L_INCUBATOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_incubator";
     public static String[][] shape = StructureUtils.readStructureFromFile(L_INCUBATOR_STRUCTURE_FILE_PATH);
@@ -123,28 +122,25 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
     @Override
     public IStructureDefinition<LargeIncubator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeIncubator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('C', ofBlock(sBlockCasings8, 1))
-                .addElement('D', ofBlock(sBlockCasings9, 1))
-                .addElement(
-                    'E',
-                    ofChain(
-                        ofHatchAdder(LargeIncubator::addRadiationInputToMachineList, CASING_INDEX, 1),
-                        buildHatchAdder(LargeIncubator.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                            .casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .build(),
-                        onElementPass(e -> e.tCountCasing++, ofBlock(sBlockReinforced, 2))))
-                .addElement('F', ofBlockAnyMeta(Blocks.sponge))
-                .addElement('G', ofChain(isAir(), ofBlockAnyMeta(Blocks.flowing_water), ofBlockAnyMeta(Blocks.water)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeIncubator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('C', ofBlock(sBlockCasings8, 1))
+            .addElement('D', ofBlock(sBlockCasings9, 1))
+            .addElement(
+                'E',
+                ofChain(
+                    ofHatchAdder(LargeIncubator::addRadiationInputToMachineList, CASING_INDEX, 1),
+                    buildHatchAdder(LargeIncubator.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .build(),
+                    onElementPass(e -> e.tCountCasing++, ofBlock(sBlockReinforced, 2))))
+            .addElement('F', ofBlockAnyMeta(Blocks.sponge))
+            .addElement('G', ofChain(isAir(), ofBlockAnyMeta(Blocks.flowing_water), ofBlockAnyMeta(Blocks.water)))
+            .build();
     }
 
     public static int[] specialValueUnpack(int aSpecialValue) {

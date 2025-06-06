@@ -40,7 +40,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeMacerationTower extends GTMMultiMachineBase<LargeMacerationTower> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeMacerationTower> STRUCTURE_DEFINITION = null;
     public static final String LMT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_maceration_tower";
     public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(14);
     public final int HORIZONTAL_OFF_SET = 2;
@@ -112,19 +111,16 @@ public class LargeMacerationTower extends GTMMultiMachineBase<LargeMacerationTow
 
     @Override
     public IStructureDefinition<LargeMacerationTower> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeMacerationTower>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(LargeMacerationTower.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 14))))
-                .addElement('B', ofBlock(BlockLoader.MetaBlockColumn, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeMacerationTower>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(LargeMacerationTower.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 14))))
+            .addElement('B', ofBlock(BlockLoader.MetaBlockColumn, 2))
+            .build();
     }
 
     @Override

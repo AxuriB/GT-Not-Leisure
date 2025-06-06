@@ -48,7 +48,6 @@ public class SteamCarpenter extends SteamMultiMachineBase<SteamCarpenter> implem
         TEXTURE_OVERLAY_CARPENTER);
     public static Textures.BlockIcons.CustomIcon OVERLAY_CARPENTER_ACTIVE = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_CARPENTER_ACTIVE);
-    private static IStructureDefinition<SteamCarpenter> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_carpenter";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SC_STRUCTURE_FILE_PATH);
@@ -71,36 +70,33 @@ public class SteamCarpenter extends SteamMultiMachineBase<SteamCarpenter> implem
 
     @Override
     public IStructureDefinition<SteamCarpenter> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamCarpenter>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildSteamWirelessInput(SteamCarpenter.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamCarpenter.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamCarpenter.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamCarpenter.class)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                InputBus,
-                                SteamHatchElement.OutputBus_Steam,
-                                OutputBus)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 2))
-                .addElement('C', ofFrame(Materials.Wood))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamCarpenter>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamWirelessInput(SteamCarpenter.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamCarpenter.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamCarpenter.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamCarpenter.class)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            InputBus,
+                            SteamHatchElement.OutputBus_Steam,
+                            OutputBus)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 2))
+            .addElement('C', ofFrame(Materials.Wood))
+            .build();
     }
 
     @Override

@@ -45,7 +45,6 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
     implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<FlotationCellRegulator> STRUCTURE_DEFINITION = null;
     public static final String FCR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/flotation_cell_regulator";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(18);
     public final int HORIZONTAL_OFF_SET = 6;
@@ -145,23 +144,20 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
 
     @Override
     public IStructureDefinition<FlotationCellRegulator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<FlotationCellRegulator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(sBlockCasings2, 15))
-                .addElement('C', ofBlock(blockCasings2Misc, 1))
-                .addElement(
-                    'D',
-                    buildHatchAdder(FlotationCellRegulator.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 2))))
-                .addElement('E', ofBlock(blockCasings3Misc, 1))
-                .addElement('F', ofBlock(blockSpecialMultiCasings, 9))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<FlotationCellRegulator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(sBlockCasings2, 15))
+            .addElement('C', ofBlock(blockCasings2Misc, 1))
+            .addElement(
+                'D',
+                buildHatchAdder(FlotationCellRegulator.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 2))))
+            .addElement('E', ofBlock(blockCasings3Misc, 1))
+            .addElement('F', ofBlock(blockSpecialMultiCasings, 9))
+            .build();
     }
 
     @Override

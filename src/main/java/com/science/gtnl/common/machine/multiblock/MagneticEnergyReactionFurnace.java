@@ -62,7 +62,6 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
     private static final int VERTICAL_OFF_SET = 12;
     private static final int DEPTH_OFF_SET = 1;
     public static final int CASING_INDEX = TAE.getIndexFromPage(3, 3);
-    private static IStructureDefinition<MagneticEnergyReactionFurnace> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String MERF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/magnetic_energy_reaction_furnace"; // 文件路径
@@ -134,38 +133,33 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
 
     @Override
     public IStructureDefinition<MagneticEnergyReactionFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MagneticEnergyReactionFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(FRF_Coil_1, 0))
-                .addElement('B', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('D', ofBlock(sBlockCasings10, 0))
-                .addElement('E', ofBlock(sBlockCasings10, 6))
-                .addElement('F', ofBlock(sBlockCasings2, 6))
-                .addElement('G', ofBlock(sBlockCasings4, 12))
-                .addElement(
-                    'H',
-                    withChannel(
-                        "coil",
-                        ofCoil(
-                            MagneticEnergyReactionFurnace::setCoilLevel,
-                            MagneticEnergyReactionFurnace::getCoilLevel)))
-                .addElement('I', ofBlock(sBlockCasings9, 13))
-                .addElement('J', ofFrame(Materials.Neutronium))
-                .addElement('K', ofBlock(sBlockMetal5, 1))
-                .addElement(
-                    'L',
-                    buildHatchAdder(MagneticEnergyReactionFurnace.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings4Misc, 3))))
-                .addElement('M', ofBlock(sBlockCasingsSE, 9))
-                .addElement('N', ofBlock(lscLapotronicEnergyUnit, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MagneticEnergyReactionFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(FRF_Coil_1, 0))
+            .addElement('B', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('D', ofBlock(sBlockCasings10, 0))
+            .addElement('E', ofBlock(sBlockCasings10, 6))
+            .addElement('F', ofBlock(sBlockCasings2, 6))
+            .addElement('G', ofBlock(sBlockCasings4, 12))
+            .addElement(
+                'H',
+                withChannel(
+                    "coil",
+                    ofCoil(MagneticEnergyReactionFurnace::setCoilLevel, MagneticEnergyReactionFurnace::getCoilLevel)))
+            .addElement('I', ofBlock(sBlockCasings9, 13))
+            .addElement('J', ofFrame(Materials.Neutronium))
+            .addElement('K', ofBlock(sBlockMetal5, 1))
+            .addElement(
+                'L',
+                buildHatchAdder(MagneticEnergyReactionFurnace.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings4Misc, 3))))
+            .addElement('M', ofBlock(sBlockCasingsSE, 9))
+            .addElement('N', ofBlock(lscLapotronicEnergyUnit, 0))
+            .build();
     }
 
     @Override

@@ -55,7 +55,6 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
     public static final String TEXTURE_SOLAR_CELL_TOP = RESOURCE_ROOT_ID + ":" + "iconsets/SOLAR_CELL_TOP";
     public static Textures.BlockIcons.CustomIcon SOLAR_CELL_TOP = new Textures.BlockIcons.CustomIcon(
         TEXTURE_SOLAR_CELL_TOP);
-    private static IStructureDefinition<MegaSolarBoiler> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String MSB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_solar_boiler";
     private static final String[][] shape = StructureUtils.readStructureFromFile(MSB_STRUCTURE_FILE_PATH);
@@ -83,27 +82,24 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
 
     @Override
     public IStructureDefinition<MegaSolarBoiler> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MegaSolarBoiler>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses())
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 10))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
-                .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 12))
-                .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 13))
-                .addElement('F', ofBlock(BlockLoader.MetaBlockColumn, 3))
-                .addElement(
-                    'G',
-                    ofChain(
-                        buildHatchAdder(MegaSolarBoiler.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, InputBus, InputHatch, OutputHatch)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MegaSolarBoiler>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 10))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 12))
+            .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 13))
+            .addElement('F', ofBlock(BlockLoader.MetaBlockColumn, 3))
+            .addElement(
+                'G',
+                ofChain(
+                    buildHatchAdder(MegaSolarBoiler.class)
+                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, InputHatch, OutputHatch)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .build();
     }
 
     @Override

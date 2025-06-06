@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
@@ -65,7 +66,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<PrecisionAssembler> STRUCTURE_DEFINITION = null;
     public static final String LPA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/precise_assembler";
     private static final int MACHINEMODE_ASSEMBLER = 0;
     private static final int MACHINEMODE_PRECISION = 1;
@@ -160,62 +160,61 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_PreciseAssembler_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_PreciseAssembler_Casing"))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<PrecisionAssembler> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<PrecisionAssembler>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement(
-                    'B',
-                    withChannel(
-                        "tiercasing",
-                        ofBlocksTiered(
-                            PrecisionAssembler::getMachineTier,
-                            ImmutableList.of(
-                                Pair.of(sBlockCasings1, 0),
-                                Pair.of(sBlockCasings1, 1),
-                                Pair.of(sBlockCasings1, 2),
-                                Pair.of(sBlockCasings1, 3),
-                                Pair.of(sBlockCasings1, 4),
-                                Pair.of(sBlockCasings1, 5),
-                                Pair.of(sBlockCasings1, 6),
-                                Pair.of(sBlockCasings1, 7),
-                                Pair.of(sBlockCasings1, 8),
-                                Pair.of(sBlockCasings1, 9)),
-                            -1,
-                            (t, m) -> t.machineTier = m,
-                            t -> t.machineTier)))
-                .addElement('C', ofFrame(Materials.TungstenSteel))
-                .addElement(
-                    'D',
-                    ofChain(
-                        buildHatchAdder(PrecisionAssembler.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                            .buildAndChain(
-                                onElementPass(
-                                    x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "precisecasing",
-                                        ofBlocksTiered(
-                                            PrecisionAssembler::getCasingTier,
-                                            ImmutableList.of(
-                                                Pair.of(Loaders.impreciseUnitCasing, 0),
-                                                Pair.of(Loaders.preciseUnitCasing, 0),
-                                                Pair.of(Loaders.preciseUnitCasing, 1),
-                                                Pair.of(Loaders.preciseUnitCasing, 2),
-                                                Pair.of(Loaders.preciseUnitCasing, 3)),
-                                            -1,
-                                            (t, m) -> t.casingTier = m,
-                                            t -> t.casingTier))))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<PrecisionAssembler>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement(
+                'B',
+                withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        PrecisionAssembler::getMachineTier,
+                        ImmutableList.of(
+                            Pair.of(sBlockCasings1, 0),
+                            Pair.of(sBlockCasings1, 1),
+                            Pair.of(sBlockCasings1, 2),
+                            Pair.of(sBlockCasings1, 3),
+                            Pair.of(sBlockCasings1, 4),
+                            Pair.of(sBlockCasings1, 5),
+                            Pair.of(sBlockCasings1, 6),
+                            Pair.of(sBlockCasings1, 7),
+                            Pair.of(sBlockCasings1, 8),
+                            Pair.of(sBlockCasings1, 9)),
+                        -1,
+                        (t, m) -> t.machineTier = m,
+                        t -> t.machineTier)))
+            .addElement('C', ofFrame(Materials.TungstenSteel))
+            .addElement(
+                'D',
+                ofChain(
+                    buildHatchAdder(PrecisionAssembler.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                        .buildAndChain(
+                            onElementPass(
+                                x -> ++x.tCountCasing,
+                                StructureUtility.withChannel(
+                                    "unit_casing",
+                                    ofBlocksTiered(
+                                        PrecisionAssembler::getCasingTier,
+                                        ImmutableList.of(
+                                            Pair.of(Loaders.impreciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 0),
+                                            Pair.of(Loaders.preciseUnitCasing, 1),
+                                            Pair.of(Loaders.preciseUnitCasing, 2),
+                                            Pair.of(Loaders.preciseUnitCasing, 3)),
+                                        -1,
+                                        (t, m) -> t.casingTier = m,
+                                        t -> t.casingTier))))))
+            .build();
     }
 
     @Override
@@ -224,17 +223,17 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     }
 
     @Nullable
-    public static Integer getCasingTier(Block block, int meta) {
+    public static Integer getMachineTier(Block block, int meta) {
         if (block == null) return null;
-        if (block == Loaders.impreciseUnitCasing) return 0;
-        if (block == Loaders.preciseUnitCasing) return meta + 1;
+        if (block == sBlockCasings1) return meta;
         return null;
     }
 
     @Nullable
-    public static Integer getMachineTier(Block block, int meta) {
+    public static Integer getCasingTier(Block block, int meta) {
         if (block == null) return null;
-        if (block == sBlockCasings1) return meta;
+        if (block == Loaders.impreciseUnitCasing) return 0;
+        if (block == Loaders.preciseUnitCasing) return meta + 1;
         return null;
     }
 
@@ -317,10 +316,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
         energyHatchTier = checkEnergyHatchTier();
 
         updateTexture(aBaseMetaTileEntity, getCasingTextureID());
-        if (aBaseMetaTileEntity instanceof MTEHatch mteHatch) {
-            mteHatch.updateTexture(getCasingTextureID());
-            return true;
-        }
+        updateHatchTexture();
         return tCountCasing >= 30 && casingTier >= 0;
     }
 

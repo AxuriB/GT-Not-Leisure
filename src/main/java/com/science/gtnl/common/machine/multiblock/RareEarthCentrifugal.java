@@ -42,7 +42,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal> implements ISurvivalConstructable {
 
-    public static IStructureDefinition<RareEarthCentrifugal> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String REC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/rare_earth_centrifugal";
     public static String[][] shape = StructureUtils.readStructureFromFile(REC_STRUCTURE_FILE_PATH);
@@ -123,21 +122,18 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
 
     @Override
     public IStructureDefinition<RareEarthCentrifugal> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<RareEarthCentrifugal>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 12))
-                .addElement(
-                    'C',
-                    buildHatchAdder(RareEarthCentrifugal.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(
-                            onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockSpecialMultiCasings, 11))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<RareEarthCentrifugal>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 12))
+            .addElement(
+                'C',
+                buildHatchAdder(RareEarthCentrifugal.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(
+                        onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockSpecialMultiCasings, 11))))
+            .build();
     }
 
     @Override

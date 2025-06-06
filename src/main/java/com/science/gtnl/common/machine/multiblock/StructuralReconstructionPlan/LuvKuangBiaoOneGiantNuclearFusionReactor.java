@@ -61,7 +61,6 @@ public class LuvKuangBiaoOneGiantNuclearFusionReactor
     public GTRecipe lastRecipe;
     public long mEUStore;
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LuvKuangBiaoOneGiantNuclearFusionReactor> STRUCTURE_DEFINITION = null;
     public static final String KBFR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/kuang_biao_giant_nuclear_fusion_reactor";
     public static final int CASING_INDEX = GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 6);
@@ -335,28 +334,25 @@ public class LuvKuangBiaoOneGiantNuclearFusionReactor
 
     @Override
     public IStructureDefinition<LuvKuangBiaoOneGiantNuclearFusionReactor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LuvKuangBiaoOneGiantNuclearFusionReactor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('B', ofBlock(sBlockCasings8, 10))
-                .addElement(
-                    'C',
-                    buildHatchAdder(LuvKuangBiaoOneGiantNuclearFusionReactor.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 6))))
-                .addElement('D', ofBlock(sBlockCasings9, 3))
-                .addElement('E', ofFrame(Materials.Tungsten))
-                .addElement('F', ofFrame(Materials.NaquadahAlloy))
-                .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement('H', ofBlock(blockCasingsMisc, 5))
-                .addElement('I', ofBlock(Loaders.compactFusionCoil, 0))
-                .addElement('J', ofBlock(blockCasingsMisc, 15))
-                .addElement('K', ofBlock(sBlockCasings10, 3))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LuvKuangBiaoOneGiantNuclearFusionReactor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('B', ofBlock(sBlockCasings8, 10))
+            .addElement(
+                'C',
+                buildHatchAdder(LuvKuangBiaoOneGiantNuclearFusionReactor.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 6))))
+            .addElement('D', ofBlock(sBlockCasings9, 3))
+            .addElement('E', ofFrame(Materials.Tungsten))
+            .addElement('F', ofFrame(Materials.NaquadahAlloy))
+            .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('H', ofBlock(blockCasingsMisc, 5))
+            .addElement('I', ofBlock(Loaders.compactFusionCoil, 0))
+            .addElement('J', ofBlock(blockCasingsMisc, 15))
+            .addElement('K', ofBlock(sBlockCasings10, 3))
+            .build();
     }
 
     @SideOnly(Side.CLIENT)

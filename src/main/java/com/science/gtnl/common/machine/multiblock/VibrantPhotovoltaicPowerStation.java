@@ -48,7 +48,6 @@ public class VibrantPhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase<V
 
     private int tCountCasing;
     public int fuelConsumption;
-    private static IStructureDefinition<VibrantPhotovoltaicPowerStation> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String PPS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/photovoltaic_power_station";
@@ -85,20 +84,17 @@ public class VibrantPhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase<V
 
     @Override
     public IStructureDefinition<VibrantPhotovoltaicPowerStation> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<VibrantPhotovoltaicPowerStation>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(VibrantPhotovoltaicPowerStation.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, Dynamo, Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
-                .addElement('B', ofFrame(Materials.StainlessSteel))
-                .addElement('D', ofBlock(BlockLoader.MetaCasing, 11))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<VibrantPhotovoltaicPowerStation>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(VibrantPhotovoltaicPowerStation.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, Dynamo, Maintenance)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
+            .addElement('B', ofFrame(Materials.StainlessSteel))
+            .addElement('D', ofBlock(BlockLoader.MetaCasing, 11))
+            .build();
     }
 
     @Override

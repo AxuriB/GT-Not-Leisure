@@ -49,7 +49,6 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
         TEXTURE_OVERLAY_LAVAMAKER);
     public static Textures.BlockIcons.CustomIcon OVERLAY_LAVAMAKER_ACTIVE = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_LAVAMAKER_ACTIVE);
-    private static IStructureDefinition<SteamLavaMaker> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SLM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_lava_marker";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SLM_STRUCTURE_FILE_PATH);
@@ -152,34 +151,30 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
 
     @Override
     public IStructureDefinition<SteamLavaMaker> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamLavaMaker>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildSteamWirelessInput(SteamLavaMaker.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamLavaMaker.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamLavaMaker.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamLavaMaker.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(BlockLoader.MetaCasing, 27)))
-                .addElement('B', chainAllGlasses())
-                .addElement('C', ofChain(ofBlockAnyMeta(Blocks.lava), ofBlockAnyMeta(Blocks.flowing_lava)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamLavaMaker>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamWirelessInput(SteamLavaMaker.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamLavaMaker.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamLavaMaker.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamLavaMaker.class)
+                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(BlockLoader.MetaCasing, 27)))
+            .addElement('B', chainAllGlasses())
+            .addElement('C', ofChain(ofBlockAnyMeta(Blocks.lava), ofBlockAnyMeta(Blocks.flowing_lava)))
+            .build();
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
@@ -55,7 +56,6 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
     private static final int MACHINEMODE_OREWASH = 0;
     private static final int MACHINEMODE_SIMPLEWASH = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeSteamOreWasher> STRUCTURE_DEFINITION = null;
     private static final String LSC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_ore_washer";
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSC_STRUCTURE_FILE_PATH);
 
@@ -115,53 +115,51 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
 
     @Override
     public IStructureDefinition<LargeSteamOreWasher> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeSteamOreWasher>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildSteamWirelessInput(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                SteamHatchElement.OutputBus_Steam,
-                                InputBus,
-                                OutputBus,
-                                InputHatch)
-                            .buildAndChain(
-                                onElementPass(
-                                    x -> ++x.tCountCasing,
-                                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                                        ofBlocksTiered(
-                                            LargeSteamOreWasher::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing))))))
-                .addElement(
-                    'B',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            LargeSteamOreWasher::getTierPipeCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                            -1,
-                            (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing)))
-                .addElement('C', chainAllGlasses())
-                .build();
-
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeSteamOreWasher>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamWirelessInput(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            SteamHatchElement.OutputBus_Steam,
+                            InputBus,
+                            OutputBus,
+                            InputHatch)
+                        .buildAndChain(
+                            onElementPass(
+                                x -> ++x.tCountCasing,
+                                StructureUtility.withChannel(
+                                    "machine_casing",
+                                    ofBlocksTiered(
+                                        LargeSteamOreWasher::getTierMachineCasing,
+                                        ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                        -1,
+                                        (t, m) -> t.tierMachineCasing = m,
+                                        t -> t.tierMachineCasing))))))
+            .addElement(
+                'B',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        LargeSteamOreWasher::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing)))
+            .addElement('C', chainAllGlasses())
+            .build();
     }
 
     @Override

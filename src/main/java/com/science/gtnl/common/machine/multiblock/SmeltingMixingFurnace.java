@@ -68,7 +68,6 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
     private static final int MACHINEMODE_SMF = 0;
     private static final int MACHINEMODE_DTPF = 1;
     protected static final int CASING_INDEX = BlockGTCasingsTT.textureOffset;
-    private static IStructureDefinition<SmeltingMixingFurnace> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String SMF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/smelting_mixing_furnace";
     public static String[][] shape = StructureUtils.readStructureFromFile(SMF_STRUCTURE_FILE_PATH);
@@ -141,43 +140,33 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
 
     @Override
     public IStructureDefinition<SmeltingMixingFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SmeltingMixingFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(ItemRegistry.bw_realglas2, 0))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 7))
-                .addElement('D', ofBlock(defcCasingBlock, 7))
-                .addElement('E', ofBlock(defcCasingBlock, 10))
-                .addElement('F', ofBlock(sBlockCasings1, 12))
-                .addElement('G', ofBlock(sBlockCasings1, 13))
-                .addElement('H', ofBlock(sBlockCasings10, 7))
-                .addElement('I', ofBlock(sBlockCasings10, 13))
-                .addElement('J', ofBlock(sBlockCasings8, 7))
-                .addElement('K', ofBlock(sBlockCasings9, 12))
-                .addElement('L', ofBlock(sBlockCasingsTT, 6))
-                .addElement('M', ofBlock(sBlockCasingsTT, 8))
-                .addElement('N', ofFrame(Materials.Infinity))
-                .addElement('O', ofBlock(blockCasings2Misc, 4))
-                .addElement('P', ofBlock(blockSpecialMultiCasings, 11))
-                .addElement('Q', ofBlock(blockCasingsMisc, 12))
-                .addElement(
-                    'R',
-                    buildHatchAdder(SmeltingMixingFurnace.class)
-                        .atLeast(
-                            InputBus,
-                            OutputBus,
-                            InputHatch,
-                            OutputHatch,
-                            Energy,
-                            Energy.or(ExoticEnergy),
-                            ParallelCon)
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++this.tCountCasing, ofBlock(sBlockCasingsTT, 0))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SmeltingMixingFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(ItemRegistry.bw_realglas2, 0))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('C', ofBlock(BlockLoader.MetaCasing, 7))
+            .addElement('D', ofBlock(defcCasingBlock, 7))
+            .addElement('E', ofBlock(defcCasingBlock, 10))
+            .addElement('F', ofBlock(sBlockCasings1, 12))
+            .addElement('G', ofBlock(sBlockCasings1, 13))
+            .addElement('H', ofBlock(sBlockCasings10, 7))
+            .addElement('I', ofBlock(sBlockCasings10, 13))
+            .addElement('J', ofBlock(sBlockCasings8, 7))
+            .addElement('K', ofBlock(sBlockCasings9, 12))
+            .addElement('L', ofBlock(sBlockCasingsTT, 6))
+            .addElement('M', ofBlock(sBlockCasingsTT, 8))
+            .addElement('N', ofFrame(Materials.Infinity))
+            .addElement('O', ofBlock(blockCasings2Misc, 4))
+            .addElement('P', ofBlock(blockSpecialMultiCasings, 11))
+            .addElement('Q', ofBlock(blockCasingsMisc, 12))
+            .addElement(
+                'R',
+                buildHatchAdder(SmeltingMixingFurnace.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy, Energy.or(ExoticEnergy), ParallelCon)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++this.tCountCasing, ofBlock(sBlockCasingsTT, 0))))
+            .build();
     }
 
     @Override

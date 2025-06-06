@@ -57,7 +57,6 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
     private static final int HORIZONTAL_OFF_SET = 8;
     private static final int VERTICAL_OFF_SET = 10;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<IntegratedAssemblyFacility> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String IAF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/integrated_assembly_facility"; // 文件路径
@@ -131,45 +130,42 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
 
     @Override
     public IStructureDefinition<IntegratedAssemblyFacility> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<IntegratedAssemblyFacility>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement(
-                    'B',
-                    ofBlocksTiered(
-                        (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
-                        IntStream.range(0, 13)
-                            .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                            .collect(Collectors.toList()),
-                        -2,
-                        (t, meta) -> t.casingTier = meta,
-                        t -> t.casingTier))
-                .addElement(
-                    'C',
-                    buildHatchAdder(IntegratedAssemblyFacility.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .addElement('D', ofBlock(sBlockCasings2, 6))
-                .addElement('E', ofBlock(sBlockCasings9, 1))
-                .addElement('F', ofBlock(sBlockCasings8, 12))
-                .addElement('G', ofFrame(Materials.Neutronium))
-                .addElement('H', ofBlock(sBlockCasings10, 11))
-                .addElement('I', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('J', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
-                .addElement('K', ofBlock(sBlockCasings2, 5))
-                .addElement('L', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
-                .addElement('M', ofBlock(sBlockCasingsSE, 1))
-                .addElement('N', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('O', ofBlock(BlockLoader.MetaBlockGlow, 31))
-                .addElement('P', ofBlock(sBlockCasings6, 9))
-                .addElement('Q', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('R', ofFrame(Materials.CosmicNeutronium))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<IntegratedAssemblyFacility>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement(
+                'B',
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                    IntStream.range(0, 13)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -2,
+                    (t, meta) -> t.casingTier = meta,
+                    t -> t.casingTier))
+            .addElement(
+                'C',
+                buildHatchAdder(IntegratedAssemblyFacility.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('D', ofBlock(sBlockCasings2, 6))
+            .addElement('E', ofBlock(sBlockCasings9, 1))
+            .addElement('F', ofBlock(sBlockCasings8, 12))
+            .addElement('G', ofFrame(Materials.Neutronium))
+            .addElement('H', ofBlock(sBlockCasings10, 11))
+            .addElement('I', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('J', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
+            .addElement('K', ofBlock(sBlockCasings2, 5))
+            .addElement('L', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
+            .addElement('M', ofBlock(sBlockCasingsSE, 1))
+            .addElement('N', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('O', ofBlock(BlockLoader.MetaBlockGlow, 31))
+            .addElement('P', ofBlock(sBlockCasings6, 9))
+            .addElement('Q', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('R', ofFrame(Materials.CosmicNeutronium))
+            .build();
     }
 
     @Override

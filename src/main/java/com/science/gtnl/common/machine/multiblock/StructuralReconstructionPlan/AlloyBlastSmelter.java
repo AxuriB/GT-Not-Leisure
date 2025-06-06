@@ -43,7 +43,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<AlloyBlastSmelter> STRUCTURE_DEFINITION = null;
     public static final String ABS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/alloy_blast_smelter";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(15);
     private int mHeatingCapacity = 0;
@@ -122,23 +121,20 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
 
     @Override
     public IStructureDefinition<AlloyBlastSmelter> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<AlloyBlastSmelter>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    withChannel("coil", ofCoil(AlloyBlastSmelter::setCoilLevel, AlloyBlastSmelter::getCoilLevel)))
-                .addElement('B', ofBlock(blockCasingsMisc, 14))
-                .addElement(
-                    'C',
-                    buildHatchAdder(AlloyBlastSmelter.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
-                .addElement('D', Muffler.newAny(CASING_INDEX, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<AlloyBlastSmelter>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                withChannel("coil", ofCoil(AlloyBlastSmelter::setCoilLevel, AlloyBlastSmelter::getCoilLevel)))
+            .addElement('B', ofBlock(blockCasingsMisc, 14))
+            .addElement(
+                'C',
+                buildHatchAdder(AlloyBlastSmelter.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
+            .addElement('D', Muffler.newAny(CASING_INDEX, 1))
+            .build();
     }
 
     @Override

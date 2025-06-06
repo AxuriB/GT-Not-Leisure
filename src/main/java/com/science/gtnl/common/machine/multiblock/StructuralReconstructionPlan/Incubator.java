@@ -88,7 +88,6 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     private int mSievert;
     private int mNeededSievert;
     private boolean isVisibleFluid = false;
-    public static IStructureDefinition<Incubator> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String INCUBATOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/incubator";
     public static String[][] shape = StructureUtils.readStructureFromFile(INCUBATOR_STRUCTURE_FILE_PATH);
@@ -152,25 +151,22 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
     @Override
     public IStructureDefinition<Incubator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<Incubator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(sBlockCasings3, 11))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildHatchAdder(Incubator.class).casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                            .buildAndChain(),
-                        ofHatchAdder(Incubator::addRadiationInputToMachineList, CASING_INDEX, 1),
-                        onElementPass(e -> e.tCountCasing++, ofBlock(sBlockReinforced, 2))))
-                .addElement('D', ofBlockAnyMeta(Blocks.sponge))
-                .addElement('E', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<Incubator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(sBlockCasings3, 11))
+            .addElement(
+                'C',
+                ofChain(
+                    buildHatchAdder(Incubator.class).casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                        .buildAndChain(),
+                    ofHatchAdder(Incubator::addRadiationInputToMachineList, CASING_INDEX, 1),
+                    onElementPass(e -> e.tCountCasing++, ofBlock(sBlockReinforced, 2))))
+            .addElement('D', ofBlockAnyMeta(Blocks.sponge))
+            .addElement('E', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
+            .build();
     }
 
     public static int[] specialValueUnpack(int aSpecialValue) {

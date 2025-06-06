@@ -41,7 +41,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeWiremill extends GTMMultiMachineBase<LargeWiremill> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeWiremill> STRUCTURE_DEFINITION = null;
     public static final String LIL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_wiremill";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     public final int HORIZONTAL_OFF_SET = 1;
@@ -113,19 +112,16 @@ public class LargeWiremill extends GTMMultiMachineBase<LargeWiremill> implements
 
     @Override
     public IStructureDefinition<LargeWiremill> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeWiremill>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 4))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargeWiremill.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeWiremill>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 4))
+            .addElement(
+                'B',
+                buildHatchAdder(LargeWiremill.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
+            .build();
     }
 
     @Override

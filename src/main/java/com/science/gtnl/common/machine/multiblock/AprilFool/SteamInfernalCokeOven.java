@@ -64,7 +64,6 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
         TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE);
     public static Textures.BlockIcons.CustomIcon OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW);
-    private static IStructureDefinition<SteamInfernalCokeOven> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SICO = RESOURCE_ROOT_ID + ":" + "multiblock/steam_infernal_coke_oven";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SICO);
@@ -94,28 +93,25 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
 
     @Override
     public IStructureDefinition<SteamInfernalCokeOven> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamInfernalCokeOven>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildHatchAdder(SteamInfernalCokeOven.class)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                InputBus,
-                                SteamHatchElement.OutputBus_Steam,
-                                OutputBus,
-                                OutputHatch)
-                            .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .addElement('B', ofBlock(ModBlocks.blockCasingsMisc, 2))
-                .addElement('C', ofBlock(Blocks.nether_brick, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamInfernalCokeOven>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildHatchAdder(SteamInfernalCokeOven.class)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            InputBus,
+                            SteamHatchElement.OutputBus_Steam,
+                            OutputBus,
+                            OutputHatch)
+                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .addElement('B', ofBlock(ModBlocks.blockCasingsMisc, 2))
+            .addElement('C', ofBlock(Blocks.nether_brick, 0))
+            .build();
     }
 
     @Override

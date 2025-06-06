@@ -58,7 +58,6 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
 
     protected boolean wirelessMode = false;
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static IStructureDefinition<WhiteNightGenerator> STRUCTURE_DEFINITION = null;
     public static final String WNG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/white_night_generator";
     public static String[][] shape = StructureUtils.readStructureFromFile(WNG_STRUCTURE_FILE_PATH);
     public static final int CASING_INDEX = ((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13);
@@ -212,34 +211,31 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
 
     @Override
     public IStructureDefinition<WhiteNightGenerator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<WhiteNightGenerator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(WhiteNightGenerator.class).atLeast(Dynamo)
-                        .dot(1)
-                        .casingIndex(CASING_INDEX)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings10, 13))))
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasingsDyson, 1))
-                .addElement('C', ofBlock(BlockLoader.defcCasingBlock, 12))
-                .addElement('D', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
-                .addElement('E', ofBlock(GregTechAPI.sBlockCasings10, 11))
-                .addElement('F', ofBlock(GregTechAPI.sBlockCasingsSE, 1))
-                .addElement('G', ofFrame(MaterialsUEVplus.SixPhasedCopper))
-                .addElement('H', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
-                .addElement('I', ofBlock(ModBlocks.blockCasings3Misc, 11))
-                .addElement('J', ofBlock(GregTechAPI.sBlockCasings9, 5))
-                .addElement('K', ofBlock(Loaders.gravityStabilizationCasing, 0))
-                .addElement('L', ofBlock(GregTechAPI.sBlockCasingsDyson, 8))
-                .addElement('M', ofBlock(GregTechAPI.sBlockCasings9, 5))
-                .addElement('N', ofBlock(GregTechAPI.sBlockCasings10, 14))
-                .addElement('O', ofBlock(GregTechAPI.sBlockCasings10, 14))
-                .addElement('P', ofBlock(GregTechAPI.sBlockCasings9, 5))
-                .addElement('Q', ofFrame(MaterialsKevlar.Kevlar))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<WhiteNightGenerator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(WhiteNightGenerator.class).atLeast(Dynamo)
+                    .dot(1)
+                    .casingIndex(CASING_INDEX)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasingsDyson, 1))
+            .addElement('C', ofBlock(BlockLoader.defcCasingBlock, 12))
+            .addElement('D', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
+            .addElement('E', ofBlock(GregTechAPI.sBlockCasings10, 11))
+            .addElement('F', ofBlock(GregTechAPI.sBlockCasingsSE, 1))
+            .addElement('G', ofFrame(MaterialsUEVplus.SixPhasedCopper))
+            .addElement('H', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
+            .addElement('I', ofBlock(ModBlocks.blockCasings3Misc, 11))
+            .addElement('J', ofBlock(GregTechAPI.sBlockCasings9, 5))
+            .addElement('K', ofBlock(Loaders.gravityStabilizationCasing, 0))
+            .addElement('L', ofBlock(GregTechAPI.sBlockCasingsDyson, 8))
+            .addElement('M', ofBlock(GregTechAPI.sBlockCasings9, 5))
+            .addElement('N', ofBlock(GregTechAPI.sBlockCasings10, 14))
+            .addElement('O', ofBlock(GregTechAPI.sBlockCasings10, 14))
+            .addElement('P', ofBlock(GregTechAPI.sBlockCasings9, 5))
+            .addElement('Q', ofFrame(MaterialsKevlar.Kevlar))
+            .build();
     }
 
     @Override

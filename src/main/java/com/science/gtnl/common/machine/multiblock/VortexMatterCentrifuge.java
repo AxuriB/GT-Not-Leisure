@@ -36,7 +36,6 @@ public class VortexMatterCentrifuge extends WirelessEnergyMultiMachineBase<Vorte
     private static final int HORIZONTAL_OFF_SET = 15;
     private static final int VERTICAL_OFF_SET = 7;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<VortexMatterCentrifuge> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String VMC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/vortex_matter_centrifuge";
@@ -108,33 +107,30 @@ public class VortexMatterCentrifuge extends WirelessEnergyMultiMachineBase<Vorte
 
     @Override
     public IStructureDefinition<VortexMatterCentrifuge> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<VortexMatterCentrifuge>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('B', ofBlock(sBlockCasingsDyson, 9))
-                .addElement('C', ofBlock(sBlockCasingsTT, 6))
-                .addElement('D', ofBlock(sBlockCasingsTT, 0))
-                .addElement('E', ofBlock(sBlockCasings10, 3))
-                .addElement('F', ofBlock(sBlockCasings1, 9))
-                .addElement('G', ofBlock(sBlockCasingsTT, 8))
-                .addElement('H', ofBlock(sBlockCasings10, 8))
-                .addElement('I', ofBlock(BlockLoader.MetaCasing, 7))
-                .addElement('J', ofBlock(sBlockCasings10, 7))
-                .addElement(
-                    'K',
-                    buildHatchAdder(VortexMatterCentrifuge.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
-                .addElement('L', ofBlock(sBlockCasings8, 10))
-                .addElement('M', ofBlock(sBlockCasings1, 13))
-                .addElement('N', ofFrame(Materials.EnrichedHolmium))
-                .addElement('O', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<VortexMatterCentrifuge>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('B', ofBlock(sBlockCasingsDyson, 9))
+            .addElement('C', ofBlock(sBlockCasingsTT, 6))
+            .addElement('D', ofBlock(sBlockCasingsTT, 0))
+            .addElement('E', ofBlock(sBlockCasings10, 3))
+            .addElement('F', ofBlock(sBlockCasings1, 9))
+            .addElement('G', ofBlock(sBlockCasingsTT, 8))
+            .addElement('H', ofBlock(sBlockCasings10, 8))
+            .addElement('I', ofBlock(BlockLoader.MetaCasing, 7))
+            .addElement('J', ofBlock(sBlockCasings10, 7))
+            .addElement(
+                'K',
+                buildHatchAdder(VortexMatterCentrifuge.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+            .addElement('L', ofBlock(sBlockCasings8, 10))
+            .addElement('M', ofBlock(sBlockCasings1, 13))
+            .addElement('N', ofFrame(Materials.EnrichedHolmium))
+            .addElement('O', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .build();
     }
 
     @Override

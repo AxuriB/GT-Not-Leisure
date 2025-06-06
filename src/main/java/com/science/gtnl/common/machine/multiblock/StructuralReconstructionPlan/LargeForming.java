@@ -46,7 +46,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeForming extends GTMMultiMachineBase<LargeForming> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeForming> STRUCTURE_DEFINITION = null;
     public static final String LF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_forming";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     public final int HORIZONTAL_OFF_SET = 3;
@@ -137,22 +136,19 @@ public class LargeForming extends GTMMultiMachineBase<LargeForming> implements I
 
     @Override
     public IStructureDefinition<LargeForming> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeForming>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement('B', ofBlock(sBlockCasings2, 5))
-                .addElement(
-                    'C',
-                    buildHatchAdder(LargeForming.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
-                .addElement('D', ofBlock(sBlockCasings3, 10))
-                .addElement('E', ofFrame(Materials.StainlessSteel))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeForming>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('B', ofBlock(sBlockCasings2, 5))
+            .addElement(
+                'C',
+                buildHatchAdder(LargeForming.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
+            .addElement('D', ofBlock(sBlockCasings3, 10))
+            .addElement('E', ofFrame(Materials.StainlessSteel))
+            .build();
     }
 
     @Override

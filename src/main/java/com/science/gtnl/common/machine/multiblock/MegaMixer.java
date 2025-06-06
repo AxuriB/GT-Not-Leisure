@@ -42,7 +42,6 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MegaMixer> STRUCTURE_DEFINITION = null;
     public static final String MM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_mixer";
     public static final int CASING_INDEX = StructureUtils.getTextureIndex(sBlockCasings8, 7);
     public final int HORIZONTAL_OFF_SET = 5;
@@ -120,25 +119,22 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
 
     @Override
     public IStructureDefinition<MegaMixer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MegaMixer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasingsTT, 0))
-                .addElement(
-                    'B',
-                    buildHatchAdder(MegaMixer.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .addElement('C', ofBlock(sBlockCasingsTT, 4))
-                .addElement('D', ofBlock(blockCasingsMisc, 11))
-                .addElement('E', ofBlock(sBlockCasings8, 10))
-                .addElement('F', ofFrame(Materials.Neutronium))
-                .addElement('G', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('H', ofBlock(BlockLoader.MetaCasing, 5))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MegaMixer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasingsTT, 0))
+            .addElement(
+                'B',
+                buildHatchAdder(MegaMixer.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('C', ofBlock(sBlockCasingsTT, 4))
+            .addElement('D', ofBlock(blockCasingsMisc, 11))
+            .addElement('E', ofBlock(sBlockCasings8, 10))
+            .addElement('F', ofFrame(Materials.Neutronium))
+            .addElement('G', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('H', ofBlock(BlockLoader.MetaCasing, 5))
+            .build();
     }
 
     @Override

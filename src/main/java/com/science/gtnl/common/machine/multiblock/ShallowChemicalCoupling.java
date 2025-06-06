@@ -48,7 +48,6 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
 
     private HeatingCoilLevel mCoilLevel;
     private int mHeatingCapacity = 0;
-    private static IStructureDefinition<ShallowChemicalCoupling> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SCC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/shallow_chemical_coupling";
@@ -73,26 +72,23 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
 
     @Override
     public IStructureDefinition<ShallowChemicalCoupling> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ShallowChemicalCoupling>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(ShallowChemicalCoupling.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(BlockLoader.MetaCasing, 19))))
-                .addElement('B', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement(
-                    'C',
-                    withChannel(
-                        "coil",
-                        ofCoil(ShallowChemicalCoupling::setCoilLevel, ShallowChemicalCoupling::getCoilLevel)))
-                .addElement('D', ofBlock(sBlockCasings8, 1))
-                .addElement('E', ofFrame(Materials.NaquadahAlloy))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ShallowChemicalCoupling>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(ShallowChemicalCoupling.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(BlockLoader.MetaCasing, 19))))
+            .addElement('B', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement(
+                'C',
+                withChannel(
+                    "coil",
+                    ofCoil(ShallowChemicalCoupling::setCoilLevel, ShallowChemicalCoupling::getCoilLevel)))
+            .addElement('D', ofBlock(sBlockCasings8, 1))
+            .addElement('E', ofFrame(Materials.NaquadahAlloy))
+            .build();
     }
 
     @Override

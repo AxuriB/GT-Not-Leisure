@@ -46,7 +46,6 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
     private static final int HORIZONTAL_OFF_SET = 32;
     private static final int VERTICAL_OFF_SET = 6;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<HeavyRolling> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String HR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/heavy_rolling";
     private static final String[][] shape = StructureUtils.readStructureFromFile(HR_STRUCTURE_FILE_PATH);
@@ -116,33 +115,30 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
 
     @Override
     public IStructureDefinition<HeavyRolling> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<HeavyRolling>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings8, 10))
-                .addElement('B', ofBlock(sBlockCasings2, 15))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('D', ofBlock(sBlockCasings10, 3))
-                .addElement('E', ofBlock(sBlockCasings8, 7))
-                .addElement('F', withChannel("coil", ofCoil(HeavyRolling::setCoilLevel, HeavyRolling::getCoilLevel)))
-                .addElement('G', ofBlock(sBlockCasings10, 6))
-                .addElement(
-                    'H',
-                    buildHatchAdder(HeavyRolling.class).atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
-                .addElement('I', ofBlock(BlockLoader.MetaCasing, 7))
-                .addElement('J', ofBlock(blockCasings3Misc, 1))
-                .addElement('K', ofBlock(BlockLoader.MetaCasing, 2))
-                .addElement('L', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement('M', ofBlock(sBlockCasings3, 11))
-                .addElement('N', ofFrame(Materials.NaquadahAlloy))
-                .addElement('O', ofBlock(sBlockCasings1, 9))
-                .addElement('P', ofBlock(BlockLoader.MetaCasing, 4))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<HeavyRolling>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings8, 10))
+            .addElement('B', ofBlock(sBlockCasings2, 15))
+            .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('D', ofBlock(sBlockCasings10, 3))
+            .addElement('E', ofBlock(sBlockCasings8, 7))
+            .addElement('F', withChannel("coil", ofCoil(HeavyRolling::setCoilLevel, HeavyRolling::getCoilLevel)))
+            .addElement('G', ofBlock(sBlockCasings10, 6))
+            .addElement(
+                'H',
+                buildHatchAdder(HeavyRolling.class).atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
+            .addElement('I', ofBlock(BlockLoader.MetaCasing, 7))
+            .addElement('J', ofBlock(blockCasings3Misc, 1))
+            .addElement('K', ofBlock(BlockLoader.MetaCasing, 2))
+            .addElement('L', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('M', ofBlock(sBlockCasings3, 11))
+            .addElement('N', ofFrame(Materials.NaquadahAlloy))
+            .addElement('O', ofBlock(sBlockCasings1, 9))
+            .addElement('P', ofBlock(BlockLoader.MetaCasing, 4))
+            .build();
     }
 
     @Override

@@ -49,7 +49,6 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
 
     private HeatingCoilLevel mHeatingCapacity;
     private int mLevel = 0;
-    private static IStructureDefinition<Desulfurizer> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String Desu_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/desulfurizer";
     public static String[][] shape = StructureUtils.readStructureFromFile(Desu_STRUCTURE_FILE_PATH);
@@ -141,25 +140,22 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
 
     @Override
     public IStructureDefinition<Desulfurizer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<Desulfurizer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings1, 11))
-                .addElement('B', ofBlock(sBlockCasings2, 0))
-                .addElement('C', ofBlock(sBlockCasings2, 12))
-                .addElement('D', ofBlock(sBlockCasings2, 13))
-                .addElement(
-                    'E',
-                    buildHatchAdder(Desulfurizer.class)
-                        .atLeast(InputHatch, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(((BlockCasings4) sBlockCasings4).getTextureIndex(1))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
-                .addElement('F', withChannel("coil", ofCoil(Desulfurizer::setCoilLevel, Desulfurizer::getCoilLevel)))
-                .addElement('G', ofBlock(sBlockCasings6, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<Desulfurizer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings1, 11))
+            .addElement('B', ofBlock(sBlockCasings2, 0))
+            .addElement('C', ofBlock(sBlockCasings2, 12))
+            .addElement('D', ofBlock(sBlockCasings2, 13))
+            .addElement(
+                'E',
+                buildHatchAdder(Desulfurizer.class)
+                    .atLeast(InputHatch, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .casingIndex(((BlockCasings4) sBlockCasings4).getTextureIndex(1))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
+            .addElement('F', withChannel("coil", ofCoil(Desulfurizer::setCoilLevel, Desulfurizer::getCoilLevel)))
+            .addElement('G', ofBlock(sBlockCasings6, 2))
+            .build();
     }
 
     @Override

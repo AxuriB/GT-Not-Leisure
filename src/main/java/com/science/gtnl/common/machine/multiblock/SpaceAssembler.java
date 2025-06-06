@@ -45,7 +45,6 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
 
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-    public static IStructureDefinition<SpaceAssembler> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String SA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/space_assembler";
     public static String[][] shape = StructureUtils.readStructureFromFile(SA_STRUCTURE_FILE_PATH);
@@ -140,22 +139,19 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
 
     @Override
     public IStructureDefinition<SpaceAssembler> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SpaceAssembler>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(sBlockCasings1, 13))
-                .addElement('C', ofBlock(sBlockCasingsSEMotor, 2))
-                .addElement('D', ofBlock(sBlockCasingsTT, 2))
-                .addElement(
-                    'E',
-                    buildHatchAdder(SpaceAssembler.class).casingIndex(BlockGTCasingsTT.textureOffset + 3)
-                        .dot(1)
-                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy), ParallelCon)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SpaceAssembler>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(sBlockCasings1, 13))
+            .addElement('C', ofBlock(sBlockCasingsSEMotor, 2))
+            .addElement('D', ofBlock(sBlockCasingsTT, 2))
+            .addElement(
+                'E',
+                buildHatchAdder(SpaceAssembler.class).casingIndex(BlockGTCasingsTT.textureOffset + 3)
+                    .dot(1)
+                    .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy), ParallelCon)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .build();
     }
 
     @Override

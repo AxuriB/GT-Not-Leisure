@@ -66,7 +66,6 @@ public class NanitesIntegratedProcessingCenter
     private double setEUtDiscount = 1;
     private double setDurationModifier = 1;
     public ArrayList<NanitesBaseModule<?>> moduleHatches = new ArrayList<>();
-    private static IStructureDefinition<NanitesIntegratedProcessingCenter> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String NIPC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/nanites_integrated_processing_center";
@@ -171,53 +170,50 @@ public class NanitesIntegratedProcessingCenter
 
     @Override
     public IStructureDefinition<NanitesIntegratedProcessingCenter> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<NanitesIntegratedProcessingCenter>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(NanitesIntegratedProcessingCenter.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+        return StructureDefinition.<NanitesIntegratedProcessingCenter>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(NanitesIntegratedProcessingCenter.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('B', ofBlock(sBlockCasingsTT, 0))
+            .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('D', ofBlock(sBlockCasings3, 10))
+            .addElement('E', ofBlock(sBlockMetal5, 1))
+            .addElement('F', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement(
+                'G',
+                withChannel(
+                    "coil",
+                    ofCoil(
+                        NanitesIntegratedProcessingCenter::setCoilLevel,
+                        NanitesIntegratedProcessingCenter::getCoilLevel)))
+            .addElement('H', ofBlock(sBlockCasings4, 10))
+            .addElement('I', ofBlock(sBlockCasings10, 3))
+            .addElement('J', ofBlock(sBlockCasingsSE, 9))
+            .addElement('K', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('L', ofBlock(blockCasings4Misc, 4))
+            .addElement('M', ofBlock(sBlockCasings2, 5))
+            .addElement('N', ofFrame(Materials.CosmicNeutronium))
+            .addElement('O', ofBlock(sBlockCasings8, 1))
+            .addElement('P', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement(
+                'Q',
+                ofChain(
+                    HatchElementBuilder.<NanitesIntegratedProcessingCenter>builder()
+                        .atLeast(moduleElement.Module)
                         .casingIndex(CASING_INDEX)
                         .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('B', ofBlock(sBlockCasingsTT, 0))
-                .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('D', ofBlock(sBlockCasings3, 10))
-                .addElement('E', ofBlock(sBlockMetal5, 1))
-                .addElement('F', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement(
-                    'G',
-                    withChannel(
-                        "coil",
-                        ofCoil(
-                            NanitesIntegratedProcessingCenter::setCoilLevel,
-                            NanitesIntegratedProcessingCenter::getCoilLevel)))
-                .addElement('H', ofBlock(sBlockCasings4, 10))
-                .addElement('I', ofBlock(sBlockCasings10, 3))
-                .addElement('J', ofBlock(sBlockCasingsSE, 9))
-                .addElement('K', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('L', ofBlock(blockCasings4Misc, 4))
-                .addElement('M', ofBlock(sBlockCasings2, 5))
-                .addElement('N', ofFrame(Materials.CosmicNeutronium))
-                .addElement('O', ofBlock(sBlockCasings8, 1))
-                .addElement('P', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement(
-                    'Q',
-                    ofChain(
-                        HatchElementBuilder.<NanitesIntegratedProcessingCenter>builder()
-                            .atLeast(moduleElement.Module)
-                            .casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .buildAndChain(sBlockCasings8, 10),
-                        ofBlock(sBlockCasings8, 7),
-                        ofBlock(sBlockCasings8, 0),
-                        ofBlock(sBlockCasings4, 0),
-                        ofBlock(sBlockCasings10, 8),
-                        ofBlock(sBlockReinforced, 2)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+                        .buildAndChain(sBlockCasings8, 10),
+                    ofBlock(sBlockCasings8, 7),
+                    ofBlock(sBlockCasings8, 0),
+                    ofBlock(sBlockCasings4, 0),
+                    ofBlock(sBlockCasings10, 8),
+                    ofBlock(sBlockReinforced, 2)))
+            .build();
     }
 
     @Override

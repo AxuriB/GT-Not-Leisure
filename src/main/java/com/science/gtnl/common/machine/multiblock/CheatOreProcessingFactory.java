@@ -55,7 +55,6 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessingFactory> {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<CheatOreProcessingFactory> STRUCTURE_DEFINITION = null;
     public static final String COPF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/cheat_ore_processing_factory"; // 文件路径
     public static String[][] shape = StructureUtils.readStructureFromFile(COPF_STRUCTURE_FILE_PATH);
@@ -259,27 +258,24 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
 
     @Override
     public IStructureDefinition<CheatOreProcessingFactory> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<CheatOreProcessingFactory>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BWBlockCasings, 32066))
-                .addElement('B', ofFrame(Materials.Bronze))
-                .addElement('C', ofBlock(blockCasingsMisc, 2))
-                .addElement('D', ofBlock(sBlockCasings2, 2))
-                .addElement('E', ofBlock(sBlockCasings2, 12))
-                .addElement('F', ofBlock(sBlockCasings3, 13))
-                .addElement(
-                    'G',
-                    ofChain(
-                        buildHatchAdder(CheatOreProcessingFactory.class).atLeast(InputBus, OutputBus)
-                            .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
-                            .dot(1)
-                            .build(),
-                        ofBlock(BWBlockCasingsAdvanced, 32066)))
-                .addElement('H', chainAllGlasses())
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<CheatOreProcessingFactory>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BWBlockCasings, 32066))
+            .addElement('B', ofFrame(Materials.Bronze))
+            .addElement('C', ofBlock(blockCasingsMisc, 2))
+            .addElement('D', ofBlock(sBlockCasings2, 2))
+            .addElement('E', ofBlock(sBlockCasings2, 12))
+            .addElement('F', ofBlock(sBlockCasings3, 13))
+            .addElement(
+                'G',
+                ofChain(
+                    buildHatchAdder(CheatOreProcessingFactory.class).atLeast(InputBus, OutputBus)
+                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .dot(1)
+                        .build(),
+                    ofBlock(BWBlockCasingsAdvanced, 32066)))
+            .addElement('H', chainAllGlasses())
+            .build();
     }
 
     @Override

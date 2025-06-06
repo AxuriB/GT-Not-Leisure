@@ -63,7 +63,6 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
     private boolean Oxygen = false;
     private int multiplier = 1;
     private long setEUt = 0;
-    private static IStructureDefinition<LargeNaquadahReactor> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LNR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_naquadah_reactor";
     public static String[][] shape = StructureUtils.readStructureFromFile(LNR_STRUCTURE_FILE_PATH);
@@ -102,24 +101,21 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
 
     @Override
     public IStructureDefinition<LargeNaquadahReactor> getStructure_EM() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeNaquadahReactor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement(
-                    'C',
-                    buildHatchAdder(LargeNaquadahReactor.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, Dynamo.or(DynamoMulti), Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('D', ofBlock(sBlockCasingsTT, 0))
-                .addElement('E', ofFrame(Materials.Naquadria))
-                .addElement('F', ofFrame(Materials.Trinium))
-                .addElement('G', ofBlock(blockCasings4Misc, 10))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeNaquadahReactor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement(
+                'C',
+                buildHatchAdder(LargeNaquadahReactor.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, Dynamo.or(DynamoMulti), Maintenance)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('D', ofBlock(sBlockCasingsTT, 0))
+            .addElement('E', ofFrame(Materials.Naquadria))
+            .addElement('F', ofFrame(Materials.Trinium))
+            .addElement('G', ofBlock(blockCasings4Misc, 10))
+            .build();
     }
 
     @Override

@@ -50,7 +50,6 @@ import tectech.thing.casing.BlockGTCasingsTT;
 public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCircuitAssemblyLine>
     implements ISurvivalConstructable {
 
-    private static IStructureDefinition<AdvancedCircuitAssemblyLine> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String ACAL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/advanced_circuit_assembly_line";
@@ -78,37 +77,34 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
 
     @Override
     public IStructureDefinition<AdvancedCircuitAssemblyLine> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<AdvancedCircuitAssemblyLine>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(FRF_Coil_1, 0))
-                .addElement(
-                    'B',
-                    ofBlocksTiered(
-                        (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
-                        IntStream.range(0, 14)
-                            .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                            .collect(Collectors.toList()),
-                        -2,
-                        (t, meta) -> t.casingTier = meta,
-                        t -> t.casingTier))
-                .addElement('C', ofBlock(sBlockCasings2, 5))
-                .addElement('D', ofBlock(sBlockCasingsTT, 0))
-                .addElement('E', ofBlock(sBlockCasingsTT, 1))
-                .addElement('F', ofBlock(sBlockCasingsTT, 2))
-                .addElement(
-                    'G',
-                    buildHatchAdder(AdvancedCircuitAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .addElement('H', ofBlock(sBlockCasingsTT, 7))
-                .addElement('I', ofBlock(sBlockCasingsTT, 8))
-                .addElement('J', ofBlock(blockCasings3Misc, 15))
-                .addElement('K', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<AdvancedCircuitAssemblyLine>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(FRF_Coil_1, 0))
+            .addElement(
+                'B',
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                    IntStream.range(0, 14)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -2,
+                    (t, meta) -> t.casingTier = meta,
+                    t -> t.casingTier))
+            .addElement('C', ofBlock(sBlockCasings2, 5))
+            .addElement('D', ofBlock(sBlockCasingsTT, 0))
+            .addElement('E', ofBlock(sBlockCasingsTT, 1))
+            .addElement('F', ofBlock(sBlockCasingsTT, 2))
+            .addElement(
+                'G',
+                buildHatchAdder(AdvancedCircuitAssemblyLine.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .addElement('H', ofBlock(sBlockCasingsTT, 7))
+            .addElement('I', ofBlock(sBlockCasingsTT, 8))
+            .addElement('J', ofBlock(blockCasings3Misc, 15))
+            .addElement('K', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .build();
     }
 
     @Override

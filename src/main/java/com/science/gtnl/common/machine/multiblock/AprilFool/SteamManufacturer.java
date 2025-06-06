@@ -50,7 +50,6 @@ public class SteamManufacturer extends SteamMultiMachineBase<SteamManufacturer> 
         + "iconsets/OVERLAY_MANUFACTURER_ACTIVE";
     public static Textures.BlockIcons.CustomIcon OVERLAY_MANUFACTURER_ACTIVE = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_MANUFACTURER_ACTIVE);
-    private static IStructureDefinition<SteamManufacturer> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_manufacturer";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SM_STRUCTURE_FILE_PATH);
@@ -73,41 +72,37 @@ public class SteamManufacturer extends SteamMultiMachineBase<SteamManufacturer> 
 
     @Override
     public IStructureDefinition<SteamManufacturer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamManufacturer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 26))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 28))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildSteamWirelessInput(SteamManufacturer.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamManufacturer.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamManufacturer.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamManufacturer.class)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                InputBus,
-                                SteamHatchElement.OutputBus_Steam,
-                                OutputBus)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(BlockLoader.MetaCasing, 30)))
-                .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
-                .addElement('E', ofFrame(Materials.Steel))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamManufacturer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 26))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 28))
+            .addElement(
+                'C',
+                ofChain(
+                    buildSteamWirelessInput(SteamManufacturer.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamManufacturer.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamManufacturer.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamManufacturer.class)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            InputBus,
+                            SteamHatchElement.OutputBus_Steam,
+                            OutputBus)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(BlockLoader.MetaCasing, 30)))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
+            .addElement('E', ofFrame(Materials.Steel))
+            .build();
     }
 
     @Override

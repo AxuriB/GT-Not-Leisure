@@ -40,7 +40,6 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
     implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<ElectricImplosionCompressor> STRUCTURE_DEFINITION = null;
     public static final String ELC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/electric_implosion_compressor";
     public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(0);
@@ -123,22 +122,19 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
 
     @Override
     public IStructureDefinition<ElectricImplosionCompressor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ElectricImplosionCompressor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement('B', ofBlock(sBlockCasings2, 15))
-                .addElement(
-                    'C',
-                    buildHatchAdder(ElectricImplosionCompressor.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
-                .addElement('D', ofFrame(Materials.TungstenSteel))
-                .addElement('E', Muffler.newAny(CASING_INDEX, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ElectricImplosionCompressor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('B', ofBlock(sBlockCasings2, 15))
+            .addElement(
+                'C',
+                buildHatchAdder(ElectricImplosionCompressor.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
+            .addElement('D', ofFrame(Materials.TungstenSteel))
+            .addElement('E', Muffler.newAny(CASING_INDEX, 1))
+            .build();
     }
 
     @Override

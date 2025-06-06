@@ -37,7 +37,6 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
     private static final int HORIZONTAL_OFF_SET = 14;
     private static final int VERTICAL_OFF_SET = 7;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<AetronPressor> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String AP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/aetron_pressor";
     private static final String[][] shape = StructureUtils.readStructureFromFile(AP_STRUCTURE_FILE_PATH);
@@ -106,29 +105,26 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
 
     @Override
     public IStructureDefinition<AetronPressor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<AetronPressor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasingsTT, 6))
-                .addElement('B', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
-                .addElement('C', ofBlock(sBlockCasingsTT, 0))
-                .addElement('D', ofBlock(sBlockCasings9, 14))
-                .addElement('E', ofBlock(BlockLoader.MetaCasing, 18))
-                .addElement('F', ofBlock(sBlockCasings9, 9))
-                .addElement(
-                    'G',
-                    buildHatchAdder(AetronPressor.class).atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
-                .addElement('H', ofBlock(sBlockCasings8, 10))
-                .addElement('I', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-                .addElement('J', ofBlock(sBlockCasings10, 12))
-                .addElement('K', ofFrame(Materials.Tritanium))
-                .addElement('L', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<AetronPressor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasingsTT, 6))
+            .addElement('B', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
+            .addElement('C', ofBlock(sBlockCasingsTT, 0))
+            .addElement('D', ofBlock(sBlockCasings9, 14))
+            .addElement('E', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('F', ofBlock(sBlockCasings9, 9))
+            .addElement(
+                'G',
+                buildHatchAdder(AetronPressor.class).atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+            .addElement('H', ofBlock(sBlockCasings8, 10))
+            .addElement('I', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .addElement('J', ofBlock(sBlockCasings10, 12))
+            .addElement('K', ofFrame(Materials.Tritanium))
+            .addElement('L', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .build();
     }
 
     @Override

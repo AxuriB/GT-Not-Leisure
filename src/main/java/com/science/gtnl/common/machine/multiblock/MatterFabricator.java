@@ -59,7 +59,6 @@ import tectech.thing.casing.BlockGTCasingsTT;
 public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MatterFabricator> STRUCTURE_DEFINITION = null;
     public static final String MF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/matter_fabricator";
     public static final int CASING_INDEX = BlockGTCasingsTT.textureOffset;
     public final int HORIZONTAL_OFF_SET = 4;
@@ -129,25 +128,22 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
     @Override
     public IStructureDefinition<MatterFabricator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MatterFabricator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('C', ofBlock(sBlockCasings1, 7))
-                .addElement('D', ofBlock(sBlockCasings1, 15))
-                .addElement('E', ofBlock(sBlockCasings3, 11))
-                .addElement('F', ofBlock(sBlockCasings8, 10))
-                .addElement(
-                    'G',
-                    buildHatchAdder(MatterFabricator.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 0))))
-                .addElement('H', ofFrame(Materials.Naquadria))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MatterFabricator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('C', ofBlock(sBlockCasings1, 7))
+            .addElement('D', ofBlock(sBlockCasings1, 15))
+            .addElement('E', ofBlock(sBlockCasings3, 11))
+            .addElement('F', ofBlock(sBlockCasings8, 10))
+            .addElement(
+                'G',
+                buildHatchAdder(MatterFabricator.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 0))))
+            .addElement('H', ofFrame(Materials.Naquadria))
+            .build();
     }
 
     @Override

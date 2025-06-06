@@ -85,7 +85,6 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String STRUCTURE_PIECE_TIER2 = "tier2";
-    public static IStructureDefinition<MeteorMiner> STRUCTURE_DEFINITION = null;
     public static final String MMO_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/meteor_miner_one";
     public static final String MMT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/meteor_miner_two";
     public static String[][] shape_t1 = StructureUtils.readStructureFromFile(MMO_STRUCTURE_FILE_PATH);
@@ -120,48 +119,44 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
 
     @Override
     public IStructureDefinition<MeteorMiner> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MeteorMiner>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape_t1))
-                .addShape(STRUCTURE_PIECE_TIER2, transpose(shape_t2))
-                .addElement('A', chainAllGlasses())
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 15))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 5))
-                .addElement('D', ofFrame(Materials.StainlessSteel))
-                .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
-                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
-                .addElement('G', ofBlock(BlockLoader.LaserBeacon, 0))
-                .addElement(
-                    'H',
-                    buildHatchAdder(MeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
-                        .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(MeteorMiner::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
-                .addElement(
-                    'I',
-                    buildHatchAdder(MeteorMiner.class)
-                        .atLeast(ImmutableMap.of(InputBus.withAdder(MeteorMiner::addInjector), 1))
-                        .casingIndex(TAE.getIndexFromPage(1, 10))
-                        .dot(2)
-                        .buildAndChain(
-                            onElementPass(MeteorMiner::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
-                .addElement('c', ofBlock(GregTechAPI.sBlockCasings4, 7))
-                .addElement('d', ofBlock(GregTechAPI.sBlockCasings8, 2))
-                .addElement('e', ofBlock(GregTechAPI.sBlockCasings8, 3))
-                .addElement('f', ofBlock(GregTechAPI.sBlockCasings9, 11))
-                .addElement('g', ofFrame(Materials.Neutronium))
-                .addElement('h', ofFrame(Materials.BlackPlutonium))
-                .addElement(
-                    'j',
-                    buildHatchAdder(MeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(2))
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(MeteorMiner::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 2))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MeteorMiner>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape_t1))
+            .addShape(STRUCTURE_PIECE_TIER2, transpose(shape_t2))
+            .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 15))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 5))
+            .addElement('D', ofFrame(Materials.StainlessSteel))
+            .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
+            .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
+            .addElement('G', ofBlock(BlockLoader.LaserBeacon, 0))
+            .addElement(
+                'H',
+                buildHatchAdder(MeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
+                    .casingIndex(TAE.getIndexFromPage(0, 10))
+                    .dot(1)
+                    .buildAndChain(
+                        onElementPass(MeteorMiner::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
+            .addElement(
+                'I',
+                buildHatchAdder(MeteorMiner.class)
+                    .atLeast(ImmutableMap.of(InputBus.withAdder(MeteorMiner::addInjector), 1))
+                    .casingIndex(TAE.getIndexFromPage(1, 10))
+                    .dot(2)
+                    .buildAndChain(
+                        onElementPass(MeteorMiner::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
+            .addElement('c', ofBlock(GregTechAPI.sBlockCasings4, 7))
+            .addElement('d', ofBlock(GregTechAPI.sBlockCasings8, 2))
+            .addElement('e', ofBlock(GregTechAPI.sBlockCasings8, 3))
+            .addElement('f', ofBlock(GregTechAPI.sBlockCasings9, 11))
+            .addElement('g', ofFrame(Materials.Neutronium))
+            .addElement('h', ofFrame(Materials.BlackPlutonium))
+            .addElement(
+                'j',
+                buildHatchAdder(MeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
+                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(2))
+                    .dot(1)
+                    .buildAndChain(onElementPass(MeteorMiner::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 2))))
+            .build();
     }
 
     @Override

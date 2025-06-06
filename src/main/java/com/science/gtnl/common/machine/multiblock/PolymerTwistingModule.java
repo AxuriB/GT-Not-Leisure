@@ -31,7 +31,6 @@ import gregtech.common.blocks.BlockCasings8;
 public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModule> {
 
     public static final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0);
-    private static IStructureDefinition<PolymerTwistingModule> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String PTM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/polymer_twisting_module";
     private static final String[][] shape = StructureUtils.readStructureFromFile(PTM_STRUCTURE_FILE_PATH);
@@ -74,27 +73,24 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
 
     @Override
     public IStructureDefinition<PolymerTwistingModule> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<PolymerTwistingModule>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(PolymerTwistingModule.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('C', ofFrame(Materials.CosmicNeutronium))
-                .addElement('D', ofBlock(sBlockCasings6, 10))
-                .addElement('E', ofBlock(sBlockCasings2, 5))
-                .addElement('F', ofBlock(sBlockCasings4, 12))
-                .addElement('G', ofBlock(sBlockCasingsTT, 0))
-                .addElement('H', ofBlock(sBlockCasings8, 1))
-                .addElement('I', ofBlock(sBlockGlass1, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<PolymerTwistingModule>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(PolymerTwistingModule.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('C', ofFrame(Materials.CosmicNeutronium))
+            .addElement('D', ofBlock(sBlockCasings6, 10))
+            .addElement('E', ofBlock(sBlockCasings2, 5))
+            .addElement('F', ofBlock(sBlockCasings4, 12))
+            .addElement('G', ofBlock(sBlockCasingsTT, 0))
+            .addElement('H', ofBlock(sBlockCasings8, 1))
+            .addElement('I', ofBlock(sBlockGlass1, 0))
+            .build();
     }
 
     @Override

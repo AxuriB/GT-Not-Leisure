@@ -35,7 +35,6 @@ import gregtech.api.util.OverclockCalculator;
 
 public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implements ISurvivalConstructable {
 
-    public static IStructureDefinition<ElementCopying> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/element_copying";
     public static String[][] shape = StructureUtils.readStructureFromFile(EC_STRUCTURE_FILE_PATH);
@@ -108,23 +107,20 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
 
     @Override
     public IStructureDefinition<ElementCopying> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ElementCopying>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 18))
-                .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement(
-                    'C',
-                    buildHatchAdder(ElementCopying.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
-                .addElement('D', ofBlock(sBlockCasingsTT, 6))
-                .addElement('E', ofBlock(sBlockCasingsTT, 7))
-                .addElement('F', ofBlock(sBlockCasingsTT, 8))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ElementCopying>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement(
+                'C',
+                buildHatchAdder(ElementCopying.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+            .addElement('D', ofBlock(sBlockCasingsTT, 6))
+            .addElement('E', ofBlock(sBlockCasingsTT, 7))
+            .addElement('F', ofBlock(sBlockCasingsTT, 8))
+            .build();
     }
 
     @Override

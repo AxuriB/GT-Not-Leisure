@@ -47,7 +47,6 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
     private static final int HORIZONTAL_OFF_SET = 16;
     private static final int VERTICAL_OFF_SET = 7;
     private static final int DEPTH_OFF_SET = 1;
-    private static IStructureDefinition<HighEnergyLaserLathe> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String HELL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/high_energy_laser_lathe"; // 文件路径
@@ -120,33 +119,30 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
 
     @Override
     public IStructureDefinition<HighEnergyLaserLathe> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<HighEnergyLaserLathe>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('B', ofBlock(sBlockCasingsTT, 0))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('D', ofBlock(sBlockCasings10, 6))
-                .addElement('E', ofBlock(sBlockGem2, 11))
-                .addElement(
-                    'F',
-                    buildHatchAdder(HighEnergyLaserLathe.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 7))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .addElement('G', ofBlock(sBlockCasings8, 12))
-                .addElement('H', ofBlock(BlockLoader.MetaCasing, 6))
-                .addElement('I', ofBlock(sBlockCasingsTT, 6))
-                .addElement('J', ofBlock(sBlockCasingsTT, 4))
-                .addElement('K', ofBlock(sBlockCasings10, 1))
-                .addElement('L', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('M', ofBlock(sBlockCasings10, 7))
-                .addElement('N', ofBlock(sBlockCasings3, 11))
-                .addElement('O', ofBlock(sBlockGlass1, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<HighEnergyLaserLathe>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('B', ofBlock(sBlockCasingsTT, 0))
+            .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('D', ofBlock(sBlockCasings10, 6))
+            .addElement('E', ofBlock(sBlockGem2, 11))
+            .addElement(
+                'F',
+                buildHatchAdder(HighEnergyLaserLathe.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 7))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('G', ofBlock(sBlockCasings8, 12))
+            .addElement('H', ofBlock(BlockLoader.MetaCasing, 6))
+            .addElement('I', ofBlock(sBlockCasingsTT, 6))
+            .addElement('J', ofBlock(sBlockCasingsTT, 4))
+            .addElement('K', ofBlock(sBlockCasings10, 1))
+            .addElement('L', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('M', ofBlock(sBlockCasings10, 7))
+            .addElement('N', ofBlock(sBlockCasings3, 11))
+            .addElement('O', ofBlock(sBlockGlass1, 1))
+            .build();
     }
 
     @Override

@@ -36,7 +36,6 @@ import gregtech.common.blocks.BlockCasings8;
 public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransformer> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MolecularTransformer> STRUCTURE_DEFINITION = null;
     public static final String MT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/molecular_transformer";
     public static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(0);
     public final int HORIZONTAL_OFF_SET = 4;
@@ -106,24 +105,21 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
 
     @Override
     public IStructureDefinition<MolecularTransformer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MolecularTransformer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 8))
-                .addElement('C', ofBlock(sBlockCasings2, 0))
-                .addElement('D', ofBlock(sBlockCasings2, 14))
-                .addElement('E', ofBlock(sBlockCasings4, 0))
-                .addElement(
-                    'F',
-                    buildHatchAdder(MolecularTransformer.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
-                .addElement('G', ofFrame(Materials.StainlessSteel))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MolecularTransformer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement('C', ofBlock(sBlockCasings2, 0))
+            .addElement('D', ofBlock(sBlockCasings2, 14))
+            .addElement('E', ofBlock(sBlockCasings4, 0))
+            .addElement(
+                'F',
+                buildHatchAdder(MolecularTransformer.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
+            .addElement('G', ofFrame(Materials.StainlessSteel))
+            .build();
     }
 
     @Override

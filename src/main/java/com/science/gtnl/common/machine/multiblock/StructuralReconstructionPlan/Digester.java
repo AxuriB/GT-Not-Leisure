@@ -60,7 +60,6 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
     private int mHeatingCapacity = 0;
     private HeatingCoilLevel heatLevel;
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<Digester> STRUCTURE_DEFINITION = null;
     public static final String D_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/digester";
     public final int HORIZONTAL_OFF_SET = 3;
     public final int VERTICAL_OFF_SET = 3;
@@ -139,21 +138,18 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
 
     @Override
     public IStructureDefinition<Digester> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<Digester>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings1, 11))
-                .addElement(
-                    'B',
-                    buildHatchAdder(Digester.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
-                .addElement('C', ofBlock(sBlockCasings4, 1))
-                .addElement('D', withChannel("coil", ofCoil(Digester::setCoilLevel, Digester::getCoilLevel)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<Digester>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings1, 11))
+            .addElement(
+                'B',
+                buildHatchAdder(Digester.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
+            .addElement('C', ofBlock(sBlockCasings4, 1))
+            .addElement('D', withChannel("coil", ofCoil(Digester::setCoilLevel, Digester::getCoilLevel)))
+            .build();
     }
 
     @Override

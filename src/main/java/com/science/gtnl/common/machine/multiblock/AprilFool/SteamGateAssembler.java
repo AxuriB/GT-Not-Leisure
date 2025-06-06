@@ -45,7 +45,6 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_STEAM_GATE_ASSEMBLER = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_FRONT_STEAM_GATE_ASSEMBLER);
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<SteamGateAssembler> STRUCTURE_DEFINITION = null;
     private static final String SGA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_gate_assembler"; // 文件路径
     private static final String[][] shape = StructureUtils.readStructureFromFile(SGA_STRUCTURE_FILE_PATH);
     public static final int HORIZONTAL_OFF_SET = 10;
@@ -166,68 +165,63 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
 
     @Override
     public IStructureDefinition<SteamGateAssembler> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamGateAssembler>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildSteamWirelessInput(SteamGateAssembler.class)
-                            .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamGateAssembler.class)
-                            .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamGateAssembler.class)
-                            .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamGateAssembler.class)
-                            .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
-                            .dot(1)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                SteamHatchElement.OutputBus_Steam,
-                                InputBus,
-                                OutputBus)
-                            .buildAndChain(
-                                onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings1, 10)))))
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildSteamWirelessInput(SteamGateAssembler.class)
-                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamGateAssembler.class)
-                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamGateAssembler.class)
-                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamGateAssembler.class)
-                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                            .dot(1)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                SteamHatchElement.OutputBus_Steam,
-                                InputBus,
-                                OutputBus)
-                            .buildAndChain(
-                                onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 2))
-                .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
-                .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))
-                .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 13))
-                .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 13))
-                .addElement('H', ofBlock(GregTechAPI.sBlockCasings3, 14))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamGateAssembler>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamWirelessInput(SteamGateAssembler.class)
+                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamGateAssembler.class)
+                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamGateAssembler.class)
+                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamGateAssembler.class)
+                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .dot(1)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            SteamHatchElement.OutputBus_Steam,
+                            InputBus,
+                            OutputBus)
+                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings1, 10)))))
+            .addElement(
+                'B',
+                ofChain(
+                    buildSteamWirelessInput(SteamGateAssembler.class)
+                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamGateAssembler.class)
+                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamGateAssembler.class)
+                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamGateAssembler.class)
+                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .dot(1)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            SteamHatchElement.OutputBus_Steam,
+                            InputBus,
+                            OutputBus)
+                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 2))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
+            .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))
+            .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 13))
+            .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 13))
+            .addElement('H', ofBlock(GregTechAPI.sBlockCasings3, 14))
+            .build();
     }
 
     @Override

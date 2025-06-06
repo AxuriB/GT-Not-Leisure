@@ -72,7 +72,6 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
     public int horizontalOffset = 2;
     public int verticalOffset = 3;
     public int depthOffset = 0;
-    public static IStructureDefinition<ProcessingArray> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String PA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/processing_array";
     public static String[][] shape = StructureUtils.readStructureFromFile(PA_STRUCTURE_FILE_PATH);
@@ -315,25 +314,20 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public IStructureDefinition<ProcessingArray> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ProcessingArray>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(ProcessingArray.class)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 2))))
-                .addElement('B', ofBlock(sBlockCasings2, 14))
-                .addElement(
-                    'C',
-                    withChannel("coil", ofCoil(ProcessingArray::setCoilLevel, ProcessingArray::getCoilLevel)))
-                .addElement('D', ofFrame(Materials.Titanium))
-                .addElement('E', Muffler.newAny(CASING_INDEX, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ProcessingArray>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(ProcessingArray.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 2))))
+            .addElement('B', ofBlock(sBlockCasings2, 14))
+            .addElement('C', withChannel("coil", ofCoil(ProcessingArray::setCoilLevel, ProcessingArray::getCoilLevel)))
+            .addElement('D', ofFrame(Materials.Titanium))
+            .addElement('E', Muffler.newAny(CASING_INDEX, 1))
+            .build();
     }
 
     @Override

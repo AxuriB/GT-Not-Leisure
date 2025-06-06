@@ -59,7 +59,6 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
     public static Textures.BlockIcons.CustomIcon OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW);
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MegaSteamCompressor> STRUCTURE_DEFINITION = null;
     private static final String SMC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_mega_compressor"; // 文件路径
     private static final String[][] shape = StructureUtils.readStructureFromFile(SMC_STRUCTURE_FILE_PATH);
     public static final int HORIZONTAL_OFF_SET = 17;
@@ -86,38 +85,34 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
 
     @Override
     public IStructureDefinition<MegaSteamCompressor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MegaSteamCompressor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses())
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildSteamWirelessInput(MegaSteamCompressor.class)
-                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(MegaSteamCompressor.class)
-                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(MegaSteamCompressor.class)
-                            .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                            .dot(1)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                SteamHatchElement.OutputBus_Steam,
-                                InputBus,
-                                OutputBus,
-                                InputHatch,
-                                OutputHatch)
-                            .buildAndChain(
-                                onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, 10))
-                .addElement('D', ofFrame(Materials.Steel))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MegaSteamCompressor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses())
+            .addElement(
+                'B',
+                ofChain(
+                    buildSteamWirelessInput(MegaSteamCompressor.class)
+                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(MegaSteamCompressor.class)
+                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(MegaSteamCompressor.class)
+                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .dot(1)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            SteamHatchElement.OutputBus_Steam,
+                            InputBus,
+                            OutputBus,
+                            InputHatch,
+                            OutputHatch)
+                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, 10))
+            .addElement('D', ofFrame(Materials.Steel))
+            .build();
     }
 
     @Override

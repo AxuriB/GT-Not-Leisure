@@ -21,6 +21,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.RecipeRegister;
@@ -55,7 +56,6 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<SteamCracking> STRUCTURE_DEFINITION = null;
     private static final String LSCr_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_cracking"; // 文件路径
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSCr_STRUCTURE_FILE_PATH);
 
@@ -91,61 +91,61 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
 
     @Override
     public IStructureDefinition<SteamCracking> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamCracking>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildSteamWirelessInput(SteamCracking.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamCracking.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamCracking.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamCracking.class).casingIndex(getCasingTextureID())
-                            .dot(1)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                SteamHatchElement.OutputBus_Steam,
-                                InputBus,
-                                OutputBus,
-                                InputHatch,
-                                OutputHatch)
-                            .buildAndChain(
-                                onElementPass(
-                                    x -> ++x.tCountCasing,
-                                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                                        ofBlocksTiered(
-                                            SteamCracking::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing))))))
-                .addElement(
-                    'B',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            SteamCracking::getTierFireboxCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
-                            -1,
-                            (t, m) -> t.tierFireboxCasing = m,
-                            t -> t.tierFireboxCasing)))
-                .addElement(
-                    'C',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            SteamCracking::getTierPlatedCasing,
-                            ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
-                            -1,
-                            (t, m) -> t.tierPlatedCasing = m,
-                            t -> t.tierPlatedCasing)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamCracking>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamWirelessInput(SteamCracking.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamCracking.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamCracking.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamCracking.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            SteamHatchElement.OutputBus_Steam,
+                            InputBus,
+                            OutputBus,
+                            InputHatch,
+                            OutputHatch)
+                        .buildAndChain(
+                            onElementPass(
+                                x -> ++x.tCountCasing,
+                                StructureUtility.withChannel(
+                                    "machine_casing",
+                                    ofBlocksTiered(
+                                        SteamCracking::getTierMachineCasing,
+                                        ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                        -1,
+                                        (t, m) -> t.tierMachineCasing = m,
+                                        t -> t.tierMachineCasing))))))
+            .addElement(
+                'B',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        SteamCracking::getTierFireboxCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
+                        -1,
+                        (t, m) -> t.tierFireboxCasing = m,
+                        t -> t.tierFireboxCasing)))
+            .addElement(
+                'C',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        SteamCracking::getTierPlatedCasing,
+                        ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
+                        -1,
+                        (t, m) -> t.tierPlatedCasing = m,
+                        t -> t.tierPlatedCasing)))
+            .build();
     }
 
     @Override

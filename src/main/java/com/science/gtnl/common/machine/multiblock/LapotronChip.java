@@ -49,7 +49,6 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
 
     public int tCountCasing = 0;
 
-    private static IStructureDefinition<LapotronChip> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/lapotron_chip"; // 文件路径
     public static String[][] shape = StructureUtils.readStructureFromFile(LC_STRUCTURE_FILE_PATH);
@@ -122,105 +121,102 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
 
     @Override
     public IStructureDefinition<LapotronChip> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LapotronChip>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(Blocks.iron_block))
-                .addElement(
-                    'B',
-                    ExtraUtilities.isModLoaded()
-                        ? withChannel(
-                            "tierLapisCaelestis",
-                            ofBlocksTiered(
-                                LapotronChip::tierLapisCaelestis,
-                                ImmutableList.of(
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 0),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 1),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 2),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 3),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 4),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 5),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 6),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 7),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 8),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 9),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 10),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 11),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 12),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 13),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 14),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 15)),
-                                -1,
-                                (t, m) -> t.tierLapisCaelestis = m,
-                                t -> t.tierLapisCaelestis))
-                        : isAir())
-                .addElement('C', ofBlock(sBlockCasings9, 7))
-                .addElement('D', ofBlock(sBlockCasings1, 11))
-                .addElement(
-                    'E',
-                    buildHatchAdder(LapotronChip.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Energy.or(ExoticEnergy))
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('F', ofBlock(BlockLoader.MetaBlockGlow, 0))
-                .addElement(
-                    'G',
-                    withChannel(
-                        "tierGlass1",
+        return StructureDefinition.<LapotronChip>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(Blocks.iron_block))
+            .addElement(
+                'B',
+                ExtraUtilities.isModLoaded()
+                    ? withChannel(
+                        "tierLapisCaelestis",
                         ofBlocksTiered(
-                            LapotronChip::tierGlass1,
+                            LapotronChip::tierLapisCaelestis,
                             ImmutableList.of(
-                                Pair.of(Blocks.stained_glass, 0),
-                                Pair.of(Blocks.stained_glass, 1),
-                                Pair.of(Blocks.stained_glass, 2),
-                                Pair.of(Blocks.stained_glass, 3),
-                                Pair.of(Blocks.stained_glass, 4),
-                                Pair.of(Blocks.stained_glass, 5),
-                                Pair.of(Blocks.stained_glass, 6),
-                                Pair.of(Blocks.stained_glass, 7),
-                                Pair.of(Blocks.stained_glass, 8),
-                                Pair.of(Blocks.stained_glass, 9),
-                                Pair.of(Blocks.stained_glass, 10),
-                                Pair.of(Blocks.stained_glass, 11),
-                                Pair.of(Blocks.stained_glass, 12),
-                                Pair.of(Blocks.stained_glass, 13),
-                                Pair.of(Blocks.stained_glass, 14),
-                                Pair.of(Blocks.stained_glass, 15)),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 0),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 1),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 2),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 3),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 4),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 5),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 6),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 7),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 8),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 9),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 10),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 11),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 12),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 13),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 14),
+                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 15)),
                             -1,
-                            (t, m) -> t.tierGlass1 = m,
-                            t -> t.tierGlass1)))
-                .addElement(
-                    'H',
-                    withChannel(
-                        "tierGlass2",
-                        ofBlocksTiered(
-                            LapotronChip::tierGlass2,
-                            ImmutableList.of(
-                                Pair.of(Blocks.stained_glass, 0),
-                                Pair.of(Blocks.stained_glass, 1),
-                                Pair.of(Blocks.stained_glass, 2),
-                                Pair.of(Blocks.stained_glass, 3),
-                                Pair.of(Blocks.stained_glass, 4),
-                                Pair.of(Blocks.stained_glass, 5),
-                                Pair.of(Blocks.stained_glass, 6),
-                                Pair.of(Blocks.stained_glass, 7),
-                                Pair.of(Blocks.stained_glass, 8),
-                                Pair.of(Blocks.stained_glass, 9),
-                                Pair.of(Blocks.stained_glass, 10),
-                                Pair.of(Blocks.stained_glass, 11),
-                                Pair.of(Blocks.stained_glass, 12),
-                                Pair.of(Blocks.stained_glass, 13),
-                                Pair.of(Blocks.stained_glass, 14),
-                                Pair.of(Blocks.stained_glass, 15)),
-                            -1,
-                            (t, m) -> t.tierGlass2 = m,
-                            t -> t.tierGlass2)))
-                .addElement('I', ofBlock(sBlockCasings1, 15))
-                .addElement('K', ofBlockAnyMeta(Blocks.beacon))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+                            (t, m) -> t.tierLapisCaelestis = m,
+                            t -> t.tierLapisCaelestis))
+                    : isAir())
+            .addElement('C', ofBlock(sBlockCasings9, 7))
+            .addElement('D', ofBlock(sBlockCasings1, 11))
+            .addElement(
+                'E',
+                buildHatchAdder(LapotronChip.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Energy.or(ExoticEnergy))
+                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('F', ofBlock(BlockLoader.MetaBlockGlow, 0))
+            .addElement(
+                'G',
+                withChannel(
+                    "tierGlass1",
+                    ofBlocksTiered(
+                        LapotronChip::tierGlass1,
+                        ImmutableList.of(
+                            Pair.of(Blocks.stained_glass, 0),
+                            Pair.of(Blocks.stained_glass, 1),
+                            Pair.of(Blocks.stained_glass, 2),
+                            Pair.of(Blocks.stained_glass, 3),
+                            Pair.of(Blocks.stained_glass, 4),
+                            Pair.of(Blocks.stained_glass, 5),
+                            Pair.of(Blocks.stained_glass, 6),
+                            Pair.of(Blocks.stained_glass, 7),
+                            Pair.of(Blocks.stained_glass, 8),
+                            Pair.of(Blocks.stained_glass, 9),
+                            Pair.of(Blocks.stained_glass, 10),
+                            Pair.of(Blocks.stained_glass, 11),
+                            Pair.of(Blocks.stained_glass, 12),
+                            Pair.of(Blocks.stained_glass, 13),
+                            Pair.of(Blocks.stained_glass, 14),
+                            Pair.of(Blocks.stained_glass, 15)),
+                        -1,
+                        (t, m) -> t.tierGlass1 = m,
+                        t -> t.tierGlass1)))
+            .addElement(
+                'H',
+                withChannel(
+                    "tierGlass2",
+                    ofBlocksTiered(
+                        LapotronChip::tierGlass2,
+                        ImmutableList.of(
+                            Pair.of(Blocks.stained_glass, 0),
+                            Pair.of(Blocks.stained_glass, 1),
+                            Pair.of(Blocks.stained_glass, 2),
+                            Pair.of(Blocks.stained_glass, 3),
+                            Pair.of(Blocks.stained_glass, 4),
+                            Pair.of(Blocks.stained_glass, 5),
+                            Pair.of(Blocks.stained_glass, 6),
+                            Pair.of(Blocks.stained_glass, 7),
+                            Pair.of(Blocks.stained_glass, 8),
+                            Pair.of(Blocks.stained_glass, 9),
+                            Pair.of(Blocks.stained_glass, 10),
+                            Pair.of(Blocks.stained_glass, 11),
+                            Pair.of(Blocks.stained_glass, 12),
+                            Pair.of(Blocks.stained_glass, 13),
+                            Pair.of(Blocks.stained_glass, 14),
+                            Pair.of(Blocks.stained_glass, 15)),
+                        -1,
+                        (t, m) -> t.tierGlass2 = m,
+                        t -> t.tierGlass2)))
+            .addElement('I', ofBlock(sBlockCasings1, 15))
+            .addElement('K', ofBlockAnyMeta(Blocks.beacon))
+            .build();
     }
 
     public static int tierLapisCaelestis(Block block, int meta) {

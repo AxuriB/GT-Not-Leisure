@@ -46,7 +46,6 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
     implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<DraconicFusionCrafting> STRUCTURE_DEFINITION = null;
     public static final String DFC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/draconic_fusion_crafting";
     public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(12);
     public final int HORIZONTAL_OFF_SET = 14;
@@ -120,37 +119,34 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
     @Override
     public IStructureDefinition<DraconicFusionCrafting> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<DraconicFusionCrafting>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings9, 11))
-                .addElement('B', ofBlock(com.science.gtnl.loader.BlockLoader.MetaCasing, 14))
-                .addElement(
-                    'C',
-                    buildHatchAdder(DraconicFusionCrafting.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 12))))
-                .addElement(
-                    'D',
-                    withChannel(
-                        "tiercasing",
-                        ofBlocksTiered(
-                            DraconicFusionCrafting::getTierCasingFromBlock,
-                            ImmutableList.of(
-                                Pair.of(BlockLoader.defcCasingBlock, 8),
-                                Pair.of(BlockLoader.defcCasingBlock, 9),
-                                Pair.of(BlockLoader.defcCasingBlock, 10),
-                                Pair.of(BlockLoader.defcCasingBlock, 11),
-                                Pair.of(BlockLoader.defcCasingBlock, 12),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2)),
-                            -1,
-                            (t, m) -> t.tierCasing = m,
-                            t -> t.tierCasing)))
-                .addElement('E', ofBlock(sBlockGlass1, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<DraconicFusionCrafting>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings9, 11))
+            .addElement('B', ofBlock(com.science.gtnl.loader.BlockLoader.MetaCasing, 14))
+            .addElement(
+                'C',
+                buildHatchAdder(DraconicFusionCrafting.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 12))))
+            .addElement(
+                'D',
+                withChannel(
+                    "tiercasing",
+                    ofBlocksTiered(
+                        DraconicFusionCrafting::getTierCasingFromBlock,
+                        ImmutableList.of(
+                            Pair.of(BlockLoader.defcCasingBlock, 8),
+                            Pair.of(BlockLoader.defcCasingBlock, 9),
+                            Pair.of(BlockLoader.defcCasingBlock, 10),
+                            Pair.of(BlockLoader.defcCasingBlock, 11),
+                            Pair.of(BlockLoader.defcCasingBlock, 12),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2)),
+                        -1,
+                        (t, m) -> t.tierCasing = m,
+                        t -> t.tierCasing)))
+            .addElement('E', ofBlock(sBlockGlass1, 1))
+            .build();
     }
 
     @Nullable

@@ -37,7 +37,6 @@ import gregtech.common.blocks.BlockCasings9;
 public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeBioLab> STRUCTURE_DEFINITION = null;
     private static final String LBL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_bio_lab";
     private final int HORIZONTAL_OFF_SET = 3;
     private final int VERTICAL_OFF_SET = 2;
@@ -111,29 +110,26 @@ public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISu
 
     @Override
     public IStructureDefinition<LargeBioLab> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeBioLab>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings10, 3))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargeBioLab.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            ParallelCon)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
-                .addElement('C', ofBlock(sBlockCasingsTT, 0))
-                .addElement('D', ofFrame(Materials.CosmicNeutronium))
-                .addElement('E', ofBlock(blockSpecialMultiCasings2, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeBioLab>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings10, 3))
+            .addElement(
+                'B',
+                buildHatchAdder(LargeBioLab.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(
+                        InputHatch,
+                        OutputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
+            .addElement('C', ofBlock(sBlockCasingsTT, 0))
+            .addElement('D', ofFrame(Materials.CosmicNeutronium))
+            .addElement('E', ofBlock(blockSpecialMultiCasings2, 2))
+            .build();
     }
 
     @Override

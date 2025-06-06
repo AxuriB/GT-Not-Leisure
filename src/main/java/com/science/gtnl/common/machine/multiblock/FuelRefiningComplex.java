@@ -48,7 +48,6 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
     private HeatingCoilLevel mCoilLevel;
     private int mHeatingCapacity = 0;
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<FuelRefiningComplex> STRUCTURE_DEFINITION = null;
     public static final String FRC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/fuel_refining_complex";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     public final int HORIZONTAL_OFF_SET = 8;
@@ -128,31 +127,28 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
 
     @Override
     public IStructureDefinition<FuelRefiningComplex> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<FuelRefiningComplex>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('C', ofBlock(sBlockCasings2, 5))
-                .addElement('D', ofBlock(sBlockCasings4, 0))
-                .addElement('E', ofBlock(sBlockCasings4, 1))
-                .addElement(
-                    'F',
-                    withChannel("coil", ofCoil(FuelRefiningComplex::setCoilLevel, FuelRefiningComplex::getCoilLevel)))
-                .addElement('G', ofBlock(sBlockCasings6, 6))
-                .addElement('H', ofBlock(sBlockCasings8, 0))
-                .addElement('I', ofBlock(sBlockCasings8, 1))
-                .addElement('J', ofFrame(Materials.TungstenSteel))
-                .addElement('K', ofBlock(blockCasings2Misc, 4))
-                .addElement(
-                    'L',
-                    buildHatchAdder(FuelRefiningComplex.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<FuelRefiningComplex>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('C', ofBlock(sBlockCasings2, 5))
+            .addElement('D', ofBlock(sBlockCasings4, 0))
+            .addElement('E', ofBlock(sBlockCasings4, 1))
+            .addElement(
+                'F',
+                withChannel("coil", ofCoil(FuelRefiningComplex::setCoilLevel, FuelRefiningComplex::getCoilLevel)))
+            .addElement('G', ofBlock(sBlockCasings6, 6))
+            .addElement('H', ofBlock(sBlockCasings8, 0))
+            .addElement('I', ofBlock(sBlockCasings8, 1))
+            .addElement('J', ofFrame(Materials.TungstenSteel))
+            .addElement('K', ofBlock(blockCasings2Misc, 4))
+            .addElement(
+                'L',
+                buildHatchAdder(FuelRefiningComplex.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
+            .build();
     }
 
     @Override

@@ -48,7 +48,6 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
     private static final int HORIZONTAL_OFF_SET = 14;
     private static final int VERTICAL_OFF_SET = 8;
     private static final int DEPTH_OFF_SET = 2;
-    private static IStructureDefinition<NanitesCircuitAssemblyFactory> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String NCAF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/nanites_circuit_assembly_factory";
@@ -119,38 +118,35 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
 
     @Override
     public IStructureDefinition<NanitesCircuitAssemblyFactory> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<NanitesCircuitAssemblyFactory>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings1, 13))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 18))
-                .addElement('C', ofBlock(sBlockCasingsSE, 0))
-                .addElement('D', ofBlock(ModBlocks.blockCasings5Misc, 12))
-                .addElement(
-                    'E',
-                    buildHatchAdder(NanitesCircuitAssemblyFactory.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('F', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement(
-                    'G',
-                    ofBlockAnyMeta(
-                        Block.getBlockFromItem(
-                            MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
-                                .getItem())))
-                .addElement(
-                    'H',
-                    ofBlockAnyMeta(
-                        Block.getBlockFromItem(
-                            MaterialsAlloy.PIKYONIUM.getFrameBox(1)
-                                .getItem())))
-                .addElement('I', ofFrame(Materials.Quantium))
-                .addElement('J', ofBlock(BlockLoader.MetaCasing, 4))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<NanitesCircuitAssemblyFactory>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings1, 13))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('C', ofBlock(sBlockCasingsSE, 0))
+            .addElement('D', ofBlock(ModBlocks.blockCasings5Misc, 12))
+            .addElement(
+                'E',
+                buildHatchAdder(NanitesCircuitAssemblyFactory.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('F', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement(
+                'G',
+                ofBlockAnyMeta(
+                    Block.getBlockFromItem(
+                        MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
+                            .getItem())))
+            .addElement(
+                'H',
+                ofBlockAnyMeta(
+                    Block.getBlockFromItem(
+                        MaterialsAlloy.PIKYONIUM.getFrameBox(1)
+                            .getItem())))
+            .addElement('I', ofFrame(Materials.Quantium))
+            .addElement('J', ofBlock(BlockLoader.MetaCasing, 4))
+            .build();
     }
 
     @Override

@@ -44,7 +44,6 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor> implements ISurvivalConstructable {
 
-    private static IStructureDefinition<SteamFusionReactor> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SFR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_fusion_reactor";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SFR_STRUCTURE_FILE_PATH);
@@ -67,35 +66,31 @@ public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor
 
     @Override
     public IStructureDefinition<SteamFusionReactor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamFusionReactor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 26))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 29))
-                .addElement('C', chainAllGlasses())
-                .addElement(
-                    'D',
-                    ofChain(
-                        buildSteamWirelessInput(SteamFusionReactor.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamFusionReactor.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamFusionReactor.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamFusionReactor.class).atLeast(InputHatch, OutputHatch)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(BlockLoader.MetaCasing, 29)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamFusionReactor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 26))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 29))
+            .addElement('C', chainAllGlasses())
+            .addElement(
+                'D',
+                ofChain(
+                    buildSteamWirelessInput(SteamFusionReactor.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamFusionReactor.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamFusionReactor.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamFusionReactor.class).atLeast(InputHatch, OutputHatch)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(BlockLoader.MetaCasing, 29)))
+            .build();
     }
 
     @Override

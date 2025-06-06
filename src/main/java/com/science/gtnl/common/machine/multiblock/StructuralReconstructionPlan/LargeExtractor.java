@@ -51,7 +51,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeExtractor extends GTMMultiMachineBase<LargeExtractor> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeExtractor> STRUCTURE_DEFINITION = null;
     public static final String LC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_extractor";
     private static final int MACHINEMODE_EXTRA = 0;
     private static final int MACHINEMODE_FLUID = 1;
@@ -132,19 +131,16 @@ public class LargeExtractor extends GTMMultiMachineBase<LargeExtractor> implemen
 
     @Override
     public IStructureDefinition<LargeExtractor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeExtractor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 13))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargeExtractor.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 4))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeExtractor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 13))
+            .addElement(
+                'B',
+                buildHatchAdder(LargeExtractor.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 4))))
+            .build();
     }
 
     @Override

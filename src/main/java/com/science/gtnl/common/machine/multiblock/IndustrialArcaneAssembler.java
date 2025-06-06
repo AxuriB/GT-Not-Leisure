@@ -51,7 +51,6 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
     protected static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(12);
     private static final int ShapedArcaneCrafting = 0;
     private static final int InfusionCrafting = 1;
-    private static IStructureDefinition<IndustrialArcaneAssembler> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LAA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/industrial_arcane_assembler";
@@ -159,25 +158,22 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
 
     @Override
     public IStructureDefinition<IndustrialArcaneAssembler> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<IndustrialArcaneAssembler>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(IndustrialArcaneAssembler.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 12))))
-                .addElement('B', ofBlock(sBlockCasings1, 13))
-                .addElement('C', ofBlock(sBlockCasings10, 11))
-                .addElement('D', ofBlock(sBlockCasings9, 11))
-                .addElement('E', ofBlock(bw_realglas, 15))
-                .addElement('F', ofBlock(sBlockGlass1, 2))
-                .addElement('G', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-                .addElement('I', ofBlockAnyMeta(Blocks.beacon))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<IndustrialArcaneAssembler>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(IndustrialArcaneAssembler.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 12))))
+            .addElement('B', ofBlock(sBlockCasings1, 13))
+            .addElement('C', ofBlock(sBlockCasings10, 11))
+            .addElement('D', ofBlock(sBlockCasings9, 11))
+            .addElement('E', ofBlock(bw_realglas, 15))
+            .addElement('F', ofBlock(sBlockGlass1, 2))
+            .addElement('G', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .addElement('I', ofBlockAnyMeta(Blocks.beacon))
+            .build();
     }
 
     @Override

@@ -68,7 +68,6 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
     public final int HORIZONTAL_OFF_SET = 3;
     public final int VERTICAL_OFF_SET = 3;
     public final int DEPTH_OFF_SET = 1;
-    public static IStructureDefinition<BlazeBlastFurnace> STRUCTURE_DEFINITION = null;
     private int mHeatingCapacity = 0;
     private HeatingCoilLevel mCoilLevel;
     public int multiTier = 1;
@@ -120,42 +119,39 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
 
     @Override
     public IStructureDefinition<BlazeBlastFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<BlazeBlastFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 15))
-                .addElement(
-                    'B',
-                    withChannel("coil", ofCoil(BlazeBlastFurnace::setCoilLevel, BlazeBlastFurnace::getCoilLevel)))
-                .addElement(
-                    'C',
+        return StructureDefinition.<BlazeBlastFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 15))
+            .addElement(
+                'B',
+                withChannel("coil", ofCoil(BlazeBlastFurnace::setCoilLevel, BlazeBlastFurnace::getCoilLevel)))
+            .addElement(
+                'C',
+                buildHatchAdder(BlazeBlastFurnace.class)
+                    .atLeast(
+                        OutputHatch.withAdder(BlazeBlastFurnace::addOutputHatchToTopList)
+                            .withCount(t -> t.mPollutionOutputHatches.size()))
+                    .casingIndex(TAE.getIndexFromPage(2, 11))
+                    .dot(1)
+                    .buildAndChain(ModBlocks.blockCasings3Misc, 11))
+            .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 14))
+            .addElement(
+                'E',
+                ofChain(
                     buildHatchAdder(BlazeBlastFurnace.class)
-                        .atLeast(
-                            OutputHatch.withAdder(BlazeBlastFurnace::addOutputHatchToTopList)
-                                .withCount(t -> t.mPollutionOutputHatches.size()))
-                        .casingIndex(TAE.getIndexFromPage(2, 11))
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
                         .dot(1)
-                        .buildAndChain(ModBlocks.blockCasings3Misc, 11))
-                .addElement('D', ofBlock(ModBlocks.blockCasingsMisc, 14))
-                .addElement(
-                    'E',
-                    ofChain(
-                        buildHatchAdder(BlazeBlastFurnace.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
-                            .dot(1)
-                            .casingIndex(CASING_INDEX)
-                            .build(),
-                        onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15)),
-                        buildHatchAdder(BlazeBlastFurnace.class).adder(BlazeBlastFurnace::addFluidBlazeInputHatch)
-                            .hatchId(21503)
-                            .shouldReject(x -> !x.FluidBlazeInputHatch.isEmpty())
-                            .casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .build()))
-                .addElement('F', Muffler.newAny(TAE.getIndexFromPage(2, 11), 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+                        .casingIndex(CASING_INDEX)
+                        .build(),
+                    onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15)),
+                    buildHatchAdder(BlazeBlastFurnace.class).adder(BlazeBlastFurnace::addFluidBlazeInputHatch)
+                        .hatchId(21503)
+                        .shouldReject(x -> !x.FluidBlazeInputHatch.isEmpty())
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .build()))
+            .addElement('F', Muffler.newAny(TAE.getIndexFromPage(2, 11), 1))
+            .build();
     }
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {

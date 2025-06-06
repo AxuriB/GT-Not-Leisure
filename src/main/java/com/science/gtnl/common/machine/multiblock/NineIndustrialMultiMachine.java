@@ -75,7 +75,6 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
     private final NineIndustrialMultiMachineManager modeManager = new NineIndustrialMultiMachineManager();
     public static final String[] aToolTipNames = new String[108];
     protected static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(12);
-    private static IStructureDefinition<NineIndustrialMultiMachine> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String NIMM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/nine_industrial_multi_machine";
@@ -153,33 +152,30 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
 
     @Override
     public IStructureDefinition<NineIndustrialMultiMachine> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<NineIndustrialMultiMachine>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(bw_realglas2, 0))
-                .addElement('B', ofBlock(FRF_Coil_4, 0))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('D', ofBlock(defcCasingBlock, 12))
-                .addElement(
-                    'E',
-                    buildHatchAdder(NineIndustrialMultiMachine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++this.tCountCasing, ofBlock(sBlockCasings1, 12))))
-                .addElement('F', ofBlock(sBlockCasings1, 13))
-                .addElement('G', ofBlock(sBlockCasings1, 14))
-                .addElement('H', ofBlock(sBlockCasings10, 6))
-                .addElement('I', ofBlock(sBlockCasings10, 7))
-                .addElement('J', ofBlock(sBlockCasings10, 11))
-                .addElement('K', ofBlock(sBlockCasings5, 13))
-                .addElement('L', ofBlock(sBlockCasingsNH, 12))
-                .addElement('M', ofBlock(sBlockCasingsTT, 4))
-                .addElement('N', ofFrame(Materials.Neutronium))
-                .addElement('O', ofBlock(StabilisationFieldGenerators, 2))
-                .addElement('P', ofBlock(TimeAccelerationFieldGenerator, 8))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<NineIndustrialMultiMachine>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(bw_realglas2, 0))
+            .addElement('B', ofBlock(FRF_Coil_4, 0))
+            .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('D', ofBlock(defcCasingBlock, 12))
+            .addElement(
+                'E',
+                buildHatchAdder(NineIndustrialMultiMachine.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++this.tCountCasing, ofBlock(sBlockCasings1, 12))))
+            .addElement('F', ofBlock(sBlockCasings1, 13))
+            .addElement('G', ofBlock(sBlockCasings1, 14))
+            .addElement('H', ofBlock(sBlockCasings10, 6))
+            .addElement('I', ofBlock(sBlockCasings10, 7))
+            .addElement('J', ofBlock(sBlockCasings10, 11))
+            .addElement('K', ofBlock(sBlockCasings5, 13))
+            .addElement('L', ofBlock(sBlockCasingsNH, 12))
+            .addElement('M', ofBlock(sBlockCasingsTT, 4))
+            .addElement('N', ofFrame(Materials.Neutronium))
+            .addElement('O', ofBlock(StabilisationFieldGenerators, 2))
+            .addElement('P', ofBlock(TimeAccelerationFieldGenerator, 8))
+            .build();
     }
 
     @Override

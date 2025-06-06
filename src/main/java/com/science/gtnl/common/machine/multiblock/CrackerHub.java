@@ -49,7 +49,6 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
     public static final int HORIZONTAL_OFF_SET = 7;
     public static final int VERTICAL_OFF_SET = 21;
     public static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<CrackerHub> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String CrH_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/cracker_hub"; // 文件路径
     public static String[][] shape = StructureUtils.readStructureFromFile(CrH_STRUCTURE_FILE_PATH);
@@ -124,34 +123,31 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
 
     @Override
     public IStructureDefinition<CrackerHub> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<CrackerHub>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(sBlockCasings10, 3))
-                .addElement('C', ofBlock(sBlockCasings2, 15))
-                .addElement('D', ofBlock(sBlockCasings3, 10))
-                .addElement('E', ofBlock(sBlockCasings4, 1))
-                .addElement('F', ofBlock(sBlockCasings4, 10))
-                .addElement('G', ofBlock(sBlockCasings4, 12))
-                .addElement('H', withChannel("coil", ofCoil(CrackerHub::setCoilLevel, CrackerHub::getCoilLevel)))
-                .addElement(
-                    'I',
-                    buildHatchAdder(CrackerHub.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('J', ofBlock(TTCasingsContainer.sBlockCasingsBA0, 6))
-                .addElement('K', ofFrame(Materials.StainlessSteel))
-                .addElement('L', ofFrame(Materials.Ultimet))
-                .addElement('M', ofFrame(Materials.HSSS))
-                .addElement('N', ofBlock(sBlockReinforced, 10))
-                .addElement('O', ofBlock(sBlockCasingsSE, 9))
-                .addElement('P', Muffler.newAny(getCasingTextureID(), 16))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<CrackerHub>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(sBlockCasings10, 3))
+            .addElement('C', ofBlock(sBlockCasings2, 15))
+            .addElement('D', ofBlock(sBlockCasings3, 10))
+            .addElement('E', ofBlock(sBlockCasings4, 1))
+            .addElement('F', ofBlock(sBlockCasings4, 10))
+            .addElement('G', ofBlock(sBlockCasings4, 12))
+            .addElement('H', withChannel("coil", ofCoil(CrackerHub::setCoilLevel, CrackerHub::getCoilLevel)))
+            .addElement(
+                'I',
+                buildHatchAdder(CrackerHub.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('J', ofBlock(TTCasingsContainer.sBlockCasingsBA0, 6))
+            .addElement('K', ofFrame(Materials.StainlessSteel))
+            .addElement('L', ofFrame(Materials.Ultimet))
+            .addElement('M', ofFrame(Materials.HSSS))
+            .addElement('N', ofBlock(sBlockReinforced, 10))
+            .addElement('O', ofBlock(sBlockCasingsSE, 9))
+            .addElement('P', Muffler.newAny(getCasingTextureID(), 16))
+            .build();
     }
 
     @Override

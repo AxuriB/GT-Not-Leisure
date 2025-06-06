@@ -26,6 +26,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.common.machine.multiblock.LargeSteamFurnace;
@@ -54,7 +55,6 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> implements ISurvivalConstructable {
 
-    private static IStructureDefinition<SteamRockBreaker> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
     private static final String SRB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_rock_breaker";
@@ -101,65 +101,64 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
 
     @Override
     public IStructureDefinition<SteamRockBreaker> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamRockBreaker>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addShape(
-                    STRUCTURE_PIECE_MAIN_SURVIVAL,
-                    Arrays.stream(transpose(shape))
-                        .map(
-                            sa -> Arrays.stream(sa)
-                                .map(s -> s.replaceAll("E", " "))
-                                .map(s -> s.replaceAll("G", " "))
-                                .toArray(String[]::new))
-                        .toArray(String[][]::new))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildSteamWirelessInput(SteamRockBreaker.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamRockBreaker.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamRockBreaker.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamRockBreaker.class)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                InputBus,
-                                SteamHatchElement.OutputBus_Steam,
-                                OutputBus)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(
-                                onElementPass(
-                                    x -> ++x.tCountCasing,
-                                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                                        ofBlocksTiered(
-                                            LargeSteamFurnace::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing))))))
-                .addElement(
-                    'B',
-                    GTStructureChannels.TIER_MACHINE_CASING.use(
-                        ofBlocksTiered(
-                            SteamRockBreaker::getTierPipeCasing,
-                            ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
-                            -1,
-                            (t, m) -> t.tierPipeCasing = m,
-                            t -> t.tierPipeCasing)))
-                .addElement('C', ofBlock(sBlockCasings4, 15))
-                .addElement('D', ofBlock(Blocks.iron_block, 0))
-                .addElement('E', ofChain(ofBlockAnyMeta(Blocks.lava), ofBlockAnyMeta(Blocks.flowing_lava)))
-                .addElement('F', ofBlock(Blocks.cobblestone, 0))
-                .addElement('G', ofAnyWater(true))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamRockBreaker>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addShape(
+                STRUCTURE_PIECE_MAIN_SURVIVAL,
+                Arrays.stream(transpose(shape))
+                    .map(
+                        sa -> Arrays.stream(sa)
+                            .map(s -> s.replaceAll("E", " "))
+                            .map(s -> s.replaceAll("G", " "))
+                            .toArray(String[]::new))
+                    .toArray(String[][]::new))
+            .addElement(
+                'A',
+                ofChain(
+                    buildSteamWirelessInput(SteamRockBreaker.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamRockBreaker.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamRockBreaker.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamRockBreaker.class)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            InputBus,
+                            SteamHatchElement.OutputBus_Steam,
+                            OutputBus)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(
+                            onElementPass(
+                                x -> ++x.tCountCasing,
+                                StructureUtility.withChannel(
+                                    "machine_casing",
+                                    ofBlocksTiered(
+                                        LargeSteamFurnace::getTierMachineCasing,
+                                        ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                        -1,
+                                        (t, m) -> t.tierMachineCasing = m,
+                                        t -> t.tierMachineCasing))))))
+            .addElement(
+                'B',
+                StructureUtility.withChannel(
+                    "machine_casing",
+                    ofBlocksTiered(
+                        SteamRockBreaker::getTierPipeCasing,
+                        ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
+                        -1,
+                        (t, m) -> t.tierPipeCasing = m,
+                        t -> t.tierPipeCasing)))
+            .addElement('C', ofBlock(sBlockCasings4, 15))
+            .addElement('D', ofBlock(Blocks.iron_block, 0))
+            .addElement('E', ofChain(ofBlockAnyMeta(Blocks.lava), ofBlockAnyMeta(Blocks.flowing_lava)))
+            .addElement('F', ofBlock(Blocks.cobblestone, 0))
+            .addElement('G', ofAnyWater(true))
+            .build();
     }
 
     @Override

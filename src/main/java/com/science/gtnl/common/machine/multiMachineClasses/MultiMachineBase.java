@@ -332,6 +332,11 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
 
+        if (supportsPowerPanel()) {
+            builder.widget(createPowerPanelButton(builder));
+            buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
+        }
+
         builder.widget(
             configurationElements.setSpace(2)
                 .setAlignment(MainAxisAlignment.SPACE_BETWEEN)

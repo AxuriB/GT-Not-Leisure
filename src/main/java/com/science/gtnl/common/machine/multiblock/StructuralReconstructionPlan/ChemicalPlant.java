@@ -42,7 +42,6 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
 
     public static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(0);
     private HeatingCoilLevel mCoilLevel;
-    private static IStructureDefinition<ChemicalPlant> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String CP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/chemical_plant";
     public final int HORIZONTAL_OFF_SET = 0;
@@ -134,20 +133,17 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
 
     @Override
     public IStructureDefinition<ChemicalPlant> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ChemicalPlant>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', withChannel("coil", ofCoil(ChemicalPlant::setCoilLevel, ChemicalPlant::getCoilLevel)))
-                .addElement(
-                    'B',
-                    buildHatchAdder(ChemicalPlant.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
-                .addElement('C', ofBlock(sBlockCasings8, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ChemicalPlant>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', withChannel("coil", ofCoil(ChemicalPlant::setCoilLevel, ChemicalPlant::getCoilLevel)))
+            .addElement(
+                'B',
+                buildHatchAdder(ChemicalPlant.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
+            .addElement('C', ofBlock(sBlockCasings8, 1))
+            .build();
     }
 
     @Override

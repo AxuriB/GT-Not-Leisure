@@ -127,7 +127,6 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     public final int HORIZONTAL_OFF_SET = 6;
     public final int VERTICAL_OFF_SET = 43;
     public final int DEPTH_OFF_SET = 10;
-    public static IStructureDefinition<EdenGarden> STRUCTURE_DEFINITION = null;
 
     @Override
     public int getCasingTextureID() {
@@ -151,34 +150,31 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     @Override
     public IStructureDefinition<EdenGarden> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<EdenGarden>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildHatchAdder(EdenGarden.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
-                            .dot(1)
-                            .casingIndex(((BlockCasings10) sBlockCasings10).getTextureIndex(4))
-                            .build(),
-                        onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 4))))
-                .addElement('C', ofBlock(sBlockCasings10, 5))
-                .addElement('D', ofBlock(sBlockCasings8, 10))
-                .addElement('E', ofBlock(sBlockCasings9, 11))
-                .addElement('F', ofBlock(ModBlocks.blockCasings2Misc, 3))
-                .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
-                .addElement('H', ofBlock(BlockLoader.MetaBlockGlow, 0))
-                .addElement('I', ofBlock(Blocks.farmland, 0))
-                .addElement(
-                    'J',
-                    ofChain(
-                        ofBlockAnyMeta(Blocks.water),
-                        ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<EdenGarden>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement(
+                'B',
+                ofChain(
+                    buildHatchAdder(EdenGarden.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
+                        .dot(1)
+                        .casingIndex(((BlockCasings10) sBlockCasings10).getTextureIndex(4))
+                        .build(),
+                    onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 4))))
+            .addElement('C', ofBlock(sBlockCasings10, 5))
+            .addElement('D', ofBlock(sBlockCasings8, 10))
+            .addElement('E', ofBlock(sBlockCasings9, 11))
+            .addElement('F', ofBlock(ModBlocks.blockCasings2Misc, 3))
+            .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
+            .addElement('H', ofBlock(BlockLoader.MetaBlockGlow, 0))
+            .addElement('I', ofBlock(Blocks.farmland, 0))
+            .addElement(
+                'J',
+                ofChain(
+                    ofBlockAnyMeta(Blocks.water),
+                    ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
+            .build();
     }
 
     @Override

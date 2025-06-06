@@ -42,7 +42,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implements ISurvivalConstructable {
 
     public int multiTier = 0;
-    private static IStructureDefinition<LibraryOfRuina> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/library_of_ruina";
     public static String[][] shape = StructureUtils.readStructureFromFile(LOR_STRUCTURE_FILE_PATH);
@@ -148,41 +147,37 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
 
     @Override
     public IStructureDefinition<LibraryOfRuina> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LibraryOfRuina>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(gravityStabilizationCasing))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 13))
-                .addElement('C', ofBlock(sBlockCasingsSE, 1))
-                .addElement(
-                    'D',
-                    buildHatchAdder(LibraryOfRuina.class)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            ParallelCon)
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(x -> ++x.tCountCasing, ofBlockAnyMeta(SHIELDED_ACCELERATOR_CASING))))
-                .addElement('E', ofBlock(sBlockCasings10, 4))
-                .addElement('F', ofBlock(sBlockCasings10, 11))
-                .addElement('G', ofBlock(sBlockCasings9, 11))
-                .addElement('H', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement(
-                    'I',
-                    ofChain(
-                        ofBlock(Blocks.water, 0),
-                        ofBlockAnyMeta(
-                            TwilightForest.isModLoaded() ? GameRegistry.findBlock(TwilightForest.ID, "tile.TFPortal")
-                                : Blocks.end_portal)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LibraryOfRuina>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(gravityStabilizationCasing))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 13))
+            .addElement('C', ofBlock(sBlockCasingsSE, 1))
+            .addElement(
+                'D',
+                buildHatchAdder(LibraryOfRuina.class)
+                    .atLeast(
+                        InputHatch,
+                        OutputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlockAnyMeta(SHIELDED_ACCELERATOR_CASING))))
+            .addElement('E', ofBlock(sBlockCasings10, 4))
+            .addElement('F', ofBlock(sBlockCasings10, 11))
+            .addElement('G', ofBlock(sBlockCasings9, 11))
+            .addElement('H', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement(
+                'I',
+                ofChain(
+                    ofBlock(Blocks.water, 0),
+                    ofBlockAnyMeta(
+                        TwilightForest.isModLoaded() ? GameRegistry.findBlock(TwilightForest.ID, "tile.TFPortal")
+                            : Blocks.end_portal)))
+            .build();
     }
 
     @Override

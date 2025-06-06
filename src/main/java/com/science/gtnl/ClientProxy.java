@@ -1,6 +1,7 @@
 package com.science.gtnl;
 
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -12,10 +13,13 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorksh
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
+import com.science.gtnl.common.entity.EntitySteamRocket;
 import com.science.gtnl.common.item.BasicItems;
+import com.science.gtnl.common.render.entity.SteamRocketRender;
 import com.science.gtnl.common.render.item.ItemBlockArtificialStarRender;
 import com.science.gtnl.common.render.item.ItemMeteorMinerMachineRender;
 import com.science.gtnl.common.render.item.ItemPlayerDollRenderer;
+import com.science.gtnl.common.render.item.ItemSteamRocketRenderer;
 import com.science.gtnl.common.render.item.ItemTwilightSwordRender;
 import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
 import com.science.gtnl.common.render.tile.MeteorMinerRenderer;
@@ -28,6 +32,7 @@ import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.ItemLoader;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -35,6 +40,9 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import fox.spiteful.avaritia.render.FancyHaloRenderer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 
 public class ClientProxy extends CommonProxy {
 
@@ -42,16 +50,8 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-        if (MainConfig.enableDebugMode) {
-            ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new MeteorMinerMachineRender());
-            MinecraftForgeClient.registerItemRenderer(
-                Item.getItemFromBlock(GregTechAPI.sBlockMachines),
-                new ItemMeteorMinerMachineRender());
-        }
-
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserBeacon.class, new MeteorMinerRenderer());
 
-        new PlayerDollRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlayerDoll.class, new PlayerDollRenderer());
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(BlockLoader.PlayerDoll), new ItemPlayerDollRenderer());
@@ -78,6 +78,24 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(ItemLoader.TestItem, new FancyHaloRenderer());
         MinecraftForgeClient.registerItemRenderer(BasicItems.MetaItem, new FancyHaloRenderer());
+
+        if (MainConfig.enableDebugMode) {
+            ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new MeteorMinerMachineRender());
+            MinecraftForgeClient.registerItemRenderer(
+                Item.getItemFromBlock(GregTechAPI.sBlockMachines),
+                new ItemMeteorMinerMachineRender());
+        }
+
+        MinecraftForgeClient.registerItemRenderer(
+            ItemLoader.SteamRocket,
+            new ItemSteamRocketRenderer(
+                new EntitySteamRocket(ClientProxyCore.mc.theWorld),
+                new ModelRocketTier1(),
+                new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/rocketT1.png")));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+            EntitySteamRocket.class,
+            new SteamRocketRender(new ModelRocketTier1(), GalacticraftCore.ASSET_PREFIX, "rocketT1"));
     }
 
     @Override

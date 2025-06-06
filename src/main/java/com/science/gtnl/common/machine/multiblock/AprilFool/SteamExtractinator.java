@@ -53,7 +53,6 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
         TEXTURE_OVERLAY_EXTRACTINATOR);
     public static Textures.BlockIcons.CustomIcon OVERLAY_EXTRACTINATOR_ACTIVE = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_EXTRACTINATOR_ACTIVE);
-    private static IStructureDefinition<SteamExtractinator> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_extractinator";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
@@ -110,50 +109,47 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
 
     @Override
     public IStructureDefinition<SteamExtractinator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamExtractinator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 3))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing02, 0))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
-                .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
-                .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))
-                .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 13))
-                .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 13))
-                .addElement('H', ofFrame(Materials.Steel))
-                .addElement('I', ofBlock(BlockLoader.MetaBlockColumn, 1))
-                .addElement(
-                    'J',
-                    ofChain(
-                        buildHatchAdder(SteamExtractinator.class).atLeast(SteamHatchElement.OutputBus_Steam, OutputBus)
-                            .casingIndex(10)
-                            .dot(2)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .addElement(
-                    'K',
-                    ofChain(
-                        buildHatchAdder(SteamExtractinator.class).atLeast(InputHatch)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .addElement(
-                    'L',
-                    ofChain(
-                        buildSteamWirelessInput(SteamExtractinator.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamExtractinator.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamExtractinator.class).casingIndex(10)
-                            .dot(3)
-                            .build(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamExtractinator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 3))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing02, 0))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
+            .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))
+            .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 13))
+            .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 13))
+            .addElement('H', ofFrame(Materials.Steel))
+            .addElement('I', ofBlock(BlockLoader.MetaBlockColumn, 1))
+            .addElement(
+                'J',
+                ofChain(
+                    buildHatchAdder(SteamExtractinator.class).atLeast(SteamHatchElement.OutputBus_Steam, OutputBus)
+                        .casingIndex(10)
+                        .dot(2)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .addElement(
+                'K',
+                ofChain(
+                    buildHatchAdder(SteamExtractinator.class).atLeast(InputHatch)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .addElement(
+                'L',
+                ofChain(
+                    buildSteamWirelessInput(SteamExtractinator.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamExtractinator.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamExtractinator.class).casingIndex(10)
+                        .dot(3)
+                        .build(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .build();
     }
 
     @Override

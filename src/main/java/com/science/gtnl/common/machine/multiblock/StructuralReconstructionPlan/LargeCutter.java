@@ -53,7 +53,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeCutter extends GTMMultiMachineBase<LargeCutter> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeCutter> STRUCTURE_DEFINITION = null;
     public static final String LC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_cutter";
     private static final int MACHINEMODE_CUTTER = 0;
     private static final int MACHINEMODE_SLICER = 1;
@@ -133,20 +132,17 @@ public class LargeCutter extends GTMMultiMachineBase<LargeCutter> implements ISu
 
     @Override
     public IStructureDefinition<LargeCutter> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeCutter>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 3))
-                .addElement(
-                    'C',
-                    buildHatchAdder(LargeCutter.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 13))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeCutter>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 3))
+            .addElement(
+                'C',
+                buildHatchAdder(LargeCutter.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 13))))
+            .build();
     }
 
     @Override

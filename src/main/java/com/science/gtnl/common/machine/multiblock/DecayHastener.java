@@ -36,7 +36,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<DecayHastener> STRUCTURE_DEFINITION = null;
     public static final String DH_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/decay_hastener";
     protected static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(10);
     public final int HORIZONTAL_OFF_SET = 2;
@@ -112,23 +111,20 @@ public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements
 
     @Override
     public IStructureDefinition<DecayHastener> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<DecayHastener>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings1, 15))
-                .addElement('B', ofBlock(sBlockCasings10, 3))
-                .addElement('C', ofBlock(sBlockCasings4, 6))
-                .addElement('D', ofBlock(sBlockCasings6, 8))
-                .addElement(
-                    'E',
-                    buildHatchAdder(DecayHastener.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('F', ofFrame(Materials.BlackSteel))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<DecayHastener>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings1, 15))
+            .addElement('B', ofBlock(sBlockCasings10, 3))
+            .addElement('C', ofBlock(sBlockCasings4, 6))
+            .addElement('D', ofBlock(sBlockCasings6, 8))
+            .addElement(
+                'E',
+                buildHatchAdder(DecayHastener.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('F', ofFrame(Materials.BlackSteel))
+            .build();
     }
 
     @Override

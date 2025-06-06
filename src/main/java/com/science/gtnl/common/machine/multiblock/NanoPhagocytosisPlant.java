@@ -77,7 +77,6 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
     private static final int HORIZONTAL_OFF_SET_RING_THREE = 1;
     private static final int VERTICAL_OFF_SET_RING_THREE = 19;
     private static final int DEPTH_OFF_SET_RING_THREE = -3;
-    private static IStructureDefinition<NanoPhagocytosisPlant> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_RING_ONE = "main_ring_one";
     private static final String STRUCTURE_PIECE_MAIN_RING_TWO = "main_ring_two";
@@ -166,51 +165,48 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
 
     @Override
     public IStructureDefinition<NanoPhagocytosisPlant> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<NanoPhagocytosisPlant>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addShape(STRUCTURE_PIECE_MAIN_RING_ONE, transpose(shapeRingOne))
-                .addShape(STRUCTURE_PIECE_MAIN_RING_TWO, transpose(shapeRingTwo))
-                .addShape(STRUCTURE_PIECE_MAIN_RING_THREE, transpose(shapeRingThree))
-                .addShape(STRUCTURE_PIECE_MAIN_RING_ONE_AIR, transpose(shapeRingOneAir))
-                .addShape(STRUCTURE_PIECE_MAIN_RING_TWO_AIR, transpose(shapeRingTwoAir))
-                .addShape(STRUCTURE_PIECE_MAIN_RING_THREE_AIR, transpose(shapeRingThreeAir))
-                .addElement('A', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 2))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('D', ofBlock(BlockLoader.MetaCasing, 18))
-                .addElement('E', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('F', ofBlock(sBlockCasings1, 15))
-                .addElement('G', ofBlock(sBlockCasings10, 3))
-                .addElement('H', ofBlock(sBlockCasings10, 7))
-                .addElement('I', ofBlock(sBlockCasings10, 8))
-                .addElement('J', ofBlock(sBlockCasings3, 10))
-                .addElement('K', ofBlock(sBlockCasings4, 11))
-                .addElement('L', ofBlock(sBlockCasings4, 12))
-                .addElement('M', ofBlock(sBlockCasings8, 7))
-                .addElement('N', ofBlock(sBlockCasings8, 10))
-                .addElement('O', ofBlock(sBlockCasings8, 11))
-                .addElement('P', ofBlock(sBlockCasings9, 12))
-                .addElement('Q', ofBlock(sBlockCasings9, 13))
-                .addElement('R', ofBlock(sBlockCasingsTT, 0))
-                .addElement('S', ofBlock(sBlockCasingsTT, 6))
-                .addElement('T', ofFrame(Materials.EnrichedHolmium))
-                .addElement('U', ofBlock(sBlockMetal5, 1))
-                .addElement('V', ofBlock(blockCasingsMisc, 5))
-                .addElement('W', ofBlock(sBlockCasings4, 7))
-                .addElement('X', ofBlock(Loaders.compactFusionCoil, 2))
-                .addElement('Y', ofBlock(Loaders.compactFusionCoil, 0))
-                .addElement('Z', ofBlock(Blocks.air, 0))
-                .addElement(
-                    'a',
-                    buildHatchAdder(NanoPhagocytosisPlant.class)
-                        .atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy), ParallelCon)
-                        .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<NanoPhagocytosisPlant>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addShape(STRUCTURE_PIECE_MAIN_RING_ONE, transpose(shapeRingOne))
+            .addShape(STRUCTURE_PIECE_MAIN_RING_TWO, transpose(shapeRingTwo))
+            .addShape(STRUCTURE_PIECE_MAIN_RING_THREE, transpose(shapeRingThree))
+            .addShape(STRUCTURE_PIECE_MAIN_RING_ONE_AIR, transpose(shapeRingOneAir))
+            .addShape(STRUCTURE_PIECE_MAIN_RING_TWO_AIR, transpose(shapeRingTwoAir))
+            .addShape(STRUCTURE_PIECE_MAIN_RING_THREE_AIR, transpose(shapeRingThreeAir))
+            .addElement('A', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 2))
+            .addElement('C', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('D', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('E', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('F', ofBlock(sBlockCasings1, 15))
+            .addElement('G', ofBlock(sBlockCasings10, 3))
+            .addElement('H', ofBlock(sBlockCasings10, 7))
+            .addElement('I', ofBlock(sBlockCasings10, 8))
+            .addElement('J', ofBlock(sBlockCasings3, 10))
+            .addElement('K', ofBlock(sBlockCasings4, 11))
+            .addElement('L', ofBlock(sBlockCasings4, 12))
+            .addElement('M', ofBlock(sBlockCasings8, 7))
+            .addElement('N', ofBlock(sBlockCasings8, 10))
+            .addElement('O', ofBlock(sBlockCasings8, 11))
+            .addElement('P', ofBlock(sBlockCasings9, 12))
+            .addElement('Q', ofBlock(sBlockCasings9, 13))
+            .addElement('R', ofBlock(sBlockCasingsTT, 0))
+            .addElement('S', ofBlock(sBlockCasingsTT, 6))
+            .addElement('T', ofFrame(Materials.EnrichedHolmium))
+            .addElement('U', ofBlock(sBlockMetal5, 1))
+            .addElement('V', ofBlock(blockCasingsMisc, 5))
+            .addElement('W', ofBlock(sBlockCasings4, 7))
+            .addElement('X', ofBlock(Loaders.compactFusionCoil, 2))
+            .addElement('Y', ofBlock(Loaders.compactFusionCoil, 0))
+            .addElement('Z', ofBlock(Blocks.air, 0))
+            .addElement(
+                'a',
+                buildHatchAdder(NanoPhagocytosisPlant.class)
+                    .atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy), ParallelCon)
+                    .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
+            .build();
     }
 
     @Override

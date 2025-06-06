@@ -56,7 +56,6 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
 
     protected static final int CASING_INDEX = TAE.GTPP_INDEX(2);
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<IsaMill> STRUCTURE_DEFINITION = null;
     public static final String IM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/isa_mill";
     public final int HORIZONTAL_OFF_SET = 2;
     public final int VERTICAL_OFF_SET = 3;
@@ -99,30 +98,27 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
 
     @Override
     public IStructureDefinition<IsaMill> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<IsaMill>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildHatchAdder(IsaMill.class).adder(IsaMill::addMillingBallsHatch)
-                            .hatchClass(MTEHatchMillingBalls.class)
-                            .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
-                            .casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(IsaMill.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
-                            .casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .build(),
-                        onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings5Misc, 0))))
-                .addElement('C', ofBlock(blockCasings5Misc, 1))
-                .addElement('D', ofBlock(blockCasings5Misc, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<IsaMill>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement(
+                'B',
+                ofChain(
+                    buildHatchAdder(IsaMill.class).adder(IsaMill::addMillingBallsHatch)
+                        .hatchClass(MTEHatchMillingBalls.class)
+                        .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(IsaMill.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .build(),
+                    onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings5Misc, 0))))
+            .addElement('C', ofBlock(blockCasings5Misc, 1))
+            .addElement('D', ofBlock(blockCasings5Misc, 2))
+            .build();
     }
 
     @Override

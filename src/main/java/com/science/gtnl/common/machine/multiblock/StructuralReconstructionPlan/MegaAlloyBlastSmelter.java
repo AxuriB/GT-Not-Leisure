@@ -47,7 +47,6 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
     implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MegaAlloyBlastSmelter> STRUCTURE_DEFINITION = null;
     public static final String MABS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/mega_alloy_blast_smelter";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(15);
@@ -130,31 +129,26 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
 
     @Override
     public IStructureDefinition<MegaAlloyBlastSmelter> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MegaAlloyBlastSmelter>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(sBlockCasings2, 15))
-                .addElement('C', ofBlock(sBlockCasings3, 14))
-                .addElement('D', ofBlock(sBlockCasings3, 15))
-                .addElement('E', ofBlock(sBlockCasings4, 3))
-                .addElement(
-                    'F',
-                    withChannel(
-                        "coil",
-                        ofCoil(MegaAlloyBlastSmelter::setCoilLevel, MegaAlloyBlastSmelter::getCoilLevel)))
-                .addElement('G', ofBlock(sBlockCasings8, 4))
-                .addElement('H', ofBlock(blockCasingsMisc, 14))
-                .addElement(
-                    'I',
-                    buildHatchAdder(MegaAlloyBlastSmelter.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
-                .addElement('J', Muffler.newAny(CASING_INDEX, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MegaAlloyBlastSmelter>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(sBlockCasings2, 15))
+            .addElement('C', ofBlock(sBlockCasings3, 14))
+            .addElement('D', ofBlock(sBlockCasings3, 15))
+            .addElement('E', ofBlock(sBlockCasings4, 3))
+            .addElement(
+                'F',
+                withChannel("coil", ofCoil(MegaAlloyBlastSmelter::setCoilLevel, MegaAlloyBlastSmelter::getCoilLevel)))
+            .addElement('G', ofBlock(sBlockCasings8, 4))
+            .addElement('H', ofBlock(blockCasingsMisc, 14))
+            .addElement(
+                'I',
+                buildHatchAdder(MegaAlloyBlastSmelter.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
+            .addElement('J', Muffler.newAny(CASING_INDEX, 1))
+            .build();
     }
 
     @Override

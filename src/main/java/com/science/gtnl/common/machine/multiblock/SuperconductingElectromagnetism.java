@@ -59,7 +59,6 @@ public class SuperconductingElectromagnetism extends WirelessEnergyMultiMachineB
     private static final int HORIZONTAL_OFF_SET = 7;
     private static final int VERTICAL_OFF_SET = 20;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<SuperconductingElectromagnetism> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/superconducting_electromagnetism";
@@ -133,24 +132,21 @@ public class SuperconductingElectromagnetism extends WirelessEnergyMultiMachineB
 
     @Override
     public IStructureDefinition<SuperconductingElectromagnetism> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SuperconductingElectromagnetism>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(Loaders.speedingPipe, 0))
-                .addElement('B', ofBlock(Loaders.compactFusionCoil, 0))
-                .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('D', ofBlock(BlockLoader.MetaCasing, 8))
-                .addElement(
-                    'E',
-                    buildHatchAdder(SuperconductingElectromagnetism.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
-                .addElement('F', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SuperconductingElectromagnetism>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(Loaders.speedingPipe, 0))
+            .addElement('B', ofBlock(Loaders.compactFusionCoil, 0))
+            .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('D', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement(
+                'E',
+                buildHatchAdder(SuperconductingElectromagnetism.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+            .addElement('F', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .build();
     }
 
     @Override

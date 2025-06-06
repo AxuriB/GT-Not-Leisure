@@ -80,7 +80,6 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
     private static int drillTier = 0;
     private static int needEu = 0;
 
-    private static IStructureDefinition<AdvancedInfiniteDriller> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String AID_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/advanced_infinite_driller";
@@ -145,29 +144,26 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     public IStructureDefinition<AdvancedInfiniteDriller> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<AdvancedInfiniteDriller>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(Loaders.MAR_Casing, 0))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 16))
-                .addElement('D', ofBlock(BlockLoader.MetaCasing, 18))
-                .addElement('E', ofBlock(sBlockCasings1, 14))
-                .addElement('F', ofBlock(sSolenoidCoilCasings, 5))
-                .addElement('G', ofBlock(sBlockCasings3, 11))
-                .addElement('H', ofBlock(sBlockCasings8, 1))
-                .addElement('I', ofBlock(sBlockCasings8, 7))
-                .addElement(
-                    'J',
-                    buildHatchAdder(AdvancedInfiniteDriller.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('K', ofFrame(Materials.Neutronium))
-                .addElement('L', ofBlock(sBlockMetal8, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<AdvancedInfiniteDriller>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(Loaders.MAR_Casing, 0))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('C', ofBlock(BlockLoader.MetaCasing, 16))
+            .addElement('D', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('E', ofBlock(sBlockCasings1, 14))
+            .addElement('F', ofBlock(sSolenoidCoilCasings, 5))
+            .addElement('G', ofBlock(sBlockCasings3, 11))
+            .addElement('H', ofBlock(sBlockCasings8, 1))
+            .addElement('I', ofBlock(sBlockCasings8, 7))
+            .addElement(
+                'J',
+                buildHatchAdder(AdvancedInfiniteDriller.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('K', ofFrame(Materials.Neutronium))
+            .addElement('L', ofBlock(sBlockMetal8, 0))
+            .build();
     }
 
     @Override

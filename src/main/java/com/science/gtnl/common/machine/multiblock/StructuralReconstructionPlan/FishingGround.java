@@ -44,7 +44,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class FishingGround extends GTMMultiMachineBase<FishingGround> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<FishingGround> STRUCTURE_DEFINITION = null;
     public static final String FG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/fishing_ground";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(18);
     public final int HORIZONTAL_OFF_SET = 6;
@@ -116,21 +115,18 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
 
     @Override
     public IStructureDefinition<FishingGround> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<FishingGround>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 13))
-                .addElement('B', ofFrame(Materials.StainlessSteel))
-                .addElement(
-                    'C',
-                    buildHatchAdder(FishingGround.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 2))))
-                .addElement('D', ofChain(ofBlockAnyMeta(Blocks.water), ofBlockAnyMeta(Blocks.flowing_water), isAir()))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<FishingGround>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 13))
+            .addElement('B', ofFrame(Materials.StainlessSteel))
+            .addElement(
+                'C',
+                buildHatchAdder(FishingGround.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 2))))
+            .addElement('D', ofChain(ofBlockAnyMeta(Blocks.water), ofBlockAnyMeta(Blocks.flowing_water), isAir()))
+            .build();
     }
 
     @Override

@@ -40,7 +40,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargeBender extends GTMMultiMachineBase<LargeBender> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeBender> STRUCTURE_DEFINITION = null;
     public static final String LB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_bender";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     public final int HORIZONTAL_OFF_SET = 2;
@@ -131,20 +130,17 @@ public class LargeBender extends GTMMultiMachineBase<LargeBender> implements ISu
 
     @Override
     public IStructureDefinition<LargeBender> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeBender>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 5))
-                .addElement('B', ofBlock(sBlockCasings2, 15))
-                .addElement(
-                    'C',
-                    buildHatchAdder(LargeBender.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeBender>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 5))
+            .addElement('B', ofBlock(sBlockCasings2, 15))
+            .addElement(
+                'C',
+                buildHatchAdder(LargeBender.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
+            .build();
     }
 
     @Override

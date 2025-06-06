@@ -38,7 +38,6 @@ import gregtech.common.blocks.BlockCasings4;
 
 public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> implements ISurvivalConstructable {
 
-    private static IStructureDefinition<BrickedBlastFurnace> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String BBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/bricked_blast_furnace";
     public static String[][] shape = StructureUtils.readStructureFromFile(BBF_STRUCTURE_FILE_PATH);
@@ -117,22 +116,19 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
     @Override
     public IStructureDefinition<BrickedBlastFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<BrickedBlastFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings3, 13))
-                .addElement(
-                    'B',
-                    buildHatchAdder(BrickedBlastFurnace.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 15))))
-                .addElement('C', ofFrame(Materials.Bronze))
-                .addElement('D', ofBlock(sBlockCasings1, 10))
-                .addElement('E', ofBlockAnyMeta(Blocks.stonebrick))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<BrickedBlastFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings3, 13))
+            .addElement(
+                'B',
+                buildHatchAdder(BrickedBlastFurnace.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus, OutputBus)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 15))))
+            .addElement('C', ofFrame(Materials.Bronze))
+            .addElement('D', ofBlock(sBlockCasings1, 10))
+            .addElement('E', ofBlockAnyMeta(Blocks.stonebrick))
+            .build();
     }
 
     @Override

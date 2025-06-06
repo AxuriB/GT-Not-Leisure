@@ -40,7 +40,6 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
         TEXTURE_OVERLAY_GAS_COLLECTOR);
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeGasCollector> STRUCTURE_DEFINITION = null;
     public static final String LGC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_gas_collector";
     public static final int CASING_INDEX = ((BlockCasings2) sBlockCasings2).getTextureIndex(0);
     public final int HORIZONTAL_OFF_SET = 2;
@@ -126,21 +125,18 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
 
     @Override
     public IStructureDefinition<LargeGasCollector> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeGasCollector>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(LargeGasCollector.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))
-                .addElement('B', ofBlock(sBlockCasings2, 15))
-                .addElement('C', ofBlock(sBlockCasings3, 10))
-                .addElement('D', ofBlock(sBlockCasings6, 5))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeGasCollector>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(LargeGasCollector.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))
+            .addElement('B', ofBlock(sBlockCasings2, 15))
+            .addElement('C', ofBlock(sBlockCasings3, 10))
+            .addElement('D', ofBlock(sBlockCasings6, 5))
+            .build();
     }
 
     @Override

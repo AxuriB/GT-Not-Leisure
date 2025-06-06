@@ -29,7 +29,6 @@ import gregtech.common.blocks.BlockCasings8;
 public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule> {
 
     public static final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7);
-    private static IStructureDefinition<BioengineeringModule> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String BM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/bioengineering_module";
     private static final String[][] shape = StructureUtils.readStructureFromFile(BM_STRUCTURE_FILE_PATH);
@@ -72,30 +71,27 @@ public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule
 
     @Override
     public IStructureDefinition<BioengineeringModule> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<BioengineeringModule>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement(
-                    'B',
-                    buildHatchAdder(BioengineeringModule.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .addElement('C', ofBlock(sBlockReinforced, 2))
-                .addElement('D', ofBlock(sBlockCasings9, 13))
-                .addElement('E', ofBlock(sBlockCasings9, 4))
-                .addElement('F', ofFrame(Materials.CosmicNeutronium))
-                .addElement('G', ofBlock(sBlockCasings2, 5))
-                .addElement('H', ofBlock(sBlockCasings4, 12))
-                .addElement('I', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement('J', ofBlock(sBlockCasings8, 1))
-                .addElement('K', ofFrame(Materials.PulsatingIron))
-                .addElement('L', ofBlock(sBlockCasings9, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<BioengineeringModule>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement(
+                'B',
+                buildHatchAdder(BioengineeringModule.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('C', ofBlock(sBlockReinforced, 2))
+            .addElement('D', ofBlock(sBlockCasings9, 13))
+            .addElement('E', ofBlock(sBlockCasings9, 4))
+            .addElement('F', ofFrame(Materials.CosmicNeutronium))
+            .addElement('G', ofBlock(sBlockCasings2, 5))
+            .addElement('H', ofBlock(sBlockCasings4, 12))
+            .addElement('I', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('J', ofBlock(sBlockCasings8, 1))
+            .addElement('K', ofFrame(Materials.PulsatingIron))
+            .addElement('L', ofBlock(sBlockCasings9, 1))
+            .build();
     }
 
     @Override

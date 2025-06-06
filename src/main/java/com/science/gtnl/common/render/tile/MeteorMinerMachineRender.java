@@ -25,19 +25,17 @@ import org.lwjgl.opengl.GL11;
 import com.science.gtnl.common.machine.multiblock.MeteorMiner;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtneioreplugin.plugin.block.ModBlocks;
 
-@SideOnly(Side.CLIENT)
 public class MeteorMinerMachineRender extends TileEntitySpecialRenderer {
 
-    private final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
+    private static final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
 
-    private final Map<String, Block> blocks = new HashMap<>();
+    private static final Map<String, Block> blocks = new HashMap<>();
 
-    public MeteorMinerMachineRender() {
+    static {
+        // Initialize the map of blocks
         blocks.putAll(ModBlocks.blocks);
     }
 

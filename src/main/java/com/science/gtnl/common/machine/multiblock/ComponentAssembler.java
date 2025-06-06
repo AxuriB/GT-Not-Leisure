@@ -70,39 +70,35 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
     private final int HORIZONTAL_OFF_SET = 3;
     private final int VERTICAL_OFF_SET = 4;
     private final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<ComponentAssembler> STRUCTURE_DEFINITION = null;
 
     @Override
     public IStructureDefinition<ComponentAssembler> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ComponentAssembler>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement(
-                    'B',
-                    ofBlocksTiered(
-                        (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
-                        IntStream.range(0, 8)
-                            .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                            .collect(Collectors.toList()),
-                        -2,
-                        (t, meta) -> t.casingTier = meta,
-                        t -> t.casingTier))
-                .addElement(
-                    'C',
-                    buildHatchAdder(ComponentAssembler.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
-                        .dot(1)
-                        .casingIndex(getCasingTextureID())
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))
-                .addElement('D', ofBlock(sBlockCasings2, 5))
-                .addElement('E', ofBlock(sBlockCasings2, 6))
-                .addElement('F', ofBlock(sBlockCasings3, 10))
-                .addElement('G', ofFrame(Materials.Steel))
-                .addElement('H', ofBlock(blockCasings3Misc, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ComponentAssembler>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement(
+                'B',
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                    IntStream.range(0, 8)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -2,
+                    (t, meta) -> t.casingTier = meta,
+                    t -> t.casingTier))
+            .addElement(
+                'C',
+                buildHatchAdder(ComponentAssembler.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
+                    .dot(1)
+                    .casingIndex(getCasingTextureID())
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))
+            .addElement('D', ofBlock(sBlockCasings2, 5))
+            .addElement('E', ofBlock(sBlockCasings2, 6))
+            .addElement('F', ofBlock(sBlockCasings3, 10))
+            .addElement('G', ofFrame(Materials.Steel))
+            .addElement('H', ofBlock(blockCasings3Misc, 2))
+            .build();
     }
 
     @Override

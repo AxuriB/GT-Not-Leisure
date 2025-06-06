@@ -47,7 +47,6 @@ import gregtech.common.blocks.BlockCasings1;
 public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> implements ISurvivalConstructable {
 
     public static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(11);
-    public static IStructureDefinition<WoodDistillation> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String WD_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/wood_distillation";
     public static String[][] shape = StructureUtils.readStructureFromFile(WD_STRUCTURE_FILE_PATH);
@@ -129,28 +128,25 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
 
     @Override
     public IStructureDefinition<WoodDistillation> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<WoodDistillation>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 2))
-                .addElement(
-                    'B',
-                    buildHatchAdder(WoodDistillation.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 11))))
-                .addElement('C', ofBlock(sBlockCasings2, 1))
-                .addElement('D', ofBlock(sBlockCasings2, 13))
-                .addElement('E', ofBlock(sBlockCasings3, 11))
-                .addElement('F', ofBlock(sBlockCasings3, 14))
-                .addElement('G', ofBlock(sBlockCasings4, 1))
-                .addElement('H', ofBlock(sBlockCasings4, 10))
-                .addElement('I', ofBlock(sBlockCasings6, 3))
-                .addElement('J', ofFrame(Materials.StainlessSteel))
-                .addElement('K', Muffler.newAny(CASING_INDEX, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<WoodDistillation>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 2))
+            .addElement(
+                'B',
+                buildHatchAdder(WoodDistillation.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 11))))
+            .addElement('C', ofBlock(sBlockCasings2, 1))
+            .addElement('D', ofBlock(sBlockCasings2, 13))
+            .addElement('E', ofBlock(sBlockCasings3, 11))
+            .addElement('F', ofBlock(sBlockCasings3, 14))
+            .addElement('G', ofBlock(sBlockCasings4, 1))
+            .addElement('H', ofBlock(sBlockCasings4, 10))
+            .addElement('I', ofBlock(sBlockCasings6, 3))
+            .addElement('J', ofFrame(Materials.StainlessSteel))
+            .addElement('K', Muffler.newAny(CASING_INDEX, 2))
+            .build();
     }
 
     @Override

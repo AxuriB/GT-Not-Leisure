@@ -55,7 +55,6 @@ public class NanoAssemblerMarkL extends WirelessEnergyMultiMachineBase<NanoAssem
     private static final int HORIZONTAL_OFF_SET = 6;
     private static final int VERTICAL_OFF_SET = 8;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<NanoAssemblerMarkL> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String VMC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/nano_assembler_mark_l";
     private static final String[][] shape = StructureUtils.readStructureFromFile(VMC_STRUCTURE_FILE_PATH);
@@ -125,49 +124,46 @@ public class NanoAssemblerMarkL extends WirelessEnergyMultiMachineBase<NanoAssem
 
     @Override
     public IStructureDefinition<NanoAssemblerMarkL> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<NanoAssemblerMarkL>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasingsTT, 8))
-                .addElement('B', ofBlock(sBlockCasings8, 10))
-                .addElement(
-                    'C',
-                    ofBlocksTiered(
-                        (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
-                        IntStream.range(0, 13)
-                            .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                            .collect(Collectors.toList()),
-                        -2,
-                        (t, meta) -> t.casingTier = meta,
-                        t -> t.casingTier))
-                .addElement('D', ofBlock(sBlockCasings9, 11))
-                .addElement(
-                    'E',
-                    buildHatchAdder(NanoAssemblerMarkL.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .addElement('F', ofBlock(sBlockCasings2, 5))
-                .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('H', ofBlock(sBlockCasingsTT, 4))
-                .addElement('I', ofBlock(sBlockCasings10, 8))
-                .addElement('J', ofFrame(Materials.Duranium))
-                .addElement('K', ofBlock(sBlockGlass1, 0))
-                .addElement('L', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('M', ofBlock(sBlockCasings1, 9))
-                .addElement(
-                    'N',
-                    ofBlockAnyMeta(
-                        Block.getBlockFromItem(
-                            MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFrameBox(1)
-                                .getItem())))
-                .addElement('O', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement('P', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('Q', ofBlock(sBlockCasings9, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<NanoAssemblerMarkL>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasingsTT, 8))
+            .addElement('B', ofBlock(sBlockCasings8, 10))
+            .addElement(
+                'C',
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                    IntStream.range(0, 13)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -2,
+                    (t, meta) -> t.casingTier = meta,
+                    t -> t.casingTier))
+            .addElement('D', ofBlock(sBlockCasings9, 11))
+            .addElement(
+                'E',
+                buildHatchAdder(NanoAssemblerMarkL.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('F', ofBlock(sBlockCasings2, 5))
+            .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('H', ofBlock(sBlockCasingsTT, 4))
+            .addElement('I', ofBlock(sBlockCasings10, 8))
+            .addElement('J', ofFrame(Materials.Duranium))
+            .addElement('K', ofBlock(sBlockGlass1, 0))
+            .addElement('L', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('M', ofBlock(sBlockCasings1, 9))
+            .addElement(
+                'N',
+                ofBlockAnyMeta(
+                    Block.getBlockFromItem(
+                        MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFrameBox(1)
+                            .getItem())))
+            .addElement('O', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('P', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('Q', ofBlock(sBlockCasings9, 1))
+            .build();
     }
 
     @Override

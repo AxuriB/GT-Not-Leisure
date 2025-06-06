@@ -38,7 +38,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> implements ISurvivalConstructable {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargePyrolyseOven> STRUCTURE_DEFINITION = null;
     public static final String LPO_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_pyrolyse_oven";
     public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(1);
     public final int HORIZONTAL_OFF_SET = 6;
@@ -111,26 +110,23 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
 
     @Override
     public IStructureDefinition<LargePyrolyseOven> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargePyrolyseOven>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings1, 11))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargePyrolyseOven.class)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
-                .addElement(
-                    'C',
-                    withChannel("coil", ofCoil(LargePyrolyseOven::setCoilLevel, LargePyrolyseOven::getCoilLevel)))
-                .addElement('D', ofFrame(Materials.StainlessSteel))
-                .addElement('E', ofFrame(Materials.PulsatingIron))
-                .addElement('F', Muffler.newAny(CASING_INDEX, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargePyrolyseOven>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings1, 11))
+            .addElement(
+                'B',
+                buildHatchAdder(LargePyrolyseOven.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
+            .addElement(
+                'C',
+                withChannel("coil", ofCoil(LargePyrolyseOven::setCoilLevel, LargePyrolyseOven::getCoilLevel)))
+            .addElement('D', ofFrame(Materials.StainlessSteel))
+            .addElement('E', ofFrame(Materials.PulsatingIron))
+            .addElement('F', Muffler.newAny(CASING_INDEX, 2))
+            .build();
     }
 
     @Override

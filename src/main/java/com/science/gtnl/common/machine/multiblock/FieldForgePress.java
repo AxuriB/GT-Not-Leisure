@@ -37,7 +37,6 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
     private static final int HORIZONTAL_OFF_SET = 8;
     private static final int VERTICAL_OFF_SET = 23;
     private static final int DEPTH_OFF_SET = 1;
-    private static IStructureDefinition<FieldForgePress> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String FFP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/field_forge_press";
     private static final String[][] shape = StructureUtils.readStructureFromFile(FFP_STRUCTURE_FILE_PATH);
@@ -108,35 +107,32 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
 
     @Override
     public IStructureDefinition<FieldForgePress> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<FieldForgePress>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings4, 12))
-                .addElement('B', ofBlock(sBlockCasings1, 14))
-                .addElement('C', ofBlock(sBlockCasings10, 3))
-                .addElement('D', ofBlock(sBlockCasings1, 13))
-                .addElement('E', ofBlock(sBlockCasings8, 7))
-                .addElement('F', ofBlock(sBlockCasings9, 9))
-                .addElement('G', ofBlock(blockCasings3Misc, 1))
-                .addElement(
-                    'H',
-                    buildHatchAdder(FieldForgePress.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
-                .addElement('I', ofBlock(blockCustomMachineCasings, 3))
-                .addElement('J', ofBlock(sBlockCasings8, 10))
-                .addElement('K', ofBlock(BlockLoader.MetaCasing, 12))
-                .addElement(
-                    'L',
-                    ofBlockAnyMeta(
-                        Block.getBlockFromItem(
-                            MaterialsAlloy.INCONEL_792.getFrameBox(1)
-                                .getItem())))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<FieldForgePress>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings4, 12))
+            .addElement('B', ofBlock(sBlockCasings1, 14))
+            .addElement('C', ofBlock(sBlockCasings10, 3))
+            .addElement('D', ofBlock(sBlockCasings1, 13))
+            .addElement('E', ofBlock(sBlockCasings8, 7))
+            .addElement('F', ofBlock(sBlockCasings9, 9))
+            .addElement('G', ofBlock(blockCasings3Misc, 1))
+            .addElement(
+                'H',
+                buildHatchAdder(FieldForgePress.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+            .addElement('I', ofBlock(blockCustomMachineCasings, 3))
+            .addElement('J', ofBlock(sBlockCasings8, 10))
+            .addElement('K', ofBlock(BlockLoader.MetaCasing, 12))
+            .addElement(
+                'L',
+                ofBlockAnyMeta(
+                    Block.getBlockFromItem(
+                        MaterialsAlloy.INCONEL_792.getFrameBox(1)
+                            .getItem())))
+            .build();
     }
 
     @Override

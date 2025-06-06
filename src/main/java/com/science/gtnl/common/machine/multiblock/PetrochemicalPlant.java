@@ -47,7 +47,6 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
     private HeatingCoilLevel mHeatingCapacity;
     private int mLevel = 0;
 
-    private static IStructureDefinition<PetrochemicalPlant> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String PP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/petrochemical_plant";
     public static String[][] shape = StructureUtils.readStructureFromFile(PP_STRUCTURE_FILE_PATH);
@@ -143,47 +142,44 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
 
     @Override
     public IStructureDefinition<PetrochemicalPlant> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<PetrochemicalPlant>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(Blocks.yszUnit))
-                .addElement('B', Muffler.newAny(CASING_INDEX, 8))
-                .addElement('C', ofBlock(sBlockCasings2, 0))
-                .addElement('D', ofBlock(sBlockCasings2, 12))
-                .addElement('E', ofBlock(sBlockCasings2, 13))
-                .addElement('F', ofBlock(sBlockCasings2, 14))
-                .addElement('G', ofBlock(sBlockCasings4, 2))
-                .addElement('H', ofBlock(sBlockCasings4, 1))
-                .addElement('I', ofBlock(sBlockCasings4, 9))
-                .addElement('J', ofBlock(sBlockCasings4, 10))
-                .addElement('K', ofBlock(blockCasings3Misc, 2))
-                .addElement(
-                    'L',
-                    withChannel("coil", ofCoil(PetrochemicalPlant::setCoilLevel, PetrochemicalPlant::getCoilLevel)))
-                .addElement('M', ofBlock(sBlockCasings8, 1))
-                .addElement('N', ofBlock(blockCasingsTieredGTPP, 4))
-                .addElement(
-                    'O',
-                    buildHatchAdder(PetrochemicalPlant.class)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 3))))
-                .addElement('P', ofBlock(sBlockCasings10, 4))
-                .addElement('Q', ofBlock(blockCasingsMisc, 14))
-                .addElement('R', ofBlock(sBlockCasings9, 0))
-                .addElement('S', ofFrame(Materials.NiobiumTitanium))
-                .addElement('T', ofFrame(Materials.StainlessSteel))
-                .addElement('U', ofFrame(Materials.Steel))
-                .addElement('V', ofFrame(Materials.RedstoneAlloy))
-                .addElement('W', ofFrame(Materials.Vanadium))
-                .addElement('X', ofBlock(blockCasings2Misc, 4))
-                .addElement('Y', ofBlock(blockCasingsMisc, 11))
-                .addElement('Z', ofBlock(blockCustomMachineCasings, 1))
-                .addElement('0', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<PetrochemicalPlant>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(Blocks.yszUnit))
+            .addElement('B', Muffler.newAny(CASING_INDEX, 8))
+            .addElement('C', ofBlock(sBlockCasings2, 0))
+            .addElement('D', ofBlock(sBlockCasings2, 12))
+            .addElement('E', ofBlock(sBlockCasings2, 13))
+            .addElement('F', ofBlock(sBlockCasings2, 14))
+            .addElement('G', ofBlock(sBlockCasings4, 2))
+            .addElement('H', ofBlock(sBlockCasings4, 1))
+            .addElement('I', ofBlock(sBlockCasings4, 9))
+            .addElement('J', ofBlock(sBlockCasings4, 10))
+            .addElement('K', ofBlock(blockCasings3Misc, 2))
+            .addElement(
+                'L',
+                withChannel("coil", ofCoil(PetrochemicalPlant::setCoilLevel, PetrochemicalPlant::getCoilLevel)))
+            .addElement('M', ofBlock(sBlockCasings8, 1))
+            .addElement('N', ofBlock(blockCasingsTieredGTPP, 4))
+            .addElement(
+                'O',
+                buildHatchAdder(PetrochemicalPlant.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 3))))
+            .addElement('P', ofBlock(sBlockCasings10, 4))
+            .addElement('Q', ofBlock(blockCasingsMisc, 14))
+            .addElement('R', ofBlock(sBlockCasings9, 0))
+            .addElement('S', ofFrame(Materials.NiobiumTitanium))
+            .addElement('T', ofFrame(Materials.StainlessSteel))
+            .addElement('U', ofFrame(Materials.Steel))
+            .addElement('V', ofFrame(Materials.RedstoneAlloy))
+            .addElement('W', ofFrame(Materials.Vanadium))
+            .addElement('X', ofBlock(blockCasings2Misc, 4))
+            .addElement('Y', ofBlock(blockCasingsMisc, 11))
+            .addElement('Z', ofBlock(blockCustomMachineCasings, 1))
+            .addElement('0', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .build();
     }
 
     @Override

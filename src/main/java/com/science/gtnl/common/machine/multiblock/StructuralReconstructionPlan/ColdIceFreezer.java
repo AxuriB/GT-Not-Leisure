@@ -62,7 +62,6 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
     public final int HORIZONTAL_OFF_SET = 2;
     public final int VERTICAL_OFF_SET = 2;
     public final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<ColdIceFreezer> STRUCTURE_DEFINITION = null;
 
     public ColdIceFreezer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -104,32 +103,29 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public IStructureDefinition<ColdIceFreezer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ColdIceFreezer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildHatchAdder(ColdIceFreezer.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
-                            .dot(1)
-                            .casingIndex(CASING_INDEX)
-                            .build(),
-                        onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 1)),
-                        buildHatchAdder(ColdIceFreezer.class).adder(ColdIceFreezer::addFluidIceInputHatch)
-                            .hatchId(21502)
-                            .shouldReject(x -> !x.FluidIceInputHatch.isEmpty())
-                            .casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .build()))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 15))
-                .addElement('D', ofFrame(Materials.Aluminium))
-                .addElement('E', ofBlock(ModBlocks.blockCasings3Misc, 10))
-                .addElement('F', Muffler.newAny(TAE.getIndexFromPage(2, 10), 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ColdIceFreezer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement(
+                'B',
+                ofChain(
+                    buildHatchAdder(ColdIceFreezer.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
+                        .dot(1)
+                        .casingIndex(CASING_INDEX)
+                        .build(),
+                    onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 1)),
+                    buildHatchAdder(ColdIceFreezer.class).adder(ColdIceFreezer::addFluidIceInputHatch)
+                        .hatchId(21502)
+                        .shouldReject(x -> !x.FluidIceInputHatch.isEmpty())
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .build()))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 15))
+            .addElement('D', ofFrame(Materials.Aluminium))
+            .addElement('E', ofBlock(ModBlocks.blockCasings3Misc, 10))
+            .addElement('F', Muffler.newAny(TAE.getIndexFromPage(2, 10), 1))
+            .build();
     }
 
     @Override

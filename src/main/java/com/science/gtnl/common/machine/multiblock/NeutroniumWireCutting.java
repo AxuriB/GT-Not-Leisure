@@ -50,7 +50,6 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
     private static final int HORIZONTAL_OFF_SET = 3;
     private static final int VERTICAL_OFF_SET = 10;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<NeutroniumWireCutting> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String NWC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/neutronium_wire_cutting"; // 文件路径
     private static final String[][] shape = StructureUtils.readStructureFromFile(NWC_STRUCTURE_FILE_PATH);
@@ -122,36 +121,33 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
 
     @Override
     public IStructureDefinition<NeutroniumWireCutting> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<NeutroniumWireCutting>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 2))
-                .addElement('C', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement('D', ofBlock(sBlockCasings10, 6))
-                .addElement('E', ofBlock(sBlockCasings10, 7))
-                .addElement('F', ofBlock(sBlockCasings10, 11))
-                .addElement('G', ofBlock(sBlockCasings3, 11))
-                .addElement('H', ofBlock(sBlockCasings4, 10))
-                .addElement('I', ofBlock(sBlockCasings8, 7))
-                .addElement('J', ofBlock(sBlockCasings9, 3))
-                .addElement('K', ofBlock(sBlockCasings9, 6))
-                .addElement(
-                    'L',
-                    buildHatchAdder(NeutroniumWireCutting.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
-                .addElement('M', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
-                .addElement('N', ofBlock(TTCasingsContainer.sBlockCasingsTT, 6))
-                .addElement('O', ofFrame(Materials.Neutronium))
-                .addElement('P', ofBlockAnyMeta(GameRegistry.findBlock("miscutils", "blockFrameGtHastelloyN")))
-                .addElement('Q', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('R', ofBlock(BlockLoader.MetaCasing, 5))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<NeutroniumWireCutting>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 2))
+            .addElement('C', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('D', ofBlock(sBlockCasings10, 6))
+            .addElement('E', ofBlock(sBlockCasings10, 7))
+            .addElement('F', ofBlock(sBlockCasings10, 11))
+            .addElement('G', ofBlock(sBlockCasings3, 11))
+            .addElement('H', ofBlock(sBlockCasings4, 10))
+            .addElement('I', ofBlock(sBlockCasings8, 7))
+            .addElement('J', ofBlock(sBlockCasings9, 3))
+            .addElement('K', ofBlock(sBlockCasings9, 6))
+            .addElement(
+                'L',
+                buildHatchAdder(NeutroniumWireCutting.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
+            .addElement('M', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
+            .addElement('N', ofBlock(TTCasingsContainer.sBlockCasingsTT, 6))
+            .addElement('O', ofFrame(Materials.Neutronium))
+            .addElement('P', ofBlockAnyMeta(GameRegistry.findBlock("miscutils", "blockFrameGtHastelloyN")))
+            .addElement('Q', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('R', ofBlock(BlockLoader.MetaCasing, 5))
+            .build();
     }
 
     @Override

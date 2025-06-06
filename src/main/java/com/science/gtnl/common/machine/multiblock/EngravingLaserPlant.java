@@ -58,7 +58,6 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
     private static final int HORIZONTAL_OFF_SET = 10;
     private static final int VERTICAL_OFF_SET = 9;
     private static final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<EngravingLaserPlant> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String ELP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/engraving_laser_plant"; // 文件路径
     private static final String[][] shape = StructureUtils.readStructureFromFile(ELP_STRUCTURE_FILE_PATH);
@@ -132,40 +131,37 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
 
     @Override
     public IStructureDefinition<EngravingLaserPlant> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<EngravingLaserPlant>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings10, 8))
-                .addElement('B', ofBlock(sBlockCasingsTT, 0))
-                .addElement('C', ofBlock(sBlockCasings6, 9))
-                .addElement(
-                    'D',
-                    buildHatchAdder(EngravingLaserPlant.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), ParallelCon)
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .addElement('E', ofBlock(sBlockCasings8, 12))
-                .addElement('F', ofBlock(sBlockCasings9, 1))
-                .addElement('G', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('H', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('I', ofBlock(compactFusionCoil, 2))
-                .addElement(
-                    'J',
-                    ofBlocksTiered(
-                        (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
-                        IntStream.range(0, 13)
-                            .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                            .collect(Collectors.toList()),
-                        -2,
-                        (t, meta) -> t.casingTier = meta,
-                        t -> t.casingTier))
-                .addElement('K', ofBlock(sBlockCasings10, 11))
-                .addElement('L', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('M', ofFrame(Materials.Neutronium))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<EngravingLaserPlant>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings10, 8))
+            .addElement('B', ofBlock(sBlockCasingsTT, 0))
+            .addElement('C', ofBlock(sBlockCasings6, 9))
+            .addElement(
+                'D',
+                buildHatchAdder(EngravingLaserPlant.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), ParallelCon)
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('E', ofBlock(sBlockCasings8, 12))
+            .addElement('F', ofBlock(sBlockCasings9, 1))
+            .addElement('G', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('H', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('I', ofBlock(compactFusionCoil, 2))
+            .addElement(
+                'J',
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                    IntStream.range(0, 13)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -2,
+                    (t, meta) -> t.casingTier = meta,
+                    t -> t.casingTier))
+            .addElement('K', ofBlock(sBlockCasings10, 11))
+            .addElement('L', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('M', ofFrame(Materials.Neutronium))
+            .build();
     }
 
     @Override

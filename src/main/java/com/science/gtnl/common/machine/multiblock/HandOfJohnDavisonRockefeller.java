@@ -48,7 +48,6 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
     implements ISurvivalConstructable {
 
     public int mSpeedCount = 0;
-    public static IStructureDefinition<HandOfJohnDavisonRockefeller> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String HODR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/hand_of_john_davison_rockefeller";
@@ -136,26 +135,23 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
 
     @Override
     public IStructureDefinition<HandOfJohnDavisonRockefeller> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<HandOfJohnDavisonRockefeller>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('C', ofBlockAnyMeta(FOCUS_MANIPULATION_CASING))
-                .addElement(
-                    'D',
-                    buildHatchAdder(HandOfJohnDavisonRockefeller.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 3))))
-                .addElement('E', ofBlock(sBlockCasings10, 8))
-                .addElement('F', ofBlock(sBlockCasings3, 10))
-                .addElement('G', ofBlock(sBlockCasings8, 2))
-                .addElement('H', ofFrame(Materials.Tungsten))
-                .addElement('I', ofBlock(blockCustomMachineCasings, 3))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<HandOfJohnDavisonRockefeller>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('C', ofBlockAnyMeta(FOCUS_MANIPULATION_CASING))
+            .addElement(
+                'D',
+                buildHatchAdder(HandOfJohnDavisonRockefeller.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 3))))
+            .addElement('E', ofBlock(sBlockCasings10, 8))
+            .addElement('F', ofBlock(sBlockCasings3, 10))
+            .addElement('G', ofBlock(sBlockCasings8, 2))
+            .addElement('H', ofFrame(Materials.Tungsten))
+            .addElement('I', ofBlock(blockCustomMachineCasings, 3))
+            .build();
     }
 
     @Override

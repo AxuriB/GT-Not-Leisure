@@ -70,7 +70,6 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     private int ParallelTier;
     private static final int MACHINEMODE_MINER = 0;
     private static final int MACHINEMODE_DRILL = 1;
-    private static IStructureDefinition<ResourceCollectionModule> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/space_module";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SM_STRUCTURE_FILE_PATH);
@@ -148,20 +147,17 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
     @Override
     public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ResourceCollectionModule>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'H',
-                    GTStructureUtility.ofHatchAdderOptional(
-                        ResourceCollectionModule::addClassicToMachineList,
-                        4096,
-                        1,
-                        sBlockCasingsSE,
-                        0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ResourceCollectionModule>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'H',
+                GTStructureUtility.ofHatchAdderOptional(
+                    ResourceCollectionModule::addClassicToMachineList,
+                    4096,
+                    1,
+                    sBlockCasingsSE,
+                    0))
+            .build();
     }
 
     @Override

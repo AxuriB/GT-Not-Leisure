@@ -71,7 +71,6 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     public final int HORIZONTAL_OFF_SET = 11;
     public final int VERTICAL_OFF_SET = 15;
     public final int DEPTH_OFF_SET = 2;
-    public static IStructureDefinition<TeleportationArrayToAlfheim> STRUCTURE_DEFINITION = null;
     public static String[][] shape = StructureUtils.readStructureFromFile(TATA_STRUCTURE_FILE_PATH);
     private static final int PORTAL_MODE = 0;
     private static final int NATURE_MODE = 1;
@@ -258,35 +257,32 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public IStructureDefinition<TeleportationArrayToAlfheim> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<TeleportationArrayToAlfheim>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('B', ofBlock(sBlockCasings10, 3))
-                .addElement('C', ofBlock(sBlockCasings4, 7))
-                .addElement('D', ofBlock(sBlockCasings8, 7))
-                .addElement(
-                    'E',
-                    ofChain(
-                        buildHatchAdder(TeleportationArrayToAlfheim.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
-                            .dot(1)
-                            .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                            .build(),
-                        onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings8, 10)),
-                        buildHatchAdder(TeleportationArrayToAlfheim.class)
-                            .adder(TeleportationArrayToAlfheim::addFluidManaInputHatch)
-                            .hatchId(21501)
-                            .shouldReject(x -> !x.FluidManaInputHatch.isEmpty())
-                            .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                            .dot(1)
-                            .build()))
-                .addElement('F', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
-                .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 0))
-                .addElement('H', ofBlock(BlockLoader.MetaBlockGlass, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<TeleportationArrayToAlfheim>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('B', ofBlock(sBlockCasings10, 3))
+            .addElement('C', ofBlock(sBlockCasings4, 7))
+            .addElement('D', ofBlock(sBlockCasings8, 7))
+            .addElement(
+                'E',
+                ofChain(
+                    buildHatchAdder(TeleportationArrayToAlfheim.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
+                        .dot(1)
+                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                        .build(),
+                    onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings8, 10)),
+                    buildHatchAdder(TeleportationArrayToAlfheim.class)
+                        .adder(TeleportationArrayToAlfheim::addFluidManaInputHatch)
+                        .hatchId(21501)
+                        .shouldReject(x -> !x.FluidManaInputHatch.isEmpty())
+                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                        .dot(1)
+                        .build()))
+            .addElement('F', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
+            .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 0))
+            .addElement('H', ofBlock(BlockLoader.MetaBlockGlass, 1))
+            .build();
     }
 
     @Override

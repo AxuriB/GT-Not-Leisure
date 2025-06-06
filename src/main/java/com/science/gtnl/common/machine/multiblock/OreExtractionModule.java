@@ -33,7 +33,6 @@ import gregtech.common.blocks.BlockCasings4;
 public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> {
 
     public static final int CASING_INDEX = ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0);
-    private static IStructureDefinition<OreExtractionModule> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String OEM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/ore_extraction_module";
     private static final String[][] shape = StructureUtils.readStructureFromFile(OEM_STRUCTURE_FILE_PATH);
@@ -76,33 +75,30 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
 
     @Override
     public IStructureDefinition<OreExtractionModule> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<OreExtractionModule>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings8, 0))
-                .addElement('B', ofBlock(sBlockCasings1, 15))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('D', ofBlock(sBlockCasings8, 7))
-                .addElement('E', ofBlock(BlockLoader.MetaCasing, 8))
-                .addElement('F', ofFrame(Materials.CosmicNeutronium))
-                .addElement(
-                    'G',
-                    buildHatchAdder(OreExtractionModule.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
-                .addElement('H', ofBlock(blockCasings4Misc, 11))
-                .addElement('I', ofBlock(sBlockCasings2, 5))
-                .addElement('J', ofBlock(sBlockCasings10, 8))
-                .addElement('K', ofBlock(sBlockCasings8, 1))
-                .addElement('L', ofBlock(sBlockCasings4, 12))
-                .addElement('M', ofFrame(Materials.Invar))
-                .addElement('N', ofBlock(BlockLoader.MetaCasing, 12))
-                .addElement('O', ofBlock(bw_realglas, 14))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<OreExtractionModule>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings8, 0))
+            .addElement('B', ofBlock(sBlockCasings1, 15))
+            .addElement('C', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('D', ofBlock(sBlockCasings8, 7))
+            .addElement('E', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement('F', ofFrame(Materials.CosmicNeutronium))
+            .addElement(
+                'G',
+                buildHatchAdder(OreExtractionModule.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
+            .addElement('H', ofBlock(blockCasings4Misc, 11))
+            .addElement('I', ofBlock(sBlockCasings2, 5))
+            .addElement('J', ofBlock(sBlockCasings10, 8))
+            .addElement('K', ofBlock(sBlockCasings8, 1))
+            .addElement('L', ofBlock(sBlockCasings4, 12))
+            .addElement('M', ofFrame(Materials.Invar))
+            .addElement('N', ofBlock(BlockLoader.MetaCasing, 12))
+            .addElement('O', ofBlock(bw_realglas, 14))
+            .build();
     }
 
     @Override

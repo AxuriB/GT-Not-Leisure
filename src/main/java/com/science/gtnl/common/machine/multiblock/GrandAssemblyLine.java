@@ -109,7 +109,6 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
     private String costingEUText = ZERO_STRING;
     private UUID ownerUUID;
     private boolean wirelessMode = false;
-    private static IStructureDefinition<GrandAssemblyLine> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String GAL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/grand_assembly_line";
     private static final String[][] shape = StructureUtils.readStructureFromFile(GAL_STRUCTURE_FILE_PATH);
@@ -919,54 +918,51 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
     @Override
     public IStructureDefinition<GrandAssemblyLine> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GrandAssemblyLine>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 5))
-                .addElement(
-                    'B',
-                    buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .addElement('C', ofBlock(sBlockCasingsTT, 2))
-                .addElement(
-                    'D',
-                    buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(OutputBus)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .addElement(
-                    'E',
-                    buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(
-                            InputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            DataHatchElement.DataAccess)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.tCountCasing,
-                                ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))))
-                .addElement(
-                    'F',
-                    buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(
-                            InputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            DataHatchElement.DataAccess)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .addElement('G', ofBlock(sBlockCasings2, 9))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<GrandAssemblyLine>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 5))
+            .addElement(
+                'B',
+                buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(InputBus)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .addElement('C', ofBlock(sBlockCasingsTT, 2))
+            .addElement(
+                'D',
+                buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(OutputBus)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .addElement(
+                'E',
+                buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(
+                        InputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        DataHatchElement.DataAccess)
+                    .buildAndChain(
+                        onElementPass(
+                            x -> ++x.tCountCasing,
+                            ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))))
+            .addElement(
+                'F',
+                buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .atLeast(
+                        InputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        DataHatchElement.DataAccess)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .addElement('G', ofBlock(sBlockCasings2, 9))
+            .build();
     }
 
     @Override

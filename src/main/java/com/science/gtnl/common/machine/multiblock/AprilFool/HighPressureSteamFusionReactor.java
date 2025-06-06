@@ -44,7 +44,6 @@ import gregtech.common.misc.GTStructureChannels;
 public class HighPressureSteamFusionReactor extends SteamMultiMachineBase<HighPressureSteamFusionReactor>
     implements ISurvivalConstructable {
 
-    private static IStructureDefinition<HighPressureSteamFusionReactor> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/high_pressure_steam_fusion_reactor";
@@ -68,36 +67,33 @@ public class HighPressureSteamFusionReactor extends SteamMultiMachineBase<HighPr
 
     @Override
     public IStructureDefinition<HighPressureSteamFusionReactor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<HighPressureSteamFusionReactor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 31))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing02, 0))
-                .addElement('C', chainAllGlasses())
-                .addElement('D', ofFrame(Materials.Steel))
-                .addElement(
-                    'E',
-                    ofChain(
-                        buildSteamWirelessInput(HighPressureSteamFusionReactor.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 32))
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(HighPressureSteamFusionReactor.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 32))
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(HighPressureSteamFusionReactor.class)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 32))
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(HighPressureSteamFusionReactor.class).atLeast(InputHatch, OutputHatch)
-                            .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 32))
-                            .dot(1)
-                            .buildAndChain(),
-                        chainAllGlasses()))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<HighPressureSteamFusionReactor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 31))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing02, 0))
+            .addElement('C', chainAllGlasses())
+            .addElement('D', ofFrame(Materials.Steel))
+            .addElement(
+                'E',
+                ofChain(
+                    buildSteamWirelessInput(HighPressureSteamFusionReactor.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 32))
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(HighPressureSteamFusionReactor.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 32))
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(HighPressureSteamFusionReactor.class)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 32))
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(HighPressureSteamFusionReactor.class).atLeast(InputHatch, OutputHatch)
+                        .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 32))
+                        .dot(1)
+                        .buildAndChain(),
+                    chainAllGlasses()))
+            .build();
     }
 
     @Override

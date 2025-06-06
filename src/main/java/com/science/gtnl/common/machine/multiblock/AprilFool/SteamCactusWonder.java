@@ -64,7 +64,6 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
         TEXTURE_OVERLAY_CACTUS_WONDER);
     public static Textures.BlockIcons.CustomIcon OVERLAY_CACTUS_WONDER_ACTIVE = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_CACTUS_WONDER_ACTIVE);
-    private static IStructureDefinition<SteamCactusWonder> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "nei";
     private static final String SCW_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_cactus_wonder";
@@ -107,40 +106,37 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
     private static final int[] steamType = { 1, 1, 1, 2, 2, 3, 3, 1, 1, 1, 2, 2, 3, 3 };
 
     public IStructureDefinition<SteamCactusWonder> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamCactusWonder>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addShape(
-                    STRUCTURE_PIECE_MAIN_SURVIVAL,
-                    Arrays.stream(transpose(shape))
-                        .map(
-                            sa -> Arrays.stream(sa)
-                                .map(s -> s.replaceAll("E", " "))
-                                .toArray(String[]::new))
-                        .toArray(String[][]::new))
-                .addElement('A', chainAllGlasses())
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 12))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildSteamWirelessInput(SteamCactusWonder.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamCactusWonder.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamCactusWonder.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings3, 13)))
-                .addElement('D', ofFrame(Materials.Steel))
-                .addElement('E', ofBlock(Blocks.cactus, 0))
-                .addElement('F', ofBlock(Blocks.sand, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamCactusWonder>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addShape(
+                STRUCTURE_PIECE_MAIN_SURVIVAL,
+                Arrays.stream(transpose(shape))
+                    .map(
+                        sa -> Arrays.stream(sa)
+                            .map(s -> s.replaceAll("E", " "))
+                            .toArray(String[]::new))
+                    .toArray(String[][]::new))
+            .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 12))
+            .addElement(
+                'C',
+                ofChain(
+                    buildSteamWirelessInput(SteamCactusWonder.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamCactusWonder.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildHatchAdder(SteamCactusWonder.class)
+                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings3, 13)))
+            .addElement('D', ofFrame(Materials.Steel))
+            .addElement('E', ofBlock(Blocks.cactus, 0))
+            .addElement('F', ofBlock(Blocks.sand, 0))
+            .build();
     }
 
     @Override

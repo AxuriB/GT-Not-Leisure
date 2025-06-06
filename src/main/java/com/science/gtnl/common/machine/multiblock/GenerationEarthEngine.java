@@ -48,7 +48,6 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
     public static final int VERTICAL_OFF_SET = 321;
     public static final int DEPTH_OFF_SET = 17;
     public int tCountCasing = 0;
-    private static IStructureDefinition<GenerationEarthEngine> STRUCTURE_DEFINITION = null;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String GEE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/generation_earth_engine"; // 文件路径
     public static String[][] shape = StructureUtils.readStructureFromFile(GEE_STRUCTURE_FILE_PATH);
@@ -132,32 +131,29 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
 
     @Override
     public IStructureDefinition<GenerationEarthEngine> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GenerationEarthEngine>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings8, 7))
-                .addElement('B', ofBlock(compactFusionCoil, 3))
-                .addElement('C', ofBlock(sSolenoidCoilCasings, 8))
-                .addElement('D', ofBlock(TTCasingsContainer.StabilisationFieldGenerators, 8))
-                .addElement('E', ofBlock(magneticFluxCasing, 0))
-                .addElement('F', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-                .addElement('G', ofBlock(sBlockCasings8, 13))
-                .addElement('H', ofBlock(sBlockCasings1, 13))
-                .addElement('I', ofBlock(sBlockCasings8, 2))
-                .addElement('J', ofBlock(sBlockCasingsSE, 1))
-                .addElement('K', ofBlock(BlockLoader.defcCasingBlock, 11))
-                .addElement(
-                    'L',
-                    buildHatchAdder(GenerationEarthEngine.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(5))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-                .addElement('M', ofBlock(Blocks.beacon, 1))
-                .addElement('N', ofBlock(EnderIO.blockIngotStorageEndergy, 3))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<GenerationEarthEngine>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings8, 7))
+            .addElement('B', ofBlock(compactFusionCoil, 3))
+            .addElement('C', ofBlock(sSolenoidCoilCasings, 8))
+            .addElement('D', ofBlock(TTCasingsContainer.StabilisationFieldGenerators, 8))
+            .addElement('E', ofBlock(magneticFluxCasing, 0))
+            .addElement('F', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .addElement('G', ofBlock(sBlockCasings8, 13))
+            .addElement('H', ofBlock(sBlockCasings1, 13))
+            .addElement('I', ofBlock(sBlockCasings8, 2))
+            .addElement('J', ofBlock(sBlockCasingsSE, 1))
+            .addElement('K', ofBlock(BlockLoader.defcCasingBlock, 11))
+            .addElement(
+                'L',
+                buildHatchAdder(GenerationEarthEngine.class)
+                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(5))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
+            .addElement('M', ofBlock(Blocks.beacon, 1))
+            .addElement('N', ofBlock(EnderIO.blockIngotStorageEndergy, 3))
+            .build();
     }
 
     @Override

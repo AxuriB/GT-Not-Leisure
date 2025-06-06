@@ -38,7 +38,6 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
         TEXTURE_OVERLAY_STEAMGATE_CONTROLLER);
     public static Textures.BlockIcons.CustomIcon STEAMGATE_CASING = new Textures.BlockIcons.CustomIcon(
         TEXTURE_STEAMGATE_CASING);
-    private static IStructureDefinition<Steamgate> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steamgate";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SG_STRUCTURE_FILE_PATH);
@@ -105,14 +104,11 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
 
     @Override
     public IStructureDefinition<Steamgate> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<Steamgate>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 21))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 22))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<Steamgate>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.MetaCasing, 21))
+            .addElement('B', ofBlock(BlockLoader.MetaCasing, 22))
+            .build();
     }
 
     @Override
