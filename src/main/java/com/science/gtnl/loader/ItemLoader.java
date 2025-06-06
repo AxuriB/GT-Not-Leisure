@@ -16,6 +16,7 @@ import com.science.gtnl.common.item.items.CircuitIntegratedPlus;
 import com.science.gtnl.common.item.items.FakeItemSiren;
 import com.science.gtnl.common.item.items.FuelRod.FuelRod;
 import com.science.gtnl.common.item.items.FuelRod.FuelRodDepleted;
+import com.science.gtnl.common.item.items.ItemSteamRocket;
 import com.science.gtnl.common.item.items.KFCFamily;
 import com.science.gtnl.common.item.items.PhysicsCape;
 import com.science.gtnl.common.item.items.RejectionRing;
@@ -32,6 +33,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class ItemLoader {
 
+    public static Item SteamRocket = new ItemSteamRocket();
     public static Item FakeItemSiren = new FakeItemSiren();
     public static Item TestItem = new TestItem();
     public static Item KFCFamily = new KFCFamily(20, 20, true);
@@ -72,6 +74,7 @@ public class ItemLoader {
         GTNLItemList.InfinityFuelRodDepleted.set(new ItemStack(InfinityFuelRodDepleted, 1));
         GTNLItemList.InfinityFuelRod.set(new ItemStack(InfinityFuelRod, 1));
 
+        IRegistry(SteamRocket, "SteamRocket");
         IRegistry(FakeItemSiren, "FakeItemSiren");
         IRegistry(TestItem, "TestItem");
         IRegistry(KFCFamily, "KFCFamily");

@@ -232,6 +232,7 @@ public enum GTNLItemList implements IItemContainer {
     PhysicsCape,
     TimeStopPocketWatch,
     MilledNaquadahEnriched,
+    SteamRocket,
 
     CircuitIntegratedPlus,
 

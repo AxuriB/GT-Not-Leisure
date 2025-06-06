@@ -25,6 +25,9 @@ Tooltip_PerfectOverclock=Machine can perform §clossless overclocking§7
 OverclockType.Description.01=Each overclock, time divided by
 OverclockType.Description.02=Power multiplied by
 
+Info_SteamNetwork_00=User %s has no global steam network.
+Info_SteamNetwork_01=User %s has %s%s%s Steam in their network.
+Info_SteamNetwork_02=User %s is currently in network of %s%s%s .
 Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s %% §r(Voltage Tier: §3%s§r, Base Voltage Tier: §3%s§r)
 
 HatchCustomFluid_00=Input fluids for multiblock machines
@@ -689,6 +692,11 @@ MetaItem.101.name=Compressed Steam Turbine
 tooltips.CompressedSteamTurbine_00=Infinite Throughtput
 MetaItem.102.name=Steel Turbine
 tooltips.SteelTurbine_00=Stable like a Table
+
+item.SteamRocket.name=Steam Rocket
+Tooltip_SteamRocket_00=Requires Molten Compressed Steam as fuel
+Tooltip_SteamRocket_01=You must be someone who plays Oxygen Not Included!
+entity.GalacticraftCore.SteamRocket.name=Steam Rocket
 
 item.TestItem.name=Test Item
 Tooltip_Testitem_00=If you see this Tooltip
