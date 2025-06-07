@@ -21,7 +21,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
@@ -96,28 +95,27 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                ofChain(
-                    buildSteamWirelessInput(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamBigInput(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamInput(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildHatchAdder(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(
-                            SteamHatchElement.InputBus_Steam,
-                            SteamHatchElement.OutputBus_Steam,
-                            InputBus,
-                            OutputBus)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.tCountCasing,
-                                StructureUtility.withChannel(
-                                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
+                    ofChain(
+                        buildSteamWirelessInput(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamBigInput(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamInput(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .atLeast(
+                                SteamHatchElement.InputBus_Steam,
+                                SteamHatchElement.OutputBus_Steam,
+                                InputBus,
+                                OutputBus)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> ++x.tCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamCrusher::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -126,8 +124,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
                                         t -> t.tierMachineCasing))))))
             .addElement(
                 'B',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamCrusher::getTierGearCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
@@ -136,8 +133,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
                         t -> t.tierGearCasing)))
             .addElement(
                 'C',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamCrusher::getTierFrameCasing,
                         ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
@@ -146,8 +142,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
                         t -> t.tierFrameCasing)))
             .addElement(
                 'D',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamCrusher::getTierPlatedCasing,
                         ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
@@ -156,8 +151,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
                         t -> t.tierPlatedCasing)))
             .addElement(
                 'E',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamCrusher::getTierBrickCasing,
                         ImmutableList
@@ -196,7 +190,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = 0;
+        tierMachine = -1;
         tierGearCasing = -1;
         tierMachineCasing = -1;
         tierFrameCasing = -1;

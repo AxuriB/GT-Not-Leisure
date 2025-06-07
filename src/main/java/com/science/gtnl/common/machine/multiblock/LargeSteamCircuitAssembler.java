@@ -20,7 +20,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
@@ -98,29 +97,28 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
             .addElement('A', ofBlock(BlockLoader.MetaCasing, 1))
             .addElement(
                 'B',
-                ofChain(
-                    buildSteamWirelessInput(LargeSteamCircuitAssembler.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamBigInput(LargeSteamCircuitAssembler.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamInput(LargeSteamCircuitAssembler.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildHatchAdder(LargeSteamCircuitAssembler.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(
-                            SteamHatchElement.InputBus_Steam,
-                            SteamHatchElement.OutputBus_Steam,
-                            InputBus,
-                            OutputBus,
-                            InputHatch)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.tCountCasing,
-                                StructureUtility.withChannel(
-                                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
+                    ofChain(
+                        buildSteamWirelessInput(LargeSteamCircuitAssembler.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamBigInput(LargeSteamCircuitAssembler.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamInput(LargeSteamCircuitAssembler.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(LargeSteamCircuitAssembler.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .atLeast(
+                                SteamHatchElement.InputBus_Steam,
+                                SteamHatchElement.OutputBus_Steam,
+                                InputBus,
+                                OutputBus,
+                                InputHatch)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> ++x.tCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamCircuitAssembler::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -130,8 +128,7 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
 
             .addElement(
                 'C',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamCircuitAssembler::getTierPipeCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
@@ -169,7 +166,7 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = 0;
+        tierMachine = -1;
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;

@@ -26,7 +26,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.common.machine.multiblock.LargeSteamFurnace;
@@ -114,29 +113,28 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
                     .toArray(String[][]::new))
             .addElement(
                 'A',
-                ofChain(
-                    buildSteamWirelessInput(SteamRockBreaker.class).casingIndex(10)
-                        .dot(1)
-                        .build(),
-                    buildSteamBigInput(SteamRockBreaker.class).casingIndex(10)
-                        .dot(1)
-                        .build(),
-                    buildSteamInput(SteamRockBreaker.class).casingIndex(10)
-                        .dot(1)
-                        .build(),
-                    buildHatchAdder(SteamRockBreaker.class)
-                        .atLeast(
-                            SteamHatchElement.InputBus_Steam,
-                            InputBus,
-                            SteamHatchElement.OutputBus_Steam,
-                            OutputBus)
-                        .casingIndex(10)
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.tCountCasing,
-                                StructureUtility.withChannel(
-                                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
+                    ofChain(
+                        buildSteamWirelessInput(SteamRockBreaker.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildSteamBigInput(SteamRockBreaker.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildSteamInput(SteamRockBreaker.class).casingIndex(10)
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(SteamRockBreaker.class)
+                            .atLeast(
+                                SteamHatchElement.InputBus_Steam,
+                                InputBus,
+                                SteamHatchElement.OutputBus_Steam,
+                                OutputBus)
+                            .casingIndex(10)
+                            .dot(1)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> ++x.tCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamFurnace::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -145,8 +143,7 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
                                         t -> t.tierMachineCasing))))))
             .addElement(
                 'B',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         SteamRockBreaker::getTierPipeCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
@@ -191,7 +188,7 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tierPipeCasing = -1;
         tierMachineCasing = -1;
-        tCountCasing = 0;
+        tCountCasing = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing >= 14 && checkHatches()) {

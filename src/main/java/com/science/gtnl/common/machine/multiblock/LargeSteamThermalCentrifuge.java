@@ -21,7 +21,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
@@ -98,28 +97,27 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                ofChain(
-                    buildSteamWirelessInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamBigInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildHatchAdder(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(
-                            SteamHatchElement.InputBus_Steam,
-                            SteamHatchElement.OutputBus_Steam,
-                            InputBus,
-                            OutputBus)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.tCountCasing,
-                                StructureUtility.withChannel(
-                                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
+                    ofChain(
+                        buildSteamWirelessInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamBigInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamInput(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(LargeSteamThermalCentrifuge.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .atLeast(
+                                SteamHatchElement.InputBus_Steam,
+                                SteamHatchElement.OutputBus_Steam,
+                                InputBus,
+                                OutputBus)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> ++x.tCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamThermalCentrifuge::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -128,8 +126,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
                                         t -> t.tierMachineCasing))))))
             .addElement(
                 'B',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamThermalCentrifuge::getTierPipeCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
@@ -138,8 +135,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
                         t -> t.tierPipeCasing)))
             .addElement(
                 'C',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamThermalCentrifuge::getTierFireboxCasing,
                         ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
@@ -148,8 +144,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
                         t -> t.tierFireboxCasing)))
             .addElement(
                 'D',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamThermalCentrifuge::getTierFrameCasing,
                         ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
@@ -187,7 +182,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = 0;
+        tierMachine = -1;
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tierFrameCasing = -1;

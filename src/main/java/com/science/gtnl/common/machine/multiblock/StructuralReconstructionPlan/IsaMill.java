@@ -144,7 +144,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
-        mGlassTier = 0;
+        mGlassTier = -1;
         mParallelTier = 0;
         mMillingBallBuses.clear();
 

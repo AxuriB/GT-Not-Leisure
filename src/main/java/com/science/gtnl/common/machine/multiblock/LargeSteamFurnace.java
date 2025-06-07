@@ -29,7 +29,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
@@ -71,28 +70,27 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                ofChain(
-                    buildSteamWirelessInput(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamBigInput(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamInput(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildHatchAdder(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(
-                            SteamHatchElement.InputBus_Steam,
-                            SteamHatchElement.OutputBus_Steam,
-                            InputBus,
-                            OutputBus)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.tCountCasing,
-                                StructureUtility.withChannel(
-                                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
+                    ofChain(
+                        buildSteamWirelessInput(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamBigInput(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamInput(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .atLeast(
+                                SteamHatchElement.InputBus_Steam,
+                                SteamHatchElement.OutputBus_Steam,
+                                InputBus,
+                                OutputBus)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> ++x.tCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamFurnace::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -101,8 +99,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
                                         t -> t.tierMachineCasing))))))
             .addElement(
                 'B',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamFurnace::getTierPipeCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
@@ -111,8 +108,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
                         t -> t.tierPipeCasing)))
             .addElement(
                 'C',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamFurnace::getTierFireboxCasing,
                         ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
@@ -121,8 +117,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
                         t -> t.tierFireboxCasing)))
             .addElement(
                 'D',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamFurnace::getTierFrameCasing,
                         ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
@@ -131,8 +126,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
                         t -> t.tierFrameCasing)))
             .addElement(
                 'E',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamFurnace::getTierPlatedCasing,
                         ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
@@ -141,8 +135,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
                         t -> t.tierPlatedCasing)))
             .addElement(
                 'F',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamFurnace::getTierBrickCasing,
                         ImmutableList
@@ -153,8 +146,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             .addElement('G', ofBlock(Blocks.stonebrick, 0))
             .addElement(
                 'H',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamFurnace::getTierAdvancedCasing,
                         ImmutableList.of(Pair.of(BWBlockCasings, 32066), Pair.of(BWBlockCasings, 32071)),
@@ -244,7 +236,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = 0;
+        tierMachine = -1;
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tierFrameCasing = -1;

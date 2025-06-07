@@ -163,7 +163,7 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
-        mGlassTier = 0;
+        mGlassTier = -1;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {

@@ -21,7 +21,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.RecipeRegister;
@@ -95,30 +94,29 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                ofChain(
-                    buildSteamWirelessInput(SteamCracking.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamBigInput(SteamCracking.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildSteamInput(SteamCracking.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .build(),
-                    buildHatchAdder(SteamCracking.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(
-                            SteamHatchElement.InputBus_Steam,
-                            SteamHatchElement.OutputBus_Steam,
-                            InputBus,
-                            OutputBus,
-                            InputHatch,
-                            OutputHatch)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.tCountCasing,
-                                StructureUtility.withChannel(
-                                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
+                    ofChain(
+                        buildSteamWirelessInput(SteamCracking.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamBigInput(SteamCracking.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildSteamInput(SteamCracking.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .build(),
+                        buildHatchAdder(SteamCracking.class).casingIndex(getCasingTextureID())
+                            .dot(1)
+                            .atLeast(
+                                SteamHatchElement.InputBus_Steam,
+                                SteamHatchElement.OutputBus_Steam,
+                                InputBus,
+                                OutputBus,
+                                InputHatch,
+                                OutputHatch)
+                            .buildAndChain(
+                                onElementPass(
+                                    x -> ++x.tCountCasing,
                                     ofBlocksTiered(
                                         SteamCracking::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -127,8 +125,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
                                         t -> t.tierMachineCasing))))))
             .addElement(
                 'B',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         SteamCracking::getTierFireboxCasing,
                         ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
@@ -137,8 +134,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
                         t -> t.tierFireboxCasing)))
             .addElement(
                 'C',
-                StructureUtility.withChannel(
-                    "machine_casing",
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         SteamCracking::getTierPlatedCasing,
                         ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
@@ -176,7 +172,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = 0;
+        tierMachine = -1;
         tierFireboxCasing = -1;
         tierMachineCasing = -1;
         tierPlatedCasing = -1;

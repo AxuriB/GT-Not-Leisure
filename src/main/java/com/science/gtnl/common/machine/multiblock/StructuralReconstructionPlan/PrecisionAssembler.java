@@ -173,7 +173,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
             .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
             .addElement(
                 'B',
-                withChannel(
+                StructureUtility.withChannel(
                     "machine_casing",
                     ofBlocksTiered(
                         PrecisionAssembler::getMachineTier,
@@ -295,7 +295,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
         tCountCasing = 0;
         casingTier = -1;
         machineTier = -1;
-        mGlassTier = 0;
+        mGlassTier = -1;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
             return false;
