@@ -21,7 +21,6 @@ import com.science.gtnl.common.render.item.ItemMeteorMinerMachineRender;
 import com.science.gtnl.common.render.item.ItemPlayerDollRenderer;
 import com.science.gtnl.common.render.item.ItemSteamRocketRenderer;
 import com.science.gtnl.common.render.item.ItemTwilightSwordRender;
-import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
 import com.science.gtnl.common.render.tile.MeteorMinerRenderer;
 import com.science.gtnl.common.render.tile.PlayerDollRenderer;
 import com.science.gtnl.common.render.tile.RealArtificialStarRender;
@@ -39,7 +38,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import fox.spiteful.avaritia.render.FancyHaloRenderer;
 import gregtech.api.GregTechAPI;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -80,7 +78,6 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(BasicItems.MetaItem, new FancyHaloRenderer());
 
         if (MainConfig.enableDebugMode) {
-            ClientRegistry.bindTileEntitySpecialRenderer(BaseMetaTileEntity.class, new MeteorMinerMachineRender());
             MinecraftForgeClient.registerItemRenderer(
                 Item.getItemFromBlock(GregTechAPI.sBlockMachines),
                 new ItemMeteorMinerMachineRender());

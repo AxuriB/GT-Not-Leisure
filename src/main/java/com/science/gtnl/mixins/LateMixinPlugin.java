@@ -30,10 +30,6 @@ public class LateMixinPlugin implements ILateMixinLoader {
         mixins.add("Gregtech.MTEDigitalTankBase_Mixin");
         mixins.add("Gregtech.MTEHatchAccessor");
 
-        if (MainConfig.enableDebugMode) {
-            mixins.add("Gregtech.MachineBlockRenderer_Mixin");
-        }
-
         mixins.add("Bartwork.BartworkLoad_Head_Mixin");
         mixins.add("Bartwork.WerkstoffLoader_Mixin");
         mixins.add("Bartwork.Werkstoff_Mixin");
