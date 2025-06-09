@@ -69,6 +69,7 @@ public class MainConfig {
     public static boolean enableDeleteRecipe = true;
     public static boolean enableAprilFoolRecipe = false;
     public static boolean enableShowDelRecipeTitle = true;
+    public static boolean enableSomethingRecipe = true;
 
     // Tickrate
     public static float defaultTickrate = 20.0f;
@@ -254,6 +255,10 @@ public class MainConfig {
         enableDeleteRecipe = config
             .get(CATEGORY_RECIPE, "enableDeleteRecipe", enableDeleteRecipe, "Enable Delete Recipe")
             .getBoolean(enableDeleteRecipe);
+
+        enableSomethingRecipe = config
+            .get(CATEGORY_RECIPE, "enableSomethingRecipe", enableSomethingRecipe, "Enable Something Cheap Recipe")
+            .getBoolean(enableSomethingRecipe);
 
         enableAprilFoolRecipe = config
             .get(CATEGORY_RECIPE, "enableAprilFoolRecipe", enableAprilFoolRecipe, "Force enable April Fool's recipe")

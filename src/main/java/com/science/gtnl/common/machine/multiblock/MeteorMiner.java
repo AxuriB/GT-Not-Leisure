@@ -49,6 +49,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
+import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -63,6 +64,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ITESRProvider;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -85,7 +87,8 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implements ISurvivalConstructable {
+public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
+    implements ISurvivalConstructable, ITESRProvider {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String STRUCTURE_PIECE_TIER2 = "tier2";
@@ -128,6 +131,13 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
             return true;
         } else {
             return super.renderInWorld(aWorld, x, y, z, block, renderer);
+        }
+    }
+
+    @Override
+    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+        if (MainConfig.enableDebugMode) {
+            MeteorMinerMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
         }
     }
 
@@ -465,7 +475,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        renderAngle += 15f;
+        renderAngle += 1f;
     }
 
     public void reset() {

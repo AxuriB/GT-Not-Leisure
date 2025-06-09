@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 
 import com.dreammaster.gthandler.CustomItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.IRecipePool;
 
 import gregtech.api.enums.ItemList;
@@ -188,11 +189,6 @@ public class CraftingTableRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenCarbide, 1L), 'B',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Ultimet, 1L), 'C',
                 GregtechItemList.Casing_CuttingFactoryFrame.get(1L), 'D', ItemList.Electric_Motor_IV.get(1L) });
-
-        addCraftingRecipe(
-            tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),
-            new Object[] { "ABA", "CDC", "ABA", 'A', "circuitAdvanced", 'B', ItemList.Hatch_Maintenance.get(1L), 'C',
-                ItemList.Robot_Arm_HV.get(1L), 'D', ItemList.Hull_HV.get(1L) });
 
         addCraftingRecipe(
             GTNLItemList.NinefoldInputHatchEV.get(1),
@@ -554,5 +550,12 @@ public class CraftingTableRecipes implements IRecipePool {
         addShapelessCraftingRecipe(
             tectech.thing.CustomItemList.Machine_DebugGenny.get(1),
             new Object[] { GTNLItemList.DebugEnergyHatch.get(1) });
+
+        if (MainConfig.enableSomethingRecipe) {
+            addCraftingRecipe(
+                tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),
+                new Object[] { "ABA", "CDC", "ABA", 'A', "circuitAdvanced", 'B', ItemList.Hatch_Maintenance.get(1L),
+                    'C', ItemList.Robot_Arm_HV.get(1L), 'D', ItemList.Hull_HV.get(1L) });
+        }
     }
 }
