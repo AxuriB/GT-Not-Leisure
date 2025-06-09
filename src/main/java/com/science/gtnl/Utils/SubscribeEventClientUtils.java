@@ -4,6 +4,7 @@ import static com.science.gtnl.common.packet.ClientSoundHandler.PLAYING_SOUNDS;
 import static com.science.gtnl.common.packet.ClientTitleDisplayHandler.*;
 import static com.science.gtnl.common.render.PlayerDollRenderManager.*;
 import static com.science.gtnl.common.render.PlayerDollRenderManagerClient.textureCache;
+import static com.science.gtnl.common.render.tile.MeteorMinerMachineRender.visualStateMap;
 
 import java.util.Map;
 import java.util.Random;
@@ -152,6 +153,7 @@ public class SubscribeEventClientUtils {
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         textureCache.clear();
+        visualStateMap.clear();
     }
 
     @SideOnly(Side.CLIENT)

@@ -29,6 +29,7 @@ public class LateMixinPlugin implements ILateMixinLoader {
         mixins.add("Gregtech.MTEBetterJukebox_Mixin");
         mixins.add("Gregtech.MTEDigitalTankBase_Mixin");
         mixins.add("Gregtech.MTEHatchAccessor");
+        mixins.add("Gregtech.BaseMetaTileEntity_Mixin");
 
         mixins.add("Bartwork.BartworkLoad_Head_Mixin");
         mixins.add("Bartwork.WerkstoffLoader_Mixin");
@@ -54,7 +55,6 @@ public class LateMixinPlugin implements ILateMixinLoader {
         }
 
         if (!Mods.NHUtilities.isModLoaded()) {
-            mixins.add("Gregtech.BaseMetaTileEntityAcceleration_Mixin");
             mixins.add("Gregtech.MTEAdvAssLineAcceleration_Mixin");
             mixins.add("Gregtech.ResearchStationAcceleration_Mixin");
             mixins.add("EnderIO.AccelerateEnergyReceive_Mixin");

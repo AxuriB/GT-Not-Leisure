@@ -2,40 +2,53 @@ package com.science.gtnl.mixins.late.Gregtech;
 
 import static com.science.gtnl.ScienceNotLeisure.LOG;
 
+import net.minecraft.util.AxisAlignedBB;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.api.ITileEntityTickAcceleration;
 import com.science.gtnl.api.mixinHelper.IAccelerationState;
+import com.science.gtnl.common.machine.multiblock.MeteorMiner;
+import com.science.gtnl.config.MainConfig;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ggfab.mte.MTEAdvAssLine;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.CommonBaseMetaTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import tectech.thing.metaTileEntity.multi.MTEResearchStation;
 
 @SuppressWarnings("UnusedMixin")
 @Mixin(value = BaseMetaTileEntity.class, remap = false)
-public abstract class BaseMetaTileEntityAcceleration_Mixin extends CommonBaseMetaTileEntity
-    implements ITileEntityTickAcceleration {
+public abstract class BaseMetaTileEntity_Mixin extends CommonBaseMetaTileEntity implements ITileEntityTickAcceleration {
 
-    @Shadow(remap = false)
+    @Shadow
+    protected MetaTileEntity mMetaTileEntity;
+
+    @Shadow
     public abstract int getProgress();
 
-    @Shadow(remap = false)
+    @Shadow
     public abstract int getMaxProgress();
 
-    @Shadow(remap = false)
+    @Shadow
     public abstract IMetaTileEntity getMetaTileEntity();
 
-    @Shadow(remap = false)
+    @Shadow
     public abstract boolean isActive();
 
     @Override
     @SuppressWarnings("AddedMixinMembersNamePattern")
     public boolean tickAcceleration(int tickAcceleratedRate) {
+        if (Mods.NHUtilities.isModLoaded()) {
+            return false;
+        }
         if (this.isActive()) {
             // safely calling
             int currentProgress = this.getProgress();
@@ -102,5 +115,21 @@ public abstract class BaseMetaTileEntityAcceleration_Mixin extends CommonBaseMet
             }
         }
         return true; // this for not acceleration while machine is shutdown
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox() {
+        if (mMetaTileEntity instanceof MeteorMiner && MainConfig.enableDebugMode) {
+            return AxisAlignedBB.getBoundingBox(
+                this.xCoord - 256,
+                this.yCoord - 256,
+                this.zCoord - 256,
+                this.xCoord + 256,
+                this.yCoord + 256,
+                this.zCoord + 256);
+        }
+
+        return super.getRenderBoundingBox();
     }
 }
