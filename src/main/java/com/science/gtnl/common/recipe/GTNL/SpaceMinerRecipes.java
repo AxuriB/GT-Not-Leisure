@@ -1315,6 +1315,5 @@ public class SpaceMinerRecipes implements IRecipePool {
             .duration(400)
             .eut(TierEU.RECIPE_UV)
             .addTo(SMR);
-
     }
 }
