@@ -14,7 +14,6 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
 import com.science.gtnl.common.entity.EntitySteamRocket;
-import com.science.gtnl.common.item.BasicItems;
 import com.science.gtnl.common.render.entity.SteamRocketRender;
 import com.science.gtnl.common.render.item.ItemBlockArtificialStarRender;
 import com.science.gtnl.common.render.item.ItemMeteorMinerMachineRender;
@@ -75,7 +74,7 @@ public class ClientProxy extends CommonProxy {
             new RenderEternalGregTechWorkshop());
 
         MinecraftForgeClient.registerItemRenderer(ItemLoader.TestItem, new FancyHaloRenderer());
-        MinecraftForgeClient.registerItemRenderer(BasicItems.MetaItem, new FancyHaloRenderer());
+        MinecraftForgeClient.registerItemRenderer(ItemLoader.MetaItem, new FancyHaloRenderer());
 
         if (MainConfig.enableDebugMode) {
             MinecraftForgeClient.registerItemRenderer(

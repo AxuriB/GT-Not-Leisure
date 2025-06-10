@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -19,6 +20,7 @@ public class FakeItemSiren extends Item {
         this.setUnlocalizedName("FakeItemSiren");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "FakeItemSiren");
+        GameRegistry.registerItem(this, "FakeItemSiren");
         GTNLItemList.FakeItemSiren.set(new ItemStack(this, 1));
     }
 

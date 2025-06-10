@@ -29,6 +29,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 
 import bartworks.common.items.ItemCircuitProgrammer;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
@@ -60,6 +61,7 @@ public class CircuitIntegratedPlus extends Item implements INetworkUpdatableItem
         this.setMaxDamage(0);
         this.setUnlocalizedName("CircuitIntegratedPlus");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
+        GameRegistry.registerItem(this, "CircuitIntegratedPlus");
 
         GTNLItemList.CircuitIntegratedPlus.set(this);
 

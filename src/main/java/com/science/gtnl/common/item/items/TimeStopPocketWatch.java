@@ -16,6 +16,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.TimeStopManager;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,6 +29,7 @@ public class TimeStopPocketWatch extends Item {
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "TimeStopPocketWatch");
         this.setMaxStackSize(1);
+        GameRegistry.registerItem(this, "TimeStopPocketWatch");
         GTNLItemList.TimeStopPocketWatch.set(new ItemStack(this, 1));
     }
 

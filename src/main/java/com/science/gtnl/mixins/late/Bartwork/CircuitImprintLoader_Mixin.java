@@ -1,7 +1,5 @@
 package com.science.gtnl.mixins.late.Bartwork;
 
-import static com.science.gtnl.common.item.BasicItems.MetaItem;
-
 import net.minecraft.item.ItemStack;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.science.gtnl.loader.ItemLoader;
 import com.science.gtnl.loader.RecipeLoader;
 
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
@@ -70,9 +69,10 @@ public abstract class CircuitImprintLoader_Mixin {
                     in[index] = original.mInputs[index].copy();
                     in[index].stackSize *= 16;
 
-                    if (in[index].getItem() != MetaItem && !(in[index].isItemEqual(
-                        BWMetaItems.getCircuitParts()
-                            .getStack(3)))
+                    if (in[index].getItem() != ItemLoader.MetaItem
+                        && !(in[index].isItemEqual(
+                            BWMetaItems.getCircuitParts()
+                                .getStack(3)))
                         && (in[index].stackSize > in[index].getItem()
                             .getItemStackLimit() || in[index].stackSize > in[index].getMaxStackSize())) {
                         in[index].stackSize = in[index].getMaxStackSize();

@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import com.science.gtnl.Utils.item.MetaItemStackUtils;
+import com.science.gtnl.loader.ItemLoader;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,15 +25,15 @@ import fox.spiteful.avaritia.render.IHaloRenderItem;
 
 /**
  * An ItemStack Generator used Meta Item System.
- * <li>Use {@link ItemAdder#initItem(String, int)} to create your Item at ItemList01.
+ * <li>Use {@link MetaItemAdder#initItem(String, int)} to create your Item at ItemList01.
  *
  */
-public class ItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
+public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
 
     /**
      * An Item Map for managing basic items
      */
-    // public static Map<String, ItemAdder> Item01Map = new HashMap<>();
+    // public static Map<String, MetaItemAdder> Item01Map = new HashMap<>();
 
     /**
      * A Set contains the meta value that has been used.
@@ -46,7 +47,7 @@ public class ItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
     /**
      * Create the basic item MetaItem.
      */
-    public ItemAdder(String aName, String aMetaName, CreativeTabs aCreativeTabs) {
+    public MetaItemAdder(String aName, String aMetaName, CreativeTabs aCreativeTabs) {
         super(aName, aMetaName, aCreativeTabs);
         this.unlocalizedName = aMetaName;
     }
@@ -61,7 +62,7 @@ public class ItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
      */
     public static ItemStack initItem(String aName, int aMeta) {
 
-        return MetaItemStackUtils.initMetaItemStack(aName, aMeta, BasicItems.MetaItem, MetaSet);
+        return MetaItemStackUtils.initMetaItemStack(aName, aMeta, ItemLoader.MetaItem, MetaSet);
 
     }
 
@@ -135,7 +136,7 @@ public class ItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List aList) {
         for (int Meta : MetaSet) {
-            aList.add(new ItemStack(BasicItems.MetaItem, 1, Meta));
+            aList.add(new ItemStack(ItemLoader.MetaItem, 1, Meta));
         }
     }
 

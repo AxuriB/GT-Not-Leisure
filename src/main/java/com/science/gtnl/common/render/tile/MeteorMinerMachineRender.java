@@ -108,7 +108,6 @@ public class MeteorMinerMachineRender {
             if (blockBelow != null && !blockBelow.isAir(world, belowX, blockY, belowZ)) {
                 AxisAlignedBB aabb = blockBelow.getCollisionBoundingBoxFromPool(world, belowX, blockY, belowZ);
                 if (aabb != null) {
-                    double blockTop = aabb.maxY;
                     if (renderY <= aabb.maxY + 0.1) {
                         isSupported = true;
                     }

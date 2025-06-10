@@ -19,6 +19,7 @@ import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.entity.EntitySteamRocket;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
@@ -38,6 +39,7 @@ public class ItemSteamRocket extends Item implements IHoldableItem {
         this.setMaxStackSize(1);
         this.setTextureName("arrow");
         this.setUnlocalizedName("SteamRocket");
+        GameRegistry.registerItem(this, "SteamRocket");
         GTNLItemList.SteamRocket.set(new ItemStack(this, 1));
     }
 
