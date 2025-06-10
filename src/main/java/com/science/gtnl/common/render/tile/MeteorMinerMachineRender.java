@@ -36,13 +36,16 @@ import gtneioreplugin.plugin.block.ModBlocks;
 @SideOnly(Side.CLIENT)
 public class MeteorMinerMachineRender {
 
-    public static final float GRAVITY = -0.001f;
-    public static final float BOUNCE_DAMPING = 0.9f;
+    public static float GRAVITY = -0.001f;
+    public static float BOUNCE_DAMPING = 0.9f;
+    public static float DAMPING = 0.98f;
+    public static double PUSH_RADIUS = 0.8;
+    public static float IMPULSE_STRENGTH = 0.04f;
 
-    public static final ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
+    public static ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
 
-    public static final Map<MeteorMiner, VisualState> visualStateMap = new WeakHashMap<>();
-    public static final Map<String, Block> blocks = new HashMap<>();
+    public static Map<MeteorMiner, VisualState> visualStateMap = new WeakHashMap<>();
+    public static Map<String, Block> blocks = new HashMap<>();
 
     static {
         blocks.putAll(ModBlocks.blocks);
@@ -84,9 +87,6 @@ public class MeteorMinerMachineRender {
 
         double dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-        final double PUSH_RADIUS = 0.8;
-        final float IMPULSE_STRENGTH = 0.04f;
-
         if (dist > 1e-4 && dist < PUSH_RADIUS) {
             dx /= dist;
             dz /= dist;
@@ -126,11 +126,10 @@ public class MeteorMinerMachineRender {
         state.offsetY += state.velocityY;
         state.rotation += state.angularVelocity;
 
-        float damping = 0.98f;
-        state.velocityX *= damping;
-        state.velocityZ *= damping;
-        state.angularVelocity *= damping;
-        state.velocityY *= damping;
+        state.velocityX *= DAMPING;
+        state.velocityZ *= DAMPING;
+        state.angularVelocity *= DAMPING;
+        state.velocityY *= DAMPING;
 
         if (tileEntity.getYCoord() + state.offsetY < -128 || state.offsetZ > 256
             || state.offsetZ < -256
@@ -181,7 +180,7 @@ public class MeteorMinerMachineRender {
             .getTextureManager()
             .bindTexture(new ResourceLocation(MODID, "models/spaceLayer.png"));
 
-        final float scale = 0.01f * 17.5f;
+        float scale = 0.01f * 17.5f;
         GL11.glScalef(scale, scale, scale);
 
         GL11.glColor4f(1, 1, 1, 1);
@@ -281,7 +280,7 @@ public class MeteorMinerMachineRender {
         }
     }
 
-    public static final class VisualState {
+    public static class VisualState {
 
         float offsetX = 0;
         float offsetZ = 0;

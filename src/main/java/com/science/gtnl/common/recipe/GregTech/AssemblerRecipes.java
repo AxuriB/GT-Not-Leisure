@@ -1,7 +1,7 @@
 package com.science.gtnl.common.recipe.GregTech;
 
 import static bartworks.common.loaders.ItemRegistry.bw_realglas;
-import static com.science.gtnl.loader.IScriptLoader.missing;
+import static com.dreammaster.scripts.IScriptLoader.missing;
 import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.*;
 

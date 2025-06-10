@@ -1,7 +1,7 @@
 package com.science.gtnl.common.recipe.GTNL;
 
+import static com.dreammaster.scripts.IScriptLoader.missing;
 import static com.science.gtnl.Utils.item.TextHandler.texter;
-import static com.science.gtnl.loader.IScriptLoader.missing;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 

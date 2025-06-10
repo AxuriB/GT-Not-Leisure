@@ -1,6 +1,6 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import static com.science.gtnl.loader.IScriptLoader.missing;
+import static com.dreammaster.scripts.IScriptLoader.missing;
 import static gregtech.api.enums.Mods.*;
 
 import net.minecraft.init.Blocks;

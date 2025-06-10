@@ -1,6 +1,6 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import static com.science.gtnl.loader.IScriptLoader.missing;
+import static com.dreammaster.scripts.IScriptLoader.missing;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.OpenBlocks;
 import static gregtech.api.util.GTModHandler.getModItem;

@@ -2,7 +2,6 @@ package com.science.gtnl.common.item.items;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static ggfab.GGItemList.SingleUseScrewdriver;
-import static gregtech.GTMod.GT_FML_LOGGER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +31,12 @@ import bartworks.common.items.ItemCircuitProgrammer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.net.GTPacketUpdateItem;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
 import ic2.core.IC2;
@@ -224,20 +220,6 @@ public class CircuitIntegratedPlus extends Item implements INetworkUpdatableItem
         super.registerIcons(aIconRegister);
         for (int i = 0; i < mIconDamage.length; i++) {
             mIconDamage[i] = aIconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "CircuitIntegratedPlus/" + i);
-        }
-        if (GregTechAPI.sPostloadFinished) {
-            GTLog.out.println("GTMod: Starting Item Icon Load Phase");
-            GT_FML_LOGGER.info("GTMod: Starting Item Icon Load Phase");
-            GregTechAPI.sItemIcons = aIconRegister;
-            for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
-                try {
-                    tRunnable.run();
-                } catch (Throwable e) {
-                    GTMod.GT_FML_LOGGER.error("Error registering icons", e);
-                }
-            }
-            GTLog.out.println("GTMod: Finished Item Icon Load Phase");
-            GT_FML_LOGGER.info("GTMod: Finished Item Icon Load Phase");
         }
     }
 

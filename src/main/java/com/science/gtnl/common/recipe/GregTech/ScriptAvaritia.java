@@ -1,5 +1,6 @@
 package com.science.gtnl.common.recipe.GregTech;
 
+import static com.dreammaster.scripts.IScriptLoader.missing;
 import static com.science.gtnl.Utils.enums.Mods.ScienceNotLeisure;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -11,9 +12,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import com.dreammaster.gthandler.CustomItemList;
+import com.dreammaster.scripts.IScriptLoader;
 import com.reavaritia.ReAvaItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.loader.IScriptLoader;
 
 import fox.spiteful.avaritia.crafting.ExtremeCraftingManager;
 import fox.spiteful.avaritia.items.LudicrousItems;
