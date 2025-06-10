@@ -45,8 +45,7 @@ public class MainConfig {
         + "infinity_sword";
     public static final String SUB_CATEGORY_CHRONARCHS_CLOCK = CATEGORY_RE_AVARITIA + Configuration.CATEGORY_SPLITTER
         + "chronarch_clock";
-    public static final String SUB_CATEGORY_METEOR_PARADIGM = CATEGORY_BLOOD_MAGIC + Configuration.CATEGORY_SPLITTER
-        + "meteor_paradigm";
+    public static final String SUB_CATEGORY_METEOR = CATEGORY_BLOOD_MAGIC + Configuration.CATEGORY_SPLITTER + "meteor";
 
     // Machine
     public static boolean enableRecipeOutputChance = true;
@@ -92,6 +91,7 @@ public class MainConfig {
     public static int chronarchsClockCooldown = 200;
 
     // BloodMagic
+    public static boolean enableMeteorSetBlockOptimize = false;
     public static int meteorParadigmChunkSize = 1024;
     public static int meteorParadigmBatchUpdateInterval = 2048;
 
@@ -363,7 +363,7 @@ public class MainConfig {
         // Blood Magic
         meteorParadigmChunkSize = config
             .get(
-                SUB_CATEGORY_METEOR_PARADIGM,
+                SUB_CATEGORY_METEOR,
                 "chunkSize",
                 meteorParadigmChunkSize,
                 "Set the chunk size for meteor paradigm operations (default: 1024)")
@@ -371,11 +371,20 @@ public class MainConfig {
 
         meteorParadigmBatchUpdateInterval = config
             .get(
-                SUB_CATEGORY_METEOR_PARADIGM,
+                SUB_CATEGORY_METEOR,
                 "batchUpdateInterval",
                 meteorParadigmBatchUpdateInterval,
                 "Set the batch update interval for meteor paradigm operations (default: 2048)")
             .getInt(meteorParadigmBatchUpdateInterval);
+
+        enableMeteorSetBlockOptimize = config
+            .get(
+                SUB_CATEGORY_METEOR,
+                "enableMeteorSetBlockOptimize",
+                enableMeteorSetBlockOptimize,
+                "Enable multithreaded optimization for setting meteor blocks.\n"
+                    + "This may improve performance but is not guaranteed to be stable.")
+            .getBoolean(enableMeteorSetBlockOptimize);
 
         // Not Enough Items
         enableSpecialCheatIcon = config

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.loader.IRecipePool;
 
 import fox.spiteful.avaritia.items.LudicrousItems;
 import gregtech.api.enums.ItemList;
@@ -23,11 +24,12 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 
-public class TCRecipePool {
+public class TCRecipePool implements IRecipePool {
 
     public static InfusionRecipe infusionRecipeTimeStopPocketWatch;
 
-    public static void loadRecipes() {
+    @Override
+    public void loadRecipes() {
 
         ItemStack CreativeCapacitorBank = GTModHandler.getModItem(Mods.EnderIO.ID, "blockCapBank", 1, 0);
         NBTTagCompound CreativeCapacitorBankType = CreativeCapacitorBank.getTagCompound();

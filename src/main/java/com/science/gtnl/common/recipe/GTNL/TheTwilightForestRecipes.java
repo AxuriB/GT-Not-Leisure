@@ -9,10 +9,10 @@ import net.minecraft.item.ItemStack;
 
 import com.dreammaster.item.NHItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.loader.IRecipePool;
 import com.science.gtnl.loader.RecipeRegister;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -28,7 +28,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
     @Override
     public void loadRecipes() {
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.NagaBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 1),
@@ -40,7 +40,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.LichBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 2),
@@ -55,7 +55,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.MinotaurBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 5),
@@ -69,7 +69,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.HydraBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 0),
@@ -85,7 +85,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.KnightPhantomBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 6),
@@ -95,7 +95,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.UrGhastBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 3),
@@ -110,7 +110,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.AlphaYetiBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 7),
@@ -122,7 +122,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.SnowQueenBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 4),
@@ -140,7 +140,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.GiantBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "tile.GiantCobble", 8),
@@ -156,7 +156,7 @@ public class TheTwilightForestRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.TwilightForestBook.get(1)))
             .itemOutputs(
                 setStackSize(new ItemStack(Items.book, 1), 262144),

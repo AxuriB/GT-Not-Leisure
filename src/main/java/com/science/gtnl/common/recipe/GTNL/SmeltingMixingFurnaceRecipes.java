@@ -2,17 +2,13 @@ package com.science.gtnl.common.recipe.GTNL;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.common.materials.MaterialPool;
 import com.science.gtnl.loader.IRecipePool;
 import com.science.gtnl.loader.RecipeRegister;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -26,7 +22,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
     @Override
     public void loadRecipes() {
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
@@ -37,7 +33,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(15)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Gold.getMolten(144 * 7), Materials.Copper.getMolten(144 * 3))
             .fluidOutputs(MaterialsAlloy.TUMBAGA.getFluidStack(1440))
@@ -46,7 +42,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(15)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
@@ -57,7 +53,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(15)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.Lead.getMolten(144 * 4),
@@ -69,7 +65,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(15)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3),
@@ -86,7 +82,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(8))
             .fluidInputs(
                 Materials.Oxygen.getGas(77000),
@@ -103,7 +99,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(15)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Tin.getMolten(144 * 5),
@@ -116,7 +112,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 12))
@@ -127,7 +123,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(60)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Zinc.getMolten(144), Materials.Thorium.getMolten(144))
             .fluidOutputs(GGMaterial.zincThoriumAlloy.getMolten(288))
@@ -136,7 +132,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
@@ -147,7 +143,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Iron.getMolten(144 * 6),
@@ -160,7 +156,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Oxygen.getGas(16000),
@@ -175,7 +171,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Nickel.getMolten(144 * 251),
@@ -188,7 +184,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Oxygen.getGas(16000),
@@ -203,7 +199,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Oxygen.getGas(16000),
@@ -218,7 +214,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 2),
@@ -236,7 +232,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Tungsten.getMolten(144 * 2), Materials.Tantalum.getMolten(144 * 23))
             .fluidOutputs(MaterialsAlloy.TANTALLOY_60.getFluidStack(3600))
@@ -245,7 +241,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
@@ -256,7 +252,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Titanium.getMolten(144), Materials.Uranium.getMolten(144 * 9))
             .fluidOutputs(MaterialsAlloy.STABALLOY.getFluidStack(1440))
@@ -265,7 +261,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.Titanium.getMolten(144 * 150),
@@ -278,7 +274,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 2))
@@ -292,7 +288,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Iron.getMolten(144 * 10),
@@ -305,7 +301,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Iron.getMolten(144 * 23),
@@ -318,7 +314,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Chrome.getMolten(144 * 8),
@@ -331,7 +327,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Nickel.getMolten(144 * 14),
@@ -344,7 +340,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Iron.getMolten(144 * 3),
@@ -358,7 +354,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Iron.getMolten(144 * 9),
@@ -373,7 +369,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Trinium.getMolten(144 * 5), Materials.Naquadah.getMolten(144 * 9))
             .fluidOutputs(MaterialsAlloy.TRINIUM_NAQUADAH.getFluidStack(2106))
@@ -382,7 +378,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(960)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Copper.getMolten(144),
@@ -395,7 +391,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(960)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 7))
@@ -406,7 +402,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Cobalt.getMolten(144 * 7),
@@ -419,7 +415,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Iron.getMolten(144 * 16),
@@ -432,7 +428,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedAir, 1),
@@ -445,7 +441,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Yttrium.getMolten(144 * 2),
@@ -459,7 +455,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(
                 Materials.Cobalt.getMolten(144),
@@ -474,7 +470,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 9),
@@ -490,7 +486,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cadmium, 10))
@@ -505,7 +501,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7680)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(
                 Materials.Iron.getMolten(144 * 47),
@@ -520,7 +516,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7680)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Titanium.getMolten(144 * 3), Materials.Nickel.getMolten(144 * 2))
             .fluidOutputs(MaterialsAlloy.NITINOL_60.getFluidStack(720))
@@ -529,7 +525,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7680)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 4),
@@ -545,7 +541,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7680)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTUtility.copyAmountUnsafe(225, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1)),
@@ -570,7 +566,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7680)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Barium.getMolten(144 * 2),
@@ -584,7 +580,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 14))
@@ -595,7 +591,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(
                 Materials.Chrome.getMolten(144 * 13),
@@ -611,7 +607,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Lithium.getMolten(144),
@@ -625,7 +621,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 25))
@@ -646,7 +642,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 MaterialsElements.getInstance().GERMANIUM.getFluidStack(144 * 3),
@@ -658,7 +654,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Trinium.getMolten(144 * 36),
@@ -678,7 +674,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(122880)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(5),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3),
@@ -698,7 +694,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(122880)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 3),
@@ -722,7 +718,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(122880)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(8))
             .fluidInputs(
                 Materials.Chrome.getMolten(144 * 208),
@@ -746,7 +742,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(122880)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Nickel.getMolten(144 * 2),
@@ -760,7 +756,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(491520)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 17),
@@ -774,7 +770,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(491520)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 4))
@@ -793,7 +789,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(491520)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTUtility.copyAmountUnsafe(105, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1)),
@@ -821,7 +817,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTUtility.copyAmountUnsafe(450, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1)))
@@ -844,7 +840,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
@@ -860,7 +856,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 10),
@@ -885,7 +881,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7864320)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().RUTHENIUM.getFluid(), 144),
@@ -900,7 +896,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7864320)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTUtility.copyAmountUnsafe(509, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1)),
@@ -924,7 +920,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7864320)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(8))
             .fluidInputs(
                 Materials.Iron.getMolten(144 * 2625),
@@ -947,7 +943,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(31457280)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().RUTHENIUM.getFluid(), 144 * 2),
@@ -958,7 +954,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().ZIRCONIUM.getFluid(), 144 * 34),
@@ -971,7 +967,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().ZIRCONIUM.getFluid(), 144 * 34),
@@ -985,7 +981,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.Adamantium.getMolten(144 * 5),
@@ -997,7 +993,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Titanium.getMolten(144 * 5),
@@ -1011,7 +1007,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7680)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(
                 Materials.Titanium.getMolten(144 * 71),
@@ -1030,7 +1026,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(491520)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.NaquadahEnriched.getMolten(144 * 8),
@@ -1043,7 +1039,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(7864320)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Copper.getMolten(144), Materials.Redstone.getMolten(576))
             .fluidOutputs(Materials.RedAlloy.getMolten(144))
@@ -1052,7 +1048,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(16)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.Redstone.getMolten(288),
@@ -1064,7 +1060,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(16)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Nickel.getMolten(144 * 4), Materials.Chrome.getMolten(144))
             .fluidOutputs(Materials.Nichrome.getMolten(144 * 5))
@@ -1073,7 +1069,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.Iron.getMolten(144),
@@ -1085,7 +1081,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Magnesium.getMolten(144), Materials.Aluminium.getMolten(144 * 2))
             .fluidOutputs(Materials.Magnalium.getMolten(144 * 3))
@@ -1094,7 +1090,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(4)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Lead.getMolten(144 * 4), Materials.Antimony.getMolten(144))
             .fluidOutputs(Materials.BatteryAlloy.getMolten(144 * 5))
@@ -1103,7 +1099,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(4)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Osmium.getMolten(144), Materials.Iridium.getMolten(144 * 3))
             .fluidOutputs(Materials.Osmiridium.getMolten(144 * 4))
@@ -1112,7 +1108,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
@@ -1123,7 +1119,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(61440)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Cobalt.getMolten(144 * 5),
@@ -1136,7 +1132,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Vanadium.getMolten(144 * 3), Materials.Gallium.getMolten(144))
             .fluidOutputs(Materials.VanadiumGallium.getMolten(144 * 4))
@@ -1145,7 +1141,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(4))
             .fluidInputs(
                 Materials.Yttrium.getMolten(144),
@@ -1158,7 +1154,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Niobium.getMolten(144), Materials.Titanium.getMolten(144))
             .fluidOutputs(Materials.NiobiumTitanium.getMolten(288))
@@ -1167,7 +1163,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(Materials.Iron.getMolten(144), Materials.Tin.getMolten(144))
             .fluidOutputs(Materials.TinAlloy.getMolten(288))
@@ -1176,7 +1172,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(16)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 3))
@@ -1191,7 +1187,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTUtility.copyAmountUnsafe(385, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1)),
@@ -1214,7 +1210,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(9),
                 GTUtility.copyAmountUnsafe(770, GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1)),
@@ -1237,7 +1233,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.Nickel.getMolten(144),
@@ -1249,7 +1245,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.Titanium.getMolten(144 * 3),
@@ -1261,7 +1257,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1))
@@ -1272,7 +1268,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(8)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(5))
             .fluidInputs(
                 Materials.Copper.getMolten(144 * 3),
@@ -1287,7 +1283,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(3))
             .fluidInputs(
                 Materials.Copper.getMolten(144 * 3),
@@ -1299,7 +1295,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 16))
@@ -1314,7 +1310,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 25))
@@ -1332,7 +1328,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 50))
@@ -1355,7 +1351,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(
                 Materials.Copper.getMolten(144 * 143),
@@ -1371,7 +1367,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(7))
             .fluidInputs(
                 Materials.Copper.getMolten(144 * 32),
@@ -1388,7 +1384,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 10))
@@ -1405,7 +1401,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 10))
@@ -1422,7 +1418,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 10),
@@ -1442,7 +1438,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 40),
@@ -1464,7 +1460,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 40),
@@ -1488,7 +1484,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 50))
@@ -1512,7 +1508,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(120)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(6),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 10),
@@ -1533,7 +1529,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4),
@@ -1550,7 +1546,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(1920)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(
                 Materials.Copper.getMolten(144 * 6),
@@ -1562,7 +1558,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(30720)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
                 GTUtility.copyAmountUnsafe(126, GGMaterial.orundum.get(OrePrefixes.dust, 1)))
@@ -1578,7 +1574,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(480)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(7),
                 GGMaterial.orundum.get(OrePrefixes.dust, 8),
@@ -1597,7 +1593,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_UXV)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1000),
@@ -1611,7 +1607,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_UXV)
             .addTo(SMFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(2))
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1000),

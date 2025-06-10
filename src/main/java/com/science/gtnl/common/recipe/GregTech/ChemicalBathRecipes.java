@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.common.materials.MaterialPool;
 import com.science.gtnl.loader.IRecipePool;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -28,7 +28,7 @@ public class ChemicalBathRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTNLItemList.TerraGlass.get(1))
             .fluidInputs(FluidRegistry.getFluidStack("molten.gaiaspirit", 288))
             .itemOutputs(GTNLItemList.GaiaGlass.get(1))
@@ -37,7 +37,7 @@ public class ChemicalBathRecipes implements IRecipePool {
             .eut(30720)
             .addTo(cBR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(getModItem("Botania", "elfGlass", 1, 0, missing))
             .fluidInputs(FluidRegistry.getFluidStack("molten.terrasteel", 576))
             .itemOutputs(GTNLItemList.TerraGlass.get(1))
@@ -46,7 +46,7 @@ public class ChemicalBathRecipes implements IRecipePool {
             .eut(7680)
             .addTo(cBR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(getModItem(OpenBlocks.ID, "sponge", 1))
             .fluidInputs(FluidRegistry.getFluidStack("dye.chemical.dyeyellow", 576))
             .itemOutputs(new ItemStack(Blocks.sponge, 1))
@@ -55,7 +55,7 @@ public class ChemicalBathRecipes implements IRecipePool {
             .eut(16)
             .addTo(cBR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.dragon_egg, 1))
             .fluidInputs(Materials.DraconiumAwakened.getMolten(576))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "dragonHeart", 1))
@@ -64,7 +64,7 @@ public class ChemicalBathRecipes implements IRecipePool {
             .eut(1966080)
             .addTo(cBR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Pitchblende, 12))
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
             .itemOutputs(
@@ -77,7 +77,7 @@ public class ChemicalBathRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_HV)
             .addTo(cBR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Pitchblende, 12))
             .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
             .itemOutputs(
@@ -90,7 +90,7 @@ public class ChemicalBathRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_HV)
             .addTo(cBR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(MaterialPool.UraniumSlag.get(OrePrefixes.dust, 1))
             .fluidInputs(Materials.HydrochloricAcid.getFluid(4000))
             .itemOutputs(MaterialPool.UraniumChlorideSlag.get(OrePrefixes.dust, 1))

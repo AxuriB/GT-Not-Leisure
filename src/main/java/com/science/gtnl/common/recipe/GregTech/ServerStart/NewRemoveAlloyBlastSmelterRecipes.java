@@ -1,8 +1,8 @@
 package com.science.gtnl.common.recipe.GregTech.ServerStart;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.loader.IRecipePool;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -11,14 +11,13 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
-public class AlloyBlastSmelterRecipes implements IRecipePool {
+public class NewRemoveAlloyBlastSmelterRecipes implements IRecipePool {
 
     final RecipeMap<?> aBS = GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
     @Override
     public void loadRecipes() {
-
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Europium, 1))

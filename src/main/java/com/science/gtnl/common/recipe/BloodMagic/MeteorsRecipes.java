@@ -12,14 +12,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.loader.IRecipePool;
 
 import WayofTime.alchemicalWizardry.common.summoning.meteor.MeteorRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTModHandler;
 
-public class MeteorsRecipes {
+public class MeteorsRecipes implements IRecipePool {
 
-    public static void registerMeteors() {
+    @Override
+    public void loadRecipes() {
         MeteorRegistry.registerMeteor(
             GTNLItemList.StargateTier9.get(1),
             new String[] { "SGCraft:stargateBase:0:10", "SGCraft:stargateRing:0:10", "SGCraft:stargateRing:1:10",

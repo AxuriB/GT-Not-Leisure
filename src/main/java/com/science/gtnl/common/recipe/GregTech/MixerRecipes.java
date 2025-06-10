@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.common.materials.MaterialPool;
 import com.science.gtnl.loader.IRecipePool;
 
@@ -35,7 +34,7 @@ public class MixerRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 3L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L))
@@ -47,7 +46,7 @@ public class MixerRecipes implements IRecipePool {
             .eut(480)
             .addTo(MNCR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(MaterialMisc.SODIUM_NITRATE.getDust(5))
             .itemOutputs()
             .fluidInputs(Materials.Water.getFluid(1000))
@@ -57,7 +56,7 @@ public class MixerRecipes implements IRecipePool {
             .eut(120)
             .addTo(MNCR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
@@ -69,7 +68,7 @@ public class MixerRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_LuV)
             .addTo(MNCR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L))
             .fluidInputs(WerkstoffMaterialPool.AmmoniumNitrate.getFluidOrGas(1000))
             .fluidOutputs(GGMaterial.naquadahSolution.getFluidOrGas(1000))
@@ -93,7 +92,7 @@ public class MixerRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_IV)
             .addTo(MNCR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RareEarth, 1L))
             .fluidInputs(FluidUtils.getFluidStack(GTPPFluids.RedMud, 1000), Materials.HydrochloricAcid.getFluid(4000))
             .fluidOutputs(MaterialPool.NeutralisedRedMud.getFluidOrGas(2000))
@@ -102,7 +101,7 @@ public class MixerRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_MV)
             .addTo(MNCR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Machine_Multi_BlastFurnace.get(6),
                 GregtechItemList.Industrial_Sifter.get(3),

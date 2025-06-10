@@ -22,7 +22,7 @@ import WayofTime.alchemicalWizardry.common.summoning.meteor.MeteorComponent;
 
 @SuppressWarnings("UnusedMixin")
 @Mixin(value = Meteor.class, remap = false)
-public abstract class MeteorParadigm_Mixin {
+public abstract class Meteor_Mixin {
 
     @Inject(
         method = "createMeteorImpact",

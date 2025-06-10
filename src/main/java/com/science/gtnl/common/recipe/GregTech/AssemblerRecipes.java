@@ -16,7 +16,6 @@ import com.dreammaster.gthandler.CustomItemList;
 import com.dreammaster.item.NHItemList;
 import com.reavaritia.common.block.ReAvaBasicBlocks;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.common.materials.MaterialPool;
 import com.science.gtnl.loader.IRecipePool;
 
@@ -96,7 +95,7 @@ public class AssemblerRecipes implements IRecipePool {
                 String lampType = lampTypes[i];
                 int circuitConfig = i + 1;
 
-                RecipeBuilder.builder()
+                GTValues.RA.stdBuilder()
                     .itemInputs(
                         GTOreDictUnificator.get(OrePrefixes.plate, Materials.Glass, 6L),
                         new ItemStack(Items.glowstone_dust, 1),
@@ -106,7 +105,6 @@ public class AssemblerRecipes implements IRecipePool {
                             .get(1))
                     .fluidInputs(FluidRegistry.getFluidStack(fluidName, 144))
                     .specialValue(0)
-
                     .duration(40)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(As);

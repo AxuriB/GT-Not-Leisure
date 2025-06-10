@@ -1,9 +1,9 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.common.materials.MaterialPool;
 import com.science.gtnl.loader.IRecipePool;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMap;
@@ -18,7 +18,7 @@ public class AlloyBlastSmelterRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
                 GTOreDictUnificator.get(MaterialsElements.getInstance().GERMANIUM.getDust(3)),
@@ -30,7 +30,7 @@ public class AlloyBlastSmelterRecipes implements IRecipePool {
             .eut(30720)
             .addTo(aBS);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Invar, 2),
@@ -43,7 +43,7 @@ public class AlloyBlastSmelterRecipes implements IRecipePool {
             .eut(480)
             .addTo(aBS);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Molybdenum, 1),

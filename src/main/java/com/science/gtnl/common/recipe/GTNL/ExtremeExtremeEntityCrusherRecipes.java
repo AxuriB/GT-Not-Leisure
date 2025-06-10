@@ -9,7 +9,6 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.brandon3055.draconicevolution.common.ModItems;
@@ -30,11 +29,6 @@ public class ExtremeExtremeEntityCrusherRecipes {
     private final RecipeMap<?> EEEC = RecipeRegister.ExtremeExtremeEntityCrusherRecipes;
 
     private static final Set<String> registeredSpawnerTypes = new HashSet<>();
-
-    public static void init() {
-        MinecraftForge.EVENT_BUS.register(new ExtremeExtremeEntityCrusherRecipes());
-        registeredSpawnerTypes.clear();
-    }
 
     @SubscribeEvent
     public void onPostMobRegistration(PostMobRegistrationEvent event) {

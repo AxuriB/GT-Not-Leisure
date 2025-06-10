@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import com.google.common.collect.Sets;
 import com.science.gtnl.ScienceNotLeisure;
+import com.science.gtnl.loader.IRecipePool;
 import com.science.gtnl.loader.RecipeRegister;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -27,7 +28,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 import ic2.core.Ic2Items;
 
-public class OP_NormalProcessing {
+public class CheatOreProcessingRecipes implements IRecipePool {
 
     /**
      * Ore stone types enum
@@ -82,7 +83,8 @@ public class OP_NormalProcessing {
     /**
      * Generate recipes.
      */
-    public void enumOreProcessingRecipes() {
+    @Override
+    public void loadRecipes() {
         initProcessingLineMaterials();
         Set<Materials> specialProcesses = Sets.newHashSet(
             Materials.Samarium,

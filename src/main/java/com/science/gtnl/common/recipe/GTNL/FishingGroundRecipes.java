@@ -10,10 +10,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.dreammaster.item.NHItemList;
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.loader.IRecipePool;
 import com.science.gtnl.loader.RecipeRegister;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -40,7 +40,7 @@ public class FishingGroundRecipes implements IRecipePool {
             ZeroPointModule.setTagCompound(ZeroPointModuleType);
         }
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1), GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)))
             .itemOutputs(
                 new ItemStack(Items.fish, 16, 0),
@@ -55,7 +55,7 @@ public class FishingGroundRecipes implements IRecipePool {
             .eut(512)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)),
@@ -73,7 +73,7 @@ public class FishingGroundRecipes implements IRecipePool {
             .eut(512)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
                 GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)),
@@ -91,7 +91,7 @@ public class FishingGroundRecipes implements IRecipePool {
             .eut(512)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(7), ItemList.ActivatedCarbonFilterMesh.get(1))
             .itemOutputs(
                 new ItemStack(Items.rotten_flesh, 16),
@@ -166,7 +166,7 @@ public class FishingGroundRecipes implements IRecipePool {
             .eut(2048)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTUtility.copyAmount(0, ItemList.ActivatedCarbonFilterMesh.get(1)))
@@ -193,7 +193,7 @@ public class FishingGroundRecipes implements IRecipePool {
             .eut(2048)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(9), NHItemList.MaceratedPlantmass.getIS(16))
             .itemOutputs(
                 GregtechItemList.AlgaeBiomass.get(64),
@@ -208,7 +208,7 @@ public class FishingGroundRecipes implements IRecipePool {
             .eut(2048)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Mytryl, 32L),
@@ -227,7 +227,7 @@ public class FishingGroundRecipes implements IRecipePool {
 
         if (PamsHarvestCraft.isModLoaded()) {
 
-            RecipeBuilder.builder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(4),
                     GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)))
@@ -294,7 +294,7 @@ public class FishingGroundRecipes implements IRecipePool {
                 .eut(512)
                 .addTo(FGR);
 
-            RecipeBuilder.builder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(5),
                     GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)),
@@ -362,7 +362,7 @@ public class FishingGroundRecipes implements IRecipePool {
                 .eut(512)
                 .addTo(FGR);
 
-            RecipeBuilder.builder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(6),
                     GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)),

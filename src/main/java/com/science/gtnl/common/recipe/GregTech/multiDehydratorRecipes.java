@@ -2,10 +2,10 @@ package com.science.gtnl.common.recipe.GregTech;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.common.materials.MaterialPool;
 import com.science.gtnl.loader.IRecipePool;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMap;
@@ -19,7 +19,7 @@ public class multiDehydratorRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialPool.SilicaGelBase.getFluidOrGas(1000))
             .itemOutputs(
                 MaterialPool.SilicaGel.get(OrePrefixes.dust, 3),
@@ -29,7 +29,7 @@ public class multiDehydratorRecipes implements IRecipePool {
             .eut(480)
             .addTo(mD);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(new FluidStack(GTPPFluids.BoricAcid, 2000))
             .itemOutputs(MaterialPool.BoronTrioxide.get(OrePrefixes.dust, 5))
             .specialValue(0)
@@ -37,7 +37,7 @@ public class multiDehydratorRecipes implements IRecipePool {
             .eut(480)
             .addTo(mD);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialPool.PloyamicAcid.getFluidOrGas(144))
             .itemOutputs()
             .fluidOutputs(MaterialPool.Polyimide.getMolten(144))

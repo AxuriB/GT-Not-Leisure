@@ -4,12 +4,12 @@ import static com.science.gtnl.Utils.enums.GTNLItemList.TrollFace;
 import static com.science.gtnl.Utils.item.TextHandler.texter;
 import static gregtech.api.util.GTModHandler.getModItem;
 
-import net.minecraftforge.fluids.FluidRegistry;
-
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.loader.IRecipePool;
 import com.science.gtnl.loader.RecipeRegister;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 
@@ -19,26 +19,26 @@ public class ReFusionReactorRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmountUnsafe(2147483647, getModItem("gregtech", "gt.metaitem.01", 1, 2299)))
             .itemOutputs(
                 TrollFace.get(1)
                     .setStackDisplayName(texter("It's just out of reach, isn't it?", "RFRRRecipes.1")))
             .fluidOutputs(
-                FluidRegistry.getFluidStack("molten.magmatter", 2147483647),
-                FluidRegistry.getFluidStack("molten.magnetohydrodynamicallyconstrainedstarmatter", 2147483647),
-                FluidRegistry.getFluidStack("molten.universium", 2147483647),
-                FluidRegistry.getFluidStack("molten.whitedwarfmatter", 2147483647),
-                FluidRegistry.getFluidStack("molten.blackdwarfmatter", 2147483647),
-                FluidRegistry.getFluidStack("molten.spacetime", 2147483647),
-                FluidRegistry.getFluidStack("molten.transcendentmetal", 2147483647),
-                FluidRegistry.getFluidStack("molten.eternity", 2147483647),
-                FluidRegistry.getFluidStack("primordialmatter", 2147483647),
-                FluidRegistry.getFluidStack("spatialfluid", 2147483647),
-                FluidRegistry.getFluidStack("temporalfluid", 2147483647),
-                FluidRegistry.getFluidStack("molten.sixphasedcopper", 2147483647),
-                FluidRegistry.getFluidStack("molten.infinity", 2147483647),
-                FluidRegistry.getFluidStack("antimatter", 2147483647))
+                MaterialsUEVplus.MagMatter.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.Universium.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.WhiteDwarfMatter.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.BlackDwarfMatter.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.SpaceTime.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.TranscendentMetal.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.Eternity.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.PrimordialMatter.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.Space.getFluid(Integer.MAX_VALUE),
+                MaterialsUEVplus.Time.getFluid(Integer.MAX_VALUE),
+                MaterialsUEVplus.SixPhasedCopper.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.StargateCrystalSlurry.getFluid(Integer.MAX_VALUE),
+                Materials.Antimatter.getFluid(Integer.MAX_VALUE))
             .outputChances(1)
             .duration(1)
             .eut(1)

@@ -13,6 +13,7 @@ import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.TickratePacket;
 import com.science.gtnl.common.packet.TileEntityNBTPacket;
 import com.science.gtnl.common.packet.TitlePacket;
+import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
 
 import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -20,6 +21,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
+import gregtech.api.enums.Mods;
 
 public class CommonProxy {
 
@@ -27,6 +29,9 @@ public class CommonProxy {
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new SubscribeEventUtils());
+        if (Mods.MobsInfo.isModLoaded()) {
+            MinecraftForge.EVENT_BUS.register(new ExtremeExtremeEntityCrusherRecipes());
+        }
         FMLCommonHandler.instance()
             .bus()
             .register(new SubscribeEventUtils());

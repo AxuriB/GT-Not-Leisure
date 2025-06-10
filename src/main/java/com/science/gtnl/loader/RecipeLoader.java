@@ -5,7 +5,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.Nxer.TwistSpaceTechnology.recipe.machineRecipe.expanded.CircuitAssemblyLineWithoutImprintRecipePool;
 import com.science.gtnl.Utils.recipes.RecipeUtil;
-import com.science.gtnl.common.machine.OreProcessing.OP_NormalProcessing;
+import com.science.gtnl.common.machine.OreProcessing.CheatOreProcessingRecipes;
 import com.science.gtnl.common.machine.multiMachineClasses.ProcessingArrayRecipeLoader;
 import com.science.gtnl.common.materials.MaterialPool;
 import com.science.gtnl.common.recipe.AprilFool.CactusWonderFakeRecipes;
@@ -28,7 +28,6 @@ import com.science.gtnl.common.recipe.GTNL.DecayHastenerRecipes;
 import com.science.gtnl.common.recipe.GTNL.DesulfurizerRecipes;
 import com.science.gtnl.common.recipe.GTNL.ElementCopyingRecipes;
 import com.science.gtnl.common.recipe.GTNL.EternalGregTechWorkshopUpgradeRecipes;
-import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
 import com.science.gtnl.common.recipe.GTNL.FallingTowerRecipes;
 import com.science.gtnl.common.recipe.GTNL.FishingGroundRecipes;
 import com.science.gtnl.common.recipe.GTNL.FuelRefiningComplexRecipes;
@@ -86,6 +85,7 @@ import com.science.gtnl.common.recipe.GregTech.PreciseAssemblerRecipes;
 import com.science.gtnl.common.recipe.GregTech.ServerStart.CircuitAssemblerConvertRecipes;
 import com.science.gtnl.common.recipe.GregTech.ServerStart.CircuitAssemblyLineRecipes;
 import com.science.gtnl.common.recipe.GregTech.ServerStart.FormingPressRecipes;
+import com.science.gtnl.common.recipe.GregTech.ServerStart.NewRemoveAlloyBlastSmelterRecipes;
 import com.science.gtnl.common.recipe.GregTech.SpaceAssemblerRecipes;
 import com.science.gtnl.common.recipe.GregTech.TranscendentPlasmaMixerRecipes;
 import com.science.gtnl.common.recipe.GregTech.VacuumFreezerRecipes;
@@ -94,10 +94,10 @@ import com.science.gtnl.common.recipe.GregTech.multiDehydratorRecipes;
 import com.science.gtnl.common.recipe.Special.OreDictionary.PortalToAlfheimOreRecipes;
 import com.science.gtnl.common.recipe.Thaumcraft.TCRecipePool;
 import com.science.gtnl.common.recipe.Thaumcraft.TCResearches;
+import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import goodgenerator.util.CrackRecipeAdder;
-import gregtech.api.enums.Mods;
 import gregtech.api.recipe.RecipeMaps;
 
 public class RecipeLoader {
@@ -107,52 +107,52 @@ public class RecipeLoader {
     public static void loadRecipesServerStart() {
         if (!recipesAdded) {
             loadRecipes();
+            if (MainConfig.enableDeleteRecipe) {
+                loadNewRemoveRecipes();
+            }
         }
         loadCircuitRelatedRecipes();
         recipesAdded = true;
     }
 
+    public static void loadNewRemoveRecipes() {
+        IRecipePool[] recipePools = new IRecipePool[] { new NewRemoveAlloyBlastSmelterRecipes() };
+
+        for (IRecipePool recipePool : recipePools) {
+            recipePool.loadRecipes();
+        }
+    }
+
     public static void loadRecipes() {
 
-        MeteorsRecipes.registerMeteors();
-
-        TCRecipePool.loadRecipes();
-        TCResearches.register();
-
-        new OP_NormalProcessing().enumOreProcessingRecipes();
-        new ShapedArcaneCraftingRecipes().loadRecipes();
-        new InfusionCraftingRecipes().loadRecipes();
         ProcessingArrayRecipeLoader.registerDefaultGregtechMaps();
 
         CrackRecipeAdder.reAddBlastRecipe(MaterialPool.MolybdenumDisilicide, 800, 1920, 2300, true);
         CrackRecipeAdder.reAddBlastRecipe(MaterialPool.HSLASteel, 1000, 480, 1711, true);
         CrackRecipeAdder.reAddBlastRecipe(MaterialPool.Germaniumtungstennitride, 800, 30720, 8200, true);
 
-        if (Mods.MobsInfo.isModLoaded()) {
-            ExtremeExtremeEntityCrusherRecipes.init();
-        }
-
-        IRecipePool[] recipePools = new IRecipePool[] { new ChemicalRecipes(), new ElectrolyzerRecipes(),
-            new MixerRecipes(), new multiDehydratorRecipes(), new AssemblerRecipes(), new AutoclaveRecipes(),
-            new AlloyBlastSmelterRecipes(), new CompressorRecipes(), new ReFusionReactorRecipes(),
-            new RealArtificialStarRecipes(), new PortalToAlfheimRecipes(), new NatureSpiritArrayRecipes(),
-            new ManaInfusionRecipes(), new TranscendentPlasmaMixerRecipes(), new PlasmaForgeRecipes(),
-            new CraftingTableRecipes(), new ChemicalBathRecipes(), new SteamCrackerRecipes(), new DesulfurizerRecipes(),
-            new PetrochemicalPlantRecipes(), new FusionReactorRecipes(), new SmeltingMixingFurnaceRecipes(),
-            new FluidExtraction(), new DigesterRecipes(), new DissolutionTankRecipes(), new CentrifugeRecipes(),
-            new ChemicalDehydratorRecipes(), new RareEarthCentrifugalRecipes(), new MatterFabricatorRecipes(),
-            new TheTwilightForestRecipes(), new IsaMillRecipes(), new CellRegulatorRecipes(),
-            new VacuumFurnaceRecipes(), new FishingGroundRecipes(), new DistilleryRecipes(),
-            new ElementCopyingRecipes(), new AlloySmelterRecipes(), new MolecularTransformerRecipes(),
-            new NaquadahReactorRecipes(), new DragonEvolutionFusionCraftingRecipes(), new LaserEngraverRecipes(),
-            new BacterialVatRecipes(), new CuttingRecipes(), new BlastFurnaceRecipes(), new FluidExtractorRecipes(),
-            new DecayHastenerRecipes(), new PreciseAssemblerRecipes(), new FuelRefiningComplexRecipes(),
-            new CrackingRecipes(), new DistillationTowerRecipes(), new SpaceMinerRecipes(), new SpaceDrillRecipes(),
-            new SpaceAssemblerRecipes(), new PCBFactoryRecipes(), new PlatinumBasedTreatmentRecipes(),
-            new ShallowChemicalCouplingRecipes(), new BloodDemonInjectionRecipes(), new AlchemicChemistrySetRecipes(),
-            new AdvancedCircuitAssemblyLineRecipes(), new FallingTowerRecipes(), new AssemblingLineRecipes(),
-            new GasCollectorRecipes(), new EternalGregTechWorkshopUpgradeRecipes(), new FluidCannerRecipes(),
-            new VacuumFreezerRecipes() };
+        IRecipePool[] recipePools = new IRecipePool[] { new TCRecipePool(), new ChemicalRecipes(),
+            new ElectrolyzerRecipes(), new MixerRecipes(), new multiDehydratorRecipes(), new AssemblerRecipes(),
+            new AutoclaveRecipes(), new AlloyBlastSmelterRecipes(), new CompressorRecipes(),
+            new ReFusionReactorRecipes(), new RealArtificialStarRecipes(), new PortalToAlfheimRecipes(),
+            new NatureSpiritArrayRecipes(), new ManaInfusionRecipes(), new TranscendentPlasmaMixerRecipes(),
+            new PlasmaForgeRecipes(), new CraftingTableRecipes(), new ChemicalBathRecipes(), new SteamCrackerRecipes(),
+            new DesulfurizerRecipes(), new PetrochemicalPlantRecipes(), new FusionReactorRecipes(),
+            new SmeltingMixingFurnaceRecipes(), new FluidExtraction(), new DigesterRecipes(),
+            new DissolutionTankRecipes(), new CentrifugeRecipes(), new ChemicalDehydratorRecipes(),
+            new RareEarthCentrifugalRecipes(), new MatterFabricatorRecipes(), new TheTwilightForestRecipes(),
+            new IsaMillRecipes(), new CellRegulatorRecipes(), new VacuumFurnaceRecipes(), new FishingGroundRecipes(),
+            new DistilleryRecipes(), new ElementCopyingRecipes(), new AlloySmelterRecipes(),
+            new MolecularTransformerRecipes(), new NaquadahReactorRecipes(), new DragonEvolutionFusionCraftingRecipes(),
+            new LaserEngraverRecipes(), new BacterialVatRecipes(), new CuttingRecipes(), new BlastFurnaceRecipes(),
+            new FluidExtractorRecipes(), new DecayHastenerRecipes(), new PreciseAssemblerRecipes(),
+            new FuelRefiningComplexRecipes(), new CrackingRecipes(), new DistillationTowerRecipes(),
+            new SpaceMinerRecipes(), new SpaceDrillRecipes(), new SpaceAssemblerRecipes(), new PCBFactoryRecipes(),
+            new PlatinumBasedTreatmentRecipes(), new ShallowChemicalCouplingRecipes(), new BloodDemonInjectionRecipes(),
+            new AlchemicChemistrySetRecipes(), new AdvancedCircuitAssemblyLineRecipes(), new FallingTowerRecipes(),
+            new AssemblingLineRecipes(), new GasCollectorRecipes(), new EternalGregTechWorkshopUpgradeRecipes(),
+            new FluidCannerRecipes(), new VacuumFreezerRecipes(), new MeteorsRecipes(), new CheatOreProcessingRecipes(),
+            new ShapedArcaneCraftingRecipes(), new InfusionCraftingRecipes() };
 
         IRecipePool[] recipePoolsAprilFool = new IRecipePool[] { new CraftingTableAprilFoolRecipes(),
             new SteamManufacturerRecipes(), new SteamCarpenterRecipe(), new LavaMakerRecipes(),
@@ -183,6 +183,8 @@ public class RecipeLoader {
 
         RecipeUtil
             .generateRecipesNotUsingCells(BartWorksRecipeMaps.bioLabRecipes, RecipeRegister.LargeBioLabRecipes, true);
+
+        TCResearches.register();
     }
 
     private static void loadCircuitRelatedRecipes() {

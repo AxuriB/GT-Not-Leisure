@@ -31,24 +31,6 @@ public class LateMixinPlugin implements ILateMixinLoader {
         mixins.add("Gregtech.MTEHatchAccessor");
         mixins.add("Gregtech.BaseMetaTileEntity_Mixin");
 
-        mixins.add("Bartwork.BartworkLoad_Head_Mixin");
-        mixins.add("Bartwork.WerkstoffLoader_Mixin");
-        mixins.add("Bartwork.Werkstoff_Mixin");
-        mixins.add("Bartwork.MultipleMetalLoader_Mixin");
-        mixins.add("Bartwork.SimpleMetalLoader_Mixin");
-        mixins.add("Bartwork.CircuitImprintLoader_Mixin");
-
-        mixins.add("DraconicEvolution.DraconicEvolutionEventHandler_Mixin");
-        mixins.add("DraconicEvolution.ReactorExplosion_Mixin");
-
-        mixins.add("ThaumicTinkerer.ItemBloodSword_Mixin");
-
-        mixins.add("NHCoreMod.BacteriaRegistry_Mixin");
-
-        mixins.add("BloodMagic.MeteorParadigm_Mixin");
-
-        mixins.add("AppliedEnergistics.EntityTinyTNTPrimed_Mixin");
-
         if (!Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
             mixins.add("Gregtech.VoltageChanceBonus_GT_ParallelHelper_Mixin");
             mixins.add("Gregtech.BehaviourScanner_Mixin");
@@ -65,6 +47,26 @@ public class LateMixinPlugin implements ILateMixinLoader {
         if (Mods.TwistSpaceTechnology.isModLoaded()) {
             mixins.add("TwistSpaceTechnology.RecipeLoader_Mixin");
         }
+
+        mixins.add("Bartwork.BartworkLoad_Head_Mixin");
+        mixins.add("Bartwork.WerkstoffLoader_Mixin");
+        mixins.add("Bartwork.Werkstoff_Mixin");
+        mixins.add("Bartwork.MultipleMetalLoader_Mixin");
+        mixins.add("Bartwork.SimpleMetalLoader_Mixin");
+        mixins.add("Bartwork.CircuitImprintLoader_Mixin");
+
+        mixins.add("DraconicEvolution.DraconicEvolutionEventHandler_Mixin");
+        mixins.add("DraconicEvolution.ReactorExplosion_Mixin");
+
+        mixins.add("ThaumicTinkerer.ItemBloodSword_Mixin");
+
+        mixins.add("NHCoreMod.BacteriaRegistry_Mixin");
+
+        if (MainConfig.enableMachineAmpLimit) {
+            mixins.add("BloodMagic.Meteor_Mixin");
+        }
+
+        mixins.add("AppliedEnergistics.EntityTinyTNTPrimed_Mixin");
 
         return mixins;
     }

@@ -3,9 +3,9 @@ package com.science.gtnl.common.recipe.Special.OreDictionary;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
 import com.science.gtnl.loader.RecipeRegister;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
@@ -28,7 +28,7 @@ public class WoodDistillationRecipes implements IOreRecipeRegistrator {
 
             final RecipeMap<?> WDR = RecipeRegister.WoodDistillationRecipes;
 
-            RecipeBuilder.builder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(16, aStack))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L))
                 .fluidInputs(Materials.Nitrogen.getGas(1000))

@@ -239,7 +239,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
                 if (depleteInput(Materials.Water.getFluid(amount))
                     || depleteInput(GTModHandler.getDistilledWater(amount))) {
-                    addOutput(GTModHandler.getSteam(tGeneratedEU));
+                    addOutput(Materials.Steam.getGas(tGeneratedEU));
                 } else {
                     GTLog.exp.println("Boiler " + this.mName + " had no Water!");
                     explodeMultiblock();
