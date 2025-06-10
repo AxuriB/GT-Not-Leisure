@@ -180,7 +180,7 @@ public class ETGWEyeOfHarmonyModule extends EternalGregTechWorkshopModule {
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
         return null;
     }
 

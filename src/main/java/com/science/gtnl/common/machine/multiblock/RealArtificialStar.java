@@ -565,11 +565,6 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
     }
 
     @Override
-    protected float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return 1;
     }

@@ -30,6 +30,8 @@ import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.Utils.recipes.ResourceCollectionModuleTierKey;
 import com.science.gtnl.loader.RecipePool;
 
@@ -48,7 +50,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -221,7 +222,7 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -288,7 +289,7 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setAmperageOC(false)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)

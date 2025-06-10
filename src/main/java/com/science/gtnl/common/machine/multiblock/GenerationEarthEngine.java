@@ -18,6 +18,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.loader.RecipePool;
 
 import crazypants.enderio.EnderIO;
@@ -200,9 +201,9 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic().setSpeedBonus(1F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

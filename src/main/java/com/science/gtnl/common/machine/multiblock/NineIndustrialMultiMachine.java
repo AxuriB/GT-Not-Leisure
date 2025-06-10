@@ -45,6 +45,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.machine.NineIndustrialMultiMachineManager;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -279,8 +280,8 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             private ItemStack lastCircuit = null;
             private int lastMode = -1;

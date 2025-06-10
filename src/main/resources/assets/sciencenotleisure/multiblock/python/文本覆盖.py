@@ -17,8 +17,8 @@ def replace_text_in_java_files(root_folder, old_text, new_text):
 if __name__ == "__main__":
     target_folder = "E:/Github/GT-Not-Leisure/src/main/java/com"
 
-    text_to_replace = """GTStructureChannels.TIER_MACHINE_CASING.use("""
+    text_to_replace = """.setMaxParallelSupplier(this::getMaxParallelRecipes);"""
 
-    replacement_text = """StructureUtility.withChannel("machine_casing","""
+    replacement_text = """.setMaxParallelSupplier(this::getTrueParallel);"""
 
     replace_text_in_java_files(target_folder, text_to_replace, replacement_text)

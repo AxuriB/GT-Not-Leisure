@@ -184,7 +184,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
 
             @NotNull
             @Override
-            public GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            @Nonnull
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost);
             }
 
@@ -214,7 +215,9 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      * @return The value (or a method to get the value) of Speed Multiplier (dynamically) .
      */
     @ApiStatus.OverrideOnly
-    protected abstract float getSpeedBonus();
+    protected float getSpeedBonus() {
+        return 1.0F;
+    }
 
     /**
      * Proxy Standard Parallel Supplier.

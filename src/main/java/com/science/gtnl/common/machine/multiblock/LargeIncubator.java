@@ -27,6 +27,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
@@ -47,7 +49,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.register.LanthItemList;
@@ -81,11 +82,6 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     @Override
     public boolean isEnablePerfectOverclock() {
         return true;
-    }
-
-    @Override
-    public float getSpeedBonus() {
-        return 1;
     }
 
     @Override
@@ -176,8 +172,8 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -204,8 +200,9 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setRecipeEUt(recipe.mEUt)
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setRecipeEUt(recipe.mEUt)
                     .setAmperage(availableAmperage)
                     .setEUt(availableVoltage)
                     .setDuration(recipe.mDuration)

@@ -272,7 +272,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
 
             @NotNull
@@ -297,10 +297,9 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-
-                return super.createOverclockCalculator(recipe).setEUtDiscount(0.4 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 * Math.pow(0.75, mParallelTier))
-                    .setExtraDurationModifier(configSpeedBoost);
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setEUtDiscount(0.4 - (mParallelTier / 50.0))
+                    .setDurationModifier(1 * Math.pow(0.75, mParallelTier));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

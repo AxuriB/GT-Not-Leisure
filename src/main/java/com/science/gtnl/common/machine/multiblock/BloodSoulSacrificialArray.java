@@ -34,6 +34,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -59,7 +61,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings8;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -357,7 +358,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @Nonnull
             @Override
@@ -423,7 +424,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
                 }
 
                 ParallelHelper helper = createParallelHelper(recipe);
-                OverclockCalculator calculator = createOverclockCalculator(recipe);
+                GTNL_OverclockCalculator calculator = createOverclockCalculator(recipe);
                 helper.setCalculator(calculator);
                 helper.build();
 
@@ -474,15 +475,16 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe)
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return GTNL_OverclockCalculator.ofNoOverclock(recipe)
+                    .setExtraDurationModifier(configSpeedBoost)
                     .setAmperage(availableAmperage)
                     .setRecipeEUt(recipe.mEUt)
                     .setEUt(availableVoltage)
                     .setEUtDiscount(1)
                     .setDurationModifier(1 - (mParallelTier / 50.0));
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     public String getOwner() {

@@ -64,11 +64,6 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new RareEarthCentrifugal(this.mName);
     }

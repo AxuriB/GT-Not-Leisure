@@ -8,6 +8,8 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -16,7 +18,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 
 public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends WirelessEnergyMultiMachineBase<T> {
 
@@ -77,8 +78,8 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -91,18 +92,17 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
 
             @Nonnull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return wirelessMode ? OverclockCalculator.ofNoOverclock(recipe)
+            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity)
-                    : super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                        .setMachineHeat(mHeatingCapacity)
-                        .setEUtDiscount(setEUtDiscount)
-                        .setDurationModifier(setDurationModifier);
+                    .setEUtDiscount(setEUtDiscount)
+                    .setDurationModifier(setDurationModifier);
             }
 
+            @NotNull
             @Override
-            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4 && wirelessMode) {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }

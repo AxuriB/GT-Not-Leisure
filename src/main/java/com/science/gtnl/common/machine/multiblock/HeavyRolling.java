@@ -20,6 +20,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -38,7 +40,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 
 public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
 
@@ -180,8 +181,8 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -203,8 +204,9 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
 
             @Nonnull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUtDiscount(0.4 - (mParallelTier / 50.0))
+            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setEUtDiscount(0.4 - (mParallelTier / 50.0))
                     .setDurationModifier(
                         1.0 / 10.0 * Math.pow(0.75, mParallelTier) * Math.pow(0.85, getCoilLevel().getTier()));
             }

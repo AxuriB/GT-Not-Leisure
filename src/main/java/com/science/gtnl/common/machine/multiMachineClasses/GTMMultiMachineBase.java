@@ -42,11 +42,6 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("parallelTier", mParallelTier);
@@ -80,16 +75,17 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
 
             @NotNull
             @Override
-            public GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setAmperageOC(true)
+            @Nonnull
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)
                     .setAmperage(availableAmperage)
                     .setRecipeEUt(recipe.mEUt)
                     .setEUt(availableVoltage)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 / 1.67 - (mParallelTier / 200.0))
-                    .setExtraDurationModifier(configSpeedBoost);
+                    .setDurationModifier(1 / 1.67 - (mParallelTier / 200.0));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

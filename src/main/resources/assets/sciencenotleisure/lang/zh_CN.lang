@@ -2394,10 +2394,9 @@ AlloyBlastSmelterRecipeType=合金冶炼炉
 Tooltip_AlloyBlastSmelter_00=每超过配方温度900K, 耗能均将乘以95%(不计超频)
 Tooltip_AlloyBlastSmelter_01=每超过配方温度1800K, 将进行一次无损超频
 Tooltip_AlloyBlastSmelter_02=超过MV后的每一级电压, 都会将温度提高100K
-Tooltip_AlloyBlastSmelter_03=只能安装一个能源仓!
-Tooltip_AlloyBlastSmelter_04=固定并行为16
-Tooltip_AlloyBlastSmelter_05=在控制器内放入并行控制核心来减少耗电! 
-Tooltip_AlloyBlastSmelter_06=能源仓限制了机器工作的电压等级
+Tooltip_AlloyBlastSmelter_03=固定并行为16
+Tooltip_AlloyBlastSmelter_04=在控制器内放入并行控制核心来减少耗电! 
+Tooltip_AlloyBlastSmelter_05=能源仓限制了机器工作的电压等级
 Tooltip_AlloyBlastSmelter_Casing=任意冶炼炉机械方块
 
 NameMegaAlloyBlastSmelter=巨型合金冶炼炉

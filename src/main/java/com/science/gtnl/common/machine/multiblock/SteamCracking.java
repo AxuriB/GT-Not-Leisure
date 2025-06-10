@@ -22,6 +22,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -32,12 +34,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.misc.GTStructureChannels;
@@ -220,24 +219,17 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
     @Override
     public ProcessingLogic createProcessingLogic() {
 
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                } else return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
+        return new GTNL_ProcessingLogic() {
 
             @Override
             @Nonnull
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(tierMachine)
-                    .setDurationModifier(1.0 / tierMachine);
+                    .setDurationModifier(1.0 / tierMachine)
+                    .setMaxTierSkips(0);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

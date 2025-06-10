@@ -144,11 +144,6 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1F;
-    }
-
-    @Override
     public IStructureDefinition<EdenGarden> getStructureDefinition() {
         return StructureDefinition.<EdenGarden>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))

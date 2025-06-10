@@ -73,11 +73,6 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new IndustrialArcaneAssembler(this.mName);
     }

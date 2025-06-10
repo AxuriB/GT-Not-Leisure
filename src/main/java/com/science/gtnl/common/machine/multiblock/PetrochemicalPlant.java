@@ -69,11 +69,6 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
     }
 
     @Override
-    protected float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new PetrochemicalPlant(this.mName);
     }

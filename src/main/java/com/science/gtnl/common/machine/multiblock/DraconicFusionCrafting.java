@@ -23,6 +23,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import gregtech.api.enums.Textures;
@@ -36,7 +38,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import kubatech.loaders.BlockLoader;
 import kubatech.loaders.DEFCRecipes;
@@ -164,7 +165,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -175,10 +176,11 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
 
                 if (tierCasing >= 4) {
-                    return super.createOverclockCalculator(recipe).setRecipeEUt(recipe.mEUt)
+                    return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                        .setRecipeEUt(recipe.mEUt)
                         .setAmperage(availableAmperage)
                         .setEUt(availableVoltage)
                         .setDuration(recipe.mDuration)
@@ -187,10 +189,11 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
                         .setEUtIncreasePerOC(4)
                         .setEUtDiscount(0.5 - (mParallelTier / 50.0))
                         .setDurationModifier(1.0 / 2.0 - (mParallelTier / 200.0));
-                } else return super.createOverclockCalculator(recipe).setEUtDiscount(0.5 - (mParallelTier / 50.0))
+                } else return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setEUtDiscount(0.5 - (mParallelTier / 50.0))
                     .setDurationModifier(1.0 / 2.0 - (mParallelTier / 200.0));
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

@@ -48,6 +48,8 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.EternalGregTechWorkshopUI;
 
@@ -65,7 +67,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.OverclockCalculator;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -162,8 +163,8 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -193,8 +194,9 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
 
             @Nonnull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMachineHeat(getHeat())
+            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMachineHeat(getHeat())
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getSpeedBoost());
             }
@@ -252,11 +254,6 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
         recipeTally = NBT.getLong("recipeTally");
         powerTally = new BigInteger(NBT.getByteArray("powerTally"));
         super.loadNBTData(NBT);
-    }
-
-    @Override
-    public float getSpeedBonus() {
-        return 1;
     }
 
     @Override

@@ -99,11 +99,6 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeGasCollectorRecipeType"))

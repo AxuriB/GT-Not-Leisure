@@ -36,6 +36,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.config.MainConfig;
 
@@ -66,7 +68,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
@@ -116,11 +117,6 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     @Override
     public boolean isEnablePerfectOverclock() {
         return false;
-    }
-
-    @Override
-    public float getSpeedBonus() {
-        return 1;
     }
 
     @Override
@@ -202,8 +198,8 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -230,8 +226,9 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUtDiscount(0.8)
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setEUtDiscount(0.8)
                     .setDurationModifier(1 / 1.67);
             }
 

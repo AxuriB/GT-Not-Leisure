@@ -404,11 +404,6 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return Integer.MAX_VALUE;
     }

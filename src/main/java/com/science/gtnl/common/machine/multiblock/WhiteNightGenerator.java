@@ -319,11 +319,6 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
     }
 
     @Override
-    protected float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return 1;
     }

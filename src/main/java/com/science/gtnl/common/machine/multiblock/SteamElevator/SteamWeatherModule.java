@@ -48,7 +48,7 @@ public class SteamWeatherModule extends SteamElevatorModule {
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
         return null;
     }
 

@@ -35,6 +35,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.machine.PortalToAlfheimExplosion;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.common.material.MaterialPool;
@@ -96,11 +97,6 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     public TeleportationArrayToAlfheim(String aName) {
         super(aName);
-    }
-
-    @Override
-    protected float getSpeedBonus() {
-        return 1F;
     }
 
     @Override
@@ -392,8 +388,8 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @Nonnull
             @Override

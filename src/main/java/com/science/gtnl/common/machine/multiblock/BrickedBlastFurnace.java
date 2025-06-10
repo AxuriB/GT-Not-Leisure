@@ -60,11 +60,6 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new BrickedBlastFurnace(this.mName);
     }

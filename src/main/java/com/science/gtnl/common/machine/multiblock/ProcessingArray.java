@@ -33,6 +33,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.machine.ProcessingArrayManager;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
 import gregtech.GTMod;
@@ -98,11 +100,6 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
         }
         return getControllerSlot().stackSize * 2 + GTUtility.getTier(this.getMaxInputVoltage()) * 4
             + getCoilLevel().getTier() * 4;
-    }
-
-    @Override
-    public float getSpeedBonus() {
-        return 1;
     }
 
     @Override
@@ -243,7 +240,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @Nonnull
             @Override
@@ -254,19 +251,18 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
                     && !isValidForLowGravity(recipe, getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
                     return SimpleCheckRecipeResult.ofFailure("high_gravity");
                 }
-                if (recipe.mEUt > availableVoltage) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
-            @NotNull
             @Override
-            public CheckRecipeResult process() {
-                setEuModifier(0.9);
-                setSpeedBonus(1 / 1.11 - (3.0 * getCoilLevel().getTier()) / 100);
-                return super.process();
+            @Nonnull
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setEUtDiscount(0.9)
+                    .setDurationModifier(1 / 1.11 - (3.0 * getCoilLevel().getTier()) / 100)
+                    .setMaxTierSkips(0);
             }
 
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

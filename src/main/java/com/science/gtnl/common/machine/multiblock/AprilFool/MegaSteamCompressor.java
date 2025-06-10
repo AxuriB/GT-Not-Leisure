@@ -20,6 +20,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.GregTechAPI;
@@ -35,7 +37,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
@@ -203,12 +204,12 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount));
             }
 
@@ -225,12 +226,13 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                 return super.onRecipeStart(recipe);
             }
 
+            @NotNull
             @Override
-            public ProcessingLogic clear() {
+            public GTNL_ProcessingLogic clear() {
                 destroyRenderBlock();
                 return super.clear();
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

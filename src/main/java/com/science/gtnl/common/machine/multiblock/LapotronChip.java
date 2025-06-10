@@ -21,6 +21,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
@@ -64,11 +65,6 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
     @Override
     protected boolean isEnablePerfectOverclock() {
         return false;
-    }
-
-    @Override
-    protected float getSpeedBonus() {
-        return 1;
     }
 
     @Override
@@ -262,9 +258,9 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic().setSpeedBonus(1F)
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

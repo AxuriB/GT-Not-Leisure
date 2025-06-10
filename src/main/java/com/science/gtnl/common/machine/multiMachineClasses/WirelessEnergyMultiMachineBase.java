@@ -113,11 +113,6 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
@@ -146,7 +141,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
 
             @NotNull
@@ -158,21 +153,12 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
                 return super.validateRecipe(recipe);
             }
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
-
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUtDiscount(0.4 - (mParallelTier / 50.0))
-                    .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier))
-                    .setExtraDurationModifier(configSpeedBoost);
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setEUtDiscount(0.4 - (mParallelTier / 50.0))
+                    .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

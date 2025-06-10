@@ -44,11 +44,11 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
+import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
@@ -65,7 +65,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITESRProvider;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.ItemData;
@@ -77,7 +76,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.TileEntityOres;
@@ -87,8 +85,7 @@ import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
-    implements ISurvivalConstructable, ITESRProvider {
+public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvivalConstructable, ITESRProvider {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String STRUCTURE_PIECE_TIER2 = "tier2";
@@ -139,6 +136,16 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
         if (MainConfig.enableDebugMode) {
             MeteorMinerMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
         }
+    }
+
+    @Override
+    public boolean isEnablePerfectOverclock() {
+        return false;
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return 1;
     }
 
     @Override
@@ -195,14 +202,6 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
 
     public MeteorMiner(String aName) {
         super(aName);
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_LOGO)
-                .setSize(18, 18)
-                .setPos(172, 67));
     }
 
     @Override
@@ -275,12 +274,17 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
         TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW);
 
     @Override
+    public int getCasingTextureID() {
+        return TAE.getIndexFromPage(0, 8);
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(0, 8)),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_METEOR_MINER_ACTIVE)
                         .extFacing()
@@ -291,7 +295,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(0, 8)),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_METEOR_MINER)
                         .extFacing()
@@ -303,7 +307,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(0, 8)) };
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
         }
         return rTexture;
     }
@@ -372,11 +376,6 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
         this.multiTier = 0;
@@ -394,16 +393,6 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
         if (inventory == null) return 0;
         return inventory.isItemEqual(GTNLItemList.MeteorMinerSchematic2.get(1)) ? 2
             : inventory.isItemEqual(GTNLItemList.MeteorMinerSchematic1.get(1)) ? 1 : 0;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
     }
 
     public void setFortuneTier() {
@@ -739,11 +728,12 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner>
         this.mEfficiency = 10000;
         this.mEfficiencyIncrease = 10000;
 
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(getAverageInputVoltage())
+        GTNL_OverclockCalculator calculator = new GTNL_OverclockCalculator().setEUt(getAverageInputVoltage())
             .setAmperage(getMaxInputAmps())
             .setRecipeEUt(128)
             .setDuration(12 * 20)
-            .setAmperageOC(mEnergyHatches.size() != 1);
+            .setAmperageOC(mEnergyHatches.size() != 1)
+            .setExtraDurationModifier(configSpeedBoost);
         calculator.calculate();
         this.mMaxProgresstime = (isWaiting) ? 200 : calculator.getDuration();
         this.mEUt = (int) (calculator.getConsumption() / ((isWaiting) ? 8 : 1));

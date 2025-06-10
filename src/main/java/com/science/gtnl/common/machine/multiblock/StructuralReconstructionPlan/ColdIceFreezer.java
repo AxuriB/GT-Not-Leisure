@@ -24,6 +24,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.config.MainConfig;
@@ -179,10 +180,6 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
         super.updateSlots();
     }
 
-    protected float getSpeedBonus() {
-        return 1F;
-    }
-
     protected boolean isEnablePerfectOverclock() {
         return false;
     }
@@ -216,10 +213,10 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1.0 / 2.5)
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic().setSpeedBonus(1.0 / 2.5)
             .setEuModifier(0.8)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

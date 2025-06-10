@@ -2383,10 +2383,9 @@ AlloyBlastSmelterRecipeType=Alloy Blast Smelter
 Tooltip_AlloyBlastSmelter_00=For every 900K above the recipe temperature, energy consumption is multiplied by 95% (excluding overclocking).
 Tooltip_AlloyBlastSmelter_01=For every 1800K above the recipe temperature, one lossless overclock is performed.
 Tooltip_AlloyBlastSmelter_02=Each voltage level above MV increases temperature by 100K.
-Tooltip_AlloyBlastSmelter_03=Only one energy hatch can be installed!
-Tooltip_AlloyBlastSmelter_04=Fixed parallel of 16.
-Tooltip_AlloyBlastSmelter_05=Place a Parallel Control Core in the controller to reduce power consumption!
-Tooltip_AlloyBlastSmelter_06=Energy hatch limits the machine's working voltage tier.
+Tooltip_AlloyBlastSmelter_03=Fixed parallel of 16.
+Tooltip_AlloyBlastSmelter_04=Place a Parallel Control Core in the controller to reduce power consumption!
+Tooltip_AlloyBlastSmelter_05=Energy hatch limits the machine's working voltage tier.
 Tooltip_AlloyBlastSmelter_Casing=Any Blast Furnace Machine Block
 
 NameMegaAlloyBlastSmelter=Mega Alloy Blast Smelter
