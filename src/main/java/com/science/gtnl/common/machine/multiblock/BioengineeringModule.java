@@ -77,7 +77,7 @@ public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule
             .addElement(
                 'B',
                 buildHatchAdder(BioengineeringModule.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))

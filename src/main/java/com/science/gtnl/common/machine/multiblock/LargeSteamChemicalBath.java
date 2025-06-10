@@ -112,6 +112,7 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
                         buildHatchAdder(LargeSteamChemicalBath.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
+                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -214,7 +215,8 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(0.8 * tierMachine)
                     .setDurationModifier(1 / 1.25 / tierMachine)
                     .setMaxTierSkips(0);

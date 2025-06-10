@@ -2,8 +2,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
@@ -128,7 +127,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
                         .dot(1)
                         .build(),
                     buildHatchAdder(SteamCactusWonder.class)
-                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
+                        .atLeast(Maintenance, SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
                         .casingIndex(10)
                         .dot(1)
                         .buildAndChain(),

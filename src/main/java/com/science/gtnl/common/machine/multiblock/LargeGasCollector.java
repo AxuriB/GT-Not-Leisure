@@ -126,7 +126,7 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
                 'A',
                 buildHatchAdder(LargeGasCollector.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))
             .addElement('B', ofBlock(sBlockCasings2, 15))
             .addElement('C', ofBlock(sBlockCasings3, 10))

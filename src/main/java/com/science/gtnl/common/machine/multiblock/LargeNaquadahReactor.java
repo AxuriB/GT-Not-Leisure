@@ -109,7 +109,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
                 'C',
                 buildHatchAdder(LargeNaquadahReactor.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputHatch, OutputHatch, Dynamo.or(DynamoMulti), Maintenance)
+                    .atLeast(Maintenance, InputHatch, OutputHatch, Dynamo.or(DynamoMulti), Maintenance)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('D', ofBlock(sBlockCasingsTT, 0))
             .addElement('E', ofFrame(Materials.Naquadria))

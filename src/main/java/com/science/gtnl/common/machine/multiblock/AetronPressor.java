@@ -115,7 +115,7 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
             .addElement('F', ofBlock(sBlockCasings9, 9))
             .addElement(
                 'G',
-                buildHatchAdder(AetronPressor.class).atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
+                buildHatchAdder(AetronPressor.class).atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))

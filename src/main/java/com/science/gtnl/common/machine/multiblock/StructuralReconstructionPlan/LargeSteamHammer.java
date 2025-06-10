@@ -109,6 +109,7 @@ public class LargeSteamHammer extends SteamMultiMachineBase<LargeSteamHammer> im
                         buildHatchAdder(LargeSteamHammer.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
+                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -237,7 +238,8 @@ public class LargeSteamHammer extends SteamMultiMachineBase<LargeSteamHammer> im
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(0.75 * tierMachine)
                     .setDurationModifier(1 / 1.33 / tierMachine)
                     .setMaxTierSkips(0);

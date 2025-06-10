@@ -8,8 +8,7 @@ import static com.science.gtnl.Utils.enums.Mods.TwistSpaceTechnology;
 import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -438,7 +437,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
             .addElement('C', ofBlock(compactFusionCoil, 4))
             .addElement(
                 'D',
-                buildHatchAdder(RealArtificialStar.class).atLeast(InputBus, OutputBus)
+                buildHatchAdder(RealArtificialStar.class).atLeast(Maintenance, InputBus, OutputBus)
                     .adder(RealArtificialStar::addInputBusOrOutputBusToMachineList)
                     .dot(1)
                     .casingIndex(13)

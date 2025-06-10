@@ -122,7 +122,7 @@ public class VortexMatterCentrifuge extends WirelessEnergyMultiMachineBase<Vorte
             .addElement(
                 'K',
                 buildHatchAdder(VortexMatterCentrifuge.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))

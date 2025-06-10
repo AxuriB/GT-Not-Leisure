@@ -2,8 +2,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -86,7 +85,7 @@ public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor
                     buildSteamInput(SteamFusionReactor.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
                         .dot(1)
                         .build(),
-                    buildHatchAdder(SteamFusionReactor.class).atLeast(InputHatch, OutputHatch)
+                    buildHatchAdder(SteamFusionReactor.class).atLeast(Maintenance, InputHatch, OutputHatch)
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
                         .dot(1)
                         .buildAndChain(),
@@ -130,7 +129,8 @@ public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(1)
                     .setDurationModifier(1);
             }

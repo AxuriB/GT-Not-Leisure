@@ -116,7 +116,7 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
                 'F',
                 buildHatchAdder(MolecularTransformer.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
             .addElement('G', ofFrame(Materials.StainlessSteel))
             .build();

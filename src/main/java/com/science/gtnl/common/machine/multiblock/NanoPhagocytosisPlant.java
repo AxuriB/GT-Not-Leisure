@@ -203,7 +203,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
             .addElement(
                 'a',
                 buildHatchAdder(NanoPhagocytosisPlant.class)
-                    .atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy), ParallelCon)
+                    .atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy), ParallelCon)
                     .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))

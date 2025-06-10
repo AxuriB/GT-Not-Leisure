@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
@@ -37,6 +38,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -53,7 +57,10 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
+import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.loader.BlockLoader;
@@ -65,12 +72,15 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -93,6 +103,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> extends MTESteamMultiBase<T> {
 
     private static final int OC_WINDOW_ID = 11;
+    protected double configSpeedBoost = 1;
     protected int recipeOcCount = 0;
     protected int tierAdvancedCasing = -1;
     protected int tierBrickCasing = -1;
@@ -319,6 +330,19 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick % 20 == 0) {
+                boolean found = false;
+                for (MTEHatchMaintenance module : mMaintenanceHatches) {
+                    if (module instanceof CustomMaintenanceHatch customMaintenanceHatch) {
+                        if (customMaintenanceHatch.isConfiguration())
+                            configSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    configSpeedBoost = 1;
+                }
+            }
             if (this.mUpdate == 1 || this.mStartUpCheck == 1) {
                 this.mSteamInputs.clear();
                 this.mSteamOutputs.clear();
@@ -333,6 +357,19 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @ApiStatus.OverrideOnly
+    protected ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
+
+            @Override
+            @Nonnull
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost);
+            }
+
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

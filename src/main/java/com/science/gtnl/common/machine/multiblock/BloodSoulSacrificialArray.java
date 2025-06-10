@@ -251,7 +251,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             .addElement('Y', ofBlockAnyMeta(ModBlocks.ritualStone))
             .addElement(
                 'Z',
-                buildHatchAdder(BloodSoulSacrificialArray.class).atLeast(InputBus, OutputBus)
+                buildHatchAdder(BloodSoulSacrificialArray.class).atLeast(Maintenance, InputBus, OutputBus)
                     .adder(BloodSoulSacrificialArray::addToMachineList)
                     .dot(1)
                     .casingIndex(getCasingTextureID())

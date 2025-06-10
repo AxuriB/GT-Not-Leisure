@@ -138,7 +138,7 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
             .addElement(
                 'L',
                 buildHatchAdder(NeutroniumWireCutting.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))

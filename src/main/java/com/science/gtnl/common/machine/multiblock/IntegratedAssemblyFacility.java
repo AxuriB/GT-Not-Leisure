@@ -147,7 +147,7 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
             .addElement(
                 'C',
                 buildHatchAdder(IntegratedAssemblyFacility.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))

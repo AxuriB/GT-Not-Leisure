@@ -113,6 +113,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                         buildHatchAdder(LargeSteamMixer.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
+                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -261,7 +262,8 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(tierMachine + (enableHVRecipe ? 1 : 0))
                     .setDurationModifier(1 / 0.67 / tierMachine - (enableHVRecipe ? 0.25 : 0))
                     .setMaxTierSkips(0);

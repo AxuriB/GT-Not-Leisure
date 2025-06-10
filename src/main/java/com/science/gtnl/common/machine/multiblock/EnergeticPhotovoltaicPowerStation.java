@@ -91,7 +91,7 @@ public class EnergeticPhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
                 'A',
                 buildHatchAdder(EnergeticPhotovoltaicPowerStation.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputHatch, Dynamo, Maintenance)
+                    .atLeast(Maintenance, InputHatch, Dynamo, Maintenance)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))
             .addElement('B', ofFrame(Materials.StainlessSteel))
             .addElement('D', ofBlock(BlockLoader.MetaCasing, 9))

@@ -145,7 +145,7 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
             .addElement(
                 'E',
                 buildHatchAdder(Desulfurizer.class)
-                    .atLeast(InputHatch, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputHatch, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(((BlockCasings4) sBlockCasings4).getTextureIndex(1))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))

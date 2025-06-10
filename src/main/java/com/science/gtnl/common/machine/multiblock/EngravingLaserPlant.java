@@ -140,7 +140,14 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
             .addElement(
                 'D',
                 buildHatchAdder(EngravingLaserPlant.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), ParallelCon)
+                    .atLeast(
+                        Maintenance,
+                        InputBus,
+                        OutputBus,
+                        InputHatch,
+                        OutputHatch,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))

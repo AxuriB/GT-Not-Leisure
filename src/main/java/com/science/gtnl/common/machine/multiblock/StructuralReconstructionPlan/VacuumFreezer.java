@@ -136,7 +136,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
                 'C',
                 buildHatchAdder(VacuumFreezer.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                    .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 1))))
             .addElement('D', ofBlock(sBlockCasings2, 14))
             .addElement('E', ofBlock(sBlockCasings4, 1))

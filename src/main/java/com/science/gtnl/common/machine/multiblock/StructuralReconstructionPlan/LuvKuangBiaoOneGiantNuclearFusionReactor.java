@@ -344,7 +344,7 @@ public class LuvKuangBiaoOneGiantNuclearFusionReactor
                 'C',
                 buildHatchAdder(LuvKuangBiaoOneGiantNuclearFusionReactor.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 6))))
             .addElement('D', ofBlock(sBlockCasings9, 3))
             .addElement('E', ofFrame(Materials.Tungsten))

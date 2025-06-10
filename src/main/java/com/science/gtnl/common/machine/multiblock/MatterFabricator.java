@@ -141,7 +141,7 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
                 'G',
                 buildHatchAdder(MatterFabricator.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 0))))
             .addElement('H', ofFrame(Materials.Naquadria))
             .build();

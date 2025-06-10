@@ -3,8 +3,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import javax.annotation.Nonnull;
@@ -166,7 +165,7 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
                         .dot(1)
                         .build(),
                     buildHatchAdder(SteamLavaMaker.class)
-                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
+                        .atLeast(Maintenance, SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
                         .dot(1)
                         .buildAndChain(),
@@ -188,7 +187,8 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(1)
                     .setDurationModifier(1)
                     .setMaxTierSkips(0);

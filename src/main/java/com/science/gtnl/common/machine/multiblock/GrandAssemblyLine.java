@@ -939,13 +939,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 'E',
                 buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(
-                        InputHatch,
-                        InputBus,
-                        OutputBus,
-                        Maintenance,
-                        Energy.or(ExoticEnergy),
-                        DataHatchElement.DataAccess)
+                    .atLeast(InputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy), DataHatchElement.DataAccess)
                     .buildAndChain(
                         onElementPass(
                             x -> ++x.tCountCasing,

@@ -119,7 +119,7 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
             .addElement(
                 'H',
                 buildHatchAdder(FieldForgePress.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))

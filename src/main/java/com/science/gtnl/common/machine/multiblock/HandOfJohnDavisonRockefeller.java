@@ -145,7 +145,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
                 'D',
                 buildHatchAdder(HandOfJohnDavisonRockefeller.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 3))))
             .addElement('E', ofBlock(sBlockCasings10, 8))
             .addElement('F', ofBlock(sBlockCasings3, 10))

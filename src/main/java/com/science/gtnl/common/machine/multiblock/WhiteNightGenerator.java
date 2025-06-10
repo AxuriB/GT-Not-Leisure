@@ -215,7 +215,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                buildHatchAdder(WhiteNightGenerator.class).atLeast(Dynamo)
+                buildHatchAdder(WhiteNightGenerator.class).atLeast(Maintenance, Dynamo)
                     .dot(1)
                     .casingIndex(CASING_INDEX)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings10, 13))))

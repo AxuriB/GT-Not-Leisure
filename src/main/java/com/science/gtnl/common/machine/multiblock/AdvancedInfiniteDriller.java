@@ -155,7 +155,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
                 'J',
                 buildHatchAdder(AdvancedInfiniteDriller.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('K', ofFrame(Materials.Neutronium))
             .addElement('L', ofBlock(sBlockMetal8, 0))

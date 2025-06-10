@@ -158,7 +158,7 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
                 'A',
                 buildHatchAdder(IndustrialArcaneAssembler.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 12))))
             .addElement('B', ofBlock(sBlockCasings1, 13))
             .addElement('C', ofBlock(sBlockCasings10, 11))

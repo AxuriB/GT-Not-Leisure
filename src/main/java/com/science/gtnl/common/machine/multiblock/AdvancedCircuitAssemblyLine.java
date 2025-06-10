@@ -99,7 +99,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
                 'G',
                 buildHatchAdder(AdvancedCircuitAssemblyLine.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
             .addElement('H', ofBlock(sBlockCasingsTT, 7))
             .addElement('I', ofBlock(sBlockCasingsTT, 8))

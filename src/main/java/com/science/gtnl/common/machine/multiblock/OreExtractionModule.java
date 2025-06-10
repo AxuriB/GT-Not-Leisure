@@ -86,7 +86,7 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
             .addElement(
                 'G',
                 buildHatchAdder(OreExtractionModule.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))

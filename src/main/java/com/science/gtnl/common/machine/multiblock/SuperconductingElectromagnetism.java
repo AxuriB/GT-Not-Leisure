@@ -142,7 +142,7 @@ public class SuperconductingElectromagnetism extends WirelessEnergyMultiMachineB
             .addElement(
                 'E',
                 buildHatchAdder(SuperconductingElectromagnetism.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))

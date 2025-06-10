@@ -104,6 +104,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                         .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                         .dot(1)
                         .atLeast(
+                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             InputBus,
@@ -210,7 +211,8 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount));
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount));
             }
 
             @NotNull

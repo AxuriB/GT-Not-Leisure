@@ -144,7 +144,7 @@ public class LargeElectromagnet extends GTMMultiMachineBase<LargeElectromagnet> 
                 'B',
                 buildHatchAdder(LargeElectromagnet.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 5))))
             .build();
     }

@@ -124,7 +124,7 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
                 'C',
                 buildHatchAdder(FishingGround.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 2))))
             .addElement('D', ofChain(ofBlockAnyMeta(Blocks.water), ofBlockAnyMeta(Blocks.flowing_water), isAir()))
             .build();

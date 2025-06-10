@@ -118,7 +118,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
                 'B',
                 buildHatchAdder(BrickedBlastFurnace.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, OutputBus)
+                    .atLeast(Maintenance, InputBus, OutputBus)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 15))))
             .addElement('C', ofFrame(Materials.Bronze))
             .addElement('D', ofBlock(sBlockCasings1, 10))

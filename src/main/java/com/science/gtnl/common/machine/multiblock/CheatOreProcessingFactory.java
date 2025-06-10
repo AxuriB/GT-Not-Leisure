@@ -265,7 +265,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
             .addElement(
                 'G',
                 ofChain(
-                    buildHatchAdder(CheatOreProcessingFactory.class).atLeast(InputBus, OutputBus)
+                    buildHatchAdder(CheatOreProcessingFactory.class).atLeast(Maintenance, InputBus, OutputBus)
                         .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
                         .dot(1)
                         .build(),

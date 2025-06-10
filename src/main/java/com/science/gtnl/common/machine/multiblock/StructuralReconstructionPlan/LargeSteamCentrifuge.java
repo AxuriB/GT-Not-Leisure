@@ -109,6 +109,7 @@ public class LargeSteamCentrifuge extends SteamMultiMachineBase<LargeSteamCentri
                         buildHatchAdder(LargeSteamCentrifuge.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
+                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -239,7 +240,8 @@ public class LargeSteamCentrifuge extends SteamMultiMachineBase<LargeSteamCentri
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(tierMachine)
                     .setDurationModifier(1 / 1.43 / tierMachine)
                     .setMaxTierSkips(0);

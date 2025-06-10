@@ -146,7 +146,7 @@ public class LargeForming extends GTMMultiMachineBase<LargeForming> implements I
                 'C',
                 buildHatchAdder(LargeForming.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
             .addElement('D', ofBlock(sBlockCasings3, 10))
             .addElement('E', ofFrame(Materials.StainlessSteel))

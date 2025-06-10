@@ -118,7 +118,7 @@ public class LargeMacerationTower extends GTMMultiMachineBase<LargeMacerationTow
                 'A',
                 buildHatchAdder(LargeMacerationTower.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 14))))
             .addElement('B', ofBlock(BlockLoader.MetaBlockColumn, 2))
             .build();

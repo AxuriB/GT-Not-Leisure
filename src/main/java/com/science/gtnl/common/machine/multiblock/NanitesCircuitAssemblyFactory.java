@@ -128,7 +128,7 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
             .addElement(
                 'E',
                 buildHatchAdder(NanitesCircuitAssemblyFactory.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))

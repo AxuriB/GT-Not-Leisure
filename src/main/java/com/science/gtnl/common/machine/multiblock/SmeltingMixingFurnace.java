@@ -162,7 +162,15 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
             .addElement(
                 'R',
                 buildHatchAdder(SmeltingMixingFurnace.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy, Energy.or(ExoticEnergy), ParallelCon)
+                    .atLeast(
+                        Maintenance,
+                        InputBus,
+                        OutputBus,
+                        InputHatch,
+                        OutputHatch,
+                        Energy,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++this.tCountCasing, ofBlock(sBlockCasingsTT, 0))))

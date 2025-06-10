@@ -256,6 +256,7 @@ public class SuperSpaceElevator extends TTMultiblockBase
                 'L',
                 buildHatchAdder(SuperSpaceElevator.class)
                     .atLeast(
+                        Maintenance,
                         InputBus,
                         InputHatch,
                         OutputHatch,

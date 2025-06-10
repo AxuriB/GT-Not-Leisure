@@ -257,7 +257,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
                 'A',
                 ofChain(
                     buildHatchAdder(LargeDistillery.class)
-                        .atLeast(Energy.or(ExoticEnergy), OutputBus, InputHatch, InputBus, Maintenance)
+                        .atLeast(Maintenance, Energy.or(ExoticEnergy), OutputBus, InputHatch, InputBus, Maintenance)
                         .casingIndex(CASING_INDEX)
                         .dot(1)
                         .build(),

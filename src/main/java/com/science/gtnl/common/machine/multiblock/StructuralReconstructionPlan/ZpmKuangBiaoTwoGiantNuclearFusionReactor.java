@@ -343,7 +343,7 @@ public class ZpmKuangBiaoTwoGiantNuclearFusionReactor
                 'C',
                 buildHatchAdder(ZpmKuangBiaoTwoGiantNuclearFusionReactor.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 6))))
             .addElement('D', ofBlock(sBlockCasings9, 3))
             .addElement('E', ofFrame(Materials.Tungsten))

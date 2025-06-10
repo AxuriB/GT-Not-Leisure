@@ -300,7 +300,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
             .addElement(
                 'f',
                 lazy(
-                    t -> buildHatchAdder(LargeBoiler.class).atLeast(InputHatch, InputBus)
+                    t -> buildHatchAdder(LargeBoiler.class).atLeast(Maintenance, InputHatch, InputBus)
                         .casingIndex(t.getFireboxTextureIndex())
                         .dot(1)
                         .buildAndChain(

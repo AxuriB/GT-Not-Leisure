@@ -3,8 +3,7 @@ package com.science.gtnl.common.machine.multiblock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.oMCDIndustrialExtruder;
 import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.oMCDIndustrialExtruderActive;
@@ -111,6 +110,7 @@ public class LargeSteamFormingPress extends SteamMultiMachineBase<LargeSteamForm
                         buildHatchAdder(LargeSteamFormingPress.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
+                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -225,7 +225,8 @@ public class LargeSteamFormingPress extends SteamMultiMachineBase<LargeSteamForm
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(0.9 * tierMachine)
                     .setDurationModifier(1 / 1.25 / tierMachine)
                     .setMaxTierSkips(0);

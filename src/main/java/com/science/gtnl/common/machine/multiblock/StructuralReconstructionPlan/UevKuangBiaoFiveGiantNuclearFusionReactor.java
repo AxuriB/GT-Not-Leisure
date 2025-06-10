@@ -344,7 +344,7 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
                 'C',
                 buildHatchAdder(UevKuangBiaoFiveGiantNuclearFusionReactor.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings6Misc, 0))))
             .addElement('D', ofBlock(sBlockCasingsDyson, 9))
             .addElement('E', ofFrame(Materials.Tungsten))

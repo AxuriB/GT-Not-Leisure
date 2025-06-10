@@ -149,7 +149,8 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(0.75)
                     .setDurationModifier(0.8)
                     .setMaxTierSkips(0);
@@ -213,6 +214,7 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
                         .build(),
                     buildHatchAdder(PrimitiveDistillationTower.class)
                         .atLeast(
+                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             OutputBus,

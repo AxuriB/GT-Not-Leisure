@@ -315,7 +315,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
             .addElement(
                 'A',
                 buildHatchAdder(ProcessingArray.class)
-                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
+                    .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 2))))

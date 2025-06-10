@@ -438,7 +438,8 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
             .addElement('M', ofBlock(ItemRegistry.bw_realglas2, 0))
             .addElement(
                 'N',
-                buildHatchAdder(EternalGregTechWorkshop.class).atLeast(InputBus, OutputBus, InputHatch, OutputHatch)
+                buildHatchAdder(EternalGregTechWorkshop.class)
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX + 1)
                     .dot(1)
                     .buildAndChain(

@@ -182,6 +182,7 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
                 buildHatchAdder(SteamElevator.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(
+                        Maintenance,
                         SteamHatchElement.InputBus_Steam,
                         SteamHatchElement.OutputBus_Steam,
                         InputHatch,

@@ -215,7 +215,7 @@ public class LargeCanning extends GTMMultiMachineBase<LargeCanning> implements I
                 'D',
                 buildHatchAdder(LargeCanning.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 4))))
             .build();
     }

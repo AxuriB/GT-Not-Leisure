@@ -127,7 +127,7 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
             .addElement('G', ofBlock(sBlockCasings10, 6))
             .addElement(
                 'H',
-                buildHatchAdder(HeavyRolling.class).atLeast(InputBus, OutputBus, Energy.or(ExoticEnergy))
+                buildHatchAdder(HeavyRolling.class).atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))

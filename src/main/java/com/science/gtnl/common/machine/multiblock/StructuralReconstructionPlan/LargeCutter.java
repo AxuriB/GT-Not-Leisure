@@ -141,7 +141,7 @@ public class LargeCutter extends GTMMultiMachineBase<LargeCutter> implements ISu
                 'C',
                 buildHatchAdder(LargeCutter.class).casingIndex(getCasingTextureID())
                     .dot(1)
-                    .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 13))))
             .build();
     }

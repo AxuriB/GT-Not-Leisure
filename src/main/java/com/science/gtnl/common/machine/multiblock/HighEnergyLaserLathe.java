@@ -130,7 +130,7 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
             .addElement(
                 'F',
                 buildHatchAdder(HighEnergyLaserLathe.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 7))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))

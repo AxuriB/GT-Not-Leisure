@@ -136,7 +136,7 @@ public class LargePacker extends GTMMultiMachineBase<LargePacker> implements ISu
                 'A',
                 buildHatchAdder(LargePacker.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
             .build();
     }

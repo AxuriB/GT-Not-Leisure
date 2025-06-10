@@ -3,8 +3,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.Arrays;
@@ -125,6 +124,7 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
                             .build(),
                         buildHatchAdder(SteamRockBreaker.class)
                             .atLeast(
+                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 InputBus,
                                 SteamHatchElement.OutputBus_Steam,
@@ -222,7 +222,8 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(1.25 * tierMachine)
                     .setDurationModifier(1.6 / tierMachine)
                     .setMaxTierSkips(0);

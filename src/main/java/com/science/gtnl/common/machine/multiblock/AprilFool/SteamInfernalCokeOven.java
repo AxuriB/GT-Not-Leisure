@@ -100,6 +100,7 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
                 ofChain(
                     buildHatchAdder(SteamInfernalCokeOven.class)
                         .atLeast(
+                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             InputBus,
                             SteamHatchElement.OutputBus_Steam,
@@ -195,7 +196,8 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setDurationModifier(1F / speedup)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setDurationModifier(1F / speedup)
                     .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setEUtDiscount(1);
             }

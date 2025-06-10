@@ -131,7 +131,7 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
             .addElement(
                 'E',
                 buildHatchAdder(SuperconductingMagneticPresser.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))

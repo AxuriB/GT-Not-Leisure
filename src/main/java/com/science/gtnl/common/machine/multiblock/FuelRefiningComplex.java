@@ -147,7 +147,7 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
                 'L',
                 buildHatchAdder(FuelRefiningComplex.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
             .build();
     }

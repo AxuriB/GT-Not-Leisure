@@ -162,7 +162,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
             .addElement('G', ofBlock(BlockLoader.LaserBeacon, 0))
             .addElement(
                 'H',
-                buildHatchAdder(MeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
+                buildHatchAdder(MeteorMiner.class).atLeast(Maintenance, OutputBus, Energy)
                     .casingIndex(TAE.getIndexFromPage(0, 10))
                     .dot(1)
                     .buildAndChain(
@@ -183,7 +183,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
             .addElement('h', ofFrame(Materials.BlackPlutonium))
             .addElement(
                 'j',
-                buildHatchAdder(MeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
+                buildHatchAdder(MeteorMiner.class).atLeast(Maintenance, OutputBus, Energy, Maintenance)
                     .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(2))
                     .dot(1)
                     .buildAndChain(onElementPass(MeteorMiner::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 2))))

@@ -133,7 +133,7 @@ public class LargeMaterialPress extends GTMMultiMachineBase<LargeMaterialPress> 
                 'C',
                 buildHatchAdder(LargeMaterialPress.class).casingIndex(CASING_INDEX)
                     .dot(1)
-                    .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
             .build();
     }

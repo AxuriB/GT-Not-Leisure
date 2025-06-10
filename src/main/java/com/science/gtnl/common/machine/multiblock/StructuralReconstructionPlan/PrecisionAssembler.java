@@ -198,7 +198,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
                 ofChain(
                     buildHatchAdder(PrecisionAssembler.class).casingIndex(getCasingTextureID())
                         .dot(1)
-                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                        .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                         .buildAndChain(
                             onElementPass(
                                 x -> ++x.tCountCasing,

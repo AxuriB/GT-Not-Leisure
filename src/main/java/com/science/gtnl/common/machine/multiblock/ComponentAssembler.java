@@ -90,7 +90,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
             .addElement(
                 'C',
                 buildHatchAdder(ComponentAssembler.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .dot(1)
                     .casingIndex(getCasingTextureID())
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))

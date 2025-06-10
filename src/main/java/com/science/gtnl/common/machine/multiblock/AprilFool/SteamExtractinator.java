@@ -2,8 +2,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
@@ -122,7 +121,8 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
             .addElement(
                 'J',
                 ofChain(
-                    buildHatchAdder(SteamExtractinator.class).atLeast(SteamHatchElement.OutputBus_Steam, OutputBus)
+                    buildHatchAdder(SteamExtractinator.class)
+                        .atLeast(Maintenance, SteamHatchElement.OutputBus_Steam, OutputBus)
                         .casingIndex(10)
                         .dot(2)
                         .buildAndChain(),
@@ -203,7 +203,8 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setMaxOverclocks(Math.min(4, recipeOcCount))
                     .setDurationModifier(1f)
                     .setMaxTierSkips(0);
             }

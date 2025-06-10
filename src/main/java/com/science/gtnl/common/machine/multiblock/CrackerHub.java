@@ -137,7 +137,7 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
             .addElement(
                 'I',
                 buildHatchAdder(CrackerHub.class)
-                    .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
