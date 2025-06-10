@@ -4,10 +4,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.Nxer.TwistSpaceTechnology.recipe.machineRecipe.expanded.CircuitAssemblyLineWithoutImprintRecipePool;
+import com.science.gtnl.Utils.machine.ProcessingArrayRecipeLoader;
 import com.science.gtnl.Utils.recipes.RecipeUtil;
+import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.machine.OreProcessing.CheatOreProcessingRecipes;
-import com.science.gtnl.common.machine.multiMachineClasses.ProcessingArrayRecipeLoader;
-import com.science.gtnl.common.materials.MaterialPool;
+import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.recipe.AprilFool.CactusWonderFakeRecipes;
 import com.science.gtnl.common.recipe.AprilFool.CraftingTableAprilFoolRecipes;
 import com.science.gtnl.common.recipe.AprilFool.InfernalCokeRecipes;
@@ -91,7 +92,7 @@ import com.science.gtnl.common.recipe.GregTech.TranscendentPlasmaMixerRecipes;
 import com.science.gtnl.common.recipe.GregTech.VacuumFreezerRecipes;
 import com.science.gtnl.common.recipe.GregTech.VacuumFurnaceRecipes;
 import com.science.gtnl.common.recipe.GregTech.multiDehydratorRecipes;
-import com.science.gtnl.common.recipe.Special.OreDictionary.PortalToAlfheimOreRecipes;
+import com.science.gtnl.common.recipe.OreDictionary.PortalToAlfheimOreRecipes;
 import com.science.gtnl.common.recipe.Thaumcraft.TCRecipePool;
 import com.science.gtnl.common.recipe.Thaumcraft.TCResearches;
 import com.science.gtnl.config.MainConfig;
@@ -181,14 +182,13 @@ public class RecipeLoader {
             PortalToAlfheimOreRecipes.addManaInfusionOreRecipes(stone);
         }
 
-        RecipeUtil
-            .generateRecipesNotUsingCells(BartWorksRecipeMaps.bioLabRecipes, RecipeRegister.LargeBioLabRecipes, true);
+        RecipeUtil.generateRecipesNotUsingCells(BartWorksRecipeMaps.bioLabRecipes, RecipePool.LargeBioLabRecipes, true);
 
         TCResearches.register();
     }
 
     private static void loadCircuitRelatedRecipes() {
-        RecipeUtil.copyAllRecipes(RecipeRegister.ConvertToCircuitAssembler, RecipeMaps.circuitAssemblerRecipes);
+        RecipeUtil.copyAllRecipes(RecipePool.ConvertToCircuitAssembler, RecipeMaps.circuitAssemblerRecipes);
 
         new CircuitAssemblyLineRecipes().loadRecipes();
 

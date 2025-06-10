@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.Utils.item.MissingMappingsHandler;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucketLoader;
 import com.science.gtnl.Utils.text.LanguageManager;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.common.command.CommandEnergyNetwork;
@@ -16,7 +17,6 @@ import com.science.gtnl.common.command.CommandReloadConfig;
 import com.science.gtnl.common.command.CommandSteamNetwork;
 import com.science.gtnl.common.command.CommandTickrate;
 import com.science.gtnl.common.command.CommandTitle;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGBucketLoader;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.MachineLoader;
 import com.science.gtnl.loader.MaterialLoader;

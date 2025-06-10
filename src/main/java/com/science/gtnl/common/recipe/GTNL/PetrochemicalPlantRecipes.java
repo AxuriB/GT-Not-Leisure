@@ -7,9 +7,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.dreammaster.bartworksHandler.BacteriaRegistry;
 import com.dreammaster.fluids.FluidList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.common.loaders.BioItemList;
 import bartworks.util.BioCulture;
@@ -24,7 +24,7 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 
 public class PetrochemicalPlantRecipes implements IRecipePool {
 
-    final RecipeMap<?> PPR = RecipeRegister.PetrochemicalPlantRecipes;
+    final RecipeMap<?> PPR = RecipePool.PetrochemicalPlantRecipes;
 
     @Override
     public void loadRecipes() {

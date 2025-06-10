@@ -28,7 +28,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
@@ -276,7 +276,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.AdvancedCircuitAssemblyLineRecipes;
+        return RecipePool.AdvancedCircuitAssemblyLineRecipes;
     }
 
     @Override

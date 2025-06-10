@@ -198,8 +198,8 @@ import com.science.gtnl.common.machine.multiblock.VibrantPhotovoltaicPowerStatio
 import com.science.gtnl.common.machine.multiblock.VortexMatterCentrifuge;
 import com.science.gtnl.common.machine.multiblock.WhiteNightGenerator;
 import com.science.gtnl.common.machine.multiblock.WoodDistillation;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.common.materials.MaterialUtils;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.common.material.MaterialUtils;
 
 import bartworks.API.BorosilicateGlass;
 import goodgenerator.util.CrackRecipeAdder;
@@ -2068,7 +2068,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2089,7 +2089,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2110,7 +2110,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2131,7 +2131,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2152,7 +2152,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2173,7 +2173,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2194,7 +2194,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2215,7 +2215,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2236,7 +2236,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2257,7 +2257,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2278,7 +2278,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2299,7 +2299,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,
@@ -2320,7 +2320,7 @@ public class MachineLoader {
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
                         + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
+                RecipePool.GasCollectorRecipes,
                 3,
                 3,
                 true,

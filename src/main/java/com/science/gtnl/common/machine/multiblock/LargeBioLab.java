@@ -22,7 +22,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -81,7 +81,7 @@ public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISu
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.LargeBioLabRecipes;
+        return RecipePool.LargeBioLabRecipes;
     }
 
     @Override

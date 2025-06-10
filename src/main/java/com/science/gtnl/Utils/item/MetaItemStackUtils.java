@@ -1,6 +1,6 @@
 package com.science.gtnl.Utils.item;
 
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 
 import java.util.Map;
 import java.util.Set;

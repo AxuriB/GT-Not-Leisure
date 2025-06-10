@@ -2,7 +2,7 @@ package com.science.gtnl.Utils.text;
 
 import static gregtech.api.util.GTLanguageManager.addStringLocalization;
 
-import com.science.gtnl.common.materials.MaterialPool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.FMLCommonHandler;

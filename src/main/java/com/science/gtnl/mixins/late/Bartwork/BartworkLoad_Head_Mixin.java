@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.science.gtnl.Utils.recipes.RecipeUtil;
-import com.science.gtnl.common.recipe.Special.RemoveRecipes;
+import com.science.gtnl.Utils.recipes.RemoveRecipes;
 import com.science.gtnl.config.MainConfig;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.MainMod;
 import gregtech.api.recipe.RecipeMaps;
@@ -24,7 +24,7 @@ public class BartworkLoad_Head_Mixin {
         if (MainConfig.enableDeleteRecipe && !recipesDel) {
             RemoveRecipes.removeRecipes();
         }
-        RecipeUtil.removeMatchingRecipes(RecipeRegister.ConvertToCircuitAssembler, RecipeMaps.circuitAssemblerRecipes);
+        RecipeUtil.removeMatchingRecipes(RecipePool.ConvertToCircuitAssembler, RecipeMaps.circuitAssemblerRecipes);
 
         recipesDel = true;
     }

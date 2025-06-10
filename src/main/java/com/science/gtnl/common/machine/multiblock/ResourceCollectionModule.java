@@ -31,7 +31,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.ResourceCollectionModuleTierKey;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -98,13 +98,13 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_MINER) ? RecipeRegister.SpaceMinerRecipes : RecipeRegister.SpaceDrillRecipes;
+        return (machineMode == MACHINEMODE_MINER) ? RecipePool.SpaceMinerRecipes : RecipePool.SpaceDrillRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeRegister.SpaceMinerRecipes, RecipeRegister.SpaceDrillRecipes);
+        return Arrays.asList(RecipePool.SpaceMinerRecipes, RecipePool.SpaceDrillRecipes);
     }
 
     @Override

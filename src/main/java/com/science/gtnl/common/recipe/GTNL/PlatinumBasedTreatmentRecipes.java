@@ -2,8 +2,8 @@ package com.science.gtnl.common.recipe.GTNL;
 
 import net.minecraftforge.fluids.FluidRegistry;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -18,7 +18,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class PlatinumBasedTreatmentRecipes implements IRecipePool {
 
-    final RecipeMap<?> PBTR = RecipeRegister.PlatinumBasedTreatmentRecipes;
+    final RecipeMap<?> PBTR = RecipePool.PlatinumBasedTreatmentRecipes;
 
     @Override
     public void loadRecipes() {

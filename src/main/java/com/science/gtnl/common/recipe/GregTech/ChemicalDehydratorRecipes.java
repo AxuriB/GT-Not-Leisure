@@ -1,8 +1,8 @@
 package com.science.gtnl.common.recipe.GregTech;
 
 import com.science.gtnl.Utils.recipes.RecipeBuilder;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.OrePrefixes;

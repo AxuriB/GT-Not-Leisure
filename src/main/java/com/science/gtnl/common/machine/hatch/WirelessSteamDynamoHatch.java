@@ -24,7 +24,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
-import com.science.gtnl.common.materials.MaterialPool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;

@@ -35,7 +35,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.Materials;
@@ -150,7 +150,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.NaquadahReactorRecipes;
+        return RecipePool.NaquadahReactorRecipes;
     }
 
     @Override

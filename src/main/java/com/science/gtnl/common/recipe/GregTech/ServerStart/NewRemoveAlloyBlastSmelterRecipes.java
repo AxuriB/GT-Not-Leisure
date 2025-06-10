@@ -1,6 +1,6 @@
 package com.science.gtnl.common.recipe.GregTech.ServerStart;
 
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;

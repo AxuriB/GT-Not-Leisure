@@ -34,13 +34,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.common.machine.Special.PortalToAlfheimExplosion;
+import com.science.gtnl.Utils.machine.PortalToAlfheimExplosion;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.common.materials.MaterialPool;
+import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
@@ -116,10 +116,10 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     @Override
     public RecipeMap<?> getRecipeMap() {
         return switch (machineMode) {
-            case NATURE_MODE -> RecipeRegister.NatureSpiritArrayRecipes;
-            case MANA_MODE -> RecipeRegister.ManaInfusionRecipes;
-            case RUNE_MODE -> RecipeRegister.RuneAltarRecipes;
-            default -> RecipeRegister.PortalToAlfheimRecipes;
+            case NATURE_MODE -> RecipePool.NatureSpiritArrayRecipes;
+            case MANA_MODE -> RecipePool.ManaInfusionRecipes;
+            case RUNE_MODE -> RecipePool.RuneAltarRecipes;
+            default -> RecipePool.PortalToAlfheimRecipes;
         };
     }
 
@@ -127,10 +127,10 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(
-            RecipeRegister.NatureSpiritArrayRecipes,
-            RecipeRegister.ManaInfusionRecipes,
-            RecipeRegister.RuneAltarRecipes,
-            RecipeRegister.PortalToAlfheimRecipes);
+            RecipePool.NatureSpiritArrayRecipes,
+            RecipePool.ManaInfusionRecipes,
+            RecipePool.RuneAltarRecipes,
+            RecipePool.PortalToAlfheimRecipes);
     }
 
     @Override

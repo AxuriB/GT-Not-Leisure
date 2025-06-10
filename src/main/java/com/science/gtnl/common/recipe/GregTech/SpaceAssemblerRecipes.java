@@ -6,7 +6,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModuleAssemblerT
 import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;

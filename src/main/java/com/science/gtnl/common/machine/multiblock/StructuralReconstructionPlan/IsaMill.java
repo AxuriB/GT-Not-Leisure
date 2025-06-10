@@ -25,7 +25,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.IsaMillTierKey;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.config.MainConfig;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -204,7 +204,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.IsaMillRecipes;
+        return RecipePool.IsaMillRecipes;
     }
 
     @Override

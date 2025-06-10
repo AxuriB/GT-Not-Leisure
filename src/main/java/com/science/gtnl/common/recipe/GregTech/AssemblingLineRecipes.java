@@ -16,8 +16,8 @@ import net.minecraftforge.fluids.FluidStack;
 import com.dreammaster.block.BlockList;
 import com.reavaritia.ReAvaItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;

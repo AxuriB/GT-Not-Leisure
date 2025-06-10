@@ -4,8 +4,8 @@ import java.lang.reflect.Array;
 
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import WayofTime.alchemicalWizardry.api.alchemy.AlchemyRecipe;
 import WayofTime.alchemicalWizardry.api.alchemy.AlchemyRecipeRegistry;
@@ -14,7 +14,7 @@ import gregtech.api.recipe.RecipeMap;
 
 public class AlchemicChemistrySetRecipes implements IRecipePool {
 
-    final RecipeMap<?> ACSR = RecipeRegister.AlchemicChemistrySetRecipes;
+    final RecipeMap<?> ACSR = RecipePool.AlchemicChemistrySetRecipes;
 
     @Override
     public void loadRecipes() {

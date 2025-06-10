@@ -2,7 +2,7 @@ package com.science.gtnl.common.block.Casings.Casing;
 
 import net.minecraft.block.Block;
 
-import com.science.gtnl.common.block.Casings.IMetaBlock;
+import com.science.gtnl.api.IMetaBlock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -3,8 +3,8 @@ package com.science.gtnl.common.recipe.GregTech;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMap;

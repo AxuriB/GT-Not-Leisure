@@ -1,9 +1,9 @@
 package com.science.gtnl.loader;
 
 import com.science.gtnl.common.recipe.AprilFool.OreDictionary.SteamCarpenterOreRecipe;
-import com.science.gtnl.common.recipe.Special.OreDictionary.LaserEngraverOreRecipes;
-import com.science.gtnl.common.recipe.Special.OreDictionary.PortalToAlfheimOreRecipes;
-import com.science.gtnl.common.recipe.Special.OreDictionary.WoodDistillationRecipes;
+import com.science.gtnl.common.recipe.OreDictionary.LaserEngraverOreRecipes;
+import com.science.gtnl.common.recipe.OreDictionary.PortalToAlfheimOreRecipes;
+import com.science.gtnl.common.recipe.OreDictionary.WoodDistillationRecipes;
 
 import gregtech.api.util.GTLog;
 

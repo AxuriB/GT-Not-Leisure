@@ -37,7 +37,7 @@ import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.ItemList;
@@ -220,14 +220,14 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_SMF) ? RecipeRegister.SmeltingMixingFurnaceRecipes
+        return (machineMode == MACHINEMODE_SMF) ? RecipePool.SmeltingMixingFurnaceRecipes
             : RecipeMaps.plasmaForgeRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeRegister.SmeltingMixingFurnaceRecipes, RecipeMaps.plasmaForgeRecipes);
+        return Arrays.asList(RecipePool.SmeltingMixingFurnaceRecipes, RecipeMaps.plasmaForgeRecipes);
     }
 
     @Override

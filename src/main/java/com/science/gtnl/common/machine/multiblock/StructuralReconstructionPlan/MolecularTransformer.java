@@ -20,7 +20,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
@@ -81,7 +81,7 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.MolecularTransformerRecipes;
+        return RecipePool.MolecularTransformerRecipes;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -12,7 +12,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class RareEarthCentrifugalRecipes implements IRecipePool {
 
-    final RecipeMap<?> RECR = RecipeRegister.RareEarthCentrifugalRecipes;
+    final RecipeMap<?> RECR = RecipePool.RareEarthCentrifugalRecipes;
 
     @Override
     public void loadRecipes() {

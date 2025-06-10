@@ -31,7 +31,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -117,16 +117,15 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == ShapedArcaneCrafting) ? RecipeRegister.IndustrialShapedArcaneCraftingRecipes
-            : RecipeRegister.IndustrialInfusionCraftingRecipes;
+        return (machineMode == ShapedArcaneCrafting) ? RecipePool.IndustrialShapedArcaneCraftingRecipes
+            : RecipePool.IndustrialInfusionCraftingRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(
-            RecipeRegister.IndustrialShapedArcaneCraftingRecipes,
-            RecipeRegister.IndustrialInfusionCraftingRecipes);
+        return Arrays
+            .asList(RecipePool.IndustrialShapedArcaneCraftingRecipes, RecipePool.IndustrialInfusionCraftingRecipes);
     }
 
     @Override

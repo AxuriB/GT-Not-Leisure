@@ -6,9 +6,9 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.*;
@@ -21,7 +21,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ShallowChemicalCouplingRecipes implements IRecipePool {
 
-    final RecipeMap<?> SCCR = RecipeRegister.ShallowChemicalCouplingRecipes;
+    final RecipeMap<?> SCCR = RecipePool.ShallowChemicalCouplingRecipes;
 
     @Override
     public void loadRecipes() {

@@ -6,8 +6,8 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.recipes.SteamFusionTierKey;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMap;
@@ -15,7 +15,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class SteamFusionReactorRecipes implements IRecipePool {
 
-    final RecipeMap<?> SFRR = RecipeRegister.SteamFusionReactorRecipes;
+    final RecipeMap<?> SFRR = RecipePool.SteamFusionReactorRecipes;
 
     @Override
     public void loadRecipes() {

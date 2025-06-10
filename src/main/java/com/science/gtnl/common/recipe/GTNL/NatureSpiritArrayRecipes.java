@@ -5,9 +5,9 @@ import static gregtech.api.enums.Mods.Botania;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMap;
@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 
 public class NatureSpiritArrayRecipes implements IRecipePool {
 
-    final RecipeMap<?> NSAR = RecipeRegister.NatureSpiritArrayRecipes;
+    final RecipeMap<?> NSAR = RecipePool.NatureSpiritArrayRecipes;
 
     @Override
     public void loadRecipes() {

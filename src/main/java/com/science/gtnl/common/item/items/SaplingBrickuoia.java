@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 
-import com.science.gtnl.common.trees.WorldGenBrickuoia;
+import com.science.gtnl.common.WorldGenBrickuoia;
 
 import gtPlusPlus.xmod.bop.blocks.base.SaplingBase;
 

@@ -10,8 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.dreammaster.item.NHItemList;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -25,7 +25,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class FishingGroundRecipes implements IRecipePool {
 
-    final RecipeMap<?> FGR = RecipeRegister.FishingGroundRecipes;
+    final RecipeMap<?> FGR = RecipePool.FishingGroundRecipes;
 
     @Override
     public void loadRecipes() {

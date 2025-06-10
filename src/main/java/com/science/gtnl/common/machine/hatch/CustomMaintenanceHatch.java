@@ -14,6 +14,8 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.api.ICleanRoomMaintenance;
+import com.science.gtnl.api.IConfigurationMaintenance;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

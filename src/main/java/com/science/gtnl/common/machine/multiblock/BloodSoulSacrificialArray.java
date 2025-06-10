@@ -35,7 +35,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
@@ -94,7 +94,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
         if (mParallelTier <= 1) {
             return 8;
         } else {
-            if (this.getRecipeMap() == RecipeRegister.FallingTowerRecipes) {
+            if (this.getRecipeMap() == RecipePool.FallingTowerRecipes) {
                 return (int) Math.pow(4, mParallelTier - 2) / 16;
             } else {
                 return (int) Math.pow(4, mParallelTier - 2) * 4;
@@ -105,9 +105,9 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     @Override
     public RecipeMap<?> getRecipeMap() {
         return switch (machineMode) {
-            case MACHINEMODE_FALLING_TOWER -> RecipeRegister.FallingTowerRecipes;
-            case MACHINEMODE_ALCHEMIC -> RecipeRegister.AlchemicChemistrySetRecipes;
-            default -> RecipeRegister.BloodDemonInjectionRecipes;
+            case MACHINEMODE_FALLING_TOWER -> RecipePool.FallingTowerRecipes;
+            case MACHINEMODE_ALCHEMIC -> RecipePool.AlchemicChemistrySetRecipes;
+            default -> RecipePool.BloodDemonInjectionRecipes;
         };
     }
 
@@ -115,9 +115,9 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(
-            RecipeRegister.FallingTowerRecipes,
-            RecipeRegister.AlchemicChemistrySetRecipes,
-            RecipeRegister.BloodDemonInjectionRecipes);
+            RecipePool.FallingTowerRecipes,
+            RecipePool.AlchemicChemistrySetRecipes,
+            RecipePool.BloodDemonInjectionRecipes);
     }
 
     @Override
@@ -280,7 +280,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
         boolean spawnMeteor = false;
 
         if ((this.mProgresstime + 1) % 20 == 0 && this.mProgresstime > 0
-            && this.getRecipeMap() == RecipeRegister.FallingTowerRecipes) {
+            && this.getRecipeMap() == RecipePool.FallingTowerRecipes) {
             if (mProgresstime < 20 && enableRender) {
                 spawnMeteor = true;
             }

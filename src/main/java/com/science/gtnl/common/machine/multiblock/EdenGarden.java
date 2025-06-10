@@ -62,12 +62,12 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGBucket;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGDropTable;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGDynamicInventory;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGMode;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGModes;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.buckets.EIGIC2Bucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDropTable;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDynamicInventory;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGMode;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGModes;
+import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGIC2Bucket;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 

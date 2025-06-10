@@ -21,7 +21,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -121,7 +121,7 @@ public class SteamCarpenter extends SteamMultiMachineBase<SteamCarpenter> implem
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.SteamCarpenterRecipes;
+        return RecipePool.SteamCarpenterRecipes;
     }
 
     @Override

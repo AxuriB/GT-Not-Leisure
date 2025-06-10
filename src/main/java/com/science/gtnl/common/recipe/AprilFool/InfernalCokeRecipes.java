@@ -10,8 +10,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -23,7 +23,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class InfernalCokeRecipes implements IRecipePool {
 
-    final RecipeMap<?> ICR = RecipeRegister.InfernalCockRecipes;
+    final RecipeMap<?> ICR = RecipePool.InfernalCockRecipes;
 
     @Override
     public void loadRecipes() {

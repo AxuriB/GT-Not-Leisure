@@ -55,7 +55,7 @@ import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
-import com.science.gtnl.common.materials.MaterialPool;
+import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.GregTechAPI;

@@ -1,7 +1,7 @@
 package com.science.gtnl.common.recipe.GTNL;
 
 import static com.dreammaster.scripts.IScriptLoader.missing;
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 
@@ -10,8 +10,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -24,7 +24,7 @@ import gregtech.api.util.GTUtility;
 
 public class PortalToAlfheimRecipes implements IRecipePool {
 
-    final RecipeMap<?> PTAR = RecipeRegister.PortalToAlfheimRecipes;
+    final RecipeMap<?> PTAR = RecipePool.PortalToAlfheimRecipes;
 
     @Override
     public void loadRecipes() {

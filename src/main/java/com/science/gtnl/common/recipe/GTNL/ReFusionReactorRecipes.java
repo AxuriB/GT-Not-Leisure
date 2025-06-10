@@ -1,11 +1,11 @@
 package com.science.gtnl.common.recipe.GTNL;
 
 import static com.science.gtnl.Utils.enums.GTNLItemList.TrollFace;
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static gregtech.api.util.GTModHandler.getModItem;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -15,7 +15,7 @@ import gregtech.api.util.GTUtility;
 
 public class ReFusionReactorRecipes implements IRecipePool {
 
-    final RecipeMap<?> RFRR = RecipeRegister.RecombinationFusionReactorRecipes;
+    final RecipeMap<?> RFRR = RecipePool.RecombinationFusionReactorRecipes;
 
     @Override
     public void loadRecipes() {

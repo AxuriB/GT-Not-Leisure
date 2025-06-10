@@ -1,7 +1,7 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
@@ -10,7 +10,7 @@ import gregtech.api.recipe.RecipeMap;
 
 public class NaquadahReactorRecipes implements IRecipePool {
 
-    final RecipeMap<?> NRR = RecipeRegister.NaquadahReactorRecipes;
+    final RecipeMap<?> NRR = RecipePool.NaquadahReactorRecipes;
 
     @Override
     public void loadRecipes() {

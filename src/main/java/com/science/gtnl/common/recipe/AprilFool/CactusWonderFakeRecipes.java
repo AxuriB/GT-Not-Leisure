@@ -3,8 +3,8 @@ package com.science.gtnl.common.recipe.AprilFool;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.recipes.SteamAmountSpecialValue;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -15,7 +15,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class CactusWonderFakeRecipes implements IRecipePool {
 
     private static final SteamAmountSpecialValue OFFER_VALUE = SteamAmountSpecialValue.INSTANCE;
-    final RecipeMap<?> CWFR = RecipeRegister.CactusWonderFakeRecipes;
+    final RecipeMap<?> CWFR = RecipePool.CactusWonderFakeRecipes;
 
     @Override
     public void loadRecipes() {

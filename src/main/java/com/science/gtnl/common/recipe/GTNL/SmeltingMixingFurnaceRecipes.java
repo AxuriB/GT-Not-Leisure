@@ -2,9 +2,9 @@ package com.science.gtnl.common.recipe.GTNL;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -17,7 +17,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class SmeltingMixingFurnaceRecipes implements IRecipePool {
 
-    final RecipeMap<?> SMFR = RecipeRegister.SmeltingMixingFurnaceRecipes;
+    final RecipeMap<?> SMFR = RecipePool.SmeltingMixingFurnaceRecipes;
 
     @Override
     public void loadRecipes() {

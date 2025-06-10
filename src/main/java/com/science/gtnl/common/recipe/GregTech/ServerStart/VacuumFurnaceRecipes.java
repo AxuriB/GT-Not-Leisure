@@ -2,7 +2,7 @@ package com.science.gtnl.common.recipe.GregTech.ServerStart;
 
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;

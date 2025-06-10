@@ -12,9 +12,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.recipe.Thaumcraft.TCRecipeTools;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
@@ -63,7 +63,7 @@ public class ShapedArcaneCraftingRecipes implements IRecipePool {
         TCRecipeTools.getShapedArcaneCraftingRecipe();
         TCRecipeTools.getShapelessArcaneCraftingRecipe();
 
-        final IRecipeMap IAA = RecipeRegister.IndustrialShapedArcaneCraftingRecipes;
+        final IRecipeMap IAA = RecipePool.IndustrialShapedArcaneCraftingRecipes;
 
         for (TCRecipeTools.ShapedArcaneCraftingRecipe recipe : TCRecipeTools.ShapedAR) {
             if (shouldSkip(

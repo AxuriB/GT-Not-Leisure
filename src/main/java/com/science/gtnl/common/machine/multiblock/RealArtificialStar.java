@@ -5,7 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.Utils.copyAmount;
 import static com.science.gtnl.Utils.enums.GTNLItemList.StellarConstructionFrameMaterial;
 import static com.science.gtnl.Utils.enums.Mods.TwistSpaceTechnology;
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -46,7 +46,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
@@ -180,7 +180,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.RealArtificialStarRecipes;
+        return RecipePool.RealArtificialStarRecipes;
     }
 
     @NotNull

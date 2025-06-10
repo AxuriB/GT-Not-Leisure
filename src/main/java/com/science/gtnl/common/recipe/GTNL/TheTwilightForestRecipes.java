@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 
 import com.dreammaster.item.NHItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -23,7 +23,7 @@ import gregtech.api.util.GTUtility;
 
 public class TheTwilightForestRecipes implements IRecipePool {
 
-    final RecipeMap<?> TTFR = RecipeRegister.TheTwilightForestRecipes;
+    final RecipeMap<?> TTFR = RecipePool.TheTwilightForestRecipes;
 
     @Override
     public void loadRecipes() {

@@ -23,7 +23,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
@@ -98,7 +98,7 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.RareEarthCentrifugalRecipes;
+        return RecipePool.RareEarthCentrifugalRecipes;
     }
 
     @Override

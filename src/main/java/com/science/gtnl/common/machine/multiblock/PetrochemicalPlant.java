@@ -24,7 +24,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -113,7 +113,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.PetrochemicalPlantRecipes;
+        return RecipePool.PetrochemicalPlantRecipes;
     }
 
     @Override

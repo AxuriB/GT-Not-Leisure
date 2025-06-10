@@ -17,14 +17,12 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListOps;
 import net.minecraft.server.management.UserListOpsEntry;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Contract;
@@ -34,7 +32,6 @@ import com.mojang.authlib.GameProfile;
 import com.science.gtnl.ScienceNotLeisure;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.metatileentity.MetaTileEntity;
 
 @SuppressWarnings("unused")
@@ -58,39 +55,6 @@ public final class Utils {
             .isServer();
     }
 
-    /**
-     * LV = 1, MAX = 14
-     */
-    public static int getCoilTier(HeatingCoilLevel coilLevel) {
-        return coilLevel.getTier() + 1;
-    }
-
-    /**
-     * One method to handle multi survivalBuildPiece at once.
-     *
-     * @param buildPieces All result of `survivalBuildPiece`.
-     * @return If all result is -1, return -1. Otherwise, return the sum of all non-negative values.
-     */
-    public static int multiBuildPiece(int... buildPieces) {
-        int out = 0x80000000;
-        for (int v : buildPieces) {
-            out &= (v & 0x80000000) | 0x7fffffff;
-            if (v != -1) out += v;
-        }
-        return out < 0 ? -1 : out;
-    }
-
-    public static ItemStack addStringToStackName(ItemStack itemStack, String extra) {
-
-        String originName = itemStack.getDisplayName();
-        String newName = originName + " " + extra;
-        itemStack.setStackDisplayName(newName);
-
-        return itemStack;
-    }
-
-    // endregion
-
     // region about ItemStack
     public static boolean metaItemEqual(ItemStack a, ItemStack b) {
         if (a == null || b == null) return false;
@@ -106,10 +70,6 @@ public final class Utils {
     @Contract(value = "_ -> new", pure = true)
     public static @NotNull ItemStack newItemStack(Block aBlock) {
         return new ItemStack(aBlock, 1, 0);
-    }
-
-    public static @NotNull ItemStack anErrorStack() {
-        return newItemStack(Blocks.fire).setStackDisplayName(EnumChatFormatting.DARK_RED + "ERROR_STACK!!!");
     }
 
     public static ItemStack[] copyItemStackArray(ItemStack... array) {

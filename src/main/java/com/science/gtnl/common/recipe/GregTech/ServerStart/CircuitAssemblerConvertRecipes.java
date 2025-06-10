@@ -5,9 +5,9 @@ import static gregtech.api.enums.Mods.*;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
 import bartworks.system.material.WerkstoffLoader;
@@ -24,7 +24,7 @@ import gtPlusPlus.core.material.MaterialMisc;
 
 public class CircuitAssemblerConvertRecipes implements IRecipePool {
 
-    final RecipeMap<?> CAR = RecipeRegister.ConvertToCircuitAssembler;
+    final RecipeMap<?> CAR = RecipePool.ConvertToCircuitAssembler;
 
     @Override
     public void loadRecipes() {

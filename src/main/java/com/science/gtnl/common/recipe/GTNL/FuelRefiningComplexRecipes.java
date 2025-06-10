@@ -4,8 +4,8 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
@@ -22,7 +22,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class FuelRefiningComplexRecipes implements IRecipePool {
 
-    final RecipeMap<?> FCR = RecipeRegister.FuelRefiningComplexRecipes;
+    final RecipeMap<?> FCR = RecipePool.FuelRefiningComplexRecipes;
 
     @Override
     public void loadRecipes() {

@@ -8,14 +8,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.recipe.RecipeMap;
 
 public class SteamWoodcutterRecipes implements IRecipePool {
 
-    final RecipeMap<?> SWR = RecipeRegister.SteamWoodcutterRecipes;
+    final RecipeMap<?> SWR = RecipePool.SteamWoodcutterRecipes;
 
     @Override
     public void loadRecipes() {

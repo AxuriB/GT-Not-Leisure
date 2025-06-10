@@ -23,7 +23,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
@@ -258,7 +258,7 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.LapotronChipRecipes;
+        return RecipePool.LapotronChipRecipes;
     }
 
     @Override

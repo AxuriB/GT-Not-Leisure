@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
@@ -35,6 +35,6 @@ public class MTETreeFarm_Mixin {
             .itemOutputs(new ItemStack(log.getItem(), 64, log.getItemDamage()))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(RecipeRegister.SteamWoodcutterRecipes);
+            .addTo(RecipePool.SteamWoodcutterRecipes);
     }
 }

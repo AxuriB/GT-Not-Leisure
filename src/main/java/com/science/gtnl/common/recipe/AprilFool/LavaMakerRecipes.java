@@ -6,15 +6,15 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.recipe.RecipeMap;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class LavaMakerRecipes implements IRecipePool {
 
-    final RecipeMap<?> LMR = RecipeRegister.LavaMakerRecipes;
+    final RecipeMap<?> LMR = RecipePool.LavaMakerRecipes;
 
     @Override
     public void loadRecipes() {

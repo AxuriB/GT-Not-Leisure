@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -67,7 +67,7 @@ public class SteamWeatherModule extends SteamElevatorModule {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.SteamWeatherModuleFakeRecipes;
+        return RecipePool.SteamWeatherModuleFakeRecipes;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class SteamWeatherModule extends SteamElevatorModule {
         List<ItemStack> inputStacks = getStoredInputs();
         List<FluidStack> inputFluids = getStoredFluids();
 
-        for (GTRecipe recipe : RecipeRegister.SteamWeatherModuleFakeRecipes.getAllRecipes()) {
+        for (GTRecipe recipe : RecipePool.SteamWeatherModuleFakeRecipes.getAllRecipes()) {
             ItemStack[] recipeItems = recipe.mInputs.clone();
             FluidStack[] recipeFluids = recipe.mFluidInputs.clone();
             int specialValue = recipe.mSpecialValue;

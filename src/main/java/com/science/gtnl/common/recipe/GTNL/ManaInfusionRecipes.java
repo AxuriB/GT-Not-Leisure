@@ -8,9 +8,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -22,7 +22,7 @@ import gregtech.api.util.GTUtility;
 
 public class ManaInfusionRecipes implements IRecipePool {
 
-    final RecipeMap<?> MIR = RecipeRegister.ManaInfusionRecipes;
+    final RecipeMap<?> MIR = RecipePool.ManaInfusionRecipes;
 
     @Override
     public void loadRecipes() {

@@ -5,8 +5,8 @@ import static gregtech.api.util.GTRecipeConstants.FUSION_THRESHOLD;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;

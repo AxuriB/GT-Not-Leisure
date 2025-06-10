@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import fox.spiteful.avaritia.items.LudicrousItems;
 import gregtech.api.enums.ItemList;

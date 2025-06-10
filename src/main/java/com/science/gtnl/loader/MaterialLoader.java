@@ -5,7 +5,7 @@ import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.common.entity.EntityArrowCustom;
 import com.science.gtnl.common.entity.EntitySteamRocket;
 import com.science.gtnl.common.item.items.MilledOre;
-import com.science.gtnl.common.materials.MaterialPool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import bartworks.API.WerkstoffAdderRegistry;
 import codechicken.nei.api.API;

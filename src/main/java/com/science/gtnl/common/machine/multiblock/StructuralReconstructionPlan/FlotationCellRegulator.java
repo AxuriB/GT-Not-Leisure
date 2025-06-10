@@ -22,7 +22,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.config.MainConfig;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -90,7 +90,7 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.CellRegulatorRecipes;
+        return RecipePool.CellRegulatorRecipes;
     }
 
     @Override

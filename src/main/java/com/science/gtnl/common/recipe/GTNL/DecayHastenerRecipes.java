@@ -1,8 +1,8 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -17,7 +17,7 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class DecayHastenerRecipes implements IRecipePool {
 
-    final RecipeMap<?> DHR = RecipeRegister.DecayHastenerRecipes;
+    final RecipeMap<?> DHR = RecipePool.DecayHastenerRecipes;
 
     @Override
     public void loadRecipes() {

@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.Utils.item.TextHandler;
+import com.science.gtnl.Utils.text.TextUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,7 +25,7 @@ public class ItemAdder_Basic extends Item {
         this.setMaxDamage(0);
         this.setCreativeTab(aCreativeTabs);
         this.unlocalizedName = MetaName;
-        TextHandler.texter(Name, this.unlocalizedName + ".name");
+        TextUtils.texter(Name, this.unlocalizedName + ".name");
 
     }
 

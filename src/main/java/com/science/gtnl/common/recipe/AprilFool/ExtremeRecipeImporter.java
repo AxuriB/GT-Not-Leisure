@@ -15,8 +15,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import fox.spiteful.avaritia.crafting.ExtremeCraftingManager;
 import fox.spiteful.avaritia.crafting.ExtremeShapedOreRecipe;
@@ -28,7 +28,7 @@ import gregtech.api.util.GTUtility;
 
 public class ExtremeRecipeImporter implements IRecipePool {
 
-    final RecipeMap<?> SGAR = RecipeRegister.SteamGateAssemblerRecipes;
+    final RecipeMap<?> SGAR = RecipePool.SteamGateAssemblerRecipes;
 
     @Override
     public void loadRecipes() {

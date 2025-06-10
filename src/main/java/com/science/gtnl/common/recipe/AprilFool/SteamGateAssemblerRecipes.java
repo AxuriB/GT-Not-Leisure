@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.recipes.RecipeBuilder;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -19,7 +19,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class SteamGateAssemblerRecipes implements IRecipePool {
 
-    final RecipeMap<?> SGAR = RecipeRegister.SteamGateAssemblerRecipes;
+    final RecipeMap<?> SGAR = RecipePool.SteamGateAssemblerRecipes;
 
     @Override
     public void loadRecipes() {

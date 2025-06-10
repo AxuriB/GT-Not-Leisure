@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GTValues;
@@ -78,7 +78,7 @@ public class OP_Bartworks_OreHandler {
                     .itemOutputs(rawOreOutputs.toArray(new ItemStack[] {}))
                     .eut(OreProcessRecipeEUt)
                     .duration(OreProcessRecipeDuration)
-                    .addTo(RecipeRegister.CheatOreProcessingRecipes);
+                    .addTo(RecipePool.CheatOreProcessingRecipes);
             }
 
             GTValues.RA.stdBuilder()
@@ -86,7 +86,7 @@ public class OP_Bartworks_OreHandler {
                 .itemOutputs(outputs.toArray(new ItemStack[] {}))
                 .eut(OreProcessRecipeEUt)
                 .duration(OreProcessRecipeDuration)
-                .addTo(RecipeRegister.CheatOreProcessingRecipes);
+                .addTo(RecipePool.CheatOreProcessingRecipes);
         }
     }
 }

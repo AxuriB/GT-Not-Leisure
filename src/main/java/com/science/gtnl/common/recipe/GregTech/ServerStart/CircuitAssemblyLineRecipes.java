@@ -9,8 +9,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
@@ -46,7 +46,7 @@ public class CircuitAssemblyLineRecipes implements IRecipePool {
 
     private static void rebuildCircuitAssemblerMap(HashSet<GTRecipe> toRem, HashSet<GTRecipe> toAdd) {
         reAddOriginalRecipes();
-        RecipeRegister.ConvertToCircuitAssembler.getAllRecipes()
+        RecipePool.ConvertToCircuitAssembler.getAllRecipes()
             .forEach(e -> handleCircuitRecipeRebuilding(e, toRem, toAdd));
     }
 

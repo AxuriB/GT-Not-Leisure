@@ -2,7 +2,7 @@ package com.science.gtnl.common.recipe.GregTech;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;

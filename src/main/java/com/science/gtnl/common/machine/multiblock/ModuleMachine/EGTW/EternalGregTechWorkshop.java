@@ -72,7 +72,7 @@ import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.Eterna
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.UpgradeColor;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.loader.Loaders;
@@ -351,7 +351,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.EternalGregTechWorkshopUpgradeRecipes;
+        return RecipePool.EternalGregTechWorkshopUpgradeRecipes;
     }
 
     @Override

@@ -4,7 +4,7 @@ import static gregtech.api.enums.Materials.*;
 import static gregtech.api.util.GTRecipeConstants.SIEVERT;
 
 import com.dreammaster.gthandler.CustomItemList;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.util.BWUtil;

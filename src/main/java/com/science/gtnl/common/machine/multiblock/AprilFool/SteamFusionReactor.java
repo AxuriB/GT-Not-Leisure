@@ -25,7 +25,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.SteamFusionTierKey;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -138,7 +138,7 @@ public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.SteamFusionReactorRecipes;
+        return RecipePool.SteamFusionReactorRecipes;
     }
 
     @Override

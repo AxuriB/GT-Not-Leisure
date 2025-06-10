@@ -1,7 +1,7 @@
 package com.science.gtnl.common.block.Casings.Base;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static com.science.gtnl.common.block.Casings.Base.ItemBlockBase.MetaBlockSet;
 
 import java.util.List;

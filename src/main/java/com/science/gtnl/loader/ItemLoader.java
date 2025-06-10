@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.item.TextHandler;
 import com.science.gtnl.Utils.text.AnimatedText;
+import com.science.gtnl.Utils.text.TextUtils;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.ItemRecord;
 import com.science.gtnl.common.item.MetaItemAdder;
@@ -90,144 +90,144 @@ public class ItemLoader {
             MetaItemAdder.initItem(
                 "TrollFace",
                 0,
-                new String[] { TextHandler.texter("Never Gonna Give You Up~", "tooltips.TrollFace") }));
+                new String[] { TextUtils.texter("Never Gonna Give You Up~", "tooltips.TrollFace") }));
         GTNLItemList.DepletedExcitedNaquadahFuelRod.set(
             MetaItemAdder.initItem(
                 "§bDepleted Excited Naquadah Fuel Rod",
                 1,
-                new String[] { TextHandler
+                new String[] { TextUtils
                     .texter("§oUltimate Form of Naquadah Fuel.", "tooltips.DepletedExcitedNaquadahFuelRod") }));
         GTNLItemList.BlazeCube.set(
             MetaItemAdder.initItem(
                 "§eBlaze Cube",
                 2,
-                new String[] { TextHandler.texter("§8§oBlaze Storm.", "tooltips.BlazeCube") }));
+                new String[] { TextUtils.texter("§8§oBlaze Storm.", "tooltips.BlazeCube") }));
         GTNLItemList.EnhancementCore.set(
             MetaItemAdder.initItem(
                 "Enhancement Core",
                 3,
-                new String[] { TextHandler.texter("§8§oThe road to completion!", "tooltips.EnhancementCore") }));
+                new String[] { TextUtils.texter("§8§oThe road to completion!", "tooltips.EnhancementCore") }));
         GTNLItemList.StellarConstructionFrameMaterial.set(
             MetaItemAdder.initItem(
                 "Stellar Construction Frame Material",
                 4,
-                new String[] { TextHandler.texter("A test item, no use.", "tooltips.TestItem0.line1") }));
+                new String[] { TextUtils.texter("A test item, no use.", "tooltips.TestItem0.line1") }));
         GTNLItemList.ActivatedGaiaPylon.set(MetaItemAdder.initItem("Activated Gaia Pylon", 5));
         GTNLItemList.PrecisionSteamMechanism.set(MetaItemAdder.initItem("Precision Steam Mechanism", 6));
         GTNLItemList.MeteorMinerSchematic1.set(
             MetaItemAdder.initItem(
                 "Meteor Miner Tier 1 Schematic",
                 7,
-                new String[] { TextHandler
+                new String[] { TextUtils
                     .texter("Schematic needed to enable the Tier 1 Meteor Miner", "tooltips.MeteorMinerSchematic1") }));
         GTNLItemList.MeteorMinerSchematic2.set(
             MetaItemAdder.initItem(
                 "Meteor Miner Tier 2 Schematic",
                 8,
-                new String[] { TextHandler
+                new String[] { TextUtils
                     .texter("Schematic needed to enable the Tier 2 Meteor Miner", "tooltips.MeteorMinerSchematic2") }));
         GTNLItemList.CircuitResonaticULV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic ULV",
                 9,
-                new String[] { TextHandler.texter("An Original Circuit", "tooltips.CircuitResonaticULV_00"),
-                    TextHandler.texter("§fULV-Tier", "tooltips.CircuitResonaticULV_01") }));
+                new String[] { TextUtils.texter("An Original Circuit", "tooltips.CircuitResonaticULV_00"),
+                    TextUtils.texter("§fULV-Tier", "tooltips.CircuitResonaticULV_01") }));
         GTNLItemList.CircuitResonaticLV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic LV",
                 10,
-                new String[] { TextHandler.texter("An Basic Circuit", "tooltips.CircuitResonaticLV_00"),
-                    TextHandler.texter("LV-Tier", "tooltips.CircuitResonaticLV_01") }));
+                new String[] { TextUtils.texter("An Basic Circuit", "tooltips.CircuitResonaticLV_00"),
+                    TextUtils.texter("LV-Tier", "tooltips.CircuitResonaticLV_01") }));
         GTNLItemList.CircuitResonaticMV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic MV",
                 11,
-                new String[] { TextHandler.texter("An Good Circuit", "tooltips.CircuitResonaticMV_00"),
-                    TextHandler.texter("§6MV-Tier", "tooltips.CircuitResonaticMV_01") }));
+                new String[] { TextUtils.texter("An Good Circuit", "tooltips.CircuitResonaticMV_00"),
+                    TextUtils.texter("§6MV-Tier", "tooltips.CircuitResonaticMV_01") }));
         GTNLItemList.CircuitResonaticHV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic HV",
                 12,
-                new String[] { TextHandler.texter("An Adavanced Circuit", "tooltips.CircuitResonaticHV_00"),
-                    TextHandler.texter("§eHV-Tier", "tooltips.CircuitResonaticHV_01") }));
+                new String[] { TextUtils.texter("An Adavanced Circuit", "tooltips.CircuitResonaticHV_00"),
+                    TextUtils.texter("§eHV-Tier", "tooltips.CircuitResonaticHV_01") }));
         GTNLItemList.CircuitResonaticEV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic EV",
                 13,
-                new String[] { TextHandler.texter("An Data Circuit", "tooltips.CircuitResonaticEV_00"),
-                    TextHandler.texter("§8EV-Tier", "tooltips.CircuitResonaticEV_01") }));
+                new String[] { TextUtils.texter("An Data Circuit", "tooltips.CircuitResonaticEV_00"),
+                    TextUtils.texter("§8EV-Tier", "tooltips.CircuitResonaticEV_01") }));
         GTNLItemList.CircuitResonaticIV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic IV",
                 14,
-                new String[] { TextHandler.texter("An Elite Circuit", "tooltips.CircuitResonaticIV_00"),
-                    TextHandler.texter("§aIV-Tier", "tooltips.CircuitResonaticIV_01") }));
+                new String[] { TextUtils.texter("An Elite Circuit", "tooltips.CircuitResonaticIV_00"),
+                    TextUtils.texter("§aIV-Tier", "tooltips.CircuitResonaticIV_01") }));
         GTNLItemList.CircuitResonaticLuV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic LuV",
                 15,
-                new String[] { TextHandler.texter("An Master Circuit", "tooltips.CircuitResonaticLuV_00"),
-                    TextHandler.texter("§dLuV-Tier", "tooltips.CircuitResonaticLuV_01") }));
+                new String[] { TextUtils.texter("An Master Circuit", "tooltips.CircuitResonaticLuV_00"),
+                    TextUtils.texter("§dLuV-Tier", "tooltips.CircuitResonaticLuV_01") }));
         GTNLItemList.CircuitResonaticZPM.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic ZPM",
                 16,
-                new String[] { TextHandler.texter("An Ultimate Circuit", "tooltips.CircuitResonaticZPM_00"),
-                    TextHandler.texter("§bZPM-Tier", "tooltips.CircuitResonaticZPM_01") }));
+                new String[] { TextUtils.texter("An Ultimate Circuit", "tooltips.CircuitResonaticZPM_00"),
+                    TextUtils.texter("§bZPM-Tier", "tooltips.CircuitResonaticZPM_01") }));
         GTNLItemList.CircuitResonaticUV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic UV",
                 17,
-                new String[] { TextHandler.texter("An Superconductor Circuit", "tooltips.CircuitResonaticUV_00"),
-                    TextHandler.texter("§2UV-Tier", "tooltips.CircuitResonaticUV_01") }));
+                new String[] { TextUtils.texter("An Superconductor Circuit", "tooltips.CircuitResonaticUV_00"),
+                    TextUtils.texter("§2UV-Tier", "tooltips.CircuitResonaticUV_01") }));
         GTNLItemList.CircuitResonaticUHV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic UHV",
                 18,
-                new String[] { TextHandler.texter("An Infinite Circuit", "tooltips.CircuitResonaticUHV_00"),
-                    TextHandler.texter("§4UHV-Tier", "tooltips.CircuitResonaticUHV_01") }));
+                new String[] { TextUtils.texter("An Infinite Circuit", "tooltips.CircuitResonaticUHV_00"),
+                    TextUtils.texter("§4UHV-Tier", "tooltips.CircuitResonaticUHV_01") }));
         GTNLItemList.CircuitResonaticUEV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic UEV",
                 19,
-                new String[] { TextHandler.texter("An Bio Circuit", "tooltips.CircuitResonaticUEV_00"),
-                    TextHandler.texter("§5UEV-Tier", "tooltips.CircuitResonaticUEV_01") }));
+                new String[] { TextUtils.texter("An Bio Circuit", "tooltips.CircuitResonaticUEV_00"),
+                    TextUtils.texter("§5UEV-Tier", "tooltips.CircuitResonaticUEV_01") }));
         GTNLItemList.CircuitResonaticUIV.set(
             MetaItemAdder.initItem(
                 "Circuit Resonatic UIV",
                 20,
-                new String[] { TextHandler.texter("An Optical Circuit", "tooltips.CircuitResonaticUIV_00"),
-                    TextHandler.texter("§l§1UIV-Tier", "tooltips.CircuitResonaticUIV_01") }));
+                new String[] { TextUtils.texter("An Optical Circuit", "tooltips.CircuitResonaticUIV_00"),
+                    TextUtils.texter("§l§1UIV-Tier", "tooltips.CircuitResonaticUIV_01") }));
         GTNLItemList.VerySimpleCircuit.set(
             MetaItemAdder.initItem(
                 "Very Simple Circuit",
                 21,
-                new String[] { TextHandler.texter("An Very Simple Circuit", "tooltips.VerySimpleCircuit_00"),
-                    TextHandler.texter("§fULV-Tier", "tooltips.VerySimpleCircuit_01") }));
+                new String[] { TextUtils.texter("An Very Simple Circuit", "tooltips.VerySimpleCircuit_00"),
+                    TextUtils.texter("§fULV-Tier", "tooltips.VerySimpleCircuit_01") }));
         GTNLItemList.SimpleCircuit.set(
             MetaItemAdder.initItem(
                 "Simple Circuit",
                 22,
-                new String[] { TextHandler.texter("An Simple Circuit", "tooltips.SimpleCircuit_00"),
-                    TextHandler.texter("LV-Tier", "tooltips.SimpleCircuit_01") }));
+                new String[] { TextUtils.texter("An Simple Circuit", "tooltips.SimpleCircuit_00"),
+                    TextUtils.texter("LV-Tier", "tooltips.SimpleCircuit_01") }));
         GTNLItemList.BasicCircuit.set(
             MetaItemAdder.initItem(
                 "Basic Circuit",
                 23,
-                new String[] { TextHandler.texter("An Basic Circuit", "tooltips.BasicCircuit_00"),
-                    TextHandler.texter("§6MV-Tier", "tooltips.BasicCircuit_01") }));
+                new String[] { TextUtils.texter("An Basic Circuit", "tooltips.BasicCircuit_00"),
+                    TextUtils.texter("§6MV-Tier", "tooltips.BasicCircuit_01") }));
         GTNLItemList.AdvancedCircuit.set(
             MetaItemAdder.initItem(
                 "Advanced Circuit",
                 24,
-                new String[] { TextHandler.texter("An Advanced Circuit", "tooltips.AdvancedCircuit_00"),
-                    TextHandler.texter("§eHV-Tier", "tooltips.AdvancedCircuit_01") }));
+                new String[] { TextUtils.texter("An Advanced Circuit", "tooltips.AdvancedCircuit_00"),
+                    TextUtils.texter("§eHV-Tier", "tooltips.AdvancedCircuit_01") }));
         GTNLItemList.EliteCircuit.set(
             MetaItemAdder.initItem(
                 "Elite Circuit",
                 25,
-                new String[] { TextHandler.texter("An Elite Circuit", "tooltips.EliteCircuit_00"),
-                    TextHandler.texter("§8EV-Tier", "tooltips.EliteCircuit_01") }));
+                new String[] { TextUtils.texter("An Elite Circuit", "tooltips.EliteCircuit_00"),
+                    TextUtils.texter("§8EV-Tier", "tooltips.EliteCircuit_01") }));
         GTNLItemList.StargateSingularity.set(MetaItemAdder.initItem("Stargate Singularity", 26))
             .setRender(new InfinityMetaItemRenderer());
         GTNLItemList.StargateCompressedSingularity.set(MetaItemAdder.initItem("Stargate Compressed Singularity", 27))
@@ -256,113 +256,113 @@ public class ItemLoader {
             MetaItemAdder.initItem(
                 "LV Parallel Controller Core",
                 48,
-                new String[] { TextHandler.texter("§dSpeed: +1%%", "tooltips.LVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -2%%", "tooltips.LVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 0", "tooltips.LVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +1%%", "tooltips.LVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -2%%", "tooltips.LVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 0", "tooltips.LVParallelControllerCore_02") }));
 
         GTNLItemList.MVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "MV Parallel Controller Core",
                 49,
-                new String[] { TextHandler.texter("§dSpeed: +2%%", "tooltips.MVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -4%%", "tooltips.MVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 1", "tooltips.MVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +2%%", "tooltips.MVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -4%%", "tooltips.MVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 1", "tooltips.MVParallelControllerCore_02") }));
 
         GTNLItemList.HVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "HV Parallel Controller Core",
                 50,
-                new String[] { TextHandler.texter("§dSpeed: +4%%", "tooltips.HVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -6%%", "tooltips.HVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 4", "tooltips.HVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +4%%", "tooltips.HVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -6%%", "tooltips.HVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 4", "tooltips.HVParallelControllerCore_02") }));
 
         GTNLItemList.EVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "EV Parallel Controller Core",
                 51,
-                new String[] { TextHandler.texter("§dSpeed: +6%%", "tooltips.EVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -8%%", "tooltips.EVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 16", "tooltips.EVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +6%%", "tooltips.EVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -8%%", "tooltips.EVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 16", "tooltips.EVParallelControllerCore_02") }));
 
         GTNLItemList.IVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "IV Parallel Controller Core",
                 52,
-                new String[] { TextHandler.texter("§dSpeed: +8%%", "tooltips.IVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -10%%", "tooltips.IVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 64", "tooltips.IVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +8%%", "tooltips.IVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -10%%", "tooltips.IVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 64", "tooltips.IVParallelControllerCore_02") }));
 
         GTNLItemList.LuVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "LuV Parallel Controller Core",
                 53,
-                new String[] { TextHandler.texter("§dSpeed: +10%%", "tooltips.LuVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -12%%", "tooltips.LuVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 256", "tooltips.LuVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +10%%", "tooltips.LuVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -12%%", "tooltips.LuVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 256", "tooltips.LuVParallelControllerCore_02") }));
 
         GTNLItemList.ZPMParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "ZPM Parallel Controller Core",
                 54,
-                new String[] { TextHandler.texter("§dSpeed: +12%%", "tooltips.ZPMParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -14%%", "tooltips.ZPMParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 1024", "tooltips.ZPMParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +12%%", "tooltips.ZPMParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -14%%", "tooltips.ZPMParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 1024", "tooltips.ZPMParallelControllerCore_02") }));
 
         GTNLItemList.UVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "UV Parallel Controller Core",
                 55,
-                new String[] { TextHandler.texter("§dSpeed: +14%%", "tooltips.UVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -16%%", "tooltips.UVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 4096", "tooltips.UVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +14%%", "tooltips.UVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -16%%", "tooltips.UVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 4096", "tooltips.UVParallelControllerCore_02") }));
 
         GTNLItemList.UHVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "UHV Parallel Controller Core",
                 56,
-                new String[] { TextHandler.texter("§dSpeed: +16%%", "tooltips.UHVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -18%%", "tooltips.UHVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 16384", "tooltips.UHVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +16%%", "tooltips.UHVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -18%%", "tooltips.UHVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 16384", "tooltips.UHVParallelControllerCore_02") }));
 
         GTNLItemList.UEVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "UEV Parallel Controller Core",
                 57,
-                new String[] { TextHandler.texter("§dSpeed: +18%%", "tooltips.UEVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -20%%", "tooltips.UEVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 65536", "tooltips.UEVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +18%%", "tooltips.UEVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -20%%", "tooltips.UEVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 65536", "tooltips.UEVParallelControllerCore_02") }));
 
         GTNLItemList.UIVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "UIV Parallel Controller Core",
                 58,
-                new String[] { TextHandler.texter("§dSpeed: +20%%", "tooltips.UIVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -22%%", "tooltips.UIVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 262144", "tooltips.UIVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +20%%", "tooltips.UIVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -22%%", "tooltips.UIVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 262144", "tooltips.UIVParallelControllerCore_02") }));
 
         GTNLItemList.UMVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "UMV Parallel Controller Core",
                 59,
-                new String[] { TextHandler.texter("§dSpeed: +22%%", "tooltips.UMVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -24%%", "tooltips.UMVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 1048576", "tooltips.UMVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +22%%", "tooltips.UMVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -24%%", "tooltips.UMVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 1048576", "tooltips.UMVParallelControllerCore_02") }));
 
         GTNLItemList.UXVParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "UXV Parallel Controller Core",
                 60,
-                new String[] { TextHandler.texter("§dSpeed: +24%%", "tooltips.UXVParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -26%%", "tooltips.UXVParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 4194304", "tooltips.UXVParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +24%%", "tooltips.UXVParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -26%%", "tooltips.UXVParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 4194304", "tooltips.UXVParallelControllerCore_02") }));
 
         GTNLItemList.MAXParallelControllerCore.set(
             MetaItemAdder.initItem(
                 "MAX Parallel Controller Core",
                 61,
-                new String[] { TextHandler.texter("§dSpeed: +26%%", "tooltips.MAXParallelControllerCore_00"),
-                    TextHandler.texter("§5EU Usage: -28%%", "tooltips.MAXParallelControllerCore_01"),
-                    TextHandler.texter("§bParallel: 16777216", "tooltips.MAXParallelControllerCore_02") }));
+                new String[] { TextUtils.texter("§dSpeed: +26%%", "tooltips.MAXParallelControllerCore_00"),
+                    TextUtils.texter("§5EU Usage: -28%%", "tooltips.MAXParallelControllerCore_01"),
+                    TextUtils.texter("§bParallel: 16777216", "tooltips.MAXParallelControllerCore_02") }));
 
         GTNLItemList.NagaBook.set(MetaItemAdder.initItem("§7Canard - Naga Book", 62));
         GTNLItemList.TwilightForestBook.set(MetaItemAdder.initItem("§bUrban legends - Twilight Forest Book", 63));
@@ -381,35 +381,35 @@ public class ItemLoader {
             MetaItemAdder.initItem(
                 "Neutronium Boule",
                 75,
-                new String[] { TextHandler.texter("Raw Circuit", "tooltips.NeutroniumBoule_00") }));
+                new String[] { TextUtils.texter("Raw Circuit", "tooltips.NeutroniumBoule_00") }));
         GTNLItemList.NeutroniumWafer.set(
             MetaItemAdder.initItem(
                 "Neutronium Wafer",
                 76,
-                new String[] { TextHandler.texter("Raw Circuit", "tooltips.NeutroniumWafer_00") }));
+                new String[] { TextUtils.texter("Raw Circuit", "tooltips.NeutroniumWafer_00") }));
         GTNLItemList.HighlyAdvancedSocWafer.set(
             MetaItemAdder.initItem(
                 "Highly Advanced Soc Wafer",
                 77,
-                new String[] { TextHandler.texter("Raw Circuit", "tooltips.HighlyAdvancedSocWafer_00") }));
+                new String[] { TextUtils.texter("Raw Circuit", "tooltips.HighlyAdvancedSocWafer_00") }));
         GTNLItemList.HighlyAdvancedSoc.set(
             MetaItemAdder.initItem(
                 "Highly Advanced Soc",
                 78,
-                new String[] { TextHandler.texter("Highly Advanced SoC", "tooltips.HighlyAdvancedSoc_00") }));
+                new String[] { TextUtils.texter("Highly Advanced SoC", "tooltips.HighlyAdvancedSoc_00") }));
         GTNLItemList.ZnFeAlClCatalyst.set(MetaItemAdder.initItem("Zn-Fe-Al-Cl Catalyst", 79));
         GTNLItemList.BlackLight.set(
             MetaItemAdder.initItem(
                 "Black Light",
                 80,
                 new String[] {
-                    TextHandler.texter("§8long-wave §dultraviolet §8light source", "tooltips.BlackLight_00") }));
+                    TextUtils.texter("§8long-wave §dultraviolet §8light source", "tooltips.BlackLight_00") }));
         GTNLItemList.SteamgateDialingDevice.set(
             MetaItemAdder.initItem(
                 "Steamgate Dialing Device",
                 81,
                 new String[] {
-                    TextHandler.texter("Links steamgates for teleportation.", "tooltips.SteamgateDialingDevice_00") }));
+                    TextUtils.texter("Links steamgates for teleportation.", "tooltips.SteamgateDialingDevice_00") }));
         GTNLItemList.SteamgateChevron.set(MetaItemAdder.initItem("Steamgate Chevron", 82));
         GTNLItemList.SteamgateChevronUpgrade.set(MetaItemAdder.initItem("Steamgate Chevron Upgrade", 83));
         GTNLItemList.SteamgateIrisBlade.set(MetaItemAdder.initItem("Steamgate Iris Blade", 84));
@@ -418,19 +418,18 @@ public class ItemLoader {
             MetaItemAdder.initItem(
                 "Steamgate Heat Containment Plate",
                 86,
-                new String[] { TextHandler
+                new String[] { TextUtils
                     .texter("Perfect temperature stability...", "tooltips.SteamgateHeatContainmentPlate_00") }));
         GTNLItemList.SteamgateFrame.set(
             MetaItemAdder.initItem(
                 "Steamgate Frame",
                 87,
-                new String[] {
-                    TextHandler.texter("Innumerable interlocking gears...", "tooltips.SteamgateFrame_00") }));
+                new String[] { TextUtils.texter("Innumerable interlocking gears...", "tooltips.SteamgateFrame_00") }));
         GTNLItemList.SteamgateCoreCrystal.set(
             MetaItemAdder.initItem(
                 "Steamgate Core Crystal",
                 88,
-                new String[] { TextHandler
+                new String[] { TextUtils
                     .texter("A crystal made of pure condensed staem...", "tooltips.SteamgateCoreCrystal_00") }));
         GTNLItemList.HydraulicMotor.set(MetaItemAdder.initItem("Hydraulic Motor", 89));
         GTNLItemList.HydraulicPiston.set(MetaItemAdder.initItem("Hydraulic Piston", 90));
@@ -439,25 +438,25 @@ public class ItemLoader {
                 "Hydraulic Pump",
                 91,
                 new String[] {
-                    TextHandler.texter("1,048,576 L/t (20,971,520 L/s) as Cover", "tooltips.HydraulicPump_00") }));
+                    TextUtils.texter("1,048,576 L/t (20,971,520 L/s) as Cover", "tooltips.HydraulicPump_00") }));
         GTNLItemList.HydraulicArm.set(MetaItemAdder.initItem("Hydraulic Arm", 92));
         GTNLItemList.HydraulicConveyor.set(
             MetaItemAdder.initItem(
                 "Hydraulic Conveyor",
                 93,
                 new String[] {
-                    TextHandler.texter("16 stacks every 1/20 sec (as Cover)", "tooltips.HydraulicConveyor_00") }));
+                    TextUtils.texter("16 stacks every 1/20 sec (as Cover)", "tooltips.HydraulicConveyor_00") }));
         GTNLItemList.HydraulicRegulator.set(
             MetaItemAdder.initItem(
                 "Hydraulic Regulator",
                 94,
                 new String[] {
-                    TextHandler
+                    TextUtils
                         .texter("Configurable up to 20,971,520 L/sec (as Cover)", "tooltips.HydraulicRegulator_00"),
-                    TextHandler.texter(
+                    TextUtils.texter(
                         "Rightclick/Screwdriver-rightclick/Shift-screwdriver-rightclick",
                         "tooltips.HydraulicRegulator_01"),
-                    TextHandler.texter(
+                    TextUtils.texter(
                         "to adjust the pump speed by 1/16/256 L/sec per click",
                         "tooltips.HydraulicRegulator_02") }));
         GTNLItemList.HydraulicVaporGenerator.set(MetaItemAdder.initItem("Hydraulic Vapor Generator", 95));
@@ -467,7 +466,7 @@ public class ItemLoader {
             MetaItemAdder.initItem(
                 "Hydraulic Steam Valve",
                 98,
-                new String[] { TextHandler
+                new String[] { TextUtils
                     .texter("16,777,216 L/t (335,544,320 L/s) as Cover", "tooltips.HydraulicSteamValve_00") }));
         addItemTooltip(
             GTNLItemList.HydraulicSteamValve.get(1),
@@ -476,7 +475,7 @@ public class ItemLoader {
             MetaItemAdder.initItem(
                 "Hydraulic Steam Regulator",
                 99,
-                new String[] { TextHandler
+                new String[] { TextUtils
                     .texter("16,777,216 L/t (335,544,320 L/s) as Cover", "tooltips.HydraulicSteamRegulator_00") }));
         addItemTooltip(
             GTNLItemList.HydraulicSteamRegulator.get(1),
@@ -485,17 +484,17 @@ public class ItemLoader {
             MetaItemAdder.initItem(
                 "SadBapyCat Token",
                 100,
-                new String[] { TextHandler.texter(":sadbapycat:", "tooltips.SadBapyCatToken_00") }));
+                new String[] { TextUtils.texter(":sadbapycat:", "tooltips.SadBapyCatToken_00") }));
         GTNLItemList.CompressedSteamTurbine.set(
             MetaItemAdder.initItem(
                 "Compressed Steam Turbine",
                 101,
-                new String[] { TextHandler.texter("Infinite Throughtput", "tooltips.CompressedSteamTurbine_00") }));
+                new String[] { TextUtils.texter("Infinite Throughtput", "tooltips.CompressedSteamTurbine_00") }));
         GTNLItemList.SteelTurbine.set(
             MetaItemAdder.initItem(
                 "Steel Turbine",
                 102,
-                new String[] { TextHandler.texter("Stable like a Table", "tooltips.SteelTurbine_00") }));
+                new String[] { TextUtils.texter("Stable like a Table", "tooltips.SteelTurbine_00") }));
 
     }
 

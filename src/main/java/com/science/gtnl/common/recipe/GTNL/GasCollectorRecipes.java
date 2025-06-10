@@ -2,9 +2,9 @@ package com.science.gtnl.common.recipe.GTNL;
 
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -14,7 +14,7 @@ import gtneioreplugin.plugin.block.ModBlocks;
 
 public class GasCollectorRecipes implements IRecipePool {
 
-    final RecipeMap<?> GCR = RecipeRegister.GasCollectorRecipes;
+    final RecipeMap<?> GCR = RecipePool.GasCollectorRecipes;
 
     @Override
     public void loadRecipes() {

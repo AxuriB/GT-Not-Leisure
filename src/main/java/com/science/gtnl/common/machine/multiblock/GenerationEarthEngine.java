@@ -18,7 +18,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
@@ -196,7 +196,7 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.RecombinationFusionReactorRecipes;
+        return RecipePool.RecombinationFusionReactorRecipes;
     }
 
     @Override

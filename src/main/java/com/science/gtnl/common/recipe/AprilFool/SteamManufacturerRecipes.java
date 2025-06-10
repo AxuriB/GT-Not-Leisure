@@ -8,9 +8,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -29,7 +29,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class SteamManufacturerRecipes implements IRecipePool {
 
-    final RecipeMap<?> SMFR = RecipeRegister.SteamManufacturerRecipes;
+    final RecipeMap<?> SMFR = RecipePool.SteamManufacturerRecipes;
 
     @Override
     public void loadRecipes() {

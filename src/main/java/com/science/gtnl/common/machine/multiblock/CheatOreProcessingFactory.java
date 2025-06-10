@@ -32,7 +32,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -203,7 +203,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.CheatOreProcessingRecipes;
+        return RecipePool.CheatOreProcessingRecipes;
     }
 
     @Override
