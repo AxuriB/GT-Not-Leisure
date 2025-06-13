@@ -4,8 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -149,7 +148,9 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
                     .casingIndex(((BlockCasings4) sBlockCasings4).getTextureIndex(1))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
-            .addElement('F', withChannel("coil", ofCoil(Desulfurizer::setCoilLevel, Desulfurizer::getCoilLevel)))
+            .addElement(
+                'F',
+                withChannel("coil", activeCoils(ofCoil(Desulfurizer::setCoilLevel, Desulfurizer::getCoilLevel))))
             .addElement('G', ofBlock(sBlockCasings6, 2))
             .build();
     }

@@ -320,7 +320,9 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 2))))
             .addElement('B', ofBlock(sBlockCasings2, 14))
-            .addElement('C', withChannel("coil", ofCoil(ProcessingArray::setCoilLevel, ProcessingArray::getCoilLevel)))
+            .addElement(
+                'C',
+                withChannel("coil", activeCoils(ofCoil(ProcessingArray::setCoilLevel, ProcessingArray::getCoilLevel))))
             .addElement('D', ofFrame(Materials.Titanium))
             .addElement('E', Muffler.newAny(CASING_INDEX, 1))
             .build();

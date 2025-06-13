@@ -124,7 +124,9 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                withChannel("coil", ofCoil(AlloyBlastSmelter::setCoilLevel, AlloyBlastSmelter::getCoilLevel)))
+                withChannel(
+                    "coil",
+                    activeCoils(ofCoil(AlloyBlastSmelter::setCoilLevel, AlloyBlastSmelter::getCoilLevel))))
             .addElement('B', ofBlock(blockCasingsMisc, 14))
             .addElement(
                 'C',

@@ -123,7 +123,9 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
             .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
             .addElement('D', ofBlock(sBlockCasings10, 3))
             .addElement('E', ofBlock(sBlockCasings8, 7))
-            .addElement('F', withChannel("coil", ofCoil(HeavyRolling::setCoilLevel, HeavyRolling::getCoilLevel)))
+            .addElement(
+                'F',
+                withChannel("coil", activeCoils(ofCoil(HeavyRolling::setCoilLevel, HeavyRolling::getCoilLevel))))
             .addElement('G', ofBlock(sBlockCasings10, 6))
             .addElement(
                 'H',

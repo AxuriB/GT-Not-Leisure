@@ -86,7 +86,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
                 'C',
                 withChannel(
                     "coil",
-                    ofCoil(ShallowChemicalCoupling::setCoilLevel, ShallowChemicalCoupling::getCoilLevel)))
+                    activeCoils(ofCoil(ShallowChemicalCoupling::setCoilLevel, ShallowChemicalCoupling::getCoilLevel))))
             .addElement('D', ofBlock(sBlockCasings8, 1))
             .addElement('E', ofFrame(Materials.NaquadahAlloy))
             .build();

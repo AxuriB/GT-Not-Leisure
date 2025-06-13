@@ -3,8 +3,7 @@ package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -152,7 +151,9 @@ public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                withChannel("coil", ofCoil(VacuumDryingFurnace::setCoilLevel, VacuumDryingFurnace::getCoilLevel)))
+                withChannel(
+                    "coil",
+                    activeCoils(ofCoil(VacuumDryingFurnace::setCoilLevel, VacuumDryingFurnace::getCoilLevel))))
             .addElement(
                 'B',
                 buildHatchAdder(VacuumDryingFurnace.class)

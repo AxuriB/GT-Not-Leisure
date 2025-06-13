@@ -189,9 +189,10 @@ public class NanitesIntegratedProcessingCenter
                 'G',
                 withChannel(
                     "coil",
-                    ofCoil(
-                        NanitesIntegratedProcessingCenter::setCoilLevel,
-                        NanitesIntegratedProcessingCenter::getCoilLevel)))
+                    activeCoils(
+                        ofCoil(
+                            NanitesIntegratedProcessingCenter::setCoilLevel,
+                            NanitesIntegratedProcessingCenter::getCoilLevel))))
             .addElement('H', ofBlock(sBlockCasings4, 10))
             .addElement('I', ofBlock(sBlockCasings10, 3))
             .addElement('J', ofBlock(sBlockCasingsSE, 9))

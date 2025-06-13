@@ -5,8 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import javax.annotation.Nonnull;
 
@@ -149,7 +148,7 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
             .addElement('C', ofBlock(sBlockCasings4, 1))
-            .addElement('D', withChannel("coil", ofCoil(Digester::setCoilLevel, Digester::getCoilLevel)))
+            .addElement('D', withChannel("coil", activeCoils(ofCoil(Digester::setCoilLevel, Digester::getCoilLevel))))
             .build();
     }
 

@@ -6,8 +6,7 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -128,7 +127,9 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
             .addElement('C', ofBlock(sBlockCasings2, 13))
             .addElement(
                 'D',
-                withChannel("coil", ofCoil(LargeAlloySmelter::setCoilLevel, LargeAlloySmelter::getCoilLevel)))
+                withChannel(
+                    "coil",
+                    activeCoils(ofCoil(LargeAlloySmelter::setCoilLevel, LargeAlloySmelter::getCoilLevel))))
             .addElement('E', Muffler.newAny(CASING_INDEX, 1))
             .build();
     }

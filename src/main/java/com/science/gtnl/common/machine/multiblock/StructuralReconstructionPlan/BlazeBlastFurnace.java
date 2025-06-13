@@ -125,7 +125,9 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
             .addElement('A', ofBlock(sBlockCasings2, 15))
             .addElement(
                 'B',
-                withChannel("coil", ofCoil(BlazeBlastFurnace::setCoilLevel, BlazeBlastFurnace::getCoilLevel)))
+                withChannel(
+                    "coil",
+                    activeCoils(ofCoil(BlazeBlastFurnace::setCoilLevel, BlazeBlastFurnace::getCoilLevel))))
             .addElement(
                 'C',
                 buildHatchAdder(BlazeBlastFurnace.class)

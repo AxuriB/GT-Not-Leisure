@@ -152,7 +152,9 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
             .addElement('K', ofBlock(blockCasings3Misc, 2))
             .addElement(
                 'L',
-                withChannel("coil", ofCoil(PetrochemicalPlant::setCoilLevel, PetrochemicalPlant::getCoilLevel)))
+                withChannel(
+                    "coil",
+                    activeCoils(ofCoil(PetrochemicalPlant::setCoilLevel, PetrochemicalPlant::getCoilLevel))))
             .addElement('M', ofBlock(sBlockCasings8, 1))
             .addElement('N', ofBlock(blockCasingsTieredGTPP, 4))
             .addElement(

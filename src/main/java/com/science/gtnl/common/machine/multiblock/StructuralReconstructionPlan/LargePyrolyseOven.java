@@ -122,7 +122,9 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
             .addElement(
                 'C',
-                withChannel("coil", ofCoil(LargePyrolyseOven::setCoilLevel, LargePyrolyseOven::getCoilLevel)))
+                withChannel(
+                    "coil",
+                    activeCoils(ofCoil(LargePyrolyseOven::setCoilLevel, LargePyrolyseOven::getCoilLevel))))
             .addElement('D', ofFrame(Materials.StainlessSteel))
             .addElement('E', ofFrame(Materials.PulsatingIron))
             .addElement('F', Muffler.newAny(CASING_INDEX, 2))

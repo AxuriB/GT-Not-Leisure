@@ -5,8 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -136,7 +135,9 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
     public IStructureDefinition<ChemicalPlant> getStructureDefinition() {
         return StructureDefinition.<ChemicalPlant>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', withChannel("coil", ofCoil(ChemicalPlant::setCoilLevel, ChemicalPlant::getCoilLevel)))
+            .addElement(
+                'A',
+                withChannel("coil", activeCoils(ofCoil(ChemicalPlant::setCoilLevel, ChemicalPlant::getCoilLevel))))
             .addElement(
                 'B',
                 buildHatchAdder(ChemicalPlant.class).casingIndex(CASING_INDEX)

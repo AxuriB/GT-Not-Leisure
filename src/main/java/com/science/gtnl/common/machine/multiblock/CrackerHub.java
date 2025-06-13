@@ -133,7 +133,9 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
             .addElement('E', ofBlock(sBlockCasings4, 1))
             .addElement('F', ofBlock(sBlockCasings4, 10))
             .addElement('G', ofBlock(sBlockCasings4, 12))
-            .addElement('H', withChannel("coil", ofCoil(CrackerHub::setCoilLevel, CrackerHub::getCoilLevel)))
+            .addElement(
+                'H',
+                withChannel("coil", activeCoils(ofCoil(CrackerHub::setCoilLevel, CrackerHub::getCoilLevel))))
             .addElement(
                 'I',
                 buildHatchAdder(CrackerHub.class)
