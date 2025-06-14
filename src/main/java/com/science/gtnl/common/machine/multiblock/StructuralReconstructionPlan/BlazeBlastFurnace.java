@@ -55,6 +55,7 @@ import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -114,6 +115,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
                 StatCollector.translateToLocal("FluidBlazeInputHatch"),
                 StatCollector.translateToLocal("Tooltip_BlazeBlastFurnace_Casing_00"),
                 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -125,9 +127,8 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
             .addElement('A', ofBlock(sBlockCasings2, 15))
             .addElement(
                 'B',
-                withChannel(
-                    "coil",
-                    activeCoils(ofCoil(BlazeBlastFurnace::setCoilLevel, BlazeBlastFurnace::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(BlazeBlastFurnace::setCoilLevel, BlazeBlastFurnace::getCoilLevel))))
             .addElement(
                 'C',
                 buildHatchAdder(BlazeBlastFurnace.class)
@@ -201,7 +202,8 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
         this.mPollutionOutputHatches.clear();
         FluidBlazeInputHatch.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+            return false;
 
         this.multiTier = getMultiTier(getControllerSlot());
 

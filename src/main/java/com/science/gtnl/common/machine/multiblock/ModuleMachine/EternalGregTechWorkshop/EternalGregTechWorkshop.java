@@ -1,9 +1,9 @@
-package com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.EternalGregTechWorkshopUpgrade.*;
+import static com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.EternalGregTechWorkshopUpgrade.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -66,10 +66,10 @@ import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.EGTWUpgradeStorage;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.EternalGregTechWorkshopUI;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.EternalGregTechWorkshopUpgrade;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.UpgradeColor;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.EGTWUpgradeStorage;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.EternalGregTechWorkshopUI;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.EternalGregTechWorkshopUpgrade;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.UpgradeColor;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;

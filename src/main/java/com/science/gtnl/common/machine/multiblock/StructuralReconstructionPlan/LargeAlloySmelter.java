@@ -37,6 +37,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> implements ISurvivalConstructable {
@@ -109,6 +110,7 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeAlloySmelter_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_LargeAlloySmelter_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_LargeAlloySmelter_Casing"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -127,9 +129,8 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
             .addElement('C', ofBlock(sBlockCasings2, 13))
             .addElement(
                 'D',
-                withChannel(
-                    "coil",
-                    activeCoils(ofCoil(LargeAlloySmelter::setCoilLevel, LargeAlloySmelter::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(LargeAlloySmelter::setCoilLevel, LargeAlloySmelter::getCoilLevel))))
             .addElement('E', Muffler.newAny(CASING_INDEX, 1))
             .build();
     }
@@ -140,10 +141,11 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
         mParallelTier = 0;
         this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
         energyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
@@ -154,7 +156,7 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
             if (getMaxInputAmps() > 64) return false;
         }
 
-        if (mMaintenanceHatches.size() != 1 && mMufflerHatches.size() != 1) return false;
+        if (mMaintenanceHatches.size() != 1 || mMufflerHatches.size() != 1) return false;
         mParallelTier = getParallelTier(aStack);
         return tCountCasing >= 25;
     }

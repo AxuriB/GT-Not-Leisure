@@ -154,7 +154,8 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
         tCountCasing = 0;
         FluidIceInputHatch.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+            return false;
 
         energyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
@@ -166,7 +167,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
             if (getMaxInputAmps() > 64) return false;
         }
 
-        return tCountCasing >= 50 && checkHatch() && this.mMufflerHatches.size() == 1;
+        return tCountCasing >= 50 && this.mMufflerHatches.size() == 1;
     }
 
     @Override

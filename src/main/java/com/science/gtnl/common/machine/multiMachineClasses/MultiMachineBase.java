@@ -560,6 +560,27 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         return false;
     }
 
+    @Override
+    public boolean checkStructure(boolean aForceReset) {
+        return checkStructure(aForceReset, getBaseMetaTileEntity());
+    }
+
+    @Override
+    public boolean checkStructure(boolean aForceReset, IGregTechTileEntity aBaseMetaTileEntity) {
+        if (!aBaseMetaTileEntity.isServerSide()) return mMachine;
+        // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
+        if ((mStructureChanged || aForceReset)) {
+            clearHatches();
+
+            mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+            updateHatchTexture();
+
+            doStructureValidation();
+        }
+        mStructureChanged = false;
+        return mMachine;
+    }
+
     public <E> boolean addToMachineListInternal(ArrayList<E> aList, final IGregTechTileEntity aTileEntity,
         final int aBaseCasingIndex) {
         return addToMachineListInternal(aList, getMetaTileEntity(aTileEntity), aBaseCasingIndex);
@@ -741,7 +762,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         for (MTEHatch h : mInputBusses) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mOutputBusses) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mMufflerHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureID());

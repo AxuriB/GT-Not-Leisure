@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock.SteamElevator;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator;
 
 import static gregtech.api.enums.GTValues.V;
 

@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;

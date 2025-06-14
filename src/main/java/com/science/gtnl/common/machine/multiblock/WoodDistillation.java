@@ -173,12 +173,14 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
+        mParallelTier = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
         energyHatchTier = checkEnergyHatchTier();
+        mParallelTier = getParallelTier(aStack);
         return tCountCasing >= 220 && this.mMufflerHatches.size() == 2;
     }
 

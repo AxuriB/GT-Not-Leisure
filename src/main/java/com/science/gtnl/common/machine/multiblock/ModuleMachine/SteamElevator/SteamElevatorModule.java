@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock.SteamElevator;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;

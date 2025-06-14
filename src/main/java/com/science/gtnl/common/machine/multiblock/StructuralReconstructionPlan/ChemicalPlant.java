@@ -36,6 +36,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements ISurvivalConstructable {
@@ -127,6 +128,7 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
             .addOutputBus(StatCollector.translateToLocal("Tooltip_ChemicalPlant_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_ChemicalPlant_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_ChemicalPlant_Casing"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -137,7 +139,8 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                withChannel("coil", activeCoils(ofCoil(ChemicalPlant::setCoilLevel, ChemicalPlant::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(ChemicalPlant::setCoilLevel, ChemicalPlant::getCoilLevel))))
             .addElement(
                 'B',
                 buildHatchAdder(ChemicalPlant.class).casingIndex(CASING_INDEX)
@@ -174,7 +177,7 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
         mParallelTier = 0;
         this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 

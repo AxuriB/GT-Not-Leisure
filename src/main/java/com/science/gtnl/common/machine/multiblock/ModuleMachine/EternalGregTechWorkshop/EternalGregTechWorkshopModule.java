@@ -1,9 +1,9 @@
-package com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.EternalGregTechWorkshop.ScreenOFF;
+import static com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.EternalGregTechWorkshop.ScreenOFF;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -51,7 +51,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.EternalGregTechWorkshopUI;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.EternalGregTechWorkshopUI;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.loader.Loaders;
@@ -330,7 +330,7 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch();
     }
 
     @Override

@@ -314,7 +314,9 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
         mFireboxCasing = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0) && tCountCasing >= 20 && mFireboxCasing >= 3;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0)) return false;
+        return tCountCasing >= 20 && mFireboxCasing >= 3;
     }
 
     @Override

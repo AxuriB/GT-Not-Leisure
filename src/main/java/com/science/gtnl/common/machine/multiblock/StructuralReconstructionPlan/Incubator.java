@@ -310,7 +310,8 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         this.mGlassTier = -1;
         this.tCountCasing = 0;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
+            || !checkHatch()) return false;
 
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {

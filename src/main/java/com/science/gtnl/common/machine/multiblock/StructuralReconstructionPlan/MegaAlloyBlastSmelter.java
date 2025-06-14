@@ -124,6 +124,7 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_MegaAlloyBlastSmelter_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_MegaAlloyBlastSmelter_Casing"))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -139,9 +140,8 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
             .addElement('E', ofBlock(sBlockCasings4, 3))
             .addElement(
                 'F',
-                withChannel(
-                    "coil",
-                    activeCoils(ofCoil(MegaAlloyBlastSmelter::setCoilLevel, MegaAlloyBlastSmelter::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(MegaAlloyBlastSmelter::setCoilLevel, MegaAlloyBlastSmelter::getCoilLevel))))
             .addElement('G', ofBlock(sBlockCasings8, 4))
             .addElement('H', ofBlock(blockCasingsMisc, 14))
             .addElement(
@@ -158,20 +158,20 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
         mParallelTier = 0;
-        heatLevel = HeatingCoilLevel.None;
+        this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && mEnergyHatches.size() <= 1
-            && mMufflerHatches.size() == 1
-            && tCountCasing >= 290) {
-            energyHatchTier = checkEnergyHatchTier();
-            mParallelTier = getParallelTier(aStack);
-            this.mHeatingCapacity = (int) this.getCoilLevel()
-                .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-            return true;
-        } else {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
+            || mEnergyHatches.size() != 1
+            || mMufflerHatches.size() != 1) {
             return false;
         }
+
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        energyHatchTier = checkEnergyHatchTier();
+        mParallelTier = getParallelTier(aStack);
+        this.mHeatingCapacity = (int) this.getCoilLevel()
+            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+        return tCountCasing >= 290;
     }
 
     @Override

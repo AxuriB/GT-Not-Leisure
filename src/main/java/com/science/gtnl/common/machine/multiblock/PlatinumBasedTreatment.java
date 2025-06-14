@@ -84,8 +84,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
             .addElement('G', ofBlock(sBlockCasings4, 1))
             .addElement(
                 'H',
-                withChannel(
-                    "coil",
+                GTStructureChannels.HEATING_COIL.use(
                     activeCoils(ofCoil(PlatinumBasedTreatment::setCoilLevel, PlatinumBasedTreatment::getCoilLevel))))
             .addElement('I', ofBlock(sBlockCasings8, 0))
             .addElement('J', ofBlock(sBlockCasings8, 1))
@@ -129,6 +128,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_PlatinumBasedTreatment_Casing_00"))
             .addMufflerHatch(StatCollector.translateToLocal("Tooltip_PlatinumBasedTreatment_Casing_01"))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -242,9 +242,10 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
         energyHatchTier = 0;
         this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
         energyHatchTier = checkEnergyHatchTier();
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {
@@ -252,9 +253,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
             }
         }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        if (mMaintenanceHatches.size() != 1 && mMufflerHatches.size() != 6) return false;
+        if (mMaintenanceHatches.size() != 1 || mMufflerHatches.size() != 6) return false;
 
         return tCountCasing >= 30;
     }

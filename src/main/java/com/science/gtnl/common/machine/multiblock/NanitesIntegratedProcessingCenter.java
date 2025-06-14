@@ -112,6 +112,7 @@ public class NanitesIntegratedProcessingCenter
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_NanitesIntegratedProcessingCenter_Casing"), 1)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_NanitesIntegratedProcessingCenter_Casing"), 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -187,8 +188,7 @@ public class NanitesIntegratedProcessingCenter
             .addElement('F', ofBlock(BlockLoader.MetaCasing, 5))
             .addElement(
                 'G',
-                withChannel(
-                    "coil",
+                GTStructureChannels.HEATING_COIL.use(
                     activeCoils(
                         ofCoil(
                             NanitesIntegratedProcessingCenter::setCoilLevel,
@@ -246,13 +246,18 @@ public class NanitesIntegratedProcessingCenter
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        heatLevel = HeatingCoilLevel.None;
         tCountCasing = 0;
         coilTier = 0;
         moduleHatches.clear();
         mGlassTier = -1;
+        mParallelTier = 0;
+        this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+            return false;
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+
+        mParallelTier = getParallelTier(aStack);
         coilTier = getCoilLevel().getTier();
         energyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();

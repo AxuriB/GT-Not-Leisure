@@ -43,6 +43,7 @@ import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISurvivalConstructable {
@@ -129,6 +130,7 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
             .addOutputBus(StatCollector.translateToLocal("Tooltip_Desulfurizer_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_Desulfurizer_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_Desulfurizer_Casing"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -150,7 +152,8 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
             .addElement(
                 'F',
-                withChannel("coil", activeCoils(ofCoil(Desulfurizer::setCoilLevel, Desulfurizer::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(Desulfurizer::setCoilLevel, Desulfurizer::getCoilLevel))))
             .addElement('G', ofBlock(sBlockCasings6, 2))
             .build();
     }
@@ -179,9 +182,11 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
         mLevel = 0;
-        setCoilLevel(HeatingCoilLevel.None);
+        this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
+            || !checkHatch()) return false;
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
 
         energyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
@@ -194,8 +199,7 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
         }
 
         return tCountCasing >= 20 && getCoilLevel() != HeatingCoilLevel.None
-            && (mLevel = getCoilLevel().getTier() + 1) > 0
-            && checkHatch();
+            && (mLevel = getCoilLevel().getTier() + 1) > 0;
     }
 
     @Override

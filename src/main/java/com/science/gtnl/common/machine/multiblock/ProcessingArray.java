@@ -63,6 +63,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.ItemMachines;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -127,6 +128,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
             .addInputHatch(StatCollector.translateToLocal("Tooltip_ProcessingArray_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_ProcessingArray_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_ProcessingArray_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -322,7 +324,8 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
             .addElement('B', ofBlock(sBlockCasings2, 14))
             .addElement(
                 'C',
-                withChannel("coil", activeCoils(ofCoil(ProcessingArray::setCoilLevel, ProcessingArray::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(ProcessingArray::setCoilLevel, ProcessingArray::getCoilLevel))))
             .addElement('D', ofFrame(Materials.Titanium))
             .addElement('E', Muffler.newAny(CASING_INDEX, 1))
             .build();
@@ -382,13 +385,14 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
-        setCoilLevel(HeatingCoilLevel.None);
+        this.setCoilLevel(HeatingCoilLevel.None);
         tTier = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) || !checkHatch()) {
             return false;
         }
 
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
         setTierAndMult();
 
         if (GTUtility.getTier(this.getMaxInputVoltage()) > tTier + 4) {

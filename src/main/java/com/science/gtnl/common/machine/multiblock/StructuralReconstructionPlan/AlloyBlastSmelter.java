@@ -36,6 +36,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
@@ -102,7 +103,6 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
             .addInfo(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_04"))
             .addInfo(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_05"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_06"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_04"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
@@ -114,6 +114,7 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
             .addOutputBus(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_Casing"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -124,9 +125,8 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                withChannel(
-                    "coil",
-                    activeCoils(ofCoil(AlloyBlastSmelter::setCoilLevel, AlloyBlastSmelter::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(AlloyBlastSmelter::setCoilLevel, AlloyBlastSmelter::getCoilLevel))))
             .addElement('B', ofBlock(blockCasingsMisc, 14))
             .addElement(
                 'C',
@@ -143,26 +143,29 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
         tCountCasing = 0;
         mParallelTier = 0;
         this.energyHatchTier = 0;
+        this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && mMufflerHatches.size() == 1
-            && tCountCasing >= 25) {
-            mParallelTier = getParallelTier(aStack);
-            energyHatchTier = checkEnergyHatchTier();
-            if (MainConfig.enableMachineAmpLimit) {
-                for (MTEHatch hatch : getExoticEnergyHatches()) {
-                    if (hatch instanceof MTEHatchEnergyTunnel) {
-                        return false;
-                    }
-                }
-                if (getMaxInputAmps() > 64) return false;
-            }
-            this.mHeatingCapacity = (int) this.getCoilLevel()
-                .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-            return true;
-        } else {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
+            || mMufflerHatches.size() != 1) {
             return false;
         }
+
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+
+        if (MainConfig.enableMachineAmpLimit) {
+            for (MTEHatch hatch : getExoticEnergyHatches()) {
+                if (hatch instanceof MTEHatchEnergyTunnel) {
+                    return false;
+                }
+            }
+            if (getMaxInputAmps() > 64) return false;
+        }
+        this.mHeatingCapacity = (int) this.getCoilLevel()
+            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+        mParallelTier = getParallelTier(aStack);
+        energyHatchTier = checkEnergyHatchTier();
+
+        return tCountCasing >= 25;
     }
 
     public HeatingCoilLevel getCoilLevel() {

@@ -291,7 +291,8 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
         this.mGlassTier = -1;
         this.tCountCasing = 0;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
+            || !checkHatch()) return false;
 
         if (tCountCasing < 19 && this.mRadHatches.size() > 1
             && this.mOutputHatches.size() != 1

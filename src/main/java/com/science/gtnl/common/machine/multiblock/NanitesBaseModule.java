@@ -109,7 +109,7 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
                 return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setMaxParallelSupplier(this::getMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     public void connect() {
@@ -148,10 +148,12 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
         setDurationModifier = boost;
     }
 
+    @Override
     public int getMaxParallel() {
         return setMaxParallel;
     }
 
+    @Override
     public void setMaxParallel(int parallel) {
         setMaxParallel = parallel;
     }

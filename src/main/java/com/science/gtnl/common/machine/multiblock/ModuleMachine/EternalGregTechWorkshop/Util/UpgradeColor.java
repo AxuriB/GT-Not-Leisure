@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 

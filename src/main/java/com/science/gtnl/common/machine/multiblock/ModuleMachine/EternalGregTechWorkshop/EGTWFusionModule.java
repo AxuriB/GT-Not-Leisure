@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop;
 
 import net.minecraft.util.StatCollector;
 

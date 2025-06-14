@@ -180,8 +180,9 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
         tCountCasing = 0;
         mGlassTier = -1;
         mSpeedCount = 0;
+        mParallelTier = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
@@ -192,6 +193,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
                 return false;
             }
         }
+        mParallelTier = getParallelTier(aStack);
         energyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
         return tCountCasing >= 80;

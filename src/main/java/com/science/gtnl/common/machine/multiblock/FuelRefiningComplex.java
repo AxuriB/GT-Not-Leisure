@@ -43,6 +43,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 
 public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex> implements ISurvivalConstructable {
 
@@ -114,6 +115,7 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
             .addOutputBus(StatCollector.translateToLocal("Tooltip_FuelRefiningComplex_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_FuelRefiningComplex_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_FuelRefiningComplex_Casing"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -137,9 +139,8 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
             .addElement('E', ofBlock(sBlockCasings4, 1))
             .addElement(
                 'F',
-                withChannel(
-                    "coil",
-                    activeCoils(ofCoil(FuelRefiningComplex::setCoilLevel, FuelRefiningComplex::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(FuelRefiningComplex::setCoilLevel, FuelRefiningComplex::getCoilLevel))))
             .addElement('G', ofBlock(sBlockCasings6, 6))
             .addElement('H', ofBlock(sBlockCasings8, 0))
             .addElement('I', ofBlock(sBlockCasings8, 1))
@@ -161,7 +162,7 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
         this.mHeatingCapacity = 0;
         this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && !checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
         if (getCoilLevel() == HeatingCoilLevel.None) return false;

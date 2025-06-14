@@ -43,6 +43,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings1;
+import gregtech.common.misc.GTStructureChannels;
 
 public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace> implements ISurvivalConstructable {
 
@@ -85,9 +86,8 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
             .addElement('D', ofBlock(sBlockCasings4, 1))
             .addElement(
                 'E',
-                withChannel(
-                    "coil",
-                    activeCoils(ofCoil(ElectricBlastFurnace::setCoilLevel, ElectricBlastFurnace::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(ElectricBlastFurnace::setCoilLevel, ElectricBlastFurnace::getCoilLevel))))
             .addElement('F', ofFrame(Materials.StainlessSteel))
             .addElement('G', Muffler.newAny(CASING_INDEX, 1))
             .build();
@@ -114,6 +114,7 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_ElectricBlastFurnace_Casing_00"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_ElectricBlastFurnace_Casing_00"))
             .addMufflerHatch(StatCollector.translateToLocal("Tooltip_ElectricBlastFurnace_Casing_01"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -238,14 +239,14 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
         energyHatchTier = 0;
         this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
         energyHatchTier = checkEnergyHatchTier();
 
         if (getCoilLevel() == HeatingCoilLevel.None) return false;
 
-        if (mMaintenanceHatches.size() != 1 && mMufflerHatches.size() != 1) return false;
+        if (mMaintenanceHatches.size() != 1 || mMufflerHatches.size() != 1) return false;
 
         this.mHeatingCapacity = (int) this.getCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);

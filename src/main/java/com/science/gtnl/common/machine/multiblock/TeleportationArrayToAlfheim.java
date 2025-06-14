@@ -342,7 +342,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
         tCountCasing = 0;
         FluidManaInputHatch.clear();
         enableInfinityMana = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
         ItemStack item = getControllerSlot();
         if (areStacksEqualExtended(item, GTModHandler.getModItem(Botania.ID, "pool", 1, 1))

@@ -95,6 +95,7 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_CrackerHub_Casing"), 1)
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_CrackerHub_Casing"), 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -135,7 +136,8 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
             .addElement('G', ofBlock(sBlockCasings4, 12))
             .addElement(
                 'H',
-                withChannel("coil", activeCoils(ofCoil(CrackerHub::setCoilLevel, CrackerHub::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(CrackerHub::setCoilLevel, CrackerHub::getCoilLevel))))
             .addElement(
                 'I',
                 buildHatchAdder(CrackerHub.class)
@@ -183,8 +185,12 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
         wirelessMode = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        this.setCoilLevel(HeatingCoilLevel.None);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+            return false;
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
         energyHatchTier = checkEnergyHatchTier();
+        mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
         return mMufflerHatches.size() == 16 && tCountCasing > 100;
     }

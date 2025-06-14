@@ -47,6 +47,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
@@ -132,6 +133,7 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
             .addOutputBus(StatCollector.translateToLocal("Tooltip_Digester_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_Digester_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_Digester_Casing"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -148,7 +150,10 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
             .addElement('C', ofBlock(sBlockCasings4, 1))
-            .addElement('D', withChannel("coil", activeCoils(ofCoil(Digester::setCoilLevel, Digester::getCoilLevel))))
+            .addElement(
+                'D',
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(Digester::setCoilLevel, Digester::getCoilLevel))))
             .build();
     }
 
@@ -156,25 +161,26 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
         mParallelTier = 0;
+        this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && tCountCasing >= 45) {
-            this.mHeatingCapacity = (int) this.getCoilLevel()
-                .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-            mParallelTier = getParallelTier(aStack);
-            energyHatchTier = checkEnergyHatchTier();
-            if (MainConfig.enableMachineAmpLimit) {
-                for (MTEHatch hatch : getExoticEnergyHatches()) {
-                    if (hatch instanceof MTEHatchEnergyTunnel) {
-                        return false;
-                    }
-                }
-                return getMaxInputAmps() <= 64;
-            }
-            return true;
-        } else {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        this.mHeatingCapacity = (int) this.getCoilLevel()
+            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+        mParallelTier = getParallelTier(aStack);
+        energyHatchTier = checkEnergyHatchTier();
+        if (MainConfig.enableMachineAmpLimit) {
+            for (MTEHatch hatch : getExoticEnergyHatches()) {
+                if (hatch instanceof MTEHatchEnergyTunnel) {
+                    return false;
+                }
+            }
+            if (getMaxInputAmps() > 64) return false;
+        }
+        return tCountCasing >= 45;
     }
 
     @Override

@@ -32,6 +32,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
@@ -104,6 +105,7 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargePyrolyseOven_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_LargePyrolyseOven_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_LargePyrolyseOven_Casing"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -122,9 +124,8 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
             .addElement(
                 'C',
-                withChannel(
-                    "coil",
-                    activeCoils(ofCoil(LargePyrolyseOven::setCoilLevel, LargePyrolyseOven::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(LargePyrolyseOven::setCoilLevel, LargePyrolyseOven::getCoilLevel))))
             .addElement('D', ofFrame(Materials.StainlessSteel))
             .addElement('E', ofFrame(Materials.PulsatingIron))
             .addElement('F', Muffler.newAny(CASING_INDEX, 2))
@@ -134,12 +135,13 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
-        setCoilLevel(HeatingCoilLevel.None);
+        this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
         energyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {

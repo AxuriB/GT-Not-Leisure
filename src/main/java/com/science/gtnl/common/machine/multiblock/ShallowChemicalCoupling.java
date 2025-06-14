@@ -84,8 +84,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
             .addElement('B', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
             .addElement(
                 'C',
-                withChannel(
-                    "coil",
+                GTStructureChannels.HEATING_COIL.use(
                     activeCoils(ofCoil(ShallowChemicalCoupling::setCoilLevel, ShallowChemicalCoupling::getCoilLevel))))
             .addElement('D', ofBlock(sBlockCasings8, 1))
             .addElement('E', ofFrame(Materials.NaquadahAlloy))
@@ -115,6 +114,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_ShallowChemicalCoupling_Casing_00"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_ShallowChemicalCoupling_Casing_00"))
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -235,10 +235,11 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
         energyHatchTier = 0;
         this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
         this.mHeatingCapacity = (int) this.getCoilLevel()
             .getHeat();
         energyHatchTier = checkEnergyHatchTier();
@@ -254,8 +255,6 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
                 return false;
             }
         }
-
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
 
         mParallelTier = getParallelTier(aStack);
 

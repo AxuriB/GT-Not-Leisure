@@ -52,6 +52,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBase<MagneticEnergyReactionFurnace> {
 
@@ -105,6 +106,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
             .addInputBus(StatCollector.translateToLocal("Tooltip_MagneticEnergyReactionFurnace_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_MagneticEnergyReactionFurnace_Casing"), 1)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_MagneticEnergyReactionFurnace_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -145,8 +147,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
             .addElement('G', ofBlock(sBlockCasings4, 12))
             .addElement(
                 'H',
-                withChannel(
-                    "coil",
+                GTStructureChannels.HEATING_COIL.use(
                     activeCoils(
                         ofCoil(
                             MagneticEnergyReactionFurnace::setCoilLevel,
@@ -194,12 +195,15 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        heatLevel = HeatingCoilLevel.None;
         tCountCasing = 0;
         coilTier = 0;
         wirelessMode = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        this.setCoilLevel(HeatingCoilLevel.None);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+            return false;
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
         coilTier = getCoilLevel().getTier();
+        mParallelTier = getParallelTier(aStack);
         energyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
         return tCountCasing > 200;

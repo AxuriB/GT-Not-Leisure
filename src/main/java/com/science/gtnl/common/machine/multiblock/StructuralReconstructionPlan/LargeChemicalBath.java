@@ -227,22 +227,22 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
         tCountCasing = 0;
         mParallelTier = 0;
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && tCountCasing >= 55) {
-            energyHatchTier = checkEnergyHatchTier();
-            if (MainConfig.enableMachineAmpLimit) {
-                for (MTEHatch hatch : getExoticEnergyHatches()) {
-                    if (hatch instanceof MTEHatchEnergyTunnel) {
-                        return false;
-                    }
-                }
-                if (getMaxInputAmps() > 64) return false;
-            }
-            replaceWater();
-            return true;
-        } else {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+
+        mParallelTier = getParallelTier(aStack);
+        energyHatchTier = checkEnergyHatchTier();
+        if (MainConfig.enableMachineAmpLimit) {
+            for (MTEHatch hatch : getExoticEnergyHatches()) {
+                if (hatch instanceof MTEHatchEnergyTunnel) {
+                    return false;
+                }
+            }
+            if (getMaxInputAmps() > 64) return false;
+        }
+        replaceWater();
+        return tCountCasing >= 55;
     }
 
     @Override

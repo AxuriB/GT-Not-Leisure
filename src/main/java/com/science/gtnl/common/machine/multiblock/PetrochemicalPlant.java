@@ -40,6 +40,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
 public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> implements ISurvivalConstructable {
@@ -131,6 +132,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_PetrochemicalPlant_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_PetrochemicalPlant_Casing"))
             .addMufflerHatch(StatCollector.translateToLocal("Tooltip_PetrochemicalPlant_Muffler"), 8)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -152,9 +154,8 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
             .addElement('K', ofBlock(blockCasings3Misc, 2))
             .addElement(
                 'L',
-                withChannel(
-                    "coil",
-                    activeCoils(ofCoil(PetrochemicalPlant::setCoilLevel, PetrochemicalPlant::getCoilLevel))))
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(PetrochemicalPlant::setCoilLevel, PetrochemicalPlant::getCoilLevel))))
             .addElement('M', ofBlock(sBlockCasings8, 1))
             .addElement('N', ofBlock(blockCasingsTieredGTPP, 4))
             .addElement(
@@ -203,14 +204,14 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
         mLevel = 0;
-        setCoilLevel(HeatingCoilLevel.None);
+        this.setCoilLevel(HeatingCoilLevel.None);
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
+        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+
         return tCountCasing >= 5 && getCoilLevel() != HeatingCoilLevel.None
             && this.mMufflerHatches.size() == 8
             && (mLevel = getCoilLevel().getTier() + 1) > 0;

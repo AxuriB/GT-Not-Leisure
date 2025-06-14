@@ -95,7 +95,8 @@ public class PhysicsCape extends BaubleItem implements IBaubleRender {
                 for (int dz = -1; dz <= 1; dz++) {
                     for (int dy = -1; dy <= 0; dy++) {
                         TileEntity te = world.getTileEntity(px + dx, py + dy, pz + dz);
-                        if (te instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() instanceof MetaTileEntity mte) {
+                        if (te instanceof IGregTechTileEntity gtTE
+                            && gtTE.getMetaTileEntity() instanceof MetaTileEntity mte) {
                             if (mte.getEUVar() <= mte.maxEUStore()) {
                                 long storeEU = mte.getEUVar();
                                 long addedEU = V[4];

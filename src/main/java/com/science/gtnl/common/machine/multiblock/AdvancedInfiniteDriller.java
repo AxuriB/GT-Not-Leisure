@@ -498,8 +498,8 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
         tCountCasing = 0;
         drillTier = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && !mOutputHatches.isEmpty()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
+            || !mOutputHatches.isEmpty()) {
             return false;
         }
 

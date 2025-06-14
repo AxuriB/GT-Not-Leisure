@@ -68,7 +68,7 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
         .translate("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0");
     private static final IStatusFunction<ResourceCollectionModule> PARALLEL_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallelRecipes());
-    private int ParallelTier;
+    private int mParallelTier;
     private static final int MACHINEMODE_MINER = 0;
     private static final int MACHINEMODE_DRILL = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -169,11 +169,11 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         fixAllIssues();
-        ParallelTier = 0;
+        mParallelTier = 0;
 
         if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0)) return false;
 
-        ParallelTier = getParallelTier(aStack);
+        mParallelTier = getParallelTier(aStack);
 
         return true;
     }
@@ -213,10 +213,10 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     }
 
     public int getMaxParallelRecipes() {
-        if (ParallelTier <= 1) {
+        if (mParallelTier <= 1) {
             return 8;
         } else {
-            return (int) Math.pow(4, ParallelTier - 2);
+            return (int) Math.pow(4, mParallelTier - 2);
         }
     }
 
@@ -294,8 +294,8 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)
                     .setAmperage(availableAmperage)
-                    .setEUtDiscount(1 - (ParallelTier / 50.0))
-                    .setDurationModifier(1 - (ParallelTier / 200.0));
+                    .setEUtDiscount(1 - (mParallelTier / 50.0))
+                    .setDurationModifier(1 - (mParallelTier / 200.0));
             }
         }.setMaxParallelSupplier(() -> Math.min((int) parallelSetting.get(), getMaxParallelRecipes()));
     }
@@ -409,7 +409,7 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     @Override
     public CheckRecipeResult checkProcessing_EM() {
         ItemStack controllerItem = getControllerSlot();
-        this.ParallelTier = getParallelTier(controllerItem);
+        this.mParallelTier = getParallelTier(controllerItem);
         return super.checkProcessing_EM();
     }
 }
