@@ -78,7 +78,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
-import tectech.thing.metaTileEntity.hatch.*;
 
 public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MTEExtendedPowerMultiBlockBase<T>
     implements IConstructable, ISurvivalConstructable {
@@ -103,8 +102,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
 
     public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
-
-    public ArrayList<MTEHatchUncertainty> mUncertainHatches = new ArrayList<>();
 
     public GTCoilTracker.MultiCoilLease coilLease = null;
 
@@ -348,7 +345,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      */
     protected boolean isEnablePerfectOverclock() {
         return false;
-    };
+    }
 
     /**
      * Proxy Standard Eu Modifier Supplier.
