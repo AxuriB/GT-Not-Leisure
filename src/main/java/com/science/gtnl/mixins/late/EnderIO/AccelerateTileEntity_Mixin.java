@@ -18,18 +18,18 @@ public abstract class AccelerateTileEntity_Mixin implements ITileEntityTickAccel
     public abstract void updateEntity();
 
     @Unique
-    private int NHUtilities$tickAcceleratedRate = 1;
+    private int GTNotLeisure$tickAcceleratedRate = 1;
 
     @Override
     @SuppressWarnings("AddedMixinMembersNamePattern")
     public int getTickAcceleratedRate() {
-        return this.NHUtilities$tickAcceleratedRate;
+        return this.GTNotLeisure$tickAcceleratedRate;
     }
 
     @Override
     @SuppressWarnings("AddedMixinMembersNamePattern")
     public boolean tickAcceleration(int tickAcceleratedRate) {
-        this.NHUtilities$tickAcceleratedRate = tickAcceleratedRate;
+        this.GTNotLeisure$tickAcceleratedRate = tickAcceleratedRate;
         for (int i = 0; i < tickAcceleratedRate; i++) {
             this.lastUpdate = -1L; // make sure updateEntity() be called
             this.updateEntity();

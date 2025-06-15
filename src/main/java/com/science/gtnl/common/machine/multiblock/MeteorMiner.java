@@ -380,8 +380,11 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         tCountCasing = 0;
         this.multiTier = 0;
         if (aStack != null) {
-            if (checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7)) this.multiTier = getMultiTier(aStack);
-            if (checkPiece(STRUCTURE_PIECE_TIER2, 9, 15, 3)) this.multiTier = getMultiTier(aStack);
+            if (checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7)) {
+                this.multiTier = getMultiTier(aStack);
+            } else if (checkPiece(STRUCTURE_PIECE_TIER2, 9, 15, 3)) {
+                this.multiTier = getMultiTier(aStack);
+            }
         }
         if (mEnergyHatches.isEmpty() || (mInputBusses.isEmpty() && this.multiTier == 1)
             || mMaintenanceHatches.size() != 1
@@ -465,6 +468,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         renderAngle += 1f;
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     public void reset() {
