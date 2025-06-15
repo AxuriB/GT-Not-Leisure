@@ -333,6 +333,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
             .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_14"))
             .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_15"))
             .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_16"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_17"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
@@ -387,7 +388,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
             }
         }
         if (mEnergyHatches.isEmpty() || (mInputBusses.isEmpty() && this.multiTier == 1)
-            || mMaintenanceHatches.size() != 1
+            || mMaintenanceHatches.size() > 1
             || !findLaserRenderer(getBaseMetaTileEntity().getWorld())) return false;
         return this.multiTier > 0;
     }
