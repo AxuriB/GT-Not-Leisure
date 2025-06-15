@@ -150,7 +150,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
                     onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15)),
                     buildHatchAdder(BlazeBlastFurnace.class).adder(BlazeBlastFurnace::addFluidBlazeInputHatch)
                         .hatchId(21503)
-                        .shouldReject(x -> !x.FluidBlazeInputHatch.isEmpty())
+                        .shouldReject(x -> !x.mFluidBlazeInputHatch.isEmpty())
                         .casingIndex(CASING_INDEX)
                         .dot(1)
                         .build()))
@@ -200,7 +200,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
         multiTier = 1;
         this.setCoilLevel(HeatingCoilLevel.None);
         this.mPollutionOutputHatches.clear();
-        FluidBlazeInputHatch.clear();
+        mFluidBlazeInputHatch.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
@@ -260,12 +260,12 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
 
     @Override
     public boolean checkHatch() {
-        return super.checkHatch() && !FluidBlazeInputHatch.isEmpty();
+        return super.checkHatch() && !mFluidBlazeInputHatch.isEmpty();
     }
 
     @Override
     public void updateSlots() {
-        for (CustomFluidHatch tHatch : validMTEList(FluidBlazeInputHatch)) tHatch.updateSlots();
+        for (CustomFluidHatch tHatch : validMTEList(mFluidBlazeInputHatch)) tHatch.updateSlots();
         super.updateSlots();
     }
 
@@ -344,7 +344,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
                     if (multiTier == 4) {
                         baseAmount *= 2;
                     }
-                    if (!this.depleteInputFromRestrictedHatches(this.FluidBlazeInputHatch, baseAmount)) {
+                    if (!this.depleteInputFromRestrictedHatches(this.mFluidBlazeInputHatch, baseAmount)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
                             ShutDownReasonRegistry.outOfFluid(

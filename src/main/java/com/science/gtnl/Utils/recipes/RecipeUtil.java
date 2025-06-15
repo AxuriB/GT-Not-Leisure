@@ -77,8 +77,13 @@ public class RecipeUtil {
     private static ItemStack mEmptyCell;
     private static final ArrayList<ItemStack> mItemsToIgnore = new ArrayList<>();
 
-    public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs,
+    public static synchronized void generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs,
         boolean specialItem) {
+        generateRecipesNotUsingCells(aInputs, aOutputs, specialItem, 0);
+    }
+
+    public static synchronized void generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs,
+        boolean specialItem, double chanceMultiplier) {
         generateRecipesInit();
         int aRecipesHandled = 0;
         int aInvalidRecipesToConvert = 0;
@@ -146,12 +151,21 @@ public class RecipeUtil {
                 continue;
             }
 
+            int[] newChances = x.mChances;
+            if (chanceMultiplier > 0 && x.mChances != null) {
+                newChances = new int[x.mChances.length];
+                for (int i = 0; i < x.mChances.length; i++) {
+                    int scaledChance = (int) (chanceMultiplier * x.mChances[i]);
+                    newChances[i] = Math.min(scaledChance, 10000);
+                }
+            }
+
             GTRecipe newRecipe = new GTRecipe(
                 false,
                 newItemsIn,
                 newItemsOut,
                 specialItem ? null : x.mSpecialItems,
-                x.mChances,
+                newChances,
                 newFluidsIn,
                 newFluidsOut,
                 x.mDuration,
@@ -222,7 +236,6 @@ public class RecipeUtil {
         Logger.INFO("Original Map contains " + aOriginalCount + " recipes.");
         Logger.INFO("Output Map contains " + aRecipesHandled + " recipes.");
         Logger.INFO("There were " + aInvalidRecipesToConvert + " invalid recipes.");
-        return aRecipesHandled;
     }
 
     private static void generateRecipesInit() {

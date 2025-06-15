@@ -118,7 +118,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
                     onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 1)),
                     buildHatchAdder(ColdIceFreezer.class).adder(ColdIceFreezer::addFluidIceInputHatch)
                         .hatchId(21502)
-                        .shouldReject(x -> !x.FluidIceInputHatch.isEmpty())
+                        .shouldReject(x -> !x.mFluidIceInputHatch.isEmpty())
                         .casingIndex(CASING_INDEX)
                         .dot(1)
                         .build()))
@@ -152,7 +152,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
-        FluidIceInputHatch.clear();
+        mFluidIceInputHatch.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
@@ -172,12 +172,12 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public boolean checkHatch() {
-        return super.checkHatch() && !FluidIceInputHatch.isEmpty();
+        return super.checkHatch() && !mFluidIceInputHatch.isEmpty();
     }
 
     @Override
     public void updateSlots() {
-        for (CustomFluidHatch tHatch : validMTEList(FluidIceInputHatch)) tHatch.updateSlots();
+        for (CustomFluidHatch tHatch : validMTEList(mFluidIceInputHatch)) tHatch.updateSlots();
         super.updateSlots();
     }
 
@@ -236,7 +236,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
                     if (!this.depleteInputFromRestrictedHatches(
-                        this.FluidIceInputHatch,
+                        this.mFluidIceInputHatch,
                         (int) (10 * getInputVoltageTier() * getInputVoltageTier()))) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(

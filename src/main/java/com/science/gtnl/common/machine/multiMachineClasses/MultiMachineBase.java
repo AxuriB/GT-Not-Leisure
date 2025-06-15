@@ -66,7 +66,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.IGTHatchAdder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.data.GTCoilTracker;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
@@ -75,19 +78,11 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import tectech.thing.metaTileEntity.hatch.*;
 
 public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MTEExtendedPowerMultiBlockBase<T>
     implements IConstructable, ISurvivalConstructable {
 
-    protected int tCountCasing;
-    protected int mGlassTier;
-    protected int mParallelTier;
-    protected int energyHatchTier;
-    protected int mMaxParallel = 0;
-    protected int cleanroomTier = 0;
-    protected double configSpeedBoost = 1;
-
-    // region Class Constructor
     public MultiMachineBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -96,27 +91,32 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         super(aName);
     }
 
-    // endregion
-    /**
-     * This is the array Used to Store the Tectech Multi-Amp Dynamo hatches.
-     */
     public ArrayList<MTEHatch> mTecTechDynamoHatches = new ArrayList<>();
     public ArrayList<ParallelControllerHatch> mParallelControllerHatches = new ArrayList<>();
-    public ArrayList<CustomFluidHatch> FluidIceInputHatch = new ArrayList<>();
-    public ArrayList<CustomFluidHatch> FluidBlazeInputHatch = new ArrayList<>();
-    public ArrayList<CustomFluidHatch> FluidManaInputHatch = new ArrayList<>();
+    public ArrayList<CustomFluidHatch> mFluidIceInputHatch = new ArrayList<>();
+    public ArrayList<CustomFluidHatch> mFluidBlazeInputHatch = new ArrayList<>();
+    public ArrayList<CustomFluidHatch> mFluidManaInputHatch = new ArrayList<>();
 
-    /**
-     * This is the array Used to Store the Tectech Multi-Amp Energy hatches.
-     */
     public ArrayList<MTEHatch> mTecTechEnergyHatches = new ArrayList<>();
 
     public ArrayList<METHatchAirIntake> mAirIntakes = new ArrayList<>();
 
     public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
-    public ArrayList<MTEHatch> mAllEnergyHatches = new ArrayList<>();
-    public ArrayList<MTEHatch> mAllDynamoHatches = new ArrayList<>();
+
+    public ArrayList<MTEHatchUncertainty> mUncertainHatches = new ArrayList<>();
+
+    public GTCoilTracker.MultiCoilLease coilLease = null;
+
+    public static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
+    public final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
+
+    public int tCountCasing;
+    public int mGlassTier;
+    public int mParallelTier;
+    public int energyHatchTier;
+    public int mMaxParallel = 0;
+    public double configSpeedBoost = 1;
 
     // region new methods
     public void repairMachine() {
@@ -147,21 +147,170 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                 boolean found = false;
                 for (MTEHatchMaintenance module : mMaintenanceHatches) {
                     if (module instanceof CustomMaintenanceHatch customMaintenanceHatch) {
-                        int maintenanceCleanroomTier = customMaintenanceHatch.getCleanroomTier();
-                        cleanroomTier = Math.max(cleanroomTier, maintenanceCleanroomTier);
-                        if (customMaintenanceHatch.isConfiguration())
+                        if (customMaintenanceHatch.isConfiguration()) {
                             configSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
+                        }
                         found = true;
                     }
                 }
                 if (!found) {
                     configSpeedBoost = 1;
-                    cleanroomTier = 0;
                 }
             }
+
+            mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
+
+            if (mUpdated) {
+                if (mUpdate <= 0) mUpdate = 50;
+                mUpdated = false;
+            }
+
+            if (--mUpdate == 0 || --mStartUpCheck == 0) {
+                checkStructure(true, aBaseMetaTileEntity);
+            }
+
+            if (mStartUpCheck < 0) {
+                if (mMachine) {
+                    checkMaintenance();
+                    if (getRepairStatus() > 0) {
+                        runMachine(aBaseMetaTileEntity, aTick);
+                    } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        stopMachine(ShutDownReasonRegistry.NO_REPAIR);
+                    }
+                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                    stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
+                }
+            }
+
+            setErrorDisplayID(
+                (getErrorDisplayID() & ~127) | (mWrench ? 0 : 1)
+                    | (mScrewdriver ? 0 : 2)
+                    | (mSoftMallet ? 0 : 4)
+                    | (mHardHammer ? 0 : 8)
+                    | (mSolderingTool ? 0 : 16)
+                    | (mCrowbar ? 0 : 32)
+                    | (mMachine ? 0 : 64));
+
+            aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
+            setMufflers(aBaseMetaTileEntity.isActive() && mPollution > 0);
+
+            boolean isActive = mMaxProgresstime > 0;
+
+            if (!mMachine || !isActive) {
+                deactivateCoilLease();
+            }
+
+            if (mMachine && !mCoils.isEmpty() && isActive && coilLease == null) {
+                coilLease = GTCoilTracker.activate(this, mCoils);
+            }
+        } else {
+            if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
+                doActivitySound(getActivitySoundLoop());
+            }
         }
-        super.onPostTick(aBaseMetaTileEntity, aTick);
+    }
+
+    @Override
+    protected void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
+            if (onRunningTick(mInventory[1])) {
+                markDirty();
+                if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) {
+                    stopMachine(ShutDownReasonRegistry.POLLUTION_FAIL);
+                }
+                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
+                    if (mOutputItems != null) {
+                        for (ItemStack tStack : mOutputItems) {
+                            if (tStack != null) {
+                                addOutput(tStack);
+                            }
+                        }
+                        mOutputItems = null;
+                    }
+                    if (mOutputFluids != null) {
+                        addFluidOutputs(mOutputFluids);
+                        mOutputFluids = null;
+                    }
+                    outputAfterRecipe();
+                    mEfficiency = Math.max(
+                        0,
+                        Math.min(
+                            mEfficiency + mEfficiencyIncrease,
+                            getMaxEfficiency(getControllerSlot()) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                    mOutputItems = null;
+                    mProgresstime = 0;
+                    mMaxProgresstime = 0;
+                    mEfficiencyIncrease = 0;
+                    mLastWorkingTick = mTotalRunTime;
+                    if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        checkRecipe();
+                    }
+                }
+            }
+        } else {
+            // Check if the machine is enabled in the first place!
+            if (aBaseMetaTileEntity.isAllowedToWork()) {
+
+                if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
+                    || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                    if (checkRecipe()) {
+                        markDirty();
+                    }
+                }
+            }
+            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
+        }
+    }
+
+    protected boolean shouldCheckRecipeThisTick(long aTick) {
+        // do a recipe check if any crafting input hatch just got pushed in items
+        boolean shouldCheck = false;
+        // check all of them (i.e. do not return early) to reset the state of all of them.
+        for (IDualInputHatch craftingInputMe : mDualInputHatches) {
+            shouldCheck |= craftingInputMe.justUpdated();
+        }
+        if (shouldCheck) return true;
+        // Do the same for Smart Input Hatches
+        for (ISmartInputHatch smartInputHatch : mSmartInputHatches) {
+            shouldCheck |= smartInputHatch.justUpdated();
+        }
+        if (shouldCheck) return true;
+
+        // Perform more frequent recipe change after the machine just shuts down.
+        long timeElapsed = mTotalRunTime - mLastWorkingTick;
+
+        if (timeElapsed >= CHECK_INTERVAL) return (mTotalRunTime + randomTickOffset) % CHECK_INTERVAL == 0;
+        // Batch mode should be a lot less aggressive at recipe checking
+        if (!isBatchModeEnabled()) {
+            return timeElapsed == 5 || timeElapsed == 12
+                || timeElapsed == 20
+                || timeElapsed == 30
+                || timeElapsed == 40
+                || timeElapsed == 55
+                || timeElapsed == 70
+                || timeElapsed == 85;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRemoval() {
+        deactivateCoilLease();
+        super.onRemoval();
+    }
+
+    @Override
+    public void onUnload() {
+        deactivateCoilLease();
+        super.onUnload();
+    }
+
+    private void deactivateCoilLease() {
+        if (coilLease != null) {
+            GTCoilTracker.deactivate(coilLease);
+            coilLease = null;
+        }
     }
 
     /**
@@ -197,7 +346,9 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      *
      * @return If true, enable Perfect Overclock.
      */
-    protected abstract boolean isEnablePerfectOverclock();
+    protected boolean isEnablePerfectOverclock() {
+        return false;
+    };
 
     /**
      * Proxy Standard Eu Modifier Supplier.
@@ -483,8 +634,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         this.mAirIntakes.clear();
         this.mTecTechEnergyHatches.clear();
         this.mTecTechDynamoHatches.clear();
-        this.mAllEnergyHatches.clear();
-        this.mAllDynamoHatches.clear();
         this.mParallelControllerHatches.clear();
     }
 
@@ -827,7 +976,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                 .getMetaTileID() == 21501) {
                 hatch.updateTexture(aBaseCasingIndex);
                 hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-                return addToMachineListInternal(FluidManaInputHatch, aTileEntity, aBaseCasingIndex);
+                return addToMachineListInternal(mFluidManaInputHatch, aTileEntity, aBaseCasingIndex);
             }
         }
         return false;
@@ -842,7 +991,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                 .getMetaTileID() == 21502) {
                 hatch.updateTexture(aBaseCasingIndex);
                 hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-                return addToMachineListInternal(FluidIceInputHatch, aTileEntity, aBaseCasingIndex);
+                return addToMachineListInternal(mFluidIceInputHatch, aTileEntity, aBaseCasingIndex);
             }
         }
         return false;
@@ -857,7 +1006,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                 .getMetaTileID() == 21503) {
                 hatch.updateTexture(aBaseCasingIndex);
                 hatch.updateCraftingIcon(this.getMachineCraftingIcon());
-                return addToMachineListInternal(FluidBlazeInputHatch, aTileEntity, aBaseCasingIndex);
+                return addToMachineListInternal(mFluidBlazeInputHatch, aTileEntity, aBaseCasingIndex);
             }
         }
         return false;

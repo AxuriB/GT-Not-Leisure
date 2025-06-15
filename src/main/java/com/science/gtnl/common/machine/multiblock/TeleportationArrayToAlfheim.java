@@ -271,7 +271,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
                     buildHatchAdder(TeleportationArrayToAlfheim.class)
                         .adder(TeleportationArrayToAlfheim::addFluidManaInputHatch)
                         .hatchId(21501)
-                        .shouldReject(x -> !x.FluidManaInputHatch.isEmpty())
+                        .shouldReject(x -> !x.mFluidManaInputHatch.isEmpty())
                         .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                         .dot(1)
                         .build()))
@@ -340,7 +340,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
-        FluidManaInputHatch.clear();
+        mFluidManaInputHatch.clear();
         enableInfinityMana = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
@@ -361,12 +361,12 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public boolean checkHatch() {
-        return super.checkHatch() && !FluidManaInputHatch.isEmpty();
+        return super.checkHatch() && !mFluidManaInputHatch.isEmpty();
     }
 
     @Override
     public void updateSlots() {
-        for (CustomFluidHatch tHatch : validMTEList(FluidManaInputHatch)) tHatch.updateSlots();
+        for (CustomFluidHatch tHatch : validMTEList(mFluidManaInputHatch)) tHatch.updateSlots();
         super.updateSlots();
     }
 
@@ -378,7 +378,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
                 .hasWorkJustBeenEnabled()) {
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled() && !enableInfinityMana) {
-                    if (!this.depleteInputFromRestrictedHatches(this.FluidManaInputHatch, 100)) {
+                    if (!this.depleteInputFromRestrictedHatches(this.mFluidManaInputHatch, 100)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(ShutDownReasonRegistry.outOfFluid(MaterialPool.FluidMana.getFluidOrGas(100)));
                     }
