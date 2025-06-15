@@ -12,7 +12,6 @@ import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.loader.RecipePool;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -22,9 +21,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class SteamManufacturerRecipes implements IRecipePool {
@@ -410,7 +407,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
             .itemInputs(
                 new ItemStack(Blocks.brick_block, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 6))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings1, 10, 1))
+            .itemOutputs(ItemList.Casing_BronzePlatedBricks.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -420,7 +417,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 2, 1))
+            .itemOutputs(ItemList.Casing_Gearbox_Bronze.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -430,7 +427,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 12, 1))
+            .itemOutputs(ItemList.Casing_Pipe_Bronze.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -440,7 +437,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings3, 13, 1))
+            .itemOutputs(ItemList.Casing_Firebox_Bronze.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -450,7 +447,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 0, 1))
+            .itemOutputs(ItemList.Casing_SolidSteel.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -460,7 +457,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 2, 1))
+            .itemOutputs(ItemList.Casing_Gearbox_Steel.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -470,7 +467,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 13, 1))
+            .itemOutputs(ItemList.Casing_Pipe_Steel.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -480,7 +477,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4))
-            .itemOutputs(ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings3, 14, 1))
+            .itemOutputs(ItemList.Casing_Firebox_Steel.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -488,9 +485,9 @@ public class SteamManufacturerRecipes implements IRecipePool {
         RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 2),
-                ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 3, 1),
+                ItemList.Casing_Gearbox_Steel.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6))
-            .itemOutputs(ItemUtils.simpleMetaStack(ModBlocks.blockCasingsMisc, 3, 1))
+            .itemOutputs(GregtechItemList.Casing_BedrockMiner.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -499,7 +496,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
         RA.stdBuilder()
             .itemInputs(
                 MaterialPool.Breel.get(OrePrefixes.plateDouble, 2),
-                ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 0, 1),
+                ItemList.Casing_SolidSteel.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 6))
             .itemOutputs(GTNLItemList.VibrationSafeCasing.get(1))
             .duration(2 * SECONDS)

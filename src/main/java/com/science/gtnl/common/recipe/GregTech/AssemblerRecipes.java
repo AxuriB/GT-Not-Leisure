@@ -40,7 +40,6 @@ import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.LanthItemList;
 
@@ -639,7 +638,7 @@ public class AssemblerRecipes implements IRecipePool {
             .itemInputs(
                 ItemList.Machine_IV_Assembler.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 4L),
-                ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR, 1),
+                new ItemStack(ModItems.itemCircuitLFTR, 1),
                 GregtechItemList.TransmissionComponent_IV.get(4),
                 ItemList.Electric_Motor_IV.get(8L),
                 ItemList.Conveyor_Module_IV.get(8L),

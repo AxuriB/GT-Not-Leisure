@@ -2,8 +2,6 @@ package com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator;
 
 import static gregtech.api.enums.GTValues.V;
 
-import java.util.Arrays;
-
 import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,8 +10,7 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.science.gtnl.Utils.SubscribeEventUtils;
-
+import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -24,14 +21,16 @@ import gregtech.api.util.shutdown.ShutDownReason;
 
 public class SteamMonsterRepellentModule extends SteamElevatorModule {
 
-    public int mRange = 0;
+    public int mRange;
 
     public SteamMonsterRepellentModule(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
+        mRange = (int) Math.pow(2, 5 + aTier);
     }
 
     public SteamMonsterRepellentModule(String aName, int aTier) {
         super(aName, aTier);
+        mRange = (int) Math.pow(2, 5 + aTier);
     }
 
     @Override
@@ -101,51 +100,52 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
             int y = tileEntity.getYCoord();
             int z = tileEntity.getZCoord();
             World world = tileEntity.getWorld();
-            int[] tCoords = { x, y, z, world.provider.dimensionId };
-            SubscribeEventUtils.mobReps.add(tCoords);
-            if (!SubscribeEventUtils.mobReps.contains(tCoords)) {
-                mRange = getMachineEffectRange();
-            }
+            GTMod.gregtechproxy.spawnEventHandler.putRepellent(world.provider.dimensionId, x, y, z, mRange);
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        int[] tCoords = { aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.dimensionId };
-        SubscribeEventUtils.mobReps.add(tCoords);
-    }
-
-    @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
-        int[] tCoords = { this.getBaseMetaTileEntity()
-            .getXCoord(),
-            this.getBaseMetaTileEntity()
-                .getYCoord(),
-            this.getBaseMetaTileEntity()
-                .getZCoord(),
-            this.getBaseMetaTileEntity()
-                .getWorld().provider.dimensionId };
-        SubscribeEventUtils.mobReps.removeIf(coords -> Arrays.equals(coords, tCoords));
+        final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
+        if (mte.isServerSide()) {
+            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
+                mte.getWorld().provider.dimensionId,
+                mte.getXCoord(),
+                mte.getYCoord(),
+                mte.getZCoord());
+        }
         super.stopMachine(reason);
     }
 
     @Override
     public void onRemoval() {
-        int[] tCoords = { this.getBaseMetaTileEntity()
-            .getXCoord(),
-            this.getBaseMetaTileEntity()
-                .getYCoord(),
-            this.getBaseMetaTileEntity()
-                .getZCoord(),
-            this.getBaseMetaTileEntity()
-                .getWorld().provider.dimensionId };
-        SubscribeEventUtils.mobReps.removeIf(coords -> Arrays.equals(coords, tCoords));
+        final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
+        if (mte.isServerSide()) {
+            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
+                mte.getWorld().provider.dimensionId,
+                mte.getXCoord(),
+                mte.getYCoord(),
+                mte.getZCoord());
+        }
+        super.onRemoval();
+    }
+
+    @Override
+    public void onUnload() {
+        final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
+        if (mte.isServerSide()) {
+            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
+                mte.getWorld().provider.dimensionId,
+                mte.getXCoord(),
+                mte.getYCoord(),
+                mte.getZCoord());
+        }
+        super.onUnload();
     }
 
     @Override
     protected int getMachineEffectRange() {
-        return SubscribeEventUtils.getPoweredRepellentRange(mTier);
+        return mRange;
     }
 }

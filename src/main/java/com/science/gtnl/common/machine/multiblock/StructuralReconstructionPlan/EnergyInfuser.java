@@ -34,6 +34,7 @@ import com.science.gtnl.loader.BlockLoader;
 
 import cofh.api.energy.IEnergyContainerItem;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,7 +46,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import tectech.TecTech;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -202,7 +202,7 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
                         true,
                         false);
                     euRemaining -= charged;
-                } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+                } else if (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem) {
                     long rf = Math.min(
                         ((IEnergyContainerItem) item).getMaxEnergyStored(individualStack)
                             - ((IEnergyContainerItem) item).getEnergyStored(individualStack),
@@ -242,7 +242,7 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
                 if (ElectricItem.manager.getCharge(stack) < ((IElectricItem) item).getMaxCharge(stack)) {
                     return false;
                 }
-            } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+            } else if (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem) {
                 if (((IEnergyContainerItem) item).getEnergyStored(stack)
                     < ((IEnergyContainerItem) item).getMaxEnergyStored(stack)) {
                     return false;

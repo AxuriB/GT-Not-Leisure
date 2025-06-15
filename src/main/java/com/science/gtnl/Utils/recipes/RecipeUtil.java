@@ -9,20 +9,30 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeUtil {
+
+    private static final ArrayList<ItemStack> mEmptyItems = new ArrayList<>();
+
+    static {
+        mEmptyItems.add(ItemList.Cell_Empty.get(1));
+        mEmptyItems.add(new ItemStack(Items.bowl));
+        mEmptyItems.add(new ItemStack(Items.bucket));
+        mEmptyItems.add(new ItemStack(Items.glass_bottle));
+    }
 
     public static synchronized void copyAllRecipes(RecipeMap<?> fromMap, RecipeMap<?> toMap) {
         for (GTRecipe recipe : fromMap.getAllRecipes()) {
@@ -73,10 +83,6 @@ public class RecipeUtil {
         return true;
     }
 
-    private static boolean mRecipeInit = false;
-    private static ItemStack mEmptyCell;
-    private static final ArrayList<ItemStack> mItemsToIgnore = new ArrayList<>();
-
     public static synchronized void generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs,
         boolean specialItem) {
         generateRecipesNotUsingCells(aInputs, aOutputs, specialItem, 0);
@@ -84,7 +90,6 @@ public class RecipeUtil {
 
     public static synchronized void generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs,
         boolean specialItem, double chanceMultiplier) {
-        generateRecipesInit();
         int aRecipesHandled = 0;
         int aInvalidRecipesToConvert = 0;
         int aOriginalCount = aInputs.getAllRecipes()
@@ -146,9 +151,9 @@ public class RecipeUtil {
             FluidStack[] newFluidsIn = aInputFluidsMap.toArray(new FluidStack[0]);
             FluidStack[] newFluidsOut = aOutputFluidsMap.toArray(new FluidStack[0]);
 
-            if (!ItemUtils.checkForInvalidItems(newItemsIn, newItemsOut)) {
+            if (!(ItemUtils.checkForInvalidItems(newItemsIn) && ItemUtils.checkForInvalidItems(newItemsOut))) {
                 aInvalidRecipesToConvert++;
-                continue;
+                continue; // Skip this recipe entirely if we find an item we don't like
             }
 
             int[] newChances = x.mChances;
@@ -238,39 +243,16 @@ public class RecipeUtil {
         Logger.INFO("There were " + aInvalidRecipesToConvert + " invalid recipes.");
     }
 
-    private static void generateRecipesInit() {
-        if (!mRecipeInit) {
-            mRecipeInit = true;
-            mItemsToIgnore.add(
-                ItemUtils.simpleMetaStack(
-                    CI.emptyCells(1)
-                        .getItem(),
-                    8,
-                    1));
-        }
-    }
-
-    private static boolean doesItemMatchIgnoringStackSize(ItemStack a, ItemStack b) {
-        if (a == null || b == null) {
-            return false;
-        }
-        if (a.getItem() == b.getItem()) {
-            return a.getItemDamage() == b.getItemDamage();
-        }
-        return false;
-    }
-
     private static boolean isEmptyCell(ItemStack aCell) {
         if (aCell == null) {
             return false;
         }
-        if (mEmptyCell == null) {
-            mEmptyCell = CI.emptyCells(1);
-        }
-        if (mEmptyCell != null) {
-            ItemStack aTempStack = mEmptyCell.copy();
-            aTempStack.stackSize = aCell.stackSize;
-            return GTUtility.areStacksEqual(aTempStack, aCell);
+        for (ItemStack emptyItem : mEmptyItems) {
+            emptyItem.stackSize = aCell.stackSize;
+            if (GTUtility.areStacksEqual(emptyItem, aCell)) {
+                return true;
+            }
+
         }
         return false;
     }

@@ -40,6 +40,20 @@ public class GTNLEarlyCoreMod implements IFMLLoadingPlugin, IEarlyMixinLoader, I
         INSTANCE = this;
     }
 
+    static {
+        try {
+            if (System.getProperty("java.version")
+                .startsWith("1.8")) {
+                LOGGER.info("Patching ObfuscationRun.theConstructor for Java 8 compatibility...");
+                ObfuscationRunPatcher.patchConstructor();
+            } else {
+                LOGGER.warn("Skipping ObfuscationRun patch, not running Java 8.");
+            }
+        } catch (Throwable t) {
+            LOGGER.error("Failed to patch ObfuscationRun", t);
+        }
+    }
+
     @Override
     public String[] getASMTransformerClass() {
         return new String[] { "com.science.gtnl.asm.TickrateTransformer" };

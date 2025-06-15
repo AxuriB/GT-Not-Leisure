@@ -37,8 +37,8 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
 import com.science.gtnl.common.item.items.SaplingBrickuoia;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.util.GTRecipeBuilder;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BlockLoader {
 
@@ -574,6 +574,6 @@ public class BlockLoader {
         addItemTooltip(
             GTNLItemList.SaplingBrickuoia.get(1),
             () -> StatCollector.translateToLocal("Tooltip_GiantBrickuoiaSapling_02"));
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(SaplingBrickuoia), "treeSapling", true);
+        OreDictionary.registerOre("treeSapling", new ItemStack(SaplingBrickuoia, 1, GTRecipeBuilder.WILDCARD));
     }
 }

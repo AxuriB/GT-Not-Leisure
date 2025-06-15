@@ -1,5 +1,7 @@
 package com.science.gtnl.common.recipe.GregTech;
 
+import net.minecraft.item.ItemStack;
+
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
 
@@ -13,7 +15,6 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ElectrolyzerRecipes implements IRecipePool {
@@ -270,7 +271,7 @@ public class ElectrolyzerRecipes implements IRecipePool {
             .addTo(ENCR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5))
+            .itemInputs(new ItemStack(ModItems.dustCalciumCarbonate, 1, 5))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1))

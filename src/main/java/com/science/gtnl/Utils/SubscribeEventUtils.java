@@ -6,14 +6,10 @@ import static com.science.gtnl.common.render.PlayerDollRenderManager.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -31,7 +27,6 @@ import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
@@ -47,15 +42,12 @@ import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.common.tileentities.machines.basic.MTEMonsterRepellent;
 import ic2.api.event.ExplosionEvent;
 
 public class SubscribeEventUtils {
@@ -300,55 +292,6 @@ public class SubscribeEventUtils {
                                 }
                             }
                         }
-                    }
-                }
-            }
-        }
-    }
-
-    public static volatile List<int[]> mobReps = new CopyOnWriteArrayList<>();
-
-    public static int getPoweredRepellentRange(int aTier) {
-        return (int) Math.pow(2, 5 + aTier);
-    }
-
-    @SubscribeEvent
-    public void denyMobSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.getResult() == Event.Result.DENY) return;
-
-        if (event.entityLiving instanceof EntitySlime slime && !slime.hasCustomNameTag()
-            && event.getResult() == Event.Result.ALLOW) {
-            event.setResult(Event.Result.DEFAULT);
-        }
-
-        if (event.getResult() == Event.Result.ALLOW) {
-            return;
-        }
-
-        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
-            final double maxRangeCheck = Math.pow(getPoweredRepellentRange(GTValues.V.length - 1), 2);
-            for (int[] rep : mobReps) {
-                if (rep[3] == event.entity.worldObj.provider.dimensionId) {
-                    // If the chunk isn't loaded, we ignore this Repellent
-                    if (!event.entity.worldObj.blockExists(rep[0], rep[1], rep[2])) continue;
-                    final double dx = rep[0] + 0.5F - event.entity.posX;
-                    final double dy = rep[1] + 0.5F - event.entity.posY;
-                    final double dz = rep[2] + 0.5F - event.entity.posZ;
-
-                    final double check = (dx * dx + dz * dz + dy * dy);
-                    // Fail early if outside of max range
-                    if (check > maxRangeCheck) continue;
-
-                    final TileEntity tTile = event.entity.worldObj.getTileEntity(rep[0], rep[1], rep[2]);
-                    if (tTile instanceof BaseMetaTileEntity metaTile
-                        && metaTile.getMetaTileEntity() instanceof MTEMonsterRepellent repellent
-                        && check <= Math.pow(repellent.mRange, 2)) {
-                        if (event.entityLiving instanceof EntitySlime slime) {
-                            slime.setCustomNameTag("DoNotSpawnSlimes");
-                        }
-                        event.setResult(Event.Result.DENY);
-                        // We're already DENYing it. No reason to keep checking
-                        return;
                     }
                 }
             }

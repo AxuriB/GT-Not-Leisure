@@ -8,13 +8,11 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CraftingTableAprilFoolRecipes implements IRecipePool {
@@ -26,8 +24,7 @@ public class CraftingTableAprilFoolRecipes implements IRecipePool {
             GTNLItemList.VibrationSafeCasing.get(1),
             new Object[] { "AAA", "BCB", "AAA", 'A',
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 1), 'B',
-                MaterialPool.Breel.get(OrePrefixes.plateDouble, 1), 'C',
-                ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 0, 1) });
+                MaterialPool.Breel.get(OrePrefixes.plateDouble, 1), 'C', ItemList.Casing_SolidSteel.get(1) });
 
         GTModHandler.addCraftingRecipe(
             GTNLItemList.SteelBrickCasing.get(1),
@@ -102,8 +99,8 @@ public class CraftingTableAprilFoolRecipes implements IRecipePool {
         GTModHandler.addCraftingRecipe(
             GTNLItemList.SteamRockBreaker.get(1),
             new Object[] { "ABA", "CDE", "ABA", 'A', ItemList.Casing_BronzePlatedBricks.get(1), 'B',
-                ItemUtils.simpleMetaStack(GregTechAPI.sBlockCasings2, 12, 1), 'C', new ItemStack(Items.water_bucket, 1),
-                'D', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1), 'E',
+                ItemList.Casing_Pipe_Bronze.get(1), 'C', new ItemStack(Items.water_bucket, 1), 'D',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CrudeSteel, 1), 'E',
                 new ItemStack(Items.lava_bucket, 1) });
 
         // Steam Carpenter
