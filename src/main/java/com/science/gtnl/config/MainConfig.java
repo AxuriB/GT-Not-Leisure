@@ -79,6 +79,9 @@ public class MainConfig {
     // Player Doll
     public static boolean enableCustomPlayerDoll = true;
 
+    // Extreme Anvil
+    public static String unbreakOre = "neutronUnbreak";
+
     // Infinity Sword
     public static boolean enableInfinitySwordBypassMechanism = true;
     public static boolean enableInfinitySwordExplosion = true;

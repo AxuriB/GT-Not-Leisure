@@ -83,11 +83,10 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mParallelControllerHatches.size() == 1 && aTick % 20 == 0) {
                 for (ParallelControllerHatch module : mParallelControllerHatches) {
+                    module.setMaxParallel(module.getParallel() * 16);
                     setMaxParallel(module.getParallel());
                     mParallelTier = module.mTier;
                 }
-            } else {
-                setMaxParallel(8);
             }
             if (mEfficiency < 0) mEfficiency = 0;
         }
@@ -256,7 +255,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         } else if (mParallelTier <= 1) {
             return 8;
         } else {
-            return (int) Math.pow(4, mParallelTier - 2);
+            return (int) Math.pow(4, mParallelTier - 2) * 16;
         }
         return 8;
     }

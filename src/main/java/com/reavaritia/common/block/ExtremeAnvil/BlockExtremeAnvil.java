@@ -22,6 +22,7 @@ import com.reavaritia.ClientProxy;
 import com.reavaritia.ReAvaCreativeTabs;
 import com.reavaritia.ReAvaItemList;
 import com.reavaritia.ReAvaritia;
+import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -156,7 +157,7 @@ public class BlockExtremeAnvil extends Block {
         int[] oreIDs = OreDictionary.getOreIDs(stack);
         for (int id : oreIDs) {
             if (OreDictionary.getOreName(id)
-                .equalsIgnoreCase("neutronUnbreak")) {
+                .equalsIgnoreCase(MainConfig.unbreakOre)) {
                 return true;
             }
         }

@@ -14,7 +14,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.api.ICleanRoomMaintenance;
 import com.science.gtnl.api.IConfigurationMaintenance;
 
 import cpw.mods.fml.relauncher.Side;
@@ -29,8 +28,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.render.TextureFactory;
 
-public class CustomMaintenanceHatch extends MTEHatchMaintenance
-    implements ICleanRoomMaintenance, IConfigurationMaintenance, IAddGregtechLogo {
+public class CustomMaintenanceHatch extends MTEHatchMaintenance implements IConfigurationMaintenance, IAddGregtechLogo {
 
     private static Textures.BlockIcons.CustomIcon face;
     protected int mMinConfigTime;
@@ -158,11 +156,6 @@ public class CustomMaintenanceHatch extends MTEHatchMaintenance
     @Override
     public int getConfigTime() {
         return this.mConfigTime;
-    }
-
-    @Override
-    public int getCleanroomTier() {
-        return 0;
     }
 
     @Override

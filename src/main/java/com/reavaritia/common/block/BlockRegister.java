@@ -10,6 +10,7 @@ import com.reavaritia.common.block.ExtremeAnvil.BlockExtremeAnvil;
 import com.reavaritia.common.block.NeutronCollector.ItemBlockNeutronCollector;
 import com.reavaritia.common.block.NeutronCollector.NeutronCollector;
 import com.reavaritia.common.block.NeutronCollector.TileEntityNeutronCollector;
+import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -73,11 +74,11 @@ public class BlockRegister {
         ItemStack EndPortalFrame = new ItemStack(Blocks.end_portal_frame, 1, 0);
         ItemStack CommandBlock = new ItemStack(Blocks.command_block, 1, 0);
 
-        OreDictionary.registerOre("neutronUnbreak", CommandBlock);
-        OreDictionary.registerOre("neutronUnbreak", EndPortal);
-        OreDictionary.registerOre("neutronUnbreak", EndPortalFrame);
-        OreDictionary.registerOre("neutronUnbreak", Bedrock);
-        OreDictionary.registerOre("neutronUnbreak", ExtremeAnvilBlock);
+        OreDictionary.registerOre(MainConfig.unbreakOre, CommandBlock);
+        OreDictionary.registerOre(MainConfig.unbreakOre, EndPortal);
+        OreDictionary.registerOre(MainConfig.unbreakOre, EndPortalFrame);
+        OreDictionary.registerOre(MainConfig.unbreakOre, Bedrock);
+        OreDictionary.registerOre(MainConfig.unbreakOre, ExtremeAnvilBlock);
 
     }
 

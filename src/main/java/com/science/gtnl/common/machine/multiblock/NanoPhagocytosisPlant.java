@@ -50,6 +50,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings9;
 import gtnhlanth.common.register.LanthItemList;
@@ -540,8 +541,10 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, getMaxInputVoltage()))
-                    .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, getMaxInputVoltage()));
+                    .setEUtDiscount(
+                        0.4 - (mParallelTier / 50.0) * Math.pow(0.95, GTUtility.getTier(getMaxInputVoltage())))
+                    .setDurationModifier(
+                        0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, GTUtility.getTier(getMaxInputVoltage())));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

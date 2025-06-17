@@ -70,7 +70,7 @@ public class BehaviourScanner_Mixin {
                                 formatted_username,
                                 EnumChatFormatting.RED,
                                 GTUtility.formatNumbers(getUserSteam(userUUID)),
-                                EnumChatFormatting.RESET);
+                                "L" + EnumChatFormatting.RESET);
                             tList.add(steamInfo);
 
                             if (!userUUID.equals(teamUUID)) {

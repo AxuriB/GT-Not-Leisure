@@ -200,11 +200,6 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 16 + 4 * GTUtility.getTier(this.getMaxInputVoltage()) + 2 * mGlassTier;
-    }
-
-    @Override
     public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
 
