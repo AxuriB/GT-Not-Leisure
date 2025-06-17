@@ -207,8 +207,10 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
                         ((IEnergyContainerItem) item).getMaxEnergyStored(individualStack)
                             - ((IEnergyContainerItem) item).getEnergyStored(individualStack),
                         euRemaining * mEUtoRF / 10L);
-                    rf = ((IEnergyContainerItem) item)
-                        .receiveEnergy(individualStack, rf > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) rf, false);
+                    rf = ((IEnergyContainerItem) item).receiveEnergy(
+                        individualStack,
+                        rf > Integer.MAX_VALUE - 1 ? Integer.MAX_VALUE : (int) rf,
+                        false);
                     euRemaining -= rf * 10L / mEUtoRF;
                 }
 

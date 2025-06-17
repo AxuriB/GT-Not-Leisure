@@ -47,7 +47,6 @@ import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.common.machine.multiblock.AdvancedCircuitAssemblyLine;
 import com.science.gtnl.common.machine.multiblock.AdvancedInfiniteDriller;
-import com.science.gtnl.common.machine.multiblock.AdvancedPhotovoltaicPowerStation;
 import com.science.gtnl.common.machine.multiblock.AetronPressor;
 import com.science.gtnl.common.machine.multiblock.AprilFool.HighPressureSteamFusionReactor;
 import com.science.gtnl.common.machine.multiblock.AprilFool.MegaSolarBoiler;
@@ -74,7 +73,6 @@ import com.science.gtnl.common.machine.multiblock.Desulfurizer;
 import com.science.gtnl.common.machine.multiblock.DraconicFusionCrafting;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
 import com.science.gtnl.common.machine.multiblock.ElementCopying;
-import com.science.gtnl.common.machine.multiblock.EnergeticPhotovoltaicPowerStation;
 import com.science.gtnl.common.machine.multiblock.EngravingLaserPlant;
 import com.science.gtnl.common.machine.multiblock.FieldForgePress;
 import com.science.gtnl.common.machine.multiblock.FuelRefiningComplex;
@@ -123,6 +121,7 @@ import com.science.gtnl.common.machine.multiblock.NeutroniumWireCutting;
 import com.science.gtnl.common.machine.multiblock.NineIndustrialMultiMachine;
 import com.science.gtnl.common.machine.multiblock.OreExtractionModule;
 import com.science.gtnl.common.machine.multiblock.PetrochemicalPlant;
+import com.science.gtnl.common.machine.multiblock.PhotovoltaicPowerStation;
 import com.science.gtnl.common.machine.multiblock.PlatinumBasedTreatment;
 import com.science.gtnl.common.machine.multiblock.PolymerTwistingModule;
 import com.science.gtnl.common.machine.multiblock.PrimitiveDistillationTower;
@@ -145,6 +144,7 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.E
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.EnergyInfuser;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.FishingGround;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.FlotationCellRegulator;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.Incubator;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.IsaMill;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeAlloySmelter;
@@ -194,20 +194,19 @@ import com.science.gtnl.common.machine.multiblock.SuperSpaceElevator;
 import com.science.gtnl.common.machine.multiblock.SuperconductingElectromagnetism;
 import com.science.gtnl.common.machine.multiblock.SuperconductingMagneticPresser;
 import com.science.gtnl.common.machine.multiblock.TeleportationArrayToAlfheim;
-import com.science.gtnl.common.machine.multiblock.VibrantPhotovoltaicPowerStation;
 import com.science.gtnl.common.machine.multiblock.VortexMatterCentrifuge;
 import com.science.gtnl.common.machine.multiblock.WhiteNightGenerator;
 import com.science.gtnl.common.machine.multiblock.WoodDistillation;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.material.MaterialUtils;
 
-import bartworks.API.BorosilicateGlass;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GlassTier;
 import gregtech.common.covers.CoverConveyor;
 import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverPump;
@@ -420,21 +419,21 @@ public class MachineLoader {
         addItemTooltip(GTNLItemList.IndustrialArcaneAssembler.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.EnergeticPhotovoltaicPowerStation.set(
-            new EnergeticPhotovoltaicPowerStation(
+            new PhotovoltaicPowerStation.EnergeticPhotovoltaicPowerStation(
                 ENERGETIC_PHOTOVOLTAIC_POWER_STATION.ID,
                 "EnergeticPhotovoltaicPowerStation",
                 StatCollector.translateToLocal("NameEnergeticPhotovoltaicPowerStation")));
         addItemTooltip(GTNLItemList.EnergeticPhotovoltaicPowerStation.get(1), AnimatedText.SNL_QYZG);
 
         GTNLItemList.AdvancedPhotovoltaicPowerStation.set(
-            new AdvancedPhotovoltaicPowerStation(
+            new PhotovoltaicPowerStation.AdvancedPhotovoltaicPowerStation(
                 ADVANCED_PHOTOVOLTAIC_POWER_STATION.ID,
                 "AdvancedPhotovoltaicPowerStation",
                 StatCollector.translateToLocal("NameAdvancedPhotovoltaicPowerStation")));
         addItemTooltip(GTNLItemList.AdvancedPhotovoltaicPowerStation.get(1), AnimatedText.SNL_QYZG);
 
         GTNLItemList.VibrantPhotovoltaicPowerStation.set(
-            new VibrantPhotovoltaicPowerStation(
+            new PhotovoltaicPowerStation.VibrantPhotovoltaicPowerStation(
                 VIBRANT_PHOTOVOLTAIC_POWER_STATION.ID,
                 "VibrantPhotovoltaicPowerStation",
                 StatCollector.translateToLocal("NameVibrantPhotovoltaicPowerStation")));
@@ -1244,6 +1243,13 @@ public class MachineLoader {
                 "NanoAssemblerMarkL",
                 StatCollector.translateToLocal("NameNanoAssemblerMarkL")));
         addItemTooltip(GTNLItemList.NanoAssemblerMarkL.get(1), AnimatedText.SNL_QYZG);
+
+        GTNLItemList.HighPerformanceComputationArray.set(
+            new HighPerformanceComputationArray(
+                HIGH_PERFORMANCE_COMPUTATION_ARRAY.ID,
+                "HighPerformanceComputationArray",
+                StatCollector.translateToLocal("NameHighPerformanceComputationArray")));
+        addItemTooltip(GTNLItemList.HighPerformanceComputationArray.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(
@@ -2371,17 +2377,17 @@ public class MachineLoader {
     }
 
     public static void registerGlasses() {
-        BorosilicateGlass.registerGlass(BlockLoader.PlayerDoll, 0, (byte) 13);
-        BorosilicateGlass.registerGlass(BlockLoader.MetaBlockGlass, 0, (byte) 10);
-        BorosilicateGlass.registerGlass(BlockLoader.MetaBlockGlass, 1, (byte) 8);
-        BorosilicateGlass.registerGlass(BlockLoader.MetaBlockGlass, 2, (byte) 7);
+        GlassTier.addCustomGlass(BlockLoader.PlayerDoll, 0, 13, 1);
+        GlassTier.addCustomGlass(BlockLoader.MetaBlockGlass, 0, 10, 2);
+        GlassTier.addCustomGlass(BlockLoader.MetaBlockGlass, 1, 8, 2);
+        GlassTier.addCustomGlass(BlockLoader.MetaBlockGlass, 2, 7, 1);
 
-        for (int LampMeta = 1; LampMeta <= 32; LampMeta++) {
-            BorosilicateGlass.registerGlass(BlockLoader.MetaBlockGlow, LampMeta, (byte) 3);
+        for (int lampMeta = 1; lampMeta <= 32; lampMeta++) {
+            GlassTier.addCustomGlass(BlockLoader.MetaBlockGlow, lampMeta, 3, 1);
         }
 
-        for (int LampOffMeta = 3; LampOffMeta <= 34; LampOffMeta++) {
-            BorosilicateGlass.registerGlass(BlockLoader.MetaBlock, LampOffMeta, (byte) 3);
+        for (int lampOffMeta = 3; lampOffMeta <= 34; lampOffMeta++) {
+            GlassTier.addCustomGlass(BlockLoader.MetaBlock, lampOffMeta, 3, 1);
         }
     }
 

@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerNeutronItem extends Container {
 
-    private TileEntityNeutronCollector tileNeutron;
+    private final TileEntityNeutronCollector tileNeutron;
 
     public ContainerNeutronItem(InventoryPlayer player, TileEntityNeutronCollector machine) {
         this.tileNeutron = machine;
@@ -38,7 +38,7 @@ public class ContainerNeutronItem extends Container {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotNumber) {
         ItemStack itemstack = null;
-        Slot slot = (Slot) this.inventorySlots.get(slotNumber);
+        Slot slot = this.inventorySlots.get(slotNumber);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
@@ -51,17 +51,17 @@ public class ContainerNeutronItem extends Container {
 
                 slot.onSlotChange(itemstack1, itemstack);
             } else {
-                if (slotNumber >= 1 && slotNumber < 28) {
+                if (slotNumber < 28) {
                     if (!this.mergeItemStack(itemstack1, 28, 37, false)) {
                         return null;
                     }
-                } else if (slotNumber >= 28 && slotNumber < 37 && !this.mergeItemStack(itemstack1, 1, 28, false)) {
+                } else if (slotNumber < 37 && !this.mergeItemStack(itemstack1, 1, 28, false)) {
                     return null;
                 }
             }
 
             if (itemstack1.stackSize == 0) {
-                slot.putStack((ItemStack) null);
+                slot.putStack(null);
             } else {
                 slot.onSlotChanged();
             }

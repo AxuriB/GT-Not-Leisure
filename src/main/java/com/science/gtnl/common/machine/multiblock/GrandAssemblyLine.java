@@ -716,7 +716,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
     }
 
     // 包装常规输入仓/总线的实现
-    private static class WrappedInventory implements IDualInputInventory {
+    public static class WrappedInventory implements IDualInputInventory {
 
         private final ArrayList<ItemStack> itemInputs;
         private final ArrayList<FluidStack> fluidInputs;
@@ -760,21 +760,19 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         if (count == 0) {
             // 获取矿辞名称
             int[] oreIDs = OreDictionary.getOreIDs(required);
-            if (oreIDs.length > 0) {
-                // 遍历所有矿辞匹配的物品
-                for (int oreID : oreIDs) {
-                    String oreName = OreDictionary.getOreName(oreID);
-                    List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
+            // 遍历所有矿辞匹配的物品
+            for (int oreID : oreIDs) {
+                String oreName = OreDictionary.getOreName(oreID);
+                List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
 
-                    // 遍历输入槽位中的所有物品
-                    for (ItemStack input : allInputs) {
-                        if (input != null) {
-                            // 检查输入物品是否与矿辞匹配
-                            for (ItemStack oreDictItem : oreDictItems) {
-                                if (OreDictionary.itemMatches(oreDictItem, input, false)) {
-                                    count += input.stackSize;
-                                    break;
-                                }
+                // 遍历输入槽位中的所有物品
+                for (ItemStack input : allInputs) {
+                    if (input != null) {
+                        // 检查输入物品是否与矿辞匹配
+                        for (ItemStack oreDictItem : oreDictItems) {
+                            if (OreDictionary.itemMatches(oreDictItem, input, false)) {
+                                count += input.stackSize;
+                                break;
                             }
                         }
                     }
@@ -829,34 +827,32 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         if (remaining > 0) {
             // 获取矿辞名称
             int[] oreIDs = OreDictionary.getOreIDs(required);
-            if (oreIDs.length > 0) {
-                // 遍历所有矿辞匹配的物品
-                for (int oreID : oreIDs) {
-                    String oreName = OreDictionary.getOreName(oreID);
-                    List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
+            // 遍历所有矿辞匹配的物品
+            for (int oreID : oreIDs) {
+                String oreName = OreDictionary.getOreName(oreID);
+                List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
 
-                    // 遍历所有相同矿辞的物品
-                    for (ItemStack oreDictItem : oreDictItems) {
-                        // 在输入槽位中查找匹配的物品
-                        for (ItemStack input : allInputs) {
-                            if (input != null && OreDictionary.itemMatches(oreDictItem, input, false)) {
+                // 遍历所有相同矿辞的物品
+                for (ItemStack oreDictItem : oreDictItems) {
+                    // 在输入槽位中查找匹配的物品
+                    for (ItemStack input : allInputs) {
+                        if (input != null && OreDictionary.itemMatches(oreDictItem, input, false)) {
 
-                                int available = input.stackSize;
+                            int available = input.stackSize;
 
-                                int toConsumeNow = (int) Math.min(available, Math.min(remaining, Integer.MAX_VALUE));
+                            int toConsumeNow = (int) Math.min(available, Math.min(remaining, Integer.MAX_VALUE));
 
-                                input.stackSize -= toConsumeNow;
-                                remaining -= toConsumeNow;
+                            input.stackSize -= toConsumeNow;
+                            remaining -= toConsumeNow;
 
-                                if (input.stackSize <= 0) {
-                                    input.stackSize = 0;
-                                }
-
-                                if (remaining <= 0) {
-                                    return; // 消耗完毕，直接返回
-                                }
-                                break; // 消耗完当前物品后，跳出内层循环，继续查找下一个矿辞匹配的物品
+                            if (input.stackSize <= 0) {
+                                input.stackSize = 0;
                             }
+
+                            if (remaining <= 0) {
+                                return; // 消耗完毕，直接返回
+                            }
+                            break; // 消耗完当前物品后，跳出内层循环，继续查找下一个矿辞匹配的物品
                         }
                     }
                 }

@@ -247,7 +247,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
         if (this.mMachine) return -1;
         int realBudget = elementBudget >= 2000 ? elementBudget : Math.min(2000, elementBudget * 5);
 
-        int built = 0;
+        int built;
         built = survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,

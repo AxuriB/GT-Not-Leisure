@@ -150,13 +150,13 @@ public class BlockExtremeAnvil extends Block {
         checkAndFall(world, x, y, z);
     }
 
-    private boolean hasOreTag(ItemStack stack, String tag) {
+    private boolean hasOreTag(ItemStack stack) {
         if (stack == null || stack.getItem() == null) return false;
 
         int[] oreIDs = OreDictionary.getOreIDs(stack);
         for (int id : oreIDs) {
             if (OreDictionary.getOreName(id)
-                .equalsIgnoreCase(tag)) {
+                .equalsIgnoreCase("neutronUnbreak")) {
                 return true;
             }
         }
@@ -197,7 +197,7 @@ public class BlockExtremeAnvil extends Block {
             }
         } else {
             ItemStack foundationStack = new ItemStack(foundationBlock, 1, world.getBlockMetadata(x, y - 1, z));
-            if (!hasOreTag(foundationStack, "neutronUnbreak")) {
+            if (!hasOreTag(foundationStack)) {
                 world.func_147480_a(x, y - 1, z, true);
             }
         }

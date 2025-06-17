@@ -1,7 +1,7 @@
 package com.reavaritia.common.item;
 
 import static com.reavaritia.ReAvaritia.RESOURCE_ROOT_ID;
-import static com.reavaritia.common.block.ReAvaBasicBlocks.BlockSoulFarmland;
+import static com.reavaritia.common.block.BlockRegister.BlockSoulFarmland;
 
 import java.util.List;
 import java.util.Map;

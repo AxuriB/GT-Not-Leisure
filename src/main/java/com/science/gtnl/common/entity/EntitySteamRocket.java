@@ -3,7 +3,6 @@ package com.science.gtnl.common.entity;
 import java.util.List;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,12 +14,10 @@ import com.science.gtnl.loader.ItemLoader;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
-import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 
@@ -38,11 +35,6 @@ public class EntitySteamRocket extends EntityTieredRocket {
         this.cargoItems = new ItemStack[this.getSizeInventory()];
         this.setSize(1.2F, 3.5F);
         this.yOffset = 1.5F;
-    }
-
-    @Override
-    public float getRotateOffset() {
-        return -1.5F;
     }
 
     @Override
@@ -229,11 +221,6 @@ public class EntitySteamRocket extends EntityTieredRocket {
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer) {
-        return !this.isDead && par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
-    }
-
-    @Override
     protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {
         super.writeEntityToNBT(par1NBTTagCompound);
     }
@@ -265,58 +252,12 @@ public class EntitySteamRocket extends EntityTieredRocket {
     }
 
     @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        return false;
-    }
-
-    // @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
-    // "ICBM|Explosion")
-    // public boolean canLock(IMissile missile)
-    // {
-    // return true;
-    // }
-    //
-    // @RuntimeInterface(clazz = "icbm.api.IMissileLockable", modID =
-    // "ICBM|Explosion")
-    // public Vector3 getPredictedPosition(int ticks)
-    // {
-    // return new Vector3(this);
-    // } TODO Re-enable ICBM integration
-
-    @Override
     public void onPadDestroyed() {
         if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal()) {
             this.dropShipAsItem();
             this.setDead();
         }
     }
-
-    @Override
-    public boolean isDockValid(IFuelDock dock) {
-        return dock instanceof TileEntityLandingPad;
-    }
-
-    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-    // "ICBM|Explosion")
-    // public void destroyCraft()
-    // {
-    // this.setDead();
-    // }
-    //
-    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-    // "ICBM|Explosion")
-    // public int doDamage(int damage)
-    // {
-    // return (int) (this.shipDamage += damage);
-    // }
-    //
-    // @RuntimeInterface(clazz = "icbm.api.sentry.IAATarget", modID =
-    // "ICBM|Explosion")
-    // public boolean canBeTargeted(Object entity)
-    // {
-    // return this.launchPhase == EnumLaunchPhase.LAUNCHED.getPhase() &&
-    // this.timeSinceLaunch > 50;
-    // } TODO Re-enable ICBM integration
 
     @Override
     public int getRocketTier() {

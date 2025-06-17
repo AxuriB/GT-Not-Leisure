@@ -11,6 +11,8 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import com.science.gtnl.common.render.tile.RealArtificialStarRender;
 
+import lombok.Getter;
+
 public class TileEntityArtificialStar extends TileEntity {
 
     // 当前的旋转角度
@@ -32,6 +34,7 @@ public class TileEntityArtificialStar extends TileEntity {
     // 当前放大到第几个模型
     public int currentModelIndex = 0;
     // 模型列表
+    @Getter
     public final List<IModelCustom> models = new ArrayList<>();
     // 纹理列表
     public final List<ResourceLocation> textures = new ArrayList<>();
@@ -94,10 +97,6 @@ public class TileEntityArtificialStar extends TileEntity {
         } else {
             Rotation = (Rotation + targetRotationSpeed) % 360d;
         }
-    }
-
-    public List<IModelCustom> getModels() {
-        return models;
     }
 
     public ResourceLocation getTexture(int index) {

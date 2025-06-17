@@ -37,9 +37,7 @@ public class ToolHelper {
             hammerdrops.put(player, new ArrayList<>());
         }
 
-        if (!hammering.contains(player)) {
-            hammering.add(player);
-        }
+        hammering.add(player);
 
         for (int x1 = xs; x1 < xe; x1++)
             for (int y1 = ys; y1 < ye; y1++) for (int z1 = zs; z1 < ze; z1++) removeBlockWithDrops(
@@ -59,9 +57,7 @@ public class ToolHelper {
         int meta = world.getBlockMetadata(x, y, z);
         if (!world.isRemote) world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
 
-        if (hammering.contains(player)) {
-            hammering.remove(player);
-        }
+        hammering.remove(player);
         if (!world.isRemote) {
             List<ItemStack> clusters = MatterCluster.makeClusters(hammerdrops.get(player));
 
@@ -133,8 +129,7 @@ public class ToolHelper {
         float f6 = MathHelper.sin(-f1 * 0.017453292F);
         float f7 = f4 * f5;
         float f8 = f3 * f5;
-        double d3 = range;
-        Vec3 vec31 = vec3.addVector(f7 * d3, f6 * d3, f8 * d3);
+        Vec3 vec31 = vec3.addVector(f7 * range, f6 * range, f8 * range);
         return world.rayTraceBlocks(vec3, vec31, wut);
     }
 
@@ -148,10 +143,6 @@ public class ToolHelper {
         world.spawnEntityInWorld(entityitem);
     }
 
-    public static List<ItemStack> collateDropList(List<ItemStack> input) {
-        return collateMatterClusterContents(collateMatterCluster(input));
-    }
-
     public static List<ItemStack> collateMatterClusterContents(Map<ItemStackWrapper, Integer> input) {
         List<ItemStack> collated = new ArrayList<>();
         if (input == null) return collated;
@@ -160,7 +151,7 @@ public class ToolHelper {
             ItemStackWrapper wrap = e.getKey();
 
             int size = wrap.stack.getMaxStackSize();
-            int fullstacks = (int) Math.floor(count / size);
+            int fullstacks = (int) (double) (count / size);
 
             for (int i = 0; i < fullstacks; i++) {
                 count -= size;

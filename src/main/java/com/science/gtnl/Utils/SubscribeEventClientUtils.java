@@ -2,7 +2,6 @@ package com.science.gtnl.Utils;
 
 import static com.science.gtnl.common.packet.ClientSoundHandler.PLAYING_SOUNDS;
 import static com.science.gtnl.common.packet.ClientTitleDisplayHandler.*;
-import static com.science.gtnl.common.render.PlayerDollRenderManager.*;
 import static com.science.gtnl.common.render.PlayerDollRenderManagerClient.textureCache;
 import static com.science.gtnl.common.render.tile.MeteorMinerMachineRender.visualStateMap;
 
@@ -15,7 +14,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -30,7 +28,7 @@ import com.reavaritia.common.render.CustomEntityRenderer;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.common.effect.effects.AweEffect;
 import com.science.gtnl.common.item.TimeStopManager;
-import com.science.gtnl.common.packet.TitlePacket;
+import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -73,12 +71,8 @@ public class SubscribeEventClientUtils {
                 event.setCanceled(true);
                 String[] messages = { "Awe_Cancel_02_01", "Awe_Cancel_02_02" };
                 String message = messages[random.nextInt(messages.length)];
-                TitlePacket.sendTitleToPlayer(
-                    (EntityPlayerMP) player,
-                    StatCollector.translateToLocal(message),
-                    200,
-                    0xFFFFFF,
-                    2);
+                ClientTitleDisplayHandler
+                    .displayTitle(StatCollector.translateToLocal(message), 100, 0xFFFFFF, 3, 10, 20);
             }
         }
     }

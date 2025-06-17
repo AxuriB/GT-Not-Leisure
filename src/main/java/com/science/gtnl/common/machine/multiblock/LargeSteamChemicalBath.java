@@ -58,7 +58,7 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String LSCB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/large_steam_chemical_bath"; // 文件路径
+        + "multiblock/large_steam_chemical_bath";
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSCB_STRUCTURE_FILE_PATH);
 
     public LargeSteamChemicalBath(String aName) {

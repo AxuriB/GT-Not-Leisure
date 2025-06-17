@@ -99,6 +99,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
+import lombok.Getter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -116,6 +117,7 @@ public class SuperCraftingInputHatchME extends MTEHatchInputBus
         }
 
         private final ItemStack pattern;
+        @Getter
         private final ICraftingPatternDetails patternDetails;
         private final List<ItemStack> itemInventory;
         private final List<FluidStack> fluidInventory;
@@ -218,10 +220,6 @@ public class SuperCraftingInputHatchME extends MTEHatchInputBus
         public FluidStack[] getFluidInputs() {
             if (isFluidEmpty()) return new FluidStack[0];
             return fluidInventory.toArray(new FluidStack[0]);
-        }
-
-        public ICraftingPatternDetails getPatternDetails() {
-            return patternDetails;
         }
 
         public void refund(AENetworkProxy proxy, BaseActionSource src) throws GridAccessException {

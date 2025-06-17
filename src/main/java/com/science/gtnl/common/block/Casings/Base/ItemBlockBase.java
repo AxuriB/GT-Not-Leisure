@@ -55,24 +55,9 @@ public class ItemBlockBase extends ItemBlock {
         return initMetaBlock(i18nName, Meta);
     }
 
-    // endregion
-    // -----------------------
-    // region Member Variables
-
-    // endregion
-    // -----------------------
-    // region Overrides
-
-    /**
-     * Handle the tooltips.
-     *
-     * @param aItemStack
-     * @param theTooltipsList
-     */
     @SideOnly(Side.CLIENT)
     @Override
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List theTooltipsList,
+    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List<String> theTooltipsList,
         boolean p_77624_4_) {
         int meta = aItemStack.getItemDamage();
         if (null != MetaBlockTooltipsMap.get(meta)) {

@@ -8,20 +8,23 @@ import net.minecraft.potion.Potion;
 import com.science.gtnl.common.effect.effects.AweEffect;
 import com.science.gtnl.common.effect.effects.PerfectPhysiqueEffect;
 
+import lombok.extern.log4j.Log4j2;
+
+@Log4j2
 public class GTNLEffect {
 
     public static Potion awe;
     public static Potion perfect_physique;
 
     public static void init() {
-        if (Potion.potionTypes.length < 256) extendPotionArray();
+        extendPotionArray();
 
         awe = new AweEffect();
         perfect_physique = new PerfectPhysiqueEffect();
     }
 
     private static void extendPotionArray() {
-        Potion[] potionTypes = null;
+        Potion[] potionTypes;
 
         for (Field f : Potion.class.getDeclaredFields()) {
             f.setAccessible(true);
@@ -41,7 +44,7 @@ public class GTNLEffect {
                 }
             } catch (Exception e) {
                 System.err.println("Severe error, please report this to the mod author:");
-                System.err.println(e);
+                log.error("e: ", e);
             }
         }
     }

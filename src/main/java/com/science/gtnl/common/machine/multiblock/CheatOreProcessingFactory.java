@@ -57,7 +57,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String COPF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/cheat_ore_processing_factory"; // 文件路径
+        + "multiblock/cheat_ore_processing_factory";
     public static String[][] shape = StructureUtils.readStructureFromFile(COPF_STRUCTURE_FILE_PATH);
     public final int HORIZONTAL_OFF_SET = 20;
     public final int VERTICAL_OFF_SET = 24;
@@ -69,11 +69,6 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
 
     public CheatOreProcessingFactory(String aName) {
         super(aName);
-    }
-
-    @Override
-    protected boolean isEnablePerfectOverclock() {
-        return false;
     }
 
     @Override
@@ -107,7 +102,6 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
         RecipeMap<?> recipeMap = getRecipeMap();
         ArrayList<ItemStack> inputs = getStoredInputs();
         ArrayList<ItemStack> outputs = new ArrayList<>();
-        long EUt = 0;
         // check every inputs
         for (ItemStack items : inputs) {
             boolean hasNotFound = true;
@@ -121,9 +115,6 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
 
                     // decrease the input stack amount
                     items.stackSize -= parallel * recipeInput.stackSize;
-
-                    // add EU cost
-                    EUt += (long) recipe.mEUt * parallel;
 
                     // process output stacks
                     for (ItemStack recipeOutput : recipe.mOutputs) {
@@ -150,7 +141,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
             // Handle it specially
             if (hasNotFound) {
                 if (Objects.equals(items.getUnlocalizedName(), "gt.blockores")) {
-                    ScienceNotLeisure.LOG.info("OP system recipe has not write this material's: " + items);
+                    ScienceNotLeisure.LOG.info("OP system recipe has not write this material's: {}", items);
                     outputs.add(items.copy());
                     items.stackSize = 0;
                 } else if (moveUnprocessedItemsToOutputs) {

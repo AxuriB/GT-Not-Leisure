@@ -26,23 +26,18 @@ public class SteamRocketRender extends Render {
         this.modelSpaceship = spaceshipModel;
     }
 
-    public SteamRocketRender(IModelCustom spaceshipModel, String textureDomain, String texture) {
-        this(new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
-        this.modelSpaceshipObj = spaceshipModel;
-    }
-
     private SteamRocketRender(ResourceLocation texture) {
         this.spaceshipTexture = texture;
         this.shadowSize = 2F;
     }
 
-    protected ResourceLocation func_110779_a(Entity par1EntityArrow) {
+    protected ResourceLocation resourceLocation() {
         return this.spaceshipTexture;
     }
 
     @Override
     protected ResourceLocation getEntityTexture(Entity par1Entity) {
-        return this.func_110779_a(par1Entity);
+        return this.resourceLocation();
     }
 
     public void renderSpaceship(EntitySpaceshipBase entity, double par2, double par4, double par6, float par8,
@@ -56,14 +51,10 @@ public class SteamRocketRender extends Render {
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
         final float var28 = entity.rollAmplitude - par9;
-        float var30 = entity.shipDamage - par9;
-
-        if (var30 < 0.0F) {
-            var30 = 0.0F;
-        }
 
         if (var28 > 0.0F) {
-            final float i = entity.getLaunched() ? (5 - MathHelper.floor_double(entity.timeUntilLaunch / 85)) / 10F
+            final float i = entity.getLaunched()
+                ? (5 - MathHelper.floor_double((double) entity.timeUntilLaunch / 85)) / 10F
                 : 0.3F;
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 1.0F);

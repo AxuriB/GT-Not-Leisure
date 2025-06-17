@@ -7,11 +7,17 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
+import lombok.Getter;
+
 public class TileEntityPlayerDoll extends TileEntity {
 
+    @Getter
     public String skullOwner;
+    @Getter
     public String ownerUUID;
+    @Getter
     public String skinHttp;
+    @Getter
     public String capeHttp;
     public boolean enableElytra;
 
@@ -73,20 +79,6 @@ public class TileEntityPlayerDoll extends TileEntity {
         this.readFromNBT(nbt);
     }
 
-    public String getSkullOwner() {
-        return skullOwner;
-    }
-
-    public String getOwnerUUID() {
-        return ownerUUID;
-    }
-
-    public void clearOwner() {
-        this.skullOwner = null;
-        this.ownerUUID = null;
-        this.markDirty();
-    }
-
     public boolean hasOwner() {
         return skullOwner != null && !skullOwner.isEmpty();
     }
@@ -115,10 +107,6 @@ public class TileEntityPlayerDoll extends TileEntity {
         return skinHttp != null && !skinHttp.isEmpty();
     }
 
-    public String getSkinHttp() {
-        return skinHttp;
-    }
-
     public void setSkinHttp(String skinHttp) {
         this.skinHttp = skinHttp;
         this.markDirty();
@@ -126,10 +114,6 @@ public class TileEntityPlayerDoll extends TileEntity {
 
     public boolean hasCapeHttp() {
         return capeHttp != null && !capeHttp.isEmpty();
-    }
-
-    public String getCapeHttp() {
-        return capeHttp;
     }
 
     public void setCapeHttp(String capeHttp) {

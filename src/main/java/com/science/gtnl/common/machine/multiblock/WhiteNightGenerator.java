@@ -128,7 +128,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
     public CheckRecipeResult checkProcessing() {
         mMaxProgresstime = 6000;
         if (wirelessMode) {
-            BigInteger eu = BigInteger.valueOf((long) this.currentOutputEU)
+            BigInteger eu = BigInteger.valueOf(this.currentOutputEU)
                 .multiply(Utils.INTEGER_MAX_VALUE);
             if (!addEUToGlobalEnergyMap(ownerUUID, eu)) {
                 return CheckRecipeResultRegistry.INTERNAL_ERROR;
@@ -311,11 +311,6 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
             .addStructureInfo(StatCollector.translateToLocal("Tooltip_RealArtificialStar_02_01"))
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    protected boolean isEnablePerfectOverclock() {
-        return false;
     }
 
     @Override

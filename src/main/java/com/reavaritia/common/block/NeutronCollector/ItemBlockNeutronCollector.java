@@ -9,4 +9,28 @@ public class ItemBlockNeutronCollector extends ItemBlock {
         super(block);
     }
 
+    public static class ItemBlockDenseNeutronCollector extends ItemBlock {
+
+        public ItemBlockDenseNeutronCollector(Block block) {
+            super(block);
+        }
+
+    }
+
+    public static class ItemBlockDenserNeutronCollector extends ItemBlock {
+
+        public ItemBlockDenserNeutronCollector(Block block) {
+            super(block);
+        }
+
+    }
+
+    public static class ItemBlockDensestNeutronCollector extends ItemBlock {
+
+        public ItemBlockDensestNeutronCollector(Block block) {
+            super(block);
+        }
+
+    }
+
 }

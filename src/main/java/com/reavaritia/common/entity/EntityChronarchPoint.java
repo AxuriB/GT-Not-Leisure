@@ -127,16 +127,6 @@ public class EntityChronarchPoint extends Entity {
     }
 
     @Override
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-
-    @Override
-    public boolean canBePushed() {
-        return false;
-    }
-
-    @Override
     public boolean isEntityInvulnerable() {
         return true;
     }

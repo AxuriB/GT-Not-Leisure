@@ -2063,7 +2063,7 @@ TeleportationArrayToAlfheim_Mode_0=精灵传送门
 TeleportationArrayToAlfheim_Mode_1=自然灵阵
 TeleportationArrayToAlfheim_Mode_2=魔力灌注
 TeleportationArrayToAlfheim_Mode_3=符文祭坛
-TeleportationArrayToAlfheimRecipeType= 精灵传送门 / 自然灵阵 / 魔力灌注 / 符文祭坛
+TeleportationArrayToAlfheimRecipeType=精灵传送门 / 自然灵阵 / 魔力灌注 / 符文祭坛
 Tooltip_TeleportationArrayToAlfheim_00=传说这个法阵可以稳定传输大量的物资
 Tooltip_TeleportationArrayToAlfheim_01=需要液态魔力输入仓
 Tooltip_TeleportationArrayToAlfheim_02=每秒消耗100L液态魔力进行工作
@@ -2079,6 +2079,22 @@ Tooltip_LapotronChip_01=可以用于迅速搭建基础基地
 Tooltip_LapotronChip_Casing=任意放射硅岩合金机械方块
 
 gtnl.recipe.ExtremeExtremeEntityCrusherRecipes=极·工业屠宰场
+
+NameHighPerformanceComputationArray=高性能计算阵列
+HighPerformanceComputationArrayRecipeType=量子计算机
+Tooltip_HighPerformanceComputationArray_00=用于生成算力(以及热量)
+Tooltip_HighPerformanceComputationArray_01=使用螺丝刀切换无线模式
+
+Tooltip_LapotronChip_Casing_00=未定元解析器 X
+Tooltip_LapotronChip_Casing_01=任意电子计算机械方块(最前或最后一片)
+Tooltip_LapotronChip_Casing_02=数据接口
+Tooltip_LapotronChip_Casing_03=计算机箱
+Tooltip_LapotronChip_Casing_04=任意进阶电子计算机械方块, 除外侧
+
+HPCA_Info_00=结构长度
+HPCA_Info_01=当前最大热量
+HPCA_Info_02=生成算力
+HPCA_Info_03=当前消耗冷却剂数量
 
 NameNeutroniumWireCutting=中子丝线切割机
 NeutroniumWireCuttingRecipeType=切割机

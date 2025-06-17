@@ -60,7 +60,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
     public static Textures.BlockIcons.CustomIcon OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW);
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String SMC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_mega_compressor"; // 文件路径
+    private static final String SMC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_mega_compressor";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SMC_STRUCTURE_FILE_PATH);
     public static final int HORIZONTAL_OFF_SET = 17;
     public static final int VERTICAL_OFF_SET = 27;

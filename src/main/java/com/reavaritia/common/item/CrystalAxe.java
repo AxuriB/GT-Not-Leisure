@@ -48,21 +48,21 @@ public class CrystalAxe extends ItemAxe {
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         target.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 100, 2));
 
-        performAreaAttack(attacker, target, 10);
+        performAreaAttack(attacker, target);
 
         stack.damageItem(1, attacker);
         return true;
     }
 
-    private void performAreaAttack(EntityLivingBase attacker, EntityLivingBase target, double radius) {
+    private void performAreaAttack(EntityLivingBase attacker, EntityLivingBase target) {
         World world = attacker.worldObj;
         AxisAlignedBB area = AxisAlignedBB.getBoundingBox(
-            target.posX - radius,
-            target.posY - radius,
-            target.posZ - radius,
-            target.posX + radius,
-            target.posY + radius,
-            target.posZ + radius);
+            target.posX - (double) 10,
+            target.posY - (double) 10,
+            target.posZ - (double) 10,
+            target.posX + (double) 10,
+            target.posY + (double) 10,
+            target.posZ + (double) 10);
 
         List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, area);
         for (EntityLivingBase entity : entities) {

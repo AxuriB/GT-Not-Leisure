@@ -13,7 +13,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 
+@Getter
 public class TileEntityNBTPacket implements IMessage {
 
     private int blockId;
@@ -40,18 +42,6 @@ public class TileEntityNBTPacket implements IMessage {
         buf.writeInt(this.blockId);
         buf.writeInt(this.metadata);
         ByteBufUtils.writeTag(buf, this.nbt);
-    }
-
-    public int getBlockId() {
-        return blockId;
-    }
-
-    public int getMetadata() {
-        return metadata;
-    }
-
-    public NBTTagCompound getNbt() {
-        return nbt;
     }
 
     public static class Handler implements IMessageHandler<TileEntityNBTPacket, IMessage> {

@@ -57,7 +57,7 @@ public class LargeSteamFormingPress extends SteamMultiMachineBase<LargeSteamForm
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String LSFP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/large_steam_forming_press"; // 文件路径
+        + "multiblock/large_steam_forming_press";
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSFP_STRUCTURE_FILE_PATH);
 
     public LargeSteamFormingPress(String aName) {

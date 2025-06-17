@@ -123,8 +123,7 @@ public abstract class MetaCasingBase extends Block implements IMetaBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "unchecked" })
-    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTabs, List list) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> list) {
         Set<Integer> usedMetaSet;
         if ((usedMetaSet = getUsedMetaSet()) == null) {
             throw new NullPointerException("Null in " + this.getUnlocalizedName());

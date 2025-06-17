@@ -37,7 +37,6 @@ import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -171,89 +170,77 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
     public CheckRecipeResult checkProcessing() {
         ItemStack controllerItem = getControllerSlot();
         this.mParallelTier = getParallelTier(controllerItem);
-        boolean foundValidInput = false;
-        long outputAmount = 0;
-        final Item MatterBall = GameRegistry.findItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial");
-        ItemStack outputItem = new ItemStack(MatterBall, 1, 6);
-        List<FluidStack> outputFluids = new ArrayList<>();
+
+        final Item matterBall = GameRegistry.findItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial");
+        final ItemStack outputItem = new ItemStack(matterBall, 1, 6);
+        final int maxParallel = getMaxParallelRecipes();
 
         boolean hasCircuit1 = false;
         boolean hasCircuit2 = false;
-        int maxParallelRecipes = getMaxParallelRecipes();
 
         for (ItemStack item : getAllStoredInputs()) {
-            if (item != null) {
-                if (item.getItem() == getIntegratedCircuit(1).getItem()
-                    && item.getItemDamage() == getIntegratedCircuit(1).getItemDamage()) {
-                    if (hasCircuit2) return CheckRecipeResultRegistry.NO_RECIPE;
-                    hasCircuit1 = true;
-                }
-                if (item.getItem() == getIntegratedCircuit(2).getItem()
-                    && item.getItemDamage() == getIntegratedCircuit(2).getItemDamage()) {
-                    if (hasCircuit1) return CheckRecipeResultRegistry.NO_RECIPE;
-                    hasCircuit2 = true;
-                }
-            }
+            if (item == null) continue;
+            if (GTUtility.areStacksEqual(item, getIntegratedCircuit(1))) hasCircuit1 = true;
+            if (GTUtility.areStacksEqual(item, getIntegratedCircuit(2))) hasCircuit2 = true;
         }
 
-        if (!hasCircuit1 && !hasCircuit2) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        if (hasCircuit1 == hasCircuit2) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        boolean foundValidInput = false;
+        long totalOutput = 0;
 
         for (ItemStack item : getAllStoredInputs()) {
             if (GTUtility.isStackInvalid(item)) continue;
 
-            ItemData itemData = GTOreDictUnificator.getItemData(item);
-            if (itemData == null) continue;
+            ItemData data = GTOreDictUnificator.getItemData(item);
+            if (data == null) continue;
 
-            if (itemData.mPrefix == OrePrefixes.gem || itemData.mPrefix == OrePrefixes.ingot) {
-                long itemCount = Math.min(item.stackSize, maxParallelRecipes);
-                outputAmount += itemCount;
-                item.stackSize -= itemCount;
-                foundValidInput = true;
-            } else if (itemData.mPrefix == OrePrefixes.block) {
-                long itemCount = Math.min(item.stackSize * 9L, maxParallelRecipes * 9L);
-                outputAmount += itemCount;
-                item.stackSize -= (itemCount / 9L);
-                foundValidInput = true;
+            long count;
+            switch (data.mPrefix) {
+                case gem, ingot -> {
+                    count = Math.min(item.stackSize, maxParallel - totalOutput);
+                    item.stackSize -= (int) count;
+                    totalOutput += count;
+                    foundValidInput = true;
+                }
+                case block -> {
+                    count = Math.min(item.stackSize * 9L, (maxParallel - totalOutput) * 9L);
+                    long blocksUsed = count / 9L;
+                    item.stackSize -= (int) blocksUsed;
+                    totalOutput += count;
+                    foundValidInput = true;
+                }
             }
 
-            if (outputAmount >= maxParallelRecipes) break;
+            if (totalOutput >= maxParallel) break;
         }
 
         updateSlots();
-
-        if (!foundValidInput) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        if (!foundValidInput || totalOutput == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (hasCircuit1) {
             List<ItemStack> outputItems = new ArrayList<>();
-            while (outputAmount > 0) {
-                int stackSize = (int) (640 * Math.min(outputAmount, Integer.MAX_VALUE));
+            long remaining = totalOutput;
+            while (remaining > 0) {
+                int stackSize = (int) Math.min(remaining, Integer.MAX_VALUE);
                 outputItems.add(new ItemStack(outputItem.getItem(), stackSize, outputItem.getItemDamage()));
-                outputAmount -= stackSize;
+                remaining -= stackSize;
             }
             mOutputItems = outputItems.toArray(new ItemStack[0]);
-        } else if (hasCircuit2) {
-            long fluidAmount = outputAmount * 100000;
+        } else {
+            List<FluidStack> outputFluids = new ArrayList<>();
+            long fluidAmount = totalOutput * 100000L;
             while (fluidAmount > 0) {
-                int stackSize = (int) Math.min(fluidAmount, Integer.MAX_VALUE);
-                outputFluids.add(new FluidStack(Materials.UUAmplifier.getFluid(1000), stackSize));
-                fluidAmount -= stackSize;
+                int amount = (int) Math.min(fluidAmount, Integer.MAX_VALUE);
+                outputFluids.add(new FluidStack(Materials.UUAmplifier.getFluid(1), amount));
+                fluidAmount -= amount;
             }
             mOutputFluids = outputFluids.toArray(new FluidStack[0]);
         }
 
-        // 计算每tick消耗的EU
-        int euConsumption = (int) Math.min(outputAmount * 4, Integer.MAX_VALUE);
-
-        // 存储每tick消耗的EU，供onPostTick使用
-        this.mEUt = -euConsumption;
-
-        // 设置进度时间
-        this.mEfficiency = 10000;
+        this.mEUt = -(int) Math.min(totalOutput * 4L, Integer.MAX_VALUE);
         this.mProgresstime = 0;
+        this.mEfficiency = 10000;
         this.mMaxProgresstime = 200;
 
         return CheckRecipeResultRegistry.SUCCESSFUL;

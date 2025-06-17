@@ -1,5 +1,7 @@
 package com.lootgames.sudoku.packet;
 
+import java.util.Objects;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.lootgames.sudoku.sudoku.GameSudoku;
@@ -29,8 +31,8 @@ public class SPSSyncBoard extends NBTGamePacket {
     @Override
     public <S extends LootGame.Stage, T extends LootGame<S, T>> void runOnClient(LootGame<S, T> genericGame) {
         GameSudoku game = (GameSudoku) genericGame;
-        // 客户端读取并覆盖本地 SudokuBoard
-        NBTTagCompound boardTag = getCompound().getCompoundTag("board");
+        NBTTagCompound boardTag = Objects.requireNonNull(getCompound())
+            .getCompoundTag("board");
         game.getBoard()
             .readNBT(boardTag);
     }

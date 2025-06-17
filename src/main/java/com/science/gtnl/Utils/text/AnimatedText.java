@@ -428,8 +428,7 @@ public class AnimatedText {
             GOLD + BOLD + UNDERLINE,
             GOLD + BOLD + UNDERLINE));
 
-    public static final String AuthorHighPressureRaven = "" + EnumChatFormatting.WHITE
-        + "High"
+    public static final String AuthorHighPressureRaven = EnumChatFormatting.WHITE + "High"
         + EnumChatFormatting.GRAY
         + "Pres"
         + EnumChatFormatting.DARK_GRAY

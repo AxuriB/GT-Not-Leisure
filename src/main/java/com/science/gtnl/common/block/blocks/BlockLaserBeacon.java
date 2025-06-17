@@ -20,7 +20,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 
 public class BlockLaserBeacon extends Block implements ITileEntityProvider {
 
@@ -29,9 +28,8 @@ public class BlockLaserBeacon extends Block implements ITileEntityProvider {
 
     public BlockLaserBeacon() {
         super(Material.iron);
-        setBlockName("LaserBeacon");
+        this.setBlockName("LaserBeacon");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".name", "Laser Inducing Beacon");
         GregTechAPI.registerMachineBlock(this, -1);
         GameRegistry.registerBlock(this, ItemBlockLaserBeacon.class, getUnlocalizedName());
         GTNLItemList.LaserBeacon.set(new ItemStack(this, 1));

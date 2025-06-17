@@ -88,8 +88,7 @@ public class PlayerDollWailaDataProvider implements IWailaDataProvider {
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
         int y, int z) {
-        if (te instanceof TileEntityPlayerDoll) {
-            TileEntityPlayerDoll playerDoll = (TileEntityPlayerDoll) te;
+        if (te instanceof TileEntityPlayerDoll playerDoll) {
 
             if (playerDoll.getSkullOwner() != null) {
                 tag.setString("SkullOwner", playerDoll.getSkullOwner());

@@ -7,10 +7,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.lootgames.sudoku.Utils.CodecUtils;
 import com.lootgames.sudoku.Utils.RandHelper;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
 
 public class SudokuBoard {
 
+    @Getter
+    @Setter
     private long lastClickTime = -1;
     public static long currentTime = 0;
     public static final int SIZE = 9;
@@ -146,21 +150,9 @@ public class SudokuBoard {
         player[r][c] = (player[r][c] + 1) % 10;
     }
 
-    public void setLastClickTime(long time) {
-        lastClickTime = time;
-    }
-
-    public long getLastClickTime() {
-        return lastClickTime;
-    }
-
-    public void updateCurrentTime(long time) {
-        this.currentTime = time;
-    }
-
     public boolean checkWin() {
         for (int i = 0; i < SIZE; i++) for (int j = 0; j < SIZE; j++) {
-            if (player[i][j] == 0 || player[i][j] != solution[i][j]) return false;
+            if (player[i][j] == 0 || player[i][j].equals(solution[i][j])) return false;
         }
         return true;
     }

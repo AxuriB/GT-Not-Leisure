@@ -44,8 +44,6 @@ public class ItemAdder_Basic extends Item {
         return this;
     }
 
-    //
-    //
     @Override
     public String getUnlocalizedName(ItemStack aItemStack) {
         return this.unlocalizedName + "." + aItemStack.getItemDamage();
@@ -58,15 +56,14 @@ public class ItemAdder_Basic extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> aList) {
         aList.add(new ItemStack(aItem, 1, 0));
     }
 
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack aItemStack, EntityPlayer aEntityPlayer, List aTooltipsList,
+    public void addInformation(ItemStack aItemStack, EntityPlayer aEntityPlayer, List<String> aTooltipsList,
         boolean p_77624_4_) {
-        if (tooltips.size() > 0) {
+        if (!tooltips.isEmpty()) {
             aTooltipsList.addAll(tooltips);
         }
     }

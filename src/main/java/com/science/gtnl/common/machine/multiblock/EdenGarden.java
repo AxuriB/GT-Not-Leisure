@@ -401,8 +401,10 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
         public EIGMigrationHolder(NBTTagCompound nbt) {
             this.seed = readItemStackFromNBT(nbt.getCompoundTag("input"));
-            this.count = this.seed.stackSize;
-            this.seed.stackSize = 1;
+            if (this.seed != null) {
+                this.count = this.seed.stackSize;
+                this.seed.stackSize = 1;
+            }
             this.supportBlock = nbt.hasKey("undercrop", 10) ? readItemStackFromNBT(nbt.getCompoundTag("undercrop"))
                 : null;
             this.useNoHumidity = nbt.getBoolean("noHumidity");
@@ -693,7 +695,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                 int maxRemove = bucket.getSeedStack()
                     .getMaxStackSize();
                 ItemStack[] outputs = bucket.tryRemoveSeed(maxRemove, false);
-                if (outputs == null || outputs.length <= 0) return null;
+                if (outputs == null || outputs.length == 0) return null;
                 ItemStack ret = outputs[0];
                 for (int i = 1; i < outputs.length; i++) {
                     ItemStack suppertItem = outputs[i];

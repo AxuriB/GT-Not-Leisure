@@ -136,7 +136,8 @@ public class CommandSteamNetwork extends CommandBase {
 
                 // join other's team
 
-                if (uuidSubject.equals(uuidTeam)) {
+                if (SpaceProjectManager.getLeader(uuidSubject)
+                    .equals(SpaceProjectManager.getLeader(uuidTeam))) {
                     sender.addChatMessage(new ChatComponentText("They are already in the same network!"));
                     break;
                 }

@@ -12,7 +12,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 
+@Getter
 public class GetTileEntityNBTRequestPacket implements IMessage {
 
     private int x, y, z, blockID, blockMeta;
@@ -43,26 +45,6 @@ public class GetTileEntityNBTRequestPacket implements IMessage {
         buf.writeInt(this.z);
         buf.writeInt(this.blockID);
         buf.writeInt(this.blockMeta);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getZ() {
-        return z;
-    }
-
-    public int getBlockID() {
-        return blockID;
-    }
-
-    public int getBlockMeta() {
-        return blockMeta;
     }
 
     public static class Handler implements IMessageHandler<GetTileEntityNBTRequestPacket, IMessage> {

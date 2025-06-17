@@ -22,6 +22,7 @@ import com.gtnewhorizons.modularui.api.math.Size;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
+import lombok.Getter;
 import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon;
 import tectech.thing.metaTileEntity.multi.godforge.util.UpgradeColor;
 
@@ -282,10 +283,12 @@ public enum EternalGregTechWorkshopUpgrade {
     }
 
     // Static tree linking
+    @Getter
     private EternalGregTechWorkshopUpgrade[] prerequisites;
     private boolean requireAllPrerequisites;
 
     // Cost
+    @Getter
     private int shardCost;
     private final List<ItemStack> extraCost = new ArrayList<>();
 
@@ -293,9 +296,11 @@ public enum EternalGregTechWorkshopUpgrade {
     private UpgradeColor color;
     private MilestoneIcon icon;
     private BGWindowSize windowSize;
+    @Getter
     private Pos2d treePos;
 
     // Pre-generated data
+    @Getter
     private EternalGregTechWorkshopUpgrade[] dependents = new EternalGregTechWorkshopUpgrade[0];
     private final String name;
     private final String nameShort;
@@ -329,20 +334,8 @@ public enum EternalGregTechWorkshopUpgrade {
         extraCost.addAll(Arrays.asList(cost));
     }
 
-    public EternalGregTechWorkshopUpgrade[] getPrerequisites() {
-        return prerequisites;
-    }
-
     public boolean requiresAllPrerequisites() {
         return requireAllPrerequisites;
-    }
-
-    public EternalGregTechWorkshopUpgrade[] getDependents() {
-        return dependents;
-    }
-
-    public int getShardCost() {
-        return shardCost;
     }
 
     public boolean hasExtraCost() {
@@ -375,10 +368,6 @@ public enum EternalGregTechWorkshopUpgrade {
 
     public int getLoreYPos() {
         return windowSize.getLoreY();
-    }
-
-    public Pos2d getTreePos() {
-        return treePos;
     }
 
     public String getNameText() {
@@ -452,7 +441,7 @@ public enum EternalGregTechWorkshopUpgrade {
         }
     }
 
-    enum BGWindowSize {
+    public enum BGWindowSize {
 
         STANDARD(250, 250, 110),
         LARGE(300, 300, 85),
@@ -460,6 +449,7 @@ public enum EternalGregTechWorkshopUpgrade {
         ;
 
         private final Size size;
+        @Getter
         private final int loreY;
 
         BGWindowSize(int width, int height, int loreY) {
@@ -471,8 +461,5 @@ public enum EternalGregTechWorkshopUpgrade {
             return size;
         }
 
-        public int getLoreY() {
-            return loreY;
-        }
     }
 }

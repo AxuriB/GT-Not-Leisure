@@ -181,10 +181,6 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
         super.updateSlots();
     }
 
-    protected boolean isEnablePerfectOverclock() {
-        return false;
-    }
-
     @Override
     public int getCasingTextureID() {
         return TAE.getIndexFromPage(2, 10);

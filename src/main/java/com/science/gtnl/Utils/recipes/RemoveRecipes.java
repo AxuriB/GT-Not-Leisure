@@ -174,7 +174,7 @@ public class RemoveRecipes {
                     .append(entry.getValue())
                     .append("个");
             }
-            System.out.println(logMessage.toString());
+            System.out.println(logMessage);
         }
     }
 

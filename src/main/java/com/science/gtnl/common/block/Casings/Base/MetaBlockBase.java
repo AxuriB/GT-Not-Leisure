@@ -22,7 +22,9 @@ import com.science.gtnl.common.block.Casings.BlockStaticDataClientOnly;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lombok.Setter;
 
+@Setter
 public class MetaBlockBase extends Block {
 
     // region Constructors
@@ -60,10 +62,6 @@ public class MetaBlockBase extends Block {
     // -----------------------
     // region setters
 
-    public void setUnlocalizedName(String aUnlocalizedName) {
-        this.unlocalizedName = aUnlocalizedName;
-    }
-
     // endregion
     // -----------------------
     // region Overrides
@@ -87,7 +85,7 @@ public class MetaBlockBase extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTabs, List list) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> list) {
         for (int Meta : MetaBlockSet) {
             list.add(new ItemStack(aItem, 1, Meta));
         }

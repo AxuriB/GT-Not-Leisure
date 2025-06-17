@@ -30,9 +30,6 @@ import ic2.core.Ic2Items;
 
 public class CheatOreProcessingRecipes implements IRecipePool {
 
-    /**
-     * Ore stone types enum
-     */
     public final Set<OrePrefixes> basicStoneTypes = Sets.newHashSet(
         OrePrefixes.ore,
         OrePrefixes.rawOre,
@@ -64,11 +61,6 @@ public class CheatOreProcessingRecipes implements IRecipePool {
         processingLineMaterials
             .put(Materials.Cerium, WerkstoffMaterialPool.CeriumOreConcentrate.get(OrePrefixes.dust, 1));
     }
-
-    // public final List<Integer> insteadMaterialOresMetas = Arrays.asList(
-    // 19, 20, 28, 32, 33, 35, 57, 86, 89, 98, 347, 382, 500, 501, 514, 522, 526, 530,
-    // 535, 540, 541, 542, 543, 544, 545, 770, 810, 817, 826, 884, 894, 918, 920
-    // );
 
     public ItemStack getDustStack(Materials material, int amount) {
         if (SpecialProcessingLineMaterialInstead) {

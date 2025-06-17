@@ -934,7 +934,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
                 .setPos(3, 88)
                 .setSize(50, 14))
             .widget(
-                new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
+                new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, this::setRecipeCheck)
                     .setTextureGetter(
                         state -> expediteRecipeCheck ? GTUITextures.OVERLAY_BUTTON_CHECKMARK
                             : GTUITextures.OVERLAY_BUTTON_CROSS)

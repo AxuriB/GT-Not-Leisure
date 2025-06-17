@@ -1,11 +1,6 @@
 package com.lootgames.sudoku.sudoku;
 
-import static ru.timeconqueror.timecore.api.util.NetworkUtils.getPlayersNearby;
-
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
@@ -18,6 +13,8 @@ import com.lootgames.sudoku.packet.SPMSSpawnLevelBeatParticles;
 import com.lootgames.sudoku.packet.SPSSyncBoard;
 import com.lootgames.sudoku.packet.SPSSyncCell;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.timeconqueror.lootgames.api.minigame.BoardLootGame;
 import ru.timeconqueror.lootgames.api.minigame.ILootGameFactory;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
@@ -32,16 +29,14 @@ import ru.timeconqueror.timecore.api.common.tile.SerializationType;
 public class GameSudoku extends BoardLootGame<GameSudoku> {
 
     private int currentLevel = 1; // 难度等级 1-4
+    @Getter
     private final SudokuBoard board; // 数独棋盘对象
+    @Setter
     private ConfigSudoku.ConfigSudokuSnapshot configSnapshot = null;
     private int ticks;
 
     public GameSudoku() {
         board = new SudokuBoard();
-    }
-
-    public void setConfigSnapshot(ConfigSudoku.ConfigSudokuSnapshot configSnapshot) {
-        this.configSnapshot = configSnapshot;
     }
 
     @Override
@@ -105,7 +100,6 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
     @Override
     protected void triggerGameWin() {
         super.triggerGameWin();
-        List<EntityPlayerMP> players = getPlayersNearby(getGameCenter(), getBroadcastDistance());
         RewardUtils.spawnFourStagedReward(
             (WorldServer) getWorld(),
             this,
@@ -168,9 +162,7 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
         @Override
         protected void onClick(EntityPlayer player, Pos2i pos, MouseClickType type) {
             if (!isServerSide()) return;
-            EntityPlayerMP mp = (EntityPlayerMP) player;
             if (!board.isGenerated()) {
-                // 首次生成或重置后点击生成棋盘
                 int blanks = configSnapshot.getStageByIndex(currentLevel)
                     .getBlanksCount();
                 board.generate(blanks);
@@ -218,13 +210,5 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
         public String getID() {
             return ID;
         }
-    }
-
-    public SudokuBoard getBoard() {
-        return board;
-    }
-
-    public World getTEWorld() {
-        return getWorld();
     }
 }

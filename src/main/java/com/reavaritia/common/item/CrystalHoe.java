@@ -57,7 +57,7 @@ public class CrystalHoe extends ItemHoe {
         Block targetBlock = world.getBlock(x, y, z);
 
         if (player.isSneaking()) {
-            handleAreaEffect(world, player, stack);
+            handleAreaEffect(world, player);
             return true;
         } else {
             if (targetBlock instanceof IGrowable) {
@@ -71,12 +71,12 @@ public class CrystalHoe extends ItemHoe {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (player.isSneaking()) {
-            handleAreaEffect(world, player, stack);
+            handleAreaEffect(world, player);
         }
         return stack;
     }
 
-    private void handleAreaEffect(World world, EntityPlayer player, ItemStack stack) {
+    private void handleAreaEffect(World world, EntityPlayer player) {
         if (!world.isRemote) {
             boolean hasEffect = false;
             int range = RANGE;
@@ -99,7 +99,7 @@ public class CrystalHoe extends ItemHoe {
 
                         if (block instanceof BlockCrops) {
                             int meta = world.getBlockMetadata(x, y, z);
-                            if (isMature((BlockCrops) block, meta)) {
+                            if (isMature(meta)) {
                                 harvestCrop(world, x, y, z, player);
                                 resetCrop(world, x, y, z);
                                 hasEffect = true;
@@ -115,7 +115,7 @@ public class CrystalHoe extends ItemHoe {
         }
     }
 
-    private boolean isMature(BlockCrops crop, int meta) {
+    private boolean isMature(int meta) {
         return meta >= 7;
     }
 

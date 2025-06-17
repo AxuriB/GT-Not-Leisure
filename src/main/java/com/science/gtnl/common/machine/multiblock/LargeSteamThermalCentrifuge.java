@@ -56,7 +56,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String LSTC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/large_steam_thermal_centrifuge"; // 文件路径
+        + "multiblock/large_steam_thermal_centrifuge";
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSTC_STRUCTURE_FILE_PATH);
 
     public LargeSteamThermalCentrifuge(String aName) {

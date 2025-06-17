@@ -50,7 +50,7 @@ public class TwilightSword extends ItemSword implements playSound {
         EnumHelper.addToolMaterial("TWILIGHT_PHYSICAL", 3, 9999, 14.0F, 50.0F, 30),
         EnumHelper.addToolMaterial("TWILIGHT_VOID", 3, 9999, 14.0F, 80.0F, 30) };
 
-    private enum DamageType {
+    public enum DamageType {
         EXPLOSIVE,
         MAGIC,
         PHYSICAL,
@@ -59,7 +59,6 @@ public class TwilightSword extends ItemSword implements playSound {
 
     private final Map<UUID, Integer> cooldownMap = new HashMap<>();
     private int attackCount = 0;
-    private final Map<UUID, Long> rightClickTimes = new HashMap<>();
 
     public TwilightSword() {
         super(TWILIGHT_MATERIALS[0]);
@@ -76,7 +75,6 @@ public class TwilightSword extends ItemSword implements playSound {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-        rightClickTimes.put(player.getUniqueID(), world.getTotalWorldTime());
         return stack;
     }
 
@@ -107,16 +105,14 @@ public class TwilightSword extends ItemSword implements playSound {
                 if (rayTraceResult != null && rayTraceResult.entityHit != null) {
                     Entity hitEntity = rayTraceResult.entityHit;
 
-                    if (hitEntity instanceof EntityLivingBase) {
+                    if (hitEntity instanceof EntityLivingBase target) {
                         // 处理普通生物
-                        EntityLivingBase target = (EntityLivingBase) hitEntity;
                         target.attackEntityFrom(
                             DamageSource.causePlayerDamage(player),
                             TWILIGHT_MATERIALS[0].getDamageVsEntity());
                         hitEntity(stack, target, player);
-                    } else if (hitEntity instanceof EntityDragonPart) {
+                    } else if (hitEntity instanceof EntityDragonPart dragonPart) {
                         // 处理末影龙的部分
-                        EntityDragonPart dragonPart = (EntityDragonPart) hitEntity;
                         EntityDragon dragon = (EntityDragon) dragonPart.entityDragonObj; // 获取末影龙本体
                         dragon.attackEntityFrom(
                             DamageSource.causePlayerDamage(player),
@@ -326,26 +322,25 @@ public class TwilightSword extends ItemSword implements playSound {
         Entity entity = null;
         double closest = 9999999.0D;
         if (hitEntities) {
-            final List list = w.getEntitiesWithinAABBExcludingEntity(p, bb);
+            final List<Entity> list = w.getEntitiesWithinAABBExcludingEntity(p, bb);
 
-            for (Object o : list) {
-                final Entity entity1 = (Entity) o;
+            for (Entity o : list) {
 
-                if (!entity1.isDead && entity1 != p && !(entity1 instanceof EntityItem)) {
-                    if (entity1.isEntityAlive()) {
-                        if (entity1.riddenByEntity == p) {
+                if (!o.isDead && o != p && !(o instanceof EntityItem)) {
+                    if (o.isEntityAlive()) {
+                        if (o.riddenByEntity == p) {
                             continue;
                         }
 
                         f1 = 0.3F;
-                        final AxisAlignedBB boundingBox = entity1.boundingBox.expand(f1, f1, f1);
+                        final AxisAlignedBB boundingBox = o.boundingBox.expand(f1, f1, f1);
                         final MovingObjectPosition movingObjectPosition = boundingBox.calculateIntercept(vec3, vec31);
 
                         if (movingObjectPosition != null) {
                             final double nd = vec3.squareDistanceTo(movingObjectPosition.hitVec);
 
                             if (nd < closest) {
-                                entity = entity1;
+                                entity = o;
                                 closest = nd;
                             }
                         }

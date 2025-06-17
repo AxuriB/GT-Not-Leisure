@@ -7,18 +7,20 @@ import gregtech.api.enums.Mods;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 
-public class PlayerDollWaila {
+public final class PlayerDollWaila {
+
+    private PlayerDollWaila() {}
 
     public static void callbackRegister(IWailaRegistrar registrar) {
-        final IWailaDataProvider playerDollProvider = new PlayerDollWailaDataProvider();
+        IWailaDataProvider provider = new PlayerDollWailaDataProvider();
+        Class<TileEntityPlayerDoll> clazz = TileEntityPlayerDoll.class;
 
-        // 注册 PlayerDoll 的 WAILA 提供器
-        registrar.registerBodyProvider(playerDollProvider, TileEntityPlayerDoll.class);
-        registrar.registerNBTProvider(playerDollProvider, TileEntityPlayerDoll.class);
-        registrar.registerTailProvider(playerDollProvider, TileEntityPlayerDoll.class);
+        registrar.registerBodyProvider(provider, clazz);
+        registrar.registerNBTProvider(provider, clazz);
+        registrar.registerTailProvider(provider, clazz);
     }
 
     public static void init() {
-        FMLInterModComms.sendMessage(Mods.Waila.ID, "register", PlayerDollWaila.class.getName() + ".callbackRegister");
+        FMLInterModComms.sendMessage(Mods.Waila.ID, "register", PlayerDollWaila.class.getName() + "#callbackRegister");
     }
 }

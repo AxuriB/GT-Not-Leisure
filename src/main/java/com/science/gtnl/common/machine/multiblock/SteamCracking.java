@@ -54,7 +54,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String LSCr_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_cracking"; // 文件路径
+    private static final String LSCr_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_cracking";
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSCr_STRUCTURE_FILE_PATH);
 
     public SteamCracking(String aName) {

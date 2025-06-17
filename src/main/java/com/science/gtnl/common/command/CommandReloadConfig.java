@@ -32,11 +32,9 @@ public class CommandReloadConfig extends CommandBase {
             MainConfig.reloadConfig();
 
             ConfigSyncPacket msg = new ConfigSyncPacket(new MainConfig());
-            for (Object obj : MinecraftServer.getServer()
+            for (EntityPlayerMP player : MinecraftServer.getServer()
                 .getConfigurationManager().playerEntityList) {
-                if (obj instanceof EntityPlayerMP) {
-                    ScienceNotLeisure.network.sendTo(msg, (EntityPlayerMP) obj);
-                }
+                ScienceNotLeisure.network.sendTo(msg, player);
             }
 
             if (MainConfig.enableDeleteRecipe) {

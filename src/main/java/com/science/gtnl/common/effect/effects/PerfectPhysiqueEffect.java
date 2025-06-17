@@ -21,8 +21,7 @@ public class PerfectPhysiqueEffect extends EffectBase {
 
     @SubscribeEvent
     public void onLivingUpdate(LivingUpdateEvent event) {
-        if (event.entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.entity;
+        if (event.entity instanceof EntityPlayer player) {
             PotionEffect effect = player.getActivePotionEffect(this);
 
             if (effect != null) {

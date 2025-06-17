@@ -1,5 +1,7 @@
 package com.science.gtnl.common.item;
 
+import java.util.Objects;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,8 +24,8 @@ public abstract class BaubleItem extends Item implements IBauble {
             for (int i = 0; i < baubles.getSizeInventory(); i++) {
                 if (baubles.isItemValidForSlot(i, par1ItemStack)) {
                     ItemStack stackInSlot = baubles.getStackInSlot(i);
-                    if (stackInSlot == null
-                        || ((IBauble) stackInSlot.getItem()).canUnequip(stackInSlot, par3EntityPlayer)) {
+                    if (stackInSlot == null || ((IBauble) Objects.requireNonNull(stackInSlot.getItem()))
+                        .canUnequip(stackInSlot, par3EntityPlayer)) {
                         if (!par2World.isRemote) {
                             baubles.setInventorySlotContents(i, par1ItemStack.copy());
                             if (!par3EntityPlayer.capabilities.isCreativeMode) par3EntityPlayer.inventory

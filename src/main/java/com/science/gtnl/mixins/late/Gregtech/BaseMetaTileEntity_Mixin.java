@@ -11,6 +11,7 @@ import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.api.ITileEntityTickAcceleration;
 import com.science.gtnl.api.mixinHelper.IAccelerationState;
 import com.science.gtnl.common.machine.multiblock.MeteorMiner;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray;
 import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.relauncher.Side;
@@ -121,6 +122,16 @@ public abstract class BaseMetaTileEntity_Mixin extends CommonBaseMetaTileEntity 
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         if (mMetaTileEntity instanceof MeteorMiner && MainConfig.enableDebugMode) {
+            return AxisAlignedBB.getBoundingBox(
+                this.xCoord - 256,
+                this.yCoord - 256,
+                this.zCoord - 256,
+                this.xCoord + 256,
+                this.yCoord + 256,
+                this.zCoord + 256);
+        }
+
+        if (mMetaTileEntity instanceof HighPerformanceComputationArray) {
             return AxisAlignedBB.getBoundingBox(
                 this.xCoord - 256,
                 this.yCoord - 256,

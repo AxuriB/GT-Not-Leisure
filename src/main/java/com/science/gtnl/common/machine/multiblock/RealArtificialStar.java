@@ -559,11 +559,6 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
     }
 
     @Override
-    protected boolean isEnablePerfectOverclock() {
-        return false;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return 1;
     }

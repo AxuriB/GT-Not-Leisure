@@ -251,27 +251,15 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
                 }
 
                 if (recipeReq >= 1 && recipeReq <= 6) {
-                    ItemStack requiredDrone = null;
-                    switch (recipeReq) {
-                        case 1:
-                            requiredDrone = MiningDroneMkVIII;
-                            break;
-                        case 2:
-                            requiredDrone = MiningDroneMkIX;
-                            break;
-                        case 3:
-                            requiredDrone = MiningDroneMkX;
-                            break;
-                        case 4:
-                            requiredDrone = MiningDroneMkXI;
-                            break;
-                        case 5:
-                            requiredDrone = MiningDroneMkXII;
-                            break;
-                        case 6:
-                            requiredDrone = MiningDroneMkXIII;
-                            break;
-                    }
+                    ItemStack requiredDrone = switch (recipeReq) {
+                        case 1 -> MiningDroneMkVIII;
+                        case 2 -> MiningDroneMkIX;
+                        case 3 -> MiningDroneMkX;
+                        case 4 -> MiningDroneMkXI;
+                        case 5 -> MiningDroneMkXII;
+                        case 6 -> MiningDroneMkXIII;
+                        default -> null;
+                    };
 
                     if (areItemStacksEqual(requiredDrone, miningDrone)) {
                         lastRecipe = recipe;

@@ -2080,6 +2080,22 @@ Tooltip_LapotronChip_Casing=Any Radiant Naquadah Alloy Machine Block
 
 gtnl.recipe.ExtremeExtremeEntityCrusherRecipes=Extreme Extreme Entity Crusher
 
+NameHighPerformanceComputationArray=High Performance Computation Array
+HighPerformanceComputationArrayRecipeType=Quantum Computer
+Tooltip_HighPerformanceComputationArray_00=Used to generate computation (and heat)
+Tooltip_HighPerformanceComputationArray_01=Use screwdriver to toggle wireless mode
+
+Tooltip_LapotronChip_Casing_00=Uncertainty Resolver X
+Tooltip_LapotronChip_Casing_01=Any Computer Casing on the first or last slice
+Tooltip_LapotronChip_Casing_02=Data Connector
+Tooltip_LapotronChip_Casing_03=Computer Rack
+Tooltip_LapotronChip_Casing_04=Any Advanced Computer Casing, except the outer ones
+
+HPCA_Info_00=Structure Lens
+HPCA_Info_01=Current max. heat
+HPCA_Info_02=Produced computation
+HPCA_Info_03=Current coolant consumption amount
+
 NameNeutroniumWireCutting=Neutronium Wire Cutter
 NeutroniumWireCuttingRecipeType=Cutter
 Tooltip_NeutroniumWireCutting_00=Each glass tier provides an additional 5% speed and power reduction (multiplicative).

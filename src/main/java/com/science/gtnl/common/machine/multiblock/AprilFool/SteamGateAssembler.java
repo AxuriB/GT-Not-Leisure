@@ -44,7 +44,7 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_STEAM_GATE_ASSEMBLER = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_FRONT_STEAM_GATE_ASSEMBLER);
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String SGA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_gate_assembler"; // 文件路径
+    private static final String SGA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_gate_assembler";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SGA_STRUCTURE_FILE_PATH);
     public static final int HORIZONTAL_OFF_SET = 10;
     public static final int VERTICAL_OFF_SET = 11;
@@ -82,11 +82,6 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
     @Override
     public int getTierRecipes() {
         return 14;
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override

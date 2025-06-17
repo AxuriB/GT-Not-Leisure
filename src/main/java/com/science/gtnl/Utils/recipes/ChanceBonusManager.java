@@ -106,7 +106,7 @@ public class ChanceBonusManager {
 
                     return getTierChanceBonus(Math.min(16, machineTier), baseTier, bonusPerTier);
                 } catch (Exception e) {
-                    ScienceNotLeisure.LOG.warn("Error reading MTEMultiBlockBase voltage tier:" + mte, e);
+                    ScienceNotLeisure.LOG.warn("Error reading MTEMultiBlockBase voltage tier:{}", mte, e);
                 }
             }
             return null;

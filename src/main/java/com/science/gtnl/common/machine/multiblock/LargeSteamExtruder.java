@@ -58,7 +58,7 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String LSE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_extruder"; // 文件路径
+    private static final String LSE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_extruder";
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSE_STRUCTURE_FILE_PATH);
 
     public LargeSteamExtruder(String aName) {

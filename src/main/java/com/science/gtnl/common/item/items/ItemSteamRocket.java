@@ -118,10 +118,6 @@ public class ItemSteamRocket extends Item implements IHoldableItem {
 
         if (!par2EntityPlayer.capabilities.isCreativeMode) {
             par1ItemStack.stackSize--;
-
-            if (par1ItemStack.stackSize <= 0) {
-                par1ItemStack = null;
-            }
         }
 
         if (spaceship.rocketType.getPreFueled()) {

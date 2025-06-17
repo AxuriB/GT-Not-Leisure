@@ -25,7 +25,7 @@ public class SteamAmountSpecialValue extends RecipeMetadataKey<Long> {
 
     @Override
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
-        long offer = cast(value, 0l);
+        long offer = cast(value, 0L);
         recipeInfo
             .drawText(texter("Offer Value: ", "NEI.CactusWonderFakeRecipes.specialValue") + numberFormat.format(offer));
     }

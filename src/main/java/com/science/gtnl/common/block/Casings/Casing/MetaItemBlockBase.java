@@ -38,8 +38,7 @@ public abstract class MetaItemBlockBase extends ItemBlock {
 
     @SideOnly(Side.CLIENT)
     @Override
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List theTooltipsList,
+    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List<String> theTooltipsList,
         boolean p_77624_4_) {
         if (null == aItemStack) return;
         String[] tooltips = getTooltips(aItemStack.getItemDamage());

@@ -77,6 +77,8 @@ import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 import kubatech.loaders.BlockLoader;
+import lombok.Getter;
+import lombok.Setter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
@@ -95,6 +97,8 @@ public class SuperSpaceElevator extends TTMultiblockBase
     /** TE of the cable */
     protected TileEntitySpaceElevatorCable elevatorCable;
     /** Motor tier of the Space Elevator */
+    @Getter
+    @Setter
     protected int motorTier = 0;
     /** Flag if the chunks of the machine are loaded by it */
     private boolean isLoadedChunk;
@@ -312,7 +316,7 @@ public class SuperSpaceElevator extends TTMultiblockBase
 
         int tMotorTier = Math.min(stackSize.stackSize, 6);
 
-        int built = 0;
+        int built;
 
         built = this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
@@ -421,14 +425,6 @@ public class SuperSpaceElevator extends TTMultiblockBase
         }
 
         return false;
-    }
-
-    public void setMotorTier(int tier) {
-        motorTier = tier;
-    }
-
-    public int getMotorTier() {
-        return motorTier;
     }
 
     @Override

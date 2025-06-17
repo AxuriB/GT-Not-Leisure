@@ -1,6 +1,6 @@
 package com.reavaritia.common.block.ExtremeAnvil;
 
-import static com.reavaritia.common.block.ReAvaBasicBlocks.ExtremeAnvil;
+import static com.reavaritia.common.block.BlockRegister.ExtremeAnvil;
 
 import java.util.ArrayList;
 import java.util.List;

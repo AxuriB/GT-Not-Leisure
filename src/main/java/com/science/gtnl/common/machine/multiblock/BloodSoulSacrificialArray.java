@@ -70,7 +70,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String BSSA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/blood_soul_sacrificial_array"; // 文件路径
+        + "multiblock/blood_soul_sacrificial_array";
     public final int HORIZONTAL_OFF_SET = 16;
     public final int VERTICAL_OFF_SET = 10;
     public final int DEPTH_OFF_SET = 9;
@@ -278,19 +278,15 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public boolean onRunningTick(ItemStack stack) {
-        boolean spawnMeteor = false;
 
         if ((this.mProgresstime + 1) % 20 == 0 && this.mProgresstime > 0
-            && this.getRecipeMap() == RecipePool.FallingTowerRecipes) {
-            if (mProgresstime < 20 && enableRender) {
-                spawnMeteor = true;
-            }
+            && this.getRecipeMap() == RecipePool.FallingTowerRecipes
+            && enableRender) {
 
-            if (this.mMaxProgresstime - this.mProgresstime < 250 && spawnMeteor) {
+            if (this.mMaxProgresstime - this.mProgresstime < 250) {
                 IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
                 World world = aBaseMetaTileEntity.getWorld();
                 int baseX = aBaseMetaTileEntity.getXCoord();
-                int baseY = aBaseMetaTileEntity.getYCoord();
                 int baseZ = aBaseMetaTileEntity.getZCoord();
 
                 ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
@@ -308,7 +304,6 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
                     meteor.motionY = -1.0f;
 
                     world.spawnEntityInWorld(meteor);
-                    spawnMeteor = false;
                 }
             }
         }

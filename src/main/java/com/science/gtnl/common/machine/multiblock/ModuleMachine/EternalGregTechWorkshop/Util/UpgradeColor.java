@@ -2,8 +2,10 @@ package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTech
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
+import lombok.Getter;
 import tectech.thing.gui.TecTechUITextures;
 
+@Getter
 public enum UpgradeColor {
 
     // spotless:off
@@ -54,19 +56,4 @@ public enum UpgradeColor {
         this.connector = connector;
     }
 
-    public UITexture getBackground() {
-        return background;
-    }
-
-    public UITexture getOverlay() {
-        return overlay;
-    }
-
-    public UITexture getOpaqueConnector() {
-        return opaqueConnector;
-    }
-
-    public UITexture getConnector() {
-        return connector;
-    }
 }

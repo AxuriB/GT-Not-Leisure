@@ -61,7 +61,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
     public static final int VERTICAL_OFF_SET = 6;
     public static final int DEPTH_OFF_SET = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String LSF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_furnace"; // 文件路径
+    private static final String LSF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_furnace";
     private static final String[][] shape = StructureUtils.readStructureFromFile(LSF_STRUCTURE_FILE_PATH);
 
     @Override

@@ -143,7 +143,7 @@ public class InfinityPickaxe extends ItemPickaxe implements SubtitleDisplay {
         if (isHammerMode) {
             MovingObjectPosition raycast = ToolHelper.raytraceFromEntity(player.worldObj, player, true, 10);
             if (raycast != null) {
-                breakOtherBlock(player, stack, x, y, z, x, y, z, raycast.sideHit);
+                breakOtherBlock(player, stack, x, y, z, raycast.sideHit);
             }
         }
         return false;
@@ -157,8 +157,7 @@ public class InfinityPickaxe extends ItemPickaxe implements SubtitleDisplay {
         Minecraft.getMinecraft().ingameGUI.func_110326_a(component.getFormattedText(), true);
     }
 
-    private void breakOtherBlock(EntityPlayer player, ItemStack stack, int x, int y, int z, int originX, int originY,
-        int originZ, int side) {
+    private void breakOtherBlock(EntityPlayer player, ItemStack stack, int x, int y, int z, int side) {
         World world = player.worldObj;
         Material mat = world.getBlock(x, y, z)
             .getMaterial();

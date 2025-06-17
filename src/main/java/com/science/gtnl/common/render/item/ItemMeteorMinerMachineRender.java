@@ -1,7 +1,6 @@
 package com.science.gtnl.common.render.item;
 
 import static com.science.gtnl.Utils.enums.GTNLMachineID.METEOR_MINER;
-import static java.lang.Math.pow;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -82,7 +81,7 @@ public class ItemMeteorMinerMachineRender implements IItemRenderer {
         float scale = 0.01f;
 
         // Put each subsequent layer further out.
-        scale *= pow(1.04f, layer);
+        scale *= Math.pow(1.04f, layer);
 
         // Scale the star up in the x, y and z directions.
         GL11.glScalef(scale, scale, scale);

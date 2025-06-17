@@ -18,7 +18,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -26,7 +25,9 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import lombok.Getter;
 
+@Getter
 public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLogo {
 
     public static final String TEXTURE_OVERLAY_PARALLEL_CONTROLLER = RESOURCE_ROOT_ID + ":"
@@ -96,11 +97,6 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }
@@ -157,21 +153,13 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
         return 2 * mTier;
     }
 
-    public int getMaxParallel() {
-        return maxParallel;
-    }
-
-    public int getParallel() {
-        return parallel;
-    }
-
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
 
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

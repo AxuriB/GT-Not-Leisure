@@ -1,14 +1,12 @@
 package com.science.gtnl.common.item;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class TimeStopManager {
 
+    @Getter
+    @Setter
     public static boolean timeStopped = false;
 
-    public static boolean isTimeStopped() {
-        return timeStopped;
-    }
-
-    public static void setTimeStopped(boolean stopped) {
-        timeStopped = stopped;
-    }
 }

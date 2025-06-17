@@ -37,7 +37,7 @@ public class RadioactiveItem extends Item {
 
     @Override
     public Item setTextureName(String textureName) {
-        this.iconString = RESOURCE_ROOT_ID + ":" + "" + textureName;
+        this.iconString = RESOURCE_ROOT_ID + ":" + textureName;
         return this;
     }
 

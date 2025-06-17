@@ -219,7 +219,7 @@ public class SubscribeEventUtils {
     public void onWorldLoad(WorldEvent.Load event) {
         World world = event.world;
         offlineMode = false;
-        BLACKLISTED_UUIDS.clear();;
+        BLACKLISTED_UUIDS.clear();
         BLACKLISTED_NAMES.clear();
         BLACKLISTED_SKIN_URLS.clear();
         BLACKLISTED_CAPE_URLS.clear();

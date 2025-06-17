@@ -441,11 +441,6 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
     public int getTierRecipes() {
         return 1;
     }

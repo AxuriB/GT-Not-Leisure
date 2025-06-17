@@ -1,5 +1,7 @@
 package com.reavaritia.common.item;
 
+import java.util.Objects;
+
 import net.minecraft.item.ItemStack;
 
 public class ItemStackWrapper {
@@ -12,20 +14,17 @@ public class ItemStackWrapper {
 
     @Override
     public boolean equals(Object otherobj) {
-        if (otherobj instanceof ItemStackWrapper) {
-            ItemStackWrapper other = (ItemStackWrapper) otherobj;
+        if (otherobj instanceof ItemStackWrapper other) {
 
-            if (this.stack.getItem()
-                .equals(other.stack.getItem()) && this.stack.getItemDamage() == other.stack.getItemDamage()) {
+            if (Objects.equals(this.stack.getItem(), other.stack.getItem())
+                && this.stack.getItemDamage() == other.stack.getItemDamage()) {
 
                 if (this.stack.stackTagCompound == null && other.stack.stackTagCompound == null) {
                     return true;
                 } else {
                     if (this.stack.stackTagCompound == null ^ other.stack.stackTagCompound == null) {
                         return false;
-                    } else if (this.stack.stackTagCompound.equals(other.stack.stackTagCompound)) {
-                        return true;
-                    }
+                    } else return this.stack.stackTagCompound.equals(other.stack.stackTagCompound);
                 }
 
             }

@@ -301,24 +301,6 @@ public class EternalGregTechWorkshopUI {
         return builder.build();
     }
 
-    private static Text inversionHeaderText(boolean inversion) {
-        return inversion
-            ? new Text(
-                EnumChatFormatting.BOLD + "§k2"
-                    + EnumChatFormatting.RESET
-                    + EnumChatFormatting.WHITE
-                    + EnumChatFormatting.BOLD
-                    + translateToLocal("gt.blockmachines.multimachine.FOG.inversion")
-                    + EnumChatFormatting.BOLD
-                    + "§k2")
-            : new Text("");
-    }
-
-    private static Text inversionInfoText(boolean inversion) {
-        return inversion ? new Text(translateToLocal("gt.blockmachines.multimachine.FOG.inversioninfotext"))
-            : new Text("");
-    }
-
     public static void reopenWindow(Widget widget, int windowId) {
         if (!widget.isClient()) {
             ModularUIContext ctx = widget.getContext();

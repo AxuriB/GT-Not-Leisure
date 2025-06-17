@@ -67,6 +67,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import lombok.Getter;
+import lombok.Setter;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -79,8 +81,14 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
     protected int maxParallel = 1;
     protected int mHeatingCapacity = 0;
     protected int tCountCasing = 0;
+    @Setter
+    @Getter
     protected long maxUseEUt = 0;
+    @Setter
+    @Getter
     protected BigInteger powerTally = BigInteger.ZERO;
+    @Getter
+    @Setter
     protected long recipeTally = 0;
     protected long EUt = 0;
     protected int currentParallel = 0;
@@ -121,14 +129,6 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
 
     public void setEUtDiscount(double discount) {
         mEUtDiscount = discount;
-    }
-
-    public long getMaxUseEUt() {
-        return maxUseEUt;
-    }
-
-    public void setMaxUseEUt(long maxUse) {
-        maxUseEUt = maxUse;
     }
 
     public void setHeat(int heat) {
@@ -506,24 +506,8 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
         return EternalGregTechWorkshopUI.createVoidExcessButton(getBaseMetaTileEntity(), this, builder);
     }
 
-    public void setPowerTally(BigInteger amount) {
-        powerTally = amount;
-    }
-
-    public BigInteger getPowerTally() {
-        return powerTally;
-    }
-
     public void addToPowerTally(BigInteger amount) {
         powerTally = powerTally.add(amount);
-    }
-
-    public void setRecipeTally(long amount) {
-        recipeTally = amount;
-    }
-
-    public long getRecipeTally() {
-        return recipeTally;
     }
 
     public void addToRecipeTally(long amount) {

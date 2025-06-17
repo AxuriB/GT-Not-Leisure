@@ -47,14 +47,6 @@ public class AssLineRecipeHook {
                 .addResearchKey(24000, 64, 50000, 4)
                 .addProcessKey(100 * SECONDS, 300000)
                 .build();
-
-            // 一个测试TT那边用的 移除 样板输入输入总成
-            // Builder.newBuilder()
-            // .addOutputItem("gregtech:gt.blockmachines", 1, 2714)
-            // .addResearchItem("gregtech:gt.blockmachines", 1, 2715)
-            // .addResearchKey(2000 * 60 * 8, 2000, 3000000, 2)
-            // .addProcessKey(30 * SECONDS, (int) TierEU.RECIPE_UIV)
-            // .build();
         }
     }
 

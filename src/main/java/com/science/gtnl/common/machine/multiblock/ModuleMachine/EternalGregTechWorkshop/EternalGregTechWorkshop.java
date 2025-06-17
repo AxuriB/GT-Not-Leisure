@@ -97,6 +97,7 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
+import lombok.Setter;
 import tectech.TecTech;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.gui.TecTechUITextures;
@@ -182,6 +183,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     private double mSpeedBoost = 1;
     private UUID ownerUUID;
     private boolean mExtraModule;
+    @Setter
     private boolean enableExtraModule;
     private boolean secretUpgrade;
     private boolean isRendererDisabled;
@@ -968,10 +970,6 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
 
     public boolean getEnableExtraModule() {
         return enableExtraModule;
-    }
-
-    public void setEnableExtraModule(boolean enable) {
-        enableExtraModule = enable;
     }
 
     @Override

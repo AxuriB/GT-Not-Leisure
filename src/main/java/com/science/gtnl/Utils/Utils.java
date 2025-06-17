@@ -112,6 +112,7 @@ public final class Utils {
         return newArray;
     }
 
+    @SafeVarargs
     public static <T> T[] mergeArrayss(/* @NotNull IntFunction<T[]> generator, */T[]... arrays) {
         IntFunction<T[]> generator = null;
         for (T[] array : arrays) {
@@ -130,6 +131,7 @@ public final class Utils {
             .toArray(generator);
     }
 
+    @SafeVarargs
     public static <T> T[] mergeArrays(T[]... arrays) {
         int totalLength = 0;
         T[] pattern = null;

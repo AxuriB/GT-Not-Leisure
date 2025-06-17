@@ -23,7 +23,7 @@ public class SPMSResetNumber implements IServerGamePacket {
         SudokuBoard board = sudokuGame.getBoard();
         for (int x = 0; x < SudokuBoard.SIZE; x++) {
             for (int y = 0; y < SudokuBoard.SIZE; y++) {
-                board.cSetPlayerValue(new Pos2i(x, y), 0); // 重置每个位置的玩家值为 0
+                board.cSetPlayerValue(new Pos2i(x, y), 0);
             }
         }
     }

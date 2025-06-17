@@ -269,10 +269,6 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
         super.updateSlots();
     }
 
-    protected boolean isEnablePerfectOverclock() {
-        return false;
-    }
-
     @Override
     public int getCasingTextureID() {
         return TAE.getIndexFromPage(2, 11);

@@ -60,7 +60,7 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
     private static final int VERTICAL_OFF_SET = 9;
     private static final int DEPTH_OFF_SET = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String ELP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/engraving_laser_plant"; // 文件路径
+    private static final String ELP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/engraving_laser_plant";
     private static final String[][] shape = StructureUtils.readStructureFromFile(ELP_STRUCTURE_FILE_PATH);
 
     public EngravingLaserPlant(String aName) {

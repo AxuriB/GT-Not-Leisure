@@ -47,8 +47,6 @@ public class SuperCraftingInputProxy extends MTEHatchInputBus implements IDualIn
     private int craftingMasterX, craftingMasterY, craftingMasterZ;
     private boolean craftingMasterSet = false;
 
-    private MTEHatchCraftingInputME master; // use getMaster() to access
-
     public SuperCraftingInputProxy(int aID, String aName, String aNameRegional) {
         super(
             aID,

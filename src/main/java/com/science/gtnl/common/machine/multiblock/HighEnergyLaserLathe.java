@@ -50,7 +50,7 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
     private static final int DEPTH_OFF_SET = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String HELL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/high_energy_laser_lathe"; // 文件路径
+        + "multiblock/high_energy_laser_lathe";
     private static final String[][] shape = StructureUtils.readStructureFromFile(HELL_STRUCTURE_FILE_PATH);
 
     public HighEnergyLaserLathe(String aName) {

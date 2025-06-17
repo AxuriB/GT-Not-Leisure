@@ -166,141 +166,96 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
         multiplier = 1;
 
         List<FluidStack> tFluids = getStoredFluids();
-        if (tFluids.isEmpty()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        if (tFluids.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
 
         int count = 0;
         for (FluidStack fs : tFluids) {
-            if (count >= 6) break;
+            if (count++ >= 6) break;
             Fluid fluid = fs.getFluid();
-            switch (fluid.getName()) {
-                case "naquadah based liquid fuel mki" -> fuelTierI = true;
-                case "naquadah based liquid fuel mkii" -> fuelTierII = true;
-                case "hydrogen" -> hydrogen = true;
-                case "plasma.oxygen" -> oxygenPlasma = true;
-                case "plasma.nitrogen" -> nitrogenPlasma = true;
-                case "oxygen" -> Oxygen = true;
-            }
-            count++;
-        }
 
-        if (!fuelTierI && !fuelTierII) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (!(oxygenPlasma ^ nitrogenPlasma ^ hydrogen)) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
-
-        if (mOutputFluids == null) {
-            mOutputFluids = new FluidStack[1];
-        }
-
-        try {
-            if (fuelTierI) {
-                if (hydrogen) {
-                    int fuelAvailable = getFluidAmount(GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(1));
-                    int hydroAvailable = getFluidAmount(Materials.Hydrogen.getGas(1));
-                    int maxFuelMulti = Math.min(fuelAvailable / 16, 4);
-                    int maxHydroMulti = Math.min(hydroAvailable / 80, 4);
-                    multiplier = Math.min(maxFuelMulti, maxHydroMulti);
-
-                    if (multiplier < 1) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-
-                    // 尝试消耗液体
-                    boolean success = drainFluid(GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(1), 16 * multiplier)
-                        && drainFluid(Materials.Hydrogen.getGas(1), 80 * multiplier);
-                    if (!success) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-
-                    // 生成耗尽燃料并直接赋值给 mOutputFluids
-                    mOutputFluids[0] = GGMaterial.naquadahBasedFuelMkIDepleted.getFluidOrGas(160 * multiplier);
-                } else if (oxygenPlasma) {
-                    int fuelAvailable = getFluidAmount(GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(1));
-                    int oxyPlasmaAvailable = getFluidAmount(Materials.Oxygen.getPlasma(1));
-                    int maxFuelMulti = Math.min(fuelAvailable / 160, 4);
-                    int maxOxyMulti = Math.min(oxyPlasmaAvailable / 40, 4);
-                    multiplier = Math.min(maxFuelMulti, maxOxyMulti);
-
-                    if (multiplier < 1) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-
-                    // 尝试消耗液体
-                    boolean success = drainFluid(GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(1), 160 * multiplier)
-                        && drainFluid(Materials.Oxygen.getPlasma(1), 40 * multiplier);
-                    if (!success) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-
-                    // 生成耗尽燃料并直接赋值给 mOutputFluids
-                    mOutputFluids[0] = GGMaterial.naquadahBasedFuelMkIDepleted.getFluidOrGas(160 * multiplier);
+            if (fluid == GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(1)
+                .getFluid()) {
+                fuelTierI = true;
+            } else if (fluid == GGMaterial.naquadahBasedFuelMkII.getFluidOrGas(1)
+                .getFluid()) {
+                    fuelTierII = true;
                 }
-            } else if (fuelTierII) {
-                if (hydrogen) {
-                    int fuelAvailable = getFluidAmount(GGMaterial.naquadahBasedFuelMkII.getFluidOrGas(1));
-                    int hydroAvailable = getFluidAmount(Materials.Hydrogen.getGas(1));
-                    int maxFuelMulti = Math.min(fuelAvailable / 16, 4);
-                    int maxHydroMulti = Math.min(hydroAvailable / 80, 4);
-                    multiplier = Math.min(maxFuelMulti, maxHydroMulti);
 
-                    if (multiplier < 1) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-
-                    boolean success = drainFluid(GGMaterial.naquadahBasedFuelMkII.getFluidOrGas(1), 16 * multiplier)
-                        && drainFluid(Materials.Hydrogen.getGas(1), 80 * multiplier);
-                    if (!success) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-
-                    mOutputFluids[0] = GGMaterial.naquadahBasedFuelMkIIDepleted.getFluidOrGas(160 * multiplier);
-                } else if (nitrogenPlasma) {
-                    int fuelAvailable = getFluidAmount(GGMaterial.naquadahBasedFuelMkII.getFluidOrGas(1));
-                    int nitroPlasmaAvailable = getFluidAmount(Materials.Nitrogen.getPlasma(1));
-                    int maxFuelMulti = Math.min(fuelAvailable / 160, 4);
-                    int maxNitroMulti = Math.min(nitroPlasmaAvailable / 40, 4);
-                    multiplier = Math.min(maxFuelMulti, maxNitroMulti);
-
-                    if (multiplier < 1) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-
-                    boolean success = drainFluid(GGMaterial.naquadahBasedFuelMkII.getFluidOrGas(1), 160 * multiplier)
-                        && drainFluid(Materials.Nitrogen.getPlasma(1), 40 * multiplier);
-                    if (!success) {
-                        return CheckRecipeResultRegistry.NO_RECIPE;
-                    }
-
-                    mOutputFluids[0] = GGMaterial.naquadahBasedFuelMkIIDepleted.getFluidOrGas(160 * multiplier);
-                }
-            }
-        } catch (Exception e) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
+            if (fluid == Materials.Hydrogen.getGas(1)
+                .getFluid()) hydrogen = true;
+            if (fluid == Materials.Oxygen.getPlasma(1)
+                .getFluid()) oxygenPlasma = true;
+            if (fluid == Materials.Nitrogen.getPlasma(1)
+                .getFluid()) nitrogenPlasma = true;
+            if (fluid == Materials.Oxygen.getGas(1)
+                .getFluid()) Oxygen = true;
         }
 
-        int baseTime = 0;
+        if (fuelTierI == fuelTierII) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        int fuelTypeCount = (hydrogen ? 1 : 0) + (oxygenPlasma ? 1 : 0) + (nitrogenPlasma ? 1 : 0);
+        if (fuelTypeCount != 1) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        FluidStack fuelFluid, byproductFluid;
+        int fuelAmount, reactantAmount, fuelUnit, reactantUnit;
+        int baseTime;
+
         if (fuelTierI) {
-            if (hydrogen) baseTime = 875;
-            else if (oxygenPlasma) baseTime = 14000;
-        } else if (fuelTierII) {
-            if (hydrogen) baseTime = 1250;
-            else if (nitrogenPlasma) baseTime = 20000;
+            fuelFluid = GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(1);
+            byproductFluid = GGMaterial.naquadahBasedFuelMkIDepleted.getFluidOrGas(160);
+            if (hydrogen) {
+                reactantAmount = getFluidAmount(Materials.Hydrogen.getGas(1));
+                fuelAmount = getFluidAmount(fuelFluid);
+                fuelUnit = 16;
+                reactantUnit = 80;
+                baseTime = 875;
+            } else if (oxygenPlasma) {
+                reactantAmount = getFluidAmount(Materials.Oxygen.getPlasma(1));
+                fuelAmount = getFluidAmount(fuelFluid);
+                fuelUnit = 160;
+                reactantUnit = 40;
+                baseTime = 14000;
+            } else return CheckRecipeResultRegistry.NO_RECIPE;
+        } else {
+            fuelFluid = GGMaterial.naquadahBasedFuelMkII.getFluidOrGas(1);
+            byproductFluid = GGMaterial.naquadahBasedFuelMkIIDepleted.getFluidOrGas(160);
+            if (hydrogen) {
+                reactantAmount = getFluidAmount(Materials.Hydrogen.getGas(1));
+                fuelAmount = getFluidAmount(fuelFluid);
+                fuelUnit = 16;
+                reactantUnit = 80;
+                baseTime = 1250;
+            } else if (nitrogenPlasma) {
+                reactantAmount = getFluidAmount(Materials.Nitrogen.getPlasma(1));
+                fuelAmount = getFluidAmount(fuelFluid);
+                fuelUnit = 160;
+                reactantUnit = 40;
+                baseTime = 20000;
+            } else return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        this.mMaxProgresstime = baseTime;
 
+        multiplier = Math.min(Math.min(fuelAmount / fuelUnit, reactantAmount / reactantUnit), 4);
+        if (multiplier < 1) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        boolean drained = drainFluid(fuelFluid, fuelUnit * multiplier)
+            && (hydrogen ? drainFluid(Materials.Hydrogen.getGas(1), reactantUnit * multiplier)
+                : oxygenPlasma ? drainFluid(Materials.Oxygen.getPlasma(1), reactantUnit * multiplier)
+                    : drainFluid(Materials.Nitrogen.getPlasma(1), reactantUnit * multiplier));
+
+        if (!drained) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        mOutputFluids = new FluidStack[] { new FluidStack(byproductFluid.getFluid(), 160 * multiplier) };
+
+        mMaxProgresstime = baseTime;
         setEUt *= multiplier;
+
         if (Oxygen) {
-            this.mMaxProgresstime /= 16;
+            mMaxProgresstime /= 16;
             setEUt *= 16;
         }
 
-        this.mEfficiency = 10000;
-        this.mProgresstime = 0;
+        mEfficiency = 10000;
+        mProgresstime = 0;
         return CheckRecipeResultRegistry.GENERATING;
     }
 

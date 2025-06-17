@@ -31,11 +31,6 @@ import fox.spiteful.avaritia.render.IHaloRenderItem;
 public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
 
     /**
-     * An Item Map for managing basic items
-     */
-    // public static Map<String, MetaItemAdder> Item01Map = new HashMap<>();
-
-    /**
      * A Set contains the meta value that has been used.
      */
     public static final Set<Integer> MetaSet = new HashSet<>();
@@ -107,16 +102,9 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
             : ItemStaticDataClientOnly.iconsMap01.get(0);
     }
 
-    /**
-     * Handle the tooltips.
-     *
-     * @param aItemStack
-     * @param theTooltipsList
-     */
     @SideOnly(Side.CLIENT)
     @Override
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List theTooltipsList,
+    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List<String> theTooltipsList,
         boolean p_77624_4_) {
         int meta = aItemStack.getItemDamage();
         if (null != MetaItemTooltipsMap.get(meta)) {
@@ -125,16 +113,9 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
         }
     }
 
-    /**
-     * Override this method to show all ItemStack of MetaItem.
-     *
-     * @param aItem
-     * @param aCreativeTabs
-     * @param aList
-     */
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> aList) {
         for (int Meta : MetaSet) {
             aList.add(new ItemStack(ItemLoader.MetaItem, 1, Meta));
         }

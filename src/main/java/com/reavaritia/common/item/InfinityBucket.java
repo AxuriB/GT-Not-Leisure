@@ -133,7 +133,7 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
         NBTTagList fluids = nbt.getTagList("Fluids", 10);
         String targetFluidName = resource.getFluid()
             .getName();
-        int filledAmount = 0;
+        int filledAmount;
 
         // 1. 检查是否已有相同类型的流体，尝试合并
         for (int i = 0; i < fluids.tagCount(); i++) {
@@ -182,7 +182,7 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
         }
 
         // 计算实际可填充量（不超过 Integer.MAX_VALUE）
-        int fillable = Math.min(resource.amount, Integer.MAX_VALUE);
+        int fillable = resource.amount;
 
         if (doFill) {
             // 创建新流体条目
@@ -263,8 +263,7 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
 
     private boolean tryCollectFluid(ItemStack stack, World world, int x, int y, int z, EntityPlayer player) {
         TileEntity te = world.getTileEntity(x, y, z);
-        if (te instanceof IFluidHandler) {
-            IFluidHandler tank = (IFluidHandler) te;
+        if (te instanceof IFluidHandler tank) {
             return handleTankWithdraw(stack, tank, world, x, y, z);
         }
 
@@ -303,7 +302,6 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
                     existingTag.setInteger("Amount", Integer.MAX_VALUE);
                     // 将剩余流体回填到世界（转换为流动方块）
                     if (added < 1000) {
-                        FluidStack remaining = new FluidStack(fluid, 1000 - added);
                         Block fluidBlock = fluid.getBlock();
                         world.setBlock(x, y, z, fluidBlock, 7, 3); // 7 表示流动方块
                     } else {
@@ -336,8 +334,7 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
         float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
             TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof IFluidHandler) {
-                IFluidHandler tank = (IFluidHandler) te;
+            if (te instanceof IFluidHandler tank) {
 
                 if (player.isSneaking()) {
                     return handleTankDeposit(stack, tank);
@@ -418,7 +415,7 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
 
         NBTTagCompound newTag = new NBTTagCompound();
         newTag.setString("FluidName", fluid.getName());
-        newTag.setInteger("Amount", Math.min(amount, Integer.MAX_VALUE));
+        newTag.setInteger("Amount", amount);
         fluids.appendTag(newTag);
 
         nbt.setInteger("Selected", fluids.tagCount() - 1);
@@ -537,7 +534,7 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List toolTip, boolean advanced) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> toolTip, boolean advanced) {
         toolTip.add(StatCollector.translateToLocal("Tooltip_InfinityBucket_00"));
 
         NBTTagCompound nbt = stack.getTagCompound();

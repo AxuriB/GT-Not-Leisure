@@ -25,7 +25,6 @@ import com.science.gtnl.Utils.item.ItemUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -35,6 +34,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.util.GTUtility;
+import lombok.Getter;
+import lombok.Setter;
 import tectech.thing.metaTileEntity.Textures;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
@@ -44,6 +45,8 @@ import tectech.util.TTUtility;
 
 public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, IAddGregtechLogo {
 
+    @Setter
+    @Getter
     public long EUT = 0, AMP = 0;
     public boolean producing = true;
     private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -72,7 +75,7 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 
@@ -125,12 +128,7 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
                     setEUVar(maxEUStore());
                 }
             } else {
-                byte Tick = (byte) (aTick % 20);
-                if (CommonValues.TRANSFER_AT == Tick) {
-                    setEUVar(0);
-                } else {
-                    setEUVar(0);
-                }
+                setEUVar(0);
             }
         }
     }
@@ -183,22 +181,6 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
     @Override
     public int maxProgresstime() {
         return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
-    }
-
-    public long getEUT() {
-        return EUT;
-    }
-
-    public void setEUT(long EUT) {
-        this.EUT = EUT;
-    }
-
-    public long getAMP() {
-        return AMP;
-    }
-
-    public void setAMP(long AMP) {
-        this.AMP = AMP;
     }
 
     private void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {

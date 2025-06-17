@@ -163,28 +163,28 @@ public class MaterialUtils {
 
         GTValues.RA.stdBuilder()
             .itemInputs(material.getIngot(1), ItemList.Shape_Extruder_Pipe_Small.get(0))
-            .itemOutputs(getPipeSmall(material, 1))
+            .itemOutputs(getPipeSmall(material))
             .duration(material.getMass() * 2 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(material.getIngot(3), ItemList.Shape_Extruder_Pipe_Medium.get(0))
-            .itemOutputs(getPipeMedium(material, 1))
+            .itemOutputs(getPipeMedium(material))
             .duration(material.getMass() * 6 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(material.getIngot(6), ItemList.Shape_Extruder_Pipe_Large.get(0))
-            .itemOutputs(getPipeLarge(material, 1))
+            .itemOutputs(getPipeLarge(material))
             .duration(material.getMass() * 12 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(material.getIngot(12), ItemList.Shape_Extruder_Pipe_Huge.get(0))
-            .itemOutputs(getPipeHuge(material, 1))
+            .itemOutputs(getPipeHuge(material))
             .duration(material.getMass() * 24 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(extruderRecipes);
@@ -201,7 +201,7 @@ public class MaterialUtils {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Small.get(0))
             .fluidInputs(material.getFluidStack(144))
-            .itemOutputs(getPipeSmall(material, 1))
+            .itemOutputs(getPipeSmall(material))
             .duration(material.getMass() * 2 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
@@ -209,7 +209,7 @@ public class MaterialUtils {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Medium.get(0))
             .fluidInputs(material.getFluidStack(432))
-            .itemOutputs(getPipeMedium(material, 1))
+            .itemOutputs(getPipeMedium(material))
             .duration(material.getMass() * 6 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
@@ -217,7 +217,7 @@ public class MaterialUtils {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Large.get(0))
             .fluidInputs(material.getFluidStack(864))
-            .itemOutputs(getPipeLarge(material, 1))
+            .itemOutputs(getPipeLarge(material))
             .duration(material.getMass() * 12 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
@@ -225,7 +225,7 @@ public class MaterialUtils {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Pipe_Huge.get(0))
             .fluidInputs(material.getFluidStack(1728))
-            .itemOutputs(getPipeHuge(material, 1))
+            .itemOutputs(getPipeHuge(material))
             .duration(material.getMass() * 24 * TICKS)
             .eut(TierEU.RECIPE_LV)
             .addTo(fluidSolidifierRecipes);
@@ -236,19 +236,19 @@ public class MaterialUtils {
         return GTOreDictUnificator.get(OrePrefixes.pipeTiny, material.tryFindGregtechMaterialEquivalent(), amount);
     }
 
-    private static ItemStack getPipeSmall(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.pipeSmall, material.tryFindGregtechMaterialEquivalent(), amount);
+    private static ItemStack getPipeSmall(Material material) {
+        return GTOreDictUnificator.get(OrePrefixes.pipeSmall, material.tryFindGregtechMaterialEquivalent(), 1);
     }
 
-    private static ItemStack getPipeMedium(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.pipeMedium, material.tryFindGregtechMaterialEquivalent(), amount);
+    private static ItemStack getPipeMedium(Material material) {
+        return GTOreDictUnificator.get(OrePrefixes.pipeMedium, material.tryFindGregtechMaterialEquivalent(), 1);
     }
 
-    private static ItemStack getPipeLarge(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.pipeLarge, material.tryFindGregtechMaterialEquivalent(), amount);
+    private static ItemStack getPipeLarge(Material material) {
+        return GTOreDictUnificator.get(OrePrefixes.pipeLarge, material.tryFindGregtechMaterialEquivalent(), 1);
     }
 
-    private static ItemStack getPipeHuge(Material material, int amount) {
-        return GTOreDictUnificator.get(OrePrefixes.pipeHuge, material.tryFindGregtechMaterialEquivalent(), amount);
+    private static ItemStack getPipeHuge(Material material) {
+        return GTOreDictUnificator.get(OrePrefixes.pipeHuge, material.tryFindGregtechMaterialEquivalent(), 1);
     }
 }

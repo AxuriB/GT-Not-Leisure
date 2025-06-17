@@ -49,7 +49,7 @@ public class ItemBlockPlayerDoll extends ItemBlock implements IItemWithModularUI
         return new PlayerDollUIFactory(buildContext).createWindow();
     }
 
-    private static class PlayerDollUIFactory {
+    public static class PlayerDollUIFactory {
 
         private final UIBuildContext buildContext;
 

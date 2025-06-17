@@ -87,10 +87,10 @@ public class GTNLEarlyCoreMod implements IFMLLoadingPlugin, IEarlyMixinLoader, I
     @SideOnly(Side.CLIENT)
     public void updateClientTickrate(float tickrate, boolean log) {
         if (!TickrateAPI.isValidTickrate(tickrate)) {
-            GTNLEarlyCoreMod.LOGGER.info("Ignoring invalid tickrate: " + tickrate);
+            GTNLEarlyCoreMod.LOGGER.info("Ignoring invalid tickrate: {}", tickrate);
             return;
         }
-        if (log) LOGGER.info("Updating client tickrate to " + tickrate);
+        if (log) LOGGER.info("Updating client tickrate to {}", tickrate);
         TICKS_PER_SECOND = tickrate;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null) return; // Oops!
@@ -114,10 +114,10 @@ public class GTNLEarlyCoreMod implements IFMLLoadingPlugin, IEarlyMixinLoader, I
 
     public void updateServerTickrate(float tickrate, boolean log) {
         if (!TickrateAPI.isValidTickrate(tickrate)) {
-            GTNLEarlyCoreMod.LOGGER.info("Ignoring invalid tickrate: " + tickrate);
+            GTNLEarlyCoreMod.LOGGER.info("Ignoring invalid tickrate: {}", tickrate);
             return;
         }
-        if (log) LOGGER.info("Updating server tickrate to " + tickrate);
+        if (log) LOGGER.info("Updating server tickrate to {}", tickrate);
         MILISECONDS_PER_TICK = (long) (1000L / tickrate);
     }
 

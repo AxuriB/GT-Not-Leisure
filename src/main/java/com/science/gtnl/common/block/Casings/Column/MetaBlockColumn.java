@@ -71,7 +71,7 @@ public class MetaBlockColumn extends Block {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int meta : MetaBlockSet) {
             list.add(new ItemStack(item, 1, meta));
         }

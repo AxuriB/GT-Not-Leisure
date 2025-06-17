@@ -18,7 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
 import com.science.gtnl.common.effect.EffectBase;
-import com.science.gtnl.common.packet.TitlePacket;
+import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
 import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -94,13 +94,8 @@ public class AweEffect extends EffectBase {
 
             if (effect != null && event.gui instanceof GuiIngameMenu) {
                 event.setCanceled(true);
-
-                TitlePacket.sendTitleToPlayer(
-                    (EntityPlayerMP) player,
-                    StatCollector.translateToLocal("Awe_Cancel_01"),
-                    200,
-                    0xFFFFFF,
-                    2);
+                ClientTitleDisplayHandler
+                    .displayTitle(StatCollector.translateToLocal("Awe_Cancel_01"), 100, 0xFFFFFF, 3, 10, 20);
             }
         }
     }

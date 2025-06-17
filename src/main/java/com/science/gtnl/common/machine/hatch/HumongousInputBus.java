@@ -71,7 +71,7 @@ public class HumongousInputBus extends MTEHatchInputBus {
             slotindex++;
             mInventory[slot] = stacks.get(sID)
                 .copy();
-            mInventory[slot].stackSize = Math.min(toSet, Integer.MAX_VALUE);
+            mInventory[slot].stackSize = toSet;
             slots.merge(sID, mInventory[slot].stackSize, (a, b) -> a - b);
         }
     }

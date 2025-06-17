@@ -211,7 +211,7 @@ public class HumongousSolidifierHatch extends MTEHatchSolidifier implements IAdd
         if (aFluid == null || aFluid.getFluid()
             .getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid)) return 0;
         if (!hasFluid(aFluid) && getFirstEmptySlot() != -1) {
-            int tFilled = Math.min(aFluid.amount, mCapacityPer);
+            int tFilled = aFluid.amount;
             if (doFill) {
                 FluidStack tFluid = aFluid.copy();
                 tFluid.amount = tFilled;

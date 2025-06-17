@@ -4,7 +4,6 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,9 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.IModelCustom;
-
-import org.lwjgl.opengl.GL11;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
@@ -98,29 +94,5 @@ public class BlockArtificialStarRender extends Block {
     @Override
     public int getRenderType() {
         return -1;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void renderAsItem(TileEntityArtificialStar tileEntityArtificialStar) {
-        if (!tileEntityArtificialStar.getModels()
-            .isEmpty()) {
-            IModelCustom model = tileEntityArtificialStar.getModels()
-                .get(0);
-            GL11.glPushMatrix();
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            Minecraft.getMinecraft()
-                .getTextureManager()
-                .bindTexture(tileEntityArtificialStar.getTexture(0));
-            GL11.glScaled(0.25, 0.25, 0.25);
-            model.renderAll();
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glDepthMask(true);
-            GL11.glEnable(GL11.GL_CULL_FACE);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glPopMatrix();
-        }
     }
 }

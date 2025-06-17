@@ -50,7 +50,7 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
     public static final int DEPTH_OFF_SET = 17;
     public int tCountCasing = 0;
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String GEE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/generation_earth_engine"; // 文件路径
+    public static final String GEE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/generation_earth_engine";
     public static String[][] shape = StructureUtils.readStructureFromFile(GEE_STRUCTURE_FILE_PATH);
 
     public GenerationEarthEngine(String aName) {
@@ -205,11 +205,6 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
     public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic().setSpeedBonus(1F)
             .setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override

@@ -261,11 +261,6 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
         return NineIndustrialMultiMachineManager.MODE_MAP[machineMode][T];
     }
 
-    @Override
-    public RecipeMap<?> getRecipeMap() {
-        return null;
-    }
-
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {

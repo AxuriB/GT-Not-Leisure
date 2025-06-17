@@ -27,19 +27,19 @@ public class SuperDataAccessHatch extends MTEHatchDataAccess implements IAddGreg
     public SuperDataAccessHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
         mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_SuperDataAccessHatch_00");
-        initializeInventory(81);
+        initializeInventory();
     }
 
     public SuperDataAccessHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        initializeInventory(81);
+        initializeInventory();
     }
 
-    private void initializeInventory(int size) {
+    private void initializeInventory() {
         try {
             Field mInventoryField = MetaTileEntity.class.getField("mInventory");
             mInventoryField.setAccessible(true);
-            mInventory = new ItemStack[size];
+            mInventory = new ItemStack[81];
             mInventoryField.set(this, mInventory);
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize mInventory", e);

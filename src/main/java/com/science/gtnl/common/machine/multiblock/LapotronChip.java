@@ -14,6 +14,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -51,7 +52,7 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
     public int tCountCasing = 0;
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String LC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/lapotron_chip"; // 文件路径
+    public static final String LC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/lapotron_chip";
     public static String[][] shape = StructureUtils.readStructureFromFile(LC_STRUCTURE_FILE_PATH);
 
     public LapotronChip(String aName) {
@@ -60,11 +61,6 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
 
     public LapotronChip(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-    }
-
-    @Override
-    protected boolean isEnablePerfectOverclock() {
-        return false;
     }
 
     @Override
@@ -122,32 +118,14 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
             .addElement('A', ofBlockAnyMeta(Blocks.iron_block))
             .addElement(
                 'B',
-                ExtraUtilities.isModLoaded()
-                    ? withChannel(
-                        "tierLapisCaelestis",
-                        ofBlocksTiered(
-                            LapotronChip::tierLapisCaelestis,
-                            ImmutableList.of(
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 0),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 1),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 2),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 3),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 4),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 5),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 6),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 7),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 8),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 9),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 10),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 11),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 12),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 13),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 14),
-                                Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 15)),
-                            -1,
-                            (t, m) -> t.tierLapisCaelestis = m,
-                            t -> t.tierLapisCaelestis))
-                    : isAir())
+                withChannel(
+                    "tierLapisCaelestis",
+                    ofBlocksTiered(
+                        LapotronChip::getLapisCaelestisTier,
+                        ExtraUtilities.isModLoaded() ? getGreenScreenVariants() : getGlass(),
+                        -1,
+                        (t, m) -> t.tierLapisCaelestis = m,
+                        t -> t.tierLapisCaelestis)))
             .addElement('C', ofBlock(sBlockCasings9, 7))
             .addElement('D', ofBlock(sBlockCasings1, 11))
             .addElement(
@@ -163,24 +141,8 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
                 withChannel(
                     "tierGlass1",
                     ofBlocksTiered(
-                        LapotronChip::tierGlass1,
-                        ImmutableList.of(
-                            Pair.of(Blocks.stained_glass, 0),
-                            Pair.of(Blocks.stained_glass, 1),
-                            Pair.of(Blocks.stained_glass, 2),
-                            Pair.of(Blocks.stained_glass, 3),
-                            Pair.of(Blocks.stained_glass, 4),
-                            Pair.of(Blocks.stained_glass, 5),
-                            Pair.of(Blocks.stained_glass, 6),
-                            Pair.of(Blocks.stained_glass, 7),
-                            Pair.of(Blocks.stained_glass, 8),
-                            Pair.of(Blocks.stained_glass, 9),
-                            Pair.of(Blocks.stained_glass, 10),
-                            Pair.of(Blocks.stained_glass, 11),
-                            Pair.of(Blocks.stained_glass, 12),
-                            Pair.of(Blocks.stained_glass, 13),
-                            Pair.of(Blocks.stained_glass, 14),
-                            Pair.of(Blocks.stained_glass, 15)),
+                        LapotronChip::getTierGlass1,
+                        getGlass(),
                         -1,
                         (t, m) -> t.tierGlass1 = m,
                         t -> t.tierGlass1)))
@@ -189,24 +151,8 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
                 withChannel(
                     "tierGlass2",
                     ofBlocksTiered(
-                        LapotronChip::tierGlass2,
-                        ImmutableList.of(
-                            Pair.of(Blocks.stained_glass, 0),
-                            Pair.of(Blocks.stained_glass, 1),
-                            Pair.of(Blocks.stained_glass, 2),
-                            Pair.of(Blocks.stained_glass, 3),
-                            Pair.of(Blocks.stained_glass, 4),
-                            Pair.of(Blocks.stained_glass, 5),
-                            Pair.of(Blocks.stained_glass, 6),
-                            Pair.of(Blocks.stained_glass, 7),
-                            Pair.of(Blocks.stained_glass, 8),
-                            Pair.of(Blocks.stained_glass, 9),
-                            Pair.of(Blocks.stained_glass, 10),
-                            Pair.of(Blocks.stained_glass, 11),
-                            Pair.of(Blocks.stained_glass, 12),
-                            Pair.of(Blocks.stained_glass, 13),
-                            Pair.of(Blocks.stained_glass, 14),
-                            Pair.of(Blocks.stained_glass, 15)),
+                        LapotronChip::getTierGlass2,
+                        getGlass(),
                         -1,
                         (t, m) -> t.tierGlass2 = m,
                         t -> t.tierGlass2)))
@@ -215,17 +161,45 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
             .build();
     }
 
-    public static int tierLapisCaelestis(Block block, int meta) {
+    public static ImmutableList<Pair<Block, Integer>> getGreenScreenVariants() {
+        ImmutableList.Builder<Pair<Block, Integer>> builder = ImmutableList.builder();
+        Block greenScreen = Block.getBlockFromName("ExtraUtilities:greenscreen");
+
+        for (int i = 0; i < 16; i++) {
+            builder.add(Pair.of(greenScreen, i));
+        }
+
+        return builder.build();
+    }
+
+    public static ImmutableList<Pair<Block, Integer>> getGlass() {
+        ImmutableList.Builder<Pair<Block, Integer>> builder = ImmutableList.builder();
+        Block greenScreen = Blocks.stained_glass;
+
+        for (int i = 0; i < 16; i++) {
+            builder.add(Pair.of(greenScreen, i));
+        }
+
+        return builder.build();
+    }
+
+    @Nullable
+    public static Integer getLapisCaelestisTier(Block block, int meta) {
+        if (block == null) return null;
         if (block == Block.getBlockFromName("ExtraUtilities:greenscreen")) return meta + 1;
         return -1;
     }
 
-    public static int tierGlass1(Block block, int meta) {
+    @Nullable
+    public static Integer getTierGlass1(Block block, int meta) {
+        if (block == null) return null;
         if (block == Blocks.stained_glass) return meta + 1;
         return -1;
     }
 
-    public static int tierGlass2(Block block, int meta) {
+    @Nullable
+    public static Integer getTierGlass2(Block block, int meta) {
+        if (block == null) return null;
         if (block == Blocks.stained_glass) return meta + 1;
         return -1;
     }

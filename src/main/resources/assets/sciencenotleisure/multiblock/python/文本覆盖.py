@@ -17,8 +17,8 @@ def replace_text_in_java_files(root_folder, old_text, new_text):
 if __name__ == "__main__":
     target_folder = "E:/Github/GT-Not-Leisure/src/main/java/com"
 
-    text_to_replace = """&& !checkHatch()"""
+    text_to_replace = """ // 文件路径"""
 
-    replacement_text = """|| !checkHatch()"""
+    replacement_text = """"""
 
     replace_text_in_java_files(target_folder, text_to_replace, replacement_text)
