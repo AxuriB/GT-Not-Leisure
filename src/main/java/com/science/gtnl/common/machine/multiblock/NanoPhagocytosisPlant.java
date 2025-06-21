@@ -509,10 +509,10 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
 
     @Override
     public void onBlockDestroyed() {
-        super.onBlockDestroyed();
         if (isRenderActive) {
             destroyRenderer();
         }
+        super.onBlockDestroyed();
     }
 
     @Override

@@ -408,7 +408,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 } catch (Throwable t) {
                     System.err.println("[GTNL] Failed to copy recipe: " + recipe);
                     t.printStackTrace();
-                    continue; // 跳过这个配方
+                    continue;
                 }
 
                 // 计算超频次数
@@ -532,7 +532,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
                     // 如果没有矿辞，直接检查原始物品
                     GTUtility.ItemId itemId = GTUtility.ItemId.createNoCopy(input);
-                    long availableOriginal = getAvailableItemCount(input, allInputs);
+                    long availableOriginal = depleteInputLong(input, 1, allInputs, true);
                     long allocated = itemAllocated.getOrDefault(itemId, 0);
                     available = Math.max(0, availableOriginal - allocated);
 
@@ -550,7 +550,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 long fluidParallel = Long.MAX_VALUE;
                 for (FluidStack fluid : requiredFluids) {
                     Fluid fluidType = fluid.getFluid();
-                    long availableOriginal = getAvailableFluidAmount(fluid, allFluids);
+                    long availableOriginal = depleteInputLong(fluid, 1, allFluids, true);
                     long allocated = fluidAllocated.getOrDefault(fluidType, 0);
                     long available = Math.max(0, availableOriginal - allocated);
                     int required = fluid.amount;
@@ -677,11 +677,11 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 int parallel = entry.getValue();
 
                 for (ItemStack input : recipe.mInputs) {
-                    consumeItems(input, (long) input.stackSize * parallel, allInputs);
+                    depleteInputLong(input, (long) input.stackSize * parallel, allInputs, false);
                 }
 
                 for (FluidStack fluid : recipe.mFluidInputs) {
-                    consumeFluids(fluid, (long) fluid.amount * parallel, allFluids);
+                    depleteInputLong(fluid, (long) fluid.amount * parallel, allFluids, false);
                 }
             }
         }
@@ -783,104 +783,82 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         return count;
     }
 
-    private long getAvailableFluidAmount(FluidStack required, ArrayList<FluidStack> allFluids) {
-        long amount = 0;
+    private long depleteInputLong(ItemStack required, long amount, ArrayList<ItemStack> allInputs, boolean simulate) {
+        if (required == null || amount <= 0 || allInputs == null) return 0;
 
-        for (FluidStack fluid : allFluids) {
-            if (fluid != null && fluid.isFluidEqual(required)) {
-                amount += fluid.amount;
+        long matchedCount = 0;
 
-            }
-        }
-
-        return amount;
-    }
-
-    // 自定义方法：消耗物品
-    private void consumeItems(ItemStack required, long amount, ArrayList<ItemStack> allInputs) {
-        long remaining = amount;
-
-        // 优先消耗完全匹配的物品
         for (ItemStack input : allInputs) {
             if (input != null) {
-                if ((required.getItemDamage() == GTRecipeBuilder.WILDCARD && input.getItem() == required.getItem())
-                    || (input.isItemEqual(required) && ItemStack.areItemStackTagsEqual(input, required))) {
-                    int available = input.stackSize;
+                boolean match = (required.getItemDamage() == GTRecipeBuilder.WILDCARD
+                    && input.getItem() == required.getItem())
+                    || (input.isItemEqual(required) && ItemStack.areItemStackTagsEqual(input, required));
 
-                    int toConsumeNow = (int) Math.min(available, Math.min(remaining, Integer.MAX_VALUE));
+                if (match) {
+                    matchedCount += input.stackSize;
 
-                    input.stackSize -= toConsumeNow;
-                    remaining -= toConsumeNow;
-
-                    if (input.stackSize <= 0) {
-                        input.stackSize = 0;
-                    }
-
-                    if (remaining <= 0) {
-                        return; // 消耗完毕，直接返回
+                    if (!simulate) {
+                        int toConsume = (int) Math.min(input.stackSize, Math.min(amount, Integer.MAX_VALUE));
+                        input.stackSize -= toConsume;
+                        if (input.stackSize < 0) input.stackSize = 0;
+                        amount -= toConsume;
+                        if (amount <= 0) return matchedCount;
                     }
                 }
             }
         }
 
-        // 如果没有完全匹配的物品，尝试消耗矿辞匹配的物品
-        if (remaining > 0) {
-            // 获取矿辞名称
-            int[] oreIDs = OreDictionary.getOreIDs(required);
-            // 遍历所有矿辞匹配的物品
-            for (int oreID : oreIDs) {
+        int[] oreIDs = OreDictionary.getOreIDs(required);
+        if (oreIDs.length > 0) {
+            outer: for (int oreID : oreIDs) {
                 String oreName = OreDictionary.getOreName(oreID);
                 List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
 
-                // 遍历所有相同矿辞的物品
                 for (ItemStack oreDictItem : oreDictItems) {
-                    // 在输入槽位中查找匹配的物品
                     for (ItemStack input : allInputs) {
                         if (input != null && OreDictionary.itemMatches(oreDictItem, input, false)) {
+                            matchedCount += input.stackSize;
 
-                            int available = input.stackSize;
-
-                            int toConsumeNow = (int) Math.min(available, Math.min(remaining, Integer.MAX_VALUE));
-
-                            input.stackSize -= toConsumeNow;
-                            remaining -= toConsumeNow;
-
-                            if (input.stackSize <= 0) {
-                                input.stackSize = 0;
+                            if (!simulate) {
+                                int toConsume = (int) Math.min(input.stackSize, Math.min(amount, Integer.MAX_VALUE));
+                                input.stackSize -= toConsume;
+                                if (input.stackSize < 0) input.stackSize = 0;
+                                amount -= toConsume;
+                                if (amount <= 0) break outer;
                             }
-
-                            if (remaining <= 0) {
-                                return; // 消耗完毕，直接返回
-                            }
-                            break; // 消耗完当前物品后，跳出内层循环，继续查找下一个矿辞匹配的物品
                         }
                     }
                 }
             }
         }
+
+        return matchedCount;
     }
 
-    // 自定义方法：消耗流体
-    private void consumeFluids(FluidStack required, long amount, ArrayList<FluidStack> allFluids) {
-        long remaining = amount;
+    private long depleteInputLong(FluidStack required, long amount, ArrayList<FluidStack> allFluids, boolean simulate) {
+        long fluidAmount = 0;
         for (FluidStack fluid : allFluids) {
             if (fluid != null && fluid.isFluidEqual(required)) {
-                int available = fluid.amount;
+                fluidAmount += fluid.amount;
+                if (!simulate) {
+                    int available = fluid.amount;
 
-                int toConsumeNow = (int) Math.min(available, Math.min(remaining, Integer.MAX_VALUE));
+                    int toConsumeNow = (int) Math.min(available, Math.min(amount, Integer.MAX_VALUE));
 
-                fluid.amount -= toConsumeNow;
-                remaining -= toConsumeNow;
+                    fluid.amount -= toConsumeNow;
+                    amount -= toConsumeNow;
 
-                if (fluid.amount <= 0) {
-                    fluid.amount = 0;
-                }
+                    if (fluid.amount <= 0) {
+                        fluid.amount = 0;
+                    }
 
-                if (remaining <= 0) {
-                    return;
+                    if (amount <= 0) {
+                        return fluidAmount;
+                    }
                 }
             }
         }
+        return fluidAmount;
     }
 
     @Override

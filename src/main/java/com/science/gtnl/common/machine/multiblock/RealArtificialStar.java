@@ -333,9 +333,24 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
     }
 
     @Override
+    public void onDisableWorking() {
+        if (isRendering) {
+            destroyRenderBlock();
+        }
+        super.onDisableWorking();
+    }
+
+    @Override
+    public void onRemoval() {
+        if (isRendering) {
+            destroyRenderBlock();
+        }
+        super.onRemoval();
+    }
+
+    @Override
     public void onBlockDestroyed() {
         if (isRendering) {
-            isRendering = false;
             destroyRenderBlock();
         }
         super.onBlockDestroyed();
