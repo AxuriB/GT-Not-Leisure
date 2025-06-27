@@ -84,6 +84,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -104,7 +105,7 @@ import tectech.thing.gui.TecTechUITextures;
 import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneFormatter;
 import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon;
 
-public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWorkshop> {
+public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWorkshop> implements INEIPreviewModifier {
 
     // 75 x 19 x 75
     public static final String STRUCTURE_PIECE_MAIN_TOP = "main_top";
@@ -572,6 +573,64 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
             createRenderer();
         }
         return tCountCasing > 1;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        this.buildPiece(STRUCTURE_PIECE_MAIN, trigger, false, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+
+        for (int i = 0; i < trigger.stackSize; i++) {
+
+            this.buildPiece(
+                STRUCTURE_PIECE_MAIN_UP,
+                trigger,
+                false,
+                HORIZONTAL_OFF_SET_UP,
+                VERTICAL_OFF_SET_UP + i * 22,
+                DEPTH_OFF_SET_UP);
+
+            this.buildPiece(
+                STRUCTURE_PIECE_MAIN_DOWN,
+                trigger,
+                false,
+                HORIZONTAL_OFF_SET_DOWN,
+                VERTICAL_OFF_SET_DOWN - i * 22,
+                DEPTH_OFF_SET_DOWN);
+
+            if (trigger.stackSize > 1) {
+                this.buildPiece(
+                    STRUCTURE_PIECE_MAIN_EXTRA,
+                    trigger,
+                    false,
+                    HORIZONTAL_OFF_SET_EXTRA,
+                    VERTICAL_OFF_SET_EXTRA_UP + i * 22,
+                    DEPTH_OFF_SET_EXTRA);
+
+                this.buildPiece(
+                    STRUCTURE_PIECE_MAIN_EXTRA,
+                    trigger,
+                    false,
+                    HORIZONTAL_OFF_SET_EXTRA,
+                    VERTICAL_OFF_SET_EXTRA_DOWN - i * 22,
+                    DEPTH_OFF_SET_EXTRA);
+            }
+        }
+
+        this.buildPiece(
+            STRUCTURE_PIECE_MAIN_TOP,
+            trigger,
+            false,
+            HORIZONTAL_OFF_SET_TOP,
+            VERTICAL_OFF_SET_TOP + (trigger.stackSize - 1) * 22,
+            DEPTH_OFF_SET_TOP);
+
+        this.buildPiece(
+            STRUCTURE_PIECE_MAIN_BOTTOM,
+            trigger,
+            false,
+            HORIZONTAL_OFF_SET_BOTTOM,
+            VERTICAL_OFF_SET_BOTTOM - (trigger.stackSize - 1) * 22,
+            DEPTH_OFF_SET_BOTTOM);
     }
 
     @Override

@@ -17,6 +17,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.dreammaster.gthandler.CustomItemList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -31,6 +33,7 @@ import com.science.gtnl.loader.RecipePool;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -39,7 +42,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implements ISurvivalConstructable {
+public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     public int multiTier = 0;
     public static final String STRUCTURE_PIECE_MAIN = "main";
@@ -178,6 +182,13 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
                         TwilightForest.isModLoaded() ? GameRegistry.findBlock(TwilightForest.ID, "tile.TFPortal")
                             : Blocks.end_portal)))
             .build();
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        if (trigger.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_MAIN, trigger, false, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        }
     }
 
     @Override

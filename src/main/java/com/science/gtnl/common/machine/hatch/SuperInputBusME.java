@@ -26,6 +26,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -43,6 +44,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.Utils.item.ItemUtils;
 
 import appeng.api.config.Actionable;
@@ -69,7 +71,6 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -80,18 +81,20 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationCircuitSupport,
+public class SuperInputBusME extends MTEHatchInputBusME implements IConfigurationCircuitSupport,
     IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ISmartInputHatch, IDataCopyable {
 
-    protected static final int SLOT_COUNT = 100;
+    protected static int SIDE_SLOT_COUNT = 100;
+    protected static int ALL_SLOT_COUNT = SIDE_SLOT_COUNT * 2 + 1 + 9 * 9;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
     protected BaseActionSource requestSource = null;
     protected @Nullable AENetworkProxy gridProxy = null;
-    protected final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
-    protected final int[] savedStackSizes = new int[SLOT_COUNT];
+    protected final ItemStack[] shadowInventory = new ItemStack[SIDE_SLOT_COUNT];
+    protected final int[] savedStackSizes = new int[SIDE_SLOT_COUNT];
     protected boolean processingRecipe = false;
     protected final boolean autoPullAvailable;
     protected boolean autoPullItemList = false;
@@ -104,22 +107,37 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
     protected boolean expediteRecipeCheck = false;
 
     public SuperInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            autoPullAvailable ? 7 : 4,
-            SLOT_COUNT * 2 + 1 + 9 * 9,
-            getDescriptionArray(autoPullAvailable));
+        super(aID, autoPullAvailable, aName, aNameRegional);
         this.autoPullAvailable = autoPullAvailable;
+        Utils.setFinalFieldRecursive(this, "mInventory", new ItemStack[ALL_SLOT_COUNT]);
+        Utils.setFinalFieldRecursive(this, "inventoryHandler", new ItemStackHandler(mInventory) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                SuperInputBusME.this.onContentsChanged(slot);
+            }
+        });
         disableSort = true;
     }
 
     public SuperInputBusME(String aName, boolean autoPullAvailable, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
-        super(aName, aTier, SLOT_COUNT * 2 + 1 + 9 * 9, aDescription, aTextures);
+        super(aName, autoPullAvailable, aTier, aDescription, aTextures);
+        Utils.setFinalFieldRecursive(this, "mInventory", new ItemStack[ALL_SLOT_COUNT]);
+        Utils.setFinalFieldRecursive(this, "inventoryHandler", new ItemStackHandler(mInventory) {
+
+            @Override
+            protected void onContentsChanged(int slot) {
+                SuperInputBusME.this.onContentsChanged(slot);
+            }
+        });
         this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return getDescriptionArray(autoPullAvailable);
     }
 
     @Override
@@ -241,7 +259,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
 
         autoPullItemList = pullItemList;
         if (!autoPullItemList) {
-            for (int i = 0; i < SLOT_COUNT; i++) {
+            for (int i = 0; i < SIDE_SLOT_COUNT; i++) {
                 mInventory[i] = null;
             }
         } else {
@@ -320,7 +338,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
 
     @Override
     public void updateSlots() {
-        for (int i = 201; i <= 281; i++) {
+        for (int i = 201; i < ALL_SLOT_COUNT; i++) {
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
                 mInventory[i] = null;
             }
@@ -402,7 +420,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
         NBTTagList stockingItems = new NBTTagList();
 
         if (!autoPullItemList) {
-            for (int index = 0; index < SLOT_COUNT; index++) {
+            for (int index = 0; index < SIDE_SLOT_COUNT; index++) {
                 stockingItems.appendTag(GTUtility.saveItem(mInventory[index]));
             }
             tag.setTag("itemsToStock", stockingItems);
@@ -412,7 +430,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
 
     @Override
     public int getCircuitSlot() {
-        return SLOT_COUNT * 2;
+        return SIDE_SLOT_COUNT * 2;
     }
 
     @Override
@@ -427,7 +445,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
 
     @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
-        return aIndex < 201 || aIndex > 281;
+        return aIndex < 201 || aIndex >= ALL_SLOT_COUNT;
     }
 
     @Override
@@ -459,9 +477,9 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
         if (aIndex < 0 || aIndex > mInventory.length) return null;
 
         // Display slots
-        if (aIndex >= SLOT_COUNT && aIndex < SLOT_COUNT * 2) return null;
+        if (aIndex >= SIDE_SLOT_COUNT && aIndex < SIDE_SLOT_COUNT * 2) return null;
 
-        if (aIndex == getCircuitSlot() || (aIndex >= 201 && aIndex <= 281)) return mInventory[aIndex];
+        if (aIndex == getCircuitSlot() || (aIndex >= 201 && aIndex < ALL_SLOT_COUNT)) return mInventory[aIndex];
 
         if (mInventory[aIndex] != null) {
 
@@ -473,7 +491,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
             if (!isAllowedToWork()) {
                 this.shadowInventory[aIndex] = null;
                 this.savedStackSizes[aIndex] = 0;
-                super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                super.setInventorySlotContents(aIndex + SIDE_SLOT_COUNT, null);
                 return null;
             }
 
@@ -489,18 +507,18 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
                 if (result != null) {
                     this.shadowInventory[aIndex] = result.getItemStack();
                     this.savedStackSizes[aIndex] = this.shadowInventory[aIndex].stackSize;
-                    this.setInventorySlotContents(aIndex + SLOT_COUNT, this.shadowInventory[aIndex]);
+                    this.setInventorySlotContents(aIndex + SIDE_SLOT_COUNT, this.shadowInventory[aIndex]);
                     return this.shadowInventory[aIndex];
                 } else {
                     // Request failed
-                    this.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                    this.setInventorySlotContents(aIndex + SIDE_SLOT_COUNT, null);
                     return null;
                 }
             } catch (final GridAccessException ignored) {}
             return null;
         } else {
             // AE available but no items requested
-            this.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+            this.setInventorySlotContents(aIndex + SIDE_SLOT_COUNT, null);
         }
         return mInventory[aIndex];
     }
@@ -512,7 +530,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
 
     @Override
     public void onExplosion() {
-        for (int i = 0; i < SLOT_COUNT; i++) {
+        for (int i = 0; i < SIDE_SLOT_COUNT; i++) {
             mInventory[i] = null;
         }
     }
@@ -532,7 +550,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
             Iterator<IAEItemStack> iterator = sg.getStorageList()
                 .iterator();
             int index = 0;
-            while (iterator.hasNext() && index < SLOT_COUNT) {
+            while (iterator.hasNext() && index < SIDE_SLOT_COUNT) {
                 IAEItemStack currItem = iterator.next();
                 if (currItem.getStackSize() >= minAutoPullStackSize) {
                     ItemStack itemstack = GTUtility.copyAmount(1, currItem.getItemStack());
@@ -546,7 +564,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
                     index++;
                 }
             }
-            for (int i = index; i < SLOT_COUNT; i++) {
+            for (int i = index; i < SIDE_SLOT_COUNT; i++) {
                 mInventory[i] = null;
             }
 
@@ -554,7 +572,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
     }
 
     protected void updateAllInformationSlots() {
-        for (int index = 0; index < SLOT_COUNT; index++) {
+        for (int index = 0; index < SIDE_SLOT_COUNT; index++) {
             updateInformationSlot(index, mInventory[index]);
         }
     }
@@ -562,7 +580,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
     @Override
     public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
-        for (int i = 0; i < SLOT_COUNT; ++i) {
+        for (int i = 0; i < SIDE_SLOT_COUNT; ++i) {
             if (savedStackSizes[i] != 0) {
                 ItemStack oldStack = shadowInventory[i];
                 if (oldStack == null || oldStack.stackSize < savedStackSizes[i]) {
@@ -576,7 +594,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
                         IAEItemStack result = sg.extractItems(request, Actionable.MODULATE, getRequestSource());
                         proxy.getEnergy()
                             .extractAEPower(request.getStackSize(), Actionable.MODULATE, PowerMultiplier.CONFIG);
-                        setInventorySlotContents(i + SLOT_COUNT, oldStack);
+                        setInventorySlotContents(i + SIDE_SLOT_COUNT, oldStack);
                         if (result == null || result.getStackSize() != toExtract) {
                             controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                             checkRecipeResult = SimpleCheckRecipeResult
@@ -590,8 +608,8 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
                 }
                 savedStackSizes[i] = 0;
                 shadowInventory[i] = null;
-                if (mInventory[i + SLOT_COUNT] != null && mInventory[i + SLOT_COUNT].stackSize <= 0) {
-                    mInventory[i + SLOT_COUNT] = null;
+                if (mInventory[i + SIDE_SLOT_COUNT] != null && mInventory[i + SIDE_SLOT_COUNT].stackSize <= 0) {
+                    mInventory[i + SIDE_SLOT_COUNT] = null;
                 }
             }
         }
@@ -603,20 +621,20 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
      * Update the right side of the GUI, which shows the amounts of items set on the left side
      */
     public ItemStack updateInformationSlot(int aIndex, ItemStack aStack) {
-        if (aIndex >= 0 && aIndex < SLOT_COUNT) {
+        if (aIndex >= 0 && aIndex < SIDE_SLOT_COUNT) {
             if (aStack == null) {
-                super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                super.setInventorySlotContents(aIndex + SIDE_SLOT_COUNT, null);
             } else {
                 AENetworkProxy proxy = getProxy();
                 if (!proxy.isActive()) {
-                    super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                    super.setInventorySlotContents(aIndex + SIDE_SLOT_COUNT, null);
                     return null;
                 }
 
                 if (!isAllowedToWork()) {
                     this.shadowInventory[aIndex] = null;
                     this.savedStackSizes[aIndex] = 0;
-                    super.setInventorySlotContents(aIndex + SLOT_COUNT, null);
+                    super.setInventorySlotContents(aIndex + SIDE_SLOT_COUNT, null);
                     return null;
                 }
 
@@ -630,12 +648,12 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
                     // We want to track changes in any ItemStack to notify any connected controllers to make a recipe
                     // check early
                     if (expediteRecipeCheck) {
-                        ItemStack previous = getStackInSlot(aIndex + SLOT_COUNT);
+                        ItemStack previous = getStackInSlot(aIndex + SIDE_SLOT_COUNT);
                         if (s != null) {
                             justHadNewItems = !ItemStack.areItemStacksEqual(s, previous);
                         }
                     }
-                    setInventorySlotContents(aIndex + SLOT_COUNT, s);
+                    setInventorySlotContents(aIndex + SIDE_SLOT_COUNT, s);
                     return s;
                 } catch (final GridAccessException ignored) {}
             }
@@ -694,7 +712,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex >= 201 && aIndex <= 281;
+        return aIndex >= 201 && aIndex < ALL_SLOT_COUNT;
     }
 
     @Override
@@ -875,7 +893,7 @@ public class SuperInputBusME extends MTEHatchInputBus implements IConfigurationC
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         SlotGroup slotGroup = SlotGroup.ofItemHandler(inventoryHandler, 9)
             .startFromSlot(201)
-            .endAtSlot(281)
+            .endAtSlot(ALL_SLOT_COUNT - 1)
             .phantom(false)
             .background(getGUITextureSet().getItemSlot())
             .build();

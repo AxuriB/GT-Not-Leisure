@@ -73,7 +73,6 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -83,10 +82,11 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
+import gregtech.common.tileentities.machines.MTEHatchInputME;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class SuperInputHatchME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
+public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
     IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable {
 
     private static final int SLOT_COUNT = 100;
@@ -121,14 +121,19 @@ public class SuperInputHatchME extends MTEHatchInput implements IPowerChannelSta
     protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public SuperInputHatchME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, 1, aName, aNameRegional, autoPullAvailable ? 10 : 9, getDescriptionArray(autoPullAvailable));
+        super(aID, autoPullAvailable, aName, aNameRegional);
         this.autoPullAvailable = autoPullAvailable;
     }
 
     public SuperInputHatchME(String aName, boolean autoPullAvailable, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
-        super(aName, 1, aTier, aDescription, aTextures);
+        super(aName, autoPullAvailable, aTier, aDescription, aTextures);
         this.autoPullAvailable = autoPullAvailable;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return getDescriptionArray(autoPullAvailable);
     }
 
     @Override

@@ -13,17 +13,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,12 +41,12 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings8;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import kubatech.loaders.BlockLoader;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
-public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEngine> implements ISurvivalConstructable {
+public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngine>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     protected GTRecipe lastRecipeToBuffer;
 
@@ -62,24 +67,14 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
     }
 
     @Override
-    public String getMachineType() {
-        return StatCollector.translateToLocal("GenerationEarthEngineRecipeType");
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GenerationEarthEngine(this.mName);
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(getMachineType())
+        tt.addMachineType(StatCollector.translateToLocal("GenerationEarthEngineRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GenerationEarthEngine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GenerationEarthEngine_01"))
             .addSeparator()
@@ -158,6 +153,18 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
     }
 
     @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d == ForgeDirection.UP;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        if (trigger.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_MAIN, trigger, false, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        }
+    }
+
+    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         this.buildPiece(
             STRUCTURE_PIECE_MAIN,
@@ -208,8 +215,8 @@ public class GenerationEarthEngine extends GTPPMultiBlockBase<GenerationEarthEng
     }
 
     @Override
-    public boolean supportsInputSeparation() {
-        return true;
+    public int getMaxParallelRecipes() {
+        return 0;
     }
 
     @Override

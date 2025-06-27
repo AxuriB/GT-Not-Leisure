@@ -14,6 +14,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -29,6 +30,7 @@ import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -39,7 +41,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings8;
 
-public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISurvivalConstructable {
+public class LapotronChip extends MultiMachineBase<LapotronChip>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     public int tierLapisCaelestis = -1;
     public int tierGlass1 = -1;
@@ -202,6 +205,13 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
         if (block == null) return null;
         if (block == Blocks.stained_glass) return meta + 1;
         return -1;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        if (trigger.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_MAIN, trigger, false, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        }
     }
 
     @Override

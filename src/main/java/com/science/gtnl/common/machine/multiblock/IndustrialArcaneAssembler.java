@@ -23,6 +23,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -35,6 +37,7 @@ import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,7 +49,7 @@ import gregtech.common.blocks.BlockCasings1;
 import tectech.thing.block.BlockQuantumGlass;
 
 public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcaneAssembler>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     protected static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(12);
     private static final int ShapedArcaneCrafting = 0;
@@ -168,6 +171,13 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
             .addElement('G', ofBlock(BlockQuantumGlass.INSTANCE, 0))
             .addElement('I', ofBlockAnyMeta(Blocks.beacon))
             .build();
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        if (trigger.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_MAIN, trigger, false, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        }
     }
 
     @Override
