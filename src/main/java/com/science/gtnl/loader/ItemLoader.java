@@ -46,8 +46,9 @@ public class ItemLoader {
     public static Item CircuitIntegratedPlus = new CircuitIntegratedPlus();
     public static Item TimeStopPocketWatch = new TimeStopPocketWatch();
     public static Item SuperReachRing = new SuperReachRing();
-    public static Item RecordSus = new ItemRecord("sus");
-    public static Item RecordNewHorizons = new ItemRecord("newhorizons");
+    public static Item RecordSus = new ItemRecord("sus", GTNLItemList.RecordSus);
+    public static Item RecordNewHorizons = new ItemRecord("newhorizons", GTNLItemList.RecordNewHorizons);
+    public static Item RecordLavaChicken = new ItemRecord("lavachicken", GTNLItemList.RecordLavaChicken);
 
     public static Item InfinityFuelRodDepleted = new FuelRodDepleted("InfinityFuelRodDepleted", 2000);
     public static Item InfinityFuelRod = new FuelRod(
@@ -70,13 +71,12 @@ public class ItemLoader {
             GameRegistry.registerItem(item, item.getUnlocalizedName());
         }
 
-        GTNLItemList.RecordSus.set(new ItemStack(RecordSus, 1));
-        GTNLItemList.RecordNewHorizons.set(new ItemStack(RecordNewHorizons, 1));
         GTNLItemList.InfinityFuelRodDepleted.set(new ItemStack(InfinityFuelRodDepleted, 1));
         GTNLItemList.InfinityFuelRod.set(new ItemStack(InfinityFuelRod, 1));
 
         IRegistry(RecordSus, "RecordSus");
         IRegistry(RecordNewHorizons, "RecordNewHorizons");
+        IRegistry(RecordLavaChicken, "RecordLavaChicken");
         IRegistry(InfinityFuelRodDepleted, "InfinityFuelRodDepleted");
         IRegistry(InfinityFuelRod, "InfinityFuelRod");
     }

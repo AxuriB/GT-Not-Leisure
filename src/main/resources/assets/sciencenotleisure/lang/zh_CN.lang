@@ -818,8 +818,9 @@ Tooltip_MatterCluster_Counter=物品
 Tooltip_MatterCluster_00=§8§o用于毁灭一切。
 Tooltip_MatterCluster_01=§8§o按下SHIFT显示详细信息。
 
-item.record.sus.desc=Software Update Services
-item.record.newhorizons.desc=Sweet Dreams (Bonus Track)
+item.record.sus.desc=AU - Software Update Services
+item.record.newhorizons.desc=Aviators - Sweet Dreams (Bonus Track)
+item.record.lavachicken.desc=Hyper Potions - Lava Chicken
 
 item.milledNaquadahEnriched.name=研磨富集硅岩矿
 item.FrothNaquadahEnrichedflotation=富集硅岩浮选泡沫单元

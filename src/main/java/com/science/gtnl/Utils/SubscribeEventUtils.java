@@ -9,9 +9,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +29,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -40,6 +45,7 @@ import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.loader.ItemLoader;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -310,6 +316,22 @@ public class SubscribeEventUtils {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onZombieDeath(LivingDeathEvent event) {
+        if (!(event.entity instanceof EntityZombie zombie)) return;
+        if (zombie.worldObj.isRemote) return;
+        if (!zombie.isChild()) return;
+        if (!(zombie.ridingEntity instanceof EntityChicken)) return;
+        EntityItem drop = new EntityItem(
+            zombie.worldObj,
+            zombie.posX,
+            zombie.posY,
+            zombie.posZ,
+            new ItemStack(ItemLoader.RecordLavaChicken));
+        drop.delayBeforeCanPickup = 10;
+        zombie.worldObj.spawnEntityInWorld(drop);
     }
 
     // Config

@@ -228,6 +228,7 @@ public enum GTNLItemList implements IItemContainer {
     RejectionRing,
     RecordSus,
     RecordNewHorizons,
+    RecordLavaChicken,
     FakeItemSiren,
     PhysicsCape,
     TimeStopPocketWatch,

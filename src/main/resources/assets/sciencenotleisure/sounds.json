@@ -43,5 +43,14 @@
         "stream": "true"
       }
     ]
+  },
+  "lavachicken": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "lavachicken",
+        "stream": "true"
+      }
+    ]
   }
 }
