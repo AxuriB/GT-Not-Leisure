@@ -57,6 +57,12 @@ public final class Utils {
             .isServer();
     }
 
+    public static boolean isClientThreaded() {
+        return FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient();
+    }
+
     // region about ItemStack
     public static boolean metaItemEqual(ItemStack a, ItemStack b) {
         if (a == null || b == null) return false;

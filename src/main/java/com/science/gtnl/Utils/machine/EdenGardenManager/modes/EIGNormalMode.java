@@ -1,12 +1,11 @@
 package com.science.gtnl.Utils.machine.EdenGardenManager.modes;
 
-import static com.science.gtnl.Utils.machine.EdenGardenManager.StringUtils.voltageTooltipFormatted;
-
 import net.minecraft.util.EnumChatFormatting;
 
 import com.science.gtnl.Utils.machine.EdenGardenManager.EIGMode;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
 
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class EIGNormalMode extends EIGMode {
@@ -24,7 +23,7 @@ public class EIGNormalMode extends EIGMode {
     }
 
     @Override
-    public int getMinVoltageTier() {
+    public byte getMinVoltageTier() {
         return EdenGarden.EIG_BALANCE_REGULAR_MODE_MIN_TIER;
     }
 
@@ -65,8 +64,8 @@ public class EIGNormalMode extends EIGMode {
 
     @Override
     public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
-        String minVoltageTier = voltageTooltipFormatted(this.getMinVoltageTier());
-        String minVoltageTierMinus1 = voltageTooltipFormatted(this.getMinVoltageTier() - 1);
+        String minVoltageTier = GTUtility.getColoredTierNameFromTier(this.getMinVoltageTier());
+        String minVoltageTierMinus1 = GTUtility.getColoredTierNameFromTier((byte) (this.getMinVoltageTier() - 1));
 
         double fertilizerBonusMultiplier = this.getFertilizerBoost() * 100;
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);

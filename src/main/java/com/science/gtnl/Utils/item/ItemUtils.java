@@ -1,6 +1,8 @@
 package com.science.gtnl.Utils.item;
 
 import static com.science.gtnl.Utils.enums.Mods.Baubles;
+import static gregtech.api.enums.Mods.AE2FluidCraft;
+import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.util.GTModHandler.getModItem;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,6 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.reavaritia.common.item.InfinityTotem;
@@ -15,6 +18,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.Mods;
 
 import baubles.api.BaublesApi;
+import gregtech.api.util.GTModHandler;
 
 public class ItemUtils {
 
@@ -79,6 +83,38 @@ public class ItemUtils {
             throw new RuntimeException(e);
         }
         return s;
+    }
+
+    public static ItemStack createSpecialFlower(String typeName) {
+        ItemStack stack = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
+        if (stack == null) return null;
+
+        NBTTagCompound tag = stack.getTagCompound();
+        if (tag == null) {
+            tag = new NBTTagCompound();
+            stack.setTagCompound(tag);
+        }
+
+        tag.setString("type", typeName);
+        return stack;
+    }
+
+    public static ItemStack createFluidPacket(FluidStack fluid, int amount) {
+        ItemStack packet = GTModHandler.getModItem(AE2FluidCraft.ID, "fluid_packet", 1);
+        if (packet != null) {
+            NBTTagCompound tag = packet.getTagCompound();
+            if (tag == null) {
+                tag = new NBTTagCompound();
+                packet.setTagCompound(tag);
+            }
+
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            fluidTag.setString("FluidName", fluid.getUnlocalizedName());
+            fluidTag.setInteger("Amount", amount);
+
+            tag.setTag("FluidStack", fluidTag);
+        }
+        return packet;
     }
 
     public static ItemStack getIntegratedCircuitPlus(int config) {

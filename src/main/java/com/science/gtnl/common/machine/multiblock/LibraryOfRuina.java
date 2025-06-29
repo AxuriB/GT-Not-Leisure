@@ -19,7 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.dreammaster.gthandler.CustomItemList;
+import com.dreammaster.item.NHItemList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -243,7 +243,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
 
     public int getMultiTier(ItemStack inventory) {
         if (inventory == null) return 0;
-        return inventory.isItemEqual(CustomItemList.TwilightCrystal.get(1)) ? 1 : 0;
+        return inventory.isItemEqual(NHItemList.TwilightCrystal.getIS(1)) ? 1 : 0;
     }
 
     public void replaceWaterWithPortal() {

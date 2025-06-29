@@ -58,7 +58,7 @@ public class ClientProxy extends CommonProxy {
             Item.getItemFromBlock(BlockLoader.BlockArtificialStarRender),
             new ItemBlockArtificialStarRender());
 
-        MinecraftForgeClient.registerItemRenderer(ItemLoader.TwilightSword, new ItemTwilightSwordRender());
+        MinecraftForgeClient.registerItemRenderer(ItemLoader.twilightSword, new ItemTwilightSwordRender());
 
         MinecraftForgeClient.registerItemRenderer(
             Item.getItemFromBlock(BlockLoader.BlockNanoPhagocytosisPlantRender),
@@ -73,8 +73,8 @@ public class ClientProxy extends CommonProxy {
             TileEntityEternalGregTechWorkshop.class,
             new RenderEternalGregTechWorkshop());
 
-        MinecraftForgeClient.registerItemRenderer(ItemLoader.TestItem, new FancyHaloRenderer());
-        MinecraftForgeClient.registerItemRenderer(ItemLoader.MetaItem, new FancyHaloRenderer());
+        MinecraftForgeClient.registerItemRenderer(ItemLoader.testItem, new FancyHaloRenderer());
+        MinecraftForgeClient.registerItemRenderer(ItemLoader.metaItem, new FancyHaloRenderer());
 
         if (MainConfig.enableDebugMode) {
             MinecraftForgeClient.registerItemRenderer(
@@ -83,7 +83,7 @@ public class ClientProxy extends CommonProxy {
         }
 
         MinecraftForgeClient.registerItemRenderer(
-            ItemLoader.SteamRocket,
+            ItemLoader.steamRocket,
             new ItemSteamRocketRenderer(
                 new EntitySteamRocket(ClientProxyCore.mc.theWorld),
                 new ModelRocketTier1(),

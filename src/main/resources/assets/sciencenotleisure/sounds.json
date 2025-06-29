@@ -35,20 +35,20 @@
       }
     ]
   },
-  "newhorizons": {
+  "new_horizons": {
     "category": "record",
     "sounds": [
       {
-        "name": "newhorizons",
+        "name": "new_horizons",
         "stream": "true"
       }
     ]
   },
-  "lavachicken": {
+  "lava_chicken": {
     "category": "record",
     "sounds": [
       {
-        "name": "lavachicken",
+        "name": "lava_chicken",
         "stream": "true"
       }
     ]

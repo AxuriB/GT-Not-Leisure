@@ -2,6 +2,7 @@ package com.science.gtnl.Utils.machine.EdenGardenManager;
 
 import static com.science.gtnl.Utils.item.ItemUtils.readItemStackFromNBT;
 import static com.science.gtnl.Utils.item.ItemUtils.writeItemStackToNBT;
+import static gregtech.api.enums.Mods.ThaumicBases;
 
 import java.util.LinkedList;
 
@@ -10,13 +11,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGFlowerBucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGIC2Bucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGRainbowCactusBucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGSeedBucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGStemBucket;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
 
 import gregtech.api.util.GTUtility;
+import lombok.Getter;
 
 public abstract class EIGBucket {
 
     protected ItemStack seed;
+    @Getter
     protected int seedCount;
     protected ItemStack[] supportItems;
 
@@ -45,6 +53,19 @@ public abstract class EIGBucket {
         } else {
             supportItems = null;
         }
+    }
+
+    public static void LoadEIGBuckets() {
+        // IC2 buckets
+        EIGModes.IC2.addLowPriorityFactory(EIGIC2Bucket.factory);
+
+        // Regular Mode Buckets
+        if (ThaumicBases.isModLoaded()) {
+            EIGModes.Normal.addLowPriorityFactory(EIGRainbowCactusBucket.factory);
+        }
+        EIGModes.Normal.addLowPriorityFactory(EIGFlowerBucket.factory);
+        EIGModes.Normal.addLowPriorityFactory(EIGStemBucket.factory);
+        EIGModes.Normal.addLowPriorityFactory(EIGSeedBucket.factory);
     }
 
     /**
@@ -78,10 +99,6 @@ public abstract class EIGBucket {
         return copied;
     }
 
-    public int getSeedCount() {
-        return this.seedCount;
-    }
-
     public String getDisplayName() {
         return this.seed.getDisplayName();
     }
@@ -110,7 +127,7 @@ public abstract class EIGBucket {
         if (!GTUtility.areStacksEqual(this.seed, input, false)) return 0;
 
         // no support items, consume and exit early.
-        if (this.supportItems == null || this.supportItems.length <= 0) {
+        if (this.supportItems == null || this.supportItems.length == 0) {
             if (!simulate) {
                 input.stackSize -= maxConsume;
                 this.seedCount += maxConsume;
@@ -168,26 +185,6 @@ public abstract class EIGBucket {
         if (!simulate) {
             this.seedCount -= toRemove;
         }
-        return ret;
-    }
-
-    /**
-     * Sets the seed count to 0 and returns item stacks representing every item in this bucket.
-     *
-     * @return The contents of the bucket
-     */
-    public ItemStack[] emptyBucket() {
-        if (this.seedCount <= 0) return null;
-        ItemStack[] ret = new ItemStack[1 + (this.supportItems == null ? 0 : this.supportItems.length)];
-        ret[0] = this.seed.copy();
-        ret[0].stackSize = this.seedCount;
-        if (this.supportItems != null) {
-            for (int i = 0; i < this.supportItems.length; i++) {
-                ret[i + 1] = this.supportItems[i].copy();
-                ret[i + 1].stackSize = this.seedCount;
-            }
-        }
-        this.seedCount = 0;
         return ret;
     }
 

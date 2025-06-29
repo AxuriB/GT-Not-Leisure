@@ -3,8 +3,8 @@ package com.science.gtnl.common.recipe.GTNL;
 import static gregtech.api.enums.Mods.Botania;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.loader.RecipePool;
@@ -20,16 +20,7 @@ public class NatureSpiritArrayRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-
-        ItemStack asgardandelion = GTModHandler.getModItem("Botania", "specialFlower", 1);
-        NBTTagCompound asgardandelionType = asgardandelion.getTagCompound();
-        if (asgardandelionType != null) {
-            asgardandelionType.setString("type", "asgardandelion");
-        } else {
-            asgardandelionType = new NBTTagCompound();
-            asgardandelionType.setString("type", "asgardandelion");
-            asgardandelion.setTagCompound(asgardandelionType);
-        }
+        ItemStack asgardandelion = ItemUtils.createSpecialFlower("asgardandelion");
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, asgardandelion))

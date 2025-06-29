@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.Utils.item.MissingMappingsHandler;
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucketLoader;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
 import com.science.gtnl.Utils.text.LanguageManager;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.common.command.CommandEnergyNetwork;
@@ -95,7 +95,7 @@ public class ScienceNotLeisure {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
-        EIGBucketLoader.LoadEIGBuckets();
+        EIGBucket.LoadEIGBuckets();
         MaterialLoader.loadPostInit();
         MachineLoader.run();
     }

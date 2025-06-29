@@ -58,80 +58,44 @@ public class NineIndustrialMultiMachineManager {
     public static final int MACHINEMODE_36 = 35;
 
     public int getNextMachineMode(int currentMode) {
-        switch (currentMode) {
-            case MACHINEMODE_1:
-                return MACHINEMODE_2;
-            case MACHINEMODE_2:
-                return MACHINEMODE_3;
-            case MACHINEMODE_3:
-                return MACHINEMODE_4;
-            case MACHINEMODE_4:
-                return MACHINEMODE_5;
-            case MACHINEMODE_5:
-                return MACHINEMODE_6;
-            case MACHINEMODE_6:
-                return MACHINEMODE_7;
-            case MACHINEMODE_7:
-                return MACHINEMODE_8;
-            case MACHINEMODE_8:
-                return MACHINEMODE_9;
-            case MACHINEMODE_9:
-                return MACHINEMODE_10;
-            case MACHINEMODE_10:
-                return MACHINEMODE_11;
-            case MACHINEMODE_11:
-                return MACHINEMODE_12;
-            case MACHINEMODE_12:
-                return MACHINEMODE_13;
-            case MACHINEMODE_13:
-                return MACHINEMODE_14;
-            case MACHINEMODE_14:
-                return MACHINEMODE_15;
-            case MACHINEMODE_15:
-                return MACHINEMODE_16;
-            case MACHINEMODE_16:
-                return MACHINEMODE_17;
-            case MACHINEMODE_17:
-                return MACHINEMODE_18;
-            case MACHINEMODE_18:
-                return MACHINEMODE_19;
-            case MACHINEMODE_19:
-                return MACHINEMODE_20;
-            case MACHINEMODE_20:
-                return MACHINEMODE_21;
-            case MACHINEMODE_21:
-                return MACHINEMODE_22;
-            case MACHINEMODE_22:
-                return MACHINEMODE_23;
-            case MACHINEMODE_23:
-                return MACHINEMODE_24;
-            case MACHINEMODE_24:
-                return MACHINEMODE_25;
-            case MACHINEMODE_25:
-                return MACHINEMODE_26;
-            case MACHINEMODE_26:
-                return MACHINEMODE_27;
-            case MACHINEMODE_27:
-                return MACHINEMODE_28;
-            case MACHINEMODE_28:
-                return MACHINEMODE_29;
-            case MACHINEMODE_29:
-                return MACHINEMODE_30;
-            case MACHINEMODE_30:
-                return MACHINEMODE_31;
-            case MACHINEMODE_31:
-                return MACHINEMODE_32;
-            case MACHINEMODE_32:
-                return MACHINEMODE_33;
-            case MACHINEMODE_33:
-                return MACHINEMODE_34;
-            case MACHINEMODE_34:
-                return MACHINEMODE_35;
-            case MACHINEMODE_35:
-                return MACHINEMODE_36;
-            default:
-                return MACHINEMODE_1;
-        }
+        return switch (currentMode) {
+            case MACHINEMODE_1 -> MACHINEMODE_2;
+            case MACHINEMODE_2 -> MACHINEMODE_3;
+            case MACHINEMODE_3 -> MACHINEMODE_4;
+            case MACHINEMODE_4 -> MACHINEMODE_5;
+            case MACHINEMODE_5 -> MACHINEMODE_6;
+            case MACHINEMODE_6 -> MACHINEMODE_7;
+            case MACHINEMODE_7 -> MACHINEMODE_8;
+            case MACHINEMODE_8 -> MACHINEMODE_9;
+            case MACHINEMODE_9 -> MACHINEMODE_10;
+            case MACHINEMODE_10 -> MACHINEMODE_11;
+            case MACHINEMODE_11 -> MACHINEMODE_12;
+            case MACHINEMODE_12 -> MACHINEMODE_13;
+            case MACHINEMODE_13 -> MACHINEMODE_14;
+            case MACHINEMODE_14 -> MACHINEMODE_15;
+            case MACHINEMODE_15 -> MACHINEMODE_16;
+            case MACHINEMODE_16 -> MACHINEMODE_17;
+            case MACHINEMODE_17 -> MACHINEMODE_18;
+            case MACHINEMODE_18 -> MACHINEMODE_19;
+            case MACHINEMODE_19 -> MACHINEMODE_20;
+            case MACHINEMODE_20 -> MACHINEMODE_21;
+            case MACHINEMODE_21 -> MACHINEMODE_22;
+            case MACHINEMODE_22 -> MACHINEMODE_23;
+            case MACHINEMODE_23 -> MACHINEMODE_24;
+            case MACHINEMODE_24 -> MACHINEMODE_25;
+            case MACHINEMODE_25 -> MACHINEMODE_26;
+            case MACHINEMODE_26 -> MACHINEMODE_27;
+            case MACHINEMODE_27 -> MACHINEMODE_28;
+            case MACHINEMODE_28 -> MACHINEMODE_29;
+            case MACHINEMODE_29 -> MACHINEMODE_30;
+            case MACHINEMODE_30 -> MACHINEMODE_31;
+            case MACHINEMODE_31 -> MACHINEMODE_32;
+            case MACHINEMODE_32 -> MACHINEMODE_33;
+            case MACHINEMODE_33 -> MACHINEMODE_34;
+            case MACHINEMODE_34 -> MACHINEMODE_35;
+            case MACHINEMODE_35 -> MACHINEMODE_36;
+            default -> MACHINEMODE_1;
+        };
     }
 
     static {

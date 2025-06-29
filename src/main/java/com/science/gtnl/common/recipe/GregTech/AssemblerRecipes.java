@@ -12,7 +12,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.dreammaster.gthandler.CustomItemList;
 import com.dreammaster.item.NHItemList;
 import com.reavaritia.ReAvaItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
@@ -70,16 +69,16 @@ public class AssemblerRecipes implements IRecipePool {
             MEoutputHatch.setTagCompound(MEoutputHatchType);
         }
 
-        ItemStack CreativeCapacitorBank = GTModHandler.getModItem(EnderIO.ID, "blockCapBank", 1, 0);
-        NBTTagCompound CreativeCapacitorBankType = CreativeCapacitorBank.getTagCompound();
-        if (CreativeCapacitorBankType != null) {
-            CreativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            CreativeCapacitorBankType.setString("type", "CREATIVE");
+        ItemStack creativeCapacitorBank = GTModHandler.getModItem(EnderIO.ID, "blockCapBank", 1, 0);
+        NBTTagCompound creativeCapacitorBankType = creativeCapacitorBank.getTagCompound();
+        if (creativeCapacitorBankType != null) {
+            creativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
+            creativeCapacitorBankType.setString("type", "CREATIVE");
         } else {
-            CreativeCapacitorBankType = new NBTTagCompound();
-            CreativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            CreativeCapacitorBankType.setString("type", "CREATIVE");
-            CreativeCapacitorBank.setTagCompound(CreativeCapacitorBankType);
+            creativeCapacitorBankType = new NBTTagCompound();
+            creativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
+            creativeCapacitorBankType.setString("type", "CREATIVE");
+            creativeCapacitorBank.setTagCompound(creativeCapacitorBankType);
         }
 
         String[] lampTypes = { "Lamp", "LampBorderless", "LampOff", "LampOffBorderless" };
@@ -327,7 +326,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_HV.get(1),
-                CustomItemList.AdsorptionFilter.get(1),
+                NHItemList.AdsorptionFilter.getIS(1),
                 ItemList.Electric_Pump_HV.get(2),
                 ItemList.Electric_Motor_HV.get(1),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 2L),
@@ -794,7 +793,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 MaterialPool.MolybdenumDisilicide.get(OrePrefixes.ring, 32),
-                CustomItemList.MicaInsulatorFoil.get(16L))
+                NHItemList.MicaInsulatorFoil.getIS(16))
             .fluidInputs(MaterialPool.HSLASteel.getMolten(144))
             .itemOutputs(GTNLItemList.MolybdenumDisilicideCoil.get(1))
             .specialValue(0)
@@ -1339,7 +1338,7 @@ public class AssemblerRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, CreativeCapacitorBank),
+                GTUtility.copyAmount(0, creativeCapacitorBank),
                 GTModHandler.getModItem(DraconicEvolution.ID, "draconium", 1, 0, missing))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "draconium", 1, 2, missing))
             .duration(20)
@@ -1692,7 +1691,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.magicBeans", 64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.giantSword", 1),
                 GTModHandler.getModItem(TwilightForest.ID, "item.giantPick", 1),
@@ -1706,7 +1705,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 16, 1),
                 GTModHandler.getModItem(TwilightForest.ID, "item.nagaScale", 64),
                 GTModHandler.getModItem(TwilightForest.ID, "tile.TFSpiralBricks", 64),
@@ -1720,7 +1719,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 16, 0),
                 GTModHandler.getModItem(TwilightForest.ID, "item.hydraChop", 64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.fieryBlood", 64),
@@ -1734,7 +1733,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 16, 4),
                 GTModHandler.getModItem(TwilightForest.ID, "item.tripleBow", 1),
                 GTModHandler.getModItem(TwilightForest.ID, "tile.TFAuroraBrick", 64),
@@ -1748,7 +1747,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 16, 6),
                 GTModHandler.getModItem(TwilightForest.ID, "item.phantomHelm", 1),
                 GTModHandler.getModItem(TwilightForest.ID, "item.phantomPlate", 1),
@@ -1762,7 +1761,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 16, 3),
                 GTModHandler.getModItem(TwilightForest.ID, "tile.TFTowerDevice", 64, 0),
                 GTModHandler.getModItem(TwilightForest.ID, "tile.TFTowerDevice", 64, 2),
@@ -1776,7 +1775,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 16, 5),
                 GTModHandler.getModItem(TwilightForest.ID, "item.meefStroganoff", 1),
                 GTModHandler.getModItem(TwilightForest.ID, "item.meefSteak", 64),
@@ -1790,7 +1789,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 16, 7),
                 GTModHandler.getModItem(TwilightForest.ID, "item.alphaFur", 16),
                 GTModHandler.getModItem(TwilightForest.ID, "item.iceBomb", 16),
@@ -1804,7 +1803,7 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.book, 64),
-                CustomItemList.TwilightCrystal.get(64),
+                NHItemList.TwilightCrystal.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 16, 2),
                 GTModHandler.getModItem(TwilightForest.ID, "item.scepterLifeDrain", 1),
                 GTModHandler.getModItem(TwilightForest.ID, "item.scepterTwilight", 1),

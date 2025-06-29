@@ -57,7 +57,7 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
      */
     public static ItemStack initItem(String aName, int aMeta) {
 
-        return MetaItemStackUtils.initMetaItemStack(aName, aMeta, ItemLoader.MetaItem, MetaSet);
+        return MetaItemStackUtils.initMetaItemStack(aName, aMeta, ItemLoader.metaItem, MetaSet);
 
     }
 
@@ -117,7 +117,7 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> aList) {
         for (int Meta : MetaSet) {
-            aList.add(new ItemStack(ItemLoader.MetaItem, 1, Meta));
+            aList.add(new ItemStack(ItemLoader.metaItem, 1, Meta));
         }
     }
 

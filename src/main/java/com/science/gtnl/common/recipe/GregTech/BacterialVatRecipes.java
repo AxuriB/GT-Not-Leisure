@@ -3,7 +3,7 @@ package com.science.gtnl.common.recipe.GregTech;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.util.GTRecipeConstants.SIEVERT;
 
-import com.dreammaster.gthandler.CustomItemList;
+import com.dreammaster.item.NHItemList;
 import com.science.gtnl.api.IRecipePool;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
@@ -38,7 +38,7 @@ public class BacterialVatRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Circuit_Chip_Stemcell.get(64),
-                CustomItemList.TCetiESeaweedExtract.get(16L),
+                NHItemList.TCetiESeaweedExtract.getIS(16),
                 GTOreDictUnificator.get(OrePrefixes.dust, Tritanium, 1L))
             .fluidInputs(Materials.GrowthMediumRaw.getFluid(10))
             .fluidOutputs(Materials.BioMediumRaw.getFluid(10))

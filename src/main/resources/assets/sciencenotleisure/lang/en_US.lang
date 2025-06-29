@@ -819,8 +819,8 @@ Tooltip_MatterCluster_00=§8§oUsed to destroy everything.
 Tooltip_MatterCluster_01=§8§oPress SHIFT for details.
 
 item.record.sus.desc=AU - Software Update Services
-item.record.newhorizons.desc=Aviators - Sweet Dreams (Bonus Track)
-item.record.lavachicken.desc=Hyper Potions - Lava Chicken
+item.record.new_horizons.desc=Aviators - Sweet Dreams (Bonus Track)
+item.record.lava_chicken.desc=Hyper Potions - Lava Chicken
 
 item.milledNaquadahEnriched.name=Milled Enriched Naquadah
 item.FrothNaquadahEnrichedflotation=Enriched Naquadah Flotation Froth Unit

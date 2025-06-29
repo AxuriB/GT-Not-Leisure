@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemToolti
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -35,54 +36,78 @@ import gregtech.common.render.items.InfinityMetaItemRenderer;
 
 public class ItemLoader {
 
-    public static Item SteamRocket = new ItemSteamRocket();
-    public static Item FakeItemSiren = new FakeItemSiren();
-    public static Item TestItem = new TestItem();
-    public static Item KFCFamily = new KFCFamily(20, 20, true);
-    public static Item SatietyRing = new SatietyRing();
-    public static Item RejectionRing = new RejectionRing();
-    public static Item TwilightSword = new TwilightSword();
-    public static Item PhysicsCape = new PhysicsCape();
-    public static Item CircuitIntegratedPlus = new CircuitIntegratedPlus();
-    public static Item TimeStopPocketWatch = new TimeStopPocketWatch();
-    public static Item SuperReachRing = new SuperReachRing();
-    public static Item RecordSus = new ItemRecord("sus", GTNLItemList.RecordSus);
-    public static Item RecordNewHorizons = new ItemRecord("newhorizons", GTNLItemList.RecordNewHorizons);
-    public static Item RecordLavaChicken = new ItemRecord("lavachicken", GTNLItemList.RecordLavaChicken);
+    public static Item steamRocket;
+    public static Item fakeItemSiren;
+    public static Item testItem;
+    public static Item KFCFamily;
+    public static Item satietyRing;
+    public static Item rejectionRing;
+    public static Item twilightSword;
+    public static Item physicsCape;
+    public static Item circuitIntegratedPlus;
+    public static Item timeStopPocketWatch;
+    public static Item superReachRing;
+    public static Item recordSus;
+    public static Item recordNewHorizons;
+    public static Item recordLavaChicken;
+    public static Item infinityFuelRodDepleted;
+    public static Item infinityFuelRod;
+    public static Item metaItem;
 
-    public static Item InfinityFuelRodDepleted = new FuelRodDepleted("InfinityFuelRodDepleted", 2000);
-    public static Item InfinityFuelRod = new FuelRod(
-        "InfinityFuelRod",
-        1,
-        491520,
-        500,
-        15000,
-        160000,
-        70F,
-        new ItemStack(InfinityFuelRodDepleted, 1));
-
-    public static final Item MetaItem = new MetaItemAdder("MetaItemBase", "MetaItem", GTNLCreativeTabs.GTNotLeisureItem)
-        .setTextureName(RESOURCE_ROOT_ID + ":" + "MetaItem/0");
-
-    public static void registryItems() {
-        Item[] itemsToReg = { MetaItem };
-
-        for (Item item : itemsToReg) {
-            GameRegistry.registerItem(item, item.getUnlocalizedName());
-        }
-
-        GTNLItemList.InfinityFuelRodDepleted.set(new ItemStack(InfinityFuelRodDepleted, 1));
-        GTNLItemList.InfinityFuelRod.set(new ItemStack(InfinityFuelRod, 1));
-
-        IRegistry(RecordSus, "RecordSus");
-        IRegistry(RecordNewHorizons, "RecordNewHorizons");
-        IRegistry(RecordLavaChicken, "RecordLavaChicken");
-        IRegistry(InfinityFuelRodDepleted, "InfinityFuelRodDepleted");
-        IRegistry(InfinityFuelRod, "InfinityFuelRod");
+    public static void registryForMinecraft() {
+        recordLavaChicken = new ItemRecord("lava_chicken").setCreativeTab(CreativeTabs.tabMisc);
+        GameRegistry.registerItem(ItemLoader.recordLavaChicken, "record_lava_chicken");
     }
 
-    public static void IRegistry(Item item, String name) {
-        GameRegistry.registerItem(item, name);
+    public static void registryItems() {
+        steamRocket = new ItemSteamRocket();
+        fakeItemSiren = new FakeItemSiren();
+        testItem = new TestItem();
+        KFCFamily = new KFCFamily(20, 20, true);
+        satietyRing = new SatietyRing();
+        rejectionRing = new RejectionRing();
+        twilightSword = new TwilightSword();
+        physicsCape = new PhysicsCape();
+        circuitIntegratedPlus = new CircuitIntegratedPlus();
+        timeStopPocketWatch = new TimeStopPocketWatch();
+        superReachRing = new SuperReachRing();
+        recordSus = new ItemRecord("sus");
+        recordNewHorizons = new ItemRecord("new_horizons");
+        infinityFuelRodDepleted = new FuelRodDepleted("InfinityFuelRodDepleted", 2000);
+        infinityFuelRod = new FuelRod(
+            "InfinityFuelRod",
+            1,
+            491520,
+            500,
+            15000,
+            160000,
+            70F,
+            new ItemStack(infinityFuelRodDepleted, 1));
+        metaItem = new MetaItemAdder("MetaItemBase", "MetaItem", GTNLCreativeTabs.GTNotLeisureItem)
+            .setTextureName(RESOURCE_ROOT_ID + ":" + "MetaItem/0");
+
+        GameRegistry.registerItem(steamRocket, "SteamRocket");
+        GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
+        GameRegistry.registerItem(testItem, "TestItem");
+        GameRegistry.registerItem(KFCFamily, "KFCFamily");
+        GameRegistry.registerItem(satietyRing, "SatietyRing");
+        GameRegistry.registerItem(rejectionRing, "RejectionRing");
+        GameRegistry.registerItem(twilightSword, "TwilightSword");
+        GameRegistry.registerItem(physicsCape, "PhysicsCape");
+        GameRegistry.registerItem(circuitIntegratedPlus, "CircuitIntegratedPlus");
+        GameRegistry.registerItem(timeStopPocketWatch, "TimeStopPocketWatch");
+        GameRegistry.registerItem(superReachRing, "SuperReachRing");
+        GameRegistry.registerItem(recordSus, "record_sus");
+        GameRegistry.registerItem(recordNewHorizons, "record_new_horizons");
+        GameRegistry.registerItem(infinityFuelRodDepleted, "InfinityFuelRodDepleted");
+        GameRegistry.registerItem(infinityFuelRod, "InfinityFuelRod");
+        GameRegistry.registerItem(metaItem, "MetaItem");
+
+        GTNLItemList.RecordSus.set(new ItemStack(recordSus, 1));
+        GTNLItemList.RecordNewHorizons.set(new ItemStack(recordNewHorizons, 1));
+        GTNLItemList.RecordLavaChicken.set(new ItemStack(recordLavaChicken, 1));
+        GTNLItemList.InfinityFuelRodDepleted.set(new ItemStack(infinityFuelRodDepleted, 1));
+        GTNLItemList.InfinityFuelRod.set(new ItemStack(infinityFuelRod, 1));
     }
 
     public static void registryItemContainers() {
@@ -503,7 +528,7 @@ public class ItemLoader {
         registryItemContainers();
 
         addItemTooltip(
-            new ItemStack(ItemLoader.SatietyRing, 1),
+            new ItemStack(ItemLoader.satietyRing, 1),
             AnimatedText.buildTextWithAnimatedEnd(text("Most machine recipe by zero_CM")));
     }
 

@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.dreammaster.gthandler.CustomItemList;
+import com.dreammaster.item.NHItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.config.MainConfig;
@@ -118,8 +118,8 @@ public class CraftingTableRecipes implements IRecipePool {
 
         GTModHandler.addCraftingRecipe(
             GTNLItemList.Desulfurizer.get(1),
-            new Object[] { "ABA", "CDC", "EFE", 'A', "circuitAdvanced", 'B', CustomItemList.AdsorptionFilter.get(1),
-                'C', ItemList.Electric_Pump_HV.get(1), 'D', ItemList.Hull_HV.get(1), 'E',
+            new Object[] { "ABA", "CDC", "EFE", 'A', "circuitAdvanced", 'B', NHItemList.AdsorptionFilter.getIS(1), 'C',
+                ItemList.Electric_Pump_HV.get(1), 'D', ItemList.Hull_HV.get(1), 'E',
                 GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Electrum, 1L), 'F',
                 ItemList.Electric_Motor_HV.get(1) });
 

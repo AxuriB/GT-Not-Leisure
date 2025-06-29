@@ -1,6 +1,5 @@
 package com.science.gtnl.Utils.machine.EdenGardenManager.modes;
 
-import static com.science.gtnl.Utils.machine.EdenGardenManager.StringUtils.voltageTooltipFormatted;
 import static com.science.gtnl.common.machine.multiblock.EdenGarden.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -8,6 +7,7 @@ import net.minecraft.util.EnumChatFormatting;
 import com.science.gtnl.Utils.machine.EdenGardenManager.EIGMode;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
 
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class EIGIC2Mode extends EIGMode {
@@ -25,7 +25,7 @@ public class EIGIC2Mode extends EIGMode {
     }
 
     @Override
-    public int getMinVoltageTier() {
+    public byte getMinVoltageTier() {
         return EdenGarden.EIG_BALANCE_IC2_ACCELERATOR_TIER;
     }
 
@@ -66,7 +66,7 @@ public class EIGIC2Mode extends EIGMode {
 
     @Override
     public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
-        String minVoltageTier = voltageTooltipFormatted(this.getMinVoltageTier());
+        String minVoltageTier = GTUtility.getColoredTierNameFromTier(this.getMinVoltageTier());
 
         int acceleration = (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER);
 

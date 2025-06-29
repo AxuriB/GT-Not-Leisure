@@ -1,9 +1,6 @@
 package com.science.gtnl.Utils.recipes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import net.minecraft.item.ItemStack;
 
@@ -111,52 +108,29 @@ public class RemoveRecipes {
         VacuumFurnaceRecipe.removeRecipes(recipesToRemoveFromVacuumFurnace);
 
         List<GTRecipe> recipesToRemoveFromCircuitAssembler = new ArrayList<>();
+        List<ItemStack> targetOutputs = Arrays.asList(
+            ItemList.Circuit_Crystalprocessor.get(1), // 晶体处理器
+            ItemList.Circuit_Crystalcomputer.get(1), // 晶体处理器集群
+            ItemList.Circuit_Ultimatecrystalcomputer.get(1), // 晶体处理器电脑
+            ItemList.Circuit_Crystalmainframe.get(1), // 晶体处理器主机
+            ItemList.Circuit_Bioprocessor.get(1), // 生物处理器
+            ItemList.Circuit_Neuroprocessor.get(1), // 湿件处理器
+            ItemList.Circuit_Wetwarecomputer.get(1), // 湿件处理器集群
+            ItemList.Circuit_Wetwaresupercomputer.get(1) // 湿件处理器电脑
+        );
+
         for (GTRecipe recipe : CircuitAssemblerRecipe.getAllRecipes()) {
             for (ItemStack output : recipe.mOutputs) {
-                if (output != null) {
-                    // 晶体处理器
-                    if (output.isItemEqual(ItemList.Circuit_Crystalprocessor.get(1))) {
-                        recipesToRemoveFromCircuitAssembler.add(recipe);
-                        break;
-                    }
-                    // 晶体处理器集群
-                    if (output.isItemEqual(ItemList.Circuit_Crystalcomputer.get(1))) {
-                        recipesToRemoveFromCircuitAssembler.add(recipe);
-                        break;
-                    }
-                    // 晶体处理器电脑
-                    if (output.isItemEqual(ItemList.Circuit_Ultimatecrystalcomputer.get(1))) {
-                        recipesToRemoveFromCircuitAssembler.add(recipe);
-                        break;
-                    }
-                    // 晶体处理器主机
-                    if (output.isItemEqual(ItemList.Circuit_Crystalmainframe.get(1))) {
-                        recipesToRemoveFromCircuitAssembler.add(recipe);
-                        break;
-                    }
-                    // 生物处理器
-                    if (output.isItemEqual(ItemList.Circuit_Bioprocessor.get(1))) {
-                        recipesToRemoveFromCircuitAssembler.add(recipe);
-                        break;
-                    }
-                    // 湿件处理器
-                    if (output.isItemEqual(ItemList.Circuit_Neuroprocessor.get(1))) {
-                        recipesToRemoveFromCircuitAssembler.add(recipe);
-                        break;
-                    }
-                    // 湿件处理器集群
-                    if (output.isItemEqual(ItemList.Circuit_Wetwarecomputer.get(1))) {
-                        recipesToRemoveFromCircuitAssembler.add(recipe);
-                        break;
-                    }
-                    // 湿件处理器电脑
-                    if (output.isItemEqual(ItemList.Circuit_Wetwaresupercomputer.get(1))) {
+                if (output == null) continue;
+                for (ItemStack target : targetOutputs) {
+                    if (output.isItemEqual(target)) {
                         recipesToRemoveFromCircuitAssembler.add(recipe);
                         break;
                     }
                 }
             }
         }
+
         CircuitAssemblerRecipe.removeRecipes(recipesToRemoveFromCircuitAssembler);
 
         if (MainConfig.enableDebugMode) {

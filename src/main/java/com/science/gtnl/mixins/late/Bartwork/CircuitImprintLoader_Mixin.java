@@ -69,7 +69,7 @@ public abstract class CircuitImprintLoader_Mixin {
                     in[index] = original.mInputs[index].copy();
                     in[index].stackSize *= 16;
 
-                    if (in[index].getItem() != ItemLoader.MetaItem
+                    if (in[index].getItem() != ItemLoader.metaItem
                         && !(in[index].isItemEqual(
                             BWMetaItems.getCircuitParts()
                                 .getStack(3)))

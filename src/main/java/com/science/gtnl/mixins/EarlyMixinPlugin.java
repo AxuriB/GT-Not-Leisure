@@ -17,6 +17,7 @@ public class EarlyMixinPlugin {
         mixins.add("Minecraft.WorldClient_Mixin");
         mixins.add("Minecraft.WorldServer_Mixin");
         mixins.add("Minecraft.Explosion_Mixin");
+        mixins.add("Minecraft.Item_Mixin");
         mixins.add("Forge.FMLProxyPacket_Mixin");
         mixins.add("Forge.ForgeHook_Mixin");
 

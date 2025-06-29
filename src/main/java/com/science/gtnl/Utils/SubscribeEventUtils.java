@@ -15,7 +15,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -45,7 +44,6 @@ import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
-import com.science.gtnl.loader.ItemLoader;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -329,7 +327,7 @@ public class SubscribeEventUtils {
             zombie.posX,
             zombie.posY,
             zombie.posZ,
-            new ItemStack(ItemLoader.RecordLavaChicken));
+            GTNLItemList.RecordLavaChicken.get(1));
         drop.delayBeforeCanPickup = 10;
         zombie.worldObj.spawnEntityInWorld(drop);
     }

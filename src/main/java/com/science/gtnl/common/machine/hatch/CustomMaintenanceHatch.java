@@ -27,6 +27,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.render.TextureFactory;
+import lombok.Getter;
+import lombok.Setter;
 
 public class CustomMaintenanceHatch extends MTEHatchMaintenance implements IConfigurationMaintenance, IAddGregtechLogo {
 
@@ -34,6 +36,9 @@ public class CustomMaintenanceHatch extends MTEHatchMaintenance implements IConf
     protected int mMinConfigTime;
     protected int mMaxConfigTime;
     protected int mConfigTime = 100;
+
+    @Getter
+    @Setter
     protected int mCleanroomTier;
     protected String[] mDescription;
 

@@ -6,8 +6,8 @@ import static gregtech.api.enums.Mods.Thaumcraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.loader.RecipePool;
@@ -26,226 +26,28 @@ public class ManaInfusionRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-
-        ItemStack daybloom = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound daybloomType = daybloom.getTagCompound();
-        if (daybloomType != null) {
-            daybloomType.setString("type", "daybloom");
-        } else {
-            daybloomType = new NBTTagCompound();
-            daybloomType.setString("type", "daybloom");
-            daybloom.setTagCompound(daybloomType);
-        }
-
-        ItemStack daybloomDecor = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound daybloomDecorType = daybloomDecor.getTagCompound();
-        if (daybloomDecorType != null) {
-            daybloomDecorType.setString("type", "daybloomDecor");
-        } else {
-            daybloomDecorType = new NBTTagCompound();
-            daybloomDecorType.setString("type", "daybloomDecor");
-            daybloomDecor.setTagCompound(daybloomDecorType);
-        }
-
-        ItemStack hydroangeas = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound hydroangeasType = hydroangeas.getTagCompound();
-        if (hydroangeasType != null) {
-            hydroangeasType.setString("type", "hydroangeas");
-        } else {
-            hydroangeasType = new NBTTagCompound();
-            hydroangeasType.setString("type", "hydroangeas");
-            hydroangeas.setTagCompound(hydroangeasType);
-        }
-
-        ItemStack hydroangeasDecor = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound hydroangeasDecorType = hydroangeasDecor.getTagCompound();
-        if (hydroangeasDecorType != null) {
-            hydroangeasDecorType.setString("type", "hydroangeasDecor");
-        } else {
-            hydroangeasDecorType = new NBTTagCompound();
-            hydroangeasDecorType.setString("type", "hydroangeasDecor");
-            hydroangeasDecor.setTagCompound(hydroangeasDecorType);
-        }
-
-        ItemStack nightshade = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound nightshadeType = nightshade.getTagCompound();
-        if (nightshadeType != null) {
-            nightshadeType.setString("type", "nightshade");
-        } else {
-            nightshadeType = new NBTTagCompound();
-            nightshadeType.setString("type", "nightshade");
-            nightshade.setTagCompound(nightshadeType);
-        }
-
-        ItemStack nightshadeDecor = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound nightshadeDecorType = nightshadeDecor.getTagCompound();
-        if (nightshadeDecorType != null) {
-            nightshadeDecorType.setString("type", "nightshadeDecor");
-        } else {
-            nightshadeDecorType = new NBTTagCompound();
-            nightshadeDecorType.setString("type", "nightshadeDecor");
-            nightshadeDecor.setTagCompound(nightshadeDecorType);
-        }
-
-        ItemStack bellethorn = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound bellethornType = bellethorn.getTagCompound();
-        if (bellethornType != null) {
-            bellethornType.setString("type", "bellethorn");
-        } else {
-            bellethornType = new NBTTagCompound();
-            bellethornType.setString("type", "bellethorn");
-            bellethorn.setTagCompound(bellethornType);
-        }
-
-        ItemStack bellethornChibi = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound bellethornChibiType = bellethornChibi.getTagCompound();
-        if (bellethornChibiType != null) {
-            bellethornChibiType.setString("type", "bellethornChibi");
-        } else {
-            bellethornChibiType = new NBTTagCompound();
-            bellethornChibiType.setString("type", "bellethornChibi");
-            bellethornChibi.setTagCompound(bellethornChibiType);
-        }
-
-        ItemStack agricarnation = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound agricarnationType = agricarnation.getTagCompound();
-        if (agricarnationType != null) {
-            agricarnationType.setString("type", "agricarnation");
-        } else {
-            agricarnationType = new NBTTagCompound();
-            agricarnationType.setString("type", "agricarnation");
-            agricarnation.setTagCompound(agricarnationType);
-        }
-
-        ItemStack agricarnationChibi = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound agricarnationChibiType = agricarnationChibi.getTagCompound();
-        if (agricarnationChibiType != null) {
-            agricarnationChibiType.setString("type", "agricarnationChibi");
-        } else {
-            agricarnationChibiType = new NBTTagCompound();
-            agricarnationChibiType.setString("type", "agricarnationChibi");
-            agricarnationChibi.setTagCompound(agricarnationChibiType);
-        }
-
-        ItemStack hopperhock = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound hopperhockType = hopperhock.getTagCompound();
-        if (hopperhockType != null) {
-            hopperhockType.setString("type", "hopperhock");
-        } else {
-            hopperhockType = new NBTTagCompound();
-            hopperhockType.setString("type", "hopperhock");
-            hopperhock.setTagCompound(hopperhockType);
-        }
-
-        ItemStack hopperhockChibi = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound hopperhockChibiType = hopperhockChibi.getTagCompound();
-        if (hopperhockChibiType != null) {
-            hopperhockChibiType.setString("type", "hopperhockChibi");
-        } else {
-            hopperhockChibiType = new NBTTagCompound();
-            hopperhockChibiType.setString("type", "hopperhockChibi");
-            hopperhockChibi.setTagCompound(hopperhockChibiType);
-        }
-
-        ItemStack rannuncarpus = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound rannuncarpusType = rannuncarpus.getTagCompound();
-        if (rannuncarpusType != null) {
-            rannuncarpusType.setString("type", "rannuncarpus");
-        } else {
-            rannuncarpusType = new NBTTagCompound();
-            rannuncarpusType.setString("type", "rannuncarpus");
-            rannuncarpus.setTagCompound(rannuncarpusType);
-        }
-
-        ItemStack rannuncarpusChibi = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound rannuncarpusChibiType = rannuncarpusChibi.getTagCompound();
-        if (rannuncarpusChibiType != null) {
-            rannuncarpusChibiType.setString("type", "rannuncarpusChibi");
-        } else {
-            rannuncarpusChibiType = new NBTTagCompound();
-            rannuncarpusChibiType.setString("type", "rannuncarpusChibi");
-            rannuncarpusChibi.setTagCompound(rannuncarpusChibiType);
-        }
-
-        ItemStack clayconia = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound clayconiaType = clayconia.getTagCompound();
-        if (clayconiaType != null) {
-            clayconiaType.setString("type", "clayconia");
-        } else {
-            clayconiaType = new NBTTagCompound();
-            clayconiaType.setString("type", "clayconia");
-            clayconia.setTagCompound(clayconiaType);
-        }
-
-        ItemStack clayconiaChibi = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound clayconiaChibiType = clayconiaChibi.getTagCompound();
-        if (clayconiaChibiType != null) {
-            clayconiaChibiType.setString("type", "clayconiaChibi");
-        } else {
-            clayconiaChibiType = new NBTTagCompound();
-            clayconiaChibiType.setString("type", "clayconiaChibi");
-            clayconiaChibi.setTagCompound(clayconiaChibiType);
-        }
-
-        ItemStack marimorphosis = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound marimorphosisType = marimorphosis.getTagCompound();
-        if (marimorphosisType != null) {
-            marimorphosisType.setString("type", "marimorphosis");
-        } else {
-            marimorphosisType = new NBTTagCompound();
-            marimorphosisType.setString("type", "marimorphosis");
-            marimorphosis.setTagCompound(marimorphosisType);
-        }
-
-        ItemStack marimorphosisChibi = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound marimorphosisChibiType = marimorphosisChibi.getTagCompound();
-        if (marimorphosisChibiType != null) {
-            marimorphosisChibiType.setString("type", "marimorphosisChibi");
-        } else {
-            marimorphosisChibiType = new NBTTagCompound();
-            marimorphosisChibiType.setString("type", "marimorphosisChibi");
-            marimorphosisChibi.setTagCompound(marimorphosisChibiType);
-        }
-
-        ItemStack bubbell = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound bubbellType = bubbell.getTagCompound();
-        if (bubbellType != null) {
-            bubbellType.setString("type", "bubbell");
-        } else {
-            bubbellType = new NBTTagCompound();
-            bubbellType.setString("type", "bubbell");
-            bubbell.setTagCompound(bubbellType);
-        }
-
-        ItemStack bubbellChibi = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound bubbellChibiType = bubbellChibi.getTagCompound();
-        if (bubbellChibiType != null) {
-            bubbellChibiType.setString("type", "bubbellChibi");
-        } else {
-            bubbellChibiType = new NBTTagCompound();
-            bubbellChibiType.setString("type", "bubbellChibi");
-            bubbellChibi.setTagCompound(bubbellChibiType);
-        }
-
-        ItemStack solegnolia = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound solegnoliaType = solegnolia.getTagCompound();
-        if (solegnoliaType != null) {
-            solegnoliaType.setString("type", "solegnolia");
-        } else {
-            solegnoliaType = new NBTTagCompound();
-            solegnoliaType.setString("type", "solegnolia");
-            solegnolia.setTagCompound(solegnoliaType);
-        }
-
-        ItemStack solegnoliaChibi = GTModHandler.getModItem(Botania.ID, "specialFlower", 1);
-        NBTTagCompound solegnoliaChibiType = solegnoliaChibi.getTagCompound();
-        if (solegnoliaChibiType != null) {
-            solegnoliaChibiType.setString("type", "solegnoliaChibi");
-        } else {
-            solegnoliaChibiType = new NBTTagCompound();
-            solegnoliaChibiType.setString("type", "solegnoliaChibi");
-            solegnoliaChibi.setTagCompound(solegnoliaChibiType);
-        }
+        ItemStack daybloom = ItemUtils.createSpecialFlower("daybloom");
+        ItemStack daybloomDecor = ItemUtils.createSpecialFlower("daybloomDecor");
+        ItemStack hydroangeas = ItemUtils.createSpecialFlower("hydroangeas");
+        ItemStack hydroangeasDecor = ItemUtils.createSpecialFlower("hydroangeasDecor");
+        ItemStack nightshade = ItemUtils.createSpecialFlower("nightshade");
+        ItemStack nightshadeDecor = ItemUtils.createSpecialFlower("nightshadeDecor");
+        ItemStack bellethorn = ItemUtils.createSpecialFlower("bellethorn");
+        ItemStack bellethornChibi = ItemUtils.createSpecialFlower("bellethornChibi");
+        ItemStack agricarnation = ItemUtils.createSpecialFlower("agricarnation");
+        ItemStack agricarnationChibi = ItemUtils.createSpecialFlower("agricarnationChibi");
+        ItemStack hopperhock = ItemUtils.createSpecialFlower("hopperhock");
+        ItemStack hopperhockChibi = ItemUtils.createSpecialFlower("hopperhockChibi");
+        ItemStack rannuncarpus = ItemUtils.createSpecialFlower("rannuncarpus");
+        ItemStack rannuncarpusChibi = ItemUtils.createSpecialFlower("rannuncarpusChibi");
+        ItemStack clayconia = ItemUtils.createSpecialFlower("clayconia");
+        ItemStack clayconiaChibi = ItemUtils.createSpecialFlower("clayconiaChibi");
+        ItemStack marimorphosis = ItemUtils.createSpecialFlower("marimorphosis");
+        ItemStack marimorphosisChibi = ItemUtils.createSpecialFlower("marimorphosisChibi");
+        ItemStack bubbell = ItemUtils.createSpecialFlower("bubbell");
+        ItemStack bubbellChibi = ItemUtils.createSpecialFlower("bubbellChibi");
+        ItemStack solegnolia = ItemUtils.createSpecialFlower("solegnolia");
+        ItemStack solegnoliaChibi = ItemUtils.createSpecialFlower("solegnoliaChibi");
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTModHandler.getModItem(Botania.ID, "alchemyCatalyst", 1)), daybloom)

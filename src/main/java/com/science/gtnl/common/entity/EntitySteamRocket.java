@@ -39,7 +39,7 @@ public class EntitySteamRocket extends EntityTieredRocket {
 
     @Override
     public ItemStack getPickedResult(MovingObjectPosition target) {
-        return new ItemStack(ItemLoader.SteamRocket, 1, this.rocketType.getIndex());
+        return new ItemStack(ItemLoader.steamRocket, 1, this.rocketType.getIndex());
     }
 
     @Override
@@ -117,7 +117,7 @@ public class EntitySteamRocket extends EntityTieredRocket {
             }
 
             stats.rocketType = this.rocketType.getIndex();
-            stats.rocketItem = ItemLoader.SteamRocket;
+            stats.rocketItem = ItemLoader.steamRocket;
             stats.fuelLevel = this.fuelTank.getFluidAmount();
         }
     }
@@ -238,7 +238,7 @@ public class EntitySteamRocket extends EntityTieredRocket {
     @Override
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems) {
         super.getItemsDropped(droppedItems);
-        final ItemStack rocket = new ItemStack(ItemLoader.SteamRocket, 1, this.rocketType.getIndex());
+        final ItemStack rocket = new ItemStack(ItemLoader.steamRocket, 1, this.rocketType.getIndex());
         rocket.setTagCompound(new NBTTagCompound());
         rocket.getTagCompound()
             .setInteger("RocketFuel", this.fuelTank.getFluidAmount());

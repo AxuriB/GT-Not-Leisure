@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
@@ -32,7 +33,10 @@ import com.gtnewhorizons.modularui.common.widget.ChangeableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.Utils.gui.AutoScalingStackSizeText;
+
+import gregtech.api.util.GTUtility;
 
 public class EIGDynamicInventory<T> {
 
@@ -154,15 +158,14 @@ public class EIGDynamicInventory<T> {
             }), builder)
 
             .attachSyncer(new FakeSyncWidget.ListSyncer<>(() -> {
-                List<GTHelper.StackableItemSlot> newDrawables = new ArrayList<>();
+                List<StackableItemSlot> newDrawables = new ArrayList<>();
                 for (int i = 0, mStorageSize = inventory.size(); i < mStorageSize; i++) {
                     T slot = inventory.get(i);
                     if (slot == null) {
                         continue;
                     }
                     ItemStack stack = inventoryGetter.get(slot);
-                    newDrawables
-                        .add(new GTHelper.StackableItemSlot(1, stack, new ArrayList<>(Collections.singletonList(i))));
+                    newDrawables.add(new StackableItemSlot(1, stack, new ArrayList<>(Collections.singletonList(i))));
                 }
                 if (!Objects.equals(newDrawables, drawables)) {
                     drawables = newDrawables;
@@ -181,7 +184,7 @@ public class EIGDynamicInventory<T> {
                 }
             }, buffer -> {
                 try {
-                    return GTHelper.StackableItemSlot.read(buffer);
+                    return StackableItemSlot.read(buffer);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -192,14 +195,14 @@ public class EIGDynamicInventory<T> {
         return container;
     }
 
-    List<GTHelper.StackableItemSlot> drawables = new ArrayList<>();
+    List<StackableItemSlot> drawables = new ArrayList<>();
 
     private Widget createWidget(EntityPlayer player) {
         Scrollable dynamicInventoryWidget = new Scrollable().setVerticalScroll();
 
         ArrayList<Widget> buttons = new ArrayList<>();
 
-        if (!ModUtils.isClientThreaded()) {
+        if (!Utils.isClientThreaded()) {
             drawables = new ArrayList<>();
             for (int i = 0, inventorySize = inventory.size(); i < inventorySize; i++) {
                 T slot = inventory.get(i);
@@ -207,7 +210,7 @@ public class EIGDynamicInventory<T> {
                     continue;
                 }
                 ItemStack stack = inventoryGetter.get(slot);
-                drawables.add(new GTHelper.StackableItemSlot(1, stack, new ArrayList<>(Collections.singleton(i))));
+                drawables.add(new StackableItemSlot(1, stack, new ArrayList<>(Collections.singleton(i))));
             }
         }
 
@@ -254,7 +257,6 @@ public class EIGDynamicInventory<T> {
                             player.inventory.setItemStack(stack);
                             ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                             ((EntityPlayerMP) player).updateHeldItem();
-                            return;
                         }
                     } else if (clickData.shift) {
                         if (inventoryExtractor == null) return;
@@ -266,7 +268,6 @@ public class EIGDynamicInventory<T> {
                             if (player.inventory.addItemStackToInventory(removed))
                                 player.inventoryContainer.detectAndSendChanges();
                             else player.entityDropItem(removed, 0.f);
-                            return;
                         }
                     } else {
                         ItemStack input = player.inventory.getItemStack();
@@ -303,7 +304,6 @@ public class EIGDynamicInventory<T> {
                                 player.inventory.setItemStack(removed);
                                 ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                                 ((EntityPlayerMP) player).updateHeldItem();
-                                return;
                             }
                         }
                     }
@@ -389,7 +389,6 @@ public class EIGDynamicInventory<T> {
                         } else player.inventory.setItemStack(null);
                         ((EntityPlayerMP) player).isChangingQuantityOnly = false;
                         ((EntityPlayerMP) player).updateHeldItem();
-                        return;
                     }
                 })
                 .setBackground(() -> {
@@ -477,6 +476,41 @@ public class EIGDynamicInventory<T> {
          * @return Stack that we are left with or null
          */
         ItemStack replaceOrMerge(int where, ItemStack stack);
+    }
+
+    public static class StackableItemSlot {
+
+        public StackableItemSlot(int count, ItemStack stack, ArrayList<Integer> realSlots) {
+            this.count = count;
+            this.stack = stack;
+            this.hashcode = GTUtility.ItemId.createNoCopyWithStackSize(stack)
+                .hashCode();
+            this.realSlots = realSlots;
+        }
+
+        public final int count;
+        public final ItemStack stack;
+        private final int hashcode;
+        public final ArrayList<Integer> realSlots;
+
+        public void write(PacketBuffer buffer) throws IOException {
+            buffer.writeVarIntToBuffer(count);
+            buffer.writeItemStackToBuffer(stack);
+        }
+
+        public static StackableItemSlot read(PacketBuffer buffer) throws IOException {
+            return new StackableItemSlot(
+                buffer.readVarIntFromBuffer(),
+                buffer.readItemStackFromBuffer(),
+                new ArrayList<>());
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof StackableItemSlot other)) return false;
+            return count == other.count && hashcode == other.hashcode && realSlots.equals(other.realSlots);
+        }
     }
 
 }
