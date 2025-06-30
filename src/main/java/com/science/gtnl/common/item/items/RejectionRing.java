@@ -15,7 +15,6 @@ import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.BaubleItem;
 
 import baubles.api.BaubleType;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RejectionRing extends BaubleItem {
 
@@ -24,7 +23,6 @@ public class RejectionRing extends BaubleItem {
         this.setUnlocalizedName("RejectionRing");
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "RejectionRing");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
-        GameRegistry.registerItem(this, "RejectionRing");
         GTNLItemList.RejectionRing.set(new ItemStack(this, 1));
     }
 

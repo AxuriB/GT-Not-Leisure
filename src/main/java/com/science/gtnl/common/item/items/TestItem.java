@@ -17,7 +17,6 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.effect.GTNLEffect;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.render.IHaloRenderItem;
@@ -31,7 +30,6 @@ public class TestItem extends Item implements IHaloRenderItem {
         this.setUnlocalizedName("TestItem");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "TestItem");
-        GameRegistry.registerItem(this, "TestItem");
         GTNLItemList.TestItem.set(new ItemStack(this, 1));
     }
 

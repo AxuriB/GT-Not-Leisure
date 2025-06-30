@@ -18,6 +18,7 @@ import com.science.gtnl.common.item.items.CircuitIntegratedPlus;
 import com.science.gtnl.common.item.items.FakeItemSiren;
 import com.science.gtnl.common.item.items.FuelRod.FuelRod;
 import com.science.gtnl.common.item.items.FuelRod.FuelRodDepleted;
+import com.science.gtnl.common.item.items.InfinityTorch;
 import com.science.gtnl.common.item.items.ItemSteamRocket;
 import com.science.gtnl.common.item.items.KFCFamily;
 import com.science.gtnl.common.item.items.PhysicsCape;
@@ -47,6 +48,7 @@ public class ItemLoader {
     public static Item circuitIntegratedPlus;
     public static Item timeStopPocketWatch;
     public static Item superReachRing;
+    public static Item infinityTorch;
     public static Item recordSus;
     public static Item recordNewHorizons;
     public static Item recordLavaChicken;
@@ -71,6 +73,7 @@ public class ItemLoader {
         circuitIntegratedPlus = new CircuitIntegratedPlus();
         timeStopPocketWatch = new TimeStopPocketWatch();
         superReachRing = new SuperReachRing();
+        infinityTorch = new InfinityTorch();
         recordSus = new ItemRecord("sus");
         recordNewHorizons = new ItemRecord("new_horizons");
         infinityFuelRodDepleted = new FuelRodDepleted("InfinityFuelRodDepleted", 2000);
@@ -97,6 +100,7 @@ public class ItemLoader {
         GameRegistry.registerItem(circuitIntegratedPlus, "CircuitIntegratedPlus");
         GameRegistry.registerItem(timeStopPocketWatch, "TimeStopPocketWatch");
         GameRegistry.registerItem(superReachRing, "SuperReachRing");
+        GameRegistry.registerItem(infinityTorch, "InfinityTorch");
         GameRegistry.registerItem(recordSus, "record_sus");
         GameRegistry.registerItem(recordNewHorizons, "record_new_horizons");
         GameRegistry.registerItem(infinityFuelRodDepleted, "InfinityFuelRodDepleted");

@@ -5,6 +5,7 @@ import static com.dreammaster.scripts.IScriptLoader.missing;
 import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.*;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -2119,6 +2120,13 @@ public class AssemblerRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.ParallelControllerHatchMAX.get(1))
             .duration(20)
             .eut(TierEU.RECIPE_MAX)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.copyAmountUnsafe(384, new ItemStack(Blocks.torch, 1)))
+            .itemOutputs(GTNLItemList.InfiniteTorch.get(1))
+            .duration(200)
+            .eut(TierEU.MV)
             .addTo(As);
     }
 }

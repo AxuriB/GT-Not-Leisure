@@ -25,7 +25,6 @@ import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.BaubleItem;
 
 import baubles.api.BaubleType;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,7 +45,6 @@ public class PhysicsCape extends BaubleItem implements IBaubleRender {
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "PhysicsCape");
         this.setMaxDamage(2000);
         this.setMaxStackSize(1);
-        GameRegistry.registerItem(this, "PhysicsCape");
         GTNLItemList.PhysicsCape.set(new ItemStack(this, 1));
     }
 

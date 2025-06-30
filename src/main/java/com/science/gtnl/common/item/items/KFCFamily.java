@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,7 +25,6 @@ public class KFCFamily extends ItemFood {
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "KFCFamily");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setAlwaysEdible();
-        GameRegistry.registerItem(this, "KFCFamily");
         GTNLItemList.KFCFamily.set(new ItemStack(this, 1));
     }
 
