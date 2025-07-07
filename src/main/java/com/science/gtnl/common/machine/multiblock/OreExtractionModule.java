@@ -79,9 +79,9 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlock(sBlockCasings8, 0))
             .addElement('B', ofBlock(sBlockCasings1, 15))
-            .addElement('C', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('D', ofBlock(sBlockCasings8, 7))
-            .addElement('E', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement('E', ofBlock(BlockLoader.metaCasing, 8))
             .addElement('F', ofFrame(Materials.CosmicNeutronium))
             .addElement(
                 'G',
@@ -96,7 +96,7 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
             .addElement('K', ofBlock(sBlockCasings8, 1))
             .addElement('L', ofBlock(sBlockCasings4, 12))
             .addElement('M', ofFrame(Materials.Invar))
-            .addElement('N', ofBlock(BlockLoader.MetaCasing, 12))
+            .addElement('N', ofBlock(BlockLoader.metaCasing, 12))
             .addElement('O', ofBlock(bw_realglas, 14))
             .build();
     }

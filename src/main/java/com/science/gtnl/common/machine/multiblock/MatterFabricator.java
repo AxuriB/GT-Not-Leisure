@@ -130,7 +130,7 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
     public IStructureDefinition<MatterFabricator> getStructureDefinition() {
         return StructureDefinition.<MatterFabricator>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
             .addElement('C', ofBlock(sBlockCasings1, 7))
             .addElement('D', ofBlock(sBlockCasings1, 15))

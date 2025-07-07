@@ -185,7 +185,7 @@ public class NanitesIntegratedProcessingCenter
             .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
             .addElement('D', ofBlock(sBlockCasings3, 10))
             .addElement('E', ofBlock(sBlockMetal5, 1))
-            .addElement('F', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('F', ofBlock(BlockLoader.metaCasing, 5))
             .addElement(
                 'G',
                 GTStructureChannels.HEATING_COIL.use(

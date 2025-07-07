@@ -69,7 +69,7 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
     public IStructureDefinition<EnergyInfuser> getStructure_EM() {
         return StructureDefinition.<EnergyInfuser>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('A', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
             .addElement(
                 'C',

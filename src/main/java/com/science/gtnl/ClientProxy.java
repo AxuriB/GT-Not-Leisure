@@ -51,24 +51,24 @@ public class ClientProxy extends CommonProxy {
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlayerDoll.class, new PlayerDollRenderer());
         MinecraftForgeClient
-            .registerItemRenderer(Item.getItemFromBlock(BlockLoader.PlayerDoll), new ItemPlayerDollRenderer());
+            .registerItemRenderer(Item.getItemFromBlock(BlockLoader.playerDoll), new ItemPlayerDollRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArtificialStar.class, new RealArtificialStarRender());
         MinecraftForgeClient.registerItemRenderer(
-            Item.getItemFromBlock(BlockLoader.BlockArtificialStarRender),
+            Item.getItemFromBlock(BlockLoader.blockArtificialStarRender),
             new ItemBlockArtificialStarRender());
 
         MinecraftForgeClient.registerItemRenderer(ItemLoader.twilightSword, new ItemTwilightSwordRender());
 
         MinecraftForgeClient.registerItemRenderer(
-            Item.getItemFromBlock(BlockLoader.BlockNanoPhagocytosisPlantRender),
-            new ItemBlockNanoPhagocytosisPlantRender(BlockLoader.BlockNanoPhagocytosisPlantRender));
+            Item.getItemFromBlock(BlockLoader.blockNanoPhagocytosisPlantRender),
+            new ItemBlockNanoPhagocytosisPlantRender(BlockLoader.blockNanoPhagocytosisPlantRender));
         ClientRegistry
             .bindTileEntitySpecialRenderer(TileEntityNanoPhagocytosisPlant.class, new RenderNanoPhagocytosisPlant());
 
         MinecraftForgeClient.registerItemRenderer(
-            Item.getItemFromBlock(BlockLoader.BlockEternalGregTechWorkshopRender),
-            new ItemBlockEternalGregTechWorkshopRender(BlockLoader.BlockEternalGregTechWorkshopRender));
+            Item.getItemFromBlock(BlockLoader.blockEternalGregTechWorkshopRender),
+            new ItemBlockEternalGregTechWorkshopRender(BlockLoader.blockEternalGregTechWorkshopRender));
         ClientRegistry.bindTileEntitySpecialRenderer(
             TileEntityEternalGregTechWorkshop.class,
             new RenderEternalGregTechWorkshop());

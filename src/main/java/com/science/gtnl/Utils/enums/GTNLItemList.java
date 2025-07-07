@@ -41,6 +41,8 @@ public enum GTNLItemList implements IItemContainer {
     NanoPhagocytosisPlantRender,
     EternalGregTechWorkshopRender,
     PlayerDoll,
+    HoneyFluidBlock,
+    ShimmerFluidBlock,
 
     BronzeBrickCasing,
     SteelBrickCasing,
@@ -232,9 +234,11 @@ public enum GTNLItemList implements IItemContainer {
     FakeItemSiren,
     PhysicsCape,
     TimeStopPocketWatch,
-    InfiniteTorch,
+    InfinityTorch,
     MilledNaquadahEnriched,
     SteamRocket,
+    HoneyBucket,
+    ShimmerBucket,
 
     CircuitIntegratedPlus,
 

@@ -110,7 +110,7 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
     public IStructureDefinition<ElementCopying> getStructureDefinition() {
         return StructureDefinition.<ElementCopying>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 18))
             .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
             .addElement(
                 'C',

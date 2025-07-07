@@ -122,7 +122,7 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlock(sBlockCasings8, 10))
             .addElement('B', ofBlock(sBlockCasings2, 15))
-            .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 5))
             .addElement('D', ofBlock(sBlockCasings10, 3))
             .addElement('E', ofBlock(sBlockCasings8, 7))
             .addElement(
@@ -136,14 +136,14 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
-            .addElement('I', ofBlock(BlockLoader.MetaCasing, 7))
+            .addElement('I', ofBlock(BlockLoader.metaCasing, 7))
             .addElement('J', ofBlock(blockCasings3Misc, 1))
-            .addElement('K', ofBlock(BlockLoader.MetaCasing, 2))
-            .addElement('L', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('K', ofBlock(BlockLoader.metaCasing, 2))
+            .addElement('L', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement('M', ofBlock(sBlockCasings3, 11))
             .addElement('N', ofFrame(Materials.NaquadahAlloy))
             .addElement('O', ofBlock(sBlockCasings1, 9))
-            .addElement('P', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('P', ofBlock(BlockLoader.metaCasing, 4))
             .build();
     }
 

@@ -139,7 +139,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
         return StructureDefinition.<HandOfJohnDavisonRockefeller>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('C', ofBlockAnyMeta(FOCUS_MANIPULATION_CASING))
             .addElement(
                 'D',

@@ -131,7 +131,7 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
     public IStructureDefinition<WoodDistillation> getStructureDefinition() {
         return StructureDefinition.<WoodDistillation>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 2))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 2))
             .addElement(
                 'B',
                 buildHatchAdder(WoodDistillation.class).casingIndex(CASING_INDEX)

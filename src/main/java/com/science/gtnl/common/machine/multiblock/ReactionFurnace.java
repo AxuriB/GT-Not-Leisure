@@ -123,7 +123,7 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
         return StructureDefinition.<ReactionFurnace>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlock(sBlockCasings9, 11))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 14))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 14))
             .addElement('C', ofBlock(sBlockCasings9, 7))
             .addElement('D', ofBlock(sBlockCasings10, 3))
             .addElement('E', ofBlock(sBlockCasings8, 10))

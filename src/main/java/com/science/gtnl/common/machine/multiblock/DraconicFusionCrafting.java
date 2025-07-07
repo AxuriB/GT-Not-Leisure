@@ -123,7 +123,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
         return StructureDefinition.<DraconicFusionCrafting>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlock(sBlockCasings9, 11))
-            .addElement('B', ofBlock(com.science.gtnl.loader.BlockLoader.MetaCasing, 14))
+            .addElement('B', ofBlock(com.science.gtnl.loader.BlockLoader.metaCasing, 14))
             .addElement(
                 'C',
                 buildHatchAdder(DraconicFusionCrafting.class).casingIndex(CASING_INDEX)

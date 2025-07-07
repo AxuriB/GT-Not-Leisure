@@ -65,7 +65,7 @@ public class SteamWoodcutter extends SteamMultiMachineBase<SteamWoodcutter> impl
     public IStructureDefinition<SteamWoodcutter> getStructureDefinition() {
         return StructureDefinition.<SteamWoodcutter>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 23))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 23))
             .addElement(
                 'B',
                 ofChain(
@@ -89,8 +89,8 @@ public class SteamWoodcutter extends SteamMultiMachineBase<SteamWoodcutter> impl
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 24))
                         .dot(1)
                         .buildAndChain(),
-                    ofBlock(BlockLoader.MetaCasing, 24)))
-            .addElement('C', ofBlock(BlockLoader.MetaCasing, 25))
+                    ofBlock(BlockLoader.metaCasing, 24)))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 25))
             .addElement('D', chainAllGlasses())
             .addElement('E', ofBlock(Blocks.dirt, 0))
             .build();

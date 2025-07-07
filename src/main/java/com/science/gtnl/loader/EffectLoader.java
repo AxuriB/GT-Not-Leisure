@@ -1,4 +1,4 @@
-package com.science.gtnl.common.effect;
+package com.science.gtnl.loader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -7,20 +7,33 @@ import net.minecraft.potion.Potion;
 
 import com.science.gtnl.common.effect.effects.AweEffect;
 import com.science.gtnl.common.effect.effects.PerfectPhysiqueEffect;
+import com.science.gtnl.common.effect.effects.ShimmeringEffect;
 
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class GTNLEffect {
+public class EffectLoader {
 
     public static Potion awe;
     public static Potion perfect_physique;
+    public static Potion shimmering;
 
-    public static void init() {
-        extendPotionArray();
+    public static void registry() {
+        if (Potion.potionTypes.length < 256) extendPotionArray();
 
-        awe = new AweEffect();
-        perfect_physique = new PerfectPhysiqueEffect();
+        awe = new AweEffect(findNextFreePotionId());
+        perfect_physique = new PerfectPhysiqueEffect(findNextFreePotionId());
+        shimmering = new ShimmeringEffect(findNextFreePotionId());
+    }
+
+    public static int findNextFreePotionId() {
+        for (int i = 1; i < Potion.potionTypes.length; i++) {
+            if (Potion.potionTypes[i] == null) {
+                return i;
+            }
+        }
+
+        throw new RuntimeException("No free potion ID found.");
     }
 
     private static void extendPotionArray() {

@@ -158,7 +158,7 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
                     ofBlocksTiered(
                         LargeSteamExtruder::getTierBrickCasing,
                         ImmutableList
-                            .of(Pair.of(BlockLoader.MetaBlockColumn, 0), Pair.of(BlockLoader.MetaBlockColumn, 1)),
+                            .of(Pair.of(BlockLoader.metaBlockColumn, 0), Pair.of(BlockLoader.metaBlockColumn, 1)),
                         -1,
                         (t, m) -> t.tierBrickCasing = m,
                         t -> t.tierBrickCasing)))

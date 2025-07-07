@@ -124,7 +124,7 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
             .addElement('B', ofBlock(sBlockCasingsTT, 0))
-            .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 5))
             .addElement('D', ofBlock(sBlockCasings10, 6))
             .addElement('E', ofBlock(sBlockGem2, 11))
             .addElement(
@@ -135,7 +135,7 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
             .addElement('G', ofBlock(sBlockCasings8, 12))
-            .addElement('H', ofBlock(BlockLoader.MetaCasing, 6))
+            .addElement('H', ofBlock(BlockLoader.metaCasing, 6))
             .addElement('I', ofBlock(sBlockCasingsTT, 6))
             .addElement('J', ofBlock(sBlockCasingsTT, 4))
             .addElement('K', ofBlock(sBlockCasings10, 1))

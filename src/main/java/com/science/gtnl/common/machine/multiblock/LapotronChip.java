@@ -138,7 +138,7 @@ public class LapotronChip extends MultiMachineBase<LapotronChip>
                     .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-            .addElement('F', ofBlock(BlockLoader.MetaBlockGlow, 0))
+            .addElement('F', ofBlock(BlockLoader.metaBlockGlow, 0))
             .addElement(
                 'G',
                 withChannel(

@@ -73,7 +73,7 @@ public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule
     public IStructureDefinition<BioengineeringModule> getStructureDefinition() {
         return StructureDefinition.<BioengineeringModule>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 4))
             .addElement(
                 'B',
                 buildHatchAdder(BioengineeringModule.class)
@@ -87,7 +87,7 @@ public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule
             .addElement('F', ofFrame(Materials.CosmicNeutronium))
             .addElement('G', ofBlock(sBlockCasings2, 5))
             .addElement('H', ofBlock(sBlockCasings4, 12))
-            .addElement('I', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('I', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement('J', ofBlock(sBlockCasings8, 1))
             .addElement('K', ofFrame(Materials.PulsatingIron))
             .addElement('L', ofBlock(sBlockCasings9, 1))

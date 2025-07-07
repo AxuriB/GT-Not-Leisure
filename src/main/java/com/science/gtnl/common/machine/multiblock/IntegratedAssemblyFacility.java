@@ -133,7 +133,7 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
     public IStructureDefinition<IntegratedAssemblyFacility> getStructureDefinition() {
         return StructureDefinition.<IntegratedAssemblyFacility>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 4))
             .addElement(
                 'B',
                 ofBlocksTiered(
@@ -162,9 +162,9 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
             .addElement('L', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
             .addElement('M', ofBlock(sBlockCasingsSE, 1))
             .addElement('N', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-            .addElement('O', ofBlock(BlockLoader.MetaBlockGlow, 31))
+            .addElement('O', ofBlock(BlockLoader.metaBlockGlow, 31))
             .addElement('P', ofBlock(sBlockCasings6, 9))
-            .addElement('Q', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('Q', ofBlock(BlockLoader.metaCasing, 5))
             .addElement('R', ofFrame(Materials.CosmicNeutronium))
             .build();
     }

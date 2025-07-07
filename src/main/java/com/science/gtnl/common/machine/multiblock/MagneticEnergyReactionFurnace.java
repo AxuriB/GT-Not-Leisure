@@ -139,7 +139,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
         return StructureDefinition.<MagneticEnergyReactionFurnace>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlock(FRF_Coil_1, 0))
-            .addElement('B', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('B', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
             .addElement('D', ofBlock(sBlockCasings10, 0))
             .addElement('E', ofBlock(sBlockCasings10, 6))

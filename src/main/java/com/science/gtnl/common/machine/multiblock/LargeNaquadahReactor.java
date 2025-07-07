@@ -103,8 +103,8 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
     public IStructureDefinition<LargeNaquadahReactor> getStructure_EM() {
         return StructureDefinition.<LargeNaquadahReactor>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 5))
             .addElement(
                 'C',
                 buildHatchAdder(LargeNaquadahReactor.class).casingIndex(CASING_INDEX)

@@ -142,7 +142,7 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
     public IStructureDefinition<LargeArcSmelter> getStructureDefinition() {
         return StructureDefinition.<LargeArcSmelter>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 8))
             .addElement(
                 'B',
                 buildHatchAdder(LargeArcSmelter.class).casingIndex(CASING_INDEX)

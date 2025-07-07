@@ -48,6 +48,7 @@ import com.science.gtnl.common.recipe.GTNL.ReFusionReactorRecipes;
 import com.science.gtnl.common.recipe.GTNL.RealArtificialStarRecipes;
 import com.science.gtnl.common.recipe.GTNL.ShallowChemicalCouplingRecipes;
 import com.science.gtnl.common.recipe.GTNL.ShapedArcaneCraftingRecipes;
+import com.science.gtnl.common.recipe.GTNL.ShimmerRecipes;
 import com.science.gtnl.common.recipe.GTNL.SmeltingMixingFurnaceRecipes;
 import com.science.gtnl.common.recipe.GTNL.SpaceDrillRecipes;
 import com.science.gtnl.common.recipe.GTNL.SpaceMinerRecipes;
@@ -153,7 +154,7 @@ public class RecipeLoader {
             new AlchemicChemistrySetRecipes(), new AdvancedCircuitAssemblyLineRecipes(), new FallingTowerRecipes(),
             new AssemblingLineRecipes(), new GasCollectorRecipes(), new EternalGregTechWorkshopUpgradeRecipes(),
             new FluidCannerRecipes(), new VacuumFreezerRecipes(), new MeteorsRecipes(), new CheatOreProcessingRecipes(),
-            new ShapedArcaneCraftingRecipes(), new InfusionCraftingRecipes() };
+            new ShapedArcaneCraftingRecipes(), new InfusionCraftingRecipes(), new ShimmerRecipes() };
 
         IRecipePool[] recipePoolsAprilFool = new IRecipePool[] { new CraftingTableAprilFoolRecipes(),
             new SteamManufacturerRecipes(), new SteamCarpenterRecipe(), new LavaMakerRecipes(),

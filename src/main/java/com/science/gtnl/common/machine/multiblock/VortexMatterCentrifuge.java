@@ -109,7 +109,7 @@ public class VortexMatterCentrifuge extends WirelessEnergyMultiMachineBase<Vorte
     public IStructureDefinition<VortexMatterCentrifuge> getStructureDefinition() {
         return StructureDefinition.<VortexMatterCentrifuge>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 5))
             .addElement('B', ofBlock(sBlockCasingsDyson, 9))
             .addElement('C', ofBlock(sBlockCasingsTT, 6))
             .addElement('D', ofBlock(sBlockCasingsTT, 0))
@@ -117,7 +117,7 @@ public class VortexMatterCentrifuge extends WirelessEnergyMultiMachineBase<Vorte
             .addElement('F', ofBlock(sBlockCasings1, 9))
             .addElement('G', ofBlock(sBlockCasingsTT, 8))
             .addElement('H', ofBlock(sBlockCasings10, 8))
-            .addElement('I', ofBlock(BlockLoader.MetaCasing, 7))
+            .addElement('I', ofBlock(BlockLoader.metaCasing, 7))
             .addElement('J', ofBlock(sBlockCasings10, 7))
             .addElement(
                 'K',

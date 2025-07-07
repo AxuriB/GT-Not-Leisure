@@ -176,9 +176,9 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
             .addShape(STRUCTURE_PIECE_MAIN_RING_TWO_AIR, transpose(shapeRingTwoAir))
             .addShape(STRUCTURE_PIECE_MAIN_RING_THREE_AIR, transpose(shapeRingThreeAir))
             .addElement('A', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 2))
-            .addElement('C', ofBlock(BlockLoader.MetaCasing, 4))
-            .addElement('D', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 2))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('D', ofBlock(BlockLoader.metaCasing, 18))
             .addElement('E', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
             .addElement('F', ofBlock(sBlockCasings1, 15))
             .addElement('G', ofBlock(sBlockCasings10, 3))
@@ -346,7 +346,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
             .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, Blocks.air);
         this.getBaseMetaTileEntity()
             .getWorld()
-            .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, BlockLoader.BlockNanoPhagocytosisPlantRender);
+            .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, BlockLoader.blockNanoPhagocytosisPlantRender);
         TileEntityNanoPhagocytosisPlant rendererTileEntity = (TileEntityNanoPhagocytosisPlant) this
             .getBaseMetaTileEntity()
             .getWorld()

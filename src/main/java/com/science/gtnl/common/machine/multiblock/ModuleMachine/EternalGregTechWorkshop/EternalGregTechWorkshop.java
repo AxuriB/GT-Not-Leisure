@@ -468,7 +468,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
                 'Z',
                 ofChain(
                     ofBlock(GregTechAPI.sBlockCasings1, 14),
-                    ofBlock(BlockLoader.BlockEternalGregTechWorkshopRender, 0)))
+                    ofBlock(BlockLoader.blockEternalGregTechWorkshopRender, 0)))
             .addElement('a', isAir())
             .build();
     }
@@ -2177,7 +2177,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
             .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, Blocks.air);
         this.getBaseMetaTileEntity()
             .getWorld()
-            .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, BlockLoader.BlockEternalGregTechWorkshopRender);
+            .setBlock(renderPos.posX, renderPos.posY, renderPos.posZ, BlockLoader.blockEternalGregTechWorkshopRender);
         TileEntityEternalGregTechWorkshop rendererTileEntity = (TileEntityEternalGregTechWorkshop) this
             .getBaseMetaTileEntity()
             .getWorld()

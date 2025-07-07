@@ -150,7 +150,7 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
                         MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(1)
                             .getItem())))
             .addElement('O', ofFrame(Materials.Naquadria))
-            .addElement('P', ofBlock(BlockLoader.MetaCasing, 2))
+            .addElement('P', ofBlock(BlockLoader.metaCasing, 2))
             .addElement('Q', ofBlock(sBlockMetal5, 2))
             .build();
     }

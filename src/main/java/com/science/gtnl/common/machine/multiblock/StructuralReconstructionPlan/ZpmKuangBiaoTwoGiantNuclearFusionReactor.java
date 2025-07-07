@@ -348,7 +348,7 @@ public class ZpmKuangBiaoTwoGiantNuclearFusionReactor
             .addElement('D', ofBlock(sBlockCasings9, 3))
             .addElement('E', ofFrame(Materials.Tungsten))
             .addElement('F', ofFrame(Materials.Duranium))
-            .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('G', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement('H', ofBlock(blockCasingsMisc, 5))
             .addElement('I', ofBlock(Loaders.compactFusionCoil, 1))
             .addElement('J', ofBlock(blockCasingsMisc, 15))

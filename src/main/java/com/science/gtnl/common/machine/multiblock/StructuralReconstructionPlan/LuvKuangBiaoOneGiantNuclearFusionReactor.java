@@ -349,7 +349,7 @@ public class LuvKuangBiaoOneGiantNuclearFusionReactor
             .addElement('D', ofBlock(sBlockCasings9, 3))
             .addElement('E', ofFrame(Materials.Tungsten))
             .addElement('F', ofFrame(Materials.NaquadahAlloy))
-            .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('G', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement('H', ofBlock(blockCasingsMisc, 5))
             .addElement('I', ofBlock(Loaders.compactFusionCoil, 0))
             .addElement('J', ofBlock(blockCasingsMisc, 15))

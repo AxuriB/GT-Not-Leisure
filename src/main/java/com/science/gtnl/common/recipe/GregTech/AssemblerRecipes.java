@@ -2123,8 +2123,16 @@ public class AssemblerRecipes implements IRecipePool {
             .addTo(As);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmountUnsafe(384, new ItemStack(Blocks.torch, 1)))
-            .itemOutputs(GTNLItemList.InfiniteTorch.get(1))
+            .itemInputs(
+                new ItemStack(Blocks.torch, 64),
+                new ItemStack(Blocks.torch, 64),
+                new ItemStack(Blocks.torch, 64),
+                new ItemStack(Blocks.torch, 64),
+                new ItemStack(Blocks.torch, 64),
+                new ItemStack(Blocks.torch, 64),
+                new ItemStack(Blocks.torch, 64),
+                new ItemStack(Blocks.torch, 64))
+            .itemOutputs(GTNLItemList.InfinityTorch.get(1))
             .duration(200)
             .eut(TierEU.MV)
             .addTo(As);

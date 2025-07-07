@@ -133,8 +133,8 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
             .addElement('D', ofBlock(blockCasingsMisc, 11))
             .addElement('E', ofBlock(sBlockCasings8, 10))
             .addElement('F', ofFrame(Materials.Neutronium))
-            .addElement('G', ofBlock(BlockLoader.MetaCasing, 4))
-            .addElement('H', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('G', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('H', ofBlock(BlockLoader.metaCasing, 5))
             .build();
     }
 

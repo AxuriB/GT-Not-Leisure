@@ -231,7 +231,7 @@ public class SuperSpaceElevator extends TTMultiblockBase
         return StructureDefinition.<SuperSpaceElevator>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shapeBase))
             .addShape(STRUCTURE_PIECE_EXTENDED, transpose(shapeExtended))
-            .addElement('A', ofBlock(com.science.gtnl.loader.BlockLoader.MetaCasing, 18))
+            .addElement('A', ofBlock(com.science.gtnl.loader.BlockLoader.metaCasing, 18))
             .addElement('B', ofBlock(sBlockCasingsSE, 2))
             .addElement('C', ofBlock(sBlockCasingsTT, 0))
             .addElement(
@@ -282,7 +282,7 @@ public class SuperSpaceElevator extends TTMultiblockBase
             .addElement(
                 'N',
                 ElevatorUtil.ofBlockAdder(SuperSpaceElevator::addCable, GregTechAPI.sSpaceElevatorCable, 0))
-            .addElement('O', ofBlock(com.science.gtnl.loader.BlockLoader.MetaBlockGlow, 31))
+            .addElement('O', ofBlock(com.science.gtnl.loader.BlockLoader.metaBlockGlow, 31))
             .build();
     }
 

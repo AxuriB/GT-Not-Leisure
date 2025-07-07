@@ -17,14 +17,16 @@ public class MaterialLoader {
 
     public static void loadPreInit() {
 
-        ItemLoader.registry();
-        ItemLoader.registryOreDictionary();
-        ItemLoader.registryOreBlackList();
-        WerkstoffAdderRegistry.addWerkstoffAdder(new MaterialPool());
+        EffectLoader.registry();
 
         BlockLoader.registry();
         BlockLoader.registryAnotherData();
         BlockLoader.registerTreeBrickuoia();
+
+        ItemLoader.registry();
+        ItemLoader.registryOreDictionary();
+        ItemLoader.registryOreBlackList();
+        WerkstoffAdderRegistry.addWerkstoffAdder(new MaterialPool());
 
         API.hideItem(GTNLItemList.NanoPhagocytosisPlantRender.get(1));
         API.hideItem(GTNLItemList.ArtificialStarRender.get(1));

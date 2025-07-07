@@ -82,7 +82,7 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
                     .casingIndex(CASING_INDEX)
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('C', ofFrame(Materials.CosmicNeutronium))
             .addElement('D', ofBlock(sBlockCasings6, 10))
             .addElement('E', ofBlock(sBlockCasings2, 5))

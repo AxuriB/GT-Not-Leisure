@@ -19,15 +19,12 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 
 import com.science.gtnl.common.effect.EffectBase;
 import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
-import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class AweEffect extends EffectBase {
-
-    public static final AweEffect instance = new AweEffect();
 
     public static final DamageSource awe_damage = new DamageSource("damage.gtnl.AweDamage").setExplosion()
         .setDamageBypassesArmor()
@@ -38,8 +35,8 @@ public class AweEffect extends EffectBase {
     private static final Set<EntityPlayer> affectedPlayers = new HashSet<>();
     private static final Random random = new Random();
 
-    public AweEffect() {
-        super(MainConfig.aweEffectID, "awe", false, 0xFF00FF, 1);
+    public AweEffect(int id) {
+        super(id, "awe", false, 0xFF00FF, 1);
         MinecraftForge.EVENT_BUS.register(this);
     }
 

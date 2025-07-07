@@ -111,7 +111,7 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
             .addElement('B', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
             .addElement('C', ofBlock(sBlockCasingsTT, 0))
             .addElement('D', ofBlock(sBlockCasings9, 14))
-            .addElement('E', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('E', ofBlock(BlockLoader.metaCasing, 18))
             .addElement('F', ofBlock(sBlockCasings9, 9))
             .addElement(
                 'G',
@@ -123,7 +123,7 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
             .addElement('I', ofBlock(BlockQuantumGlass.INSTANCE, 0))
             .addElement('J', ofBlock(sBlockCasings10, 12))
             .addElement('K', ofFrame(Materials.Tritanium))
-            .addElement('L', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('L', ofBlock(BlockLoader.metaBlockGlass, 2))
             .build();
     }
 

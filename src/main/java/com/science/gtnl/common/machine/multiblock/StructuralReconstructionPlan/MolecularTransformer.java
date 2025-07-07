@@ -108,7 +108,7 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
         return StructureDefinition.<MolecularTransformer>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 8))
             .addElement('C', ofBlock(sBlockCasings2, 0))
             .addElement('D', ofBlock(sBlockCasings2, 14))
             .addElement('E', ofBlock(sBlockCasings4, 0))

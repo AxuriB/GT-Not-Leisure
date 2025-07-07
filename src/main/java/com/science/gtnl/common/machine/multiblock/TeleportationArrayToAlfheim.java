@@ -276,8 +276,8 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
                         .dot(1)
                         .build()))
             .addElement('F', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
-            .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 0))
-            .addElement('H', ofBlock(BlockLoader.MetaBlockGlass, 1))
+            .addElement('G', ofBlock(BlockLoader.metaBlockGlass, 0))
+            .addElement('H', ofBlock(BlockLoader.metaBlockGlass, 1))
             .build();
     }
 

@@ -153,7 +153,7 @@ public class NanoAssemblerMarkL extends WirelessEnergyMultiMachineBase<NanoAssem
             .addElement('I', ofBlock(sBlockCasings10, 8))
             .addElement('J', ofFrame(Materials.Duranium))
             .addElement('K', ofBlock(sBlockGlass1, 0))
-            .addElement('L', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('L', ofBlock(BlockLoader.metaCasing, 5))
             .addElement('M', ofBlock(sBlockCasings1, 9))
             .addElement(
                 'N',
@@ -162,7 +162,7 @@ public class NanoAssemblerMarkL extends WirelessEnergyMultiMachineBase<NanoAssem
                         MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFrameBox(1)
                             .getItem())))
             .addElement('O', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-            .addElement('P', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('P', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('Q', ofBlock(sBlockCasings9, 1))
             .build();
     }

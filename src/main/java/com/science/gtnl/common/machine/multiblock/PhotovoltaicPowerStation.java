@@ -301,7 +301,7 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
 
         @Override
         protected Block getPhotovoltaicBlock() {
-            return BlockLoader.MetaCasing;
+            return BlockLoader.metaCasing;
         }
 
         @Override
@@ -364,7 +364,7 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
 
         @Override
         protected Block getPhotovoltaicBlock() {
-            return BlockLoader.MetaCasing;
+            return BlockLoader.metaCasing;
         }
 
         @Override
@@ -427,7 +427,7 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
 
         @Override
         protected Block getPhotovoltaicBlock() {
-            return BlockLoader.MetaCasing;
+            return BlockLoader.metaCasing;
         }
 
         @Override

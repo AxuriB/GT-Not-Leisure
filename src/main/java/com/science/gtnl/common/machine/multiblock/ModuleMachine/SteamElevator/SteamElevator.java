@@ -170,8 +170,8 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
                         .build(),
                     buildSteamInput(SteamElevator.class).casingIndex(GTUtility.getTextureId((byte) 116, (byte) 25))
                         .dot(1)
-                        .buildAndChain(BlockLoader.MetaCasing, 25)))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 31))
+                        .buildAndChain(BlockLoader.metaCasing, 25)))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 31))
             .addElement('C', ofBlock(sBlockCasings1, 10))
             .addElement('D', ofBlock(sBlockCasings2, 0))
             .addElement('E', ofBlock(sBlockCasings3, 14))

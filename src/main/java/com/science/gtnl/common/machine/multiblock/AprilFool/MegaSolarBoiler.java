@@ -89,7 +89,7 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
             .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
             .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 12))
             .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 13))
-            .addElement('F', ofBlock(BlockLoader.MetaBlockColumn, 3))
+            .addElement('F', ofBlock(BlockLoader.metaBlockColumn, 3))
             .addElement(
                 'G',
                 ofChain(

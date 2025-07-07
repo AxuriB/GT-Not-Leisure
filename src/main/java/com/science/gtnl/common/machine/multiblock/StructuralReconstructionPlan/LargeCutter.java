@@ -136,7 +136,7 @@ public class LargeCutter extends GTMMultiMachineBase<LargeCutter> implements ISu
         return StructureDefinition.<LargeCutter>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 3))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 3))
             .addElement(
                 'C',
                 buildHatchAdder(LargeCutter.class).casingIndex(getCasingTextureID())

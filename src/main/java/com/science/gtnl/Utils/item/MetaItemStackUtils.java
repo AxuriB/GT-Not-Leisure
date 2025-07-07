@@ -13,7 +13,7 @@ import com.science.gtnl.ScienceNotLeisure;
 
 public class MetaItemStackUtils {
 
-    // generate item stack when init
+    // generate item stack when registry
     public static ItemStack initMetaItemStack(String i18nName, int Meta, Item basicItem, Set<Integer> aContainerSet) {
 
         // Handle the Name
@@ -24,7 +24,7 @@ public class MetaItemStackUtils {
         return new ItemStack(basicItem, 1, Meta);
     }
 
-    // generate itemBlock stack when init
+    // generate itemBlock stack when registry
     public static ItemStack initMetaItemStack(String i18nName, int Meta, Block baseBlock, Set<Integer> aContainerSet) {
         texter(i18nName, baseBlock.getUnlocalizedName() + "." + Meta + ".name");
         aContainerSet.add(Meta);

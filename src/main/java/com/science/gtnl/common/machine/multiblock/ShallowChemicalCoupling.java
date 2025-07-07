@@ -80,7 +80,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
                 buildHatchAdder(ShallowChemicalCoupling.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(BlockLoader.MetaCasing, 19))))
+                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(BlockLoader.metaCasing, 19))))
             .addElement('B', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
             .addElement(
                 'C',

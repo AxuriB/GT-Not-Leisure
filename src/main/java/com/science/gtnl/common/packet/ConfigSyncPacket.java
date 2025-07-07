@@ -78,9 +78,6 @@ public class ConfigSyncPacket implements IMessage {
         explosionPower = cfg.explosionPower;
         moveSpeed = cfg.moveSpeed;
         explosionTriggerRange = cfg.explosionTriggerRange;
-
-        aweEffectID = cfg.aweEffectID;
-        perfectPhysiqueEffect = cfg.perfectPhysiqueEffect;
     }
 
     @Override
@@ -174,9 +171,6 @@ public class ConfigSyncPacket implements IMessage {
         explosionPower = buf.readInt();
         moveSpeed = buf.readDouble();
         explosionTriggerRange = buf.readDouble();
-
-        aweEffectID = buf.readInt();
-        perfectPhysiqueEffect = buf.readInt();
     }
 
     public static class Handler implements IMessageHandler<ConfigSyncPacket, IMessage> {
@@ -224,9 +218,6 @@ public class ConfigSyncPacket implements IMessage {
             MainConfig.explosionPower = msg.explosionPower;
             MainConfig.moveSpeed = msg.moveSpeed;
             MainConfig.explosionTriggerRange = msg.explosionTriggerRange;
-
-            MainConfig.aweEffectID = msg.aweEffectID;
-            MainConfig.perfectPhysiqueEffect = msg.perfectPhysiqueEffect;
             return null;
         }
     }

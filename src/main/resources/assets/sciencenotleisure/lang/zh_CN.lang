@@ -720,7 +720,16 @@ item.KFCFamily.name=疯狂星期四
 Tooltip_KFCFamily_00=§o疯狂星期四, v我50!
 gtnl.potion.perfect_physique=完美体魄
 
-item.InfiniteTorch.name=无尽火把
+item.InfinityTorch.name=无尽火把
+
+item.HoneyBucket.name=蜂蜜桶
+tile.honey.name=蜂蜜
+fluid.honey=蜂蜜
+
+item.ShimmerBucket.name=微光桶
+tile.shimmer.name=微光
+fluid.shimmer=微光
+gtnl.potion.shimmering=微光闪烁
 
 item.SatietyRing.name=饱食指环
 item.SuperReachRing.name=超级触物指环

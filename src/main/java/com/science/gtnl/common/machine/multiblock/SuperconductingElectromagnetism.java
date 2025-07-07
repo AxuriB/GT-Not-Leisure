@@ -138,7 +138,7 @@ public class SuperconductingElectromagnetism extends WirelessEnergyMultiMachineB
             .addElement('A', ofBlock(Loaders.speedingPipe, 0))
             .addElement('B', ofBlock(Loaders.compactFusionCoil, 0))
             .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
-            .addElement('D', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement('D', ofBlock(BlockLoader.metaCasing, 8))
             .addElement(
                 'E',
                 buildHatchAdder(SuperconductingElectromagnetism.class)

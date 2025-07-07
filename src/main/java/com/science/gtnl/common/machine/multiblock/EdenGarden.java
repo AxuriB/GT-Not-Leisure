@@ -162,7 +162,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
             .addElement('E', ofBlock(sBlockCasings9, 11))
             .addElement('F', ofBlock(ModBlocks.blockCasings2Misc, 3))
             .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
-            .addElement('H', ofBlock(BlockLoader.MetaBlockGlow, 0))
+            .addElement('H', ofBlock(BlockLoader.metaBlockGlow, 0))
             .addElement('I', ofBlock(Blocks.farmland, 0))
             .addElement(
                 'J',

@@ -6,6 +6,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
@@ -55,6 +56,8 @@ public class ItemLoader {
     public static Item infinityFuelRodDepleted;
     public static Item infinityFuelRod;
     public static Item metaItem;
+    public static ItemBucket honeyBucket;
+    public static ItemBucket shimmerBucket;
 
     public static void registryForMinecraft() {
         recordLavaChicken = new ItemRecord("lava_chicken").setCreativeTab(CreativeTabs.tabMisc);
@@ -88,6 +91,12 @@ public class ItemLoader {
             new ItemStack(infinityFuelRodDepleted, 1));
         metaItem = new MetaItemAdder("MetaItemBase", "MetaItem", GTNLCreativeTabs.GTNotLeisureItem)
             .setTextureName(RESOURCE_ROOT_ID + ":" + "MetaItem/0");
+        honeyBucket = (ItemBucket) new ItemBucket(BlockLoader.honeyFluidBlock).setUnlocalizedName("HoneyBucket")
+            .setTextureName(RESOURCE_ROOT_ID + ":" + "HoneyBucket")
+            .setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
+        shimmerBucket = (ItemBucket) new ItemBucket(BlockLoader.shimmerFluidBlock).setUnlocalizedName("ShimmerBucket")
+            .setTextureName(RESOURCE_ROOT_ID + ":" + "ShimmerBucket")
+            .setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
 
         GameRegistry.registerItem(steamRocket, "SteamRocket");
         GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
@@ -106,12 +115,16 @@ public class ItemLoader {
         GameRegistry.registerItem(infinityFuelRodDepleted, "InfinityFuelRodDepleted");
         GameRegistry.registerItem(infinityFuelRod, "InfinityFuelRod");
         GameRegistry.registerItem(metaItem, "MetaItem");
+        GameRegistry.registerItem(honeyBucket, "HoneyBucket");
+        GameRegistry.registerItem(shimmerBucket, "ShimmerBucket");
 
         GTNLItemList.RecordSus.set(new ItemStack(recordSus, 1));
         GTNLItemList.RecordNewHorizons.set(new ItemStack(recordNewHorizons, 1));
         GTNLItemList.RecordLavaChicken.set(new ItemStack(recordLavaChicken, 1));
         GTNLItemList.InfinityFuelRodDepleted.set(new ItemStack(infinityFuelRodDepleted, 1));
         GTNLItemList.InfinityFuelRod.set(new ItemStack(infinityFuelRod, 1));
+        GTNLItemList.HoneyBucket.set(new ItemStack(honeyBucket, 1));
+        GTNLItemList.ShimmerBucket.set(new ItemStack(shimmerBucket, 1));
     }
 
     public static void registryItemContainers() {

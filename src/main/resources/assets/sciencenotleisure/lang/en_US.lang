@@ -720,7 +720,16 @@ item.KFCFamily.name=Crazy Thursday
 Tooltip_KFCFamily_00=§oCrazy Thursday, v me 50!
 gtnl.potion.perfect_physique=Perfect Physique
 
-item.InfiniteTorch.name=Infinity Torch
+item.InfinityTorch.name=Infinity Torch
+
+item.HoneyBucket.name=Honey Bucket
+tile.honey.name=Honey
+fluid.honey=Honey
+
+item.ShimmerBucket.name=Shimmer Bucket
+tile.shimmer.name=Shimmer
+fluid.shimmer=Shimmer
+gtnl.potion.shimmering=Shimmering
 
 item.SatietyRing.name=Ring of Satiety
 item.SuperReachRing.name=Super Reach Ring

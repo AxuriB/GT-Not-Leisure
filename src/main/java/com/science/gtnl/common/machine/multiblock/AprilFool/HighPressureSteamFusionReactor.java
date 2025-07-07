@@ -67,8 +67,8 @@ public class HighPressureSteamFusionReactor extends SteamMultiMachineBase<HighPr
     public IStructureDefinition<HighPressureSteamFusionReactor> getStructureDefinition() {
         return StructureDefinition.<HighPressureSteamFusionReactor>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 31))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing02, 0))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 31))
+            .addElement('B', ofBlock(BlockLoader.metaCasing02, 0))
             .addElement('C', chainAllGlasses())
             .addElement('D', ofFrame(Materials.Steel))
             .addElement(

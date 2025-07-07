@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
@@ -23,20 +26,26 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.event.entity.item.ItemEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.asm.GTNLEarlyCoreMod;
+import com.science.gtnl.common.block.blocks.BlockShimmerFluid;
 import com.science.gtnl.common.command.CommandTickrate;
 import com.science.gtnl.common.item.TimeStopManager;
 import com.science.gtnl.common.machine.hatch.ExplosionDynamoHatch;
@@ -44,6 +53,7 @@ import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.loader.EffectLoader;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -216,7 +226,56 @@ public class SubscribeEventUtils {
         }
     }
 
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.entityPlayer.isPotionActive(EffectLoader.shimmering)) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent event) {
+        if (event.entityPlayer.isPotionActive(EffectLoader.shimmering)) {
+            event.setCanceled(true);
+        }
+    }
+
     // Item
+    @SubscribeEvent
+    public void onItemUpdate(ItemEvent event) {
+        EntityItem item = event.entityItem;
+
+        if (!item.getEntityData()
+            .getBoolean("ShimmerConverted")) return;
+
+        World world = item.worldObj;
+
+        int x = MathHelper.floor_double(item.posX);
+        int y = MathHelper.floor_double(item.posY - 0.1);
+        int z = MathHelper.floor_double(item.posZ);
+
+        Block below = world.getBlock(x, y, z);
+        if (!(below instanceof BlockShimmerFluid)) return;
+
+        double fluidTopY = y + 1.0;
+        double targetY = fluidTopY + 0.5;
+
+        double dy = targetY - item.posY;
+
+        if (dy > 0.05) {
+            item.motionY = Math.min(0.07, dy * 0.15);
+            item.motionX = 0;
+            item.motionZ = 0;
+            item.velocityChanged = true;
+            item.fallDistance = 0f;
+            item.onGround = false;
+        } else {
+            item.motionY = 0;
+            item.motionX = 0;
+            item.motionZ = 0;
+            item.velocityChanged = true;
+        }
+    }
 
     // World
     @SubscribeEvent
@@ -312,6 +371,17 @@ public class SubscribeEventUtils {
                     nbt.setInteger("creeperExplosionDelay", 30);
                     nbt.setBoolean("creeperExplosionDelayed", true);
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingAttack(LivingAttackEvent event) {
+        if (!(event.entityLiving instanceof EntityPlayer player)) return;
+        if (player.isPotionActive(EffectLoader.shimmering)) {
+            Entity source = event.source.getEntity();
+            if (source instanceof EntityLivingBase && !(source instanceof IBossDisplayData)) {
+                event.setCanceled(true);
             }
         }
     }

@@ -143,7 +143,7 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
     public IStructureDefinition<LargeBrewer> getStructureDefinition() {
         return StructureDefinition.<LargeBrewer>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 8))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 8))
             .addElement('B', ofBlock(sBlockCasings2, 13))
             .addElement(
                 'C',

@@ -45,7 +45,7 @@ public class ItemBlockBase extends ItemBlock {
     // region MetaBlock Generators
 
     public static ItemStack initMetaBlock(String i18nName, int Meta) {
-        return initMetaItemStack(i18nName, Meta, BlockLoader.MetaBlock, MetaBlockSet);
+        return initMetaItemStack(i18nName, Meta, BlockLoader.metaBlock, MetaBlockSet);
     }
 
     public static ItemStack initMetaBlock(String i18nName, int Meta, String[] tooltips) {

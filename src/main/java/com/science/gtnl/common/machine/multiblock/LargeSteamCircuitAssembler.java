@@ -93,7 +93,7 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
     public IStructureDefinition<LargeSteamCircuitAssembler> getStructureDefinition() {
         return StructureDefinition.<LargeSteamCircuitAssembler>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 1))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 1))
             .addElement(
                 'B',
                 GTStructureChannels.TIER_MACHINE_CASING.use(

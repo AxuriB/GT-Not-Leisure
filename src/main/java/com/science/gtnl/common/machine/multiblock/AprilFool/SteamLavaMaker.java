@@ -137,7 +137,7 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(BlockLoader.MetaCasing, 27)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(BlockLoader.metaCasing, 27)) };
         }
         return rTexture;
     }
@@ -169,7 +169,7 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
                         .dot(1)
                         .buildAndChain(),
-                    ofBlock(BlockLoader.MetaCasing, 27)))
+                    ofBlock(BlockLoader.metaCasing, 27)))
             .addElement('B', chainAllGlasses())
             .addElement('C', ofChain(ofBlockAnyMeta(Blocks.lava), ofBlockAnyMeta(Blocks.flowing_lava)))
             .build();

@@ -122,7 +122,7 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
         return StructureDefinition.<NanitesCircuitAssemblyFactory>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlock(sBlockCasings1, 13))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 18))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 18))
             .addElement('C', ofBlock(sBlockCasingsSE, 0))
             .addElement('D', ofBlock(ModBlocks.blockCasings5Misc, 12))
             .addElement(
@@ -132,7 +132,7 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-            .addElement('F', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('F', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement(
                 'G',
                 ofBlockAnyMeta(
@@ -146,7 +146,7 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
                         MaterialsAlloy.PIKYONIUM.getFrameBox(1)
                             .getItem())))
             .addElement('I', ofFrame(Materials.Quantium))
-            .addElement('J', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('J', ofBlock(BlockLoader.metaCasing, 4))
             .build();
     }
 

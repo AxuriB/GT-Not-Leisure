@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Facing;
 import net.minecraft.world.World;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
@@ -18,7 +19,7 @@ public class InfinityTorch extends Item {
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "InfinityTorch");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setMaxStackSize(1);
-        GTNLItemList.InfiniteTorch.set(new ItemStack(this, 1));
+        GTNLItemList.InfinityTorch.set(new ItemStack(this, 1));
     }
 
     @Override
@@ -26,9 +27,9 @@ public class InfinityTorch extends Item {
         float hitX, float hitY, float hitZ) {
         if (world.isRemote) return true;
 
-        x += net.minecraft.util.Facing.offsetsXForSide[side];
-        y += net.minecraft.util.Facing.offsetsYForSide[side];
-        z += net.minecraft.util.Facing.offsetsZForSide[side];
+        x += Facing.offsetsXForSide[side];
+        y += Facing.offsetsYForSide[side];
+        z += Facing.offsetsZForSide[side];
 
         if (!world.isAirBlock(x, y, z)) return false;
 

@@ -72,8 +72,8 @@ public class SteamManufacturer extends SteamMultiMachineBase<SteamManufacturer> 
     public IStructureDefinition<SteamManufacturer> getStructureDefinition() {
         return StructureDefinition.<SteamManufacturer>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 26))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 28))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 26))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 28))
             .addElement(
                 'C',
                 ofChain(
@@ -98,7 +98,7 @@ public class SteamManufacturer extends SteamMultiMachineBase<SteamManufacturer> 
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
                         .dot(1)
                         .buildAndChain(),
-                    ofBlock(BlockLoader.MetaCasing, 30)))
+                    ofBlock(BlockLoader.metaCasing, 30)))
             .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
             .addElement('E', ofFrame(Materials.Steel))
             .build();

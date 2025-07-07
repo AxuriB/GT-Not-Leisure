@@ -106,8 +106,8 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
     public IStructureDefinition<Steamgate> getStructureDefinition() {
         return StructureDefinition.<Steamgate>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 21))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 22))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 21))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 22))
             .build();
     }
 

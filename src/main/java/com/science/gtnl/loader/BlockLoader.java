@@ -6,6 +6,8 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
@@ -26,9 +28,11 @@ import com.science.gtnl.common.block.Casings.Special.BlocksStargate;
 import com.science.gtnl.common.block.Casings.Special.StargateMetaBlockBase;
 import com.science.gtnl.common.block.blocks.BlockArtificialStarRender;
 import com.science.gtnl.common.block.blocks.BlockEternalGregTechWorkshopRender;
+import com.science.gtnl.common.block.blocks.BlockHoneyFluid;
 import com.science.gtnl.common.block.blocks.BlockLaserBeacon;
 import com.science.gtnl.common.block.blocks.BlockNanoPhagocytosisPlantRender;
 import com.science.gtnl.common.block.blocks.BlockPlayerDoll;
+import com.science.gtnl.common.block.blocks.BlockShimmerFluid;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
@@ -42,98 +46,113 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 
 public class BlockLoader {
 
-    public static Block BlockArtificialStarRender;
-    public static Block LaserBeacon;
-    public static Block PlayerDoll;
-    public static Block BlockNanoPhagocytosisPlantRender;
-    public static Block BlockEternalGregTechWorkshopRender;
-    public static final Block MetaBlock = new MetaBlockBase("MetaBlock", "MetaBlock");
-    public static final Block MetaBlockGlow = new MetaBlockGlow("MetaBlockGlow", "MetaBlockGlow");
-    public static final Block MetaBlockGlass = new MetaBlockGlass("MetaBlockGlass", "MetaBlockGlass");
-    public static final Block MetaBlockColumn = new MetaBlockColumn("MetaBlockColumn", "MetaBlockColumn");
-    public static final com.science.gtnl.common.block.Casings.Casing.MetaCasing MetaCasing = new MetaCasing(
-        "MetaCasing",
-        (byte) 0);
-    public static final MetaCasing MetaCasing02 = new MetaCasing("MetaCasing02", (byte) 32);
-    public static Block StargateTier0 = new BlocksStargate(0);
-    public static Block StargateTier1 = new BlocksStargate(1);
-    public static Block StargateTier2 = new BlocksStargate(2);
-    public static Block StargateTier3 = new BlocksStargate(3);
-    public static Block StargateTier4 = new BlocksStargate(4);
-    public static Block StargateTier5 = new BlocksStargate(5);
-    public static Block StargateTier6 = new BlocksStargate(6);
-    public static Block StargateTier7 = new BlocksStargate(7);
-    public static Block StargateTier8 = new BlocksStargate(8);
-    public static Block StargateTier9 = new BlocksStargate(9);
-    public static Block Stargate_Coil_Compressed = new StargateMetaBlockBase(
+    public static Block blockArtificialStarRender;
+    public static Block laserBeacon;
+    public static Block playerDoll;
+    public static Block blockNanoPhagocytosisPlantRender;
+    public static Block blockEternalGregTechWorkshopRender;
+    public static final Block metaBlock = new MetaBlockBase("MetaBlock", "MetaBlock");
+    public static final Block metaBlockGlow = new MetaBlockGlow("MetaBlockGlow", "MetaBlockGlow");
+    public static final Block metaBlockGlass = new MetaBlockGlass("MetaBlockGlass", "MetaBlockGlass");
+    public static final Block metaBlockColumn = new MetaBlockColumn("MetaBlockColumn", "MetaBlockColumn");
+    public static final MetaCasing metaCasing = new MetaCasing("MetaCasing", (byte) 0);
+    public static final MetaCasing metaCasing02 = new MetaCasing("MetaCasing02", (byte) 32);
+    public static Block stargateTier0 = new BlocksStargate(0);
+    public static Block stargateTier1 = new BlocksStargate(1);
+    public static Block stargateTier2 = new BlocksStargate(2);
+    public static Block stargateTier3 = new BlocksStargate(3);
+    public static Block stargateTier4 = new BlocksStargate(4);
+    public static Block stargateTier5 = new BlocksStargate(5);
+    public static Block stargateTier6 = new BlocksStargate(6);
+    public static Block stargateTier7 = new BlocksStargate(7);
+    public static Block stargateTier8 = new BlocksStargate(8);
+    public static Block stargateTier9 = new BlocksStargate(9);
+    public static Block stargateCoilCompressed = new StargateMetaBlockBase(
         "Stargate_Coil_Compressed",
         new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" });
+    public static BlockHoneyFluid honeyFluidBlock;
+    public static Fluid honeyFluid;
+    public static BlockShimmerFluid shimmerFluidBlock;
+    public static Fluid shimmerFluid;
 
     public static void registryBlocks() {
 
-        BlockLoader.BlockEternalGregTechWorkshopRender = new BlockEternalGregTechWorkshopRender();
+        BlockLoader.blockEternalGregTechWorkshopRender = new BlockEternalGregTechWorkshopRender();
         GameRegistry
             .registerTileEntity(TileEntityEternalGregTechWorkshop.class, "EternalGregTechWorkshopRenderTileEntity");
 
-        BlockLoader.BlockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
+        BlockLoader.blockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
         GameRegistry.registerTileEntity(TileEntityNanoPhagocytosisPlant.class, "NanoPhagocytosisPlantRenderTileEntity");
 
-        BlockLoader.BlockArtificialStarRender = new BlockArtificialStarRender();
+        BlockLoader.blockArtificialStarRender = new BlockArtificialStarRender();
         GameRegistry.registerTileEntity(TileEntityArtificialStar.class, "ArtificialStarRenderTileEntity");
 
-        BlockLoader.PlayerDoll = new BlockPlayerDoll();
+        BlockLoader.playerDoll = new BlockPlayerDoll();
         GameRegistry.registerTileEntity(TileEntityPlayerDoll.class, "playerDollTileEntity");
 
-        BlockLoader.LaserBeacon = new BlockLaserBeacon();
+        BlockLoader.laserBeacon = new BlockLaserBeacon();
         GameRegistry.registerTileEntity(TileEntityLaserBeacon.class, "LaserBeaconTileEntity");
 
         GameRegistry
-            .registerBlock(BlockLoader.MetaBlock, ItemBlockBase.class, BlockLoader.MetaBlock.getUnlocalizedName());
+            .registerBlock(BlockLoader.metaBlock, ItemBlockBase.class, BlockLoader.metaBlock.getUnlocalizedName());
         GameRegistry.registerBlock(
-            BlockLoader.MetaBlockGlow,
+            BlockLoader.metaBlockGlow,
             ItemBlockGlow.class,
-            BlockLoader.MetaBlockGlow.getUnlocalizedName());
+            BlockLoader.metaBlockGlow.getUnlocalizedName());
         GameRegistry.registerBlock(
-            BlockLoader.MetaBlockGlass,
+            BlockLoader.metaBlockGlass,
             ItemBlockGlass.class,
-            BlockLoader.MetaBlockGlass.getUnlocalizedName());
+            BlockLoader.metaBlockGlass.getUnlocalizedName());
         GameRegistry.registerBlock(
-            BlockLoader.MetaBlockColumn,
+            BlockLoader.metaBlockColumn,
             ItemBlockColumn.class,
-            BlockLoader.MetaBlockColumn.getUnlocalizedName());
+            BlockLoader.metaBlockColumn.getUnlocalizedName());
 
         GameRegistry.registerBlock(
-            BlockLoader.MetaCasing,
+            BlockLoader.metaCasing,
             MetaItemBlockCasing.class,
-            BlockLoader.MetaCasing.getUnlocalizedName());
+            BlockLoader.metaCasing.getUnlocalizedName());
 
         GameRegistry.registerBlock(
-            BlockLoader.MetaCasing02,
+            BlockLoader.metaCasing02,
             MetaItemBlockCasing.class,
-            BlockLoader.MetaCasing02.getUnlocalizedName());
+            BlockLoader.metaCasing02.getUnlocalizedName());
 
-        GameRegistry.registerBlock(BlockLoader.StargateTier0, "StargateTier0");
-        GTNLItemList.StargateTier0.set(new ItemStack(BlockLoader.StargateTier0));
-        GameRegistry.registerBlock(BlockLoader.StargateTier1, "StargateTier1");
-        GTNLItemList.StargateTier1.set(new ItemStack(BlockLoader.StargateTier1));
-        GameRegistry.registerBlock(BlockLoader.StargateTier2, "StargateTier2");
-        GTNLItemList.StargateTier2.set(new ItemStack(BlockLoader.StargateTier2));
-        GameRegistry.registerBlock(BlockLoader.StargateTier3, "StargateTier3");
-        GTNLItemList.StargateTier3.set(new ItemStack(BlockLoader.StargateTier3));
-        GameRegistry.registerBlock(BlockLoader.StargateTier4, "StargateTier4");
-        GTNLItemList.StargateTier4.set(new ItemStack(BlockLoader.StargateTier4));
-        GameRegistry.registerBlock(BlockLoader.StargateTier5, "StargateTier5");
-        GTNLItemList.StargateTier5.set(new ItemStack(BlockLoader.StargateTier5));
-        GameRegistry.registerBlock(BlockLoader.StargateTier6, "StargateTier6");
-        GTNLItemList.StargateTier6.set(new ItemStack(BlockLoader.StargateTier6));
-        GameRegistry.registerBlock(BlockLoader.StargateTier7, "StargateTier7");
-        GTNLItemList.StargateTier7.set(new ItemStack(BlockLoader.StargateTier7));
-        GameRegistry.registerBlock(BlockLoader.StargateTier8, "StargateTier8");
-        GTNLItemList.StargateTier8.set(new ItemStack(BlockLoader.StargateTier8));
-        GameRegistry.registerBlock(BlockLoader.StargateTier9, "StargateTier9");
-        GTNLItemList.StargateTier9.set(new ItemStack(BlockLoader.StargateTier9));
-        GameRegistry.registerBlock(BlockLoader.Stargate_Coil_Compressed, ItemBlockMeta.class, "StargateCoilCompressed");
-        GTNLItemList.Stargate_Coil_Compressed.set(new ItemStack(BlockLoader.Stargate_Coil_Compressed));
+        GameRegistry.registerBlock(BlockLoader.stargateTier0, "StargateTier0");
+        GTNLItemList.StargateTier0.set(new ItemStack(BlockLoader.stargateTier0));
+        GameRegistry.registerBlock(BlockLoader.stargateTier1, "StargateTier1");
+        GTNLItemList.StargateTier1.set(new ItemStack(BlockLoader.stargateTier1));
+        GameRegistry.registerBlock(BlockLoader.stargateTier2, "StargateTier2");
+        GTNLItemList.StargateTier2.set(new ItemStack(BlockLoader.stargateTier2));
+        GameRegistry.registerBlock(BlockLoader.stargateTier3, "StargateTier3");
+        GTNLItemList.StargateTier3.set(new ItemStack(BlockLoader.stargateTier3));
+        GameRegistry.registerBlock(BlockLoader.stargateTier4, "StargateTier4");
+        GTNLItemList.StargateTier4.set(new ItemStack(BlockLoader.stargateTier4));
+        GameRegistry.registerBlock(BlockLoader.stargateTier5, "StargateTier5");
+        GTNLItemList.StargateTier5.set(new ItemStack(BlockLoader.stargateTier5));
+        GameRegistry.registerBlock(BlockLoader.stargateTier6, "StargateTier6");
+        GTNLItemList.StargateTier6.set(new ItemStack(BlockLoader.stargateTier6));
+        GameRegistry.registerBlock(BlockLoader.stargateTier7, "StargateTier7");
+        GTNLItemList.StargateTier7.set(new ItemStack(BlockLoader.stargateTier7));
+        GameRegistry.registerBlock(BlockLoader.stargateTier8, "StargateTier8");
+        GTNLItemList.StargateTier8.set(new ItemStack(BlockLoader.stargateTier8));
+        GameRegistry.registerBlock(BlockLoader.stargateTier9, "StargateTier9");
+        GTNLItemList.StargateTier9.set(new ItemStack(BlockLoader.stargateTier9));
+        GameRegistry.registerBlock(BlockLoader.stargateCoilCompressed, ItemBlockMeta.class, "StargateCoilCompressed");
+        GTNLItemList.Stargate_Coil_Compressed.set(new ItemStack(BlockLoader.stargateCoilCompressed));
+
+        honeyFluid = new Fluid("honey").setViscosity(6000)
+            .setDensity(1500);
+        FluidRegistry.registerFluid(honeyFluid);
+        honeyFluidBlock = new BlockHoneyFluid(honeyFluid);
+        GameRegistry.registerBlock(honeyFluidBlock, "honey");
+        GTNLItemList.HoneyFluidBlock.set(new ItemStack(BlockLoader.honeyFluidBlock));
+
+        shimmerFluid = new Fluid("shimmer").setViscosity(800);
+        FluidRegistry.registerFluid(shimmerFluid);
+        shimmerFluidBlock = new BlockShimmerFluid(shimmerFluid);
+        GameRegistry.registerBlock(shimmerFluidBlock, "shimmer");
+        GTNLItemList.ShimmerFluidBlock.set(new ItemStack(BlockLoader.shimmerFluidBlock));
     }
 
     public static void registryBlockContainers() {
@@ -453,81 +472,81 @@ public class BlockLoader {
         GTNLItemList.SolarBoilingCell.set(ItemBlockColumn.initMetaBlock("Solar Boiling Cell", 3));
 
         GTNLItemList.TestCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Test Casing", (byte) 0, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Test Casing", (byte) 0, BlockLoader.metaCasing));
         GTNLItemList.SteamAssemblyCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Steam Assembly Casing", (byte) 1, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Steam Assembly Casing", (byte) 1, BlockLoader.metaCasing));
         GTNLItemList.HeatVent
-            .set(MetaBlockConstructors.initMetaBlockCasing("Heat Vent", (byte) 2, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Heat Vent", (byte) 2, BlockLoader.metaCasing));
         GTNLItemList.SlicingBlades
-            .set(MetaBlockConstructors.initMetaBlockCasing("Slicing Blades", (byte) 3, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Slicing Blades", (byte) 3, BlockLoader.metaCasing));
         GTNLItemList.NeutroniumPipeCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Neutronium Pipe Casing", (byte) 4, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Neutronium Pipe Casing", (byte) 4, BlockLoader.metaCasing));
         GTNLItemList.NeutroniumGearbox.set(
-            MetaBlockConstructors.initMetaBlockCasing("Neutronium Gear Box Casing", (byte) 5, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("Neutronium Gear Box Casing", (byte) 5, BlockLoader.metaCasing));
         GTNLItemList.Laser_Cooling_Casing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Laser Cooling Casing", (byte) 6, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Laser Cooling Casing", (byte) 6, BlockLoader.metaCasing));
         GTNLItemList.Antifreeze_Heatproof_Machine_Casing.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Antifreeze Heatproof Machine Casing", (byte) 7, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Antifreeze Heatproof Machine Casing", (byte) 7, BlockLoader.metaCasing));
         GTNLItemList.MolybdenumDisilicideCoil.set(
-            MetaBlockConstructors.initMetaBlockCasing("Molybdenum Disilicide Coil", (byte) 8, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("Molybdenum Disilicide Coil", (byte) 8, BlockLoader.metaCasing));
         GTNLItemList.EnergeticPhotovoltaicBlock.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Energetic Photovoltaic Block", (byte) 9, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Energetic Photovoltaic Block", (byte) 9, BlockLoader.metaCasing));
         GTNLItemList.AdvancedPhotovoltaicBlock.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Advanced Photovoltaic Block", (byte) 10, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Advanced Photovoltaic Block", (byte) 10, BlockLoader.metaCasing));
         GTNLItemList.VibrantPhotovoltaicBlock.set(
-            MetaBlockConstructors.initMetaBlockCasing("Vibrant Photovoltaic Block", (byte) 11, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("Vibrant Photovoltaic Block", (byte) 11, BlockLoader.metaCasing));
         GTNLItemList.TungstensteelGearbox.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Tungstensteel Gear Box Casing", (byte) 12, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Tungstensteel Gear Box Casing", (byte) 12, BlockLoader.metaCasing));
         GTNLItemList.DimensionallyStableCasing.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Dimensionally Stable Casing", (byte) 13, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Dimensionally Stable Casing", (byte) 13, BlockLoader.metaCasing));
         GTNLItemList.PressureBalancedCasing.set(
-            MetaBlockConstructors.initMetaBlockCasing("Pressure Balanced Casing", (byte) 14, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("Pressure Balanced Casing", (byte) 14, BlockLoader.metaCasing));
         GTNLItemList.ABSUltraSolidCasing.set(
-            MetaBlockConstructors.initMetaBlockCasing("ABS Ultra-Solid Casing", (byte) 15, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("ABS Ultra-Solid Casing", (byte) 15, BlockLoader.metaCasing));
         GTNLItemList.GravitationalFocusingLensBlock.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Gravitational Focusing Lens Block", (byte) 16, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Gravitational Focusing Lens Block", (byte) 16, BlockLoader.metaCasing));
         GTNLItemList.GaiaStabilizedForceFieldCasing.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Gaia Stabilized Force Field Casing", (byte) 17, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Gaia Stabilized Force Field Casing", (byte) 17, BlockLoader.metaCasing));
         GTNLItemList.HyperCore
-            .set(MetaBlockConstructors.initMetaBlockCasing("Hyper Core", (byte) 18, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Hyper Core", (byte) 18, BlockLoader.metaCasing));
         GTNLItemList.ChemicallyResistantCasing.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Chemically Resistant Casing", (byte) 19, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Chemically Resistant Casing", (byte) 19, BlockLoader.metaCasing));
         GTNLItemList.UltraPoweredCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Ultra Powered Casing", (byte) 20, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Ultra Powered Casing", (byte) 20, BlockLoader.metaCasing));
         GTNLItemList.SteamgateRingBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing("Steamgate Ring Block", (byte) 21, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Steamgate Ring Block", (byte) 21, BlockLoader.metaCasing));
         GTNLItemList.SteamgateChevronBlock.set(
-            MetaBlockConstructors.initMetaBlockCasing("Steamgate Chevron Block", (byte) 22, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("Steamgate Chevron Block", (byte) 22, BlockLoader.metaCasing));
         GTNLItemList.IronReinforcedWood
-            .set(MetaBlockConstructors.initMetaBlockCasing("Iron Reinforced Wood", (byte) 23, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Iron Reinforced Wood", (byte) 23, BlockLoader.metaCasing));
         GTNLItemList.BronzeReinforcedWood.set(
-            MetaBlockConstructors.initMetaBlockCasing("Bronze Reinforced Wood", (byte) 24, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("Bronze Reinforced Wood", (byte) 24, BlockLoader.metaCasing));
         GTNLItemList.SteelReinforcedWood
-            .set(MetaBlockConstructors.initMetaBlockCasing("Steel Reinforced Wood", (byte) 25, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Steel Reinforced Wood", (byte) 25, BlockLoader.metaCasing));
         GTNLItemList.BreelPipeCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Breel Pipe Casing", (byte) 26, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Breel Pipe Casing", (byte) 26, BlockLoader.metaCasing));
         GTNLItemList.StronzeWrappedCasing.set(
-            MetaBlockConstructors.initMetaBlockCasing("Stronze-Wrapped Casing", (byte) 27, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("Stronze-Wrapped Casing", (byte) 27, BlockLoader.metaCasing));
         GTNLItemList.HydraulicAssemblingCasing.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Hydraulic Assembling Casing", (byte) 28, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Hydraulic Assembling Casing", (byte) 28, BlockLoader.metaCasing));
         GTNLItemList.HyperPressureBreelCasing.set(
             MetaBlockConstructors
-                .initMetaBlockCasing("Hyper Pressure Breel Casing", (byte) 29, BlockLoader.MetaCasing));
+                .initMetaBlockCasing("Hyper Pressure Breel Casing", (byte) 29, BlockLoader.metaCasing));
         GTNLItemList.BreelPlatedCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Breel-Plated Casing", (byte) 30, BlockLoader.MetaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing("Breel-Plated Casing", (byte) 30, BlockLoader.metaCasing));
         GTNLItemList.SteamCompactPipeCasing.set(
-            MetaBlockConstructors.initMetaBlockCasing("Steam Compact Pipe Casing", (byte) 31, BlockLoader.MetaCasing));
+            MetaBlockConstructors.initMetaBlockCasing("Steam Compact Pipe Casing", (byte) 31, BlockLoader.metaCasing));
         GTNLItemList.VibrationSafeCasing.set(
-            MetaBlockConstructors.initMetaBlockCasing("Vibration-Safe Casing", (byte) 0, BlockLoader.MetaCasing02));
+            MetaBlockConstructors.initMetaBlockCasing("Vibration-Safe Casing", (byte) 0, BlockLoader.metaCasing02));
     }
 
     public static void registry() {
@@ -536,18 +555,18 @@ public class BlockLoader {
     }
 
     public static void registryAnotherData() {
-        ItemStack GaiaGlass = new ItemStack(BlockLoader.MetaBlockGlass, 1, 0);
-        ItemStack TerraGlass = new ItemStack(BlockLoader.MetaBlockGlass, 1, 1);
-        ItemStack FusionGlass = new ItemStack(BlockLoader.MetaBlockGlass, 1, 2);
+        ItemStack GaiaGlass = new ItemStack(BlockLoader.metaBlockGlass, 1, 0);
+        ItemStack TerraGlass = new ItemStack(BlockLoader.metaBlockGlass, 1, 1);
+        ItemStack FusionGlass = new ItemStack(BlockLoader.metaBlockGlass, 1, 2);
 
         for (int LampMeta = 1; LampMeta <= 32; LampMeta++) {
-            ItemStack LampTier = new ItemStack(BlockLoader.MetaBlockGlow, 1, LampMeta);
+            ItemStack LampTier = new ItemStack(BlockLoader.metaBlockGlow, 1, LampMeta);
             OreDictionary.registerOre("blockGlassHV", LampTier);
             OreDictionary.registerOre("blockGlass", LampTier);
         }
 
         for (int LampOffMeta = 3; LampOffMeta <= 34; LampOffMeta++) {
-            ItemStack LampOffTier = new ItemStack(BlockLoader.MetaBlock, 1, LampOffMeta);
+            ItemStack LampOffTier = new ItemStack(BlockLoader.metaBlock, 1, LampOffMeta);
             OreDictionary.registerOre("blockGlassHV", LampOffTier);
             OreDictionary.registerOre("blockGlass", LampOffTier);
         }

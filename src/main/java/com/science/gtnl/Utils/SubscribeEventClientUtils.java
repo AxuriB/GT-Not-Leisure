@@ -19,6 +19,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
@@ -26,9 +27,9 @@ import org.lwjgl.opengl.GL11;
 
 import com.reavaritia.common.render.CustomEntityRenderer;
 import com.science.gtnl.Utils.enums.Mods;
-import com.science.gtnl.common.effect.effects.AweEffect;
 import com.science.gtnl.common.item.TimeStopManager;
 import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
+import com.science.gtnl.loader.EffectLoader;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -65,7 +66,7 @@ public class SubscribeEventClientUtils {
         EntityPlayer player = mc.thePlayer;
 
         if (player != null && !player.capabilities.isCreativeMode) {
-            PotionEffect effect = player.getActivePotionEffect(AweEffect.instance);
+            PotionEffect effect = player.getActivePotionEffect(EffectLoader.awe);
 
             if (effect != null && event.gui instanceof GuiInventory) {
                 event.setCanceled(true);
@@ -116,6 +117,27 @@ public class SubscribeEventClientUtils {
             GL11.glPopMatrix();
 
             ticksRemaining--;
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderPlayerPre(RenderLivingEvent.Pre event) {
+        if (!(event.entity instanceof EntityPlayer player)) return;
+
+        if (player.isPotionActive(EffectLoader.shimmering)) {
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.4F);
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderPlayerPost(RenderLivingEvent.Post event) {
+        if (!(event.entity instanceof EntityPlayer player)) return;
+
+        if (player.isPotionActive(EffectLoader.shimmering)) {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glDisable(GL11.GL_BLEND);
         }
     }
 

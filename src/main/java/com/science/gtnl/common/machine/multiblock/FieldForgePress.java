@@ -125,7 +125,7 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
             .addElement('I', ofBlock(blockCustomMachineCasings, 3))
             .addElement('J', ofBlock(sBlockCasings8, 10))
-            .addElement('K', ofBlock(BlockLoader.MetaCasing, 12))
+            .addElement('K', ofBlock(BlockLoader.metaCasing, 12))
             .addElement(
                 'L',
                 ofBlockAnyMeta(

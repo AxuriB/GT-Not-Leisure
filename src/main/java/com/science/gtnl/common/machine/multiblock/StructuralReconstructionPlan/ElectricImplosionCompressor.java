@@ -125,7 +125,7 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
     public IStructureDefinition<ElectricImplosionCompressor> getStructureDefinition() {
         return StructureDefinition.<ElectricImplosionCompressor>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('A', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement('B', ofBlock(sBlockCasings2, 15))
             .addElement(
                 'C',

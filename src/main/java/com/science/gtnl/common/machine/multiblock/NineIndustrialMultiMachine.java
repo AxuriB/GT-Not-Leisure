@@ -157,7 +157,7 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlock(bw_realglas2, 0))
             .addElement('B', ofBlock(FRF_Coil_4, 0))
-            .addElement('C', ofBlock(BlockLoader.MetaCasing, 5))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 5))
             .addElement('D', ofBlock(defcCasingBlock, 12))
             .addElement(
                 'E',

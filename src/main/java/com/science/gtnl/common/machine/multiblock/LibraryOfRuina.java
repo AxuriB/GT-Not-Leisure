@@ -154,7 +154,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
         return StructureDefinition.<LibraryOfRuina>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlockAnyMeta(gravityStabilizationCasing))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 13))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 13))
             .addElement('C', ofBlock(sBlockCasingsSE, 1))
             .addElement(
                 'D',
@@ -173,7 +173,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
             .addElement('E', ofBlock(sBlockCasings10, 4))
             .addElement('F', ofBlock(sBlockCasings10, 11))
             .addElement('G', ofBlock(sBlockCasings9, 11))
-            .addElement('H', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('H', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement(
                 'I',
                 ofChain(

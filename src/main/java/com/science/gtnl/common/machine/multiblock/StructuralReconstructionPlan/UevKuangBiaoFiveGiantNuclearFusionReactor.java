@@ -345,7 +345,7 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
             .addElement('D', ofBlock(sBlockCasingsDyson, 9))
             .addElement('E', ofFrame(Materials.Tungsten))
             .addElement('F', ofFrame(Materials.Infinity))
-            .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 2))
+            .addElement('G', ofBlock(BlockLoader.metaBlockGlass, 2))
             .addElement('H', ofBlock(blockCasingsMisc, 5))
             .addElement('I', ofBlock(Loaders.compactFusionCoil, 4))
             .addElement('J', ofBlock(blockCasingsMisc, 15))

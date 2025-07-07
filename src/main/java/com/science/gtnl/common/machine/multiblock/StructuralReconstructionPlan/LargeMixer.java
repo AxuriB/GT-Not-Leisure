@@ -119,7 +119,7 @@ public class LargeMixer extends GTMMultiMachineBase<LargeMixer> implements ISurv
     public IStructureDefinition<LargeMixer> getStructureDefinition() {
         return StructureDefinition.<LargeMixer>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 12))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 12))
             .addElement('B', ofFrame(Materials.TungstenSteel))
             .addElement('C', ofBlock(sBlockCasings2, 14))
             .addElement('D', ofBlock(sBlockCasings2, 15))

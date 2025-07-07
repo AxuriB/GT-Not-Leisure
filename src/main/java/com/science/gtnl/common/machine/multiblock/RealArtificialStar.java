@@ -637,7 +637,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
                 (int) (x + xOffset),
                 (int) (y + yOffset),
                 (int) (z + zOffset),
-                BlockLoader.BlockArtificialStarRender);
+                BlockLoader.blockArtificialStarRender);
     }
 
     public void destroyRenderBlock() {

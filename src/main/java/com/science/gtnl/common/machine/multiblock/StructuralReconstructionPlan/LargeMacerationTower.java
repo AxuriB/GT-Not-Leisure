@@ -120,7 +120,7 @@ public class LargeMacerationTower extends GTMMultiMachineBase<LargeMacerationTow
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 14))))
-            .addElement('B', ofBlock(BlockLoader.MetaBlockColumn, 2))
+            .addElement('B', ofBlock(BlockLoader.metaBlockColumn, 2))
             .build();
     }
 

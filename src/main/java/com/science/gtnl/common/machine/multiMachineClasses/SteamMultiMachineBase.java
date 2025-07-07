@@ -187,8 +187,8 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     @Nullable
     protected static Integer getTierBrickCasing(Block block, int meta) {
         if (block == null) return null;
-        if (block == BlockLoader.MetaBlockColumn && 0 == meta) return 1;
-        if (block == BlockLoader.MetaBlockColumn && 1 == meta) return 2;
+        if (block == BlockLoader.metaBlockColumn && 0 == meta) return 1;
+        if (block == BlockLoader.metaBlockColumn && 1 == meta) return 2;
         return null;
     }
 

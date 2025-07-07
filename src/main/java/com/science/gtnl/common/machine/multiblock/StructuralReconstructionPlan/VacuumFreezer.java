@@ -130,7 +130,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
     public IStructureDefinition<VacuumFreezer> getStructureDefinition() {
         return StructureDefinition.<VacuumFreezer>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 2))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 2))
             .addElement('B', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
             .addElement(
                 'C',

@@ -109,15 +109,15 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
     public IStructureDefinition<SteamExtractinator> getStructureDefinition() {
         return StructureDefinition.<SteamExtractinator>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 3))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing02, 0))
+            .addElement('A', ofBlock(BlockLoader.metaBlockGlass, 3))
+            .addElement('B', ofBlock(BlockLoader.metaCasing02, 0))
             .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
             .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
             .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))
             .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 13))
             .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 13))
             .addElement('H', ofFrame(Materials.Steel))
-            .addElement('I', ofBlock(BlockLoader.MetaBlockColumn, 1))
+            .addElement('I', ofBlock(BlockLoader.metaBlockColumn, 1))
             .addElement(
                 'J',
                 ofChain(

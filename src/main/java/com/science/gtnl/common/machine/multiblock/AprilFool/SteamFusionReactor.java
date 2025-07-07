@@ -68,8 +68,8 @@ public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor
     public IStructureDefinition<SteamFusionReactor> getStructureDefinition() {
         return StructureDefinition.<SteamFusionReactor>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.MetaCasing, 26))
-            .addElement('B', ofBlock(BlockLoader.MetaCasing, 29))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 26))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 29))
             .addElement('C', chainAllGlasses())
             .addElement(
                 'D',
@@ -89,7 +89,7 @@ public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 29))
                         .dot(1)
                         .buildAndChain(),
-                    ofBlock(BlockLoader.MetaCasing, 29)))
+                    ofBlock(BlockLoader.metaCasing, 29)))
             .build();
     }
 

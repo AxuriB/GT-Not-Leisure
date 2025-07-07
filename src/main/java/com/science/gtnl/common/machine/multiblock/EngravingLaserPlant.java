@@ -153,8 +153,8 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
             .addElement('E', ofBlock(sBlockCasings8, 12))
             .addElement('F', ofBlock(sBlockCasings9, 1))
-            .addElement('G', ofBlock(BlockLoader.MetaCasing, 5))
-            .addElement('H', ofBlock(BlockLoader.MetaCasing, 4))
+            .addElement('G', ofBlock(BlockLoader.metaCasing, 5))
+            .addElement('H', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('I', ofBlock(compactFusionCoil, 2))
             .addElement(
                 'J',

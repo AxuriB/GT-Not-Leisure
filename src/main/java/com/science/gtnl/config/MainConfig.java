@@ -127,8 +127,9 @@ public class MainConfig {
     public static int spiderTargetInterval = 20;
 
     // Effect
-    public static int aweEffectID = 186;
-    public static int perfectPhysiqueEffect = 187;
+    public static int aweEffectID = 110;
+    public static int perfectPhysiqueEffect = 111;
+    public static int shimmerEffect = 112;
 
     // Message
     public static boolean enableShowJoinMessage = true;

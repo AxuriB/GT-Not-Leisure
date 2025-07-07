@@ -2377,17 +2377,17 @@ public class MachineLoader {
     }
 
     public static void registerGlasses() {
-        GlassTier.addCustomGlass(BlockLoader.PlayerDoll, 0, 13, 1);
-        GlassTier.addCustomGlass(BlockLoader.MetaBlockGlass, 0, 10, 2);
-        GlassTier.addCustomGlass(BlockLoader.MetaBlockGlass, 1, 8, 2);
-        GlassTier.addCustomGlass(BlockLoader.MetaBlockGlass, 2, 7, 1);
+        GlassTier.addCustomGlass(BlockLoader.playerDoll, 0, 13, 1);
+        GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 0, 10, 2);
+        GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 1, 8, 2);
+        GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 2, 7, 1);
 
         for (int lampMeta = 1; lampMeta <= 32; lampMeta++) {
-            GlassTier.addCustomGlass(BlockLoader.MetaBlockGlow, lampMeta, 3, 1);
+            GlassTier.addCustomGlass(BlockLoader.metaBlockGlow, lampMeta, 3, 1);
         }
 
         for (int lampOffMeta = 3; lampOffMeta <= 34; lampOffMeta++) {
-            GlassTier.addCustomGlass(BlockLoader.MetaBlock, lampOffMeta, 3, 1);
+            GlassTier.addCustomGlass(BlockLoader.metaBlock, lampOffMeta, 3, 1);
         }
     }
 

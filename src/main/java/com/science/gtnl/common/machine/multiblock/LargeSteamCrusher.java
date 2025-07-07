@@ -155,7 +155,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
                     ofBlocksTiered(
                         LargeSteamCrusher::getTierBrickCasing,
                         ImmutableList
-                            .of(Pair.of(BlockLoader.MetaBlockColumn, 0), Pair.of(BlockLoader.MetaBlockColumn, 1)),
+                            .of(Pair.of(BlockLoader.metaBlockColumn, 0), Pair.of(BlockLoader.metaBlockColumn, 1)),
                         -1,
                         (t, m) -> t.tierBrickCasing = m,
                         t -> t.tierBrickCasing)))

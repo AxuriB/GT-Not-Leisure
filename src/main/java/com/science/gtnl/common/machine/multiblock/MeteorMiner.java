@@ -159,7 +159,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
             .addElement('D', ofFrame(Materials.StainlessSteel))
             .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
             .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
-            .addElement('G', ofBlock(BlockLoader.LaserBeacon, 0))
+            .addElement('G', ofBlock(BlockLoader.laserBeacon, 0))
             .addElement(
                 'H',
                 buildHatchAdder(MeteorMiner.class).atLeast(Maintenance, OutputBus, Energy)
