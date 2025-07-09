@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.block.blocks.Item.ItemBlockEternalGregTechWorkshopRender;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
 
 import cpw.mods.fml.common.registry.GameRegistry;

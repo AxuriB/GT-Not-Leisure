@@ -1,4 +1,4 @@
-package com.science.gtnl.common.block.blocks;
+package com.science.gtnl.common.block.blocks.Item;
 
 import static tectech.rendering.EOH.EOHRenderingUtils.renderStarLayer;
 import static tectech.rendering.EOH.EOHTileEntitySR.*;

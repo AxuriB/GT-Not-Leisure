@@ -7,8 +7,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
-import com.science.gtnl.common.block.blocks.ItemBlockEternalGregTechWorkshopRender;
-import com.science.gtnl.common.block.blocks.ItemBlockNanoPhagocytosisPlantRender;
+import com.science.gtnl.common.block.blocks.Item.ItemBlockEternalGregTechWorkshopRender;
+import com.science.gtnl.common.block.blocks.Item.ItemBlockNanoPhagocytosisPlantRender;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;

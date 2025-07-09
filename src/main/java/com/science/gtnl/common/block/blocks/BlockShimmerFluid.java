@@ -16,6 +16,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 
+import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.block.BlockFluidBase;
 import com.science.gtnl.common.recipe.GTNL.ShimmerRecipes;
 import com.science.gtnl.loader.EffectLoader;
@@ -28,6 +29,7 @@ public class BlockShimmerFluid extends BlockFluidBase {
         super(fluid, Material.water);
         this.setBlockName("shimmer");
         this.setQuantaPerBlock(7);
+        this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
     }
 
     @Override

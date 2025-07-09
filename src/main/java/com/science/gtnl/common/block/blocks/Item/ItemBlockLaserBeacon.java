@@ -1,4 +1,4 @@
-package com.science.gtnl.common.block.blocks;
+package com.science.gtnl.common.block.blocks.Item;
 
 import java.util.List;
 

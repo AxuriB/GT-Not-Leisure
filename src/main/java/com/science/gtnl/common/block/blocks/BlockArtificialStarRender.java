@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.block.blocks.Item.ItemBlockArtificialStarRender;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,7 +31,7 @@ public class BlockArtificialStarRender extends Block {
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
         this.setBlockName("RealArtificialStarRender");
         this.setLightLevel(100.0f);
-        GameRegistry.registerBlock(this, ItemArtificialStarRender.class, getUnlocalizedName());
+        GameRegistry.registerBlock(this, ItemBlockArtificialStarRender.class, getUnlocalizedName());
         GTNLItemList.ArtificialStarRender.set(new ItemStack(this, 1));
     }
 
