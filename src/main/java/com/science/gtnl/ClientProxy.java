@@ -1,5 +1,6 @@
 package com.science.gtnl;
 
+import net.minecraft.client.model.ModelSlime;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -13,7 +14,9 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorksh
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
+import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.common.entity.EntitySteamRocket;
+import com.science.gtnl.common.render.entity.SaddleSlimeRender;
 import com.science.gtnl.common.render.entity.SteamRocketRender;
 import com.science.gtnl.common.render.item.ItemBlockArtificialStarRender;
 import com.science.gtnl.common.render.item.ItemMeteorMinerMachineRender;
@@ -88,10 +91,13 @@ public class ClientProxy extends CommonProxy {
                 new EntitySteamRocket(ClientProxyCore.mc.theWorld),
                 new ModelRocketTier1(),
                 new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/model/rocketT1.png")));
-
         RenderingRegistry.registerEntityRenderingHandler(
             EntitySteamRocket.class,
             new SteamRocketRender(new ModelRocketTier1(), GalacticraftCore.ASSET_PREFIX, "rocketT1"));
+
+        RenderingRegistry.registerEntityRenderingHandler(
+            EntitySaddleSlime.class,
+            new SaddleSlimeRender(new ModelSlime(16), new ModelSlime(0), 0.25f));
     }
 
     @Override

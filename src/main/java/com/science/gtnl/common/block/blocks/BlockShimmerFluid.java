@@ -1,5 +1,6 @@
 package com.science.gtnl.common.block.blocks;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
@@ -58,9 +59,7 @@ public class BlockShimmerFluid extends BlockFluidBase {
 
     private void handleItemEntity(World world, EntityItem itemEntity) {
         UUID uuid = itemEntity.getUniqueID();
-
         int time = itemTimeMap.getOrDefault(uuid, 0) + 1;
-
         itemTimeMap.put(uuid, time);
 
         if (itemEntity.getEntityData()
@@ -75,14 +74,43 @@ public class BlockShimmerFluid extends BlockFluidBase {
         if (time < 100) return;
 
         ItemStack original = itemEntity.getEntityItem();
-        ItemStack result = ShimmerRecipes.getConversionResult(original);
+        List<ItemStack> results = ShimmerRecipes.getConversionResult(original);
 
-        if (result != null) {
-            itemEntity.setEntityItemStack(result);
-            itemEntity.lifespan = 6000;
-            itemEntity.getEntityData()
-                .setBoolean("ShimmerConverted", true);
+        if (results != null && !results.isEmpty()) {
+            spawnShimmerParticles(world, itemEntity.posX, itemEntity.posY, itemEntity.posZ);
+            itemEntity.setDead();
+
+            for (ItemStack output : results) {
+                while (output.stackSize > 0) {
+                    int count = Math.min(64, output.stackSize);
+                    ItemStack part = output.splitStack(count);
+
+                    EntityItem newItem = new EntityItem(world, itemEntity.posX, itemEntity.posY, itemEntity.posZ, part);
+                    newItem.delayBeforeCanPickup = 10;
+                    newItem.lifespan = 6000;
+                    newItem.getEntityData()
+                        .setBoolean("ShimmerConverted", true);
+                    world.spawnEntityInWorld(newItem);
+                }
+            }
+
             itemTimeMap.remove(uuid);
+        }
+    }
+
+    private void spawnShimmerParticles(World world, double x, double y, double z) {
+        if (world.isRemote) return;
+
+        for (int i = 0; i < 40; i++) {
+            double offsetX = (world.rand.nextDouble() - 0.5) * 0.5;
+            double offsetY = world.rand.nextDouble() * 0.5 + 0.1;
+            double offsetZ = (world.rand.nextDouble() - 0.5) * 0.5;
+
+            double motionX = (world.rand.nextDouble() - 0.5) * 0.1;
+            double motionY = world.rand.nextDouble() * 0.1;
+            double motionZ = (world.rand.nextDouble() - 0.5) * 0.1;
+
+            world.spawnParticle("fireworksSpark", x + offsetX, y + offsetY, z + offsetZ, motionX, motionY, motionZ);
         }
     }
 

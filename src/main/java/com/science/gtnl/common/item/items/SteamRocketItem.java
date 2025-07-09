@@ -30,9 +30,9 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
-public class ItemSteamRocket extends Item implements IHoldableItem {
+public class SteamRocketItem extends Item implements IHoldableItem {
 
-    public ItemSteamRocket() {
+    public SteamRocketItem() {
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);

@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.Nxer.TwistSpaceTechnology.recipe.machineRecipe.expanded.CircuitAssemblyLineWithoutImprintRecipePool;
+import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.machine.ProcessingArrayRecipeLoader;
 import com.science.gtnl.Utils.recipes.RecipeUtil;
 import com.science.gtnl.api.IRecipePool;
@@ -99,6 +100,7 @@ import com.science.gtnl.common.recipe.Thaumcraft.TCResearches;
 import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
+import codechicken.nei.api.API;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.recipe.RecipeMaps;
 
@@ -109,6 +111,7 @@ public class RecipeLoader {
     public static void loadRecipesServerStart() {
         if (!recipesAdded) {
             loadRecipes();
+            registerNEIRecipeCatalyst();
             if (MainConfig.enableDeleteRecipe) {
                 loadNewRemoveRecipes();
             }
@@ -187,6 +190,7 @@ public class RecipeLoader {
             .generateRecipesNotUsingCells(BartWorksRecipeMaps.bioLabRecipes, RecipePool.LargeBioLabRecipes, true, 1.1);
 
         TCResearches.register();
+
     }
 
     private static void loadCircuitRelatedRecipes() {
@@ -197,5 +201,14 @@ public class RecipeLoader {
         if (!recipesAdded && com.science.gtnl.Utils.enums.Mods.TwistSpaceTechnology.isModLoaded()) {
             CircuitAssemblyLineWithoutImprintRecipePool.loadRecipes();
         }
+    }
+
+    private static void registerNEIRecipeCatalyst() {
+        API.addRecipeCatalyst(GTNLItemList.ShimmerBucket.get(1), RecipePool.ShimmerRecipes.unlocalizedName);
+        API.addRecipeCatalyst(GTNLItemList.InfinityShimmerBucket.get(1), RecipePool.ShimmerRecipes.unlocalizedName);
+        API.addRecipeCatalyst(GTNLItemList.ShimmerFluidBlock.get(1), RecipePool.ShimmerRecipes.unlocalizedName);
+
+        API.addRecipeCatalyst(GTNLItemList.ReactionFurnace.get(1), "smelting");
+        API.addRecipeCatalyst(GTNLItemList.LargeSteamFurnace.get(1), "smelting");
     }
 }

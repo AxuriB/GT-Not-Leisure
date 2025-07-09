@@ -109,7 +109,10 @@ public class ItemUtils {
             }
 
             NBTTagCompound fluidTag = new NBTTagCompound();
-            fluidTag.setString("FluidName", fluid.getUnlocalizedName());
+            String fluidName = fluid.getFluid()
+                .getName();
+
+            fluidTag.setString("FluidName", fluidName);
             fluidTag.setInteger("Amount", amount);
 
             tag.setTag("FluidStack", fluidTag);

@@ -30,6 +30,8 @@ public class LateMixinPlugin implements ILateMixinLoader {
         mixins.add("Gregtech.MTEDigitalTankBase_Mixin");
         mixins.add("Gregtech.MTEHatchAccessor");
         mixins.add("Gregtech.BaseMetaTileEntity_Mixin");
+        mixins.add("Gregtech.GTShapelessRecipe_Mixin");
+        mixins.add("Gregtech.GTShapedRecipe_Mixin");
 
         if (!Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
             mixins.add("Gregtech.VoltageChanceBonus_GT_ParallelHelper_Mixin");
@@ -67,6 +69,8 @@ public class LateMixinPlugin implements ILateMixinLoader {
         }
 
         mixins.add("AppliedEnergistics.EntityTinyTNTPrimed_Mixin");
+
+        mixins.add("AEFluidCraft.ItemFluidPacket_Mixin");
 
         return mixins;
     }

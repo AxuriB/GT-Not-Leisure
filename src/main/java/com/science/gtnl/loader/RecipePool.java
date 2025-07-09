@@ -535,4 +535,11 @@ public class RecipePool {
         .frontend(SteamLogoFrontend::new)
         .neiHandlerInfo((builder -> builder.setDisplayStack(GTNLItemList.SteamWeatherModule.get(1))))
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> ShimmerRecipes = RecipeMapBuilder.of("gtnl.recipe.ShimmerRecipes")
+        .maxIO(1, 20, 0, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
+        .frontend(GeneralFrontend::new)
+        .neiHandlerInfo((builder -> builder.setDisplayStack(GTNLItemList.ShimmerFluidBlock.get(1))))
+        .build();
 }

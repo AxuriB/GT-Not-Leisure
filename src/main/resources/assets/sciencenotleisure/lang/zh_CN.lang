@@ -720,7 +720,15 @@ item.KFCFamily.name=疯狂星期四
 Tooltip_KFCFamily_00=§o疯狂星期四, v我50!
 gtnl.potion.perfect_physique=完美体魄
 
+item.SlimeSaddle.name=粘鞍
+entity.sciencenotleisure.SaddleSlime.name=皇家史莱姆
+
 item.InfinityTorch.name=无尽火把
+item.InfinityWaterBucket.name=无底水桶
+item.InfinityLavaBucket.name=无底岩浆桶
+item.InfinityHoneyBucket.name=无底蜂蜜桶
+item.InfinityShimmerBucket.name=无底微光桶
+item.SuperstrongSponge.name=超强吸收棉
 
 item.HoneyBucket.name=蜂蜜桶
 tile.honey.name=蜂蜜
@@ -730,6 +738,7 @@ item.ShimmerBucket.name=微光桶
 tile.shimmer.name=微光
 fluid.shimmer=微光
 gtnl.potion.shimmering=微光闪烁
+gtnl.recipe.ShimmerRecipes=微光嬗变
 
 item.SatietyRing.name=饱食指环
 item.SuperReachRing.name=超级触物指环
@@ -759,6 +768,7 @@ Tooltip_TwilightSword_07=§r生命值低于10时基础伤害翻倍
 Tooltip_TwilightSword_08=§r攻击实体轮流使用四种强力的攻击
 Tooltip_TwilightSword_09=§r长按右键触发特殊攻击
 Tooltip_TwilightSword_10=§oModel by IceyArk
+entity.sciencenotleisure.ArrowCustom.name=薄暝之箭
 
 item.CrystalSword.name=§d双锋裂界之剑
 Tooltip_CrystalSword_00=§8§o锋刃所向, 裂界无阻；剑影所至, 敌影无存。

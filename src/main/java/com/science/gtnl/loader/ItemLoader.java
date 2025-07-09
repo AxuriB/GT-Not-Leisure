@@ -5,6 +5,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
@@ -19,12 +20,14 @@ import com.science.gtnl.common.item.items.CircuitIntegratedPlus;
 import com.science.gtnl.common.item.items.FakeItemSiren;
 import com.science.gtnl.common.item.items.FuelRod.FuelRod;
 import com.science.gtnl.common.item.items.FuelRod.FuelRodDepleted;
-import com.science.gtnl.common.item.items.InfinityTorch;
-import com.science.gtnl.common.item.items.ItemSteamRocket;
+import com.science.gtnl.common.item.items.GTNLItemBucket;
+import com.science.gtnl.common.item.items.InfinityItem;
 import com.science.gtnl.common.item.items.KFCFamily;
 import com.science.gtnl.common.item.items.PhysicsCape;
 import com.science.gtnl.common.item.items.RejectionRing;
 import com.science.gtnl.common.item.items.SatietyRing;
+import com.science.gtnl.common.item.items.SlimeSaddle;
+import com.science.gtnl.common.item.items.SteamRocketItem;
 import com.science.gtnl.common.item.items.SuperReachRing;
 import com.science.gtnl.common.item.items.TestItem;
 import com.science.gtnl.common.item.items.TimeStopPocketWatch;
@@ -50,6 +53,12 @@ public class ItemLoader {
     public static Item timeStopPocketWatch;
     public static Item superReachRing;
     public static Item infinityTorch;
+    public static Item infinityWaterBucket;
+    public static Item infinityLavaBucket;
+    public static Item infinityHoneyBucket;
+    public static Item infinityShimmerBucket;
+    public static Item superstrongSponge;
+    public static Item slimeSaddle;
     public static Item recordSus;
     public static Item recordNewHorizons;
     public static Item recordLavaChicken;
@@ -65,7 +74,7 @@ public class ItemLoader {
     }
 
     public static void registryItems() {
-        steamRocket = new ItemSteamRocket();
+        steamRocket = new SteamRocketItem();
         fakeItemSiren = new FakeItemSiren();
         testItem = new TestItem();
         KFCFamily = new KFCFamily(20, 20, true);
@@ -76,7 +85,19 @@ public class ItemLoader {
         circuitIntegratedPlus = new CircuitIntegratedPlus();
         timeStopPocketWatch = new TimeStopPocketWatch();
         superReachRing = new SuperReachRing();
-        infinityTorch = new InfinityTorch();
+        slimeSaddle = new SlimeSaddle();
+        infinityTorch = new InfinityItem("InfinityTorch", Blocks.torch, GTNLItemList.InfinityTorch);
+        infinityWaterBucket = new InfinityItem("InfinityWaterBucket", Blocks.water, GTNLItemList.InfinityWaterBucket);
+        infinityLavaBucket = new InfinityItem("InfinityLavaBucket", Blocks.lava, GTNLItemList.InfinityLavaBucket);
+        infinityHoneyBucket = new InfinityItem(
+            "InfinityHoneyBucket",
+            BlockLoader.honeyFluidBlock,
+            GTNLItemList.InfinityHoneyBucket);
+        infinityShimmerBucket = new InfinityItem(
+            "InfinityShimmerBucket",
+            BlockLoader.shimmerFluidBlock,
+            GTNLItemList.InfinityShimmerBucket);
+        superstrongSponge = new InfinityItem("SuperstrongSponge", null, GTNLItemList.SuperstrongSponge, false);
         recordSus = new ItemRecord("sus");
         recordNewHorizons = new ItemRecord("new_horizons");
         infinityFuelRodDepleted = new FuelRodDepleted("InfinityFuelRodDepleted", 2000);
@@ -91,12 +112,8 @@ public class ItemLoader {
             new ItemStack(infinityFuelRodDepleted, 1));
         metaItem = new MetaItemAdder("MetaItemBase", "MetaItem", GTNLCreativeTabs.GTNotLeisureItem)
             .setTextureName(RESOURCE_ROOT_ID + ":" + "MetaItem/0");
-        honeyBucket = (ItemBucket) new ItemBucket(BlockLoader.honeyFluidBlock).setUnlocalizedName("HoneyBucket")
-            .setTextureName(RESOURCE_ROOT_ID + ":" + "HoneyBucket")
-            .setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
-        shimmerBucket = (ItemBucket) new ItemBucket(BlockLoader.shimmerFluidBlock).setUnlocalizedName("ShimmerBucket")
-            .setTextureName(RESOURCE_ROOT_ID + ":" + "ShimmerBucket")
-            .setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
+        honeyBucket = GTNLItemBucket.create(BlockLoader.honeyFluid);
+        shimmerBucket = GTNLItemBucket.create(BlockLoader.shimmerFluid);
 
         GameRegistry.registerItem(steamRocket, "SteamRocket");
         GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
@@ -110,6 +127,12 @@ public class ItemLoader {
         GameRegistry.registerItem(timeStopPocketWatch, "TimeStopPocketWatch");
         GameRegistry.registerItem(superReachRing, "SuperReachRing");
         GameRegistry.registerItem(infinityTorch, "InfinityTorch");
+        GameRegistry.registerItem(infinityWaterBucket, "InfinityWaterBucket");
+        GameRegistry.registerItem(infinityLavaBucket, "InfinityLavaBucket");
+        GameRegistry.registerItem(infinityHoneyBucket, "InfinityHoneyBucket");
+        GameRegistry.registerItem(infinityShimmerBucket, "InfinityShimmerBucket");
+        GameRegistry.registerItem(superstrongSponge, "SuperstrongSponge");
+        GameRegistry.registerItem(slimeSaddle, "SlimeSaddle");
         GameRegistry.registerItem(recordSus, "record_sus");
         GameRegistry.registerItem(recordNewHorizons, "record_new_horizons");
         GameRegistry.registerItem(infinityFuelRodDepleted, "InfinityFuelRodDepleted");

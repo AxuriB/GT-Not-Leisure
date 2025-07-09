@@ -66,7 +66,7 @@ public class TestItem extends Item implements IHaloRenderItem {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn) {
         if (!worldIn.isRemote) {
-            playerIn.addPotionEffect(new PotionEffect(EffectLoader.awe.getId(), 6000, 1));
+            playerIn.addPotionEffect(new PotionEffect(EffectLoader.awe.id, 6000, 1));
         }
 
         stack.splitStack(1);

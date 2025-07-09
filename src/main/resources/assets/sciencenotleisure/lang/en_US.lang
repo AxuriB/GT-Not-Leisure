@@ -720,7 +720,15 @@ item.KFCFamily.name=Crazy Thursday
 Tooltip_KFCFamily_00=§oCrazy Thursday, v me 50!
 gtnl.potion.perfect_physique=Perfect Physique
 
+item.SlimeSaddle.name=Slime Saddle
+entity.sciencenotleisure.SaddleSlime.name=Royal Slime
+
 item.InfinityTorch.name=Infinity Torch
+item.InfinityWaterBucket.name=Infinity Water Bucket
+item.InfinityLavaBucket.name=Infinity Lava Bucket
+item.InfinityHoneyBucket.name=Infinity Honey Bucket
+item.InfinityShimmerBucket.name=Infinity Shimmer Bucket
+item.SuperstrongSponge.name=Superstrong Sponge
 
 item.HoneyBucket.name=Honey Bucket
 tile.honey.name=Honey
@@ -730,6 +738,7 @@ item.ShimmerBucket.name=Shimmer Bucket
 tile.shimmer.name=Shimmer
 fluid.shimmer=Shimmer
 gtnl.potion.shimmering=Shimmering
+gtnl.recipe.ShimmerRecipes=Shimmer Transformation
 
 item.SatietyRing.name=Ring of Satiety
 item.SuperReachRing.name=Super Reach Ring
@@ -759,6 +768,7 @@ Tooltip_TwilightSword_07=§rBase damage doubles when health is below 10
 Tooltip_TwilightSword_08=§rAttacks entities with four powerful attacks in rotation
 Tooltip_TwilightSword_09=§rHold right-click to trigger a special attack
 Tooltip_TwilightSword_10=§oModel by IceyArk
+entity.sciencenotleisure.ArrowCustom.name=Twilight Arrow
 
 item.CrystalSword.name=§dCrystal Sword
 Tooltip_CrystalSword_00=§8§oWhere the blade points, the rift is unimpeded; where the sword shadow goes, the enemy shadow disappears.
