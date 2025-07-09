@@ -554,29 +554,6 @@ public class BlockLoader {
         registryBlockContainers();
     }
 
-    public static void registryAnotherData() {
-        ItemStack GaiaGlass = new ItemStack(BlockLoader.metaBlockGlass, 1, 0);
-        ItemStack TerraGlass = new ItemStack(BlockLoader.metaBlockGlass, 1, 1);
-        ItemStack FusionGlass = new ItemStack(BlockLoader.metaBlockGlass, 1, 2);
-
-        for (int LampMeta = 1; LampMeta <= 32; LampMeta++) {
-            ItemStack LampTier = new ItemStack(BlockLoader.metaBlockGlow, 1, LampMeta);
-            OreDictionary.registerOre("blockGlassHV", LampTier);
-            OreDictionary.registerOre("blockGlass", LampTier);
-        }
-
-        for (int LampOffMeta = 3; LampOffMeta <= 34; LampOffMeta++) {
-            ItemStack LampOffTier = new ItemStack(BlockLoader.metaBlock, 1, LampOffMeta);
-            OreDictionary.registerOre("blockGlassHV", LampOffTier);
-            OreDictionary.registerOre("blockGlass", LampOffTier);
-        }
-
-        OreDictionary.registerOre("blockGlassUEV", GaiaGlass);
-        OreDictionary.registerOre("blockGlassUV", TerraGlass);
-        OreDictionary.registerOre("blockGlassZPM", FusionGlass);
-
-    }
-
     public static Block SaplingBrickuoia;
 
     public static void registerTreeBrickuoia() {

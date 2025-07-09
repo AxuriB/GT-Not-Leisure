@@ -7,8 +7,10 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -23,6 +25,12 @@ public class EntitySaddleSlime extends EntitySlime {
     public EntitySaddleSlime(World world) {
         super(world);
         this.setSlimeSize(4);
+        this.isImmuneToFire = true;
+        this.tasks.taskEntries.clear();
+        this.targetTasks.taskEntries.clear();
+        this.setHealth(Integer.MAX_VALUE);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+            .setBaseValue(Integer.MAX_VALUE);
     }
 
     @Override
@@ -34,6 +42,11 @@ public class EntitySaddleSlime extends EntitySlime {
         } else {
             super.updateEntityActionState();
         }
+    }
+
+    @Override
+    public void setDead() {
+        this.isDead = true;
     }
 
     @Override
@@ -172,5 +185,25 @@ public class EntitySaddleSlime extends EntitySlime {
 
     public void publicSetSlimeSize(int size) {
         this.setSlimeSize(size);
+    }
+
+    @Override
+    protected Item getDropItem() {
+        return null;
+    }
+
+    @Override
+    public boolean getCanSpawnHere() {
+        return false;
+    }
+
+    @Override
+    protected boolean canDamagePlayer() {
+        return false;
+    }
+
+    @Override
+    protected int getAttackStrength() {
+        return 0;
     }
 }

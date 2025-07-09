@@ -43,6 +43,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import com.reavaritia.ReAvaCreativeTabs;
 import com.reavaritia.ReAvaItemList;
 import com.reavaritia.common.SubtitleDisplay;
+import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -154,7 +155,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
     }
 
     private void applyInfinityDamage(EntityLivingBase target, EntityLivingBase attacker) {
-
+        if (target instanceof EntitySaddleSlime) return;
         if (target instanceof EntityDragon) {
             target.attackEntityFrom(INFINITY_DAMAGE, Float.POSITIVE_INFINITY);
             target.setDead();
@@ -276,6 +277,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
 
         for (Entity target : targets) {
             if (target == player) continue;
+            if (target instanceof EntitySaddleSlime) continue;
 
             if (target instanceof EntityDoppleganger livingTarget) {
                 try {
@@ -340,6 +342,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
     }
 
     private void applyDoubleSweepDamage(EntityLivingBase target, EntityPlayer attacker) {
+        if (target instanceof EntitySaddleSlime) return;
         if (!attacker.isSneaking() && target instanceof EntityPlayer) {
             return;
         }

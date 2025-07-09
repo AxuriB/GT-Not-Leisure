@@ -41,7 +41,7 @@ public class ShimmeringEffect extends EffectBase {
                 int y = MathHelper.floor_double(player.posY);
                 int z = MathHelper.floor_double(player.posZ);
 
-                if (player.posY > 0) {
+                if (player.posY > -2) {
                     player.setPositionAndUpdate(player.posX, player.posY - 0.2, player.posZ);
                 }
 

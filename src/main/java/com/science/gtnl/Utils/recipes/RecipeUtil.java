@@ -176,7 +176,9 @@ public class RecipeUtil {
                 x.mDuration,
                 x.mEUt,
                 x.mSpecialValue);
-            newRecipe.owners = new ArrayList<>(x.owners);
+            if (x.owners != null) {
+                newRecipe.owners = new ArrayList<>(x.owners);
+            }
 
             // 构建包含 NBT 的唯一键
             StringBuilder key = new StringBuilder();

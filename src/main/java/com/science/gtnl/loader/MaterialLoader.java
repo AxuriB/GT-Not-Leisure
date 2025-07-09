@@ -21,7 +21,6 @@ public class MaterialLoader {
         EffectLoader.registry();
 
         BlockLoader.registry();
-        BlockLoader.registryAnotherData();
         BlockLoader.registerTreeBrickuoia();
 
         ItemLoader.registry();

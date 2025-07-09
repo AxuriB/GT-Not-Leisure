@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
@@ -48,7 +48,7 @@ public class RoyalGel extends ItemBauble {
     }
 
     @SubscribeEvent
-    public static void onPlayerHurt(LivingHurtEvent event) {
+    public void onPlayerAttacked(LivingAttackEvent event) {
         if (!(event.entityLiving instanceof EntityPlayerMP player)) return;
         if (!(event.source.getSourceOfDamage() instanceof EntitySlime)) return;
 
@@ -57,7 +57,7 @@ public class RoyalGel extends ItemBauble {
         }
     }
 
-    private static boolean hasRoyalGelEquipped(EntityPlayerMP player) {
+    private boolean hasRoyalGelEquipped(EntityPlayerMP player) {
         if (BaublesApi.getBaubles(player) == null) return false;
 
         for (int i = 0; i < BaublesApi.getBaubles(player)
