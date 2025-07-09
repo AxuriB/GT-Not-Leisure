@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -94,13 +93,9 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
         this.lEUt = mTier * V[3];
         this.mEfficiency = 10000;
         this.mMaxProgresstime = 1000;
-        IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
-        if (tileEntity.isAllowedToWork() && tileEntity.isServerSide()) {
-            int x = tileEntity.getXCoord();
-            int y = tileEntity.getYCoord();
-            int z = tileEntity.getZCoord();
-            World world = tileEntity.getWorld();
-            GTMod.gregtechproxy.spawnEventHandler.putRepellent(world.provider.dimensionId, x, y, z, mRange);
+        IGregTechTileEntity mte = getBaseMetaTileEntity();
+        if (mte.isAllowedToWork() && mte.isServerSide()) {
+            GTMod.gregtechproxy.spawnEventHandler.putRepellent(mte, mRange);
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -109,11 +104,7 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
     public void stopMachine(@Nonnull ShutDownReason reason) {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
-                mte.getWorld().provider.dimensionId,
-                mte.getXCoord(),
-                mte.getYCoord(),
-                mte.getZCoord());
+            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(mte);
         }
         super.stopMachine(reason);
     }
@@ -122,11 +113,7 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
     public void onRemoval() {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
-                mte.getWorld().provider.dimensionId,
-                mte.getXCoord(),
-                mte.getYCoord(),
-                mte.getZCoord());
+            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(mte);
         }
         super.onRemoval();
     }
@@ -135,11 +122,7 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
     public void onUnload() {
         final IGregTechTileEntity mte = this.getBaseMetaTileEntity();
         if (mte.isServerSide()) {
-            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(
-                mte.getWorld().provider.dimensionId,
-                mte.getXCoord(),
-                mte.getYCoord(),
-                mte.getZCoord());
+            GTMod.gregtechproxy.spawnEventHandler.removeRepellent(mte);
         }
         super.onUnload();
     }

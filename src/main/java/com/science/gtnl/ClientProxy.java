@@ -16,6 +16,7 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.common.entity.EntitySteamRocket;
+import com.science.gtnl.common.render.GTRendererTileEntity;
 import com.science.gtnl.common.render.entity.SaddleSlimeRender;
 import com.science.gtnl.common.render.entity.SteamRocketRender;
 import com.science.gtnl.common.render.item.ItemBlockArtificialStarRender;
@@ -49,6 +50,8 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
+
+        new GTRendererTileEntity();
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserBeacon.class, new MeteorMinerRenderer());
 
