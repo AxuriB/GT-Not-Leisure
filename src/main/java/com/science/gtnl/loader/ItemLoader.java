@@ -25,6 +25,7 @@ import com.science.gtnl.common.item.items.InfinityItem;
 import com.science.gtnl.common.item.items.KFCFamily;
 import com.science.gtnl.common.item.items.PhysicsCape;
 import com.science.gtnl.common.item.items.RejectionRing;
+import com.science.gtnl.common.item.items.RoyalGel;
 import com.science.gtnl.common.item.items.SatietyRing;
 import com.science.gtnl.common.item.items.SlimeSaddle;
 import com.science.gtnl.common.item.items.SteamRocketItem;
@@ -59,6 +60,7 @@ public class ItemLoader {
     public static Item infinityShimmerBucket;
     public static Item superstrongSponge;
     public static Item slimeSaddle;
+    public static Item royalGel;
     public static Item recordSus;
     public static Item recordNewHorizons;
     public static Item recordLavaChicken;
@@ -86,6 +88,7 @@ public class ItemLoader {
         timeStopPocketWatch = new TimeStopPocketWatch();
         superReachRing = new SuperReachRing();
         slimeSaddle = new SlimeSaddle();
+        royalGel = new RoyalGel();
         infinityTorch = new InfinityItem("InfinityTorch", Blocks.torch, GTNLItemList.InfinityTorch);
         infinityWaterBucket = new InfinityItem("InfinityWaterBucket", Blocks.water, GTNLItemList.InfinityWaterBucket);
         infinityLavaBucket = new InfinityItem("InfinityLavaBucket", Blocks.lava, GTNLItemList.InfinityLavaBucket);
@@ -133,6 +136,7 @@ public class ItemLoader {
         GameRegistry.registerItem(infinityShimmerBucket, "InfinityShimmerBucket");
         GameRegistry.registerItem(superstrongSponge, "SuperstrongSponge");
         GameRegistry.registerItem(slimeSaddle, "SlimeSaddle");
+        GameRegistry.registerItem(royalGel, "RoyalGel");
         GameRegistry.registerItem(recordSus, "record_sus");
         GameRegistry.registerItem(recordNewHorizons, "record_new_horizons");
         GameRegistry.registerItem(infinityFuelRodDepleted, "InfinityFuelRodDepleted");

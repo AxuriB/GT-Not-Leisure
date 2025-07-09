@@ -723,6 +723,8 @@ gtnl.potion.perfect_physique=完美体魄
 item.SlimeSaddle.name=粘鞍
 entity.sciencenotleisure.SaddleSlime.name=皇家史莱姆
 
+item.RoyalGel.name=皇家凝胶
+
 item.InfinityTorch.name=无尽火把
 item.InfinityWaterBucket.name=无底水桶
 item.InfinityLavaBucket.name=无底岩浆桶

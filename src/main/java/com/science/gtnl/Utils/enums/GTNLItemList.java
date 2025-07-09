@@ -245,6 +245,7 @@ public enum GTNLItemList implements IItemContainer {
     HoneyBucket,
     ShimmerBucket,
     SlimeSaddle,
+    RoyalGel,
 
     CircuitIntegratedPlus,
 

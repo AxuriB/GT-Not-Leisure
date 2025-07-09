@@ -41,8 +41,8 @@ public class SuperReachRing extends ItemBauble {
     }
 
     @Override
-    public String getUnlocalizedNameInefficiently(ItemStack p_77657_1_) {
-        String s = this.getUnlocalizedName(p_77657_1_);
+    public String getUnlocalizedNameInefficiently(ItemStack itemStack) {
+        String s = this.getUnlocalizedName(itemStack);
         return s == null ? "" : StatCollector.translateToLocal(s);
     }
 

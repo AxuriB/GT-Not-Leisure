@@ -723,6 +723,8 @@ gtnl.potion.perfect_physique=Perfect Physique
 item.SlimeSaddle.name=Slime Saddle
 entity.sciencenotleisure.SaddleSlime.name=Royal Slime
 
+item.RoyalGel.name=Royal Gel
+
 item.InfinityTorch.name=Infinity Torch
 item.InfinityWaterBucket.name=Infinity Water Bucket
 item.InfinityLavaBucket.name=Infinity Lava Bucket
