@@ -1,4 +1,4 @@
-package com.science.gtnl.common.item.items;
+package com.science.gtnl.common.item.items.Bauble;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.item.ItemUtils.removeItemFromPlayer;

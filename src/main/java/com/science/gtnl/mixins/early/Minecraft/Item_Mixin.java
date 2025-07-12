@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.science.gtnl.loader.ItemLoader;
+import com.science.gtnl.loader.RecordLoader;
 
 @SuppressWarnings("UnusedMixin")
 @Mixin(Item.class)
@@ -21,6 +21,6 @@ public abstract class Item_Mixin {
             ordinal = 11,
             shift = At.Shift.AFTER))
     private static void afterLastRecordInjection(CallbackInfo ci) {
-        ItemLoader.registryForMinecraft();
+        RecordLoader.registryForMinecraft();
     }
 }

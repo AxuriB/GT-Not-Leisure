@@ -723,8 +723,6 @@ gtnl.potion.perfect_physique=完美体魄
 item.SlimeSaddle.name=粘鞍
 entity.sciencenotleisure.SaddleSlime.name=皇家史莱姆
 
-item.RoyalGel.name=皇家凝胶
-
 item.InfinityTorch.name=无尽火把
 item.InfinityWaterBucket.name=无底水桶
 item.InfinityLavaBucket.name=无底岩浆桶
@@ -745,7 +743,8 @@ gtnl.recipe.ShimmerRecipes=微光嬗变
 item.SatietyRing.name=饱食指环
 item.SuperReachRing.name=超级触物指环
 item.RejectionRing.name=排斥指环
-
+item.RoyalGel.name=皇家凝胶
+item.LuckyHorseshoe.name=幸运马掌
 item.PhysicsCape.name=物理学披风
 Tooltip_PhysicsCape_00=利用强大的切割磁感线进行发电!
 

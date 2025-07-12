@@ -723,8 +723,6 @@ gtnl.potion.perfect_physique=Perfect Physique
 item.SlimeSaddle.name=Slime Saddle
 entity.sciencenotleisure.SaddleSlime.name=Royal Slime
 
-item.RoyalGel.name=Royal Gel
-
 item.InfinityTorch.name=Infinity Torch
 item.InfinityWaterBucket.name=Infinity Water Bucket
 item.InfinityLavaBucket.name=Infinity Lava Bucket
@@ -745,7 +743,8 @@ gtnl.recipe.ShimmerRecipes=Shimmer Transformation
 item.SatietyRing.name=Ring of Satiety
 item.SuperReachRing.name=Super Reach Ring
 item.RejectionRing.name=Ring of Rejection
-
+item.RoyalGel.name=Royal Gel
+item.LuckyHorseshoe.name=Lucky Horseshoe
 item.PhysicsCape.name=Physics Cape
 Tooltip_PhysicsCape_00=Generate electricity by harnessing powerful magnetic flux cutting!
 

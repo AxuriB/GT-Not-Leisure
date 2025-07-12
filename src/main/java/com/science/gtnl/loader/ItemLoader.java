@@ -4,7 +4,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemToolti
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
@@ -16,6 +15,12 @@ import com.science.gtnl.Utils.text.TextUtils;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.ItemRecord;
 import com.science.gtnl.common.item.MetaItemAdder;
+import com.science.gtnl.common.item.items.Bauble.LuckyHorseshoe;
+import com.science.gtnl.common.item.items.Bauble.PhysicsCape;
+import com.science.gtnl.common.item.items.Bauble.RejectionRing;
+import com.science.gtnl.common.item.items.Bauble.RoyalGel;
+import com.science.gtnl.common.item.items.Bauble.SatietyRing;
+import com.science.gtnl.common.item.items.Bauble.SuperReachRing;
 import com.science.gtnl.common.item.items.CircuitIntegratedPlus;
 import com.science.gtnl.common.item.items.FakeItemSiren;
 import com.science.gtnl.common.item.items.FuelRod.FuelRod;
@@ -23,13 +28,8 @@ import com.science.gtnl.common.item.items.FuelRod.FuelRodDepleted;
 import com.science.gtnl.common.item.items.GTNLItemBucket;
 import com.science.gtnl.common.item.items.InfinityItem;
 import com.science.gtnl.common.item.items.KFCFamily;
-import com.science.gtnl.common.item.items.PhysicsCape;
-import com.science.gtnl.common.item.items.RejectionRing;
-import com.science.gtnl.common.item.items.RoyalGel;
-import com.science.gtnl.common.item.items.SatietyRing;
 import com.science.gtnl.common.item.items.SlimeSaddle;
 import com.science.gtnl.common.item.items.SteamRocketItem;
-import com.science.gtnl.common.item.items.SuperReachRing;
 import com.science.gtnl.common.item.items.TestItem;
 import com.science.gtnl.common.item.items.TimeStopPocketWatch;
 import com.science.gtnl.common.item.items.TwilightSword;
@@ -46,13 +46,9 @@ public class ItemLoader {
     public static Item fakeItemSiren;
     public static Item testItem;
     public static Item KFCFamily;
-    public static Item satietyRing;
-    public static Item rejectionRing;
     public static Item twilightSword;
-    public static Item physicsCape;
     public static Item circuitIntegratedPlus;
     public static Item timeStopPocketWatch;
-    public static Item superReachRing;
     public static Item infinityTorch;
     public static Item infinityWaterBucket;
     public static Item infinityLavaBucket;
@@ -60,35 +56,27 @@ public class ItemLoader {
     public static Item infinityShimmerBucket;
     public static Item superstrongSponge;
     public static Item slimeSaddle;
-    public static Item royalGel;
-    public static Item recordSus;
-    public static Item recordNewHorizons;
-    public static Item recordLavaChicken;
     public static Item infinityFuelRodDepleted;
     public static Item infinityFuelRod;
     public static Item metaItem;
     public static ItemBucket honeyBucket;
     public static ItemBucket shimmerBucket;
 
-    public static void registryForMinecraft() {
-        recordLavaChicken = new ItemRecord("lava_chicken").setCreativeTab(CreativeTabs.tabMisc);
-        GameRegistry.registerItem(ItemLoader.recordLavaChicken, "record_lava_chicken");
-    }
+    public static Item satietyRing;
+    public static Item rejectionRing;
+    public static Item superReachRing;
+    public static Item physicsCape;
+    public static Item royalGel;
+    public static Item luckyHorseshoe;
 
     public static void registryItems() {
         steamRocket = new SteamRocketItem();
         fakeItemSiren = new FakeItemSiren();
         testItem = new TestItem();
         KFCFamily = new KFCFamily(20, 20, true);
-        satietyRing = new SatietyRing();
-        rejectionRing = new RejectionRing();
         twilightSword = new TwilightSword();
-        physicsCape = new PhysicsCape();
         circuitIntegratedPlus = new CircuitIntegratedPlus();
         timeStopPocketWatch = new TimeStopPocketWatch();
-        superReachRing = new SuperReachRing();
-        slimeSaddle = new SlimeSaddle();
-        royalGel = new RoyalGel();
         infinityTorch = new InfinityItem("InfinityTorch", Blocks.torch, GTNLItemList.InfinityTorch);
         infinityWaterBucket = new InfinityItem("InfinityWaterBucket", Blocks.water, GTNLItemList.InfinityWaterBucket);
         infinityLavaBucket = new InfinityItem("InfinityLavaBucket", Blocks.lava, GTNLItemList.InfinityLavaBucket);
@@ -101,8 +89,9 @@ public class ItemLoader {
             BlockLoader.shimmerFluidBlock,
             GTNLItemList.InfinityShimmerBucket);
         superstrongSponge = new InfinityItem("SuperstrongSponge", null, GTNLItemList.SuperstrongSponge, false);
-        recordSus = new ItemRecord("sus");
-        recordNewHorizons = new ItemRecord("new_horizons");
+        RecordLoader.recordSus = new ItemRecord("sus").setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
+        RecordLoader.recordNewHorizons = new ItemRecord("new_horizons")
+            .setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         infinityFuelRodDepleted = new FuelRodDepleted("InfinityFuelRodDepleted", 2000);
         infinityFuelRod = new FuelRod(
             "InfinityFuelRod",
@@ -118,17 +107,21 @@ public class ItemLoader {
         honeyBucket = GTNLItemBucket.create(BlockLoader.honeyFluid);
         shimmerBucket = GTNLItemBucket.create(BlockLoader.shimmerFluid);
 
+        superReachRing = new SuperReachRing();
+        satietyRing = new SatietyRing();
+        rejectionRing = new RejectionRing();
+        slimeSaddle = new SlimeSaddle();
+        physicsCape = new PhysicsCape();
+        royalGel = new RoyalGel();
+        luckyHorseshoe = new LuckyHorseshoe();
+
         GameRegistry.registerItem(steamRocket, "SteamRocket");
         GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
         GameRegistry.registerItem(testItem, "TestItem");
         GameRegistry.registerItem(KFCFamily, "KFCFamily");
-        GameRegistry.registerItem(satietyRing, "SatietyRing");
-        GameRegistry.registerItem(rejectionRing, "RejectionRing");
         GameRegistry.registerItem(twilightSword, "TwilightSword");
-        GameRegistry.registerItem(physicsCape, "PhysicsCape");
         GameRegistry.registerItem(circuitIntegratedPlus, "CircuitIntegratedPlus");
         GameRegistry.registerItem(timeStopPocketWatch, "TimeStopPocketWatch");
-        GameRegistry.registerItem(superReachRing, "SuperReachRing");
         GameRegistry.registerItem(infinityTorch, "InfinityTorch");
         GameRegistry.registerItem(infinityWaterBucket, "InfinityWaterBucket");
         GameRegistry.registerItem(infinityLavaBucket, "InfinityLavaBucket");
@@ -136,18 +129,22 @@ public class ItemLoader {
         GameRegistry.registerItem(infinityShimmerBucket, "InfinityShimmerBucket");
         GameRegistry.registerItem(superstrongSponge, "SuperstrongSponge");
         GameRegistry.registerItem(slimeSaddle, "SlimeSaddle");
-        GameRegistry.registerItem(royalGel, "RoyalGel");
-        GameRegistry.registerItem(recordSus, "record_sus");
-        GameRegistry.registerItem(recordNewHorizons, "record_new_horizons");
+        GameRegistry.registerItem(RecordLoader.recordSus, "record_sus");
+        GameRegistry.registerItem(RecordLoader.recordNewHorizons, "record_new_horizons");
         GameRegistry.registerItem(infinityFuelRodDepleted, "InfinityFuelRodDepleted");
         GameRegistry.registerItem(infinityFuelRod, "InfinityFuelRod");
         GameRegistry.registerItem(metaItem, "MetaItem");
-        GameRegistry.registerItem(honeyBucket, "HoneyBucket");
-        GameRegistry.registerItem(shimmerBucket, "ShimmerBucket");
 
-        GTNLItemList.RecordSus.set(new ItemStack(recordSus, 1));
-        GTNLItemList.RecordNewHorizons.set(new ItemStack(recordNewHorizons, 1));
-        GTNLItemList.RecordLavaChicken.set(new ItemStack(recordLavaChicken, 1));
+        GameRegistry.registerItem(satietyRing, "SatietyRing");
+        GameRegistry.registerItem(rejectionRing, "RejectionRing");
+        GameRegistry.registerItem(superReachRing, "SuperReachRing");
+        GameRegistry.registerItem(royalGel, "RoyalGel");
+        GameRegistry.registerItem(physicsCape, "PhysicsCape");
+        GameRegistry.registerItem(luckyHorseshoe, "LuckyHorseshoe");
+
+        GTNLItemList.RecordSus.set(new ItemStack(RecordLoader.recordSus, 1));
+        GTNLItemList.RecordNewHorizons.set(new ItemStack(RecordLoader.recordNewHorizons, 1));
+        GTNLItemList.RecordLavaChicken.set(new ItemStack(RecordLoader.recordLavaChicken, 1));
         GTNLItemList.InfinityFuelRodDepleted.set(new ItemStack(infinityFuelRodDepleted, 1));
         GTNLItemList.InfinityFuelRod.set(new ItemStack(infinityFuelRod, 1));
         GTNLItemList.HoneyBucket.set(new ItemStack(honeyBucket, 1));

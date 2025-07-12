@@ -9,7 +9,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -84,7 +83,6 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
         super(INFINITY);
         setUnlocalizedName("InfinitySword");
         setTextureName(RESOURCE_ROOT_ID + ":" + "InfinitySword");
-        setCreativeTab(CreativeTabs.tabCombat);
         setCreativeTab(ReAvaCreativeTabs.ReAvaritia);
         this.setMaxDamage(9999);
         MinecraftForge.EVENT_BUS.register(this);

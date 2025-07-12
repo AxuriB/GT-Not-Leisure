@@ -225,14 +225,10 @@ public enum GTNLItemList implements IItemContainer {
 
     TestItem,
     KFCFamily,
-    SatietyRing,
-    SuperReachRing,
-    RejectionRing,
     RecordSus,
     RecordNewHorizons,
     RecordLavaChicken,
     FakeItemSiren,
-    PhysicsCape,
     TimeStopPocketWatch,
     InfinityTorch,
     InfinityWaterBucket,
@@ -240,12 +236,17 @@ public enum GTNLItemList implements IItemContainer {
     InfinityHoneyBucket,
     InfinityShimmerBucket,
     SuperstrongSponge,
-    MilledNaquadahEnriched,
     SteamRocket,
     HoneyBucket,
     ShimmerBucket,
     SlimeSaddle,
+
+    SatietyRing,
+    SuperReachRing,
+    RejectionRing,
     RoyalGel,
+    PhysicsCape,
+    LuckyHorseshoe,
 
     CircuitIntegratedPlus,
 
@@ -253,6 +254,8 @@ public enum GTNLItemList implements IItemContainer {
     InfinityFuelRodDepleted,
 
     SaplingBrickuoia,
+
+    MilledNaquadahEnriched,
 
     TwilightSword,
 
