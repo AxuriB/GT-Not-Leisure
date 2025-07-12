@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import baubles.api.IBauble;
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
+import vazkii.botania.common.achievement.ModAchievements;
 import vazkii.botania.common.entity.EntityDoppleganger;
 
 public abstract class BaubleItem extends Item implements IBauble {
@@ -49,7 +50,19 @@ public abstract class BaubleItem extends Item implements IBauble {
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {}
 
     @Override
-    public void onEquipped(ItemStack itemstack, EntityLivingBase player) {}
+    public void onEquipped(ItemStack stack, EntityLivingBase player) {
+        if (player != null) {
+            if (!player.worldObj.isRemote) player.worldObj.playSoundAtEntity(player, "botania:equipBauble", 0.1F, 1.3F);
+
+            if (player instanceof EntityPlayer) ((EntityPlayer) player).addStat(ModAchievements.baubleWear, 1);
+
+            onEquippedOrLoadedIntoWorld(stack, player);
+        }
+    }
+
+    public void onEquippedOrLoadedIntoWorld(ItemStack stack, EntityLivingBase player) {
+        // NO-OP
+    }
 
     @Override
     public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {}

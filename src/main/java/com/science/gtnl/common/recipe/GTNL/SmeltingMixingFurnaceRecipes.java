@@ -618,7 +618,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
                 Materials.Cobalt.getMolten(144),
                 Materials.Platinum.getMolten(144),
                 Materials.Erbium.getMolten(144),
-                Materials.Helium.getMolten(1000))
+                Materials.Helium.getGas(1000))
             .fluidOutputs(MaterialsAlloy.HELICOPTER.getFluidStack(720))
             .specialValue(0)
             .duration(7200)
@@ -1568,7 +1568,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
                 GTUtility.copyAmountUnsafe(126, GGMaterial.orundum.get(OrePrefixes.dust, 1)))
             .fluidInputs(
                 Materials.Blaze.getMolten(144 * 128),
-                Materials.Draconic.getMolten(144 * 16),
+                Materials.Draconium.getMolten(144 * 16),
                 Materials.Ardite.getMolten(144 * 16),
                 Materials.Plutonium.getMolten(144 * 63),
                 Materials.Naquadah.getMolten(144 * 8))

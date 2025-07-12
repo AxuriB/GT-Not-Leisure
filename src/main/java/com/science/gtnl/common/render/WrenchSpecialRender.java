@@ -81,7 +81,12 @@ public class WrenchSpecialRender {
                 GL11.glDisable(GL11.GL_CULL_FACE);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 GL11.glTranslatef(centerX, centerY, 20f);
-                GL11.glRotatef((GTMod.gregtechproxy.getAnimationTicks() * 3.5f) % 360, 0.3f, 0.5f, 0.2f);
+                GL11.glRotatef(
+                    (GTMod.clientProxy()
+                        .getAnimationTicks() * 3.5f) % 360,
+                    0.3f,
+                    0.5f,
+                    0.2f);
                 GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
                 GL11.glTranslatef(0.0f, 0.0f, 0.03125F);
                 GL11.glTranslatef(-centerX, -centerY, 10f);

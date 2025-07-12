@@ -21,8 +21,8 @@ public class TranscendentPlasmaMixerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(6))
             .fluidInputs(
-                MaterialsUEVplus.Time.getFluid(710),
-                MaterialsUEVplus.Space.getFluid(710),
+                MaterialsUEVplus.Time.getMolten(710),
+                MaterialsUEVplus.Space.getMolten(710),
                 GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(1000),
                 GGMaterial.naquadahBasedFuelMkII.getFluidOrGas(1000),
                 GGMaterial.naquadahBasedFuelMkIII.getFluidOrGas(1000),

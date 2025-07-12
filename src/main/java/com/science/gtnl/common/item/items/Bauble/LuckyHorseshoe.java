@@ -8,26 +8,24 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.item.BaubleItem;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import vazkii.botania.common.item.equipment.bauble.ItemBauble;
 
-public class LuckyHorseshoe extends ItemBauble {
+public class LuckyHorseshoe extends BaubleItem {
 
     private static final Random rand = new Random();
 
     public LuckyHorseshoe() {
-        super("LuckyHorseshoe");
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "LuckyHorseshoe");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         GTNLItemList.LuckyHorseshoe.set(new ItemStack(this, 1));
@@ -42,12 +40,6 @@ public class LuckyHorseshoe extends ItemBauble {
     @Override
     public void onWornTick(ItemStack stack, EntityLivingBase player) {
         player.fallDistance = 0;
-    }
-
-    @Override
-    public String getUnlocalizedNameInefficiently(ItemStack stack) {
-        String s = this.getUnlocalizedName(stack);
-        return s == null ? "" : StatCollector.translateToLocal(s);
     }
 
     @Override

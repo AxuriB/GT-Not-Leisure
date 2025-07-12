@@ -2049,6 +2049,7 @@ Tooltip_EdenGarden_05=每株作物消耗2000L水
 Tooltip_EdenGarden_Casing=任意电力压缩机机械方块
 
 NameGenerationEarthEngine=初代目行星发动机
+GenerationEarthEngineRecipeType=聚变反应堆
 gtnl.recipe.RecombinationFusionReactorRecipes=重聚变反应堆
 gtnl.recipe.GenerationEarthEngineRecipeType=重聚变反应堆
 Tooltip_GenerationEarthEngine_00=尽管多年过去了, 它仍然屹立不倒

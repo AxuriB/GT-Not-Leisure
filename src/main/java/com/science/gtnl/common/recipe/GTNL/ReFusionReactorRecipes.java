@@ -8,7 +8,6 @@ import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
@@ -33,15 +32,15 @@ public class ReFusionReactorRecipes implements IRecipePool {
                 MaterialsUEVplus.SpaceTime.getMolten(Integer.MAX_VALUE),
                 MaterialsUEVplus.TranscendentMetal.getMolten(Integer.MAX_VALUE),
                 MaterialsUEVplus.Eternity.getMolten(Integer.MAX_VALUE),
-                MaterialsUEVplus.PrimordialMatter.getMolten(Integer.MAX_VALUE),
-                MaterialsUEVplus.Space.getFluid(Integer.MAX_VALUE),
-                MaterialsUEVplus.Time.getFluid(Integer.MAX_VALUE),
+                MaterialsUEVplus.PrimordialMatter.getFluid(Integer.MAX_VALUE),
+                MaterialsUEVplus.Space.getMolten(Integer.MAX_VALUE),
+                MaterialsUEVplus.Time.getMolten(Integer.MAX_VALUE),
                 MaterialsUEVplus.SixPhasedCopper.getMolten(Integer.MAX_VALUE),
                 MaterialsUEVplus.StargateCrystalSlurry.getFluid(Integer.MAX_VALUE),
-                Materials.Antimatter.getFluid(Integer.MAX_VALUE))
+                MaterialsUEVplus.Antimatter.getFluid(Integer.MAX_VALUE))
             .outputChances(1)
             .duration(1)
-            .eut(1)
+            .eut(0)
             .addTo(RFRR);
     }
 }

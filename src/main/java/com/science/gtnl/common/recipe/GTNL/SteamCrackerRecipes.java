@@ -16,8 +16,8 @@ public class SteamCrackerRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-        Materials[][] matPairs = { { Materials.SulfuricGas, Materials.Gas },
-            { Materials.SulfuricNaphtha, Materials.Naphtha }, { Materials.SulfuricLightFuel, Materials.LightFuel },
+        Materials[][] matPairs = { { Materials.SulfuricNaphtha, Materials.Naphtha },
+            { Materials.SulfuricLightFuel, Materials.LightFuel },
             { Materials.SulfuricHeavyFuel, Materials.HeavyFuel }, };
 
         for (Materials[] pair : matPairs) {
@@ -27,13 +27,24 @@ public class SteamCrackerRecipes implements IRecipePool {
             for (int circuit = 1; circuit <= 3; circuit++) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.getIntegratedCircuit(circuit))
-                    .fluidInputs(inputMat.getGas(1000))
+                    .fluidInputs(inputMat.getFluid(1000))
                     .fluidOutputs(getSteamCrackedFluid(outputMat, circuit, 400))
                     .specialValue(0)
                     .duration(200)
                     .eut(30)
                     .addTo(SCR);
             }
+        }
+
+        for (int circuit = 1; circuit <= 3; circuit++) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.getIntegratedCircuit(circuit))
+                .fluidInputs(Materials.SulfuricGas.getGas(1000))
+                .fluidOutputs(getSteamCrackedFluid(Materials.Gas, circuit, 400))
+                .specialValue(0)
+                .duration(200)
+                .eut(30)
+                .addTo(SCR);
         }
     }
 

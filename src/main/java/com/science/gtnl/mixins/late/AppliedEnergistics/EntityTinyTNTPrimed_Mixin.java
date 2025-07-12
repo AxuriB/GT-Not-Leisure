@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -19,13 +20,14 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 @Mixin(value = EntityTinyTNTPrimed.class, remap = false)
 public abstract class EntityTinyTNTPrimed_Mixin extends EntityTNTPrimed {
 
+    @Unique
     private static final float TINY_TNT_DYNAMO_POWER = 1.0F;
 
     public EntityTinyTNTPrimed_Mixin(World p_i1729_1_) {
         super(p_i1729_1_);
     }
 
-    @Inject(method = "explode", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "explode", at = @At("HEAD"), cancellable = true, remap = true)
     private void injectDynamoCheck(CallbackInfo ci) {
         int ex = (int) posX;
         int ey = (int) posY;

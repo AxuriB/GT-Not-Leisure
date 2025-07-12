@@ -2049,6 +2049,7 @@ Tooltip_EdenGarden_05=Each plant consumes 2000L of water.
 Tooltip_EdenGarden_Casing=Any Electric Compressor Machine Block
 
 NameGenerationEarthEngine=First Generation Planetary Engine
+GenerationEarthEngineRecipeType=Fusion Reactor
 gtnl.recipe.RecombinationFusionReactorRecipes=Recombination Fusion Reactor
 gtnl.recipe.GenerationEarthEngineRecipeType=Recombination Fusion Reactor
 Tooltip_GenerationEarthEngine_00=Despite the years, it still stands tall.
@@ -2462,8 +2463,8 @@ Tooltip_SpaceAssembler_Casing=Any Advanced Computer Casing
 GT5U.gui.text.not_in_space_station=Not in Space Station!
 
 NameSmeltingMixingFurnace=Smelting Mixing Furnace
-SmeltingMixingFurnaceRecipeType=Smelting Mixing
-gtnl.recipe.SmeltingMixingFurnaceRecipes=Smelting Mixing / Dimensionally Transcendent Plasma Forge
+SmeltingMixingFurnaceRecipeType=Smelting Mixing / Dimensionally Transcendent Plasma Forge
+gtnl.recipe.SmeltingMixingFurnaceRecipes=Smelting Mixing
 SmeltingMixingFurnace_Mode_0=Smelting Mixing
 SmeltingMixingFurnace_Mode_1=Hyperdimensional Plasma Forge
 Tooltip_SmeltingMixingFurnace_00=§9§lManipulate substances in an extremely efficient manner

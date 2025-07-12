@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.util.GTModHandler.getModItem;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
@@ -100,23 +101,22 @@ public class ItemUtils {
     }
 
     public static ItemStack createFluidPacket(FluidStack fluid, int amount) {
+        if (fluid == null) return new ItemStack(Blocks.fire);
         ItemStack packet = GTModHandler.getModItem(AE2FluidCraft.ID, "fluid_packet", 1);
-        if (packet != null) {
-            NBTTagCompound tag = packet.getTagCompound();
-            if (tag == null) {
-                tag = new NBTTagCompound();
-                packet.setTagCompound(tag);
-            }
-
-            NBTTagCompound fluidTag = new NBTTagCompound();
-            String fluidName = fluid.getFluid()
-                .getName();
-
-            fluidTag.setString("FluidName", fluidName);
-            fluidTag.setInteger("Amount", amount);
-
-            tag.setTag("FluidStack", fluidTag);
+        NBTTagCompound tag = packet.getTagCompound();
+        if (tag == null) {
+            tag = new NBTTagCompound();
+            packet.setTagCompound(tag);
         }
+
+        NBTTagCompound fluidTag = new NBTTagCompound();
+        String fluidName = fluid.getFluid()
+            .getName();
+
+        fluidTag.setString("FluidName", fluidName);
+        fluidTag.setInteger("Amount", amount);
+
+        tag.setTag("FluidStack", fluidTag);
         return packet;
     }
 

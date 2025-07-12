@@ -1,7 +1,6 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import static gregtech.api.enums.Mods.Botania;
-import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -1292,7 +1291,7 @@ public class ManaInfusionRecipes implements IRecipePool {
             .addTo(MIR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem("harvestcraft", "wovencottonItem", 1, 0))
+            .itemInputs(GTModHandler.getModItem(PamsHarvestCraft.ID, "wovencottonItem", 1, 0))
             .itemOutputs(GTModHandler.getModItem(Botania.ID, "manaResource", 1, 22))
             .fluidInputs(MaterialPool.FluidMana.getFluidOrGas(15000))
             .duration(20)
@@ -1300,7 +1299,7 @@ public class ManaInfusionRecipes implements IRecipePool {
             .addTo(MIR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem("harvestcraft", "wovencottonItem", 1, 0))
+            .itemInputs(GTModHandler.getModItem(PamsHarvestCraft.ID, "wovencottonItem", 1, 0))
             .itemOutputs(GTModHandler.getModItem(Botania.ID, "manaResource", 1, 22))
             .fluidInputs(MaterialPool.FluidMana.getFluidOrGas(15000))
             .duration(20)
@@ -1308,24 +1307,16 @@ public class ManaInfusionRecipes implements IRecipePool {
             .addTo(MIR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem("ForbiddenMagic", "Cores", 1, 8))
-            .itemOutputs(GTModHandler.getModItem("ForbiddenMagic", "Cores", 1, 7))
-            .fluidInputs(MaterialPool.FluidMana.getFluidOrGas(10000))
-            .duration(20)
-            .eut(2048)
-            .addTo(MIR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem("ForbiddenMagic", "WandCaps", 1, 4))
-            .itemOutputs(GTModHandler.getModItem("ForbiddenMagic", "WandCaps", 1, 3))
+            .itemInputs(GTModHandler.getModItem(ForbiddenMagic.ID, "WandCaps", 1, 4))
+            .itemOutputs(GTModHandler.getModItem(ForbiddenMagic.ID, "WandCaps", 1, 3))
             .fluidInputs(MaterialPool.FluidMana.getFluidOrGas(1000))
             .duration(20)
             .eut(2048)
             .addTo(MIR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem("ForbiddenMagic", "WandCores", 1, 12))
-            .itemOutputs(GTModHandler.getModItem("ForbiddenMagic", "WandCores", 1, 11))
+            .itemInputs(GTModHandler.getModItem(ForbiddenMagic.ID, "WandCores", 1, 12))
+            .itemOutputs(GTModHandler.getModItem(ForbiddenMagic.ID, "WandCores", 1, 11))
             .fluidInputs(MaterialPool.FluidMana.getFluidOrGas(10000))
             .duration(20)
             .eut(2048)

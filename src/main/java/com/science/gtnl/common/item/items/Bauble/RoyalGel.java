@@ -6,24 +6,22 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.item.BaubleItem;
 
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import vazkii.botania.common.item.equipment.bauble.ItemBauble;
 
-public class RoyalGel extends ItemBauble {
+public class RoyalGel extends BaubleItem {
 
     public RoyalGel() {
-        super("RoyalGel");
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "RoyalGel");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         GTNLItemList.RoyalGel.set(new ItemStack(this, 1));
@@ -33,12 +31,6 @@ public class RoyalGel extends ItemBauble {
     @Override
     public BaubleType getBaubleType(ItemStack stack) {
         return BaubleType.UNIVERSAL;
-    }
-
-    @Override
-    public String getUnlocalizedNameInefficiently(ItemStack stack) {
-        String s = this.getUnlocalizedName(stack);
-        return s == null ? "" : StatCollector.translateToLocal(s);
     }
 
     @Override

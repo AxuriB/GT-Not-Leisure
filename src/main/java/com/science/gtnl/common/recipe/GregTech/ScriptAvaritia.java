@@ -31,6 +31,8 @@ import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.common.items.CombType;
+import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -75,7 +77,7 @@ public class ScriptAvaritia implements IScriptLoader {
         ItemStack sixPhasedCopperFluidPacket = ItemUtils
             .createFluidPacket(MaterialsUEVplus.SixPhasedCopper.getMolten(1), 114514);
         ItemStack phononMediumFluidPacket = ItemUtils
-            .createFluidPacket(MaterialsUEVplus.PhononMedium.getMolten(1), 114514);
+            .createFluidPacket(MaterialsUEVplus.PhononMedium.getFluid(1), 114514);
         ItemStack antimatterFluidPacket = ItemUtils.createFluidPacket(MaterialsUEVplus.Antimatter.getFluid(1), 114514);
         ItemStack plasmaLeadFluidPacket = ItemUtils.createFluidPacket(Materials.Lead.getPlasma(1), 114514);
         ItemStack dtrFluidPacket = ItemUtils
@@ -112,8 +114,7 @@ public class ScriptAvaritia implements IScriptLoader {
             .createFluidPacket(new FluidStack(MaterialsElements.getInstance().BROMINE.getPlasma(), 1), 114514);
         ItemStack plasmaXenonPacket = ItemUtils
             .createFluidPacket(new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 1), 114514);
-        ItemStack plasmaHypogenPacket = ItemUtils
-            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().HYDROGEN.getPlasma(), 1), 114514);
+        ItemStack plasmaHypogenPacket = ItemUtils.createFluidPacket(Materials.Hydrogen.getPlasma(1), 114514);
         ItemStack plasmaAdvancedNitinolPacket = ItemUtils
             .createFluidPacket(new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 1), 114514);
         ItemStack plasmaChromaticGlassPacket = ItemUtils
@@ -147,16 +148,16 @@ public class ScriptAvaritia implements IScriptLoader {
             .createFluidPacket(new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 1), 114514);
         ItemStack plasmaZincPacket = ItemUtils.createFluidPacket(Materials.Zinc.getPlasma(1), 114514);
         ItemStack plasmaTechnetiumPacket = ItemUtils
-            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().HYDROGEN.getPlasma(), 1), 114514);
+            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().TECHNETIUM.getPlasma(), 1), 114514);
         ItemStack plasmaNeptuniumPacket = ItemUtils
-            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().HYDROGEN.getPlasma(), 1), 114514);
+            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().NEPTUNIUM.getPlasma(), 1), 114514);
         ItemStack plasmaCaliforniumPacket = ItemUtils
-            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().HYDROGEN.getPlasma(), 1), 114514);
+            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().CALIFORNIUM.getPlasma(), 1), 114514);
         ItemStack plasmaNiobiumPacket = ItemUtils.createFluidPacket(Materials.Niobium.getPlasma(1), 114514);
         ItemStack plasmaCuriumPacket = ItemUtils
-            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().HYDROGEN.getPlasma(), 1), 114514);
+            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().CURIUM.getPlasma(), 1), 114514);
         ItemStack plasmaProtactiniumPacket = ItemUtils
-            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().HYDROGEN.getPlasma(), 1), 114514);
+            .createFluidPacket(new FluidStack(MaterialsElements.getInstance().PROTACTINIUM.getPlasma(), 1), 114514);
         ItemStack excitedDTRCPacket = ItemUtils.createFluidPacket(MaterialsUEVplus.ExcitedDTRC.getFluid(1), 114514);
         ItemStack excitedDTSCFluidPacket = ItemUtils
             .createFluidPacket(MaterialsUEVplus.ExcitedDTSC.getFluid(1), 114514);
@@ -1110,7 +1111,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 '6',
                 GTModHandler.getModItem(ElectroMagicTools.ID, "EssentiaGenerators", 1, 0, missing),
                 '7',
-                GTOreDictUnificator.get(OrePrefixes.comb, Materials.Infinity, 1),
+                GTBees.combs.getStackForType(CombType.INFINITY),
                 '8',
                 GTModHandler.getModItem(ElectroMagicTools.ID, "EssentiaGenerators", 1, 1, missing),
                 '9',

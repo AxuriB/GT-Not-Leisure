@@ -15,8 +15,8 @@ import gregtech.GTMod;
 @Mixin(value = GTMod.class, remap = false)
 public class ForGTPreLoadHook_Mixin {
 
-    @Inject(method = "onPreLoad", at = @At("HEAD"), require = 1)
-    private void science$loadHook(FMLPreInitializationEvent aEvent, CallbackInfo ci) {
+    @Inject(method = "onPreInitialization", at = @At("HEAD"))
+    public void science$loadHook(FMLPreInitializationEvent aEvent, CallbackInfo ci) {
         if (MainConfig.enableDeleteRecipe) {
             AssLineRecipeHook.loadAndInit();
         }
