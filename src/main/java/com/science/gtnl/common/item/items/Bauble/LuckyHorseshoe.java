@@ -26,6 +26,8 @@ public class LuckyHorseshoe extends BaubleItem {
     private static final Random rand = new Random();
 
     public LuckyHorseshoe() {
+        this.setMaxStackSize(1);
+        this.setUnlocalizedName("LuckyHorseshoe");
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "LuckyHorseshoe");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         GTNLItemList.LuckyHorseshoe.set(new ItemStack(this, 1));

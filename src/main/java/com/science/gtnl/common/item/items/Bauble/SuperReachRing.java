@@ -18,6 +18,8 @@ import vazkii.botania.common.Botania;
 public class SuperReachRing extends BaubleItem {
 
     public SuperReachRing() {
+        this.setMaxStackSize(1);
+        this.setUnlocalizedName("SuperReachRing");
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "SuperReachRing");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         GTNLItemList.SuperReachRing.set(new ItemStack(this, 1));

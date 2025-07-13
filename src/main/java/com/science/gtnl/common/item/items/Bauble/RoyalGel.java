@@ -22,6 +22,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class RoyalGel extends BaubleItem {
 
     public RoyalGel() {
+        this.setUnlocalizedName("RoyalGel");
+        this.setMaxStackSize(1);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "RoyalGel");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         GTNLItemList.RoyalGel.set(new ItemStack(this, 1));
