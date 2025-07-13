@@ -1,6 +1,7 @@
 package com.science.gtnl.common.recipe.GregTech.ServerStart;
 
 import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -437,6 +438,21 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .specialValue(0)
             .duration(400)
             .eut(TierEU.RECIPE_ZPM)
+            .addTo(CAR);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 2L),
+                ItemList.Circuit_Ultimatecrystalcomputer.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NiobiumTitanium, 8L),
+                ItemList.Circuit_Parts_InductorASMD.get(8),
+                ItemList.Circuit_Parts_CapacitorASMD.get(16),
+                ItemList.Circuit_Parts_DiodeASMD.get(8))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1440))
+            .itemOutputs(ItemList.Circuit_Crystalmainframe.get(1))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(20 * SECONDS)
+            .requiresCleanRoom()
             .addTo(CAR);
 
     }

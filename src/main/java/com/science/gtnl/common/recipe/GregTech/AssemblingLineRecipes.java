@@ -690,24 +690,6 @@ public class AssemblingLineRecipes implements IRecipePool {
             120 * SECONDS,
             (int) TierEU.RECIPE_UEV);
 
-        GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, ItemList.Circuit_Ultimatecrystalcomputer.get(1))
-            .metadata(SCANNING, new Scanning(30 * MINUTES, TierEU.RECIPE_IV))
-            .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 2L),
-                ItemList.Circuit_Ultimatecrystalcomputer.get(2),
-                ItemList.Circuit_Chip_Ram.get(32),
-                ItemList.Circuit_Chip_HPIC.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NiobiumTitanium, 8L),
-                ItemList.Circuit_Parts_InductorASMD.get(8),
-                ItemList.Circuit_Parts_CapacitorASMD.get(16),
-                ItemList.Circuit_Parts_DiodeASMD.get(8))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(1440))
-            .itemOutputs(ItemList.Circuit_Crystalmainframe.get(1))
-            .eut(TierEU.RECIPE_LuV)
-            .duration(40 * SECONDS)
-            .addTo(AssemblyLine);
-
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 4),
             1024000000,
