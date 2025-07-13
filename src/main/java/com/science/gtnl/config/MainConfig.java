@@ -311,7 +311,7 @@ public class MainConfig {
 
         // Player Doll
         enableCustomPlayerDoll = config
-            .get(CATEGORY_PLAYER_DOLL, "enable", enableCustomPlayerDoll, "Enable Custom Player Skin for Player Doll")
+            .get(CATEGORY_PLAYER_DOLL, "enableCustomSkin", enableCustomPlayerDoll, "Enable Custom Player Skin for Player Doll")
             .getBoolean(enableCustomPlayerDoll);
 
         // Infinity Sword

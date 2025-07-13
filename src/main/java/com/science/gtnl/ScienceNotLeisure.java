@@ -20,6 +20,7 @@ import com.science.gtnl.common.command.CommandTitle;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.MachineLoader;
 import com.science.gtnl.loader.MaterialLoader;
+import com.science.gtnl.loader.QuestLoader;
 import com.science.gtnl.loader.RecipeLoaderRunnable;
 import com.science.gtnl.loader.ScriptLoader;
 
@@ -81,6 +82,9 @@ public class ScienceNotLeisure {
         LanguageManager.init();
 
         new RecipeLoaderRunnable().run();
+        if (gregtech.api.enums.Mods.BetterQuesting.isModLoaded() && MainConfig.enableDebugMode) {
+            QuestLoader.syncAll();
+        }
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
