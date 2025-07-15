@@ -1846,6 +1846,14 @@ NEI.MatterFabricatorRecipes.01=任意材料锭
 NEI.MatterFabricatorRecipes.02=任意材料宝石
 NEI.MatterFabricatorRecipes.03=任意材料方块
 
+NameEyeOfHarmonyInjector=鸿蒙之眼注入器
+EyeOfHarmonyInjectorRecipeType=§b鸿蒙之眼注入器
+Tooltip_EyeOfHarmonyInjector_00=以强大的宇宙力量注入气体！
+Tooltip_EyeOfHarmonyInjector_01=这太令人兴奋了！
+Tooltip_EyeOfHarmonyInjector_02=§e爱来自Korosensei :)
+Tooltip_EyeOfHarmonyInjector_Casing=任意无尽时空能量边界方块
+Tooltip_EyeOfHarmonyInjector_Parametrization=§b最大流体输入阈值
+
 NameReactionFurnace=反应炉
 ReactionFurnaceRecipeType=熔炉
 Tooltip_ReactionFurnace_00=总并行数: 并行控制核心提供的并行 * 512 - 1

@@ -74,6 +74,7 @@ import com.science.gtnl.common.machine.multiblock.DraconicFusionCrafting;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
 import com.science.gtnl.common.machine.multiblock.ElementCopying;
 import com.science.gtnl.common.machine.multiblock.EngravingLaserPlant;
+import com.science.gtnl.common.machine.multiblock.EyeOfHarmonyInjector;
 import com.science.gtnl.common.machine.multiblock.FieldForgePress;
 import com.science.gtnl.common.machine.multiblock.FuelRefiningComplex;
 import com.science.gtnl.common.machine.multiblock.GenerationEarthEngine;
@@ -1248,6 +1249,13 @@ public class MachineLoader {
                 "HighPerformanceComputationArray",
                 StatCollector.translateToLocal("NameHighPerformanceComputationArray")));
         addItemTooltip(GTNLItemList.HighPerformanceComputationArray.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EyeOfHarmonyInjector.set(
+            new EyeOfHarmonyInjector(
+                EYE_OF_HARMONY_INJECTOR.ID,
+                "EyeOfHarmonyInjector",
+                StatCollector.translateToLocal("NameEyeOfHarmonyInjector")));
+        addItemTooltip(GTNLItemList.EyeOfHarmonyInjector.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

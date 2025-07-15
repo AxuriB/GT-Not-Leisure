@@ -1846,6 +1846,14 @@ NEI.MatterFabricatorRecipes.01=Any Material Ingot
 NEI.MatterFabricatorRecipes.02=Any Material Gem
 NEI.MatterFabricatorRecipes.03=Any Material Block
 
+NameEyeOfHarmonyInjector=EyeOfHarmonyInjector
+EyeOfHarmonyInjectorRecipeType=§bEyeOfHarmonyInjector
+Tooltip_EyeOfHarmonyInjector_00=Inject gas with powerful cosmic power!
+Tooltip_EyeOfHarmonyInjector_01=It's so exciting!
+Tooltip_EyeOfHarmonyInjector_02=§eLove from Korosensei :)
+Tooltip_EyeOfHarmonyInjector_Casing=Any Infinite Spacetime Energy Boundary Casing
+Tooltip_EyeOfHarmonyInjector_Parametrization=§bMaximum fluid input threshold
+
 NameReactionFurnace=Reaction Furnace
 ReactionFurnaceRecipeType=Furnace
 Tooltip_ReactionFurnace_00=Total Parallels: Parallel Control Core's Parallels * 512 - 1
