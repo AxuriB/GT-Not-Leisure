@@ -33,6 +33,11 @@ public class LateMixinPlugin implements ILateMixinLoader {
         mixins.add("Gregtech.GTShapelessRecipe_Mixin");
         mixins.add("Gregtech.GTShapedRecipe_Mixin");
 
+        if (MainConfig.enableDebugMode) {
+            mixins.add("Gregtech.EyeOfHarmonyRecipeAccessor");
+            mixins.add("Gregtech.EyeOfHarmonyRecipeStorage_Mixin");
+        }
+
         if (!Mods.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak) {
             mixins.add("Gregtech.MTEVoidMinerBase_Mixin");
         }
