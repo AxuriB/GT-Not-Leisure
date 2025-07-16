@@ -20,15 +20,14 @@ Adder=Add Mod:
 NoMobsSpawnInThisBlock=Mobs cannot Spawn on this Block
 NoTileEntitySpawnInThisBlock=This is NOT a TileEntity!
 Tooltip_Tectech_Hatch=Supports §9Tec§1Tech§r laser hatches!
-Tooltip_PerfectOverclock=Machine can perform §clossless overclocking§7
-
-OverclockType.Description.01=Each overclock, time divided by
-OverclockType.Description.02=Power multiplied by
+Tooltip_PerfectOverclock=Machine can perform §clossless overcloc
 
 Info_SteamNetwork_00=User %s has no global steam network.
 Info_SteamNetwork_01=User %s has %s%s%s Steam in their network.
 Info_SteamNetwork_02=User %s is currently in network of %s%s%s .
 Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s %% §r(Voltage Tier: §3%s§r, Base Voltage Tier: §3%s§r)
+
+Info_Dimension_Override=Dimension Override: 
 
 HatchCustomFluid_00=Input fluids for multiblock machines
 HatchCustomFluid_01=Capacity: 
@@ -2116,13 +2115,11 @@ NameHighPerformanceComputationArray=High Performance Computation Array
 HighPerformanceComputationArrayRecipeType=Quantum Computer
 Tooltip_HighPerformanceComputationArray_00=Used to generate computation (and heat)
 Tooltip_HighPerformanceComputationArray_01=Use screwdriver to toggle wireless mode
-
-Tooltip_LapotronChip_Casing_00=Uncertainty Resolver X
-Tooltip_LapotronChip_Casing_01=Any Computer Casing on the first or last slice
-Tooltip_LapotronChip_Casing_02=Data Connector
-Tooltip_LapotronChip_Casing_03=Computer Rack
-Tooltip_LapotronChip_Casing_04=Any Advanced Computer Casing, except the outer ones
-
+Tooltip_HighPerformanceComputationArray_Casing_00=Uncertainty Resolver X
+Tooltip_HighPerformanceComputationArray_Casing_01=Any Computer Casing on the first or last slice
+Tooltip_HighPerformanceComputationArray_Casing_02=Data Connector
+Tooltip_HighPerformanceComputationArray_Casing_03=Computer Rack
+Tooltip_HighPerformanceComputationArray_Casing_04=Any Advanced Computer Casing, except the outer ones
 HPCA_Info_00=Structure Lens
 HPCA_Info_01=Current max. heat
 HPCA_Info_02=Produced computation

@@ -371,19 +371,19 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
             .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
             .addOtherStructurePart(
-                StatCollector.translateToLocal("Tooltip_LapotronChip_Casing_00"),
-                StatCollector.translateToLocal("Tooltip_LapotronChip_Casing_01"),
+                StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_Casing_00"),
+                StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_Casing_01"),
                 1)
             .addOtherStructurePart(
-                StatCollector.translateToLocal("Tooltip_LapotronChip_Casing_02"),
-                StatCollector.translateToLocal("Tooltip_LapotronChip_Casing_01"),
+                StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_Casing_02"),
+                StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_Casing_01"),
                 1)
             .addOtherStructurePart(
-                StatCollector.translateToLocal("Tooltip_LapotronChip_Casing_03"),
-                StatCollector.translateToLocal("Tooltip_LapotronChip_Casing_04"),
+                StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_Casing_03"),
+                StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_Casing_04"),
                 2)
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_LapotronChip_Casing_01"), 1)
-            .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_LapotronChip_Casing_01"), 1)
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_Casing_01"), 1)
+            .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_Casing_01"), 1)
             .toolTipFinisher();
         return tt;
     }

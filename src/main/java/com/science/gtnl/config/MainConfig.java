@@ -64,6 +64,8 @@ public class MainConfig {
 
     public static boolean enableEternalGregTechWorkshopSpiralRender = false;
 
+    public static boolean enableVoidMinerTweak = true;
+
     // Recipe
     public static boolean enableDeleteRecipe = true;
     public static boolean enableAprilFoolRecipe = false;
@@ -175,6 +177,14 @@ public class MainConfig {
     public static void loadConfig() {
 
         // Machine
+        enableVoidMinerTweak = config
+            .get(
+                CATEGORY_MACHINE,
+                "enableVoidMinerTweak",
+                enableVoidMinerTweak,
+                "Enable Void Miner Tweak, allows you to override target dimension that Void Miner mines")
+            .getBoolean(enableVoidMinerTweak);
+
         enableRecipeOutputChance = config
             .get(
                 CATEGORY_MACHINE,

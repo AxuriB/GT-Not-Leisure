@@ -5,6 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.network;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventUtils;
+import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.ConfigSyncPacket;
@@ -14,6 +15,7 @@ import com.science.gtnl.common.packet.TickratePacket;
 import com.science.gtnl.common.packet.TileEntityNBTPacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
+import com.science.gtnl.config.MainConfig;
 
 import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -51,6 +53,12 @@ public class CommonProxy {
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         PlayerDollWaila.init();
+        if (!com.science.gtnl.Utils.enums.Mods.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak) {
+            MinecraftForge.EVENT_BUS.register(new VMTweakHelper());
+            FMLCommonHandler.instance()
+                .bus()
+                .register(new VMTweakHelper());
+        }
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)

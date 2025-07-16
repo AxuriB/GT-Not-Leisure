@@ -33,6 +33,10 @@ public class LateMixinPlugin implements ILateMixinLoader {
         mixins.add("Gregtech.GTShapelessRecipe_Mixin");
         mixins.add("Gregtech.GTShapedRecipe_Mixin");
 
+        if (!Mods.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak) {
+            mixins.add("Gregtech.MTEVoidMinerBase_Mixin");
+        }
+
         if (!Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
             mixins.add("Gregtech.VoltageChanceBonus_GT_ParallelHelper_Mixin");
             mixins.add("Gregtech.BehaviourScanner_Mixin");

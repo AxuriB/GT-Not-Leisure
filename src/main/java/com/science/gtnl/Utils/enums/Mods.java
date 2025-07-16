@@ -20,6 +20,7 @@ public enum Mods {
     Baubles(ModIds.BAUBLES, Names.BAUBLES),
     Overpowered(ModIds.OVERPOWERED, Names.OVERPOWERED),
     ThinkTech(ModIds.THINKTECH, Names.THINKTECH),
+    VMTweak(ModIds.VMTTWEAK, Names.VMTTWEAK),
     ReAvaritia(ModIds.REAVARITIA, Names.REAVARITIA),
     Sudoku(ModIds.SUDOKU, Names.SUDOKU),
     GiveCount(ModIds.GIVECOUNT, Names.GIVECOUNT);
@@ -38,6 +39,7 @@ public enum Mods {
         public static final String BAUBLES = "Baubles";
         public static final String OVERPOWERED = "Overpowered";
         public static final String THINKTECH = "thinktech";
+        public static final String VMTTWEAK = "vmtweak";
         public static final String GIVECOUNT = "givecount";
         public static final String REAVARITIA = "reavaritia";
         public static final String SUDOKU = "sudoku";
@@ -57,6 +59,7 @@ public enum Mods {
         public static final String BAUBLES = "Baubles";
         public static final String OVERPOWERED = "Overpowered";
         public static final String THINKTECH = "ThinkTech";
+        public static final String VMTTWEAK = "VoidMinerTweak";
         public static final String GIVECOUNT = "GiveCount";
         public static final String REAVARITIA = "ReAvaritia";
         public static final String SUDOKU = "Sudoku";
