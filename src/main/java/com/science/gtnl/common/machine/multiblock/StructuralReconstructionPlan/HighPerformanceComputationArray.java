@@ -76,7 +76,7 @@ import tectech.util.CommonValues;
 
 public class HighPerformanceComputationArray extends TTMultiblockBase implements ISurvivalConstructable, ITESRProvider {
 
-    public UUID randomUUID;
+    public UUID randomUUID = UUID.randomUUID();
     public int[][] randomColor;
 
     public int totalLens = 0;
@@ -212,12 +212,6 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
             wirelessModeEnabled = false;
         }
         super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
-        randomUUID = UUID.randomUUID();
-        super.onFirstTick_EM(aBaseMetaTileEntity);
     }
 
     @Override

@@ -156,7 +156,7 @@ public class SuperCraftingInputHatchME extends MTEHatchInputBus
                     }
                 } else {
                     ScienceNotLeisure.LOG.warn(
-                        "An error occurred while loading contents of ME Crafting Input Bus. This item has been voided: {}",
+                        "An error occurred while loading contents of ME Super Crafting Input Bus. This item has been voided: {}",
                         tagItemStack);
                 }
             }
@@ -170,7 +170,7 @@ public class SuperCraftingInputHatchME extends MTEHatchInputBus
                     }
                 } else {
                     ScienceNotLeisure.LOG.warn(
-                        "An error occurred while loading contents of ME Crafting Input Bus. This fluid has been voided: {}",
+                        "An error occurred while loading contents of ME Super Crafting Input Bus. This fluid has been voided: {}",
                         tagFluidStack);
                 }
             }

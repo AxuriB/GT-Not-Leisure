@@ -1,5 +1,6 @@
 package com.science.gtnl.common.recipe.GTNL;
 
+import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import net.minecraft.item.ItemStack;
@@ -25,8 +26,11 @@ public class FallingTowerRecipes implements IRecipePool {
 
             ItemStack input = data.input;
 
-            if (input != null && input.isItemEqual(GTModHandler.getModItem(IndustrialCraft2.ID, "blockNuke", 1))) {
-                continue;
+            if (input != null) {
+                if (input.isItemEqual(GTModHandler.getModItem(IndustrialCraft2.ID, "blockNuke", 1))
+                    || input.isItemEqual(GTModHandler.getModItem(BloodArsenal.ID, "blood_tnt", 1))) {
+                    continue;
+                }
             }
 
             ItemStack[] outputs = data.outputs.toArray(new ItemStack[0]);
