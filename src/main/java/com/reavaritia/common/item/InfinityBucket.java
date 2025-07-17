@@ -553,29 +553,26 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.entity instanceof EntityPlayer) {
-            Minecraft mc = Minecraft.getMinecraft();
-            EntityPlayer player = mc.thePlayer;
+        if (event.entity instanceof EntityPlayer player) {
             if (player.getHeldItem() != null && player.getHeldItem()
-                .getItem() == this) {
-                ItemStack heldItem = player.getHeldItem();
-                if (heldItem != null && heldItem.getItem() instanceof InfinityBucket) {
-                    long currentTime = System.currentTimeMillis();
-                    if (currentTime - lastUpdateTime >= 500) {
-                        NBTTagCompound nbt = heldItem.getTagCompound();
-                        if (nbt != null) {
-                            NBTTagList fluids = nbt.getTagList("Fluids", 10);
-                            if (fluids.tagCount() > 0) {
-                                NBTTagCompound fluidTag = fluids.getCompoundTagAt(0);
-                                String fluidName = fluidTag.getString("FluidName");
-                                int remainingAmount = fluidTag.getInteger("Amount");
+                .getItem() instanceof InfinityBucket) {
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - lastUpdateTime >= 500) {
+                    NBTTagCompound nbt = player.getHeldItem()
+                        .getTagCompound();
+                    if (nbt != null) {
+                        NBTTagList fluids = nbt.getTagList("Fluids", 10);
+                        if (fluids.tagCount() > 0) {
+                            NBTTagCompound fluidTag = fluids.getCompoundTagAt(0);
+                            String fluidName = fluidTag.getString("FluidName");
+                            int remainingAmount = fluidTag.getInteger("Amount");
 
-                                showSubtitle(fluidName, remainingAmount);
-                            }
+                            showSubtitle(fluidName, remainingAmount);
                         }
-                        lastUpdateTime = currentTime;
                     }
+                    lastUpdateTime = currentTime;
                 }
+
             }
         }
     }
