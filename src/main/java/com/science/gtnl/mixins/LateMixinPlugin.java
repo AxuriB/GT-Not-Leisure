@@ -21,6 +21,9 @@ public class LateMixinPlugin implements ILateMixinLoader {
     @Override
     public List<String> getMixins(Set<String> loadedMods) {
         var mixins = new ArrayList<String>();
+        mixins.add("Gregtech.MTETieredMachineBlockAccessor");
+        mixins.add("Gregtech.MTEHatchAccessor");
+
         mixins.add("Gregtech.AssLineRemover.GTRecipeBuilderHook_Mixin");
         mixins.add("Gregtech.AssLineRemover.ForGTPreLoadHook_Mixin");
         mixins.add("Gregtech.AssLineRemover.TTAssLineBuilderHook_Mixin");
@@ -28,7 +31,6 @@ public class LateMixinPlugin implements ILateMixinLoader {
         mixins.add("Gregtech.MTEIntegratedOreFactory_Mixin");
         mixins.add("Gregtech.MTEBetterJukebox_Mixin");
         mixins.add("Gregtech.MTEDigitalTankBase_Mixin");
-        mixins.add("Gregtech.MTEHatchAccessor");
         mixins.add("Gregtech.BaseMetaTileEntity_Mixin");
         mixins.add("Gregtech.GTShapelessRecipe_Mixin");
         mixins.add("Gregtech.GTShapedRecipe_Mixin");

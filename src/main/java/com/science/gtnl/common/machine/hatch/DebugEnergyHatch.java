@@ -22,6 +22,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.mixins.late.Gregtech.MTETieredMachineBlockAccessor;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,19 +42,36 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
 import tectech.util.CommonValues;
-import tectech.util.TTUtility;
 
 public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, IAddGregtechLogo {
 
     @Setter
     @Getter
-    public long EUT = 0, AMP = 0;
+    public long mEUT = 0, mAMP = 0;
     public boolean producing = true;
     private static final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
-    public DebugEnergyHatch(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier);
-        TTUtility.setTier(aTier, this);
+    public DebugEnergyHatch(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional, 14);
+    }
+
+    public DebugEnergyHatch(String aName, String[] aDescription, ITexture[][][] aTextures) {
+        super(aName, 14, aDescription, aTextures);
+    }
+
+    @Override
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new DebugEnergyHatch(mName, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public long getInputTier() {
+        return GTUtility.getTier(Math.abs(mEUT));
+    }
+
+    @Override
+    public long getOutputTier() {
+        return GTUtility.getTier(Math.abs(mEUT));
     }
 
     @Override
@@ -68,20 +86,10 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
         return desc.toArray(new String[] {});
     }
 
-    public DebugEnergyHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        TTUtility.setTier(aTier, this);
-    }
-
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         openGui(aPlayer);
         return true;
-    }
-
-    @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new DebugEnergyHatch(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -102,16 +110,16 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("eEUT", EUT);
-        aNBT.setLong("eAMP", AMP);
+        aNBT.setLong("mEUT", mEUT);
+        aNBT.setLong("mAMP", mAMP);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        EUT = aNBT.getLong("eEUT");
-        AMP = aNBT.getLong("eAMP");
-        producing = AMP * EUT >= 0;
+        mEUT = aNBT.getLong("mEUT");
+        mAMP = aNBT.getLong("mAMP");
+        producing = mAMP * mEUT >= 0;
         getBaseMetaTileEntity().setActive(producing);
     }
 
@@ -120,13 +128,14 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
         if (aBaseMetaTileEntity.isServerSide()) {
             aBaseMetaTileEntity.setActive(producing);
             if (aBaseMetaTileEntity.isActive()) {
-                byte Tick = (byte) (aTick % 20);
-                if (CommonValues.TRANSFER_AT == Tick) {
+                byte tick = (byte) (aTick % 20);
+                if (CommonValues.TRANSFER_AT == tick) {
                     setEUVar(maxEUStore());
                     moveAround(aBaseMetaTileEntity);
                 } else {
                     setEUVar(maxEUStore());
                 }
+                ((MTETieredMachineBlockAccessor) this).setMachineTier(GTUtility.getTier(Math.abs(mEUT)));
             } else {
                 setEUVar(0);
             }
@@ -145,32 +154,32 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
 
     @Override
     public long maxAmperesIn() {
-        return Math.abs(AMP);
+        return Math.abs(mAMP);
     }
 
     @Override
     public long maxAmperesOut() {
-        return Math.abs(AMP);
+        return Math.abs(mAMP);
     }
 
     @Override
     public long maxEUInput() {
-        return Math.abs(EUT);
+        return Math.abs(mEUT);
     }
 
     @Override
     public long maxEUOutput() {
-        return Math.abs(EUT);
+        return Math.abs(mEUT);
     }
 
     @Override
     public long maxEUStore() {
-        return Math.abs(EUT * AMP);
+        return Math.abs(mEUT * mAMP);
     }
 
     @Override
     public long getMinimumStoredEU() {
-        return Math.abs(EUT * AMP);
+        return Math.abs(mEUT * mAMP);
     }
 
     @Override
@@ -214,7 +223,7 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
                         aMetaTileEntity.doExplosion(maxEUOutput());
                     } else {
                         long diff = Math.min(
-                            AMP * 20L * maxEUOutput(),
+                            mAMP * 20L * maxEUOutput(),
                             Math.min(
                                 ((MTEHatchEnergyTunnel) aMetaTileEntity).maxEUStore()
                                     - aMetaTileEntity.getBaseMetaTileEntity()
@@ -252,36 +261,36 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
                 .setSize(90, 72)
                 .setPos(43, 4))
             .widget(
-                new TextWidget().setStringSupplier(() -> "TIER: " + VN[GTUtility.getTier(Math.abs(EUT))])
+                new TextWidget().setStringSupplier(() -> "TIER: " + VN[GTUtility.getTier(Math.abs(mEUT))])
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 22))
             .widget(
-                new TextWidget().setStringSupplier(() -> "SUM: " + numberFormat.format(AMP * EUT))
+                new TextWidget().setStringSupplier(() -> "SUM: " + numberFormat.format(mAMP * mEUT))
                     .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(46, 46));
 
-        addLabelledIntegerTextField(builder, "EUT: ", this::getEUT, this::setEUT, 8);
-        addLabelledIntegerTextField(builder, "AMP: ", this::getAMP, this::setAMP, 34);
+        addLabelledIntegerTextField(builder, "EUT: ", this::getMEUT, this::setMEUT, 8);
+        addLabelledIntegerTextField(builder, "AMP: ", this::getMAMP, this::setMAMP, 34);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT -= val, 512, 64, 7, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> EUT /= val, 512, 64, 7, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> AMP -= val, 512, 64, 7, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> AMP /= val, 512, 64, 7, 58);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mEUT -= val, 512, 64, 7, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mEUT /= val, 512, 64, 7, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mAMP -= val, 512, 64, 7, 40);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mAMP /= val, 512, 64, 7, 58);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> EUT -= val, 16, 1, 25, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> EUT /= val, 16, 2, 25, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> AMP -= val, 16, 1, 25, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> AMP /= val, 16, 2, 25, 58);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mEUT -= val, 16, 1, 25, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mEUT /= val, 16, 2, 25, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mAMP -= val, 16, 1, 25, 40);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mAMP /= val, 16, 2, 25, 58);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> EUT += val, 16, 1, 133, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> EUT *= val, 16, 2, 133, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> AMP += val, 16, 1, 133, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> AMP *= val, 16, 2, 133, 58);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mEUT += val, 16, 1, 133, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mEUT *= val, 16, 2, 133, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mAMP += val, 16, 1, 133, 40);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mAMP *= val, 16, 2, 133, 58);
 
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT += val, 512, 64, 151, 4);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> EUT *= val, 512, 64, 151, 22);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP += val, 512, 64, 151, 40);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> AMP *= val, 512, 64, 151, 58);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mEUT += val, 512, 64, 151, 4);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mEUT *= val, 512, 64, 151, 22);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mAMP += val, 512, 64, 151, 40);
+        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mAMP *= val, 512, 64, 151, 58);
     }
 
     private void addLabelledIntegerTextField(ModularWindow.Builder builder, String label, LongSupplier getter,
@@ -302,7 +311,7 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
         int changeNumberShift, int changeNumber, int xPos, int yPos) {
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             setter.accept(clickData.shift ? changeNumberShift : changeNumber);
-            producing = AMP * EUT >= 0;
+            producing = mAMP * mEUT >= 0;
         })
             .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
             .setSize(18, 18)

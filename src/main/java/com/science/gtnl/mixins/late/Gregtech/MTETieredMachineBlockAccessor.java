@@ -1,0 +1,18 @@
+package com.science.gtnl.mixins.late.Gregtech;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
+
+@SuppressWarnings("UnusedMixin")
+@Mixin(value = MTETieredMachineBlock.class, remap = false)
+public interface MTETieredMachineBlockAccessor {
+
+    @Accessor("mTier")
+    byte getMachineTier();
+
+    @Accessor("mTier")
+    void setMachineTier(byte mTier);
+
+}

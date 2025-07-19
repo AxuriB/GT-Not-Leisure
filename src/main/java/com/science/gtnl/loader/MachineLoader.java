@@ -1347,8 +1347,7 @@ public class MachineLoader {
             new DebugEnergyHatch(
                 DEBUG_ENERGY_HATCH.ID,
                 "DebugEnergyHatch",
-                StatCollector.translateToLocal("DebugEnergyHatch"),
-                14));
+                StatCollector.translateToLocal("DebugEnergyHatch")));
         addItemTooltip(GTNLItemList.DebugEnergyHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.NinefoldInputHatchEV.set(
