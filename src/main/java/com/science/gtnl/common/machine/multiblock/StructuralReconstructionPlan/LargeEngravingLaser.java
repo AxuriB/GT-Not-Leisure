@@ -149,7 +149,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
                 buildHatchAdder(LargeEngravingLaser.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 1))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 1))))
             .addElement('C', ofBlock(sBlockCasings2, 15))
             .addElement('D', ofBlock(sBlockCasings3, 10))
             .build();
@@ -157,7 +157,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
         mGlassTier = -1;
 
@@ -165,7 +165,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -182,7 +182,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 25;
+        return mCountCasing >= 25;
     }
 
     @Override
@@ -192,7 +192,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)

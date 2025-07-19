@@ -78,7 +78,6 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String PA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/processing_array";
     public static String[][] shape = StructureUtils.readStructureFromFile(PA_STRUCTURE_FILE_PATH);
-    public HeatingCoilLevel mHeatingCapacity;
     public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(2);
 
     public ProcessingArray(int aID, String aName, String aNameRegional) {
@@ -100,7 +99,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
             return 0;
         }
         return getControllerSlot().stackSize * 2 + GTUtility.getTier(this.getMaxInputVoltage()) * 4
-            + getCoilLevel().getTier() * 4;
+            + getMCoilLevel().getTier() * 4;
     }
 
     @Override
@@ -260,7 +259,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setEUtDiscount(0.9)
-                    .setDurationModifier(1 / 1.11 - (3.0 * getCoilLevel().getTier()) / 100)
+                    .setDurationModifier(1 / 1.11 - (3.0 * getMCoilLevel().getTier()) / 100)
                     .setMaxTierSkips(0);
             }
 
@@ -301,14 +300,6 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
         }
     }
 
-    public HeatingCoilLevel getCoilLevel() {
-        return mHeatingCapacity;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        mHeatingCapacity = aCoilLevel;
-    }
-
     @Override
     public IStructureDefinition<ProcessingArray> getStructureDefinition() {
         return StructureDefinition.<ProcessingArray>builder()
@@ -319,12 +310,12 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
                     .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 2))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 2))))
             .addElement('B', ofBlock(sBlockCasings2, 14))
             .addElement(
                 'C',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(ProcessingArray::setCoilLevel, ProcessingArray::getCoilLevel))))
+                    .use(activeCoils(ofCoil(ProcessingArray::setMCoilLevel, ProcessingArray::getMCoilLevel))))
             .addElement('D', ofFrame(Materials.Titanium))
             .addElement('E', Muffler.newAny(CASING_INDEX, 1))
             .build();
@@ -383,22 +374,22 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        mCountCasing = 0;
+        this.setMCoilLevel(HeatingCoilLevel.None);
         tTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) || !checkHatch()) {
             return false;
         }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
         setTierAndMult();
 
         if (GTUtility.getTier(this.getMaxInputVoltage()) > tTier + 4) {
             return false;
         }
-        return tCountCasing >= 40 && mMaintenanceHatches.size() == 1
-            && getCoilLevel() != HeatingCoilLevel.None
+        return mCountCasing >= 40 && mMaintenanceHatches.size() == 1
+            && getMCoilLevel() != HeatingCoilLevel.None
             && this.mMufflerHatches.size() == 1;
     }
 

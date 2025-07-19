@@ -80,7 +80,7 @@ public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
             .addElement('C', ofBlock(sBlockReinforced, 2))
             .addElement('D', ofBlock(sBlockCasings9, 13))
             .addElement('E', ofBlock(sBlockCasings9, 4))
@@ -122,13 +122,13 @@ public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         isBioModule = false;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
 
         isBioModule = true;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
 
         return true;

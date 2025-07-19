@@ -207,7 +207,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
                     .atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy), ParallelCon)
                     .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings9, 12))))
             .build();
     }
 
@@ -455,7 +455,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
         wirelessMode = false;
         if (isRenderActive) {
@@ -502,9 +502,9 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
         }
 
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 1 && checkHatch();
+        return mCountCasing > 1 && checkHatch();
     }
 
     @Override
@@ -540,7 +540,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(
                         0.4 - (mParallelTier / 50.0) * Math.pow(0.95, GTUtility.getTier(getMaxInputVoltage())))
                     .setDurationModifier(

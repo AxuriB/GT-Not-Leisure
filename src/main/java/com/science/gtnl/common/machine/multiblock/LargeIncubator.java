@@ -133,7 +133,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
                         .casingIndex(CASING_INDEX)
                         .dot(1)
                         .build(),
-                    onElementPass(e -> e.tCountCasing++, ofBlock(sBlockReinforced, 2))))
+                    onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
             .addElement('F', ofBlockAnyMeta(Blocks.sponge))
             .addElement('G', ofChain(isAir(), ofBlockAnyMeta(Blocks.flowing_water), ofBlockAnyMeta(Blocks.water)))
             .build();
@@ -201,7 +201,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeEUt(recipe.mEUt)
                     .setAmperage(availableAmperage)
                     .setEUt(availableVoltage)
@@ -289,12 +289,12 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mRadHatches.clear();
         this.mGlassTier = -1;
-        this.tCountCasing = 0;
+        this.mCountCasing = 0;
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
             || !checkHatch()) return false;
 
-        if (tCountCasing < 19 && this.mRadHatches.size() > 1
+        if (mCountCasing < 19 && this.mRadHatches.size() > 1
             && this.mOutputHatches.size() != 1
             && this.mInputHatches.isEmpty()
             && this.mEnergyHatches.isEmpty()) return false;

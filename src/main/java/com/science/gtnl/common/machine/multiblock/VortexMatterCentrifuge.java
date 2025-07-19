@@ -125,7 +125,7 @@ public class VortexMatterCentrifuge extends WirelessEnergyMultiMachineBase<Vorte
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))
             .addElement('L', ofBlock(sBlockCasings8, 10))
             .addElement('M', ofBlock(sBlockCasings1, 13))
             .addElement('N', ofFrame(Materials.EnrichedHolmium))
@@ -161,14 +161,14 @@ public class VortexMatterCentrifuge extends WirelessEnergyMultiMachineBase<Vorte
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 250;
+        return mCountCasing > 250;
     }
 
     @Override

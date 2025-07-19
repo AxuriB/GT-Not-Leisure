@@ -127,7 +127,7 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
                 buildHatchAdder(LargeGasCollector.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 0))))
             .addElement('B', ofBlock(sBlockCasings2, 15))
             .addElement('C', ofBlock(sBlockCasings3, 10))
             .addElement('D', ofBlock(sBlockCasings6, 5))
@@ -136,13 +136,13 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        return tCountCasing >= 20;
+        return mCountCasing >= 20;
     }
 
     @Override

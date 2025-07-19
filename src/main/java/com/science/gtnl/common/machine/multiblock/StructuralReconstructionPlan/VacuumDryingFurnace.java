@@ -57,8 +57,6 @@ public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace
     private static final int MACHINEMODE_DEHYDRATOR = 1;
     private static final int MACHINEMODE_COLD_TRAP = 2;
     private static final int MACHINEMODE_NUCLEAR_SALT = 3;
-    private HeatingCoilLevel mCoilLevel;
-    private int mHeatingCapacity = 0;
     public final int HORIZONTAL_OFF_SET = 1;
     public final int VERTICAL_OFF_SET = 4;
     public final int DEPTH_OFF_SET = 0;
@@ -155,14 +153,14 @@ public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace
             .addElement(
                 'A',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(VacuumDryingFurnace::setCoilLevel, VacuumDryingFurnace::getCoilLevel))))
+                    .use(activeCoils(ofCoil(VacuumDryingFurnace::setMCoilLevel, VacuumDryingFurnace::getMCoilLevel))))
             .addElement(
                 'B',
                 buildHatchAdder(VacuumDryingFurnace.class)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasings4Misc, 10))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(ModBlocks.blockCasings4Misc, 10))))
             .addElement('C', Muffler.newAny(getCasingTextureID(), 1))
             .build();
     }
@@ -215,7 +213,7 @@ public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setMachineHeat(VacuumDryingFurnace.this.mHeatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(false)
@@ -226,33 +224,25 @@ public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
-    }
-
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mHeatingCapacity = 0;
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
 
         if (mMaintenanceHatches.size() != 1 && mMufflerHatches.size() != 1) return false;
 
-        this.mHeatingCapacity = (int) this.getCoilLevel()
+        this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -263,7 +253,7 @@ public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 10;
+        return mCountCasing >= 10;
     }
 
     @Override

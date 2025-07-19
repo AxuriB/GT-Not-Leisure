@@ -213,7 +213,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         ItemStack controllerItem = getControllerSlot();
         this.mParallelTier = getParallelTier(controllerItem);
         long energyEU = wirelessMode ? Integer.MAX_VALUE
-            : GTValues.VP[energyHatchTier] * (useSingleAmp ? 1 : getMaxInputAmps() / 4); // 能源仓最大输入功率
+            : GTValues.VP[mEnergyHatchTier] * (useSingleAmp ? 1 : getMaxInputAmps() / 4); // 能源仓最大输入功率
         int maxParallel = getMaxParallelRecipes(); // 最大并行数
 
         if (energyEU <= 0) return CheckRecipeResultRegistry.POWER_OVERFLOW;
@@ -901,14 +901,14 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputBus)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
             .addElement('C', ofBlock(sBlockCasingsTT, 2))
             .addElement(
                 'D',
                 buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(OutputBus)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
             .addElement(
                 'E',
                 buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
@@ -916,7 +916,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     .atLeast(InputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy), DataHatchElement.DataAccess)
                     .buildAndChain(
                         onElementPass(
-                            x -> ++x.tCountCasing,
+                            x -> ++x.mCountCasing,
                             ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))))
             .addElement(
                 'F',
@@ -929,14 +929,14 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                         Maintenance,
                         Energy.or(ExoticEnergy),
                         DataHatchElement.DataAccess)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
             .addElement('G', ofBlock(sBlockCasings2, 9))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
         mDataAccessHatches.clear();
         isDualInputHatch = false;
@@ -946,7 +946,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
             || !checkHatch()) return false;
         useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
 
         if (mParallelTier < 9 && MainConfig.enableMachineAmpLimit) {
@@ -961,7 +961,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         if (mParallelTier >= 12 && mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
             wirelessMode = true;
             useSingleAmp = false;
-            energyHatchTier = 14;
+            mEnergyHatchTier = 14;
         } else if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) return false;
 
         if (!mDualInputHatches.isEmpty()) {
@@ -969,7 +969,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             if (!mInputBusses.isEmpty() || !mInputHatches.isEmpty()) return false;
         }
 
-        return mDataAccessHatches.size() <= 1 && mMaintenanceHatches.size() <= 1 && tCountCasing >= 590;
+        return mDataAccessHatches.size() <= 1 && mMaintenanceHatches.size() <= 1 && mCountCasing >= 590;
     }
 
     @Override
@@ -1048,7 +1048,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return GTNL_OverclockCalculator.ofNoOverclock(recipe)
-                    .setExtraDurationModifier(configSpeedBoost)
+                    .setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0) * ((mParallelTier >= 12) ? 0.2 : 1))
                     .setDurationModifier(
                         (1 / 1.67 - (mParallelTier / 200.0)) * ((mParallelTier >= 12) ? 1.0 / 20.0 : 1));

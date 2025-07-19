@@ -100,7 +100,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
                 buildHatchAdder(AdvancedCircuitAssemblyLine.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
             .addElement('H', ofBlock(sBlockCasingsTT, 7))
             .addElement('I', ofBlock(sBlockCasingsTT, 8))
             .addElement('J', ofBlock(blockCasings3Misc, 15))
@@ -188,7 +188,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)
@@ -264,17 +264,17 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
         mParallelTier = 0;
-        tCountCasing = 0;
-        energyHatchTier = 0;
+        mCountCasing = 0;
+        mEnergyHatchTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
 
-        return tCountCasing >= 30;
+        return mCountCasing >= 30;
     }
 
     @Override

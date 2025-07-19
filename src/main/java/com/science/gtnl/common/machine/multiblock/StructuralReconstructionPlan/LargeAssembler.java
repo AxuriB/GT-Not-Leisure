@@ -137,21 +137,21 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
                 buildHatchAdder(LargeAssembler.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 12))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings2Misc, 12))))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
-        this.energyHatchTier = 0;
+        this.mEnergyHatchTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UEV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -168,7 +168,7 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 30;
+        return mCountCasing >= 30;
     }
 
     @Override
@@ -198,7 +198,7 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)

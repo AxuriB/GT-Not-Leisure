@@ -70,8 +70,6 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
     public final int HORIZONTAL_OFF_SET = 3;
     public final int VERTICAL_OFF_SET = 3;
     public final int DEPTH_OFF_SET = 1;
-    private int mHeatingCapacity = 0;
-    private HeatingCoilLevel mCoilLevel;
     public int multiTier = 1;
     protected final FluidStack[] pollutionFluidStacks = { Materials.CarbonDioxide.getGas(1000),
         Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
@@ -128,7 +126,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
             .addElement(
                 'B',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(BlazeBlastFurnace::setCoilLevel, BlazeBlastFurnace::getCoilLevel))))
+                    .use(activeCoils(ofCoil(BlazeBlastFurnace::setMCoilLevel, BlazeBlastFurnace::getMCoilLevel))))
             .addElement(
                 'C',
                 buildHatchAdder(BlazeBlastFurnace.class)
@@ -147,7 +145,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
                         .dot(1)
                         .casingIndex(CASING_INDEX)
                         .build(),
-                    onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15)),
+                    onElementPass(x -> ++x.mCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15)),
                     buildHatchAdder(BlazeBlastFurnace.class).adder(BlazeBlastFurnace::addFluidBlazeInputHatch)
                         .hatchId(21503)
                         .shouldReject(x -> !x.mFluidBlazeInputHatch.isEmpty())
@@ -158,14 +156,6 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
             .build();
     }
 
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
-    }
-
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
@@ -174,7 +164,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
@@ -196,9 +186,9 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         this.mHeatingCapacity = 0;
-        tCountCasing = 0;
+        mCountCasing = 0;
         multiTier = 1;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
         this.mPollutionOutputHatches.clear();
         mFluidBlazeInputHatch.clear();
 
@@ -207,13 +197,13 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
 
         this.multiTier = getMultiTier(getControllerSlot());
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
 
         if (mMaintenanceHatches.size() != 1 && mMufflerHatches.size() != 1) return false;
 
-        this.mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (BWUtil.getTier(getMaxInputVoltage()) - 2);
+        this.mHeatingCapacity = (int) getMCoilLevel().getHeat() + 100 * (BWUtil.getTier(getMaxInputVoltage()) - 2);
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -223,7 +213,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
             if (getMaxInputAmps() > 64) return false;
         }
 
-        return tCountCasing >= 50 && checkHatch();
+        return mCountCasing >= 50 && checkHatch();
     }
 
     public boolean addOutputHatchToTopList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -304,7 +294,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(BlazeBlastFurnace.this.mHeatingCapacity)
                     .setHeatOC(true)

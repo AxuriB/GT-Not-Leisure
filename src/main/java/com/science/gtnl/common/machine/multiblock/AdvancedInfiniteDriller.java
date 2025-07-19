@@ -156,7 +156,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
                 buildHatchAdder(AdvancedInfiniteDriller.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('K', ofFrame(Materials.Neutronium))
             .addElement('L', ofBlock(sBlockMetal8, 0))
             .build();
@@ -376,7 +376,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
         if (Math.random() < probability) {
             Fluid fluidType = fluidStack.getFluid();
             long baseOutput = (long) ((1000 * oilFieldReserve * (oilFieldReserve + 1))
-                * (0.5 + 0.25 * (GTValues.V[energyHatchTier - 7]))
+                * (0.5 + 0.25 * (GTValues.V[mEnergyHatchTier - 7]))
                 * (excessFuel / 1000.0)
                 * drillTier);
 
@@ -406,7 +406,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return GTNL_OverclockCalculator.ofNoOverclock(recipe)
-                    .setExtraDurationModifier(configSpeedBoost);
+                    .setExtraDurationModifier(mConfigSpeedBoost);
             }
         };
     }
@@ -495,7 +495,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         drillTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
@@ -503,10 +503,10 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         drillTier = checkDrillTier();
 
-        return tCountCasing >= 570;
+        return mCountCasing >= 570;
     }
 
     public int checkDrillTier() {

@@ -117,7 +117,7 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
                 buildHatchAdder(ElementCopying.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))
             .addElement('D', ofBlock(sBlockCasingsTT, 6))
             .addElement('E', ofBlock(sBlockCasingsTT, 7))
             .addElement('F', ofBlock(sBlockCasingsTT, 8))
@@ -146,16 +146,16 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (this.mEnergyHatches.size() >= 2) return false;
-        return tCountCasing >= 200;
+        return mCountCasing >= 200;
     }
 
     @Override
@@ -165,7 +165,7 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeEUt(recipe.mEUt)
                     .setAmperage(availableAmperage)
                     .setEUt(availableVoltage)

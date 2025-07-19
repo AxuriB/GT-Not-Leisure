@@ -45,8 +45,6 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String ABS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/alloy_blast_smelter";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(15);
-    private int mHeatingCapacity = 0;
-    private HeatingCoilLevel heatLevel;
     public final int HORIZONTAL_OFF_SET = 2;
     public final int VERTICAL_OFF_SET = 4;
     public final int DEPTH_OFF_SET = 0;
@@ -126,31 +124,31 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
             .addElement(
                 'A',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(AlloyBlastSmelter::setCoilLevel, AlloyBlastSmelter::getCoilLevel))))
+                    .use(activeCoils(ofCoil(AlloyBlastSmelter::setMCoilLevel, AlloyBlastSmelter::getMCoilLevel))))
             .addElement('B', ofBlock(blockCasingsMisc, 14))
             .addElement(
                 'C',
                 buildHatchAdder(AlloyBlastSmelter.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasingsMisc, 15))))
             .addElement('D', Muffler.newAny(CASING_INDEX, 1))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
-        this.energyHatchTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.mEnergyHatchTier = 0;
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
             || mMufflerHatches.size() != 1) {
             return false;
         }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
 
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
@@ -160,20 +158,12 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
             }
             if (getMaxInputAmps() > 64) return false;
         }
-        this.mHeatingCapacity = (int) this.getCoilLevel()
+        this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
 
-        return tCountCasing >= 25;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.heatLevel;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel level) {
-        this.heatLevel = level;
+        return mCountCasing >= 25;
     }
 
     @Override
@@ -203,7 +193,7 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setMachineHeat(AlloyBlastSmelter.this.mHeatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(false)

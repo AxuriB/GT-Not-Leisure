@@ -129,7 +129,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
                 buildHatchAdder(DraconicFusionCrafting.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 12))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 12))))
             .addElement(
                 'D',
                 withChannel(
@@ -179,7 +179,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
 
                 if (tierCasing >= 4) {
-                    return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                         .setRecipeEUt(recipe.mEUt)
                         .setAmperage(availableAmperage)
                         .setEUt(availableVoltage)
@@ -189,7 +189,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
                         .setEUtIncreasePerOC(4)
                         .setEUtDiscount(0.5 - (mParallelTier / 50.0))
                         .setDurationModifier(1.0 / 2.0 - (mParallelTier / 200.0));
-                } else return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                } else return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.5 - (mParallelTier / 50.0))
                     .setDurationModifier(1.0 / 2.0 - (mParallelTier / 200.0));
             }
@@ -198,7 +198,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
         tierCasing = -1;
 
@@ -206,11 +206,11 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (tierCasing < 0) return false;
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 25;
+        return mCountCasing >= 25;
     }
 
     @Override

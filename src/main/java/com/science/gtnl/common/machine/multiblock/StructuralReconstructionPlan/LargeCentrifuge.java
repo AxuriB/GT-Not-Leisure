@@ -142,7 +142,7 @@ public class LargeCentrifuge extends GTMMultiMachineBase<LargeCentrifuge> implem
                 buildHatchAdder(LargeCentrifuge.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 0))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasingsMisc, 0))))
             .build();
     }
 
@@ -186,14 +186,14 @@ public class LargeCentrifuge extends GTMMultiMachineBase<LargeCentrifuge> implem
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -204,7 +204,7 @@ public class LargeCentrifuge extends GTMMultiMachineBase<LargeCentrifuge> implem
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 40;
+        return mCountCasing >= 40;
     }
 
     @Override
@@ -239,7 +239,7 @@ public class LargeCentrifuge extends GTMMultiMachineBase<LargeCentrifuge> implem
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
                     .setDurationModifier(1.0 / 2.6 - (mParallelTier / 200.0));
             }

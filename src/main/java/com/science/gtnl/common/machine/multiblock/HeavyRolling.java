@@ -44,7 +44,6 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
 
-    private HeatingCoilLevel heatLevel;
     private static final int HORIZONTAL_OFF_SET = 32;
     private static final int VERTICAL_OFF_SET = 6;
     private static final int DEPTH_OFF_SET = 0;
@@ -128,14 +127,14 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
             .addElement(
                 'F',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(HeavyRolling::setCoilLevel, HeavyRolling::getCoilLevel))))
+                    .use(activeCoils(ofCoil(HeavyRolling::setMCoilLevel, HeavyRolling::getMCoilLevel))))
             .addElement('G', ofBlock(sBlockCasings10, 6))
             .addElement(
                 'H',
                 buildHatchAdder(HeavyRolling.class).atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasingsMisc, 15))))
             .addElement('I', ofBlock(BlockLoader.metaCasing, 7))
             .addElement('J', ofBlock(blockCasings3Misc, 1))
             .addElement('K', ofBlock(BlockLoader.metaCasing, 2))
@@ -175,17 +174,17 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 1800;
+        return mCountCasing > 350;
     }
 
     @Override
@@ -213,20 +212,12 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0))
                     .setDurationModifier(
-                        1.0 / 10.0 * Math.pow(0.75, mParallelTier) * Math.pow(0.85, getCoilLevel().getTier()));
+                        1.0 / 10.0 * Math.pow(0.75, mParallelTier) * Math.pow(0.85, getMCoilLevel().getTier()));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.heatLevel;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel level) {
-        this.heatLevel = level;
     }
 
     @Override

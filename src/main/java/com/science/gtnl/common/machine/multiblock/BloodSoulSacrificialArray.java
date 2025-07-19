@@ -472,7 +472,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return GTNL_OverclockCalculator.ofNoOverclock(recipe)
-                    .setExtraDurationModifier(configSpeedBoost)
+                    .setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperage(availableAmperage)
                     .setRecipeEUt(recipe.mEUt)
                     .setEUt(availableVoltage)

@@ -46,7 +46,6 @@ import tectech.thing.casing.TTCasingsContainer;
 
 public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
 
-    private HeatingCoilLevel heatLevel;
     public static final int HORIZONTAL_OFF_SET = 7;
     public static final int VERTICAL_OFF_SET = 21;
     public static final int DEPTH_OFF_SET = 0;
@@ -137,14 +136,14 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
             .addElement(
                 'H',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(CrackerHub::setCoilLevel, CrackerHub::getCoilLevel))))
+                    .use(activeCoils(ofCoil(CrackerHub::setMCoilLevel, CrackerHub::getMCoilLevel))))
             .addElement(
                 'I',
                 buildHatchAdder(CrackerHub.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('J', ofBlock(TTCasingsContainer.sBlockCasingsBA0, 6))
             .addElement('K', ofFrame(Materials.StainlessSteel))
             .addElement('L', ofFrame(Materials.Ultimet))
@@ -183,29 +182,21 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-        energyHatchTier = checkEnergyHatchTier();
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return mMufflerHatches.size() == 16 && tCountCasing > 100;
+        return mMufflerHatches.size() == 16 && mCountCasing > 100;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.crackingRecipes;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.heatLevel;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel level) {
-        this.heatLevel = level;
     }
 
     @Override
@@ -245,7 +236,7 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier))
                     .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier));
             }
@@ -257,7 +248,7 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
     public CheckRecipeResult checkProcessing() {
         super.checkProcessing();
 
-        int tier = getCoilLevel().getTier();
+        int tier = getMCoilLevel().getTier();
         double factor = (Math.floor(tier / 2.0) * 0.1);
 
         ItemStack[] outputItems = processingLogic.getOutputItems();

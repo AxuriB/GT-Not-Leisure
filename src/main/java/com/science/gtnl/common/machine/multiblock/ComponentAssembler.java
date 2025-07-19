@@ -93,7 +93,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .dot(1)
                     .casingIndex(getCasingTextureID())
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 0))))
             .addElement('D', ofBlock(sBlockCasings2, 5))
             .addElement('E', ofBlock(sBlockCasings2, 6))
             .addElement('F', ofBlock(sBlockCasings3, 10))
@@ -221,7 +221,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8)
                     .setDurationModifier(1.0 / 2.0);
             }
@@ -256,7 +256,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingTier = -2;
-        tCountCasing = 0;
+        mCountCasing = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
@@ -268,7 +268,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
             }
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -278,7 +278,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
             if (getMaxInputAmps() > 64) return false;
         }
 
-        return tCountCasing >= 50 && mEnergyHatches.size() <= 2 && mMaintenanceHatches.size() == 1;
+        return mCountCasing >= 50 && mEnergyHatches.size() <= 2 && mMaintenanceHatches.size() == 1;
     }
 
     @Override

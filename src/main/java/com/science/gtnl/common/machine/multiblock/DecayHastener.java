@@ -122,21 +122,21 @@ public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements
                 buildHatchAdder(DecayHastener.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('F', ofFrame(Materials.BlackSteel))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -148,7 +148,7 @@ public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements
 
         mParallelTier = getParallelTier(aStack);
 
-        return tCountCasing >= 80;
+        return mCountCasing >= 80;
     }
 
     @Override

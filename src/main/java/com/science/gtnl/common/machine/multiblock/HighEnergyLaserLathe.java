@@ -133,7 +133,7 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 7))
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
             .addElement('G', ofBlock(sBlockCasings8, 12))
             .addElement('H', ofBlock(BlockLoader.metaCasing, 6))
             .addElement('I', ofBlock(sBlockCasingsTT, 6))
@@ -174,14 +174,14 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 1000;
+        return mCountCasing > 1000;
     }
 
     @Override
@@ -209,7 +209,7 @@ public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEne
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier))
                     .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier));
             }

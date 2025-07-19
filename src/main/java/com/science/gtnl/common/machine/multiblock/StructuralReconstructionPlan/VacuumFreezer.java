@@ -137,7 +137,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
                 buildHatchAdder(VacuumFreezer.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 1))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 1))))
             .addElement('D', ofBlock(sBlockCasings2, 14))
             .addElement('E', ofBlock(sBlockCasings4, 1))
             .build();
@@ -165,14 +165,14 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
-        return tCountCasing >= 135 || !checkHatch();
+        mEnergyHatchTier = checkEnergyHatchTier();
+        return mCountCasing >= 135 || !checkHatch();
     }
 
     @Override
@@ -187,7 +187,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setMachineHeat(3601)
                     .setRecipeHeat(0)
                     .setHeatOC(true)

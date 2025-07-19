@@ -125,7 +125,7 @@ public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISu
                         Maintenance,
                         Energy.or(ExoticEnergy),
                         ParallelCon)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings9, 12))))
             .addElement('C', ofBlock(sBlockCasingsTT, 0))
             .addElement('D', ofFrame(Materials.CosmicNeutronium))
             .addElement('E', ofBlock(blockSpecialMultiCasings2, 2))
@@ -134,17 +134,17 @@ public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISu
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
-        energyHatchTier = 0;
+        mEnergyHatchTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 20;
+        return mCountCasing >= 20;
     }
 
     @Override

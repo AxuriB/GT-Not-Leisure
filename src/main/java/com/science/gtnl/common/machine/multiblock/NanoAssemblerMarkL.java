@@ -146,7 +146,7 @@ public class NanoAssemblerMarkL extends WirelessEnergyMultiMachineBase<NanoAssem
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
             .addElement('F', ofBlock(sBlockCasings2, 5))
             .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
             .addElement('H', ofBlock(sBlockCasingsTT, 4))
@@ -196,14 +196,14 @@ public class NanoAssemblerMarkL extends WirelessEnergyMultiMachineBase<NanoAssem
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingTier = -2;
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 250;
+        return mCountCasing > 250;
     }
 
     @Override
@@ -231,7 +231,7 @@ public class NanoAssemblerMarkL extends WirelessEnergyMultiMachineBase<NanoAssem
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.9, casingTier))
                     .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.9, casingTier));
             }

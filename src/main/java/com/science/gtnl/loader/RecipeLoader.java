@@ -1,6 +1,7 @@
 package com.science.gtnl.loader;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.Nxer.TwistSpaceTechnology.recipe.machineRecipe.expanded.CircuitAssemblyLineWithoutImprintRecipePool;
@@ -102,7 +103,9 @@ import com.science.gtnl.config.MainConfig;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import codechicken.nei.api.API;
 import goodgenerator.util.CrackRecipeAdder;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTRecipe;
 
 public class RecipeLoader {
 
@@ -188,6 +191,34 @@ public class RecipeLoader {
 
         RecipeUtil
             .generateRecipesNotUsingCells(BartWorksRecipeMaps.bioLabRecipes, RecipePool.LargeBioLabRecipes, true, 1.1);
+
+        for (RecipeMap<?> map : new RecipeMap<?>[] { RecipeMaps.transcendentPlasmaMixerRecipes,
+            RecipeMaps.fusionRecipes }) {
+            for (GTRecipe recipe : map.getAllRecipes()) {
+                if (recipe == null) continue;
+
+                GTRecipe copiedRecipe = recipe.copy();
+                if (copiedRecipe == null) continue;
+
+                FluidStack[] newInputs = recipe.mFluidOutputs;
+                FluidStack[] newOutputs = recipe.mFluidInputs;
+
+                if (newOutputs != null) {
+                    for (FluidStack stack : newOutputs) {
+                        if (stack != null) {
+                            stack.amount = (int) (stack.amount * 0.9);
+                        }
+                    }
+                }
+
+                copiedRecipe.mFluidInputs = newInputs;
+                copiedRecipe.mFluidOutputs = newOutputs;
+                copiedRecipe.mEUt = 0;
+                copiedRecipe.mDuration = 200;
+
+                RecipePool.PlasmaCentrifugeRecipes.add(copiedRecipe);
+            }
+        }
 
         TCResearches.register();
 

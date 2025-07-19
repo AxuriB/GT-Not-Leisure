@@ -150,7 +150,7 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
                 buildHatchAdder(LargeBrewer.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 1))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasingsMisc, 1))))
             .addElement('D', Muffler.newAny(TAE.GTPP_INDEX(1), 1))
             .build();
     }
@@ -196,14 +196,14 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -214,7 +214,7 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 45 && this.mMufflerHatches.size() == 1;
+        return mCountCasing >= 45 && this.mMufflerHatches.size() == 1;
     }
 
     @Override
@@ -257,7 +257,7 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
                     .setDurationModifier(1.0 / 2.25 - (mParallelTier / 200.0));
             }

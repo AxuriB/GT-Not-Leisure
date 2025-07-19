@@ -2249,6 +2249,8 @@ Tooltip_ETGWEyeOfHarmonyModule_09=仓室检查和鸿蒙之眼一致
 Tooltip_ETGWEyeOfHarmonyModule_10=允许执行所有配方
 Tooltip_ETGWEyeOfHarmonyModule_Casing=提示方块: 1号
 
+gtnl.recipe.PlasmaCentrifugeRecipes=等离子离心机
+
 NameCrackerHub=裂解反应枢纽
 CrackerHubRecipeType=石油裂化机
 Tooltip_CrackerHub_00=线圈等级每高出2级, 产出+10%

@@ -31,7 +31,6 @@ import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -39,7 +38,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
@@ -73,15 +71,14 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
 
     @Override
     public int getCasingTextureID() {
-        return GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
+        return 1662;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(StructureUtils.getTextureIndex(sBlockCasings1, 14)),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                     .extFacing()
@@ -91,8 +88,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(StructureUtils.getTextureIndex(sBlockCasings1, 14)),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER)
                     .extFacing()
@@ -103,8 +99,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
                     .glow()
                     .build() };
         }
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(StructureUtils.getTextureIndex(sBlockCasings1, 14)) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
@@ -169,7 +164,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
                         ParallelCon)
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlockAnyMeta(SHIELDED_ACCELERATOR_CASING))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlockAnyMeta(SHIELDED_ACCELERATOR_CASING))))
             .addElement('E', ofBlock(sBlockCasings10, 4))
             .addElement('F', ofBlock(sBlockCasings10, 11))
             .addElement('G', ofBlock(sBlockCasings9, 11))
@@ -225,14 +220,14 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mParallelTier = 0;
-        tCountCasing = 0;
+        mCountCasing = 0;
         this.multiTier = getMultiTier(aStack);
 
         if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && tCountCasing >= 920
+            && mCountCasing >= 920
             && multiTier == 1) {
             replaceWaterWithPortal();
-            energyHatchTier = checkEnergyHatchTier();
+            mEnergyHatchTier = checkEnergyHatchTier();
             mParallelTier = getParallelTier(aStack);
             return true;
         } else {

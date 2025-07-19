@@ -50,6 +50,7 @@ import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -84,6 +85,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIn
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MTEExtendedPowerMultiBlockBase<T>
     implements IConstructable, ISurvivalConstructable {
@@ -101,11 +104,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     public ArrayList<CustomFluidHatch> mFluidIceInputHatch = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mFluidBlazeInputHatch = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mFluidManaInputHatch = new ArrayList<>();
-
     public ArrayList<MTEHatch> mTecTechEnergyHatches = new ArrayList<>();
-
     public ArrayList<METHatchAirIntake> mAirIntakes = new ArrayList<>();
-
     public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
 
@@ -114,14 +114,19 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     public static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
     public final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
-    public int tCountCasing;
-    public int mGlassTier;
-    public int mParallelTier;
-    public int energyHatchTier;
+    public int mCountCasing = -1;
+    public int mGlassTier = -1;
+    public int mParallelTier = 0;
+    public int mEnergyHatchTier = 0;
     public int mMaxParallel = 0;
-    public double configSpeedBoost = 1;
+    public double mConfigSpeedBoost = 1;
 
-    // region new methods
+    @Getter
+    @Setter
+    public HeatingCoilLevel mCoilLevel = HeatingCoilLevel.None;
+    public int mHeatingCapacity = 0;
+    public int mCoilTier = 0;
+
     public void repairMachine() {
         mHardHammer = true;
         mSoftMallet = true;
@@ -130,10 +135,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         mSolderingTool = true;
         mWrench = true;
     }
-
-    // endregion
-
-    // region Processing Logic
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
@@ -151,13 +152,13 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                 for (MTEHatchMaintenance module : mMaintenanceHatches) {
                     if (module instanceof CustomMaintenanceHatch customMaintenanceHatch) {
                         if (customMaintenanceHatch.isConfiguration()) {
-                            configSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
+                            mConfigSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
                         }
                         found = true;
                     }
                 }
                 if (!found) {
-                    configSpeedBoost = 1;
+                    mConfigSpeedBoost = 1;
                 }
             }
 
@@ -338,7 +339,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost);
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost);
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -384,7 +385,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     public abstract int getCasingTextureID();
 
     protected long getMachineVoltageLimit() {
-        return GTValues.V[energyHatchTier];
+        return GTValues.V[mEnergyHatchTier];
     }
 
     protected int checkEnergyHatchTier() {

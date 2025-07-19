@@ -162,7 +162,7 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
                 buildHatchAdder(IndustrialArcaneAssembler.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 12))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings1, 12))))
             .addElement('B', ofBlock(sBlockCasings1, 13))
             .addElement('C', ofBlock(sBlockCasings10, 11))
             .addElement('D', ofBlock(sBlockCasings9, 11))
@@ -208,14 +208,14 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         ItemStack item = getControllerSlot();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        return tCountCasing >= 3 && item != null
+        return mCountCasing >= 3 && item != null
             && item.isItemEqual(GTModHandler.getModItem(Thaumcraft.ID, "WandCasting", 1, 9000));
     }
 

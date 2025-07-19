@@ -135,7 +135,7 @@ public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssem
                 buildHatchAdder(LargeCircuitAssembler.class).casingIndex(TAE.getIndexFromPage(2, 2))
                     .dot(1)
                     .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy), ParallelCon)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 2))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 2))))
             .build();
     }
 
@@ -161,7 +161,7 @@ public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssem
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mGlassTier = -1;
         mParallelTier = 0;
 
@@ -169,7 +169,7 @@ public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssem
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -186,6 +186,6 @@ public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssem
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 30 && this.mEnergyHatches.size() <= 2;
+        return mCountCasing >= 30 && this.mEnergyHatches.size() <= 2;
     }
 }

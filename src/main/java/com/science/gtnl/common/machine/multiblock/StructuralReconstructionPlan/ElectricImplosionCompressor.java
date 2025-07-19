@@ -132,7 +132,7 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
                 buildHatchAdder(ElectricImplosionCompressor.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 0))))
             .addElement('D', ofFrame(Materials.TungstenSteel))
             .addElement('E', Muffler.newAny(CASING_INDEX, 1))
             .build();
@@ -140,7 +140,7 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
@@ -148,7 +148,7 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 35 && this.mMufflerHatches.size() == 1;
+        return mCountCasing >= 35 && this.mMufflerHatches.size() == 1;
     }
 
     @Override
@@ -178,7 +178,7 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUt(ElectricImplosionCompressor.this.getMaxInputEu())
                     .setAmperage(1)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))

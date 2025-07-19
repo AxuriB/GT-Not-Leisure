@@ -77,7 +77,7 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)

@@ -150,7 +150,7 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7))
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
             .addElement('D', ofBlock(sBlockCasings2, 6))
             .addElement('E', ofBlock(sBlockCasings9, 1))
             .addElement('F', ofBlock(sBlockCasings8, 12))
@@ -198,14 +198,14 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingTier = -2;
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 1200;
+        return mCountCasing > 1200;
     }
 
     @Override
@@ -233,7 +233,7 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(
                         0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier) * Math.pow(0.95, casingTier))
                     .setDurationModifier(
@@ -267,9 +267,9 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
                 return V[Math.min(Math.min(mParallelTier + 1, casingTier + 3), 14)];
             }
         } else if (casingTier >= 11) {
-            return V[energyHatchTier];
+            return V[mEnergyHatchTier];
         } else {
-            return V[Math.min(casingTier + 3, energyHatchTier)];
+            return V[Math.min(casingTier + 3, mEnergyHatchTier)];
         }
     }
 

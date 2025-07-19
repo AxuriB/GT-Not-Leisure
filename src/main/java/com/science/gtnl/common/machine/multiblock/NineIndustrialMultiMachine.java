@@ -164,7 +164,7 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
                 buildHatchAdder(NineIndustrialMultiMachine.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++this.tCountCasing, ofBlock(sBlockCasings1, 12))))
+                    .buildAndChain(onElementPass(x -> ++this.mCountCasing, ofBlock(sBlockCasings1, 12))))
             .addElement('F', ofBlock(sBlockCasings1, 13))
             .addElement('G', ofBlock(sBlockCasings1, 14))
             .addElement('H', ofBlock(sBlockCasings10, 6))
@@ -201,15 +201,15 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.tCountCasing = 0;
+        this.mCountCasing = 0;
         wirelessMode = false;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return this.tCountCasing > 256;
+        return this.mCountCasing > 256;
     }
 
     @Override

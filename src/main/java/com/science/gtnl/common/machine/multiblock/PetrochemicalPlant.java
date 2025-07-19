@@ -45,9 +45,6 @@ import kekztech.common.Blocks;
 
 public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mHeatingCapacity;
-    private int mLevel = 0;
-
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String PP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/petrochemical_plant";
     public static String[][] shape = StructureUtils.readStructureFromFile(PP_STRUCTURE_FILE_PATH);
@@ -155,7 +152,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
             .addElement(
                 'L',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(PetrochemicalPlant::setCoilLevel, PetrochemicalPlant::getCoilLevel))))
+                    .use(activeCoils(ofCoil(PetrochemicalPlant::setMCoilLevel, PetrochemicalPlant::getMCoilLevel))))
             .addElement('M', ofBlock(sBlockCasings8, 1))
             .addElement('N', ofBlock(blockCasingsTieredGTPP, 4))
             .addElement(
@@ -164,7 +161,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 3))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 3))))
             .addElement('P', ofBlock(sBlockCasings10, 4))
             .addElement('Q', ofBlock(blockCasingsMisc, 14))
             .addElement('R', ofBlock(sBlockCasings9, 0))
@@ -202,32 +199,24 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mLevel = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        mCountCasing = 0;
+        mCoilTier = 0;
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
 
-        return tCountCasing >= 5 && getCoilLevel() != HeatingCoilLevel.None
+        return mCountCasing >= 5 && getMCoilLevel() != HeatingCoilLevel.None
             && this.mMufflerHatches.size() == 8
-            && (mLevel = getCoilLevel().getTier() + 1) > 0;
+            && (mCoilTier = getMCoilLevel().getTier() + 1) > 0;
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (this.mLevel * 16);
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return mHeatingCapacity;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        mHeatingCapacity = aCoilLevel;
+        return (this.mCoilTier * 16);
     }
 
     @Nonnull
@@ -250,30 +239,26 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
         mMaxProgresstime = processingLogic.getDuration();
         setEnergyUsage(processingLogic);
 
-        // 获取输出物品并进行 null 检查
         ItemStack[] outputItems = processingLogic.getOutputItems();
         if (outputItems != null) {
             for (ItemStack itemStack : outputItems) {
                 if (itemStack != null) {
-                    itemStack.stackSize *= this.mLevel * GTUtility.getTier(this.getMaxInputVoltage()) * 10;
+                    itemStack.stackSize *= this.mCoilTier * GTUtility.getTier(this.getMaxInputVoltage()) * 10;
                 }
             }
         }
         mOutputItems = outputItems;
 
-        // 获取输出流体并进行 null 检查
         FluidStack[] outputFluids = processingLogic.getOutputFluids();
         List<FluidStack> expandedFluids = new ArrayList<>();
 
         if (outputFluids != null) {
             for (FluidStack fluidStack : outputFluids) {
                 if (fluidStack != null) {
-                    // 计算放大后的总量
-                    long totalAmount = (long) fluidStack.amount * this.mLevel
+                    long totalAmount = (long) fluidStack.amount * this.mCoilTier
                         * GTUtility.getTier(this.getMaxInputVoltage())
                         * 10;
 
-                    // 拆分为多个 FluidStack，避免 amount 超过 int 上限
                     while (totalAmount > 0) {
                         int stackSize = (int) Math.min(totalAmount, Integer.MAX_VALUE);
                         expandedFluids.add(new FluidStack(fluidStack.getFluid(), stackSize));

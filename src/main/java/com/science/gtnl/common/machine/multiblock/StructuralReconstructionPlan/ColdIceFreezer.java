@@ -115,7 +115,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
                         .dot(1)
                         .casingIndex(CASING_INDEX)
                         .build(),
-                    onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 1)),
+                    onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 1)),
                     buildHatchAdder(ColdIceFreezer.class).adder(ColdIceFreezer::addFluidIceInputHatch)
                         .hatchId(21502)
                         .shouldReject(x -> !x.mFluidIceInputHatch.isEmpty())
@@ -151,13 +151,13 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mFluidIceInputHatch.clear();
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -167,7 +167,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
             if (getMaxInputAmps() > 64) return false;
         }
 
-        return tCountCasing >= 50 && this.mMufflerHatches.size() == 1;
+        return mCountCasing >= 50 && this.mMufflerHatches.size() == 1;
     }
 
     @Override

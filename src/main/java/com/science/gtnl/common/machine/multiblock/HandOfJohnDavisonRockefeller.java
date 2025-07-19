@@ -146,7 +146,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
                 buildHatchAdder(HandOfJohnDavisonRockefeller.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 3))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 3))))
             .addElement('E', ofBlock(sBlockCasings10, 8))
             .addElement('F', ofBlock(sBlockCasings3, 10))
             .addElement('G', ofBlock(sBlockCasings8, 2))
@@ -177,7 +177,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mGlassTier = -1;
         mSpeedCount = 0;
         mParallelTier = 0;
@@ -194,9 +194,9 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
             }
         }
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing >= 80;
+        return mCountCasing >= 80;
     }
 
     @Override
@@ -224,7 +224,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(calculateEUtDiscount(mSpeedCount))
                     .setDurationModifier(calculateSpeedBoost(mSpeedCount));
             }

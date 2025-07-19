@@ -155,7 +155,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0))
                     .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier));
             }

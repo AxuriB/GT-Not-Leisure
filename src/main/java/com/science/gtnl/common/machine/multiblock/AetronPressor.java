@@ -118,7 +118,7 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
                 buildHatchAdder(AetronPressor.class).atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))
             .addElement('H', ofBlock(sBlockCasings8, 10))
             .addElement('I', ofBlock(BlockQuantumGlass.INSTANCE, 0))
             .addElement('J', ofBlock(sBlockCasings10, 12))
@@ -155,12 +155,12 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 250;
+        return mCountCasing > 250;
     }
 
     @Override

@@ -201,7 +201,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
                         .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                         .buildAndChain(
                             onElementPass(
-                                x -> ++x.tCountCasing,
+                                x -> ++x.mCountCasing,
                                 StructureUtility.withChannel(
                                     "unit_casing",
                                     ofBlocksTiered(
@@ -288,7 +288,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         casingTier = -1;
         machineTier = -1;
         mGlassTier = -1;
@@ -309,11 +309,11 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
             }
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
 
         updateTexture(aBaseMetaTileEntity, getCasingTextureID());
         updateHatchTexture();
-        return tCountCasing >= 30 && casingTier >= 0;
+        return mCountCasing >= 30 && casingTier >= 0;
     }
 
     @Override
@@ -328,8 +328,8 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
 
     public long getMachineVoltageLimit() {
         if (machineTier < 0) return 0;
-        if (machineTier >= 9) return GTValues.V[energyHatchTier];
-        else return GTValues.V[Math.min(machineTier, energyHatchTier)];
+        if (machineTier >= 9) return GTValues.V[mEnergyHatchTier];
+        else return GTValues.V[Math.min(machineTier, mEnergyHatchTier)];
     }
 
     public int checkEnergyHatchTier() {
@@ -370,7 +370,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8)
                     .setDurationModifier(1 / 2.25)
                     .setMaxTierSkips(0);

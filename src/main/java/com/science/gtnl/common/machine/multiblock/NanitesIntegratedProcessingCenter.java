@@ -57,9 +57,6 @@ import gtnhlanth.common.register.LanthItemList;
 public class NanitesIntegratedProcessingCenter
     extends WirelessEnergyMultiMachineBase<NanitesIntegratedProcessingCenter> {
 
-    private HeatingCoilLevel heatLevel;
-    private int coilTier = 0;
-    private int mHeatingCapacity = 0;
     public final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10);
     private final int HORIZONTAL_OFF_SET = 15;
     private final int VERTICAL_OFF_SET = 20;
@@ -180,7 +177,7 @@ public class NanitesIntegratedProcessingCenter
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('B', ofBlock(sBlockCasingsTT, 0))
             .addElement('C', ofBlockAnyMeta(ELECTRODE_CASING))
             .addElement('D', ofBlock(sBlockCasings3, 10))
@@ -191,8 +188,8 @@ public class NanitesIntegratedProcessingCenter
                 GTStructureChannels.HEATING_COIL.use(
                     activeCoils(
                         ofCoil(
-                            NanitesIntegratedProcessingCenter::setCoilLevel,
-                            NanitesIntegratedProcessingCenter::getCoilLevel))))
+                            NanitesIntegratedProcessingCenter::setMCoilLevel,
+                            NanitesIntegratedProcessingCenter::getMCoilLevel))))
             .addElement('H', ofBlock(sBlockCasings4, 10))
             .addElement('I', ofBlock(sBlockCasings10, 3))
             .addElement('J', ofBlock(sBlockCasingsSE, 9))
@@ -246,25 +243,23 @@ public class NanitesIntegratedProcessingCenter
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        coilTier = 0;
+        mCountCasing = 0;
         moduleHatches.clear();
         mGlassTier = -1;
         mParallelTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
 
         mParallelTier = getParallelTier(aStack);
-        coilTier = getCoilLevel().getTier();
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        mHeatingCapacity = (int) this.getCoilLevel()
+        mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
 
-        return mHeatingCapacity > 0 && mGlassTier > 0 && tCountCasing > 1;
+        return mHeatingCapacity > 0 && mGlassTier > 0 && mCountCasing > 1;
     }
 
     @Override
@@ -283,9 +278,9 @@ public class NanitesIntegratedProcessingCenter
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                setEUtDiscount = 1 - (mParallelTier / 50.0) * Math.pow(0.80, coilTier);
-                setDurationModifier = Math.pow(0.75, mParallelTier) * Math.pow(0.80, coilTier);
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                setEUtDiscount = 1 - (mParallelTier / 50.0) * Math.pow(0.80, getMCoilLevel().getTier());
+                setDurationModifier = Math.pow(0.75, mParallelTier) * Math.pow(0.80, getMCoilLevel().getTier());
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity)
                     .setEUtDiscount(setEUtDiscount)
@@ -366,14 +361,6 @@ public class NanitesIntegratedProcessingCenter
 
     public int getGlassTier() {
         return this.mGlassTier;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.heatLevel;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel level) {
-        this.heatLevel = level;
     }
 
     public double getEUtDiscount() {

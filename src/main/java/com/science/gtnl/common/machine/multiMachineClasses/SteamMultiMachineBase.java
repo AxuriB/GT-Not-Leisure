@@ -5,7 +5,6 @@ import static com.science.gtnl.Utils.enums.GTNLMachineID.BIG_STEAM_INPUT_HATCH;
 import static com.science.gtnl.Utils.enums.GTNLMachineID.PIPELESS_STEAM_HATCH;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.GregTechAPI.sBlockFrames;
-import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
@@ -51,10 +50,14 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.Scrollable;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
@@ -122,7 +125,10 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     private long uiSteamStored = 0;
     private long uiSteamCapacity = 0;
     private int uiSteamStoredOfAllTypes = 0;
-    public static final UITexture STEAM_GAUGE_BG = UITexture.fullImage(GregTech.ID, "gui/background/steam_dial");
+    public static final UITexture STEAM_GAUGE_BG = UITexture
+        .fullImage(Mods.ScienceNotLeisure.ID, "gui/background/steam_dial");
+    public static final UITexture STEAM_GAUGE_STEEL_BG = UITexture
+        .fullImage(Mods.ScienceNotLeisure.ID, "gui/background/steam_dial_steel");
 
     public SteamMultiMachineBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -886,6 +892,40 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        if (doesBindPlayerInventory()) {
+            builder.widget(
+                new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
+                    .setPos(4, 4)
+                    .setSize(190, 85));
+            final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
+            builder.widget(
+                inventorySlot.setPos(173, 167)
+                    .setBackground(GTUITextures.SLOT_DARK_GRAY));
+
+            final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
+            drawTexts(screenElements, inventorySlot);
+            builder.widget(
+                new Scrollable().setVerticalScroll()
+                    .widget(screenElements)
+                    .setPos(10, 7)
+                    .setSize(182, 79));
+
+            setMachineModeIcons();
+            builder.widget(createPowerSwitchButton(builder))
+                .widget(createVoidExcessButton(builder))
+                .widget(createInputSeparationButton(builder))
+                .widget(createModeSwitchButton(builder))
+                .widget(createBatchModeButton(builder))
+                .widget(createLockToSingleRecipeButton(builder))
+                .widget(createStructureUpdateButton(builder));
+            if (supportsPowerPanel()) {
+                builder.widget(createPowerPanelButton(builder));
+                buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
+            }
+        } else {
+            addNoPlayerInventoryUI(builder, buildContext);
+        }
+
         buildContext.addSyncedWindow(OC_WINDOW_ID, this::createRecipeOcCountWindow);
         builder.widget(new FakeSyncWidget.LongSyncer(this::getTotalSteamCapacityLong, val -> uiSteamCapacity = val));
         builder.widget(new FakeSyncWidget.LongSyncer(this::getLongTotalSteamStored, val -> uiSteamStored = val));
@@ -910,7 +950,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             .setPos(174, 112)
             .setSize(16, 16));
         builder.widget(
-            new DrawableWidget().setDrawable(STEAM_GAUGE_BG)
+            new DrawableWidget().setDrawable(this.tierMachine == 2 ? STEAM_GAUGE_STEEL_BG : STEAM_GAUGE_BG)
                 .dynamicTooltip(() -> {
                     List<String> ret = new ArrayList<>();
                     ret.add(
@@ -937,8 +977,6 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             new ItemDrawable(GTNLItemList.FakeItemSiren.get(1)).asWidget()
                 .setPos(-64 + 21 - 7, 100 - 20)
                 .setEnabled(w -> uiSteamStored == 0));
-
-        super.addUIWidgets(builder, buildContext);
     }
 
     public ModularWindow createRecipeOcCountWindow(final EntityPlayer player) {

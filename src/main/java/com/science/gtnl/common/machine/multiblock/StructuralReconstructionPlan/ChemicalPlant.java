@@ -42,7 +42,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements ISurvivalConstructable {
 
     public static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(0);
-    private HeatingCoilLevel mCoilLevel;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String CP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/chemical_plant";
     public final int HORIZONTAL_OFF_SET = 0;
@@ -140,13 +139,13 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
             .addElement(
                 'A',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(ChemicalPlant::setCoilLevel, ChemicalPlant::getCoilLevel))))
+                    .use(activeCoils(ofCoil(ChemicalPlant::setMCoilLevel, ChemicalPlant::getMCoilLevel))))
             .addElement(
                 'B',
                 buildHatchAdder(ChemicalPlant.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 0))))
             .addElement('C', ofBlock(sBlockCasings8, 1))
             .build();
     }
@@ -173,17 +172,17 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -194,7 +193,7 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 50;
+        return mCountCasing >= 50;
     }
 
     @Override
@@ -211,8 +210,8 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(4)
                     .setEUtIncreasePerOC(4)
-                    .setEUtDiscount(0.8 * Math.pow(0.95, getCoilLevel().getTier()))
-                    .setDurationModifier(1 / 1.67 * Math.pow(0.95, getCoilLevel().getTier()));
+                    .setEUtDiscount(0.8 * Math.pow(0.95, getMCoilLevel().getTier()))
+                    .setDurationModifier(1 / 1.67 * Math.pow(0.95, getMCoilLevel().getTier()));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -226,13 +225,5 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
             maxRecipes = (int) Math.pow(4, mParallelTier - 3);
         }
         return Math.min(maxRecipes, 1024);
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
     }
 }

@@ -119,7 +119,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
                 buildHatchAdder(BrickedBlastFurnace.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 15))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 15))))
             .addElement('C', ofFrame(Materials.Bronze))
             .addElement('D', ofBlock(sBlockCasings1, 10))
             .addElement('E', ofBlockAnyMeta(Blocks.stonebrick))
@@ -153,13 +153,13 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        return tCountCasing >= 350;
+        return mCountCasing >= 350;
     }
 
     @Override

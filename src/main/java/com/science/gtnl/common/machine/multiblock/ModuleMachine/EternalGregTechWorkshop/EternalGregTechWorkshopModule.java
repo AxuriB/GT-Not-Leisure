@@ -195,7 +195,7 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setMachineHeat(getHeat())
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getSpeedBoost());

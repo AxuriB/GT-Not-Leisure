@@ -45,7 +45,6 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
     public final int VERTICAL_OFF_SET = 4;
     public final int DEPTH_OFF_SET = 0;
     public static String[][] shape = StructureUtils.readStructureFromFile(LPO_STRUCTURE_FILE_PATH);
-    public HeatingCoilLevel mHeatingCapacity;
 
     public LargePyrolyseOven(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -121,11 +120,11 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 1))))
             .addElement(
                 'C',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(LargePyrolyseOven::setCoilLevel, LargePyrolyseOven::getCoilLevel))))
+                    .use(activeCoils(ofCoil(LargePyrolyseOven::setMCoilLevel, LargePyrolyseOven::getMCoilLevel))))
             .addElement('D', ofFrame(Materials.StainlessSteel))
             .addElement('E', ofFrame(Materials.PulsatingIron))
             .addElement('F', Muffler.newAny(CASING_INDEX, 2))
@@ -134,15 +133,15 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        mCountCasing = 0;
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-        energyHatchTier = checkEnergyHatchTier();
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -152,8 +151,8 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
             if (getMaxInputAmps() > 64) return false;
         }
 
-        return tCountCasing >= 120 && mMaintenanceHatches.size() == 1
-            && getCoilLevel() != HeatingCoilLevel.None
+        return mCountCasing >= 120 && mMaintenanceHatches.size() == 1
+            && getMCoilLevel() != HeatingCoilLevel.None
             && this.mMufflerHatches.size() == 2;
     }
 
@@ -175,13 +174,5 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
             env,
             false,
             true);
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return mHeatingCapacity;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        mHeatingCapacity = aCoilLevel;
     }
 }

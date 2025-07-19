@@ -128,20 +128,20 @@ public class LargeHammer extends GTMMultiMachineBase<LargeHammer> implements ISu
                 buildHatchAdder(LargeHammer.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 1))))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -152,7 +152,7 @@ public class LargeHammer extends GTMMultiMachineBase<LargeHammer> implements ISu
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 25;
+        return mCountCasing >= 25;
     }
 
     @Override
@@ -182,7 +182,7 @@ public class LargeHammer extends GTMMultiMachineBase<LargeHammer> implements ISu
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
                     .setDurationModifier(1.0 / 2.5 - (mParallelTier / 200.0));
             }

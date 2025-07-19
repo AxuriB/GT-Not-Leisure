@@ -165,7 +165,7 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
                 buildHatchAdder(LargeChemicalBath.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 4))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings2Misc, 4))))
             .build();
     }
 
@@ -224,7 +224,7 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
@@ -232,7 +232,7 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
         }
 
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -242,7 +242,7 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
             if (getMaxInputAmps() > 64) return false;
         }
         replaceWater();
-        return tCountCasing >= 55;
+        return mCountCasing >= 55;
     }
 
     @Override
@@ -252,7 +252,7 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)

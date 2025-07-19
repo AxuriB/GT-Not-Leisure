@@ -159,7 +159,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                         .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                         .buildAndChain(),
                     ofHatchAdder(Incubator::addRadiationInputToMachineList, CASING_INDEX, 1),
-                    onElementPass(e -> e.tCountCasing++, ofBlock(sBlockReinforced, 2))))
+                    onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
             .addElement('D', ofBlockAnyMeta(Blocks.sponge))
             .addElement('E', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
             .build();
@@ -227,7 +227,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8)
                     .setDurationModifier(1 / 1.67);
             }
@@ -308,7 +308,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
         this.mRadHatches.clear();
         this.mGlassTier = -1;
-        this.tCountCasing = 0;
+        this.mCountCasing = 0;
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
             || !checkHatch()) return false;
@@ -328,7 +328,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             if (getMaxInputAmps() > 64) return false;
         }
 
-        return this.tCountCasing >= 19 && this.mRadHatches.size() <= 1
+        return this.mCountCasing >= 19 && this.mRadHatches.size() <= 1
             && this.mOutputHatches.size() == 1
             && this.mMaintenanceHatches.size() == 1
             && !this.mInputHatches.isEmpty()

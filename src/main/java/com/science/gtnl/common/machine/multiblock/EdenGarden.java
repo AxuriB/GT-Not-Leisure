@@ -156,7 +156,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                         .dot(1)
                         .casingIndex(((BlockCasings10) sBlockCasings10).getTextureIndex(4))
                         .build(),
-                    onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 4))))
+                    onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 4))))
             .addElement('C', ofBlock(sBlockCasings10, 5))
             .addElement('D', ofBlock(sBlockCasings8, 10))
             .addElement('E', ofBlock(sBlockCasings9, 11))
@@ -174,11 +174,11 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         boolean valid = this.mMaintenanceHatches.size() == 1
             && !(this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty())
-            && this.tCountCasing >= 1000;
+            && this.mCountCasing >= 1000;
 
         if (valid) this.updateSeedLimits();
         return valid;
@@ -568,13 +568,13 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
         double multiplier = EIG_BALANCE_MAX_FERTILIZER_BOOST;
         this.guiDropTracker = new EIGDropTable();
         if (this.mode == EIGModes.IC2) {
-            this.mMaxProgresstime = Math.max(20, 100 / (energyHatchTier - 5));
+            this.mMaxProgresstime = Math.max(20, 100 / (mEnergyHatchTier - 5));
             double timeElapsed = ((double) this.mMaxProgresstime * (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER));
             for (EIGBucket bucket : this.buckets) {
                 bucket.addProgress(timeElapsed * multiplier, this.guiDropTracker);
             }
         } else if (this.mode == EIGModes.Normal) {
-            this.mMaxProgresstime = Math.max(20, 100 / (energyHatchTier - 3)); // Min 1 s
+            this.mMaxProgresstime = Math.max(20, 100 / (mEnergyHatchTier - 3)); // Min 1 s
             for (EIGBucket bucket : this.buckets) {
                 bucket.addProgress(multiplier, this.guiDropTracker);
             }
@@ -583,7 +583,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
         this.guiDropTracker.addTo(this.dropTracker, multiplier);
         this.mOutputItems = this.dropTracker.getDrops();
 
-        this.lEUt = -(long) ((double) GTValues.V[energyHatchTier] * 0.99d);
+        this.lEUt = -(long) ((double) GTValues.V[mEnergyHatchTier] * 0.99d);
         this.mEfficiency = 10000;
         this.mEfficiencyIncrease = 10000;
         this.updateSlots();

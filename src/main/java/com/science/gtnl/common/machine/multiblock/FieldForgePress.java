@@ -122,7 +122,7 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))
             .addElement('I', ofBlock(blockCustomMachineCasings, 3))
             .addElement('J', ofBlock(sBlockCasings8, 10))
             .addElement('K', ofBlock(BlockLoader.metaCasing, 12))
@@ -163,14 +163,14 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 1800;
+        return mCountCasing > 1800;
     }
 
     @Override

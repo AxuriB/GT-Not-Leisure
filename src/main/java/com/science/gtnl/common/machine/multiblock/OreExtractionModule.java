@@ -89,7 +89,7 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 0))))
             .addElement('H', ofBlock(blockCasings4Misc, 11))
             .addElement('I', ofBlock(sBlockCasings2, 5))
             .addElement('J', ofBlock(sBlockCasings10, 8))
@@ -129,14 +129,14 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         isOreModule = false;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
 
         isOreModule = true;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
         return true;
     }

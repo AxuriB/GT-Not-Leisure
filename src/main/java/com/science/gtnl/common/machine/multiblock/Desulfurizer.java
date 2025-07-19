@@ -48,7 +48,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mHeatingCapacity;
     private int mLevel = 0;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String Desu_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/desulfurizer";
@@ -149,11 +148,11 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
                     .atLeast(Maintenance, InputHatch, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(((BlockCasings4) sBlockCasings4).getTextureIndex(1))
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 1))))
             .addElement(
                 'F',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(Desulfurizer::setCoilLevel, Desulfurizer::getCoilLevel))))
+                    .use(activeCoils(ofCoil(Desulfurizer::setMCoilLevel, Desulfurizer::getMCoilLevel))))
             .addElement('G', ofBlock(sBlockCasings6, 2))
             .build();
     }
@@ -180,15 +179,15 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mLevel = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
             || !checkHatch()) return false;
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -198,8 +197,8 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
             if (getMaxInputAmps() > 64) return false;
         }
 
-        return tCountCasing >= 20 && getCoilLevel() != HeatingCoilLevel.None
-            && (mLevel = getCoilLevel().getTier() + 1) > 0;
+        return mCountCasing >= 20 && getMCoilLevel() != HeatingCoilLevel.None
+            && (mLevel = getMCoilLevel().getTier() + 1) > 0;
     }
 
     @Override
@@ -214,7 +213,7 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeEUt(recipe.mEUt)
                     .setAmperage(availableAmperage)
                     .setEUt(availableVoltage)
@@ -225,7 +224,7 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
                     .setDurationModifier(100.0 / (100 + 10 * mLevel))
                     .setHeatOC(true)
                     .setRecipeHeat(0)
-                    .setMachineHeat((int) (getCoilLevel().getHeat() * 2));
+                    .setMachineHeat((int) (getMCoilLevel().getHeat() * 2));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -238,14 +237,6 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
             useSingleAmp ? 1
                 : ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList()));
         logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return mHeatingCapacity;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        mHeatingCapacity = aCoilLevel;
     }
 
     @Override

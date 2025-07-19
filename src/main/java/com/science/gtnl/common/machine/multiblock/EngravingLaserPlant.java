@@ -150,7 +150,7 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
                         ParallelCon)
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
             .addElement('E', ofBlock(sBlockCasings8, 12))
             .addElement('F', ofBlock(sBlockCasings9, 1))
             .addElement('G', ofBlock(BlockLoader.metaCasing, 5))
@@ -201,14 +201,14 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         casingTier = -2;
-        tCountCasing = 0;
+        mCountCasing = 0;
         wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 1200;
+        return mCountCasing > 750;
     }
 
     @Override
@@ -236,7 +236,7 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(
                         0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier) * Math.pow(0.95, casingTier))
                     .setDurationModifier(
@@ -270,9 +270,9 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
                 return V[Math.min(Math.min(mParallelTier + 1, casingTier + 3), 14)];
             }
         } else if (casingTier >= 11) {
-            return V[energyHatchTier];
+            return V[mEnergyHatchTier];
         } else {
-            return V[Math.min(casingTier + 3, energyHatchTier)];
+            return V[Math.min(casingTier + 3, mEnergyHatchTier)];
         }
     }
 

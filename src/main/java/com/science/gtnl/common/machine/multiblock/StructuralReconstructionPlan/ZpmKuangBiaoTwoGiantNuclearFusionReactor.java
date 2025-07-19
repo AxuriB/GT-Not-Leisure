@@ -84,20 +84,20 @@ public class ZpmKuangBiaoTwoGiantNuclearFusionReactor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (!checkHatch()) {
             return false;
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 1500;
+        return mCountCasing >= 1500;
     }
 
     @Override
@@ -303,7 +303,7 @@ public class ZpmKuangBiaoTwoGiantNuclearFusionReactor
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(4)
                     .setEUtIncreasePerOC(4)
@@ -344,7 +344,7 @@ public class ZpmKuangBiaoTwoGiantNuclearFusionReactor
                 buildHatchAdder(ZpmKuangBiaoTwoGiantNuclearFusionReactor.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 6))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 6))))
             .addElement('D', ofBlock(sBlockCasings9, 3))
             .addElement('E', ofFrame(Materials.Tungsten))
             .addElement('F', ofFrame(Materials.Duranium))

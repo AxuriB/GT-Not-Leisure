@@ -106,7 +106,7 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeEUt(recipe.mEUt)
                     .setAmperage(availableAmperage)
                     .setEUt(availableVoltage)
@@ -154,7 +154,7 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
                 buildHatchAdder(FlotationCellRegulator.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 2))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings2Misc, 2))))
             .addElement('E', ofBlock(blockCasings3Misc, 1))
             .addElement('F', ofBlock(blockSpecialMultiCasings, 9))
             .build();
@@ -162,7 +162,7 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mGlassTier = -1;
         mParallelTier = 0;
 
@@ -176,7 +176,7 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
             }
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -187,7 +187,7 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 25;
+        return mCountCasing >= 25;
     }
 
     @Override

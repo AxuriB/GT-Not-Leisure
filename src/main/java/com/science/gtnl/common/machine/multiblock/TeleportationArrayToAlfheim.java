@@ -267,7 +267,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
                         .dot(1)
                         .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
                         .build(),
-                    onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings8, 10)),
+                    onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings8, 10)),
                     buildHatchAdder(TeleportationArrayToAlfheim.class)
                         .adder(TeleportationArrayToAlfheim::addFluidManaInputHatch)
                         .hatchId(21501)
@@ -339,7 +339,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mFluidManaInputHatch.clear();
         enableInfinityMana = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
@@ -350,7 +350,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
             enableInfinityMana = true;
         }
 
-        return tCountCasing >= 350;
+        return mCountCasing >= 350;
     }
 
     private static boolean areStacksEqualExtended(ItemStack lhs, ItemStack rhs) {

@@ -47,8 +47,6 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace> implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mCoilLevel;
-    private int mHeatingCapacity = 0;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/electric_blast_furnace";
     public static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(11);
@@ -80,14 +78,14 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 11))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings1, 11))))
             .addElement('B', ofBlock(sBlockCasings2, 0))
             .addElement('C', ofBlock(sBlockCasings3, 10))
             .addElement('D', ofBlock(sBlockCasings4, 1))
             .addElement(
                 'E',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(ElectricBlastFurnace::setCoilLevel, ElectricBlastFurnace::getCoilLevel))))
+                    .use(activeCoils(ofCoil(ElectricBlastFurnace::setMCoilLevel, ElectricBlastFurnace::getMCoilLevel))))
             .addElement('F', ofFrame(Materials.StainlessSteel))
             .addElement('G', Muffler.newAny(CASING_INDEX, 1))
             .build();
@@ -117,14 +115,6 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
     }
 
     @Override
@@ -182,13 +172,13 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(ElectricBlastFurnace.this.mHeatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(false)
-                    .setEUtDiscount(0.9 * Math.pow(0.95, getCoilLevel().getTier()))
-                    .setDurationModifier(1.0 / 1.25 * Math.pow(0.95, getCoilLevel().getTier()));
+                    .setEUtDiscount(0.9 * Math.pow(0.95, getMCoilLevel().getTier()))
+                    .setDurationModifier(1.0 / 1.25 * Math.pow(0.95, getMCoilLevel().getTier()));
             }
 
             @Override
@@ -202,7 +192,7 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
 
     @Override
     public int getMaxParallelRecipes() {
-        return Math.max(1, GTUtility.getTier(this.getMaxInputVoltage()) * 2 + (getCoilLevel().getTier() + 1) * 2);
+        return Math.max(1, GTUtility.getTier(this.getMaxInputVoltage()) * 2 + (getMCoilLevel().getTier() + 1) * 2);
     }
 
     @Override
@@ -219,7 +209,7 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
@@ -235,22 +225,22 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
         this.mHeatingCapacity = 0;
-        tCountCasing = 0;
-        energyHatchTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        mCountCasing = 0;
+        mEnergyHatchTier = 0;
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
 
         if (mMaintenanceHatches.size() != 1 || mMufflerHatches.size() != 1) return false;
 
-        this.mHeatingCapacity = (int) this.getCoilLevel()
+        this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-        return tCountCasing >= 30;
+        return mCountCasing >= 30;
     }
 
     @Override

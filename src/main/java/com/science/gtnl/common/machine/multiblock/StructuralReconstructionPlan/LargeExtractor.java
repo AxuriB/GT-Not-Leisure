@@ -140,7 +140,7 @@ public class LargeExtractor extends GTMMultiMachineBase<LargeExtractor> implemen
                 buildHatchAdder(LargeExtractor.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 4))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings2Misc, 4))))
             .build();
     }
 
@@ -151,7 +151,7 @@ public class LargeExtractor extends GTMMultiMachineBase<LargeExtractor> implemen
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)
@@ -204,14 +204,14 @@ public class LargeExtractor extends GTMMultiMachineBase<LargeExtractor> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -222,7 +222,7 @@ public class LargeExtractor extends GTMMultiMachineBase<LargeExtractor> implemen
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 10;
+        return mCountCasing >= 10;
     }
 
     @Override

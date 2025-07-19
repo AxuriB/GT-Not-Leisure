@@ -58,8 +58,6 @@ import gtPlusPlus.core.block.ModBlocks;
 
 public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mCoilLevel;
-    private int mHeatingCapacity = 0;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_blast_furnace";
     public static String[][] shape = StructureUtils.readStructureFromFile(MBF_STRUCTURE_FILE_PATH);
@@ -97,7 +95,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
                         ParallelCon)
                     .casingIndex(TAE.GTPP_INDEX(15))
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
             .addElement('B', ofBlock(sBlockCasings2, 0))
             .addElement('S', Muffler.newAny(((BlockCasings8) sBlockCasings8).getTextureIndex(10), 2))
             .addElement('C', ofBlock(sBlockCasings2, 12))
@@ -248,7 +246,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(MegaBlastFurnace.this.mHeatingCapacity)
                     .setHeatOC(true)
@@ -305,7 +303,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
         this.mHeatingCapacity = 0;
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
         this.setCoilLevel(HeatingCoilLevel.None);
 
@@ -320,9 +318,9 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
         this.mHeatingCapacity = (int) this.getCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 3500;
+        return mCountCasing >= 3500;
     }
 
     @Override

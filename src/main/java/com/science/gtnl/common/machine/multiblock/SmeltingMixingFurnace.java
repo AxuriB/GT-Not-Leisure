@@ -173,7 +173,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
                         ParallelCon)
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++this.tCountCasing, ofBlock(sBlockCasingsTT, 0))))
+                    .buildAndChain(onElementPass(x -> ++this.mCountCasing, ofBlock(sBlockCasingsTT, 0))))
             .build();
     }
 
@@ -205,7 +205,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.tCountCasing = 0;
+        this.mCountCasing = 0;
         wirelessMode = false;
         hasRequiredItem = false;
         mParallelTier = 0;
@@ -221,9 +221,9 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
         }
 
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return this.tCountCasing > 15;
+        return this.mCountCasing > 15;
     }
 
     @Override
@@ -305,7 +305,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0))
                     .setDurationModifier(1 * Math.pow(0.75, mParallelTier));
             }

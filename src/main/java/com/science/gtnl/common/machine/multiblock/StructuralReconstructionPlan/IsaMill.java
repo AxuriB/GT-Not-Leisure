@@ -116,7 +116,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
                         .casingIndex(CASING_INDEX)
                         .dot(1)
                         .build(),
-                    onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings5Misc, 0))))
+                    onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings5Misc, 0))))
             .addElement('C', ofBlock(blockCasings5Misc, 1))
             .addElement('D', ofBlock(blockCasings5Misc, 2))
             .build();
@@ -144,7 +144,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mGlassTier = -1;
         mParallelTier = 0;
         mMillingBallBuses.clear();
@@ -159,7 +159,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
             }
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -170,7 +170,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
         }
 
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 48 && mMillingBallBuses.size() == 1;
+        return mCountCasing >= 48 && mMillingBallBuses.size() == 1;
     }
 
     @Override
@@ -369,7 +369,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeEUt(recipe.mEUt)
                     .setAmperage(availableAmperage)
                     .setEUt(availableVoltage)

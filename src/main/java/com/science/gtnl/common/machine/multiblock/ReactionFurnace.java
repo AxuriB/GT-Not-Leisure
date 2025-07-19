@@ -132,22 +132,22 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
                 buildHatchAdder(ReactionFurnace.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 115;
+        return mCountCasing >= 115;
     }
 
     @Override
@@ -173,7 +173,7 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
             .setRecipeEUt(4)
             .setDuration(64)
             .setParallel(originalMaxParallel)
-            .setExtraDurationModifier(configSpeedBoost);
+            .setExtraDurationModifier(mConfigSpeedBoost);
 
         maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
 

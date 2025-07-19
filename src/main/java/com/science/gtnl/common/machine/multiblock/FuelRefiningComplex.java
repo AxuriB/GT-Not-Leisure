@@ -47,8 +47,6 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex> implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mCoilLevel;
-    private int mHeatingCapacity = 0;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String FRC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/fuel_refining_complex";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
@@ -120,14 +118,6 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
         return tt;
     }
 
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
-    }
-
     @Override
     public IStructureDefinition<FuelRefiningComplex> getStructureDefinition() {
         return StructureDefinition.<FuelRefiningComplex>builder()
@@ -140,7 +130,7 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
             .addElement(
                 'F',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(FuelRefiningComplex::setCoilLevel, FuelRefiningComplex::getCoilLevel))))
+                    .use(activeCoils(ofCoil(FuelRefiningComplex::setMCoilLevel, FuelRefiningComplex::getMCoilLevel))))
             .addElement('G', ofBlock(sBlockCasings6, 6))
             .addElement('H', ofBlock(sBlockCasings8, 0))
             .addElement('I', ofBlock(sBlockCasings8, 1))
@@ -151,27 +141,27 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
                 buildHatchAdder(FuelRefiningComplex.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 1))))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
         this.mHeatingCapacity = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-        this.mHeatingCapacity = (int) getCoilLevel().getHeat();
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+        this.mHeatingCapacity = (int) getMCoilLevel().getHeat();
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
 
-        return tCountCasing >= 245;
+        return mCountCasing >= 245;
     }
 
     @Override
@@ -201,7 +191,7 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(FuelRefiningComplex.this.mHeatingCapacity)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))

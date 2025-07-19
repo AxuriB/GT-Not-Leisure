@@ -151,7 +151,7 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
                 buildHatchAdder(SpaceAssembler.class).casingIndex(BlockGTCasingsTT.textureOffset + 3)
                     .dot(1)
                     .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy), ParallelCon)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
             .build();
     }
 
@@ -177,7 +177,7 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mGlassTier = -1;
         mParallelTier = 0;
 
@@ -185,9 +185,9 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
             return false;
         }
 
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 10;
+        return mCountCasing >= 10;
     }
 
     @Override
@@ -197,7 +197,7 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)

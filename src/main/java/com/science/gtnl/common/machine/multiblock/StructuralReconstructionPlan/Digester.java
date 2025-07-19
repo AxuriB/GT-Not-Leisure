@@ -58,8 +58,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class Digester extends GTMMultiMachineBase<Digester> implements ISurvivalConstructable {
 
     public static final int CASING_INDEX = ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0);
-    private int mHeatingCapacity = 0;
-    private HeatingCoilLevel heatLevel;
     public static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String D_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/digester";
     public final int HORIZONTAL_OFF_SET = 3;
@@ -148,30 +146,30 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
                 buildHatchAdder(Digester.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 0))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 0))))
             .addElement('C', ofBlock(sBlockCasings4, 1))
             .addElement(
                 'D',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(Digester::setCoilLevel, Digester::getCoilLevel))))
+                    .use(activeCoils(ofCoil(Digester::setMCoilLevel, Digester::getMCoilLevel))))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-        this.mHeatingCapacity = (int) this.getCoilLevel()
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+        this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -180,7 +178,7 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
             }
             if (getMaxInputAmps() > 64) return false;
         }
-        return tCountCasing >= 45;
+        return mCountCasing >= 45;
     }
 
     @Override
@@ -203,14 +201,6 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
             true);
     }
 
-    public HeatingCoilLevel getCoilLevel() {
-        return this.heatLevel;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel level) {
-        this.heatLevel = level;
-    }
-
     @Override
     public boolean isEnablePerfectOverclock() {
         return true;
@@ -228,7 +218,7 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setMachineHeat(Digester.this.mHeatingCapacity)
                     .setHeatOC(true)
                     .setHeatDiscount(true)
@@ -240,7 +230,7 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 if (checkForNitricAcid()) {
-                    return recipe.mSpecialValue <= Digester.this.getCoilLevel()
+                    return recipe.mSpecialValue <= Digester.this.getMCoilLevel()
                         .getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
                             : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
                 }

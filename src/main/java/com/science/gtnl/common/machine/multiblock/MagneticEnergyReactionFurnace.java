@@ -58,8 +58,6 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
 
     private static final int MACHINEMODE_ARC = 0;
     private static final int MACHINEMODE_PLSAMA = 1;
-    private HeatingCoilLevel heatLevel;
-    private int coilTier = 0;
     private static final int HORIZONTAL_OFF_SET = 16;
     private static final int VERTICAL_OFF_SET = 12;
     private static final int DEPTH_OFF_SET = 1;
@@ -150,8 +148,8 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
                 GTStructureChannels.HEATING_COIL.use(
                     activeCoils(
                         ofCoil(
-                            MagneticEnergyReactionFurnace::setCoilLevel,
-                            MagneticEnergyReactionFurnace::getCoilLevel))))
+                            MagneticEnergyReactionFurnace::setMCoilLevel,
+                            MagneticEnergyReactionFurnace::getMCoilLevel))))
             .addElement('I', ofBlock(sBlockCasings9, 13))
             .addElement('J', ofFrame(Materials.Neutronium))
             .addElement('K', ofBlock(sBlockMetal5, 1))
@@ -161,7 +159,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings4Misc, 3))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings4Misc, 3))))
             .addElement('M', ofBlock(sBlockCasingsSE, 9))
             .addElement('N', ofBlock(lscLapotronicEnergyUnit, 0))
             .build();
@@ -195,18 +193,16 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        coilTier = 0;
+        mCountCasing = 0;
         wirelessMode = false;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-        coilTier = getCoilLevel().getTier();
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return tCountCasing > 200;
+        return mCountCasing > 50;
     }
 
     @Override
@@ -234,19 +230,12 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.80, coilTier))
-                    .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.80, coilTier));
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.80, getMCoilLevel().getTier()))
+                    .setDurationModifier(
+                        0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.80, getMCoilLevel().getTier()));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.heatLevel;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel level) {
-        this.heatLevel = level;
     }
 
     @Override

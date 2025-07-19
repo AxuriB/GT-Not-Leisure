@@ -209,7 +209,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     }
 
     protected void onCasingFound() {
-        tCountCasing++;
+        mCountCasing++;
     }
 
     protected int getCurrentLayerOutputHatchCount() {
@@ -298,7 +298,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
-        tCountCasing = 0;
+        mCountCasing = 0;
         mParallelTier = 0;
 
         if (!checkPiece(STRUCTURE_PIECE_BASE, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
@@ -319,7 +319,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
 
         if (!checkHatch()) return false;
         mParallelTier = getParallelTier(aStack);
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {
             for (MTEHatch hatch : getExoticEnergyHatches()) {
                 if (hatch instanceof MTEHatchEnergyTunnel) {
@@ -329,7 +329,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
             if (getMaxInputAmps() > 64) return false;
         }
 
-        return tCountCasing >= 5 * (mHeight + 1) - 5 && mHeight + 1 >= 3 && mMufflerHatches.size() == 1;
+        return mCountCasing >= 5 * (mHeight + 1) - 5 && mHeight + 1 >= 3 && mMufflerHatches.size() == 1;
     }
 
     @Override
@@ -424,7 +424,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setAmperageOC(true)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)

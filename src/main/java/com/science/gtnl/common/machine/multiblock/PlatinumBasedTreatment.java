@@ -48,7 +48,6 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatment> implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mCoilLevel;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String PBT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/platinum_based_treatment";
@@ -85,7 +84,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
             .addElement(
                 'H',
                 GTStructureChannels.HEATING_COIL.use(
-                    activeCoils(ofCoil(PlatinumBasedTreatment::setCoilLevel, PlatinumBasedTreatment::getCoilLevel))))
+                    activeCoils(ofCoil(PlatinumBasedTreatment::setMCoilLevel, PlatinumBasedTreatment::getMCoilLevel))))
             .addElement('I', ofBlock(sBlockCasings8, 0))
             .addElement('J', ofBlock(sBlockCasings8, 1))
             .addElement('K', ofFrame(Materials.BlackSteel))
@@ -97,7 +96,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
                 buildHatchAdder(PlatinumBasedTreatment.class).casingIndex(CASING_INDEX)
                     .dot(1)
                     .atLeast(InputHatch, InputBus, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 2))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 2))))
             .addElement('P', ofBlock(blockCasingsMisc, 0))
             .addElement('Q', ofBlock(blockCasingsMisc, 5))
             .addElement('R', Muffler.newAny(((BlockCasings1) sBlockCasings1).getTextureIndex(11), 6))
@@ -131,14 +130,6 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
     }
 
     @Override
@@ -196,9 +187,9 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(1.0 - getCoilLevel().getTier() * 0.05)
-                    .setDurationModifier(1.0 - getCoilLevel().getTier() * 0.05);
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setEUtDiscount(1.0 - getMCoilLevel().getTier() * 0.05)
+                    .setDurationModifier(1.0 - getMCoilLevel().getTier() * 0.05);
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -223,7 +214,6 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        this.setCoilLevel(HeatingCoilLevel.None);
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
@@ -238,15 +228,15 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        energyHatchTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        mCountCasing = 0;
+        mEnergyHatchTier = 0;
+        this.setMCoilLevel(HeatingCoilLevel.None);
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-        energyHatchTier = checkEnergyHatchTier();
+        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+        mEnergyHatchTier = checkEnergyHatchTier();
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -255,7 +245,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
 
         if (mMaintenanceHatches.size() != 1 || mMufflerHatches.size() != 6) return false;
 
-        return tCountCasing >= 30;
+        return mCountCasing >= 30;
     }
 
     @Override

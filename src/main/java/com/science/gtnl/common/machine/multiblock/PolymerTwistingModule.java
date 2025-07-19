@@ -81,7 +81,7 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(CASING_INDEX)
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 0))))
             .addElement('B', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('C', ofFrame(Materials.CosmicNeutronium))
             .addElement('D', ofBlock(sBlockCasings6, 10))
@@ -121,14 +121,14 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         isPolModule = false;
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
 
         isPolModule = true;
-        energyHatchTier = checkEnergyHatchTier();
+        mEnergyHatchTier = checkEnergyHatchTier();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
 
         return true;
