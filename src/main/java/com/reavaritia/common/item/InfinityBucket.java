@@ -555,7 +555,9 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
     public void onPlayerUpdate(LivingEvent.LivingUpdateEvent event) {
         if (event.entity instanceof EntityPlayer player) {
             if (player.getHeldItem() != null && player.getHeldItem()
-                .getItem() instanceof InfinityBucket) {
+                .getItem() != null
+                && player.getHeldItem()
+                    .getItem() instanceof InfinityBucket) {
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - lastUpdateTime >= 500) {
                     NBTTagCompound nbt = player.getHeldItem()
