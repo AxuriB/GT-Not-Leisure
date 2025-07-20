@@ -599,6 +599,10 @@ public class ItemLoader {
         GTOreDictUnificator.registerOre(OrePrefixes.circuit.get(Materials.MV), GTNLItemList.BasicCircuit.get(1));
         GTOreDictUnificator.registerOre(OrePrefixes.circuit.get(Materials.HV), GTNLItemList.AdvancedCircuit.get(1));
         GTOreDictUnificator.registerOre(OrePrefixes.circuit.get(Materials.EV), GTNLItemList.EliteCircuit.get(1));
+
+        GTOreDictUnificator.registerOre("record", GTNLItemList.RecordSus.get(1));
+        GTOreDictUnificator.registerOre("record", GTNLItemList.RecordLavaChicken.get(1));
+        GTOreDictUnificator.registerOre("record", GTNLItemList.RecordNewHorizons.get(1));
     }
 
     public static void registryOreBlackList() {

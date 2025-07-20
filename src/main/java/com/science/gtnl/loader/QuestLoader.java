@@ -4,7 +4,6 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,8 +14,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -103,17 +104,22 @@ public class QuestLoader {
                 String relativePath = name.substring(RESOURCE_QUESTS_PREFIX.length());
                 File targetFile = new File(CONFIG_QUESTS_DIR, relativePath);
 
-                try (InputStream jarStream = jar.getInputStream(entry)) {
-                    if (targetFile.exists()) {
-                        if (compareFileContent(jarStream, targetFile)) {
-                            continue;
+                boolean shouldCopy = true;
+
+                if (targetFile.exists()) {
+                    try (InputStream compareStream = jar.getInputStream(entry)) {
+                        if (compareFileContent(compareStream, targetFile)) {
+                            shouldCopy = false;
                         }
                     }
+                }
 
+                if (shouldCopy) {
                     targetFile.getParentFile()
                         .mkdirs();
-                    try (OutputStream out = new FileOutputStream(targetFile)) {
-                        copyStream(jarStream, out);
+                    try (InputStream freshStream = jar.getInputStream(entry);
+                        OutputStream out = new FileOutputStream(targetFile)) {
+                        copyStream(freshStream, out);
                         System.out.println("[QuestLoader] Copied/Updated: " + targetFile.getName());
                     }
                 }
@@ -121,22 +127,29 @@ public class QuestLoader {
         }
     }
 
-    private static boolean compareFileContent(InputStream input, File file) throws IOException {
-        byte[] fileBytes = readAllBytes(file);
-        byte[] inputBytes = readAllBytes(input);
-        return Arrays.equals(fileBytes, inputBytes);
-    }
+    private static boolean compareFileContent(InputStream in1, File file2) throws IOException {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-    private static byte[] readAllBytes(File file) throws IOException {
-        try (InputStream in = new FileInputStream(file)) {
-            return readAllBytes(in);
+            byte[] hash1;
+            try (DigestInputStream dis1 = new DigestInputStream(in1, digest)) {
+                while (dis1.read() != -1) {}
+                hash1 = digest.digest();
+            }
+
+            digest.reset();
+
+            byte[] hash2;
+            try (InputStream fis = new FileInputStream(file2);
+                DigestInputStream dis2 = new DigestInputStream(fis, digest)) {
+                while (dis2.read() != -1) {}
+                hash2 = digest.digest();
+            }
+
+            return java.util.Arrays.equals(hash1, hash2);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IOException("SHA-256 algorithm not available", e);
         }
-    }
-
-    private static byte[] readAllBytes(InputStream in) throws IOException {
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        copyStream(in, buffer);
-        return buffer.toByteArray();
     }
 
     private static void copyStream(InputStream in, OutputStream out) throws IOException {

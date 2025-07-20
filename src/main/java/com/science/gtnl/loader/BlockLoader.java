@@ -1,7 +1,6 @@
 package com.science.gtnl.loader;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -10,8 +9,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.block.Casings.Base.ItemBlockBase;
 import com.science.gtnl.common.block.Casings.Base.MetaBlockBase;
@@ -163,26 +162,71 @@ public class BlockLoader {
                 "NewHorizonsCoil",
                 1,
                 new String[] { RESET + StatCollector.translateToLocal("gt.coilheattooltip") }));
-        addItemTooltip(
+        AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.NewHorizonsCoil.get(1),
-            AnimatedText.buildTextWithAnimatedEnd(
-                text("179,769,313,486,231,590,772,930,519,078,902,473,361,797,697,894,230,657,273,430,081,")));
-        addItemTooltip(
+            AnimatedTooltipHandler.animatedText(
+                "179,769,313,486,231,590,772,930,519,078,902,473,361,797,697,894,230,657,273,430,081,",
+                1,
+                80,
+                RED,
+                GOLD,
+                YELLOW,
+                GREEN,
+                AQUA,
+                BLUE,
+                LIGHT_PURPLE));
+        AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.NewHorizonsCoil.get(1),
-            AnimatedText.buildTextWithAnimatedEnd(
-                text("157,732,675,805,500,963,132,708,477,322,407,536,021,120,113,879,871,393,357,658,789,")));
-        addItemTooltip(
+            AnimatedTooltipHandler.animatedText(
+                "157,732,675,805,500,963,132,708,477,322,407,536,021,120,113,879,871,393,357,658,789,",
+                1,
+                80,
+                GOLD,
+                YELLOW,
+                GREEN,
+                AQUA,
+                BLUE,
+                LIGHT_PURPLE,
+                RED));
+        AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.NewHorizonsCoil.get(1),
-            AnimatedText.buildTextWithAnimatedEnd(
-                text("768,814,416,622,492,847,430,639,474,124,377,767,893,424,865,485,276,302,219,601,246,")));
-        addItemTooltip(
+            AnimatedTooltipHandler.animatedText(
+                "768,814,416,622,492,847,430,639,474,124,377,767,893,424,865,485,276,302,219,601,246,",
+                1,
+                80,
+                YELLOW,
+                GREEN,
+                AQUA,
+                BLUE,
+                LIGHT_PURPLE,
+                RED,
+                GOLD));
+        AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.NewHorizonsCoil.get(1),
-            AnimatedText.buildTextWithAnimatedEnd(
-                text("094,119,453,082,952,085,005,768,838,150,682,342,462,881,473,913,110,540,827,237,163,")));
-        addItemTooltip(
+            AnimatedTooltipHandler.animatedText(
+                "094,119,453,082,952,085,005,768,838,150,682,342,462,881,473,913,110,540,827,237,163,",
+                1,
+                80,
+                GREEN,
+                AQUA,
+                BLUE,
+                LIGHT_PURPLE,
+                RED,
+                GOLD,
+                YELLOW));
+        AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.NewHorizonsCoil.get(1),
-            AnimatedText.buildTextWithAnimatedEnd(
-                text("350,510,684,586,298,239,947,245,938,479,716,304,835,356,329,624,224,137,216")));
+            AnimatedTooltipHandler.animatedText(
+                "350,510,684,586,298,239,947,245,938,479,716,304,835,356,329,624,224,137,216",
+                1,
+                80,
+                AQUA,
+                BLUE,
+                LIGHT_PURPLE,
+                RED,
+                GOLD,
+                YELLOW,
+                GREEN));
 
         GTNLItemList.StargateCoil.set(ItemBlockBase.initMetaBlock("StargateCoil", 2));
         GTNLItemList.BlackLampOff.set(
@@ -560,14 +604,14 @@ public class BlockLoader {
         SaplingBrickuoia = new SaplingBrickuoia();
         GTNLItemList.SaplingBrickuoia.set(new ItemStack(SaplingBrickuoia, 1));
         SaplingBrickuoia.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
-        addItemTooltip(
+        AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.SaplingBrickuoia.get(1),
             () -> StatCollector.translateToLocal("Tooltip_GiantBrickuoiaSapling_00"));
-        addItemTooltip(
+        AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.SaplingBrickuoia.get(1),
             () -> StatCollector.translateToLocal("Tooltip_GiantBrickuoiaSapling_01"));
-        addItemTooltip(GTNLItemList.SaplingBrickuoia.get(1), () -> "");
-        addItemTooltip(
+        AnimatedTooltipHandler.addItemTooltip(GTNLItemList.SaplingBrickuoia.get(1), () -> "");
+        AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.SaplingBrickuoia.get(1),
             () -> StatCollector.translateToLocal("Tooltip_GiantBrickuoiaSapling_02"));
         OreDictionary.registerOre("treeSapling", new ItemStack(SaplingBrickuoia, 1, GTRecipeBuilder.WILDCARD));
