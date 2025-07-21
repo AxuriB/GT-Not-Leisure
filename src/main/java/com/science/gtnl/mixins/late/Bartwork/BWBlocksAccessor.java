@@ -1,0 +1,15 @@
+package com.science.gtnl.mixins.late.Bartwork;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+import bartworks.common.blocks.BWBlocks;
+
+@SuppressWarnings("UnusedMixin")
+@Mixin(value = BWBlocks.class, remap = false)
+public interface BWBlocksAccessor {
+
+    @Accessor("textureNames")
+    String[] getTextureNames();
+
+}

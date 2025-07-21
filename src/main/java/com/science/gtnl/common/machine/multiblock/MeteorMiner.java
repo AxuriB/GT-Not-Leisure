@@ -82,6 +82,7 @@ import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import lombok.Getter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -115,12 +116,12 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     private static final int MAX_BLOCKS_PER_CYCLE = MainConfig.meteorMinerMaxBlockPerCycle;
     private static final int MAX_ROWS_PER_CYCLE = MainConfig.meteorMinerMaxRowPerCycle;
 
+    @Getter
     public float renderAngle = 0f;
 
-    public float getRenderAngle() {
-        return this.renderAngle;
-    }
-
+    /**
+     * See Custom tile render {@link com.science.gtnl.common.render.tile.MeteorMinerMachineRender}
+     */
     @SideOnly(Side.CLIENT)
     @Override
     public boolean renderInWorld(IBlockAccess aWorld, int x, int y, int z, Block block, RenderBlocks renderer) {

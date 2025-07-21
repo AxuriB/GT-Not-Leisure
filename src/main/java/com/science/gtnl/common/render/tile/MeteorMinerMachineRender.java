@@ -32,6 +32,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtneioreplugin.plugin.block.ModBlocks;
+import lombok.Getter;
 
 @SideOnly(Side.CLIENT)
 public class MeteorMinerMachineRender {
@@ -42,6 +43,7 @@ public class MeteorMinerMachineRender {
     public static double PUSH_RADIUS = 0.8;
     public static float IMPULSE_STRENGTH = 0.04f;
 
+    @Getter
     public static ArrayList<OrbitingObject> orbitingObjects = new ArrayList<>();
 
     public static Map<MeteorMiner, VisualState> visualStateMap = new WeakHashMap<>();
@@ -188,10 +190,6 @@ public class MeteorMinerMachineRender {
         spaceModel.renderAll();
         GL11.glPopMatrix();
         GL11.glPopAttrib();
-    }
-
-    public static ArrayList<OrbitingObject> getOrbitingObjects() {
-        return orbitingObjects;
     }
 
     public static void generateImportantInfo() {

@@ -201,6 +201,7 @@ import com.science.gtnl.common.machine.multiblock.WoodDistillation;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.material.MaterialUtils;
 
+import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Materials;
@@ -2383,6 +2384,7 @@ public class MachineLoader {
 
     public static void registerGlasses() {
         GlassTier.addCustomGlass(BlockLoader.playerDoll, 0, 14, 1);
+        GlassTier.addCustomGlass(ItemRegistry.bw_realglas2, 1, 14, 2);
         GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 0, 10, 2);
         GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 1, 8, 2);
         GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 2, 7, 1);
