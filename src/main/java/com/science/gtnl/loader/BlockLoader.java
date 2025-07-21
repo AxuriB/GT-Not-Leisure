@@ -217,7 +217,8 @@ public class BlockLoader {
         AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.NewHorizonsCoil.get(1),
             AnimatedTooltipHandler.animatedText(
-                "350,510,684,586,298,239,947,245,938,479,716,304,835,356,329,624,224,137,216",
+                "350,510,684,586,298,239,947,245,938,479,716,304,835,356,329,624,224,137,216"
+                    + StatCollector.translateToLocal("gt.coilunittooltip"),
                 1,
                 80,
                 AQUA,
