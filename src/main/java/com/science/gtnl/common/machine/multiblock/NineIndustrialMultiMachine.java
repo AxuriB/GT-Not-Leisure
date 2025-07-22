@@ -45,6 +45,8 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.machine.NineIndustrialMultiMachineManager;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
@@ -64,8 +66,6 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings1;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -311,8 +311,8 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
 
             @Nonnull
             @Override
-            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
-                return new ParallelHelper().setRecipe(recipe)
+            protected GTNL_ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+                return new GTNL_ParallelHelper().setRecipe(recipe)
                     .setItemInputs(inputItems)
                     .setFluidInputs(inputFluids)
                     .setAvailableEUt(Integer.MAX_VALUE)
@@ -325,8 +325,8 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
             }
 
             @Override
-            protected double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
-                @Nonnull OverclockCalculator calculator) {
+            protected double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
+                @Nonnull GTNL_OverclockCalculator calculator) {
                 if (batchMode) {
                     return 1;
                 } else {

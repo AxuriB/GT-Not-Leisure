@@ -35,6 +35,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.machine.PortalToAlfheimExplosion;
+import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
@@ -58,7 +59,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 import gtnhlanth.common.register.LanthItemList;
@@ -393,7 +393,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
             @Nonnull
             @Override
-            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+            protected GTNL_ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 if (enableInfinityMana) inputFluids[0] = MaterialPool.FluidMana.getFluidOrGas(Integer.MAX_VALUE);
                 return super.createParallelHelper(recipe).setFluidInputs(inputFluids);
             }

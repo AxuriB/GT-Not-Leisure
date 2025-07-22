@@ -37,6 +37,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.config.MainConfig;
@@ -68,7 +69,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ParallelHelper;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
@@ -234,7 +234,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
             @NotNull
             @Override
-            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
+            protected GTNL_ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };

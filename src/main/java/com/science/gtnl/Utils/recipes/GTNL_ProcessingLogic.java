@@ -23,7 +23,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.ParallelHelper;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 
 /**
@@ -475,7 +474,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
             return CalculationResult.ofFailure(result);
         }
 
-        ParallelHelper helper = createParallelHelper(recipe);
+        GTNL_ParallelHelper helper = createParallelHelper(recipe);
         GTNL_OverclockCalculator calculator = createOverclockCalculator(recipe);
         helper.setCalculator(calculator);
         helper.build();
@@ -493,7 +492,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      * At this point, inputs have been already consumed.
      */
     @Nonnull
-    protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
+    protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
         @Nonnull GTNL_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
@@ -531,7 +530,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
     /**
      * Override to tweak final duration that will be set as a result of this logic class.
      */
-    protected double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull ParallelHelper helper,
+    protected double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
         @Nonnull GTNL_OverclockCalculator calculator) {
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }
@@ -571,8 +570,8 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      */
     @Nonnull
     @Override
-    protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
-        return new ParallelHelper().setRecipe(recipe)
+    protected GTNL_ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+        return new GTNL_ParallelHelper().setRecipe(recipe)
             .setItemInputs(inputItems)
             .setFluidInputs(inputFluids)
             .setAvailableEUt(availableVoltage * availableAmperage)

@@ -1,7 +1,6 @@
 package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop;
 
 import static gregtech.api.util.GTUtility.formatNumbers;
-import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
 import static java.lang.Math.*;
@@ -26,6 +25,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+
+import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -276,9 +277,8 @@ public class ETGWEyeOfHarmonyModule extends EternalGregTechWorkshopModule {
         // And stellar plasma is the second last.
         stellarPlasma = new FluidStackLong(outputFluids.get(outputFluids.size() - 2));
 
-        successfulParallelAmount = (long) calculateChancedOutputMultiplier(
-            (int) ((successChance + pityChance) * 10000),
-            65536);
+        successfulParallelAmount = (long) GTNL_ParallelHelper
+            .calculateChancedOutputMultiplier((int) ((successChance + pityChance) * 10000), 65536);
         // Iterate over item output list and apply yield & successful parallel values.
         for (ItemStackLong itemStackLong : outputItems) {
             itemStackLong.stackSize *= successfulParallelAmount;

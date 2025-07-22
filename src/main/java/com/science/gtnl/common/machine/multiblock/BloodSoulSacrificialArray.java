@@ -35,6 +35,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
@@ -61,7 +62,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasings8;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -418,7 +418,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
                     return CalculationResult.ofFailure(result);
                 }
 
-                ParallelHelper helper = createParallelHelper(recipe);
+                GTNL_ParallelHelper helper = createParallelHelper(recipe);
                 GTNL_OverclockCalculator calculator = createOverclockCalculator(recipe);
                 helper.setCalculator(calculator);
                 helper.build();
@@ -433,12 +433,12 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
             @Nonnull
             @Override
-            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+            protected GTNL_ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
 
                 currentEssence = SoulNetworkHandler.getCurrentEssence(getOwner());
                 int needEssence = (int) (recipe.mSpecialValue * (1 - mParallelTier / 50.0));
 
-                return new ParallelHelper().setRecipe(recipe)
+                return new GTNL_ParallelHelper().setRecipe(recipe)
                     .setItemInputs(inputItems)
                     .setFluidInputs(inputFluids)
                     .setAvailableEUt(availableVoltage * availableAmperage)
