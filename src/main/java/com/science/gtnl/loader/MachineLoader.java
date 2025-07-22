@@ -2383,8 +2383,9 @@ public class MachineLoader {
     }
 
     public static void registerGlasses() {
+        GlassTier.addCustomGlass(ItemRegistry.bw_realglas2, 1, 13, 1);
         GlassTier.addCustomGlass(BlockLoader.playerDoll, 0, 14, 1);
-        GlassTier.addCustomGlass(ItemRegistry.bw_realglas2, 1, 14, 2);
+        GlassTier.addCustomGlass(ItemRegistry.bw_realglas2, 2, 14, 2);
         GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 0, 10, 2);
         GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 1, 8, 2);
         GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 2, 7, 1);

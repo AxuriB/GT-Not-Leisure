@@ -27,8 +27,7 @@ Info_SteamNetwork_01=User %s has %s%s%s Steam in their network.
 Info_SteamNetwork_02=User %s is currently in network of %s%s%s .
 Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s %% §r(Voltage Tier: §3%s§r, Base Voltage Tier: §3%s§r)
 
-Info_Dimension_Over
-ride=Dimension Override: 
+Info_Dimension_Override=Dimension Override: 
 
 HatchCustomFluid_00=Input fluids for multiblock machines
 HatchCustomFluid_01=Capacity: 
@@ -308,6 +307,7 @@ SteamAssemblerSteel=High-Pressure Steam Assembler
 Tooltip_SteamAssembler_00=Assemble, Avengers!
 
 BW_GlasBlocks2.1.name=Shirabon Reinforced Borosilicate Glass Block
+BW_GlasBlocks2.2.name=Quark Gluon Plasma Reinforced Borosilicate Glass Block
 
 MetaCasing.0.name=Test Machine Block
 MetaCasing.1.name=Steam Assembly Machine Block

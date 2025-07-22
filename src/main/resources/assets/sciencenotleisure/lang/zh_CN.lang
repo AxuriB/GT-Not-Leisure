@@ -307,6 +307,7 @@ SteamAssemblerSteel=高压蒸汽组装机
 Tooltip_SteamAssembler_00=复仇者们，集结！ 
 
 BW_GlasBlocks2.1.name=调律源金强化硼玻璃方块
+BW_GlasBlocks2.2.name=简并夸克胶子等离子体强化硼玻璃方块
 
 MetaCasing.0.name=测试机械方块
 MetaCasing.1.name=蒸汽装配机械方块

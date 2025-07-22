@@ -24,13 +24,22 @@ public class ItemRegistry_Mixin {
             ordinal = 0))
     private static void modifyRealGlass2Textures(Args args) {
         String[] originalTextures = args.get(1);
-        String[] newTextures = Arrays.copyOf(originalTextures, originalTextures.length + 1);
+        String[] newTextures = Arrays.copyOf(originalTextures, originalTextures.length + 2);
         newTextures[originalTextures.length] = Mods.ScienceNotLeisure.ID + ":ShirabonReinforcedBoronSilicateGlassBlock";
+        newTextures[originalTextures.length + 1] = Mods.ScienceNotLeisure.ID
+            + ":QuarkGluonPlasmaReinforcedBoronSilicateGlassBlock";
         args.set(1, newTextures);
 
         short[][] originalColors = args.get(2);
-        short[][] newColors = Arrays.copyOf(originalColors, originalColors.length + 1);
+        short[][] newColors = Arrays.copyOf(originalColors, originalColors.length + 2);
+
         newColors[originalColors.length] = GGMaterial.shirabon.getRGBA();
+
+        /**
+         *
+         * @see gregtech.api.enums.MaterialsUEVplus#QuarkGluonPlasma
+         */
+        newColors[originalColors.length + 1] = new short[] { 251, 239, 154 };
         args.set(2, newColors);
     }
 }

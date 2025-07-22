@@ -61,9 +61,11 @@ public class LateMixinPlugin implements ILateMixinLoader {
             mixins.add("TwistSpaceTechnology.RecipeLoader_Mixin");
         }
 
-        mixins.add("Bartwork.BWBlocksAccessor");
-        mixins.add("Bartwork.BWBlockGlass_Mixin");
-        mixins.add("Bartwork.BWBlockGlass2_Mixin");
+        /*
+         * mixins.add("Bartwork.BWBlocksAccessor");
+         * mixins.add("Bartwork.BWBlockGlass_Mixin");
+         * mixins.add("Bartwork.BWBlockGlass2_Mixin");
+         */
         mixins.add("Bartwork.BartworkLoad_Head_Mixin");
         mixins.add("Bartwork.WerkstoffLoader_Mixin");
         mixins.add("Bartwork.Werkstoff_Mixin");
