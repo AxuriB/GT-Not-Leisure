@@ -67,6 +67,7 @@ import com.science.gtnl.common.machine.multiblock.BloodSoulSacrificialArray;
 import com.science.gtnl.common.machine.multiblock.BrickedBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.CheatOreProcessingFactory;
 import com.science.gtnl.common.machine.multiblock.ComponentAssembler;
+import com.science.gtnl.common.machine.multiblock.CompoundExtremeCoolingUnit;
 import com.science.gtnl.common.machine.multiblock.CrackerHub;
 import com.science.gtnl.common.machine.multiblock.DecayHastener;
 import com.science.gtnl.common.machine.multiblock.Desulfurizer;
@@ -1257,6 +1258,13 @@ public class MachineLoader {
                 "EyeOfHarmonyInjector",
                 StatCollector.translateToLocal("NameEyeOfHarmonyInjector")));
         addItemTooltip(GTNLItemList.EyeOfHarmonyInjector.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.CompoundExtremeCoolingUnit.set(
+            new CompoundExtremeCoolingUnit(
+                COMPOUND_EXTREME_COOLING_UNIT.ID,
+                "CompoundExtremeCoolingUnit",
+                StatCollector.translateToLocal("NameCompoundExtremeCoolingUnit")));
+        addItemTooltip(GTNLItemList.CompoundExtremeCoolingUnit.get(1), AnimatedText.SNL_QYZG);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

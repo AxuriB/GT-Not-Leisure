@@ -551,4 +551,14 @@ public class RecipePool {
             builder -> builder.setDisplayStack(GTNLItemList.LargeGasCollector.get(1))
                 .setMaxRecipesPerPage(1))
         .build();
+
+    public static RecipeMap<RecipeMapBackend> PlasmaCondensationRecipes = RecipeMapBuilder
+        .of("gtnl.recipe.PlasmaCondensationRecipes")
+        .maxIO(1, 1, 2, 2)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .frontend(GTNLLogoFrontend::new)
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(GTNLItemList.CompoundExtremeCoolingUnit.get(1))
+                .setMaxRecipesPerPage(1))
+        .build();
 }

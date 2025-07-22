@@ -2,38 +2,42 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase.ParallelControllerElement.ParallelCon;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
+import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
 
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Arrays;
+import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
+import com.science.gtnl.loader.RecipePool;
 
-import goodgenerator.loader.Loaders;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,41 +48,42 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.misc.GTStructureChannels;
-import gtnhlanth.common.register.LanthItemList;
+import gtPlusPlus.core.material.MaterialsAlloy;
 
-public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<IntegratedAssemblyFacility> {
+public class CompoundExtremeCoolingUnit extends WirelessEnergyMultiMachineBase<CompoundExtremeCoolingUnit> {
 
-    private int casingTier;
-    private static final int HORIZONTAL_OFF_SET = 8;
-    private static final int VERTICAL_OFF_SET = 10;
+    private static final int MACHINEMODE_VACUUM_FREEZE = 0;
+    private static final int MACHINEMODE_PLSAMA_CONDENSATION = 1;
+    private static final int HORIZONTAL_OFF_SET = 15;
+    private static final int VERTICAL_OFF_SET = 4;
     private static final int DEPTH_OFF_SET = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String IAF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/integrated_assembly_facility";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(IAF_STRUCTURE_FILE_PATH);
+    private static final String UECN_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
+        + "multiblock/compound_extreme_cooling_unit";
+    private static final String[][] shape = StructureUtils.readStructureFromFile(UECN_STRUCTURE_FILE_PATH);
 
-    public IntegratedAssemblyFacility(String aName) {
+    public CompoundExtremeCoolingUnit(String aName) {
         super(aName);
     }
 
-    public IntegratedAssemblyFacility(int aID, String aName, String aNameRegional) {
+    public CompoundExtremeCoolingUnit(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new IntegratedAssemblyFacility(this.mName);
+        return new CompoundExtremeCoolingUnit(this.mName);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("IntegratedAssemblyFacilityRecipeType"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_00"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_01"))
+        tt.addMachineType(StatCollector.translateToLocal("CompoundExtremeCoolingUnitRecipeType"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_CompoundExtremeCoolingUnit_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_02"))
@@ -93,11 +98,12 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(47, 13, 19, true)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_Casing"), 1)
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_Casing"), 1)
-            .addInputHatch(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_Casing"), 1)
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_Casing"), 1)
+            .beginStructureBlock(31, 9, 15, true)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_CompoundExtremeCoolingUnit_Casing"), 1)
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_CompoundExtremeCoolingUnit_Casing"), 1)
+            .addInputHatch(StatCollector.translateToLocal("Tooltip_CompoundExtremeCoolingUnit_Casing"), 1)
+            .addOutputHatch(StatCollector.translateToLocal("Tooltip_CompoundExtremeCoolingUnit_Casing"), 1)
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_CompoundExtremeCoolingUnit_Casing"), 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -105,7 +111,7 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7);
+        return ((BlockCasings2) sBlockCasings2).getTextureIndex(1);
     }
 
     @Override
@@ -127,42 +133,34 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
     }
 
     @Override
-    public IStructureDefinition<IntegratedAssemblyFacility> getStructureDefinition() {
-        return StructureDefinition.<IntegratedAssemblyFacility>builder()
+    public IStructureDefinition<CompoundExtremeCoolingUnit> getStructureDefinition() {
+        return StructureDefinition.<CompoundExtremeCoolingUnit>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 6))
+            .addElement('D', ofBlock(BlockLoader.metaCasing, 7))
             .addElement(
-                'B',
-                ofBlocksTiered(
-                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
-                    IntStream.range(0, 13)
-                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                        .collect(Collectors.toList()),
-                    -2,
-                    (t, meta) -> t.casingTier = meta,
-                    t -> t.casingTier))
+                'E',
+                ofBlockAnyMeta(
+                    Block.getBlockFromItem(
+                        MaterialsAlloy.AQUATIC_STEEL.getFrameBox(1)
+                            .getItem())))
+            .addElement('F', ofBlock(BlockLoader.metaBlockGlass, 2))
+            .addElement('G', ofBlock(sBlockCasings10, 1))
+            .addElement('H', ofBlock(sBlockCasings2, 1))
+            .addElement('I', ofBlock(sBlockCasings2, 15))
+            .addElement('J', ofBlock(sBlockCasings3, 11))
+            .addElement('K', ofBlock(sBlockCasingsTT, 0))
+            .addElement('L', ofBlock(sBlockCasingsTT, 8))
+            .addElement('M', ofFrame(Materials.Neutronium))
             .addElement(
-                'C',
-                buildHatchAdder(IntegratedAssemblyFacility.class)
-                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7))
+                'N',
+                buildHatchAdder(CompoundExtremeCoolingUnit.class)
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy), ParallelCon)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
-            .addElement('D', ofBlock(sBlockCasings2, 6))
-            .addElement('E', ofBlock(sBlockCasings9, 1))
-            .addElement('F', ofBlock(sBlockCasings8, 12))
-            .addElement('G', ofFrame(Materials.Neutronium))
-            .addElement('H', ofBlock(sBlockCasings10, 11))
-            .addElement('I', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-            .addElement('J', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
-            .addElement('K', ofBlock(sBlockCasings2, 5))
-            .addElement('L', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
-            .addElement('M', ofBlock(sBlockCasingsSE, 1))
-            .addElement('N', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-            .addElement('O', ofBlock(BlockLoader.metaBlockGlow, 31))
-            .addElement('P', ofBlock(sBlockCasings6, 9))
-            .addElement('Q', ofBlock(BlockLoader.metaCasing, 5))
-            .addElement('R', ofFrame(Materials.CosmicNeutronium))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 1))))
             .build();
     }
 
@@ -194,7 +192,6 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingTier = -2;
         mCountCasing = 0;
         wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
@@ -202,7 +199,7 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
         mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return mCountCasing > 1200;
+        return mCountCasing > 1;
     }
 
     @Override
@@ -231,62 +228,34 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(
-                        0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier) * Math.pow(0.95, casingTier))
-                    .setDurationModifier(
-                        0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier) * Math.pow(0.95, casingTier));
+                    .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier))
+                    .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        if (wirelessMode) {
-            logic.setAvailableVoltage(getMachineVoltageLimit());
-            logic.setAvailableAmperage((long) Math.pow(4, mParallelTier) * 8L - 2L);
-            logic.setAmperageOC(false);
-            logic.enablePerfectOverclock();
-        } else {
-            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()
-                && getMaxInputAmps() <= 2;
-            logic.setAvailableVoltage(getMachineVoltageLimit());
-            logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-            logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
-        }
-    }
-
-    public long getMachineVoltageLimit() {
-        if (casingTier < 0) return 0;
-        if (wirelessMode) {
-            if (casingTier >= 11) {
-                return V[Math.min(mParallelTier + 1, 14)];
-            } else {
-                return V[Math.min(Math.min(mParallelTier + 1, casingTier + 3), 14)];
-            }
-        } else if (casingTier >= 11) {
-            return V[mEnergyHatchTier];
-        } else {
-            return V[Math.min(casingTier + 3, mEnergyHatchTier)];
-        }
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.assemblerRecipes;
+        return (machineMode == MACHINEMODE_VACUUM_FREEZE) ? RecipeMaps.vacuumFreezerRecipes
+            : RecipePool.PlasmaCondensationRecipes;
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.vacuumFreezerRecipes, RecipePool.PlasmaCondensationRecipes);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mGlassTier", mGlassTier);
-        aNBT.setInteger("casingTier", casingTier);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mGlassTier = aNBT.getInteger("mGlassTier");
-        casingTier = aNBT.getInteger("casingTier");
     }
 
     @Override
@@ -294,9 +263,45 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? VN[casingTier + 1] : "None!");
         return ret;
+    }
+
+    @Override
+    public int nextMachineMode() {
+        return (machineMode == MACHINEMODE_VACUUM_FREEZE) ? MACHINEMODE_PLSAMA_CONDENSATION : MACHINEMODE_VACUUM_FREEZE;
+    }
+
+    @Override
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        setMachineModeIcons();
+        builder.widget(createModeSwitchButton(builder));
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        this.machineMode = (byte) ((this.machineMode + 1) % 3);
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("CompoundExtremeCoolingUnit_Mode_" + this.machineMode));
+    }
+
+    @Override
+    public String getMachineModeName() {
+        return StatCollector.translateToLocal("CompoundExtremeCoolingUnit_Mode_" + machineMode);
     }
 
 }

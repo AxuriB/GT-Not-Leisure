@@ -2192,6 +2192,14 @@ Tooltip_MagneticEnergyReactionFurnace_00=Capacitor is operating at full capacity
 Tooltip_MagneticEnergyReactionFurnace_01=Each level of coil grade provides an additional 20% acceleration and power consumption reduction (multiplication and superposition)
 Tooltip_MagneticEnergyReactionFurnace_Casing=Ang Tempered Arc Furnace Casing
 
+NameCompoundExtremeCoolingUnit=Compound Extreme Cooling Unit
+gtnl.recipe.PlasmaCondensationRecipes=Plasma Condensation
+CompoundExtremeCoolingUnitRecipeType=Vacuum Freezer / Plasma Condensation
+CompoundExtremeCoolingUnit_Mode_0=Vacuum Freezer
+CompoundExtremeCoolingUnit_Mode_1=Plasma Condensation
+Tooltip_CompoundExtremeCoolingUnit_00=Each level of Glass grade provides an additional 5% acceleration and power consumption reduction (multiplication and superposition)
+Tooltip_CompoundExtremeCoolingUnit_Casing=Any Freeze-Proof Machine Block
+
 NameIntegratedAssemblyFacility=Integrated Assembly Facility
 IntegratedAssemblyFacilityRecipeType=Assembler
 Tooltip_IntegratedAssemblyFacility_00=Each level of Glass and Component Assembly Line Casing grade provides an additional 5% acceleration and power consumption reduction (multiplication and superposition)
