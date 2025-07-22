@@ -46,10 +46,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.*;
 import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.misc.GTStructureChannels;
@@ -334,17 +331,20 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
         long availableEUt = GTUtility.roundUpVoltage(getMaxInputVoltage());
         if (availableEUt < 4) {
             return CheckRecipeResultRegistry.insufficientPower(4);
+        } else {
+            availableEUt = Integer.MAX_VALUE;
         }
         if (tInput.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        int maxParallel = getMaxParallelRecipes();
-        int originalMaxParallel = getMaxParallelRecipes();
+        int maxParallel = getTrueParallel();
+        int originalMaxParallel = getTrueParallel();
 
         GTNL_OverclockCalculator calculator = new GTNL_OverclockCalculator().setEUt(availableEUt)
             .setRecipeEUt(4)
             .setDuration(64)
-            .setParallel(originalMaxParallel);
+            .setParallel(originalMaxParallel)
+            .setNoOverclock(true);
 
         maxParallel = GTUtility.safeInt((long) (maxParallel * calculator.calculateMultiplierUnderOneTick()), 0);
 

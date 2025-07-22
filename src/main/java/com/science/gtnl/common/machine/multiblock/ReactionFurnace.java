@@ -166,8 +166,8 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
         if (tInput.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
-        int maxParallel = getMaxParallelRecipes();
-        int originalMaxParallel = getMaxParallelRecipes();
+        int maxParallel = getTrueParallel();
+        int originalMaxParallel = getTrueParallel();
 
         GTNL_OverclockCalculator calculator = new GTNL_OverclockCalculator().setEUt(availableEUt)
             .setRecipeEUt(4)
