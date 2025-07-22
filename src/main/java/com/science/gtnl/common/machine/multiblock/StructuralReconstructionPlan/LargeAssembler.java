@@ -207,7 +207,7 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
                     .setEUt(availableVoltage)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
                     .setDurationModifier(1 / 3.0 - (mParallelTier / 200.0))
-                    .setMaxTierSkips(0);
+                    .setMaxTierSkips((recipe.mEUt > availableAmperage * availableVoltage) ? 1 : 0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
