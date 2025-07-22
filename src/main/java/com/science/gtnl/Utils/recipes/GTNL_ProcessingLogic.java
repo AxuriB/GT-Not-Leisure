@@ -48,6 +48,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
     protected double extraSpeedBoost = 1.0;
     protected long availableVoltage;
     protected long availableAmperage;
+    protected int maxOverclocks = 1;
     protected int maxTierSkips = 1;
     protected boolean protectItems;
     protected boolean protectFluids;
@@ -256,6 +257,16 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
     @Override
     public GTNL_ProcessingLogic setAvailableAmperage(long amperage) {
         this.availableAmperage = amperage;
+        return this;
+    }
+
+    public GTNL_ProcessingLogic setMaxOverclocks(int maxOverclocks) {
+        this.maxOverclocks = maxOverclocks;
+        return this;
+    }
+
+    public GTNL_ProcessingLogic setUnlimitedMaxOverclocks() {
+        this.maxOverclocks = Integer.MAX_VALUE;
         return this;
     }
 
@@ -584,6 +595,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
             .setAmperage(availableAmperage)
             .setEUt(availableVoltage)
             .setMaxTierSkips(maxTierSkips)
+            .setMaxOverclocks(maxOverclocks)
             .setDuration(recipe.mDuration)
             .setExtraDurationModifier(extraSpeedBoost)
             .setDurationModifier(speedBoost)
