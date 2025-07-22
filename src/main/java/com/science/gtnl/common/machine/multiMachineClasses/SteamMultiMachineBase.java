@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -592,25 +593,15 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Override
-    public ArrayList<ItemStack> getStoredInputs() {
+    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
         ArrayList<ItemStack> rList = new ArrayList<>();
         Map<GTUtility.ItemId, ItemStack> inputsFromME = new HashMap<>();
-        for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
-            tHatch.mRecipeMap = getRecipeMap();
-            for (int i = tHatch.getBaseMetaTileEntity()
-                .getSizeInventory() - 1; i >= 0; i--) {
-                if (tHatch.getBaseMetaTileEntity()
-                    .getStackInSlot(i) != null) {
-                    rList.add(
-                        tHatch.getBaseMetaTileEntity()
-                            .getStackInSlot(i));
-                }
-            }
-        }
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             if (tHatch instanceof MTEHatchCraftingInputME) {
                 continue;
             }
+            byte busColor = tHatch.getColor();
+            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
             boolean isMEBus = tHatch instanceof MTEHatchInputBusME;
@@ -618,6 +609,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 ItemStack itemStack = tileEntity.getStackInSlot(i);
                 if (itemStack != null) {
                     if (isMEBus) {
+                        // Prevent the same item from different ME buses from being recognized
                         inputsFromME.put(GTUtility.ItemId.createNoCopy(itemStack), itemStack);
                     } else {
                         rList.add(itemStack);
@@ -631,6 +623,22 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             .startsWith("gt.integrated_circuit")) rList.add(stackInSlot1);
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
+        }
+
+        for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
+            tHatch.mRecipeMap = getRecipeMap();
+            for (int i = tHatch.getBaseMetaTileEntity()
+                .getSizeInventory() - 1; i >= 0; i--) {
+                if (tHatch.getBaseMetaTileEntity()
+                    .getStackInSlot(i) != null) {
+                    rList.add(
+                        tHatch.getBaseMetaTileEntity()
+                            .getStackInSlot(i));
+                }
+            }
         }
         return rList;
     }
