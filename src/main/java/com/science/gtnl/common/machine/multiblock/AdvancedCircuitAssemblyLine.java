@@ -55,10 +55,10 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     private static final String ACAL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/advanced_circuit_assembly_line";
     private static final int CASING_INDEX = BlockGTCasingsTT.textureOffset + 3;
-    private static final String[][] shape = StructureUtils.readStructureFromFile(ACAL_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 0;
-    public final int VERTICAL_OFF_SET = 2;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(ACAL_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 0;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
     private float speedup = 1;
     public int casingTier;
     private int runningTickCounter = 0;

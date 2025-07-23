@@ -36,12 +36,12 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/element_copying";
-    public static String[][] shape = StructureUtils.readStructureFromFile(EC_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 7;
-    public final int VERTICAL_OFF_SET = 0;
-    public final int DEPTH_OFF_SET = 12;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(EC_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 7;
+    protected final int VERTICAL_OFF_SET = 0;
+    protected final int DEPTH_OFF_SET = 12;
     protected static final int CASING_INDEX = 1028;
 
     public ElementCopying(int aID, String aName, String aNameRegional) {

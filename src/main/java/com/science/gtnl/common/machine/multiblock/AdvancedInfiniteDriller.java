@@ -84,10 +84,10 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String AID_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/advanced_infinite_driller";
-    public static String[][] shape = StructureUtils.readStructureFromFile(AID_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 12;
-    public final int VERTICAL_OFF_SET = 39;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(AID_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 12;
+    protected final int VERTICAL_OFF_SET = 39;
+    protected final int DEPTH_OFF_SET = 0;
     private static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(10);
 
     public AdvancedInfiniteDriller(int aID, String aName, String aNameRegional) {

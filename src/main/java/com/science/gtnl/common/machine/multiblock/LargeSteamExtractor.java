@@ -54,7 +54,7 @@ public class LargeSteamExtractor extends SteamMultiMachineBase<LargeSteamExtract
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String LSC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_extractor";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(LSC_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LSC_STRUCTURE_FILE_PATH);
 
     public LargeSteamExtractor(String aName) {
         super(aName);
@@ -64,9 +64,9 @@ public class LargeSteamExtractor extends SteamMultiMachineBase<LargeSteamExtract
         super(aID, aName, aNameRegional);
     }
 
-    public static final int HORIZONTAL_OFF_SET = 2;
-    public static final int VERTICAL_OFF_SET = 3;
-    public static final int DEPTH_OFF_SET = 0;
+    protected final int HORIZONTAL_OFF_SET = 2;
+    protected final int VERTICAL_OFF_SET = 3;
+    protected final int DEPTH_OFF_SET = 0;
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,

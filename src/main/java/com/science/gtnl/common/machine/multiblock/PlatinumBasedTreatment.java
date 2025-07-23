@@ -51,7 +51,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
     private static final String PBT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/platinum_based_treatment";
     private static final int CASING_INDEX = TAE.getIndexFromPage(2, 2);
-    private static final String[][] shape = StructureUtils.readStructureFromFile(PBT_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(PBT_STRUCTURE_FILE_PATH);
     private final int HORIZONTAL_OFF_SET = 7;
     private final int VERTICAL_OFF_SET = 15;
     private final int DEPTH_OFF_SET = 0;

@@ -66,13 +66,13 @@ import tectech.thing.casing.TTCasingsContainer;
 
 public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationArrayToAlfheim> {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String TATA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/teleportation_array_to_alfheim";
-    public final int HORIZONTAL_OFF_SET = 11;
-    public final int VERTICAL_OFF_SET = 15;
-    public final int DEPTH_OFF_SET = 2;
-    public static String[][] shape = StructureUtils.readStructureFromFile(TATA_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 11;
+    protected final int VERTICAL_OFF_SET = 15;
+    protected final int DEPTH_OFF_SET = 2;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(TATA_STRUCTURE_FILE_PATH);
     private static final int PORTAL_MODE = 0;
     private static final int NATURE_MODE = 1;
     private static final int MANA_MODE = 2;

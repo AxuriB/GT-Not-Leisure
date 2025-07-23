@@ -67,9 +67,9 @@ import tectech.thing.casing.TTCasingsContainer;
 
 public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String RAS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/real_artificial_star";
-    public static String[][] shape = StructureUtils.readStructureFromFile(RAS_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(RAS_STRUCTURE_FILE_PATH);
     protected static long MaxOfDepletedExcitedNaquadahFuelRod = MainConfig.euEveryDepletedExcitedNaquadahFuelRod;
     protected static long MaxOfEnhancementCore = MainConfig.euEveryEnhancementCore;
     protected static long MaxOfAntimatter = 3;
@@ -89,9 +89,9 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
     public boolean isRendering = false;
     public static boolean configEnableDefaultRender = MainConfig.enableRenderDefaultArtificialStar;
     public boolean enableRender = configEnableDefaultRender;
-    public final int HORIZONTAL_OFF_SET = 62;
-    public final int VERTICAL_OFF_SET = 88;
-    public final int DEPTH_OFF_SET = 15;
+    protected final int HORIZONTAL_OFF_SET = 62;
+    protected final int VERTICAL_OFF_SET = 88;
+    protected final int DEPTH_OFF_SET = 15;
 
     public RealArtificialStar(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

@@ -65,7 +65,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String MERF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/magnetic_energy_reaction_furnace";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(MERF_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(MERF_STRUCTURE_FILE_PATH);
 
     public MagneticEnergyReactionFurnace(String aName) {
         super(aName);

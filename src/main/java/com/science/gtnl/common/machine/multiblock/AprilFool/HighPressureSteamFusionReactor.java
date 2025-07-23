@@ -45,7 +45,7 @@ public class HighPressureSteamFusionReactor extends SteamMultiMachineBase<HighPr
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/high_pressure_steam_fusion_reactor";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
     private static final int HORIZONTAL_OFF_SET = 23;
     private static final int VERTICAL_OFF_SET = 3;
     private static final int DEPTH_OFF_SET = 40;

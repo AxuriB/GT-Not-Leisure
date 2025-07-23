@@ -47,13 +47,13 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String FRC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/fuel_refining_complex";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
-    public final int HORIZONTAL_OFF_SET = 8;
-    public final int VERTICAL_OFF_SET = 12;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(FRC_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 8;
+    protected final int VERTICAL_OFF_SET = 12;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(FRC_STRUCTURE_FILE_PATH);
 
     public FuelRefiningComplex(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

@@ -66,7 +66,7 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String PPS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/photovoltaic_power_station";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(PPS_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(PPS_STRUCTURE_FILE_PATH);
     protected static final int HORIZONTAL_OFF_SET = 4;
     protected static final int VERTICAL_OFF_SET = 4;
     protected static final int DEPTH_OFF_SET = 2;

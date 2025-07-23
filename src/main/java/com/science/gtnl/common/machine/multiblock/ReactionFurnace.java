@@ -47,13 +47,13 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
 
     private static final long RECIPE_EUT = 4;
     private static final int RECIPE_DURATION = 128;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String RF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/reaction_furnace";
     public static final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7);
-    public final int HORIZONTAL_OFF_SET = 15;
-    public final int VERTICAL_OFF_SET = 18;
-    public final int DEPTH_OFF_SET = 3;
-    public static String[][] shape = StructureUtils.readStructureFromFile(RF_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 15;
+    protected final int VERTICAL_OFF_SET = 18;
+    protected final int DEPTH_OFF_SET = 3;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(RF_STRUCTURE_FILE_PATH);
 
     public ReactionFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

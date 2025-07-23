@@ -54,13 +54,13 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
     protected static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(12);
     private static final int ShapedArcaneCrafting = 0;
     private static final int InfusionCrafting = 1;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LAA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/industrial_arcane_assembler";
-    public static String[][] shape = StructureUtils.readStructureFromFile(LAA_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 45;
-    public final int VERTICAL_OFF_SET = 84;
-    public final int DEPTH_OFF_SET = 45;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LAA_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 45;
+    protected final int VERTICAL_OFF_SET = 84;
+    protected final int DEPTH_OFF_SET = 45;
 
     public IndustrialArcaneAssembler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

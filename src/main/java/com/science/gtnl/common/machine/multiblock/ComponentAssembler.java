@@ -66,7 +66,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
 
     public int casingTier;
     private static final String CA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/component_assembler";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(CA_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(CA_STRUCTURE_FILE_PATH);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private final int HORIZONTAL_OFF_SET = 3;
     private final int VERTICAL_OFF_SET = 4;

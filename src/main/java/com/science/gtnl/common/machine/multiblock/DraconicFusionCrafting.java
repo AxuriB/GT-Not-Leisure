@@ -46,13 +46,13 @@ import tectech.thing.casing.TTCasingsContainer;
 public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCrafting>
     implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String DFC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/draconic_fusion_crafting";
     public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(12);
-    public final int HORIZONTAL_OFF_SET = 14;
-    public final int VERTICAL_OFF_SET = 33;
-    public final int DEPTH_OFF_SET = 5;
-    public static String[][] shape = StructureUtils.readStructureFromFile(DFC_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 14;
+    protected final int VERTICAL_OFF_SET = 33;
+    protected final int DEPTH_OFF_SET = 5;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(DFC_STRUCTURE_FILE_PATH);
     public int tierCasing = -1;
 
     public DraconicFusionCrafting(int aID, String aName, String aNameRegional) {

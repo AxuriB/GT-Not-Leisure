@@ -108,38 +108,38 @@ import tectech.thing.metaTileEntity.multi.godforge.util.MilestoneIcon;
 public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWorkshop> implements INEIPreviewModifier {
 
     // 75 x 19 x 75
-    public static final String STRUCTURE_PIECE_MAIN_TOP = "main_top";
+    private static final String STRUCTURE_PIECE_MAIN_TOP = "main_top";
     private final int HORIZONTAL_OFF_SET_TOP = 37;
     private final int VERTICAL_OFF_SET_TOP = 46;
     private final int DEPTH_OFF_SET_TOP = 11;
 
     // 53 x 22 x 53
-    public static final String STRUCTURE_PIECE_MAIN_UP = "main_up";
+    private static final String STRUCTURE_PIECE_MAIN_UP = "main_up";
     private final int HORIZONTAL_OFF_SET_UP = 26;
     private final int VERTICAL_OFF_SET_UP = 27;
     private final int DEPTH_OFF_SET_UP = 0;
 
     // 53 x 11 x 53
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     private final int HORIZONTAL_OFF_SET = 26;
     private final int VERTICAL_OFF_SET = 5;
     private final int DEPTH_OFF_SET = 1;
 
     // 53 x 22 x 53
-    public static final String STRUCTURE_PIECE_MAIN_DOWN = "main_down";
+    private static final String STRUCTURE_PIECE_MAIN_DOWN = "main_down";
     private final int HORIZONTAL_OFF_SET_DOWN = 26;
     private final int VERTICAL_OFF_SET_DOWN = -6;
     private final int DEPTH_OFF_SET_DOWN = 0;
 
     // 75 x 22 x 75
-    public static final String STRUCTURE_PIECE_MAIN_BOTTOM = "main_bottom";
+    private static final String STRUCTURE_PIECE_MAIN_BOTTOM = "main_bottom";
     private final int HORIZONTAL_OFF_SET_BOTTOM = 37;
     private final int VERTICAL_OFF_SET_BOTTOM = -28;
     private final int DEPTH_OFF_SET_BOTTOM = 11;
 
     // 63 x 7 x 63
-    public static final String STRUCTURE_PIECE_MAIN_EXTRA = "main_extra";
-    public static final String STRUCTURE_PIECE_MAIN_EXTRA_AIR = "main_extra_air";
+    private static final String STRUCTURE_PIECE_MAIN_EXTRA = "main_extra";
+    private static final String STRUCTURE_PIECE_MAIN_EXTRA_AIR = "main_extra_air";
     private final int HORIZONTAL_OFF_SET_EXTRA = 31;
     private final int VERTICAL_OFF_SET_EXTRA_UP = 14;
     private final int VERTICAL_OFF_SET_EXTRA_DOWN = -8;
@@ -157,12 +157,12 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
         + "multiblock/eternal_gregTech_workshop/bottom";
     public static final String EGTWE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/eternal_gregTech_workshop/extra";
-    public static String[][] shape_top = StructureUtils.readStructureFromFile(EGTWT_STRUCTURE_FILE_PATH);
-    public static String[][] shape_up = StructureUtils.readStructureFromFile(EGTWU_STRUCTURE_FILE_PATH);
-    public static String[][] shape = StructureUtils.readStructureFromFile(EGTWC_STRUCTURE_FILE_PATH);
-    public static String[][] shape_down = StructureUtils.readStructureFromFile(EGTWD_STRUCTURE_FILE_PATH);
-    public static String[][] shape_bottom = StructureUtils.readStructureFromFile(EGTWB_STRUCTURE_FILE_PATH);
-    public static String[][] shape_extra = StructureUtils.readStructureFromFile(EGTWE_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_top = StructureUtils.readStructureFromFile(EGTWT_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_up = StructureUtils.readStructureFromFile(EGTWU_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(EGTWC_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_down = StructureUtils.readStructureFromFile(EGTWD_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_bottom = StructureUtils.readStructureFromFile(EGTWB_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_extra = StructureUtils.readStructureFromFile(EGTWE_STRUCTURE_FILE_PATH);
     public static final String[][] shape_extra_air = StructureUtils.replaceLetters(shape_extra, "a");
 
     public final int CASING_INDEX = 960;

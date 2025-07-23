@@ -35,13 +35,13 @@ import gregtech.common.blocks.BlockCasings8;
 
 public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransformer> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/molecular_transformer";
     public static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(0);
-    public final int HORIZONTAL_OFF_SET = 4;
-    public final int VERTICAL_OFF_SET = 9;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(MT_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 4;
+    protected final int VERTICAL_OFF_SET = 9;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(MT_STRUCTURE_FILE_PATH);
 
     public MolecularTransformer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

@@ -76,13 +76,13 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
     private final NineIndustrialMultiMachineManager modeManager = new NineIndustrialMultiMachineManager();
     public static final String[] aToolTipNames = new String[108];
     protected static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(12);
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String NIMM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/nine_industrial_multi_machine";
-    public static String[][] shape = StructureUtils.readStructureFromFile(NIMM_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 14;
-    public final int VERTICAL_OFF_SET = 27;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(NIMM_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 14;
+    protected final int VERTICAL_OFF_SET = 27;
+    protected final int DEPTH_OFF_SET = 0;
 
     static {
         for (int id = 0; id < 108; id++) {

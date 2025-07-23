@@ -40,7 +40,7 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
     public static final int CASING_INDEX = StructureUtils.getTextureIndex(sBlockCasings2, 0);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SEM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_elevator_module";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SEM_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SEM_STRUCTURE_FILE_PATH);
 
     public SteamElevatorModule(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional);

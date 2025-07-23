@@ -57,9 +57,9 @@ import tectech.thing.casing.TTCasingsContainer;
 public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
 
     protected boolean wirelessMode = false;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String WNG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/white_night_generator";
-    public static String[][] shape = StructureUtils.readStructureFromFile(WNG_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(WNG_STRUCTURE_FILE_PATH);
     public static final int CASING_INDEX = ((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13);
     public int multiTier = 0;
     public String ownerName;
@@ -205,9 +205,9 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
             true);
     }
 
-    public final int HORIZONTAL_OFF_SET = 49;
-    public final int VERTICAL_OFF_SET = 55;
-    public final int DEPTH_OFF_SET = 26;
+    protected final int HORIZONTAL_OFF_SET = 49;
+    protected final int VERTICAL_OFF_SET = 55;
+    protected final int DEPTH_OFF_SET = 26;
 
     @Override
     public IStructureDefinition<WhiteNightGenerator> getStructureDefinition() {

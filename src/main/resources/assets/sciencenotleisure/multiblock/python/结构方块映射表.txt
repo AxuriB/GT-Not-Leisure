@@ -4,25 +4,25 @@
 A -> ofBlock...(tile.bedrock, 0, ...)
 B -> ofBlock...(tile.blockCoal, 0, ...)
 C -> ofBlock...(tile.blockDiamond, 0, ...)
-D -> ofBlock...(tile.blockIron, 0, ...)
-E -> ofBlock...(tile.cloth, 0, ...)
-F -> ofBlock...(tile.cloth, 3, ...)
-G -> ofBlock...(tile.cloth, 8, ...)
-H -> ofBlock...(tile.cloth, 11, ...)
-I -> ofBlock...(tile.cloth, 15, ...)
-J -> ofBlock...(tile.fenceIron, 0, ...)
+D -> ofBlock...(tile.blockGold, 0, ...)
+E -> ofBlock...(tile.blockIron, 0, ...)
+F -> ofBlock...(tile.cloth, 0, ...)
+G -> ofBlock...(tile.cloth, 3, ...)
+H -> ofBlock...(tile.cloth, 8, ...)
+I -> ofBlock...(tile.cloth, 11, ...)
+J -> ofBlock...(tile.cloth, 13, ...)
 K -> ofBlock...(tile.glass, 0, ...)
-L -> ofBlock...(tile.oreIron, 0, ...)
-M -> ofBlock...(tile.quartzBlock, 0, ...)
-N -> ofBlock...(tile.stainedGlass, 7, ...)
-O -> ofBlock...(tile.stainedGlass, 15, ...)
+L -> ofBlock...(tile.lightgem, 0, ...)
+M -> ofBlock...(tile.oreDiamond, 0, ...)
+N -> ofBlock...(tile.oreIron, 0, ...)
+O -> ofBlock...(tile.quartzBlock, 0, ...)
 P -> ofBlock...(tile.stone, 0, ...)
 Q -> ofBlock...(tile.stonebrick, 0, ...)
 R -> 控制器位置
 
-偏移值 Offsets: 6 8 0
-结构体高度: 10
+偏移值 Offsets: 26 6 1
+结构体高度: 13
 
-宽: 13
-高: 10
-长: 31
+宽: 53
+高: 13
+长: 62

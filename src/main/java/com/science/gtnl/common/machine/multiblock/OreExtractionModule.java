@@ -35,7 +35,7 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
     public static final int CASING_INDEX = ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String OEM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/ore_extraction_module";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(OEM_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(OEM_STRUCTURE_FILE_PATH);
 
     public OreExtractionModule(String aName) {
         super(aName);

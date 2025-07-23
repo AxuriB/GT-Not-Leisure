@@ -45,13 +45,13 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellRegulator>
     implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String FCR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/flotation_cell_regulator";
     public static final int CASING_INDEX = TAE.GTPP_INDEX(18);
-    public final int HORIZONTAL_OFF_SET = 6;
-    public final int VERTICAL_OFF_SET = 4;
-    public final int DEPTH_OFF_SET = 1;
-    public static String[][] shape = StructureUtils.readStructureFromFile(FCR_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 6;
+    protected final int VERTICAL_OFF_SET = 4;
+    protected final int DEPTH_OFF_SET = 1;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(FCR_STRUCTURE_FILE_PATH);
 
     public FlotationCellRegulator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

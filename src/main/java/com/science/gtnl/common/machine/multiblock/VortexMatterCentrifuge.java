@@ -39,7 +39,7 @@ public class VortexMatterCentrifuge extends WirelessEnergyMultiMachineBase<Vorte
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String VMC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/vortex_matter_centrifuge";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(VMC_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(VMC_STRUCTURE_FILE_PATH);
 
     public VortexMatterCentrifuge(String aName) {
         super(aName);

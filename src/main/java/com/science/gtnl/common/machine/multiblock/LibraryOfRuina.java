@@ -44,12 +44,12 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
     public int multiTier = 0;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/library_of_ruina";
-    public static String[][] shape = StructureUtils.readStructureFromFile(LOR_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 34;
-    public final int VERTICAL_OFF_SET = 34;
-    public final int DEPTH_OFF_SET = 20;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LOR_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 34;
+    protected final int VERTICAL_OFF_SET = 34;
+    protected final int DEPTH_OFF_SET = 20;
 
     public LibraryOfRuina(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

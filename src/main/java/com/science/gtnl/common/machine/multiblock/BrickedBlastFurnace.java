@@ -38,12 +38,12 @@ import gregtech.common.blocks.BlockCasings4;
 
 public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String BBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/bricked_blast_furnace";
-    public static String[][] shape = StructureUtils.readStructureFromFile(BBF_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 7;
-    public final int VERTICAL_OFF_SET = 12;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(BBF_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 7;
+    protected final int VERTICAL_OFF_SET = 12;
+    protected final int DEPTH_OFF_SET = 0;
     protected static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(15);
 
     public BrickedBlastFurnace(int aID, String aName, String aNameRegional) {

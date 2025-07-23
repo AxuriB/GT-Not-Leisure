@@ -39,13 +39,13 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
     public static Textures.BlockIcons.CustomIcon OVERLAY_GAS_COLLECTOR = new Textures.BlockIcons.CustomIcon(
         TEXTURE_OVERLAY_GAS_COLLECTOR);
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LGC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_gas_collector";
     public static final int CASING_INDEX = ((BlockCasings2) sBlockCasings2).getTextureIndex(0);
-    public final int HORIZONTAL_OFF_SET = 2;
-    public final int VERTICAL_OFF_SET = 2;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(LGC_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 2;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LGC_STRUCTURE_FILE_PATH);
 
     public LargeGasCollector(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

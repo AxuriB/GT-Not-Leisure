@@ -50,13 +50,13 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
 
     protected GTRecipe lastRecipeToBuffer;
 
-    public static final int HORIZONTAL_OFF_SET = 321;
-    public static final int VERTICAL_OFF_SET = 321;
-    public static final int DEPTH_OFF_SET = 17;
+    protected final int HORIZONTAL_OFF_SET = 321;
+    protected final int VERTICAL_OFF_SET = 321;
+    protected final int DEPTH_OFF_SET = 17;
     public int tCountCasing = 0;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String GEE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/generation_earth_engine";
-    public static String[][] shape = StructureUtils.readStructureFromFile(GEE_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(GEE_STRUCTURE_FILE_PATH);
 
     public GenerationEarthEngine(String aName) {
         super(aName);

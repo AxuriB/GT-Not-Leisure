@@ -57,7 +57,7 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String LSCA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/large_steam_circuit_assembler";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(LSCA_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LSCA_STRUCTURE_FILE_PATH);
 
     public LargeSteamCircuitAssembler(String aName) {
         super(aName);
@@ -67,9 +67,9 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
         super(aID, aName, aNameRegional);
     }
 
-    public static final int HORIZONTAL_OFF_SET = 1;
-    public static final int VERTICAL_OFF_SET = 2;
-    public static final int DEPTH_OFF_SET = 0;
+    protected final int HORIZONTAL_OFF_SET = 1;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,

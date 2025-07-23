@@ -121,12 +121,12 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     }
 
     public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(5);
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/eden_garden";
-    public static String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 6;
-    public final int VERTICAL_OFF_SET = 43;
-    public final int DEPTH_OFF_SET = 10;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 6;
+    protected final int VERTICAL_OFF_SET = 43;
+    protected final int DEPTH_OFF_SET = 10;
 
     @Override
     public int getCasingTextureID() {

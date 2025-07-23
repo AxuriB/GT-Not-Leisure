@@ -40,7 +40,7 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
         TEXTURE_STEAMGATE_CASING);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steamgate";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SG_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SG_STRUCTURE_FILE_PATH);
 
     private static final int HORIZONTAL_OFF_SET = 4;
     private static final int VERTICAL_OFF_SET = 8;

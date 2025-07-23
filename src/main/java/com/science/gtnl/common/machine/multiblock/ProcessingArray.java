@@ -75,9 +75,9 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
     public int horizontalOffset = 2;
     public int verticalOffset = 3;
     public int depthOffset = 0;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String PA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/processing_array";
-    public static String[][] shape = StructureUtils.readStructureFromFile(PA_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(PA_STRUCTURE_FILE_PATH);
     public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(2);
 
     public ProcessingArray(int aID, String aName, String aNameRegional) {

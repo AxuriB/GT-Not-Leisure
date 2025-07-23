@@ -102,13 +102,13 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
     protected static Textures.BlockIcons.CustomIcon ScreenOFF;
     protected static Textures.BlockIcons.CustomIcon ScreenON;
 
-    public static final int HORIZONTAL_OFF_SET = 17;
-    public static final int VERTICAL_OFF_SET = 39;
-    public static final int DEPTH_OFF_SET = 14;
+    protected final int HORIZONTAL_OFF_SET = 17;
+    protected final int VERTICAL_OFF_SET = 39;
+    protected final int DEPTH_OFF_SET = 14;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_elevator";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
 
     @Override
     @SideOnly(Side.CLIENT)
