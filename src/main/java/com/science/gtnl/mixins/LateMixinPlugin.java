@@ -21,7 +21,6 @@ public class LateMixinPlugin implements ILateMixinLoader {
     @Override
     public List<String> getMixins(Set<String> loadedMods) {
         var mixins = new ArrayList<String>();
-        mixins.add("Gregtech.MTETieredMachineBlockAccessor");
         mixins.add("Gregtech.MTEHatchAccessor");
 
         mixins.add("Gregtech.AssLineRemover.GTRecipeBuilderHook_Mixin");

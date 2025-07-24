@@ -38,6 +38,8 @@ public class EarlyMixinPlugin {
             mixins.add("Minecraft.EntityCreeper_Mixin");
             mixins.add("Minecraft.EntitySpider_Mixin");
         }
+
+        mixins.add("Gregtech.MTETieredMachineBlockAccessor");
         return mixins;
     }
 }

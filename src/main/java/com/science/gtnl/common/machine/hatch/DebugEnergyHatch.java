@@ -22,7 +22,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.mixins.late.Gregtech.MTETieredMachineBlockAccessor;
+import com.science.gtnl.mixins.early.Gregtech.MTETieredMachineBlockAccessor;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
