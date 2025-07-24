@@ -21,6 +21,7 @@ import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.common.machine.basicMachine.DebugResearchStation;
 import com.science.gtnl.common.machine.basicMachine.ManaTank;
+import com.science.gtnl.common.machine.basicMachine.Replicator;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerSteel;
 import com.science.gtnl.common.machine.basicMachine.SteamTurbine;
@@ -1820,6 +1821,10 @@ public class MachineLoader {
                 "AdvancedSuperInputHatchME",
                 StatCollector.translateToLocal("AdvancedSuperInputHatchME")));
         addItemTooltip(GTNLItemList.AdvancedSuperInputHatchME.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.Replicator
+            .set(new Replicator(REPLICATOR.ID, "Replicator", StatCollector.translateToLocal("Replicator"), 7));
+        addItemTooltip(GTNLItemList.Replicator.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     @Deprecated

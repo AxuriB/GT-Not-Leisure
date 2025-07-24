@@ -283,6 +283,8 @@ Tooltip_SteamTurbine_03=流体容量:
 DebugResearchStation=Debug研究站
 Tooltip_DebugResearchStation_00=立即扫描研究站配方，无需能量
 
+Replicator=复制器
+
 GasCollectorLV=基础集气室
 GasCollectorMV=进阶集气室
 GasCollectorHV=进阶集气室 II

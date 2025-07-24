@@ -465,6 +465,7 @@ public enum GTNLItemList implements IItemContainer {
     LargeSteamCircuitAssembler,
     GenerationEarthEngine,
 
+    Replicator,
     SuperInputHatchME,
     AdvancedSuperInputHatchME,
     SuperInputBusME,
