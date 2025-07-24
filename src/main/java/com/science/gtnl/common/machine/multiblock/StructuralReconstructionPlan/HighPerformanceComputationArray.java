@@ -3,6 +3,7 @@ package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.ScienceNotLeisure.network;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -37,8 +38,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.science.gtnl.Utils.enums.HPCAModifier;
 import com.science.gtnl.api.ITESRProvider;
+import com.science.gtnl.common.packet.SyncHPCAVariablesPacket;
 import com.science.gtnl.common.render.tile.HighPerformanceComputationArrayMachineRender;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
@@ -218,6 +221,24 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         setRenderRotation(getDirection());
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick % 20 == 0) {
+                IGregTechTileEntity hpca = this.getBaseMetaTileEntity();
+                network.sendToAllAround(
+                    new SyncHPCAVariablesPacket(
+                        this.randomUUID,
+                        this.totalLens,
+                        hpca.getXCoord(),
+                        hpca.getYCoord(),
+                        hpca.getZCoord(),
+                        this.mMachine),
+                    new NetworkRegistry.TargetPoint(
+                        hpca.getWorld().provider.dimensionId,
+                        hpca.getXCoord() + 0.5,
+                        hpca.getYCoord() + 0.5,
+                        hpca.getZCoord() + 0.5,
+                        512.0));
+            }
+
             if (mUpdated) {
                 if (mUpdate <= 0) mUpdate = 20;
                 mUpdated = false;

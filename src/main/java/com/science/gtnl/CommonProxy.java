@@ -11,6 +11,7 @@ import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.GetTileEntityNBTRequestPacket;
 import com.science.gtnl.common.packet.SoundPacket;
+import com.science.gtnl.common.packet.SyncHPCAVariablesPacket;
 import com.science.gtnl.common.packet.TickratePacket;
 import com.science.gtnl.common.packet.TileEntityNBTPacket;
 import com.science.gtnl.common.packet.TitlePacket;
@@ -48,6 +49,7 @@ public class CommonProxy {
             Side.SERVER);
         network.registerMessage(TileEntityNBTPacket.Handler.class, TileEntityNBTPacket.class, 4, Side.CLIENT);
         network.registerMessage(SoundPacket.Handler.class, SoundPacket.class, 5, Side.CLIENT);
+        network.registerMessage(SyncHPCAVariablesPacket.Handler.class, SyncHPCAVariablesPacket.class, 6, Side.CLIENT);
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)

@@ -50,7 +50,7 @@ public class HighPerformanceComputationArrayMachineRender {
         GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 
-        int machineLens = (int) machine.machineLens.get();
+        int machineLens = machine.totalLens;
         int[][] colorTable = machine.generateTwoModifierIndexGroups(machine.randomUUID, machineLens);
         if (colorTable.length < 2) {
             GL11.glPopMatrix();
