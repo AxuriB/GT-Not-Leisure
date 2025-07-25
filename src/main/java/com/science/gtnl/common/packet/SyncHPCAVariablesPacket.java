@@ -2,16 +2,9 @@ package com.science.gtnl.common.packet;
 
 import java.util.UUID;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray;
-
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import io.netty.buffer.ByteBuf;
 
 public class SyncHPCAVariablesPacket implements IMessage {
@@ -59,18 +52,10 @@ public class SyncHPCAVariablesPacket implements IMessage {
 
         @Override
         public IMessage onMessage(SyncHPCAVariablesPacket message, MessageContext ctx) {
-            World world = Minecraft.getMinecraft().theWorld;
-            if (world != null) {
-                TileEntity te = world.getTileEntity(message.x, message.y, message.z);
-                if (te instanceof IGregTechTileEntity gtTE
-                    && gtTE.getMetaTileEntity() instanceof HighPerformanceComputationArray hpca) {
-                    hpca.randomUUID = message.uuid;
-                    hpca.totalLens = message.totalLens;
-                    hpca.mMachine = message.mMachine;
-                }
-            }
+            ClientSyncHPCAVariablesHandler
+                .apply(message.x, message.y, message.z, message.uuid, message.totalLens, message.mMachine);
             return null;
         }
-
     }
+
 }
