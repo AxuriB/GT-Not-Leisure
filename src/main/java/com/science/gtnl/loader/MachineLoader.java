@@ -206,6 +206,7 @@ import com.science.gtnl.common.material.MaterialUtils;
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
@@ -2419,5 +2420,7 @@ public class MachineLoader {
         registerMTEWireAndPipe();
         registerBasicMachine();
         registerCovers();
+
+        addItemTooltip(ItemList.Ore_Processor.get(1), AnimatedText.SCIENCE_NOT_LEISURE_CHANGE);
     }
 }

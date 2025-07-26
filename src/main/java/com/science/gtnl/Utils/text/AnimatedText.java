@@ -80,6 +80,10 @@ public class AnimatedText {
         text(StatCollector.translateToLocal("Adder")),
         animatedText("Science Not Leisure", 1, 80, RED, GOLD, YELLOW, GREEN, AQUA, BLUE, LIGHT_PURPLE));
 
+    public static final Supplier<String> SCIENCE_NOT_LEISURE_CHANGE = chain(
+        text(StatCollector.translateToLocal("ChangeAdder")),
+        animatedText("Science Not Leisure", 1, 80, RED, GOLD, YELLOW, GREEN, AQUA, BLUE, LIGHT_PURPLE));
+
     public static final Supplier<String> STRUCTURAL_RECONSTRUCTION_PLAN = chain(
         animatedText(
             StatCollector.translateToLocal("StructuralReconstructionPlan"),

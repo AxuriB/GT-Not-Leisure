@@ -14,6 +14,7 @@ import static tectech.util.TTUtility.replaceLetters;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -24,8 +25,12 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -40,6 +45,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,13 +64,16 @@ import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 
-public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPhagocytosisPlant> {
+public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPhagocytosisPlant>
+    implements INEIPreviewModifier {
 
     private static final int DEFAULT_STAR_SIZE = 20;
     private final StarColorStorage starColors = new StarColorStorage();
     private static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
     private String selectedStarColor = DEFAULT_STAR_COLOR;
     private int starSize = DEFAULT_STAR_SIZE;
+    private int mNEITier = -1;
+    private boolean neiEnableRender;
     private boolean isRendererDisabled;
     private boolean isRenderActive;
     private static final int HORIZONTAL_OFF_SET = 10;
@@ -175,7 +184,16 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
             .addShape(STRUCTURE_PIECE_MAIN_RING_ONE_AIR, transpose(shapeRingOneAir))
             .addShape(STRUCTURE_PIECE_MAIN_RING_TWO_AIR, transpose(shapeRingTwoAir))
             .addShape(STRUCTURE_PIECE_MAIN_RING_THREE_AIR, transpose(shapeRingThreeAir))
-            .addElement('A', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .addElement(
+                'A',
+                withChannel(
+                    "enableRender",
+                    ofBlocksTiered(
+                        NanoPhagocytosisPlant::getTierCasingFromBlock,
+                        ImmutableList.of(Pair.of(BlockQuantumGlass.INSTANCE, 0)),
+                        -1,
+                        (t, m) -> {},
+                        t -> -1)))
             .addElement('B', ofBlock(BlockLoader.metaCasing, 2))
             .addElement('C', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('D', ofBlock(BlockLoader.metaCasing, 18))
@@ -200,7 +218,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
             .addElement('W', ofBlock(sBlockCasings4, 7))
             .addElement('X', ofBlock(Loaders.compactFusionCoil, 2))
             .addElement('Y', ofBlock(Loaders.compactFusionCoil, 0))
-            .addElement('Z', ofBlock(Blocks.air, 0))
+            .addElement('Z', isAir())
             .addElement(
                 'a',
                 buildHatchAdder(NanoPhagocytosisPlant.class)
@@ -211,8 +229,19 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
             .build();
     }
 
+    @Nullable
+    public static Integer getTierCasingFromBlock(Block block, int meta) {
+        if (block == null) return null;
+        if (block == BlockQuantumGlass.INSTANCE) return meta;
+        return null;
+    }
+
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
+        if (ChannelDataAccessor.hasSubChannel(stackSize, "enableRender")
+            && ChannelDataAccessor.getChannelData(stackSize, "enableRender") > 0) {
+            neiEnableRender = true;
+        }
         this.buildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
@@ -246,6 +275,10 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
+        if (ChannelDataAccessor.hasSubChannel(stackSize, "enableRender")
+            && ChannelDataAccessor.getChannelData(stackSize, "enableRender") > 0) {
+            neiEnableRender = true;
+        }
         int realBudget = elementBudget >= 2000 ? elementBudget : Math.min(2000, elementBudget * 5);
 
         int built;
@@ -497,7 +530,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
                     return false;
                 }
 
-        if (!isRenderActive && !isRendererDisabled && mTotalRunTime > 0) {
+        if (!isRenderActive && !isRendererDisabled && mTotalRunTime > 0 || neiEnableRender) {
             createRenderer();
         }
 
@@ -571,4 +604,19 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
         isRendererDisabled = aNBT.getBoolean("isRendererDisabled");
     }
 
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack stackSize) {
+        if (ChannelDataAccessor.hasSubChannel(stackSize, "enableRender")
+            && ChannelDataAccessor.getChannelData(stackSize, "enableRender") > 0) {
+            neiEnableRender = true;
+        }
+    }
+
+    @Override
+    public void onPreviewStructureComplete(@NotNull ItemStack stackSize) {
+        if (ChannelDataAccessor.hasSubChannel(stackSize, "enableRender")
+            && ChannelDataAccessor.getChannelData(stackSize, "enableRender") > 0) {
+            neiEnableRender = true;
+        }
+    }
 }

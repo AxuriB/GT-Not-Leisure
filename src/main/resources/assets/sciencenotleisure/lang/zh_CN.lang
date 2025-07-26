@@ -17,6 +17,7 @@ Welcome_GTNL_RecipeOutputChance_01=当前每级增加概率: %s
 Welcome_GTNL_reload=配置文件已重新加载！
 
 Adder=添加模组: 
+ChangeAdder=修改模组: 
 NoMobsSpawnInThisBlock=生物不会在这个方块上生成
 NoTileEntitySpawnInThisBlock=这不是一个实体！
 Tooltip_Tectech_Hatch=支持§9Tec§1Tech§r激光仓！ 
@@ -1421,6 +1422,28 @@ Tooltip_WirelessEnergyMultiMachine_09=无线模式下电压为并行控制核心
 Waila_WirelessMode=无线模式
 Waila_CurrentEuCost=当前EU消耗
 Waila_CurrentSteamCost=当前蒸汽消耗
+
+IntegratedOreFactoryRecipeType=矿石处理厂，IOF
+Tooltip_IntegratedOreFactory_01=它很强(OP)。我是说，它是矿石处理厂。
+Tooltip_IntegratedOreFactory_02=一步完成所有矿石处理。
+Tooltip_IntegratedOreFactory_03=一次至多可处理65536个矿石。
+Tooltip_IntegratedOreFactory_04=每个矿石消耗30EU/t、2升润滑油、200升蒸馏水。
+Tooltip_IntegratedOreFactory_05=处理时间取决于模式。
+Tooltip_IntegratedOreFactory_06=使用螺丝刀切换模式。
+Tooltip_IntegratedOreFactory_07=手持螺丝刀Shift+右键以销毁石粉。
+Tooltip_IntegratedOreFactory_08=正面第三层中央
+Tooltip_IntegratedOreFactory_Casing_00=强化镀铱机械方块
+Tooltip_IntegratedOreFactory_Casing_01=洁净不锈钢机械方块
+Tooltip_IntegratedOreFactory_Casing_02=防爆玻璃
+Tooltip_IntegratedOreFactory_Casing_03=钨钢管道方块
+Tooltip_IntegratedOreFactory_Casing_04=钨钢框架
+Tooltip_IntegratedOreFactory_Casing_05=钢齿轮箱机械方块
+Tooltip_IntegratedOreFactory_Casing_06=能源仓（底层机械方块）
+Tooltip_IntegratedOreFactory_Casing_07=维护仓（底层机械方块）
+Tooltip_IntegratedOreFactory_Casing_08=输入总线（输入矿石/粉碎矿石）
+Tooltip_IntegratedOreFactory_Casing_09=输入仓（输入润滑油/蒸馏水/化学浸洗剂）
+Tooltip_IntegratedOreFactory_Casing_10=消声仓（输出污染）
+Tooltip_IntegratedOreFactory_Casing_11=输出总线（输出产物）
 
 NameFuelRefiningComplex=燃料精炼复合体
 FuelRefiningComplexRecipeType=燃料精炼复合体

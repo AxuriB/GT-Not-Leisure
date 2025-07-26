@@ -17,6 +17,7 @@ Welcome_GTNL_RecipeOutputChance_01=Current probability increase for each level: 
 Welcome_GTNL_reload=Configuration file has been reloaded!
 
 Adder=Add Mod: 
+ChangeAdder=Change Mod: 
 NoMobsSpawnInThisBlock=Mobs cannot Spawn on this Block
 NoTileEntitySpawnInThisBlock=This is NOT a TileEntity!
 Tooltip_Tectech_Hatch=Supports §9Tec§1Tech§r laser hatches!
@@ -1421,6 +1422,28 @@ Tooltip_WirelessEnergyMultiMachine_09=In wireless mode, the voltage is the paral
 Waila_WirelessMode=Wireless Mode
 Waila_CurrentEuCost=Current EU Consumption
 Waila_CurrentSteamCost=Current Steam Consumption
+
+IntegratedOreFactoryRecipeType=Ore Processor, IOF
+Tooltip_IntegratedOreFactory_01=It is OP. I mean ore processor.
+Tooltip_IntegratedOreFactory_02=Do all ore processing in one step.
+Tooltip_IntegratedOreFactory_03=Can process up to 1024 ores at a time.
+Tooltip_IntegratedOreFactory_04=Every ore costs 30EU/t, 2L lubricant, 200L distilled water.
+Tooltip_IntegratedOreFactory_05=Processing time is dependent on mode.
+Tooltip_IntegratedOreFactory_06=Use a screwdriver to switch mode.
+Tooltip_IntegratedOreFactory_07=Sneak click with screwdriver to void the stone dust.
+Tooltip_IntegratedOreFactory_08=The third layer
+Tooltip_IntegratedOreFactory_Casing_00=Advanced Iridium Plated Machine Casing
+Tooltip_IntegratedOreFactory_Casing_01=Clean Stainless Steel Machine Casing
+Tooltip_IntegratedOreFactory_Casing_02=Reinforced Glass
+Tooltip_IntegratedOreFactory_Casing_03=Tungstensteel Pipe Casing
+Tooltip_IntegratedOreFactory_Casing_04=Tungstensteel Frame Box
+Tooltip_IntegratedOreFactory_Casing_05=Steel Gear Box Casing
+Tooltip_IntegratedOreFactory_Casing_06=Energy Hatch (Any bottom Casing)
+Tooltip_IntegratedOreFactory_Casing_07=Maintenance Hatch (Any bottom Casing)
+Tooltip_IntegratedOreFactory_Casing_08=Input Bus (Input ore/crushed ore)
+Tooltip_IntegratedOreFactory_Casing_09=Input Hatch (Input lubricant/distilled water/washing chemicals)
+Tooltip_IntegratedOreFactory_Casing_10=Muffler Hatch (Output Pollution)
+Tooltip_IntegratedOreFactory_Casing_11=Output Bus (Output products)
 
 NameFuelRefiningComplex=Fuel Refining Complex
 FuelRefiningComplexRecipeType=Fuel Refining Complex
