@@ -4,6 +4,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemToolti
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
+import com.science.gtnl.common.item.ItemInfinityCell;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
@@ -61,6 +62,7 @@ public class ItemLoader {
     public static Item metaItem;
     public static ItemBucket honeyBucket;
     public static ItemBucket shimmerBucket;
+    public static ItemInfinityCell infinityCell;
 
     public static Item satietyRing;
     public static Item rejectionRing;
@@ -114,6 +116,7 @@ public class ItemLoader {
         physicsCape = new PhysicsCape();
         royalGel = new RoyalGel();
         luckyHorseshoe = new LuckyHorseshoe();
+        infinityCell = new ItemInfinityCell();
 
         GameRegistry.registerItem(steamRocket, "SteamRocket");
         GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
@@ -141,6 +144,7 @@ public class ItemLoader {
         GameRegistry.registerItem(royalGel, "RoyalGel");
         GameRegistry.registerItem(physicsCape, "PhysicsCape");
         GameRegistry.registerItem(luckyHorseshoe, "LuckyHorseshoe");
+        GameRegistry.registerItem(infinityCell, "InfinityCell");
 
         GTNLItemList.RecordSus.set(new ItemStack(RecordLoader.recordSus, 1));
         GTNLItemList.RecordNewHorizons.set(new ItemStack(RecordLoader.recordNewHorizons, 1));

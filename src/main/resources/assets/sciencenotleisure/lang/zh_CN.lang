@@ -849,6 +849,9 @@ item.record.sus.desc=AU - Software Update Services
 item.record.new_horizons.desc=Aviators - Sweet Dreams (Bonus Track)
 item.record.lava_chicken.desc=Hyper Potions - Lava Chicken
 
+item.infinity_cell.name=ME无限%s元件
+item.infinity_cell.unknown=未知的无限元件
+
 item.milledNaquadahEnriched.name=研磨富集硅岩矿
 item.FrothNaquadahEnrichedflotation=富集硅岩浮选泡沫单元
 item.FrothNaquadahEnrichedflotation.name=富集硅岩浮选泡沫单元
