@@ -76,10 +76,10 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     @Override
     public int getEfficiency() {
         return switch (this.mTier) {
-            case 1 -> 100; // 600 / 6 = 100
-            case 2 -> 80; // 600 / 9.23 ≈ 65
-            case 3 -> 60; // 600 / 20 = 30
-            default -> 100; // 默认值
+            case 1 -> 10000; // 60000 / 6 = 10000
+            case 2 -> 8000; // 60000 / 9.23 ≈ 6500
+            case 3 -> 6000; // 60000 / 2000 = 3000
+            default -> 10000; // 默认值
         };
     }
 
