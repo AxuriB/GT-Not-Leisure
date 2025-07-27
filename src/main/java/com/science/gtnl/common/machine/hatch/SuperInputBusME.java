@@ -168,6 +168,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
+    @Override
     protected boolean isAllowedToWork() {
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
@@ -185,6 +186,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
+    @Override
     protected void updateValidGridProxySides() {
         if (additionalConnection) {
             getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
@@ -252,6 +254,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         getProxy().writeToNBT(aNBT);
     }
 
+    @Override
     protected void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
@@ -268,6 +271,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         updateAllInformationSlots();
     }
 
+    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }
@@ -458,6 +462,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         return false;
     }
 
+    @Override
     public void setRecipeCheck(boolean value) {
         expediteRecipeCheck = value;
     }
@@ -523,6 +528,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         return mInventory[aIndex];
     }
 
+    @Override
     protected BaseActionSource getRequestSource() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
@@ -541,6 +547,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         updateAllInformationSlots();
     }
 
+    @Override
     protected void refreshItemList() {
         if (!isActive()) return;
         AENetworkProxy proxy = getProxy();
@@ -571,6 +578,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         } catch (final GridAccessException ignored) {}
     }
 
+    @Override
     protected void updateAllInformationSlots() {
         for (int index = 0; index < SIDE_SLOT_COUNT; index++) {
             updateInformationSlot(index, mInventory[index]);
@@ -620,6 +628,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     /**
      * Update the right side of the GUI, which shows the amounts of items set on the left side
      */
+    @Override
     public ItemStack updateInformationSlot(int aIndex, ItemStack aStack) {
         if (aIndex >= 0 && aIndex < SIDE_SLOT_COUNT) {
             if (aStack == null) {
@@ -664,6 +673,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     /**
      * Used to avoid slot update.
      */
+    @Override
     public ItemStack getShadowItemStack(int index) {
         if (index < 0 || index >= shadowInventory.length) {
             return null;
@@ -671,6 +681,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         return shadowInventory[index];
     }
 
+    @Override
     public int getShadowInventorySize() {
         return shadowInventory.length;
     }
@@ -680,6 +691,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
      *
      * @return The first shadow item stack, or null if this doesn't exist.
      */
+    @Override
     public ItemStack getFirstShadowItemStack() {
         return getFirstShadowItemStack(false);
     }
@@ -690,6 +702,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
      * @param hasToMatchGhost Whether the first item stack returned has to match the first non-null ghost stack
      * @return The first shadow item stack, or null if this doesn't exist.
      */
+    @Override
     public ItemStack getFirstShadowItemStack(boolean hasToMatchGhost) {
         ItemStack itemStack;
         ItemStack lockedSlot = null;
@@ -905,6 +918,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         return builder.build();
     }
 
+    @Override
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
         final int HEIGHT = 115;

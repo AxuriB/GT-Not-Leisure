@@ -72,7 +72,6 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
     private static final String DEFAULT_STAR_COLOR = ForgeOfGodsStarColor.DEFAULT.getName();
     private String selectedStarColor = DEFAULT_STAR_COLOR;
     private int starSize = DEFAULT_STAR_SIZE;
-    private int mNEITier = -1;
     private boolean neiEnableRender;
     private boolean isRendererDisabled;
     private boolean isRenderActive;
@@ -189,11 +188,14 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
                 withChannel(
                     "enableRender",
                     ofBlocksTiered(
-                        NanoPhagocytosisPlant::getTierCasingFromBlock,
+                        (block, meta) -> block == BlockQuantumGlass.INSTANCE ? 1 : null,
                         ImmutableList.of(Pair.of(BlockQuantumGlass.INSTANCE, 0)),
                         -1,
                         (t, m) -> {},
-                        t -> -1)))
+                        t -> -1
+                    )
+                )
+            )
             .addElement('B', ofBlock(BlockLoader.metaCasing, 2))
             .addElement('C', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('D', ofBlock(BlockLoader.metaCasing, 18))
@@ -227,13 +229,6 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings9, 12))))
             .build();
-    }
-
-    @Nullable
-    public static Integer getTierCasingFromBlock(Block block, int meta) {
-        if (block == null) return null;
-        if (block == BlockQuantumGlass.INSTANCE) return meta;
-        return null;
     }
 
     @Override

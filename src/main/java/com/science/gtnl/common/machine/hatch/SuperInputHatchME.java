@@ -164,6 +164,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
+    @Override
     protected boolean isAllowedToWork() {
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
@@ -204,11 +205,13 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         } catch (final GridAccessException ignored) {}
     }
 
+    @Override
     protected void setSavedFluid(int i, FluidStack stack) {
         shadowStoredFluids[i] = stack;
         savedStackSizes[i] = stack == null ? 0 : stack.amount;
     }
 
+    @Override
     public FluidStack[] getStoredFluids() {
         if (!processingRecipe) {
             return EMPTY_FLUID_STACK;
@@ -245,6 +248,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         return false;
     }
 
+    @Override
     public void setRecipeCheck(boolean value) {
         expediteRecipeCheck = value;
     }
@@ -386,6 +390,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         updateAllInformationSlots();
     }
 
+    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }
@@ -396,6 +401,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         }
     }
 
+    @Override
     public void updateInformationSlot(int index) {
         if (index < 0 || index >= SLOT_COUNT) {
             return;
@@ -442,6 +448,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         return requestSource;
     }
 
+    @Override
     public FluidStack getMatchingFluidStack(FluidStack fluidStack) {
         if (fluidStack == null) return null;
 
@@ -472,6 +479,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
     /**
      * Used to avoid slot update.
      */
+    @Override
     public FluidStack getShadowFluidStack(int index) {
         if (index < 0 || index >= storedFluids.length) {
             return null;
@@ -485,6 +493,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
      *
      * @return The first shadow fluid stack, or null if this doesn't exist.
      */
+    @Override
     public FluidStack getFirstShadowFluidStack() {
         return getFirstShadowFluidStack(false);
     }
@@ -495,6 +504,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
      * @param hasToMatchGhost Whether the first fluid stack returned has to match the first non-null ghost stack
      * @return The first shadow fluid stack, or null if this doesn't exist.
      */
+    @Override
     public FluidStack getFirstShadowFluidStack(boolean hasToMatchGhost) {
         FluidStack fluidStack;
         FluidStack lockedSlot = null;
@@ -515,10 +525,12 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         return fluidStack;
     }
 
+    @Override
     public int getShadowStoredFluidsSize() {
         return shadowStoredFluids.length;
     }
 
+    @Override
     public int getFluidSlot(FluidStack fluidStack) {
         if (fluidStack == null) return -1;
 
@@ -699,6 +711,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
     }
 
+    @Override
     public boolean containsSuchStack(FluidStack tStack) {
         for (int i = 0; i < 100; ++i) {
             if (GTUtility.areFluidsEqual(storedFluids[i], tStack, false)) {
@@ -890,6 +903,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         }, capacity);
     }
 
+    @Override
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
         final int HEIGHT = 115;
