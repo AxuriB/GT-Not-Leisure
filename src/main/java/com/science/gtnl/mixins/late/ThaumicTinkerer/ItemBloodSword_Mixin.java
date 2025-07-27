@@ -17,7 +17,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import thaumic.tinkerer.common.item.ItemBloodSword;
 
 @SuppressWarnings("UnusedMixin")
-@Mixin(value = ItemBloodSword.class, remap = false)
+@Mixin(value = ItemBloodSword.EventHandler.class, remap = false)
 public abstract class ItemBloodSword_Mixin {
 
     @Unique

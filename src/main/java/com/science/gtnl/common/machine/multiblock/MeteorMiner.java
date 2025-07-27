@@ -81,7 +81,6 @@ import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import lombok.Getter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -372,9 +371,9 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
-            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("MeteorMiner_Render_Off"));
             if (renderer != null) renderer.setShouldRender(false);
-        } else PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+        } else GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("MeteorMiner_Render_On"));
     }
 
     @Override

@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import com.google.common.collect.ImmutableSet;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.enums.GTNLMachineID;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.text.AnimatedText;
@@ -209,6 +210,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GlassTier;
@@ -2083,13 +2085,13 @@ public class MachineLoader {
                 16));
         addItemTooltip(GTNLItemList.ManaEnergyHatchZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.GasCollectorLV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_LV.ID,
-                "GasCollectorLV",
-                StatCollector.translateToLocal("GasCollectorLV"),
-                1,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_00"),
+        for (GasCollectorTier tier : GasCollectorTier.values()) {
+            IMetaTileEntity mte = new MTEBasicMachineWithRecipe(
+                tier.id.ID,
+                tier.unlocalizedName,
+                StatCollector.translateToLocal(tier.unlocalizedName),
+                tier.tier,
+                new String[] { StatCollector.translateToLocal(tier.tooltipKey),
                     StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
                         + EnumChatFormatting.YELLOW
                         + StatCollector.translateToLocal("GasCollectorRecipeType")
@@ -2100,261 +2102,12 @@ public class MachineLoader {
                 true,
                 SoundResource.NONE,
                 MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+                "GAS_COLLECTOR");
 
-        GTNLItemList.GasCollectorMV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_MV.ID,
-                "GasCollectorMV",
-                StatCollector.translateToLocal("GasCollectorMV"),
-                2,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_00"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+            tier.itemEnum.set(mte);
 
-        GTNLItemList.GasCollectorHV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_HV.ID,
-                "GasCollectorHV",
-                StatCollector.translateToLocal("GasCollectorHV"),
-                3,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_00"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorEV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_EV.ID,
-                "GasCollectorEV",
-                StatCollector.translateToLocal("GasCollectorEV"),
-                4,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_00"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorIV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_IV.ID,
-                "GasCollectorIV",
-                StatCollector.translateToLocal("GasCollectorIV"),
-                5,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_01"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_LUV.ID,
-                "GasCollectorLuV",
-                StatCollector.translateToLocal("GasCollectorLuV"),
-                6,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_01"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorLuV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_ZPM.ID,
-                "GasCollectorZPM",
-                StatCollector.translateToLocal("GasCollectorZPM"),
-                7,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_01"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UV.ID,
-                "GasCollectorUV",
-                StatCollector.translateToLocal("GasCollectorUV"),
-                8,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UHV.ID,
-                "GasCollectorUHV",
-                StatCollector.translateToLocal("GasCollectorUHV"),
-                9,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UEV.ID,
-                "GasCollectorUEV",
-                StatCollector.translateToLocal("GasCollectorUEV"),
-                10,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UIV.ID,
-                "GasCollectorUIV",
-                StatCollector.translateToLocal("GasCollectorUIV"),
-                11,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UMV.ID,
-                "GasCollectorUMV",
-                StatCollector.translateToLocal("GasCollectorUMV"),
-                12,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUXV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UXV.ID,
-                "GasCollectorUXV",
-                StatCollector.translateToLocal("GasCollectorUXV"),
-                13,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_03"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipePool.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUXV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+            addItemTooltip(tier.itemEnum.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        }
     }
 
     public static void registerMTEWireAndPipe() {
@@ -2422,5 +2175,36 @@ public class MachineLoader {
         registerCovers();
 
         addItemTooltip(ItemList.Ore_Processor.get(1), AnimatedText.SCIENCE_NOT_LEISURE_CHANGE);
+    }
+
+    public enum GasCollectorTier {
+
+        LV(GTNLItemList.GasCollectorLV, GAS_COLLECTOR_LV, "GasCollectorLV", 1, "Tooltip_GasCollector_00"),
+        MV(GTNLItemList.GasCollectorMV, GAS_COLLECTOR_MV, "GasCollectorMV", 2, "Tooltip_GasCollector_00"),
+        HV(GTNLItemList.GasCollectorHV, GAS_COLLECTOR_HV, "GasCollectorHV", 3, "Tooltip_GasCollector_00"),
+        EV(GTNLItemList.GasCollectorEV, GAS_COLLECTOR_EV, "GasCollectorEV", 4, "Tooltip_GasCollector_00"),
+        IV(GTNLItemList.GasCollectorIV, GAS_COLLECTOR_IV, "GasCollectorIV", 5, "Tooltip_GasCollector_01"),
+        LuV(GTNLItemList.GasCollectorLuV, GAS_COLLECTOR_LUV, "GasCollectorLuV", 6, "Tooltip_GasCollector_01"),
+        ZPM(GTNLItemList.GasCollectorZPM, GAS_COLLECTOR_ZPM, "GasCollectorZPM", 7, "Tooltip_GasCollector_01"),
+        UV(GTNLItemList.GasCollectorUV, GAS_COLLECTOR_UV, "GasCollectorUV", 8, "Tooltip_GasCollector_02"),
+        UHV(GTNLItemList.GasCollectorUHV, GAS_COLLECTOR_UHV, "GasCollectorUHV", 9, "Tooltip_GasCollector_02"),
+        UEV(GTNLItemList.GasCollectorUEV, GAS_COLLECTOR_UEV, "GasCollectorUEV", 10, "Tooltip_GasCollector_02"),
+        UIV(GTNLItemList.GasCollectorUIV, GAS_COLLECTOR_UIV, "GasCollectorUIV", 11, "Tooltip_GasCollector_02"),
+        UMV(GTNLItemList.GasCollectorUMV, GAS_COLLECTOR_UMV, "GasCollectorUMV", 12, "Tooltip_GasCollector_02"),
+        UXV(GTNLItemList.GasCollectorUXV, GAS_COLLECTOR_UXV, "GasCollectorUXV", 13, "Tooltip_GasCollector_03");
+
+        public final GTNLItemList itemEnum;
+        public final GTNLMachineID id;
+        public final String unlocalizedName;
+        public final int tier;
+        public final String tooltipKey;
+
+        GasCollectorTier(GTNLItemList itemEnum, GTNLMachineID id, String name, int tier, String tooltipKey) {
+            this.itemEnum = itemEnum;
+            this.id = id;
+            this.unlocalizedName = name;
+            this.tier = tier;
+            this.tooltipKey = tooltipKey;
+        }
     }
 }
