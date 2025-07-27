@@ -1195,7 +1195,7 @@ public class ManaInfusionRecipes implements IRecipePool {
             .addTo(MIR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.tallgrass, 1))
+            .itemInputs(GTUtility.getIntegratedCircuit(1), new ItemStack(Blocks.tallgrass, 1))
             .itemOutputs(GTModHandler.getModItem(Botania.ID, "grassSeeds", 1, 0))
             .fluidInputs(MaterialPool.FluidMana.getFluidOrGas(2500))
             .duration(20)

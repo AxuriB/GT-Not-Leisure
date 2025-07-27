@@ -14,7 +14,6 @@ import static tectech.util.TTUtility.replaceLetters;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -27,7 +26,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
@@ -192,10 +190,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
                         ImmutableList.of(Pair.of(BlockQuantumGlass.INSTANCE, 0)),
                         -1,
                         (t, m) -> {},
-                        t -> -1
-                    )
-                )
-            )
+                        t -> -1)))
             .addElement('B', ofBlock(BlockLoader.metaCasing, 2))
             .addElement('C', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('D', ofBlock(BlockLoader.metaCasing, 18))
