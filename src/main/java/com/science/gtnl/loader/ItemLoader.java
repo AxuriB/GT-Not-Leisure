@@ -71,6 +71,9 @@ public class ItemLoader {
     public static Item royalGel;
     public static Item luckyHorseshoe;
 
+    public static ItemStack infinityDyeCell;
+    public static ItemStack infinityBlockCell;
+
     public static void registryItems() {
         steamRocket = new SteamRocketItem();
         fakeItemSiren = new FakeItemSiren();
@@ -153,6 +156,8 @@ public class ItemLoader {
         GTNLItemList.InfinityFuelRod.set(new ItemStack(infinityFuelRod, 1));
         GTNLItemList.HoneyBucket.set(new ItemStack(honeyBucket, 1));
         GTNLItemList.ShimmerBucket.set(new ItemStack(shimmerBucket, 1));
+        GTNLItemList.InfinityCell.set(new ItemStack(infinityCell, 1));
+        GTNLItemList.InfinityDyeCell.set(infinityDyeCell);
     }
 
     public static void registryItemContainers() {

@@ -10,7 +10,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.glodblock.github.util.NameConst;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
@@ -37,7 +36,9 @@ import com.glodblock.github.common.storage.IStorageFluidCell;
 import com.glodblock.github.inventory.InventoryHandler;
 import com.glodblock.github.inventory.gui.GuiType;
 import com.glodblock.github.util.BlockPos;
+import com.glodblock.github.util.NameConst;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.loader.ItemLoader;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -67,7 +68,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorageFluidCell {
 
     private static final long StorageSIZE = 1L << 53 - 1;
-    public static ItemStack InfinityDyeCell;
 
     public ItemInfinityCell() {
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "InfinityCell");
@@ -87,7 +87,11 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
         for (short i = 0; i < 16; i++) {
             s[i] = SubItem.getInstance("gregtech:gt.metaitem.02", (short) (32414 + i));
         }
-        itemStacks.add(InfinityDyeCell = getSubItem(StorageChannel.ITEMS, "infinity.dye.name", s));
+        itemStacks.add(ItemLoader.infinityDyeCell = getSubItem(StorageChannel.ITEMS, "InfinityCell.dye.name", s));
+        itemStacks.add(
+            ItemLoader.infinityBlockCell = getSubItem(
+                StorageChannel.ITEMS,
+                SubItem.getInstance("minecraft:stone", (short) 0)));
     }
 
     private ItemStack getSubItem(StorageChannel s, String unlocalizedName, SubItem... subItems) {
@@ -294,17 +298,27 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
     }
 
     @SideOnly(Side.CLIENT)
-    protected void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines, final boolean displayMoreInfo) {
+    protected void addCheckedInformation(final ItemStack stack, final EntityPlayer player, final List<String> lines,
+        final boolean displayMoreInfo) {
         if (GuiScreen.isCtrlKeyDown()) {
             if (stack.hasTagCompound()) {
                 var c = getChannel(stack);
                 if (c != null) {
                     var isItem = c == StorageChannel.ITEMS;
-                    lines.add(StatCollector.translateToLocal(isItem ? "snl.tooltip.item_cell_contents" : NameConst.TT_CELL_CONTENTS));
-                    var list = getRecord(stack,c);
+                    lines.add(
+                        StatCollector
+                            .translateToLocal(isItem ? "Tooltip_InfinityCell_Contents" : NameConst.TT_CELL_CONTENTS));
+                    var list = getRecord(stack, c);
                     if (!list.isEmpty()) {
                         for (IAEStack<?> s : list) {
-                            lines.add(String.format("  %s %s", StatCollector.translateToLocal(NameConst.TT_INFINITY_FLUID_STORAGE_TIPS),isItem ? ((IAEItemStack) s).getItemStack().getDisplayName() : ((IAEFluidStack) s).getFluidStack().getLocalizedName()));
+                            lines.add(
+                                String.format(
+                                    "  %s %s",
+                                    StatCollector.translateToLocal(NameConst.TT_INFINITY_FLUID_STORAGE_TIPS),
+                                    isItem ? ((IAEItemStack) s).getItemStack()
+                                        .getDisplayName()
+                                        : ((IAEFluidStack) s).getFluidStack()
+                                            .getLocalizedName()));
                         }
                         return;
                     }

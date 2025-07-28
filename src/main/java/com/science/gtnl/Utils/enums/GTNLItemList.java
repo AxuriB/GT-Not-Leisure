@@ -240,6 +240,8 @@ public enum GTNLItemList implements IItemContainer {
     HoneyBucket,
     ShimmerBucket,
     SlimeSaddle,
+    InfinityCell,
+    InfinityDyeCell,
 
     SatietyRing,
     SuperReachRing,
