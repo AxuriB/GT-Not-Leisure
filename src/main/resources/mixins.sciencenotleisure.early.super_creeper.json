@@ -1,11 +1,17 @@
 {
   "required": true,
   "minVersion": "0.8.5-GTNH",
-  "package": "com.science.gtnl.mixins.late",
+  "package": "com.science.gtnl.mixins.early.super_creeper",
   "refmap": "mixins.sciencenotleisure.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
+  "mixins": [
+    "AccessorEntityCreeper",
+    "EntityAICreeperSwell_Mixin",
+    "EntityCreeper_Mixin",
+    "EntitySpider_Mixin"
+  ],
   "client": [],
   "server": []
 }
+

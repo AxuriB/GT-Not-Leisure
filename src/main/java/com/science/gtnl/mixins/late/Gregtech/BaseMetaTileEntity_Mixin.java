@@ -25,7 +25,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import tectech.thing.metaTileEntity.multi.MTEResearchStation;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = BaseMetaTileEntity.class, remap = false)
 public abstract class BaseMetaTileEntity_Mixin extends CommonBaseMetaTileEntity implements ITileEntityTickAcceleration {
 

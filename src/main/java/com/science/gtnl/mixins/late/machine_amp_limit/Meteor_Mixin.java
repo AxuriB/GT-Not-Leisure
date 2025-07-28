@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.BloodMagic;
+package com.science.gtnl.mixins.late.machine_amp_limit;
 
 import static WayofTime.alchemicalWizardry.common.summoning.meteor.Meteor.*;
 import static com.science.gtnl.Utils.bloodMagic.MeteorParadigmHelper.*;
@@ -20,7 +20,6 @@ import WayofTime.alchemicalWizardry.api.alchemy.energy.Reagent;
 import WayofTime.alchemicalWizardry.common.summoning.meteor.Meteor;
 import WayofTime.alchemicalWizardry.common.summoning.meteor.MeteorComponent;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = Meteor.class, remap = false)
 public abstract class Meteor_Mixin {
 

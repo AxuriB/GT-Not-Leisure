@@ -4,6 +4,35 @@
   "package": "com.science.gtnl.mixins.late",
   "refmap": "mixins.sciencenotleisure.refmap.json",
   "target": "@env(DEFAULT)",
-  "compatibilityLevel": "JAVA_8"
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "AEFluidCraft.ItemFluidPacket_Mixin",
+    "AppliedEnergistics.EntityTinyTNTPrimed_Mixin",
+    "Bartwork.BartworkLoad_Head_Mixin",
+    "Bartwork.CircuitImprintLoader_Mixin",
+    "Bartwork.ItemRegistry_Mixin",
+    "Bartwork.MultipleMetalLoader_Mixin",
+    "Bartwork.SimpleMetalLoader_Mixin",
+    "Bartwork.Werkstoff_Mixin",
+    "Bartwork.WerkstoffLoader_Mixin",
+    "DraconicEvolution.DraconicEvolutionEventHandler_Mixin",
+    "DraconicEvolution.ReactorExplosion_Mixin",
+    "Gregtech.BaseMetaTileEntity_Mixin",
+    "Gregtech.GTShapedRecipe_Mixin",
+    "Gregtech.GTShapelessRecipe_Mixin",
+    "Gregtech.MTEBetterJukebox_Mixin",
+    "Gregtech.MTEDigitalTankBase_Mixin",
+    "Gregtech.MTEHatchAccessor",
+    "Gregtech.MTEIntegratedOreFactory_Mixin",
+    "Gregtech.MTETreeFarm_Mixin",
+    "Gregtech.AssLineRemover.ForGTPreLoadHook_Mixin",
+    "Gregtech.AssLineRemover.GTRecipeBuilderHook_Mixin",
+    "Gregtech.AssLineRemover.TTAssLineBuilderHook_Mixin",
+    "NHCoreMod.BacteriaRegistry_Mixin",
+    "ThaumicTinkerer.ItemBloodSword_Mixin"
+  ],
+  "client": [
+  ],
+  "server": []
 }
 

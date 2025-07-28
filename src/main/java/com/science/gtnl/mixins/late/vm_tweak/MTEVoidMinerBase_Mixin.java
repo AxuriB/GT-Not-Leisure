@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.Gregtech;
+package com.science.gtnl.mixins.late.vm_tweak;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -29,7 +29,6 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gtneioreplugin.plugin.block.ModBlocks;
 import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MTEVoidMinerBase.class, remap = false)
 public abstract class MTEVoidMinerBase_Mixin extends MTEEnhancedMultiBlockBase<MTEVoidMinerBase_Mixin> {
 

@@ -6,7 +6,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.Nxer.TwistSpaceTechnology.loader.RecipeLoader;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = RecipeLoader.class, remap = false)
 public abstract class RecipeLoader_Mixin {
 

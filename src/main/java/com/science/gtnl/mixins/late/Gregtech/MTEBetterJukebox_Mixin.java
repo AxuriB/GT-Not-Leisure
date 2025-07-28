@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MTEBetterJukebox.class, remap = false)
 public class MTEBetterJukebox_Mixin {
 

@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.early.Minecraft;
+package com.science.gtnl.mixins.early.super_creeper;
 
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.science.gtnl.config.MainConfig;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(EntityCreeper.class)
 public abstract class EntityCreeper_Mixin extends EntityMob {
 
@@ -39,9 +38,9 @@ public abstract class EntityCreeper_Mixin extends EntityMob {
     @Unique
     private int burningExplosionTimer = 0;
     @Shadow
-    private int timeSinceIgnited;
+    public int timeSinceIgnited;
     @Shadow
-    private int fuseTime;
+    public int fuseTime;
 
     @Inject(method = "writeEntityToNBT", at = @At("TAIL"))
     private void writeCustomData(NBTTagCompound tag, CallbackInfo ci) {

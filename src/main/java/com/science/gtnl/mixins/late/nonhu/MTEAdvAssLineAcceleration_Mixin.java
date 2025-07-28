@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.Gregtech;
+package com.science.gtnl.mixins.late.nonhu;
 
 import net.minecraft.item.ItemStack;
 
@@ -16,7 +16,6 @@ import ggfab.mte.MTEAdvAssLine;
 
 @Pseudo
 @Mixin(value = MTEAdvAssLine.class, remap = false)
-@SuppressWarnings({ "UnusedMixin", "AddedMixinMembersNamePattern" })
 public abstract class MTEAdvAssLineAcceleration_Mixin implements IAccelerationState {
 
     @Shadow

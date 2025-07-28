@@ -9,7 +9,6 @@ import bartworks.system.material.BWMetaGeneratedItems;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.OrePrefixes;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = WerkstoffLoader.class, remap = false)
 public abstract class WerkstoffLoader_Mixin {
 

@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.early.Minecraft;
+package com.science.gtnl.mixins.early.super_creeper;
 
 import java.util.List;
 
@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.config.MainConfig;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(EntityAICreeperSwell.class)
 public abstract class EntityAICreeperSwell_Mixin {
 
@@ -61,6 +60,7 @@ public abstract class EntityAICreeperSwell_Mixin {
     @Unique
     private final double explosionTriggerRange = MainConfig.explosionTriggerRange;
 
+    @Unique
     public Utils.TargetInfo findNearestTarget() {
         long currentTick = this.swellingCreeper.worldObj.getTotalWorldTime();
 
@@ -80,6 +80,7 @@ public abstract class EntityAICreeperSwell_Mixin {
         return cachedBlockTarget.distance < cachedPlayerTarget.distance ? cachedBlockTarget : cachedPlayerTarget;
     }
 
+    @Unique
     private Utils.TargetInfo findNearestTargetBlock() {
         double minDistance = Double.MAX_VALUE;
         Utils.TargetInfo closestTarget = null;
@@ -108,6 +109,7 @@ public abstract class EntityAICreeperSwell_Mixin {
         return closestTarget;
     }
 
+    @Unique
     private Utils.TargetInfo findNearestTargetPlayer() {
         double minDistance = Double.MAX_VALUE;
         Utils.TargetInfo closestTarget = null;
@@ -130,6 +132,7 @@ public abstract class EntityAICreeperSwell_Mixin {
         return closestTarget;
     }
 
+    @Unique
     public boolean executeSpider() {
         long currentTick = this.swellingCreeper.worldObj.getTotalWorldTime();
 
@@ -232,7 +235,7 @@ public abstract class EntityAICreeperSwell_Mixin {
             if (customTargetDistance <= explosionTriggerRange) {
                 if (this.swellingCreeper.getCreeperState() < 1) {
                     this.swellingCreeper.setCreeperState(1);
-                    ((EntityCreeperAccessor) this.swellingCreeper).setExplosionRadius(explosionPower);
+                    ((AccessorEntityCreeper) this.swellingCreeper).setExplosionRadius(explosionPower);
                 }
                 this.swellingCreeper.getNavigator()
                     .clearPathEntity();

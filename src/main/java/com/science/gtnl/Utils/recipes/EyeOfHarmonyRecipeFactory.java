@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.science.gtnl.mixins.late.Gregtech.EyeOfHarmonyRecipeAccessor;
+import com.science.gtnl.mixins.late.debug.EyeOfHarmonyRecipeAccessor;
 
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;

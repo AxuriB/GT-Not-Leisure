@@ -16,7 +16,6 @@ import appeng.entity.EntityTinyTNTPrimed;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = EntityTinyTNTPrimed.class, remap = false)
 public abstract class EntityTinyTNTPrimed_Mixin extends EntityTNTPrimed {
 

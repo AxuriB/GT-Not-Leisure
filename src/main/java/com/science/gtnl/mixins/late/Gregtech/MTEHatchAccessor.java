@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import gregtech.api.metatileentity.implementations.MTEHatch;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MTEHatch.class, remap = false)
 public interface MTEHatchAccessor {
 

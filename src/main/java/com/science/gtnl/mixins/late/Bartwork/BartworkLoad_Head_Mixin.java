@@ -1,6 +1,7 @@
 package com.science.gtnl.mixins.late.Bartwork;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -13,10 +14,10 @@ import com.science.gtnl.loader.RecipePool;
 import bartworks.MainMod;
 import gregtech.api.recipe.RecipeMaps;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MainMod.class, remap = false)
 public class BartworkLoad_Head_Mixin {
 
+    @Unique
     private static boolean recipesDel;
 
     @Inject(method = "runOnPlayerJoined(ZZ)V", at = @At("HEAD"), remap = false)

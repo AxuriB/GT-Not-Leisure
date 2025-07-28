@@ -2,6 +2,7 @@ package com.science.gtnl.mixins.early.NotEnoughItems;
 
 import net.minecraft.util.ResourceLocation;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,23 +16,27 @@ import com.science.gtnl.common.render.WrenchSpecialRender;
 import codechicken.nei.Image;
 import codechicken.nei.drawable.DrawableResource;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = DrawableResource.class, remap = false)
 public abstract class DrawableResource_Mixin extends Image
-    implements IDrawableResourceAccessor, DrawableResourceAccessor {
+    implements IDrawableResourceAccessor, AccessorDrawableResource {
 
     @Unique
     private final WrenchSpecialRender specialRender = new WrenchSpecialRender();
 
+    @Final
     @Shadow
     private ResourceLocation resourceLocation;
+    @Final
     @Shadow
     private int textureWidth;
+    @Final
     @Shadow
     private int textureHeight;
 
+    @Final
     @Shadow
     private int paddingTop;
+    @Final
     @Shadow
     private int paddingLeft;
 

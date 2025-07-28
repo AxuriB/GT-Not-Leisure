@@ -11,7 +11,6 @@ import com.science.gtnl.config.MainConfig;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import gregtech.GTMod;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = GTMod.class, remap = false)
 public class ForGTPreLoadHook_Mixin {
 

@@ -28,7 +28,6 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.recipe.Scanning;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = GTRecipeBuilder.class, remap = false)
 public class GTRecipeBuilderHook_Mixin {
 

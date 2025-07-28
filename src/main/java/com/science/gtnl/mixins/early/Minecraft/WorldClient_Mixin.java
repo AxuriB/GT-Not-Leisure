@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.science.gtnl.common.item.TimeStopManager;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = WorldClient.class)
 public class WorldClient_Mixin {
 

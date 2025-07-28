@@ -10,7 +10,6 @@ import com.dreammaster.bartworksHandler.BacteriaRegistry;
 
 import bartworks.util.BioCulture;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = BacteriaRegistry.class, remap = false)
 public class BacteriaRegistry_Mixin {
 

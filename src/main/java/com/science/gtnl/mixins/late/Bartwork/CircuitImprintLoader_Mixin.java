@@ -18,7 +18,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = CircuitImprintLoader.class, remap = false)
 public abstract class CircuitImprintLoader_Mixin {
 
@@ -62,7 +61,7 @@ public abstract class CircuitImprintLoader_Mixin {
                         in[index] = GTOreDictUnificator.get(
                             OrePrefixes.wireFine,
                             GTOreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
-                            original.mInputs[index].stackSize * 16);
+                            original.mInputs[index].stackSize * 16L);
                     }
                     // other components
                 } else {

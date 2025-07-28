@@ -7,9 +7,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import codechicken.nei.drawable.DrawableBuilder;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = DrawableBuilder.class, remap = false)
-public interface DrawableBuilderAccessor {
+public interface AccessorDrawableBuilder {
 
     @Accessor("resourceLocation")
     ResourceLocation getResourceLocation();

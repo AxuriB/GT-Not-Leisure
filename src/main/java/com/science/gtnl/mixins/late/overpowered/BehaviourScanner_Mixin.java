@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.Gregtech;
+package com.science.gtnl.mixins.late.overpowered;
 
 import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.getUserSteam;
 
@@ -33,7 +33,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourScanner;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = BehaviourScanner.class, remap = false)
 public class BehaviourScanner_Mixin {
 

@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.early.Minecraft;
+package com.science.gtnl.mixins.early.super_creeper;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.science.gtnl.config.MainConfig;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(EntitySpider.class)
 public abstract class EntitySpider_Mixin extends EntityMob {
 

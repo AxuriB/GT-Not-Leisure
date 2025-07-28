@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import com.mojang.authlib.GameProfile;
 import com.science.gtnl.Utils.PlayerHealData;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(EntityPlayerMP.class)
 public abstract class EntityPlayerMP_Mixin extends EntityPlayer {
 

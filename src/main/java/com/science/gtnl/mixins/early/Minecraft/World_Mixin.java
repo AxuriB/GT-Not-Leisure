@@ -15,6 +15,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.ForgeModContainer;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,28 +26,28 @@ import com.science.gtnl.common.item.TimeStopManager;
 
 import cpw.mods.fml.common.FMLLog;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = World.class)
 public abstract class World_Mixin {
 
+    @Final
     @Shadow
-    Profiler theProfiler;
+    public Profiler theProfiler;
     @Shadow
-    List<Entity> weatherEffects;
+    public List<Entity> weatherEffects;
     @Shadow
-    List<Entity> loadedEntityList;
+    public List<Entity> loadedEntityList;
     @Shadow
-    List<Entity> unloadedEntityList;
+    protected List<Entity> unloadedEntityList;
     @Shadow
-    boolean field_147481_N;
+    private boolean field_147481_N;
     @Shadow
-    List<TileEntity> loadedTileEntityList;
+    public List<TileEntity> loadedTileEntityList;
     @Shadow
-    List field_147483_b;
+    private List field_147483_b;
     @Shadow
-    List addedTileEntityList;
+    private List addedTileEntityList;
     @Shadow
-    IChunkProvider chunkProvider;
+    protected IChunkProvider chunkProvider;
 
     @Inject(method = "updateEntities", at = @At("HEAD"), cancellable = true, remap = true)
     public void mixin$updateEntities(CallbackInfo ci) {

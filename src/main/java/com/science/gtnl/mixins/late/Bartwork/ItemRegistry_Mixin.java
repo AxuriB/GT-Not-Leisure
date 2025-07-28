@@ -12,7 +12,6 @@ import com.science.gtnl.Utils.enums.Mods;
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.items.GGMaterial;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = ItemRegistry.class, remap = false)
 public class ItemRegistry_Mixin {
 

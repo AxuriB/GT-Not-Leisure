@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.Gregtech;
+package com.science.gtnl.mixins.late.debug;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,6 @@ import tectech.recipe.EyeOfHarmonyRecipe;
 import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = EyeOfHarmonyRecipe.class, remap = false)
 public interface EyeOfHarmonyRecipeAccessor {
 

@@ -14,7 +14,6 @@ import codechicken.nei.Button;
 import codechicken.nei.Image;
 import codechicken.nei.LayoutStyleMinecraft;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = LayoutStyleMinecraft.class, remap = false)
 public class LayoutStyleMinecraft_Mixin {
 
@@ -24,7 +23,7 @@ public class LayoutStyleMinecraft_Mixin {
         cancellable = true)
     private void beforeDrawIcon(Button b, int mousex, int mousey, CallbackInfo ci) {
         Image icon = b.getRenderIcon();
-        if (icon instanceof DrawableResourceAccessor accessor && icon instanceof IDrawableResourceAccessor dr) {
+        if (icon instanceof AccessorDrawableResource accessor && icon instanceof IDrawableResourceAccessor dr) {
             ResourceLocation rl = accessor.getResourceLocation();
             if ("nei:textures/items/cheat_speical.png".equals(rl.toString()) && MainConfig.enableSpecialCheatIcon) {
                 final int iconX = b.x + (b.w - icon.width) / 2;

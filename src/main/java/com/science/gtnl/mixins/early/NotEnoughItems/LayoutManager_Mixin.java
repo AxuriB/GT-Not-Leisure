@@ -9,7 +9,6 @@ import com.science.gtnl.api.mixinHelper.ExtendedDrawableBuilder;
 import codechicken.nei.drawable.DrawableBuilder;
 import codechicken.nei.drawable.DrawableResource;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(targets = "codechicken.nei.LayoutManager$1", remap = false)
 public class LayoutManager_Mixin {
 
