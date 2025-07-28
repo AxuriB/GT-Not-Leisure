@@ -849,8 +849,8 @@ item.record.sus.desc=AU - Software Update Services
 item.record.new_horizons.desc=Aviators - Sweet Dreams (Bonus Track)
 item.record.lava_chicken.desc=Hyper Potions - Lava Chicken
 
-item.infinity_cell.name=ME Infinity %s Cell
-item.infinity_cell.unknown=Unknown Infinity Cell
+item.InfinityCell.name=ME Infinity %s Storage Cell
+item.InfinityCell.unknown=Unknown ME Infinity Storage Cell
 
 item.milledNaquadahEnriched.name=Milled Enriched Naquadah
 item.FrothNaquadahEnrichedflotation=Enriched Naquadah Flotation Froth Unit
