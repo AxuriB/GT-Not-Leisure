@@ -1,7 +1,6 @@
 package com.science.gtnl.Utils.recipes;
 
-import static gregtech.api.util.GTRecipeBuilder.HOURS;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +11,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import com.science.gtnl.config.MainConfig;
-
-import gregtech.api.enums.TierEU;
 
 @SuppressWarnings({ "unused", "SpellCheckingInspection" })
 public class AssLineRecipeHook {
@@ -28,16 +25,16 @@ public class AssLineRecipeHook {
             Builder.newBuilder()
                 .addOutputItem("gregtech:gt.metaitem.03", 1, 32077)
                 .addResearchItem("gregtech:gt.metaitem.03", 1, 32072)
-                .addResearchKey(2 * HOURS)
-                .addProcessKey(30 * SECONDS, (int) (TierEU.RECIPE_UHV / 2))
+                .addResearchKey(90 * SECONDS)
+                .addProcessKey(30 * SECONDS, 983040)
                 .build();
 
             // 移除 神经元处理器
             Builder.newBuilder()
                 .addOutputItem("gregtech:gt.metaitem.03", 1, 32072)
                 .addResearchItem("gregtech:gt.metaitem.03", 1, 32073)
-                .addResearchKey(1 * HOURS)
-                .addProcessKey(30 * SECONDS, (int) (TierEU.RECIPE_ZPM))
+                .addResearchKey(60 * SECONDS)
+                .addProcessKey(30 * SECONDS, 122880)
                 .build();
 
             // 移除 湿件处理器主机
