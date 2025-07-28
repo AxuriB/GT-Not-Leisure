@@ -851,6 +851,9 @@ item.record.lava_chicken.desc=Hyper Potions - Lava Chicken
 
 item.InfinityCell.name=ME Infinity %s Storage Cell
 item.InfinityCell.unknown=Unknown ME Infinity Storage Cell
+infinity.dye.name=dye
+
+snl.tooltip.item_cell_contents=Contains Item:
 
 item.milledNaquadahEnriched.name=Milled Enriched Naquadah
 item.FrothNaquadahEnrichedflotation=Enriched Naquadah Flotation Froth Unit
