@@ -851,6 +851,9 @@ item.record.lava_chicken.desc=Hyper Potions - Lava Chicken
 
 item.InfinityCell.name=ME无限%s存储元件
 item.InfinityCell.unknown=未知的ME无限存储元件
+infinity.dye.name=染料
+
+snl.tooltip.item_cell_contents=内含物品:
 
 item.milledNaquadahEnriched.name=研磨富集硅岩矿
 item.FrothNaquadahEnrichedflotation=富集硅岩浮选泡沫单元
