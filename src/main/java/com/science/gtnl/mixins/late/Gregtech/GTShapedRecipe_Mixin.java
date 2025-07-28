@@ -12,11 +12,12 @@ import com.science.gtnl.Utils.recipes.ReversedRecipeRegistry;
 
 import gregtech.api.util.GTShapedRecipe;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = GTShapedRecipe.class, remap = false)
 public class GTShapedRecipe_Mixin {
 
-    @Inject(method = "<init>", at = @At("RETURN"))
+    @Inject(
+        method = "<init>(Lnet/minecraft/item/ItemStack;ZZZ[Lnet/minecraft/enchantment/Enchantment;[I[Ljava/lang/Object;)V",
+        at = @At("RETURN"))
     private void init(ItemStack aResult, boolean aDismantleAble, boolean aRemovableByGT, boolean aKeepingNBT,
         Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object[] aRecipe, CallbackInfo ci) {
         if (aDismantleAble) {

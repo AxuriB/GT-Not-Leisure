@@ -15,12 +15,11 @@ import com.science.gtnl.common.machine.hatch.ExplosionDynamoHatch;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(Explosion.class)
 public abstract class Explosion_Mixin {
 
     @Shadow
-    public World worldObj;
+    private World worldObj;
     @Shadow
     public double explosionX;
     @Shadow

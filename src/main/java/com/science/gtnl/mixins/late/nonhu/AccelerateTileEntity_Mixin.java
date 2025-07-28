@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.EnderIO;
+package com.science.gtnl.mixins.late.nonhu;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.Unique;
 import com.enderio.core.common.TileEntityEnder;
 import com.science.gtnl.api.ITileEntityTickAcceleration;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = TileEntityEnder.class, remap = false)
 public abstract class AccelerateTileEntity_Mixin implements ITileEntityTickAcceleration {
 

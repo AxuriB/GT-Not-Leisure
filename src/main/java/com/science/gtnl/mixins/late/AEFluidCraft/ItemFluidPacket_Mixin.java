@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import com.glodblock.github.common.item.ItemFluidPacket;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = ItemFluidPacket.class, remap = false)
 public abstract class ItemFluidPacket_Mixin implements IFluidContainerItem {
 

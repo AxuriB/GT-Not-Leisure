@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MTETieredMachineBlock.class, remap = false)
 public interface MTETieredMachineBlockAccessor {
 

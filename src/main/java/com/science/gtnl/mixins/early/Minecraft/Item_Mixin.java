@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.science.gtnl.loader.RecordLoader;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(Item.class)
 public abstract class Item_Mixin {
 

@@ -15,7 +15,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = SimpleMetalLoader.class, remap = false)
 public abstract class SimpleMetalLoader_Mixin {
 

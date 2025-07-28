@@ -15,7 +15,6 @@ import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEIntegratedOreFactory;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MTEIntegratedOreFactory.class, remap = false)
 public abstract class MTEIntegratedOreFactory_Mixin {
 

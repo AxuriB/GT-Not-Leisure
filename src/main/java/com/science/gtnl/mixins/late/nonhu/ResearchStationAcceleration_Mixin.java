@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.Gregtech;
+package com.science.gtnl.mixins.late.nonhu;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,7 +8,6 @@ import com.science.gtnl.api.ITileEntityTickAcceleration;
 import tectech.thing.metaTileEntity.multi.MTEResearchStation;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MTEResearchStation.class, remap = false)
 public abstract class ResearchStationAcceleration_Mixin extends TTMultiblockBase
     implements ITileEntityTickAcceleration {

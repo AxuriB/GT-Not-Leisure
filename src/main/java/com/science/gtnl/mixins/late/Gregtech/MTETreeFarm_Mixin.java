@@ -16,7 +16,6 @@ import com.science.gtnl.loader.RecipePool;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MTETreeFarm.class, remap = false)
 public class MTETreeFarm_Mixin {
 

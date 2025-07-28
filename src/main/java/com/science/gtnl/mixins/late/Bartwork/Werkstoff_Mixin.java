@@ -10,7 +10,6 @@ import bartworks.system.material.Werkstoff;
 import bartworks.util.NonNullWrappedHashMap;
 import gregtech.api.enums.OrePrefixes;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = Werkstoff.GenerationFeatures.class, remap = false)
 public abstract class Werkstoff_Mixin {
 

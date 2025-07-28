@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.Gregtech;
+package com.science.gtnl.mixins.late.overpowered;
 
 import java.util.OptionalDouble;
 
@@ -17,20 +17,19 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ParallelHelper;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = ParallelHelper.class, remap = false)
 public abstract class VoltageChanceBonus_GT_ParallelHelper_Mixin {
 
     // Original code from Overpowered Mod. MIT License. 2025/4/18
 
     @Shadow
-    private GTRecipe recipe;
+    protected GTRecipe recipe;
 
     @Shadow
-    private double chanceMultiplier;
+    protected double chanceMultiplier;
 
     @Shadow
-    private IVoidable machine;
+    protected IVoidable machine;
 
     /**
      * Inject at the start of determineParallel to apply voltage-based chance bonus.

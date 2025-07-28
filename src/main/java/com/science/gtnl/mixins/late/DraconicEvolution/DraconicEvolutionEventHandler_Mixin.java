@@ -14,7 +14,6 @@ import com.brandon3055.draconicevolution.common.items.armor.CustomArmorHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MinecraftForgeEventHandler.class, remap = false)
 public abstract class DraconicEvolutionEventHandler_Mixin {
 

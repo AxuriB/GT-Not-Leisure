@@ -15,7 +15,6 @@ import com.science.gtnl.common.machine.basicMachine.ManaTank;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MTEDigitalTankBase.class, remap = false)
 public abstract class MTEDigitalTankBase_Mixin {
 

@@ -15,7 +15,6 @@ import bartworks.common.blocks.BWBlocksGlass;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = BWBlocksGlass.class, remap = false)
 public abstract class BWBlockGlass_Mixin extends BWBlocks {
 

@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.Gregtech;
+package com.science.gtnl.mixins.late.debug;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -19,7 +19,6 @@ import com.science.gtnl.common.recipe.GregTech.EyeOfHarmonyRecipes;
 import tectech.recipe.EyeOfHarmonyRecipe;
 import tectech.recipe.EyeOfHarmonyRecipeStorage;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = EyeOfHarmonyRecipeStorage.class, remap = false)
 public class EyeOfHarmonyRecipeStorage_Mixin {
 

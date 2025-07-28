@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.science.gtnl.common.block.blocks.BlockShimmerFluid;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(EntityItem.class)
 public abstract class EntityItem_Mixin {
 

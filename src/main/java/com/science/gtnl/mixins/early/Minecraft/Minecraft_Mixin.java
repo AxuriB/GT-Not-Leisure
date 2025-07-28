@@ -47,6 +47,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -61,14 +62,15 @@ import com.science.gtnl.common.packet.GetTileEntityNBTRequestPacket;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = Minecraft.class)
 public abstract class Minecraft_Mixin {
 
     @Shadow
-    private boolean isGamePaused;
+    public boolean isGamePaused;
+    @Final
     @Shadow
     public Profiler mcProfiler;
+    @Final
     @Shadow
     public Queue field_152351_aB;
     @Shadow
@@ -174,13 +176,13 @@ public abstract class Minecraft_Mixin {
 
         if (this.currentScreen == null && this.thePlayer != null) {
             if (this.thePlayer.getHealth() <= 0.0F) {
-                ((Minecraft) ((Object) this)).displayGuiScreen((GuiScreen) null);
+                ((Minecraft) ((Object) this)).displayGuiScreen(null);
             } else if (this.thePlayer.isPlayerSleeping() && this.theWorld != null) {
                 ((Minecraft) ((Object) this)).displayGuiScreen(new GuiSleepMP());
             }
         } else if (this.currentScreen != null && this.currentScreen instanceof GuiSleepMP
             && !this.thePlayer.isPlayerSleeping()) {
-                ((Minecraft) ((Object) this)).displayGuiScreen((GuiScreen) null);
+                ((Minecraft) ((Object) this)).displayGuiScreen(null);
             }
 
         if (this.currentScreen != null) {

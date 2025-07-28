@@ -15,7 +15,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.CompressionTierKey;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = MultipleMetalLoader.class, remap = false)
 public abstract class MultipleMetalLoader_Mixin {
 

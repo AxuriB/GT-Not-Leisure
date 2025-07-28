@@ -16,7 +16,6 @@ import com.science.gtnl.common.machine.hatch.ExplosionDynamoHatch;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = ReactorExplosion.class, remap = false)
 public abstract class ReactorExplosion_Mixin {
 

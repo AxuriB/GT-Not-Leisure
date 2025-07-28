@@ -19,7 +19,6 @@ import com.science.gtnl.Utils.recipes.AssLineRecipeHook;
 import cpw.mods.fml.common.registry.GameData;
 import tectech.recipe.TTRecipeAdder;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = TTRecipeAdder.class, remap = false)
 public class TTAssLineBuilderHook_Mixin {
 

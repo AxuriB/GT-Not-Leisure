@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.EnderIO;
+package com.science.gtnl.mixins.late.nonhu;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,7 +9,6 @@ import com.science.gtnl.api.ITileEntityTickAcceleration;
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.power.ICapacitor;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = AbstractPoweredMachineEntity.class, remap = false)
 public class AccelerateEnergyReceive_Mixin {
 
