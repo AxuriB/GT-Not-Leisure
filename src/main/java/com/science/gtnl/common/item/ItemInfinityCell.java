@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -83,23 +84,23 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
     @Override
     protected void getCheckedSubItems(final Item sameItem, final CreativeTabs creativeTab,
         final List<ItemStack> itemStacks) {
-        var s = new SubItem[16];
-        for (short i = 0; i < 16; i++) {
-            s[i] = SubItem.getInstance("gregtech:gt.metaitem.02", (short) (32414 + i));
-        }
-        itemStacks.add(ItemLoader.infinityDyeCell = getSubItem(StorageChannel.ITEMS, "InfinityCell.dye.name", s));
-        itemStacks.add(
-            ItemLoader.infinityBlockCell = getSubItem(
-                StorageChannel.ITEMS,
-                SubItem.getInstance("minecraft:stone", (short) 0)));
+        itemStacks.add(ItemLoader.infinityDyeCell);
+        itemStacks.add(ItemLoader.infinityCobblestoneCell);
     }
 
-    private ItemStack getSubItem(StorageChannel s, String unlocalizedName, SubItem... subItems) {
-        var cell = getSubItem(s, subItems);
+    public static ItemStack getSubItem(StorageChannel s, String unlocalizedName, String textureName,
+        SubItem... subItems) {
+        var cell = getSubItem(s, textureName, subItems);
         return setInfinityUnlocalizedName(cell, unlocalizedName);
     }
 
-    private ItemStack getSubItem(StorageChannel s, SubItem... subItems) {
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister) {
+        itemIcon = iconRegister.registerIcon(getIconString());
+    }
+
+    public static ItemStack getSubItem(StorageChannel s, String textureName, SubItem... subItems) {
         var cell = new ItemStack(infinityCell);
         var tag = new NBTTagCompound();
         var list = new NBTTagList();
@@ -128,7 +129,7 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
         return cell;
     }
 
-    private ItemStack setInfinityUnlocalizedName(ItemStack stack, String unlocalizedName) {
+    public static ItemStack setInfinityUnlocalizedName(ItemStack stack, String unlocalizedName) {
         if (stack.hasTagCompound()) {
             var tag = stack.getTagCompound();
             tag.setString("key", unlocalizedName);
@@ -141,7 +142,7 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
     }
 
     @Desugar
-    private record SubItem(String id, short Damage, @Nullable NBTTagCompound nbt) {
+    public record SubItem(String id, short Damage, @Nullable NBTTagCompound nbt) {
 
         public static SubItem getInstance(FluidStack stack) {
             return getInstance(stack.getFluid());

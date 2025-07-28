@@ -35,7 +35,9 @@ import com.science.gtnl.common.item.items.TestItem;
 import com.science.gtnl.common.item.items.TimeStopPocketWatch;
 import com.science.gtnl.common.item.items.TwilightSword;
 
+import appeng.api.storage.StorageChannel;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
@@ -72,7 +74,7 @@ public class ItemLoader {
     public static Item luckyHorseshoe;
 
     public static ItemStack infinityDyeCell;
-    public static ItemStack infinityBlockCell;
+    public static ItemStack infinityCobblestoneCell;
 
     public static void registryItems() {
         steamRocket = new SteamRocketItem();
@@ -120,6 +122,17 @@ public class ItemLoader {
         royalGel = new RoyalGel();
         luckyHorseshoe = new LuckyHorseshoe();
         infinityCell = new ItemInfinityCell();
+
+        var subDyeItems = new ItemInfinityCell.SubItem[16];
+        for (short i = 0; i < 16; i++) {
+            subDyeItems[i] = ItemInfinityCell.SubItem.getInstance(ItemList.DYE_ONLY_ITEMS[i].get(1));
+        }
+        infinityDyeCell = ItemInfinityCell
+            .getSubItem(StorageChannel.ITEMS, "InfinityCell.dye.name", "InfinityDyeCell", subDyeItems);
+        infinityCobblestoneCell = ItemInfinityCell.getSubItem(
+            StorageChannel.ITEMS,
+            "InfinityCobblestoneCell",
+            ItemInfinityCell.SubItem.getInstance(Blocks.cobblestone));
 
         GameRegistry.registerItem(steamRocket, "SteamRocket");
         GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
