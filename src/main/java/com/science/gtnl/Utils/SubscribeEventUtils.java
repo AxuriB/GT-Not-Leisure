@@ -5,8 +5,11 @@ import static com.science.gtnl.Utils.steam.GlobalSteamWorldSavedData.loadInstanc
 import static com.science.gtnl.common.render.PlayerDollRenderManager.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -26,6 +29,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -51,6 +55,7 @@ import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.EffectLoader;
+import com.science.gtnl.mixins.early.Minecraft.AccessorFoodStats;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -71,6 +76,8 @@ public class SubscribeEventUtils {
             Mods.ScienceNotLeisure.ID,
             Mods.Sudoku.ID,
             Mods.GiveCount.ID));
+
+    private static final Map<UUID, Integer> foodTickTimers = new HashMap<>();
 
     // Player
     @SubscribeEvent
@@ -234,6 +241,37 @@ public class SubscribeEventUtils {
     public void onAttackEntity(AttackEntityEvent event) {
         if (event.entityPlayer.isPotionActive(EffectLoader.shimmering)) {
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || event.player.worldObj.isRemote) return;
+
+        EntityPlayer player = event.player;
+        FoodStats stats = player.getFoodStats();
+
+        if (stats.getFoodLevel() >= 20) {
+            UUID uuid = player.getUniqueID();
+            int timer = foodTickTimers.getOrDefault(uuid, 0) + 1;
+
+            if (timer >= 10) {
+                timer = 0;
+
+                if (player.getHealth() < player.getMaxHealth()) {
+
+                    if (stats.getSaturationLevel() >= 1.0f) {
+                        player.heal(1);
+                        ((AccessorFoodStats) stats).setFoodSaturationLevel(stats.getSaturationLevel() - 1);
+                    } else {
+                        ((AccessorFoodStats) stats).setFoodlevel(stats.getFoodLevel() - 1);
+                    }
+                }
+            }
+
+            foodTickTimers.put(uuid, timer);
+        } else {
+            foodTickTimers.remove(player.getUniqueID());
         }
     }
 
