@@ -1851,7 +1851,7 @@ Tooltip_LargeBioLab_Casing=任意超能硅岩强化无菌净水厂机械方块
 NameLargeAssembler=大型组装厂
 LargeAssemblerRecipeType=组装机
 Tooltip_LargeAssembler_00=能源仓限制了机器工作的电压等级+1
-Tooltip_LargeAssembler_01=玻璃等级限制了能源仓等级，UHV玻璃解锁所有等级
+Tooltip_LargeAssembler_01=玻璃等级限制了能源仓等级，UV玻璃解锁所有等级
 Tooltip_LargeAssembler_02=比相同电压的机器快200%
 Tooltip_LargeAssembler_Casing=任意批量生产框架
 

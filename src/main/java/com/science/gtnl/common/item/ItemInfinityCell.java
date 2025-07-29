@@ -421,7 +421,7 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
         public IMEInventoryHandler<?> getCellInventory(ItemStack item, ISaveProvider host, StorageChannel s) {
             if (s != null) {
                 var stack = infinityCell.getRecord(item, s);
-                if (stack != null) {
+                if (!stack.isEmpty()) {
                     return switch (s) {
                         case ITEMS -> new InfinityItemCellHandler((List<IAEItemStack>) stack);
                         case FLUIDS -> {

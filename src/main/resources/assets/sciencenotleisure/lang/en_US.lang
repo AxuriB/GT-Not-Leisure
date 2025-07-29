@@ -1851,7 +1851,7 @@ Tooltip_LargeBioLab_Casing=Any Naquadria-Reinforced Water Plant Casing
 NameLargeAssembler=Large Assembler
 LargeAssemblerRecipeType=Assembler
 Tooltip_LargeAssembler_00=The Energy Hatch limits the machine's working voltage tier +1.
-Tooltip_LargeAssembler_01=Glass tier limits Energy Hatch tier, UHV glass unlocks all tiers.
+Tooltip_LargeAssembler_01=Glass tier limits Energy Hatch tier, UV glass unlocks all tiers.
 Tooltip_LargeAssembler_02=200% faster than machines of the same voltage.
 Tooltip_LargeAssembler_Casing=Any Mass Production Frame
 
