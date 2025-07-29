@@ -5,7 +5,11 @@ import static com.science.gtnl.loader.ItemLoader.infinityCell;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -69,6 +73,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorageFluidCell {
 
     private static final long StorageSIZE = 1L << 53 - 1;
+    private static final Map<String, IIcon> ICON_MAP = new HashMap<>();
+    public static final Set<String> REGISTERED_TEXTURES = new HashSet<>();
 
     public ItemInfinityCell() {
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "InfinityCell");
@@ -94,16 +100,50 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
         return setInfinityUnlocalizedName(cell, unlocalizedName);
     }
 
-    @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister) {
-        itemIcon = iconRegister.registerIcon(getIconString());
+    @Override
+    public void registerIcons(IIconRegister register) {
+        ICON_MAP.clear();
+        for (String tex : REGISTERED_TEXTURES) {
+            ICON_MAP.put(tex, register.registerIcon(RESOURCE_ROOT_ID + ":" + tex));
+        }
+
+        ICON_MAP.put("default", register.registerIcon(RESOURCE_ROOT_ID + ":" + "InfinityCell"));
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public IIcon getIcon(ItemStack stack, int pass) {
+        if (stack.hasTagCompound()) {
+            String texName = stack.getTagCompound()
+                .getString("CustomTexture");
+            IIcon icon = ICON_MAP.get(texName);
+            if (icon != null) {
+                return icon;
+            }
+        }
+        return ICON_MAP.get("default");
+    }
+
+    @Override
+    public IIcon getIconIndex(ItemStack stack) {
+        return getIcon(stack, 0);
+    }
+
+    public static ItemStack getSubItem(StorageChannel s, SubItem... subItems) {
+        return getSubItem(s, null, subItems);
     }
 
     public static ItemStack getSubItem(StorageChannel s, String textureName, SubItem... subItems) {
         var cell = new ItemStack(infinityCell);
         var tag = new NBTTagCompound();
         var list = new NBTTagList();
+
+        if (textureName != null) {
+            tag.setString("CustomTexture", textureName);
+            REGISTERED_TEXTURES.add(textureName);
+        }
+
         if (s == StorageChannel.ITEMS) {
             tag.setString("t", "i");
             for (SubItem subItem : subItems) {
@@ -115,7 +155,6 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
                 }
                 list.appendTag(rtag);
             }
-            tag.setTag("infinityList", list);
         } else {
             tag.setString("t", "f");
             for (SubItem subItem : subItems) {
@@ -123,8 +162,8 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
                 rtag.setString("id", subItem.id);
                 list.appendTag(rtag);
             }
-            tag.setTag("infinityList", list);
         }
+        tag.setTag("infinityList", list);
         cell.setTagCompound(tag);
         return cell;
     }

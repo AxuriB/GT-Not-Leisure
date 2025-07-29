@@ -1,4 +1,4 @@
-package com.science.gtnl.common.item.items;
+package com.science.gtnl.common.item;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
@@ -36,17 +36,17 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import vazkii.botania.common.Botania;
 
-public class InfinityItem extends Item {
+public class ItemInfinityItem extends Item {
 
     private final Block block;
     private final boolean isBlockItem;
     private static final ExecutorService FLUID_CLEAR_EXECUTOR = Executors.newFixedThreadPool(1);
 
-    public InfinityItem(String name, Block block, GTNLItemList itemList) {
+    public ItemInfinityItem(String name, Block block, GTNLItemList itemList) {
         this(name, block, itemList, true);
     }
 
-    public InfinityItem(String name, Block block, GTNLItemList itemList, boolean isBlockItem) {
+    public ItemInfinityItem(String name, Block block, GTNLItemList itemList, boolean isBlockItem) {
         this.block = block;
         this.isBlockItem = isBlockItem;
         this.setUnlocalizedName(name);
@@ -207,7 +207,7 @@ public class InfinityItem extends Item {
         if (player == null || player.worldObj.isRemote) return;
 
         ItemStack held = player.getHeldItem();
-        if (held != null && held.getItem() instanceof InfinityItem) {
+        if (held != null && held.getItem() instanceof ItemInfinityItem) {
             event.setCanceled(true);
         }
     }
@@ -219,7 +219,7 @@ public class InfinityItem extends Item {
         if (!(event.entityLiving instanceof EntityPlayer player)) return;
 
         ItemStack held = player.getHeldItem();
-        boolean holdingInfinity = held != null && held.getItem() instanceof InfinityItem;
+        boolean holdingInfinity = held != null && held.getItem() instanceof ItemInfinityItem;
         UUID uuid = player.getUniqueID();
 
         if (holdingInfinity) {

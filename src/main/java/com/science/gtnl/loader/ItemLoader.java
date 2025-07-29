@@ -14,6 +14,7 @@ import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.Utils.text.TextUtils;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.ItemInfinityCell;
+import com.science.gtnl.common.item.ItemInfinityItem;
 import com.science.gtnl.common.item.ItemRecord;
 import com.science.gtnl.common.item.MetaItemAdder;
 import com.science.gtnl.common.item.items.Bauble.LuckyHorseshoe;
@@ -27,7 +28,6 @@ import com.science.gtnl.common.item.items.FakeItemSiren;
 import com.science.gtnl.common.item.items.FuelRod.FuelRod;
 import com.science.gtnl.common.item.items.FuelRod.FuelRodDepleted;
 import com.science.gtnl.common.item.items.GTNLItemBucket;
-import com.science.gtnl.common.item.items.InfinityItem;
 import com.science.gtnl.common.item.items.KFCFamily;
 import com.science.gtnl.common.item.items.SlimeSaddle;
 import com.science.gtnl.common.item.items.SteamRocketItem;
@@ -84,18 +84,21 @@ public class ItemLoader {
         twilightSword = new TwilightSword();
         circuitIntegratedPlus = new CircuitIntegratedPlus();
         timeStopPocketWatch = new TimeStopPocketWatch();
-        infinityTorch = new InfinityItem("InfinityTorch", Blocks.torch, GTNLItemList.InfinityTorch);
-        infinityWaterBucket = new InfinityItem("InfinityWaterBucket", Blocks.water, GTNLItemList.InfinityWaterBucket);
-        infinityLavaBucket = new InfinityItem("InfinityLavaBucket", Blocks.lava, GTNLItemList.InfinityLavaBucket);
-        infinityHoneyBucket = new InfinityItem(
+        infinityTorch = new ItemInfinityItem("InfinityTorch", Blocks.torch, GTNLItemList.InfinityTorch);
+        infinityWaterBucket = new ItemInfinityItem(
+            "InfinityWaterBucket",
+            Blocks.water,
+            GTNLItemList.InfinityWaterBucket);
+        infinityLavaBucket = new ItemInfinityItem("InfinityLavaBucket", Blocks.lava, GTNLItemList.InfinityLavaBucket);
+        infinityHoneyBucket = new ItemInfinityItem(
             "InfinityHoneyBucket",
             BlockLoader.honeyFluidBlock,
             GTNLItemList.InfinityHoneyBucket);
-        infinityShimmerBucket = new InfinityItem(
+        infinityShimmerBucket = new ItemInfinityItem(
             "InfinityShimmerBucket",
             BlockLoader.shimmerFluidBlock,
             GTNLItemList.InfinityShimmerBucket);
-        superstrongSponge = new InfinityItem("SuperstrongSponge", null, GTNLItemList.SuperstrongSponge, false);
+        superstrongSponge = new ItemInfinityItem("SuperstrongSponge", null, GTNLItemList.SuperstrongSponge, false);
         RecordLoader.recordSus = new ItemRecord("sus").setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         RecordLoader.recordNewHorizons = new ItemRecord("new_horizons")
             .setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
