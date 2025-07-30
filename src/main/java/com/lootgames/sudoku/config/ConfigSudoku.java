@@ -16,10 +16,10 @@ public class ConfigSudoku extends Config {
 
     public ConfigSudoku() {
         super("sudoku");
-        level1 = new StageConfig(getKey(), "stage_1", "简单级别空格数", 35);
-        level2 = new StageConfig(getKey(), "stage_2", "中级别空格数", 45);
-        level3 = new StageConfig(getKey(), "stage_3", "高级别空格数", 55);
-        level4 = new StageConfig(getKey(), "stage_4", "专家级别空格数", 64);
+        level1 = new StageConfig(getKey(), "stage_1", "Easy", 35);
+        level2 = new StageConfig(getKey(), "stage_2", "Normal", 45);
+        level3 = new StageConfig(getKey(), "stage_3", "Hard", 55);
+        level4 = new StageConfig(getKey(), "stage_4", "Expert", 64);
     }
 
     @Override

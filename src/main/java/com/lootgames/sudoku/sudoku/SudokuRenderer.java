@@ -43,6 +43,26 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
             }
         }
 
+        GL11.glLineWidth(150.0F);
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glColor4f(1f, 1f, 1f, 1f);
+
+        for (int i = 0; i <= size; i++) {
+            if (i % 3 == 0) {
+                GL11.glVertex3f(i, 0, -0.02f);
+                GL11.glVertex3f(i, size, -0.02f);
+            }
+        }
+
+        for (int i = 0; i <= size; i++) {
+            if (i % 3 == 0) {
+                GL11.glVertex3f(0, i, -0.02f);
+                GL11.glVertex3f(size, i, -0.02f);
+            }
+        }
+
+        GL11.glEnd();
+
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         Map<Integer, Integer> numberCounts = new HashMap<>();
@@ -59,41 +79,78 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
         }
 
         Set<Pos2i> duplicatePositions = new HashSet<>();
+        Set<Pos2i> correctCompletedPositions = new HashSet<>();
+
+        // Rows
         for (int row = 0; row < size; row++) {
-            Map<Integer, Set<Pos2i>> rowMap = new HashMap<>();
+            Map<Integer, Set<Pos2i>> map = new HashMap<>();
+            boolean complete = true;
             for (int col = 0; col < size; col++) {
-                int puzzleVal = board.getPuzzleValue(row, col);
-                int playerVal = board.getPlayerValue(new Pos2i(row, col));
-                int actualVal = puzzleVal != 0 ? puzzleVal : playerVal;
-                if (actualVal != 0) {
-                    rowMap.computeIfAbsent(actualVal, k -> new HashSet<>())
-                        .add(new Pos2i(row, col));
-                }
+                int val = board.getPlayerValue(new Pos2i(row, col));
+                if (val == 0 || val != board.getSolution()[row][col]) complete = false;
+                map.computeIfAbsent(val, k -> new HashSet<>())
+                    .add(new Pos2i(row, col));
             }
-            for (Set<Pos2i> positions : rowMap.values()) {
-                if (positions.size() > 1) {
-                    duplicatePositions.addAll(positions);
-                }
+            for (Map.Entry<Integer, Set<Pos2i>> e : map.entrySet()) {
+                if (e.getKey() != 0 && e.getValue()
+                    .size() > 1) duplicatePositions.addAll(e.getValue());
             }
-        }
-        for (int col = 0; col < size; col++) {
-            Map<Integer, Set<Pos2i>> colMap = new HashMap<>();
-            for (int row = 0; row < size; row++) {
-                int puzzleVal = board.getPuzzleValue(row, col);
-                int playerVal = board.getPlayerValue(new Pos2i(row, col));
-                int actualVal = puzzleVal != 0 ? puzzleVal : playerVal;
-                if (actualVal != 0) {
-                    colMap.computeIfAbsent(actualVal, k -> new HashSet<>())
-                        .add(new Pos2i(row, col));
-                }
-            }
-            for (Set<Pos2i> positions : colMap.values()) {
-                if (positions.size() > 1) {
-                    duplicatePositions.addAll(positions);
+            if (complete && map.size() == 9) {
+                for (Set<Pos2i> set : map.values()) {
+                    correctCompletedPositions.addAll(set);
                 }
             }
         }
 
+        // Columns
+        for (int col = 0; col < size; col++) {
+            Map<Integer, Set<Pos2i>> map = new HashMap<>();
+            boolean complete = true;
+            for (int row = 0; row < size; row++) {
+                int val = board.getPlayerValue(new Pos2i(row, col));
+                if (val == 0 || val != board.getSolution()[row][col]) complete = false;
+                map.computeIfAbsent(val, k -> new HashSet<>())
+                    .add(new Pos2i(row, col));
+            }
+            for (Map.Entry<Integer, Set<Pos2i>> e : map.entrySet()) {
+                if (e.getKey() != 0 && e.getValue()
+                    .size() > 1) duplicatePositions.addAll(e.getValue());
+            }
+            if (complete && map.size() == 9) {
+                for (Set<Pos2i> set : map.values()) {
+                    correctCompletedPositions.addAll(set);
+                }
+            }
+        }
+
+        // Boxes
+        for (int boxRow = 0; boxRow < 3; boxRow++) {
+            for (int boxCol = 0; boxCol < 3; boxCol++) {
+                Map<Integer, Set<Pos2i>> map = new HashMap<>();
+                boolean complete = true;
+                for (int dy = 0; dy < 3; dy++) {
+                    for (int dx = 0; dx < 3; dx++) {
+                        int r = boxRow * 3 + dy;
+                        int c = boxCol * 3 + dx;
+                        int val = board.getPlayerValue(new Pos2i(r, c));
+                        if (val == 0 || val != board.getSolution()[r][c]) complete = false;
+                        map.computeIfAbsent(val, k -> new HashSet<>())
+                            .add(new Pos2i(r, c));
+                    }
+                }
+                for (Map.Entry<Integer, Set<Pos2i>> e : map.entrySet()) {
+                    if (e.getKey() != 0 && e.getValue()
+                        .size() > 1) duplicatePositions.addAll(e.getValue());
+                }
+                if (complete && map.size() == 9) {
+                    for (Set<Pos2i> set : map.values()) {
+                        correctCompletedPositions.addAll(set);
+                    }
+                }
+            }
+        }
+
+        // 绘制数字部分（颜色区分）
         for (int cx = 0; cx < size; cx++) {
             for (int cz = 0; cz < size; cz++) {
                 Pos2i pos = new Pos2i(cx, cz);
@@ -107,13 +164,16 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
                     int color;
 
                     if (count > 9) {
-                        color = 0xFFAAAA;
+                        color = 0xFFAAAA; // light red
                     } else if (duplicatePositions.contains(pos)) {
-                        color = 0xFFFF00;
+                        color = 0xFFFF00; // yellow
+                    } else if (correctCompletedPositions.contains(pos)) {
+                        color = 0x00FFFF; // cyan
                     } else if (count == 9) {
-                        color = 0x00FF00;
+                        color = 0x00FF00; // green
                     } else {
                         color = puzzleVal != 0 ? 0x808080 : 0xFFFFFF;
+                        // gray or white
                     }
 
                     GL11.glPushMatrix();

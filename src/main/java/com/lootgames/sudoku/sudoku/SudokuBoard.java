@@ -18,6 +18,8 @@ public class SudokuBoard {
     private long lastClickTime = -1;
     public static long currentTime = 0;
     public static final int SIZE = 9;
+    @Getter
+    @Setter
     private Integer[][] solution = new Integer[SIZE][SIZE]; // 完整解
     private Integer[][] puzzle = new Integer[SIZE][SIZE]; // 挖空后的谜题
     private Integer[][] player = new Integer[SIZE][SIZE]; // 玩家填写
