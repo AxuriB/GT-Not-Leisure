@@ -31,7 +31,7 @@ public class CommandReloadConfig extends CommandBase {
         try {
             MainConfig.reloadConfig();
 
-            ConfigSyncPacket msg = new ConfigSyncPacket(new MainConfig());
+            ConfigSyncPacket msg = new ConfigSyncPacket();
             for (EntityPlayerMP player : MinecraftServer.getServer()
                 .getConfigurationManager().playerEntityList) {
                 ScienceNotLeisure.network.sendTo(msg, player);

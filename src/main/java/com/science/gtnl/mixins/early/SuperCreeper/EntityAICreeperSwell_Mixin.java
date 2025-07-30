@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.early.super_creeper;
+package com.science.gtnl.mixins.early.SuperCreeper;
 
 import java.util.List;
 

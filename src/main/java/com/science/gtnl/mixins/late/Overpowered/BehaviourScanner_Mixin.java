@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.overpowered;
+package com.science.gtnl.mixins.late.Overpowered;
 
 import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.getUserSteam;
 

@@ -84,7 +84,7 @@ public class SubscribeEventUtils {
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.player instanceof EntityPlayerMP player) {
             // construct message from current server config
-            ConfigSyncPacket msg = new ConfigSyncPacket(new MainConfig());// or pass static values
+            ConfigSyncPacket msg = new ConfigSyncPacket();// or pass static values
             network.sendTo(msg, player);
 
             TimeStopManager.setTimeStopped(false);
@@ -246,7 +246,8 @@ public class SubscribeEventUtils {
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END || event.player.worldObj.isRemote) return;
+        if (event.phase != TickEvent.Phase.END || event.player.worldObj.isRemote || !MainConfig.enableSaturationHeal)
+            return;
 
         EntityPlayer player = event.player;
         FoodStats stats = player.getFoodStats();

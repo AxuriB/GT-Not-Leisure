@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.debug;
+package com.science.gtnl.mixins.late.Debug;
 
 import java.util.Collection;
 import java.util.HashMap;

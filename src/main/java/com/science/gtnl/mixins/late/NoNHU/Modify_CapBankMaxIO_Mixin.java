@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.nonhu;
+package com.science.gtnl.mixins.late.NoNHU;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

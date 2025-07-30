@@ -25,16 +25,14 @@ public class LateMixinLoader implements ILateMixinLoader {
 
     static {
         addMixinCFG("mixins.sciencenotleisure.late.json");
-        addMixinCFG("mixins.sciencenotleisure.late.debug.json", () -> MainConfig.enableDebugMode);
+        addMixinCFG("mixins.sciencenotleisure.late.Debug.json", () -> MainConfig.enableDebugMode);
         addMixinCFG(
-            "mixins.sciencenotleisure.late.vm_tweak.json",
-            () -> !Mods.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak);
-        addMixinCFG(
-            "mixins.sciencenotleisure.late.overpowered.json",
+            "mixins.sciencenotleisure.late.Overpowered.json",
             () -> !Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance);
-        addMixinCFG("mixins.sciencenotleisure.late.nonhu.json", () -> !Mods.NHUtilities.isModLoaded());
-        addMixinCFG("mixins.sciencenotleisure.late.tst.json", Mods.TwistSpaceTechnology::isModLoaded);
-        addMixinCFG("mixins.sciencenotleisure.late.machine_amp_limit.json", () -> MainConfig.enableMachineAmpLimit);
+        addMixinCFG("mixins.sciencenotleisure.late.NoNHU.json", () -> !Mods.NHUtilities.isModLoaded());
+        addMixinCFG("mixins.sciencenotleisure.late.TwistSpaceTechnology.json", Mods.TwistSpaceTechnology::isModLoaded);
+        addMixinCFG("mixins.sciencenotleisure.late.MeteorOptimize.json", () -> MainConfig.enableMachineAmpLimit);
+        addMixinCFG("mixins.sciencenotleisure.late.OPChange.json", () -> MainConfig.enableIntegratedOreFactoryChange);
     }
 
     @Override

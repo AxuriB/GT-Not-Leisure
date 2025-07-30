@@ -29,6 +29,7 @@ public class MainConfig {
     public static final String CATEGORY_SUPER_CREEPER = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER
         + "super_creeper";
     public static final String CATEGORY_MESSAGE = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "message";
+    public static final String CATEGORY_OTHER = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "other";
     public static final String CATEGORY_DEBUG = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "debug";
 
     // --- Deeper Nested Categories (paths constructed using CATEGORY_SPLITTER) ---
@@ -61,10 +62,9 @@ public class MainConfig {
     public static boolean enableRenderDefaultArtificialStar = true;
 
     public static boolean enablePortalToAlfheimBigBoom = true;
-
     public static boolean enableEternalGregTechWorkshopSpiralRender = false;
-
     public static boolean enableVoidMinerTweak = true;
+    public static boolean enableIntegratedOreFactoryChange = true;
 
     // Recipe
     public static boolean enableDeleteRecipe = true;
@@ -133,6 +133,9 @@ public class MainConfig {
     public static int perfectPhysiqueEffect = 111;
     public static int shimmerEffect = 112;
 
+    // Other
+    public static boolean enableSaturationHeal = true;
+
     // Message
     public static boolean enableShowJoinMessage = true;
     public static boolean enableShowAddMods = true;
@@ -177,14 +180,6 @@ public class MainConfig {
     public static void loadConfig() {
 
         // Machine
-        enableVoidMinerTweak = config
-            .get(
-                CATEGORY_MACHINE,
-                "enableVoidMinerTweak",
-                enableVoidMinerTweak,
-                "Enable Void Miner Tweak, allows you to override target dimension that Void Miner mines")
-            .getBoolean(enableVoidMinerTweak);
-
         enableRecipeOutputChance = config
             .get(
                 CATEGORY_MACHINE,
@@ -264,6 +259,22 @@ public class MainConfig {
                 enablePortalToAlfheimBigBoom,
                 "Setting this to false will reduce the Portal To Alfheim explosion to little more then a tnt blast")
             .getBoolean(enablePortalToAlfheimBigBoom);
+
+        enableVoidMinerTweak = config
+            .get(
+                CATEGORY_MACHINE,
+                "enableVoidMinerTweak",
+                enableVoidMinerTweak,
+                "Enable Void Miner Tweak, allows you to override target dimension that Void Miner mines")
+            .getBoolean(enableVoidMinerTweak);
+
+        enableIntegratedOreFactoryChange = config
+            .get(
+                CATEGORY_MACHINE,
+                "enableIntegratedOreFactoryChange",
+                enableIntegratedOreFactoryChange,
+                "Enable Integrated Ore Factory Change, change parallel to 65536 and can use Laser Energy Hatch")
+            .getBoolean(enableIntegratedOreFactoryChange);
 
         // Recipe
         enableDeleteRecipe = config
@@ -569,6 +580,14 @@ public class MainConfig {
                 burningExplosionTimer,
                 "Ticks before Creeper explodes due to burning.")
             .getInt(burningExplosionTimer);
+
+        // Other
+        enableSaturationHeal = config.get(
+            CATEGORY_OTHER,
+            "enableSaturationHeal",
+            true,
+            "Enable Saturation Heal Tweak. When hunger is 20, player regenerates health based on saturation / 6, up to 1 HP per 0.5s")
+            .getBoolean(true);
 
         // Message
         enableShowJoinMessage = config

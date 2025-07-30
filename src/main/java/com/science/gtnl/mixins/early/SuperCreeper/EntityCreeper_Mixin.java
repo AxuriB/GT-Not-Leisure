@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.early.super_creeper;
+package com.science.gtnl.mixins.early.SuperCreeper;
 
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;

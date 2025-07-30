@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.late.machine_amp_limit;
+package com.science.gtnl.mixins.late.BloodMagic;
 
 import static WayofTime.alchemicalWizardry.common.summoning.meteor.Meteor.*;
 import static com.science.gtnl.Utils.bloodMagic.MeteorParadigmHelper.*;
