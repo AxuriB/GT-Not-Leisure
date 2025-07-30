@@ -34,6 +34,7 @@ public class MaterialLoader {
 
         registerEntity();
         RocketFuels.addFuel(EntitySteamRocket.class, "molten.compressedsteam");
+
     }
 
     public static void loadPostInit() {

@@ -11,6 +11,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.block.Casings.Base.ItemBlockBase;
 import com.science.gtnl.common.block.Casings.Base.MetaBlockBase;
@@ -39,6 +40,7 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
 import com.science.gtnl.common.item.items.SaplingBrickuoia;
 
+import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTRecipeBuilder;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
@@ -152,6 +154,15 @@ public class BlockLoader {
         shimmerFluidBlock = new BlockShimmerFluid(shimmerFluid);
         GameRegistry.registerBlock(shimmerFluidBlock, "shimmer");
         GTNLItemList.ShimmerFluidBlock.set(new ItemStack(BlockLoader.shimmerFluidBlock));
+
+        GTNLItemList.ShirabonReinforcedBoronSilicateGlass.set(new ItemStack(ItemRegistry.bw_realglas2, 1, 1));
+        addItemTooltip(
+            GTNLItemList.ShirabonReinforcedBoronSilicateGlass.get(1),
+            AnimatedText.SCIENCE_NOT_LEISURE_CHANGE);
+        GTNLItemList.QuarkGluonPlasmaReinforcedBoronSilicateGlass.set(new ItemStack(ItemRegistry.bw_realglas2, 1, 2));
+        addItemTooltip(
+            GTNLItemList.QuarkGluonPlasmaReinforcedBoronSilicateGlass.get(1),
+            AnimatedText.SCIENCE_NOT_LEISURE_CHANGE);
     }
 
     public static void registryBlockContainers() {

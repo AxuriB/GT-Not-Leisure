@@ -203,6 +203,7 @@ import com.science.gtnl.common.machine.multiblock.WhiteNightGenerator;
 import com.science.gtnl.common.machine.multiblock.WoodDistillation;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.material.MaterialUtils;
+import com.science.gtnl.config.MainConfig;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.CrackRecipeAdder;
@@ -2174,7 +2175,9 @@ public class MachineLoader {
         registerBasicMachine();
         registerCovers();
 
-        addItemTooltip(ItemList.Ore_Processor.get(1), AnimatedText.SCIENCE_NOT_LEISURE_CHANGE);
+        if (MainConfig.enableIntegratedOreFactoryChange) {
+            addItemTooltip(ItemList.Ore_Processor.get(1), AnimatedText.SCIENCE_NOT_LEISURE_CHANGE);
+        }
     }
 
     public enum GasCollectorTier {

@@ -266,6 +266,9 @@ public enum GTNLItemList implements IItemContainer {
     FusionGlass,
     ConcentratingSieveMesh,
 
+    ShirabonReinforcedBoronSilicateGlass,
+    QuarkGluonPlasmaReinforcedBoronSilicateGlass,
+
     FortifyGlowstone,
     BlackLamp,
     BlackLampBorderless,
