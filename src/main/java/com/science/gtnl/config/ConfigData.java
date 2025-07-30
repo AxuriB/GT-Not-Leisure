@@ -1,7 +1,8 @@
 package com.science.gtnl.config;
 
-import io.netty.buffer.ByteBuf;
 import java.util.Objects;
+
+import io.netty.buffer.ByteBuf;
 
 public class ConfigData {
 
@@ -65,14 +66,13 @@ public class ConfigData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ConfigData that)) return false;
-        return enableDeleteRecipe == that.enableDeleteRecipe &&
-            enableAprilFoolRecipe == that.enableAprilFoolRecipe &&
-            enableShowDelRecipeTitle == that.enableShowDelRecipeTitle &&
-            enableSomethingRecipe == that.enableSomethingRecipe &&
-            showTickrateMessages == that.showTickrateMessages &&
-            enableShowJoinMessage == that.enableShowJoinMessage &&
-            enableShowAddMods == that.enableShowAddMods &&
-            enableDebugMode == that.enableDebugMode;
+        return enableDeleteRecipe == that.enableDeleteRecipe && enableAprilFoolRecipe == that.enableAprilFoolRecipe
+            && enableShowDelRecipeTitle == that.enableShowDelRecipeTitle
+            && enableSomethingRecipe == that.enableSomethingRecipe
+            && showTickrateMessages == that.showTickrateMessages
+            && enableShowJoinMessage == that.enableShowJoinMessage
+            && enableShowAddMods == that.enableShowAddMods
+            && enableDebugMode == that.enableDebugMode;
     }
 
     @Override
@@ -85,7 +85,6 @@ public class ConfigData {
             showTickrateMessages,
             enableShowJoinMessage,
             enableShowAddMods,
-            enableDebugMode
-        );
+            enableDebugMode);
     }
 }
