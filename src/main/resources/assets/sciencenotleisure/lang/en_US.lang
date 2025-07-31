@@ -852,6 +852,7 @@ item.record.lava_chicken.desc=Hyper Potions - Lava Chicken
 item.InfinityCell.name=ME Infinity %s Storage Cell
 item.InfinityCell.unknown=Unknown ME Infinity Storage Cell
 InfinityCell.dye.name=dye
+InfinityCell.dye.fluid.name=fluid dye
 
 Tooltip_InfinityCell_Contents=Contains Item:
 

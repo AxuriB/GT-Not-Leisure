@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.text.AnimatedText;
@@ -74,6 +75,7 @@ public class ItemLoader {
     public static Item luckyHorseshoe;
 
     public static ItemStack infinityDyeCell;
+    public static ItemStack infinityDyeFluidCell;
     public static ItemStack infinityCobblestoneCell;
 
     public static void registryItems() {
@@ -132,6 +134,18 @@ public class ItemLoader {
         }
         infinityDyeCell = ItemInfinityCell
             .getSubItem(StorageChannel.ITEMS, "InfinityCell.dye.name", "InfinityDyeCell", subDyeItems);
+
+        String[] colors = { "Black", "Pink", "Red", "Orange", "Yellow", "Green", "Lime", "Blue", "LightBlue", "Cyan",
+            "Brown", "Magenta", "Purple", "Gray", "LightGray", "White" };
+        var subDyeFluid = new ItemInfinityCell.SubItem[colors.length];
+        for (int i = 0; i < colors.length; i++) {
+            String color = colors[i];
+            String fluidName = "dye.chemical.dye" + color.toLowerCase();
+            subDyeFluid[i] = ItemInfinityCell.SubItem.getInstance(FluidRegistry.getFluid(fluidName));
+        }
+        infinityDyeFluidCell = ItemInfinityCell
+            .getSubItem(StorageChannel.FLUIDS, "InfinityCell.dye.fluid.name", "InfinityDyeFluidCell", subDyeFluid);
+
         infinityCobblestoneCell = ItemInfinityCell.getSubItem(
             StorageChannel.ITEMS,
             "InfinityCobblestoneCell",
@@ -174,6 +188,8 @@ public class ItemLoader {
         GTNLItemList.ShimmerBucket.set(new ItemStack(shimmerBucket, 1));
         GTNLItemList.InfinityCell.set(new ItemStack(infinityCell, 1));
         GTNLItemList.InfinityDyeCell.set(infinityDyeCell);
+        GTNLItemList.InfinityDyeFluidCell.set(infinityDyeFluidCell);
+        GTNLItemList.InfinityCobblestoneCell.set(infinityCobblestoneCell);
     }
 
     public static void registryItemContainers() {

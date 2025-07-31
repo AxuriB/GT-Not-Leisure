@@ -92,6 +92,7 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
         final List<ItemStack> itemStacks) {
         itemStacks.add(ItemLoader.infinityDyeCell);
         itemStacks.add(ItemLoader.infinityCobblestoneCell);
+        itemStacks.add(ItemLoader.infinityDyeFluidCell);
     }
 
     public static ItemStack getSubItem(StorageChannel s, String unlocalizedName, String textureName,

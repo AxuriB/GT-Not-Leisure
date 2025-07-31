@@ -242,6 +242,8 @@ public enum GTNLItemList implements IItemContainer {
     SlimeSaddle,
     InfinityCell,
     InfinityDyeCell,
+    InfinityDyeFluidCell,
+    InfinityCobblestoneCell,
 
     SatietyRing,
     SuperReachRing,
