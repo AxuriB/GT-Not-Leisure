@@ -945,7 +945,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
             || !checkHatch()) return false;
-        useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
+        useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 2;
         mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
 
