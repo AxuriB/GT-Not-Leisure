@@ -179,18 +179,11 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUt(ElectricImplosionCompressor.this.getMaxInputEu())
+                    .setEUt(getMaxInputEu())
                     .setAmperage(1)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
                     .setDurationModifier(1 / 1.67 - (mParallelTier / 200.0));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    public void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(getAverageInputVoltage());
-        logic.setAvailableAmperage(getMaxInputAmps());
-        logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
     }
 }

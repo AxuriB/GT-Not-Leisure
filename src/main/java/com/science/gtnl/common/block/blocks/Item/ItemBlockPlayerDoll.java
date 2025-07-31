@@ -1,11 +1,15 @@
 package com.science.gtnl.common.block.blocks.Item;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -19,6 +23,8 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.VanillaButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 
@@ -27,6 +33,54 @@ public class ItemBlockPlayerDoll extends ItemBlock implements IItemWithModularUI
     public ItemBlockPlayerDoll(Block block) {
         super(block);
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(final ItemStack itemStack, final EntityPlayer player, final List<String> toolTip,
+        final boolean advancedToolTips) {
+        NBTTagCompound tag = itemStack.getTagCompound();
+        if (tag == null) return;
+        if (tag.hasKey("CapeHttp", 8)) {
+            String capeUrl = tag.getString("CapeHttp");
+            if (!StringUtils.isNullOrEmpty(capeUrl)) {
+                toolTip.add(
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocal("Waila_TileEntityPlayerDoll_02")
+                        + EnumChatFormatting.GOLD
+                        + capeUrl);
+            }
+        }
+
+        if (tag.hasKey("enableElytra")) {
+            boolean enableElytra = tag.getBoolean("enableElytra");
+            String elytraStatus = enableElytra ? StatCollector.translateToLocal("Waila_TileEntityPlayerDoll_03_On")
+                : StatCollector.translateToLocal("Waila_TileEntityPlayerDoll_03_Off");
+            toolTip.add(
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("Waila_TileEntityPlayerDoll_03")
+                    + EnumChatFormatting.GOLD
+                    + elytraStatus);
+        }
+
+        if (tag.hasKey("SkinHttp", 8)) {
+            String skinUrl = tag.getString("SkinHttp");
+            if (!StringUtils.isNullOrEmpty(skinUrl)) {
+                toolTip.add(
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocal("Waila_TileEntityPlayerDoll_01")
+                        + EnumChatFormatting.GOLD
+                        + skinUrl);
+                return;
+            }
+        }
+
+        if (tag.hasKey("SkullOwner", 8)) {
+            String playerName = tag.getString("SkullOwner");
+            if (!StringUtils.isNullOrEmpty(playerName)) {
+                toolTip.add(
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocal("Waila_TileEntityPlayerDoll_00")
+                        + EnumChatFormatting.GOLD
+                        + playerName);
+            }
+        }
     }
 
     @Override

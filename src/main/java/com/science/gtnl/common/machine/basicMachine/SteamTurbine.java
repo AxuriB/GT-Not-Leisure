@@ -95,11 +95,6 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     }
 
     @Override
-    public int consumedFluidPerOperation(FluidStack aLiquid) {
-        return getEfficiency();
-    }
-
-    @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
             TextureFactory.of(

@@ -1,6 +1,7 @@
 package com.science.gtnl;
 
 import net.minecraft.client.model.ModelSlime;
+import net.minecraft.client.renderer.entity.RenderLeashKnot;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -14,6 +15,7 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorksh
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
+import com.science.gtnl.common.entity.EntityPlayerLeashKnot;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.common.entity.EntitySteamRocket;
 import com.science.gtnl.common.render.GTRendererTileEntity;
@@ -101,6 +103,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(
             EntitySaddleSlime.class,
             new SaddleSlimeRender(new ModelSlime(16), new ModelSlime(0), 0.25f));
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityPlayerLeashKnot.class, new RenderLeashKnot());
     }
 
     @Override

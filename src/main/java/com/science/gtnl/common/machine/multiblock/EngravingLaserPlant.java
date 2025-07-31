@@ -245,22 +245,6 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        if (wirelessMode) {
-            logic.setAvailableVoltage(getMachineVoltageLimit());
-            logic.setAvailableAmperage((long) Math.pow(4, mParallelTier) * 8L - 2L);
-            logic.setAmperageOC(false);
-            logic.enablePerfectOverclock();
-        } else {
-            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()
-                && getMaxInputAmps() <= 2;
-            logic.setAvailableVoltage(getMachineVoltageLimit());
-            logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-            logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
-        }
-    }
-
     public long getMachineVoltageLimit() {
         if (casingTier < 0) return 0;
         if (wirelessMode) {

@@ -32,6 +32,7 @@ import com.science.gtnl.common.block.blocks.BlockHoneyFluid;
 import com.science.gtnl.common.block.blocks.BlockLaserBeacon;
 import com.science.gtnl.common.block.blocks.BlockNanoPhagocytosisPlantRender;
 import com.science.gtnl.common.block.blocks.BlockPlayerDoll;
+import com.science.gtnl.common.block.blocks.BlockPlayerLeash;
 import com.science.gtnl.common.block.blocks.BlockShimmerFluid;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
@@ -50,6 +51,7 @@ public class BlockLoader {
     public static Block blockArtificialStarRender;
     public static Block laserBeacon;
     public static Block playerDoll;
+    public static Block blockPlayerLeash;
     public static Block blockNanoPhagocytosisPlantRender;
     public static Block blockEternalGregTechWorkshopRender;
     public static final Block metaBlock = new MetaBlockBase("MetaBlock", "MetaBlock");
@@ -78,20 +80,18 @@ public class BlockLoader {
 
     public static void registryBlocks() {
 
-        BlockLoader.blockEternalGregTechWorkshopRender = new BlockEternalGregTechWorkshopRender();
+        blockArtificialStarRender = new BlockArtificialStarRender();
+        laserBeacon = new BlockLaserBeacon();
+        playerDoll = new BlockPlayerDoll();
+        blockPlayerLeash = new BlockPlayerLeash();
+        blockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
+        blockEternalGregTechWorkshopRender = new BlockEternalGregTechWorkshopRender();
+
         GameRegistry
             .registerTileEntity(TileEntityEternalGregTechWorkshop.class, "EternalGregTechWorkshopRenderTileEntity");
-
-        BlockLoader.blockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
         GameRegistry.registerTileEntity(TileEntityNanoPhagocytosisPlant.class, "NanoPhagocytosisPlantRenderTileEntity");
-
-        BlockLoader.blockArtificialStarRender = new BlockArtificialStarRender();
         GameRegistry.registerTileEntity(TileEntityArtificialStar.class, "ArtificialStarRenderTileEntity");
-
-        BlockLoader.playerDoll = new BlockPlayerDoll();
         GameRegistry.registerTileEntity(TileEntityPlayerDoll.class, "playerDollTileEntity");
-
-        BlockLoader.laserBeacon = new BlockLaserBeacon();
         GameRegistry.registerTileEntity(TileEntityLaserBeacon.class, "LaserBeaconTileEntity");
 
         GameRegistry

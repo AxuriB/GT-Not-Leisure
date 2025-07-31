@@ -3,6 +3,7 @@ package com.science.gtnl.loader;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.common.entity.EntityArrowCustom;
+import com.science.gtnl.common.entity.EntityPlayerLeashKnot;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.common.entity.EntitySteamRocket;
 import com.science.gtnl.common.item.items.MilledOre;
@@ -47,5 +48,13 @@ public class MaterialLoader {
             .registerModEntity(EntityArrowCustom.class, "ArrowCustom", 0, Mods.ScienceNotLeisure.ID, 64, 2, true);
         EntityRegistry
             .registerModEntity(EntitySaddleSlime.class, "SaddleSlime", 1, Mods.ScienceNotLeisure.ID, 64, 2, true);
+        EntityRegistry.registerModEntity(
+            EntityPlayerLeashKnot.class,
+            "PlayerLeashKnot",
+            2,
+            Mods.ScienceNotLeisure.ID,
+            64,
+            2,
+            true);
     }
 }

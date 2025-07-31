@@ -24,6 +24,7 @@ import com.science.gtnl.common.item.items.Bauble.RejectionRing;
 import com.science.gtnl.common.item.items.Bauble.RoyalGel;
 import com.science.gtnl.common.item.items.Bauble.SatietyRing;
 import com.science.gtnl.common.item.items.Bauble.SuperReachRing;
+import com.science.gtnl.common.item.items.BehaviourDetravToolElectricProspector;
 import com.science.gtnl.common.item.items.CircuitIntegratedPlus;
 import com.science.gtnl.common.item.items.FakeItemSiren;
 import com.science.gtnl.common.item.items.FuelRod.FuelRod;
@@ -67,6 +68,8 @@ public class ItemLoader {
     public static ItemBucket shimmerBucket;
     public static ItemInfinityCell infinityCell;
 
+    public static Item test;
+
     public static Item satietyRing;
     public static Item rejectionRing;
     public static Item superReachRing;
@@ -82,6 +85,7 @@ public class ItemLoader {
         steamRocket = new SteamRocketItem();
         fakeItemSiren = new FakeItemSiren();
         testItem = new TestItem();
+        test = new BehaviourDetravToolElectricProspector();
         KFCFamily = new KFCFamily(20, 20, true);
         twilightSword = new TwilightSword();
         circuitIntegratedPlus = new CircuitIntegratedPlus();
@@ -154,6 +158,7 @@ public class ItemLoader {
         GameRegistry.registerItem(steamRocket, "SteamRocket");
         GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
         GameRegistry.registerItem(testItem, "TestItem");
+        GameRegistry.registerItem(test, "TestItemBDTEP");
         GameRegistry.registerItem(KFCFamily, "KFCFamily");
         GameRegistry.registerItem(twilightSword, "TwilightSword");
         GameRegistry.registerItem(circuitIntegratedPlus, "CircuitIntegratedPlus");

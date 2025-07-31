@@ -238,10 +238,11 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
             logic.setAmperageOC(false);
             logic.enablePerfectOverclock();
         } else {
-            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
+            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()
+                && getMaxInputAmps() <= 2;
             logic.setAvailableVoltage(getMachineVoltageLimit());
             logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-            logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
+            logic.setAmperageOC(!useSingleAmp);
         }
     }
 

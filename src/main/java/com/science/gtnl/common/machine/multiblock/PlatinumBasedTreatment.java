@@ -268,7 +268,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
         boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 2;
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-        logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
+        logic.setAmperageOC(!useSingleAmp);
     }
 
 }

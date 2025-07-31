@@ -494,6 +494,11 @@ tile.ExtremeAnvil.name=§cThe Final Anvil
 entity.reavaritia.EntityExtremeAnvil.name=§cThe Final Anvil
 container.ExtremeAnvil=The Final Anvil
 
+tile.PlayerLeash.name=Leash Barrier
+entity.sciencenotleisure.PlayerLeashKnot.name=Leash Barrier
+Tooltip_PlayerLeash_00=Creates a powerful leash field that allows the placer to fly
+Tooltip_PlayerLeash_01=Effective radius: 10 blocks
+
 MetaItem.0.name=Troll Face
 tooltips.TrollFace=Never Gonna Give You Up~
 MetaItem.1.name=§bExcited Mixed Naquadah Fuel Rod

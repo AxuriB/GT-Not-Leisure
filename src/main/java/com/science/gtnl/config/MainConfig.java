@@ -135,6 +135,7 @@ public class MainConfig {
 
     // Other
     public static boolean enableSaturationHeal = true;
+    public static boolean enableDeathIncompleteMessage = true;
 
     // Message
     public static boolean enableShowJoinMessage = true;
@@ -587,7 +588,15 @@ public class MainConfig {
             "enableSaturationHeal",
             true,
             "Enable Saturation Heal Tweak. When hunger is 20, player regenerates health based on saturation / 6, up to 1 HP per 0.5s")
-            .getBoolean(true);
+            .getBoolean(enableSaturationHeal);
+
+        enableDeathIncompleteMessage = config
+            .get(
+                CATEGORY_OTHER,
+                "enableDeathIncompleteMessage",
+                enableDeathIncompleteMessage,
+                "Enable sending the unfinished chat message when player dies")
+            .getBoolean(enableDeathIncompleteMessage);
 
         // Message
         enableShowJoinMessage = config

@@ -31,8 +31,7 @@
     "NHCoreMod.BacteriaRegistry_Mixin",
     "ThaumicTinkerer.ItemBloodSword_Mixin"
   ],
-  "client": [
-  ],
+  "client": [],
   "server": []
 }
 

@@ -37,6 +37,7 @@ public enum GTNLItemList implements IItemContainer {
     StargateTier9,
     Stargate_Coil_Compressed,
     LaserBeacon,
+    PlayerLeash,
     ArtificialStarRender,
     NanoPhagocytosisPlantRender,
     EternalGregTechWorkshopRender,

@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -21,6 +22,7 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -29,7 +31,9 @@ import com.reavaritia.common.render.CustomEntityRenderer;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.common.item.TimeStopManager;
 import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
+import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.EffectLoader;
+import com.science.gtnl.mixins.early.Minecraft.AccessorGuiChat;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -57,6 +61,19 @@ public class SubscribeEventClientUtils {
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         PLAYING_SOUNDS.clear();
+    }
+
+    @SubscribeEvent
+    public void onPlayerDeath(LivingDeathEvent event) {
+        if (!(event.entity instanceof EntityPlayer) && MainConfig.enableDeathIncompleteMessage) return;
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.currentScreen instanceof GuiChat guiChat) {
+            String chat = ((AccessorGuiChat) guiChat).getInputField()
+                .getText();
+            mc.thePlayer.sendChatMessage(chat + (chat.startsWith("/") ? "" : "-"));
+            guiChat.onGuiClosed();
+            mc.displayGuiScreen(null);
+        }
     }
 
     @SideOnly(Side.CLIENT)

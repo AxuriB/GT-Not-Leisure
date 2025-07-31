@@ -31,7 +31,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -41,7 +40,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -178,17 +176,6 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableAmperage(1);
-        logic.setAmperageOC(false);
-    }
-
-    @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {}.setMaxParallel(Integer.MAX_VALUE);
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipePool.CheatOreProcessingRecipes;
     }
@@ -205,7 +192,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
 
     @Override
     public int getMaxParallelRecipes() {
-        return 1;
+        return Integer.MAX_VALUE;
     }
 
     @Override
