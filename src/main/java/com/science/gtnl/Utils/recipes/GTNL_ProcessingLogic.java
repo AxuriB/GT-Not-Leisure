@@ -47,7 +47,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
     protected double extraSpeedBoost = 1.0;
     protected long availableVoltage;
     protected long availableAmperage;
-    protected int maxOverclocks = 1;
+    protected int maxOverclocks = Integer.MAX_VALUE;
     protected int maxTierSkips = 1;
     protected boolean protectItems;
     protected boolean protectFluids;
