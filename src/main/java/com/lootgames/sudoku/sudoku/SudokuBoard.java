@@ -131,6 +131,15 @@ public class SudokuBoard {
         return getPlayerValue(pos.getX(), pos.getY());
     }
 
+    public int getSolutionValue(int x, int y) {
+        Integer v = solution[x][y];
+        return v != null ? v : 0;
+    }
+
+    public int getSolutionValue(Pos2i pos) {
+        return getSolutionValue(pos.getX(), pos.getY());
+    }
+
     public int getPuzzleValue(int x, int y) {
         Integer v = puzzle[x][y];
         return v != null ? v : 0;
