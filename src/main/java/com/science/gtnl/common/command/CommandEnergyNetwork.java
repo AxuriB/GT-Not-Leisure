@@ -35,8 +35,18 @@ public class CommandEnergyNetwork extends CommandBase {
     }
 
     @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
+
+    @Override
     public int getRequiredPermissionLevel() {
         return 0;
+    }
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        return true;
     }
 
     @Override
