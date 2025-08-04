@@ -27,17 +27,16 @@ public class CommandSteamNetwork extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/steam_network <global_steam_add/set/join/display>";
+        return "/steam_network <add/set/join/display>";
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] ss) {
         List<String> l = new ArrayList<>();
         String test = ss.length == 0 ? "" : ss[0].trim();
-        if (ss.length == 0 || ss.length == 1 && (test.isEmpty()
-            || Stream.of("global_steam_add", "global_steam_set", "global_steam_join", "global_steam_display")
-                .anyMatch(s -> s.startsWith(test)))) {
-            Stream.of("global_steam_add", "global_steam_set", "global_steam_join", "global_steam_display")
+        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of("add", "set", "join", "display")
+            .anyMatch(s -> s.startsWith(test)))) {
+            Stream.of("add", "set", "join", "display")
                 .filter(s -> test.isEmpty() || s.startsWith(test))
                 .forEach(l::add);
         }
@@ -51,7 +50,7 @@ public class CommandSteamNetwork extends CommandBase {
             return;
         }
         switch (strings[0]) {
-            case "global_steam_add" -> {
+            case "add" -> {
                 if (!hasPermission(sender, 2)) {
                     sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
                     break;
@@ -91,7 +90,7 @@ public class CommandSteamNetwork extends CommandBase {
                             + " Steam in their network."));
 
             }
-            case "global_steam_set" -> {
+            case "set" -> {
                 if (!hasPermission(sender, 2)) {
                     sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
                     break;
@@ -124,7 +123,7 @@ public class CommandSteamNetwork extends CommandBase {
                             + " Steam."));
 
             }
-            case "global_steam_join" -> {
+            case "join" -> {
 
                 // Usage is /gt global_energy_join username_of_you username_to_join
 
@@ -162,14 +161,14 @@ public class CommandSteamNetwork extends CommandBase {
                         "Success! " + formattedUsernameSubject + " has joined " + formattedUsernameTeam + "."));
                 sender.addChatMessage(
                     new ChatComponentText(
-                        "To undo this simply join your own network again with /steam_network global_steam_join "
+                        "To undo this simply join your own network again with /steam_network join "
                             + formattedUsernameSubject
                             + " "
                             + formattedUsernameSubject
                             + "."));
 
             }
-            case "global_steam_display" -> {
+            case "display" -> {
 
                 // Usage is /gt global_energy_display username.
 
