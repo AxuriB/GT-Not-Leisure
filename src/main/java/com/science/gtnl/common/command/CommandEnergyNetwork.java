@@ -169,7 +169,15 @@ public class CommandEnergyNetwork extends CommandBase {
                 String usernameSubject = args[1];
                 String usernameTeam = args[2];
 
-                if (usernameSubject == null) usernameSubject = sender.getCommandSenderName();
+                if (usernameSubject != null && usernameTeam != null) {
+                    if (!hasPermission(sender, 2)) {
+                        sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                        break;
+                    }
+                } else if (usernameTeam == null) {
+                    usernameTeam = args[1];
+                    usernameSubject = sender.getCommandSenderName();
+                }
                 UUID uuidSubject = SpaceProjectManager.getPlayerUUIDFromName(usernameSubject);
                 UUID uuidTeam = SpaceProjectManager.getPlayerUUIDFromName(usernameTeam);
 

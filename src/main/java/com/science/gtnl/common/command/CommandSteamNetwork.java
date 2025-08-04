@@ -129,7 +129,16 @@ public class CommandSteamNetwork extends CommandBase {
 
                 String usernameSubject = strings[1];
                 String usernameTeam = strings[2];
-                if (usernameSubject == null) usernameSubject = sender.getCommandSenderName();
+
+                if (usernameSubject != null && usernameTeam != null) {
+                    if (!hasPermission(sender, 2)) {
+                        sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                        break;
+                    }
+                } else if (usernameTeam == null) {
+                    usernameTeam = strings[1];
+                    usernameSubject = sender.getCommandSenderName();
+                }
 
                 String formattedUsernameSubject = EnumChatFormatting.BLUE + usernameSubject + EnumChatFormatting.RESET;
                 String formattedUsernameTeam = EnumChatFormatting.BLUE + usernameTeam + EnumChatFormatting.RESET;
