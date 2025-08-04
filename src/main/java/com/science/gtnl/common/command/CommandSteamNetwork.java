@@ -1,5 +1,6 @@
 package com.science.gtnl.common.command;
 
+import static com.science.gtnl.Utils.Utils.hasPermission;
 import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.*;
 
 import java.math.BigInteger;
@@ -11,6 +12,7 @@ import java.util.stream.Stream;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.util.GTUtility;
@@ -50,7 +52,12 @@ public class CommandSteamNetwork extends CommandBase {
         }
         switch (strings[0]) {
             case "global_steam_add" -> {
+                if (!hasPermission(sender, 2)) {
+                    sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                    break;
+                }
                 String username = strings[1];
+                if (username == null) username = sender.getCommandSenderName();
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
                 UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
 
@@ -81,14 +88,19 @@ public class CommandSteamNetwork extends CommandBase {
                             + EnumChatFormatting.RED
                             + GTUtility.formatNumbers(new BigInteger(getUserSteam(uuid).toString()))
                             + EnumChatFormatting.RESET
-                            + "Steam in their network."));
+                            + " Steam in their network."));
 
             }
             case "global_steam_set" -> {
+                if (!hasPermission(sender, 2)) {
+                    sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                    break;
+                }
 
                 // Usage is /gt global_energy_set username EU
 
                 String username = strings[1];
+                if (username == null) username = sender.getCommandSenderName();
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
                 UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
 
@@ -109,7 +121,7 @@ public class CommandSteamNetwork extends CommandBase {
                             + EnumChatFormatting.RED
                             + GTUtility.formatNumbers(new BigInteger(Steam_String_0))
                             + EnumChatFormatting.RESET
-                            + "Steam."));
+                            + " Steam."));
 
             }
             case "global_steam_join" -> {
@@ -118,6 +130,7 @@ public class CommandSteamNetwork extends CommandBase {
 
                 String usernameSubject = strings[1];
                 String usernameTeam = strings[2];
+                if (usernameSubject == null) usernameSubject = sender.getCommandSenderName();
 
                 String formattedUsernameSubject = EnumChatFormatting.BLUE + usernameSubject + EnumChatFormatting.RESET;
                 String formattedUsernameTeam = EnumChatFormatting.BLUE + usernameTeam + EnumChatFormatting.RESET;
@@ -161,6 +174,7 @@ public class CommandSteamNetwork extends CommandBase {
                 // Usage is /gt global_energy_display username.
 
                 String username = strings[1];
+                if (username == null) username = sender.getCommandSenderName();
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
                 UUID userUUID = SpaceProjectManager.getPlayerUUIDFromName(username);
 
@@ -193,4 +207,20 @@ public class CommandSteamNetwork extends CommandBase {
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Invalid command/syntax detected."));
         }
     }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
+
+    @Override
+    public int getRequiredPermissionLevel() {
+        return 0;
+    }
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        return true;
+    }
+
 }

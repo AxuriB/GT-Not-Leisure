@@ -1,6 +1,6 @@
 package com.science.gtnl.loader;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
+import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -9,9 +9,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.text.AnimatedText;
+import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.block.Casings.Base.ItemBlockBase;
 import com.science.gtnl.common.block.Casings.Base.MetaBlockBase;

@@ -5,7 +5,6 @@ import static com.science.gtnl.ScienceNotLeisure.network;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventUtils;
-import com.science.gtnl.Utils.bloodMagic.AltarStructure;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
@@ -71,6 +70,6 @@ public class CommonProxy {
             .interfaceTerminal()
             .register(SuperCraftingInputHatchME.class);
 
-        AltarStructure.registerAltarStructureInfo();
+        // AltarStructure.registerAltarStructureInfo();
     }
 }

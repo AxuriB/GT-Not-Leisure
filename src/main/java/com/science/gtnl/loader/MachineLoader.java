@@ -1,7 +1,7 @@
 package com.science.gtnl.loader;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 import static com.science.gtnl.Utils.enums.GTNLMachineID.*;
+import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VALVE;
 

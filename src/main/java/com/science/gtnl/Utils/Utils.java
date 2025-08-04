@@ -18,12 +18,11 @@ import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.UserListOps;
 import net.minecraft.server.management.UserListOpsEntry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -421,24 +420,23 @@ public final class Utils {
         return sb.toString();
     }
 
-    public static boolean checkSenderPermission(ICommandSender sender, int requiredLevel) {
-        if (requiredLevel == 0) return true;
-        if (sender instanceof RConConsoleSource || sender instanceof MinecraftServer) {
+    public static boolean hasPermission(ICommandSender sender, int permissionLevel) {
+        if (sender instanceof CommandBlockLogic || sender instanceof MinecraftServer
+            || sender instanceof RConConsoleSource) {
             return true;
         }
-
-        if (sender instanceof CommandBlockLogic) {
-            return requiredLevel < 4;
-        }
-
-        if (sender instanceof EntityPlayerMP player) {
-            UserListOps userList = MinecraftServer.getServer()
-                .getConfigurationManager()
-                .func_152603_m();
+        if (sender instanceof EntityPlayer player) {
+            MinecraftServer server = MinecraftServer.getServer();
             GameProfile profile = player.getGameProfile();
-            UserListOpsEntry entry = (UserListOpsEntry) userList.func_152683_b(profile);
-            if (entry != null) {
-                return requiredLevel <= entry.func_152644_a();
+
+            if (server.getConfigurationManager()
+                .func_152596_g(profile)) {
+                UserListOpsEntry entry = (UserListOpsEntry) server.getConfigurationManager()
+                    .func_152603_m()
+                    .func_152683_b(profile);
+
+                return entry != null ? entry.func_152644_a() >= permissionLevel
+                    : server.getOpPermissionLevel() >= permissionLevel;
             }
         }
 

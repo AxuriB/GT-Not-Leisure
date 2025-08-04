@@ -1,8 +1,7 @@
 package com.science.gtnl.loader;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.addItemTooltip;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.text;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -11,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.text.AnimatedText;
+import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.Utils.text.TextUtils;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.ItemInfinityCell;
@@ -31,6 +30,7 @@ import com.science.gtnl.common.item.items.FuelRod.FuelRod;
 import com.science.gtnl.common.item.items.FuelRod.FuelRodDepleted;
 import com.science.gtnl.common.item.items.GTNLItemBucket;
 import com.science.gtnl.common.item.items.KFCFamily;
+import com.science.gtnl.common.item.items.NullPointerException;
 import com.science.gtnl.common.item.items.SlimeSaddle;
 import com.science.gtnl.common.item.items.SteamRocketItem;
 import com.science.gtnl.common.item.items.TestItem;
@@ -48,6 +48,7 @@ import gregtech.common.render.items.InfinityMetaItemRenderer;
 public class ItemLoader {
 
     public static Item steamRocket;
+    public static Item nullPointerException;
     public static Item fakeItemSiren;
     public static Item testItem;
     public static Item KFCFamily;
@@ -83,6 +84,7 @@ public class ItemLoader {
 
     public static void registryItems() {
         steamRocket = new SteamRocketItem();
+        nullPointerException = new NullPointerException();
         fakeItemSiren = new FakeItemSiren();
         testItem = new TestItem();
         test = new BehaviourDetravToolElectricProspector();
@@ -156,6 +158,7 @@ public class ItemLoader {
             ItemInfinityCell.SubItem.getInstance(Blocks.cobblestone));
 
         GameRegistry.registerItem(steamRocket, "SteamRocket");
+        GameRegistry.registerItem(nullPointerException, "NullPointerException");
         GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
         GameRegistry.registerItem(testItem, "TestItem");
         GameRegistry.registerItem(test, "TestItemBDTEP");
@@ -582,7 +585,7 @@ public class ItemLoader {
                     .texter("16,777,216 L/t (335,544,320 L/s) as Cover", "tooltips.HydraulicSteamValve_00") }));
         addItemTooltip(
             GTNLItemList.HydraulicSteamValve.get(1),
-            AnimatedText.buildTextWithAnimatedEnd(text("Tips: 瑶光Alkaid要的")));
+            AnimatedTooltipHandler.buildTextWithAnimatedEnd(text("Tips: 瑶光Alkaid要的")));
         GTNLItemList.HydraulicSteamRegulator.set(
             MetaItemAdder.initItem(
                 "Hydraulic Steam Regulator",
@@ -591,7 +594,7 @@ public class ItemLoader {
                     .texter("16,777,216 L/t (335,544,320 L/s) as Cover", "tooltips.HydraulicSteamRegulator_00") }));
         addItemTooltip(
             GTNLItemList.HydraulicSteamRegulator.get(1),
-            AnimatedText.buildTextWithAnimatedEnd(text("Tips: 瑶光Alkaid要的")));
+            AnimatedTooltipHandler.buildTextWithAnimatedEnd(text("Tips: 瑶光Alkaid要的")));
         GTNLItemList.SadBapyCatToken.set(
             MetaItemAdder.initItem(
                 "SadBapyCat Token",
@@ -616,7 +619,7 @@ public class ItemLoader {
 
         addItemTooltip(
             new ItemStack(ItemLoader.satietyRing, 1),
-            AnimatedText.buildTextWithAnimatedEnd(text("Most machine recipe by zero_CM")));
+            AnimatedTooltipHandler.buildTextWithAnimatedEnd(text("Most machine recipe by zero_CM")));
     }
 
     public static void registryOreDictionary() {

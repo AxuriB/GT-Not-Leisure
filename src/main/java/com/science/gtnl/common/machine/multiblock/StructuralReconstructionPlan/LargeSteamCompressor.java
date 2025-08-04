@@ -35,6 +35,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -233,8 +236,16 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-
         return new GTNL_ProcessingLogic() {
+
+            @NotNull
+            @Override
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) != 0) {
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+                return super.validateRecipe(recipe);
+            }
 
             @Override
             @Nonnull

@@ -2,6 +2,7 @@ package com.science.gtnl;
 
 import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.renderer.entity.RenderLeashKnot;
+import net.minecraft.entity.EntityNPE;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -19,10 +20,12 @@ import com.science.gtnl.common.entity.EntityPlayerLeashKnot;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.common.entity.EntitySteamRocket;
 import com.science.gtnl.common.render.GTRendererTileEntity;
+import com.science.gtnl.common.render.entity.NullPointerExceptionRender;
 import com.science.gtnl.common.render.entity.SaddleSlimeRender;
 import com.science.gtnl.common.render.entity.SteamRocketRender;
 import com.science.gtnl.common.render.item.ItemBlockArtificialStarRender;
 import com.science.gtnl.common.render.item.ItemMeteorMinerMachineRender;
+import com.science.gtnl.common.render.item.ItemNullPointerExceptionRender;
 import com.science.gtnl.common.render.item.ItemPlayerDollRenderer;
 import com.science.gtnl.common.render.item.ItemSteamRocketRenderer;
 import com.science.gtnl.common.render.item.ItemTwilightSwordRender;
@@ -105,6 +108,10 @@ public class ClientProxy extends CommonProxy {
             new SaddleSlimeRender(new ModelSlime(16), new ModelSlime(0), 0.25f));
 
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayerLeashKnot.class, new RenderLeashKnot());
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityNPE.class, new NullPointerExceptionRender());
+        MinecraftForgeClient
+            .registerItemRenderer(ItemLoader.nullPointerException, new ItemNullPointerExceptionRender());
     }
 
     @Override

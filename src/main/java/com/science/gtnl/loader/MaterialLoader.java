@@ -1,5 +1,7 @@
 package com.science.gtnl.loader;
 
+import net.minecraft.entity.EntityNPE;
+
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.common.entity.EntityArrowCustom;
@@ -43,6 +45,7 @@ public class MaterialLoader {
     }
 
     public static void registerEntity() {
+        EntityRegistry.registerModEntity(EntityNPE.class, "NullPointerException", 1024, "Forge", 64, 2, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntitySteamRocket.class, "SteamRocket", 150, 1, false);
         EntityRegistry
             .registerModEntity(EntityArrowCustom.class, "ArrowCustom", 0, Mods.ScienceNotLeisure.ID, 64, 2, true);

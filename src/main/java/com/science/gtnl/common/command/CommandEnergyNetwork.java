@@ -1,6 +1,6 @@
 package com.science.gtnl.common.command;
 
-import static com.science.gtnl.Utils.Utils.checkSenderPermission;
+import static com.science.gtnl.Utils.Utils.hasPermission;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
@@ -50,7 +50,7 @@ public class CommandEnergyNetwork extends CommandBase {
         switch (subCommand) {
             case "add": {
                 int requiredLevelAdd = 2;
-                if (checkSenderPermission(sender, requiredLevelAdd)) {
+                if (hasPermission(sender, requiredLevelAdd)) {
                     sendChatMessage(
                         sender,
                         EnumChatFormatting.RED + String.format(
@@ -116,7 +116,7 @@ public class CommandEnergyNetwork extends CommandBase {
 
             case "set": {
                 int requiredLevelSet = 2;
-                if (checkSenderPermission(sender, requiredLevelSet)) {
+                if (hasPermission(sender, requiredLevelSet)) {
                     sendChatMessage(
                         sender,
                         EnumChatFormatting.RED + String.format(

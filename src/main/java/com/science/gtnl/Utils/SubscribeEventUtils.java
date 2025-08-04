@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -21,6 +22,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -43,8 +45,11 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.machine.CircuitMaterialHelper;
+import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.asm.GTNLEarlyCoreMod;
 import com.science.gtnl.common.command.CommandTickrate;
@@ -78,6 +83,9 @@ public class SubscribeEventUtils {
             Mods.GiveCount.ID));
 
     private static final Map<UUID, Integer> foodTickTimers = new HashMap<>();
+
+    public static final DamageSource CRUSHING_DAMAGE = new DamageSource("damage.gtnl.crushing")
+        .setDamageBypassesArmor();
 
     // Player
     @SubscribeEvent
@@ -200,19 +208,23 @@ public class SubscribeEventUtils {
 
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.entity instanceof EntityPlayer player) {
-            World world = player.worldObj;
+        if (event.entity instanceof EntityLivingBase entityLiving) {
+            World world = entityLiving.worldObj;
 
-            int x = (int) Math.floor(player.posX);
-            int y = (int) player.posY - 1;
-            int z = (int) Math.floor(player.posZ);
+            int x = (int) Math.floor(entityLiving.posX);
+            int y = (int) entityLiving.posY - 1;
+            int z = (int) Math.floor(entityLiving.posZ);
 
             Block block = world.getBlock(x, y, z);
             int meta = world.getBlockMetadata(x, y, z);
 
             if (block == GTNLItemList.CrushingWheels.getBlock() && meta == 2) {
-                player.attackEntityFrom(DamageSource.generic, 4.0F);
-                player.hurtResistantTime = 0;
+                if (entityLiving instanceof EntityPlayer player) {
+                    player.attackEntityFrom(CRUSHING_DAMAGE, 0.4F);
+                    player.hurtResistantTime = 0;
+                } else {
+                    entityLiving.attackEntityFrom(CRUSHING_DAMAGE, 1F);
+                }
             }
         }
     }
@@ -278,16 +290,45 @@ public class SubscribeEventUtils {
 
     // Item
 
+    private static final Map<ItemStack, Supplier<String>> tooltipCache = new ItemStackMap<>(false);
+    private static boolean circuitMaterialLoad = false;
+
     // World
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         World world = event.world;
-        offlineMode = false;
-        BLACKLISTED_UUIDS.clear();
-        BLACKLISTED_NAMES.clear();
-        BLACKLISTED_SKIN_URLS.clear();
-        BLACKLISTED_CAPE_URLS.clear();
-        UUID_CACHE.clear();
+        if (!circuitMaterialLoad) {
+            CircuitMaterialHelper.init();
+            CircuitMaterialHelper.worldSeed = world.getSeed();
+            CircuitMaterialHelper
+                .applyRandomizedParams(CircuitMaterialHelper.materialParameterList, CircuitMaterialHelper.worldSeed);
+
+            for (CircuitMaterialHelper.ItemStackData data : CircuitMaterialHelper.materialParameterList) {
+                Supplier<String> tooltip1 = AnimatedTooltipHandler.translatedText("test00", data.euModifier);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip1);
+                tooltipCache.put(data.stack, tooltip1);
+                Supplier<String> tooltip2 = AnimatedTooltipHandler.translatedText("test01", data.speedBoost);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip2);
+                tooltipCache.put(data.stack, tooltip2);
+                Supplier<String> tooltip3 = AnimatedTooltipHandler.translatedText("test02", data.successChance);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip3);
+                tooltipCache.put(data.stack, tooltip3);
+                Supplier<String> tooltip4 = AnimatedTooltipHandler.translatedText("test03", data.failedChance);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip4);
+                tooltipCache.put(data.stack, tooltip4);
+                Supplier<String> tooltip5 = AnimatedTooltipHandler.translatedText("test04", data.parallelCount);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip5);
+                tooltipCache.put(data.stack, tooltip5);
+                Supplier<String> tooltip6 = AnimatedTooltipHandler.translatedText("test05", data.outputMultiplier);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip6);
+                tooltipCache.put(data.stack, tooltip6);
+                Supplier<String> tooltip7 = AnimatedTooltipHandler.translatedText("test06", data.maxTierSkips);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip7);
+                tooltipCache.put(data.stack, tooltip7);
+            }
+            circuitMaterialLoad = true;
+        }
+
         if (!world.isRemote) {
             GameRules rules = world.getGameRules();
             if (!rules.hasRule("doWeatherCycle")) {
@@ -297,6 +338,22 @@ public class SubscribeEventUtils {
                 loadInstance(event.world);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        for (Map.Entry<ItemStack, Supplier<String>> entry : tooltipCache.entrySet()) {
+            AnimatedTooltipHandler.removeItemTooltipShift(entry.getKey(), entry.getValue());
+        }
+        tooltipCache.clear();
+        CircuitMaterialHelper.materialParameterList.clear();
+        circuitMaterialLoad = false;
+        offlineMode = false;
+        BLACKLISTED_UUIDS.clear();
+        BLACKLISTED_NAMES.clear();
+        BLACKLISTED_SKIN_URLS.clear();
+        BLACKLISTED_CAPE_URLS.clear();
+        UUID_CACHE.clear();
     }
 
     @SubscribeEvent

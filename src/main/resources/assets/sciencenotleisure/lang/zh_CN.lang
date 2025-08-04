@@ -5,6 +5,14 @@ itemGroup.ReAvaritia=无尽: 重生
 StructuralReconstructionPlan=结构代替计划
 AppliedEnergistics2=应用能源2
 
+test00=EU减免加成：%s
+test01=速度加成：%s
+test02=成功率加成：%s
+test03=失败率加成：%s
+test04=并行：%s
+test05=产出系数：%s
+test06=允许升压次数：%s
+
 Welcome_GTNL_00=欢迎来到GT Not Leisure！
 Welcome_GTNL_01=如果你是第一次安装这个模组，请仔细检查配置文件
 Welcome_GTNL_02=本模组添加了大量的机器和新的配方
@@ -22,6 +30,10 @@ NoMobsSpawnInThisBlock=生物不会在这个方块上生成
 NoTileEntitySpawnInThisBlock=这不是一个实体！
 Tooltip_Tectech_Hatch=支持§9Tec§1Tech§r激光仓！ 
 Tooltip_PerfectOverclock=机器可进行§c无损超频§7
+Tooltip_PressShift=§r按住 §6Shift §r查看更多信息
+Tooltip_PressCtrl=§r按住 §6Ctrl §r查看更多信息
+
+death.attack.damage.gtnl.crushing=%1$s 被绞碎了
 
 Info_SteamNetwork_00=玩家 %s 没有无线蒸汽网络.
 Info_SteamNetwork_01=玩家 %s 的无线蒸汽网络中有 %s%s%s 蒸汽.
@@ -725,6 +737,8 @@ Tooltip_Testitem_12=本模组添加的机器meta值从21000开始
 Tooltip_Testitem_13=§c§l另外提醒: 不要拿着这个物品右键！
 
 item.CircuitIntegratedPlus.name=突破编程电路
+
+item.NullPointerException.name=java.lang.NullPointerException
 
 item.KFCFamily.name=疯狂星期四
 Tooltip_KFCFamily_00=§o疯狂星期四，v我50！
