@@ -22,7 +22,6 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -31,7 +30,6 @@ import com.reavaritia.common.render.CustomEntityRenderer;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.common.item.TimeStopManager;
 import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
-import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.EffectLoader;
 import com.science.gtnl.mixins.early.Minecraft.AccessorGuiChat;
 
@@ -44,12 +42,14 @@ import gregtech.client.ElectricJukeboxSound;
 
 public class SubscribeEventClientUtils {
 
-    private static final Random random = new Random();
+    public static final Random random = new Random();
     public static String haloNoiseIconTexture = Mods.ScienceNotLeisure.resourceDomain + ":halonoise";
     public static IIcon haloNoiseIcon;
 
     public static String cheatWrenchIconTexture = "nei:cheat_speical";
     public static IIcon cheatWrenchIcon;
+
+    public static boolean hasHandledDeathMessage = false;
 
     public static void registerAllIcons(net.minecraft.client.renderer.texture.IIconRegister ir) {
         haloNoiseIcon = ir.registerIcon(haloNoiseIconTexture);
@@ -64,15 +64,22 @@ public class SubscribeEventClientUtils {
     }
 
     @SubscribeEvent
-    public void onPlayerDeath(LivingDeathEvent event) {
-        if (!(event.entity instanceof EntityPlayer) && MainConfig.enableDeathIncompleteMessage) return;
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+
         Minecraft mc = Minecraft.getMinecraft();
-        if (mc.currentScreen instanceof GuiChat guiChat) {
+        if (mc.thePlayer == null || mc.theWorld == null) return;
+
+        if (mc.thePlayer.isDead && !hasHandledDeathMessage && mc.currentScreen instanceof GuiChat guiChat) {
             String chat = ((AccessorGuiChat) guiChat).getInputField()
                 .getText();
             mc.thePlayer.sendChatMessage(chat + (chat.startsWith("/") ? "" : "-"));
-            guiChat.onGuiClosed();
-            mc.displayGuiScreen(null);
+            mc.thePlayer.closeScreen();
+            hasHandledDeathMessage = true; // 标记为已处理
+        }
+
+        if (!mc.thePlayer.isDead) {
+            hasHandledDeathMessage = false;
         }
     }
 
