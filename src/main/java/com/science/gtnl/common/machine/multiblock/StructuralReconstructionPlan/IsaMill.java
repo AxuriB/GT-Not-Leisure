@@ -158,6 +158,11 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
                 return false;
             }
         }
+        for (MTEHatch mExoticEnergyHatch : this.mExoticEnergyHatches) {
+            if (mGlassTier < VoltageIndex.UHV && mExoticEnergyHatch.mTier > mGlassTier) {
+                return false;
+            }
+        }
 
         mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {

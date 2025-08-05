@@ -175,6 +175,11 @@ public class FlotationCellRegulator extends GTMMultiMachineBase<FlotationCellReg
                 return false;
             }
         }
+        for (MTEHatch mExoticEnergyHatch : this.mExoticEnergyHatches) {
+            if (mGlassTier < VoltageIndex.UHV && mExoticEnergyHatch.mTier > mGlassTier) {
+                return false;
+            }
+        }
 
         mEnergyHatchTier = checkEnergyHatchTier();
         if (MainConfig.enableMachineAmpLimit) {

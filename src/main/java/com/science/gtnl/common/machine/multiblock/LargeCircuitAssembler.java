@@ -171,7 +171,12 @@ public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssem
 
         mEnergyHatchTier = checkEnergyHatchTier();
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (mGlassTier < VoltageIndex.UV & mEnergyHatch.mTier > mGlassTier) {
+            if (mGlassTier < VoltageIndex.UV && mEnergyHatch.mTier > mGlassTier) {
+                return false;
+            }
+        }
+        for (MTEHatch mExoticEnergyHatch : this.mExoticEnergyHatches) {
+            if (mGlassTier < VoltageIndex.UV && mExoticEnergyHatch.mTier > mGlassTier) {
                 return false;
             }
         }
