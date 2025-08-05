@@ -586,7 +586,7 @@ public class MainConfig {
         enableSaturationHeal = config.get(
             CATEGORY_OTHER,
             "enableSaturationHeal",
-            true,
+            enableSaturationHeal,
             "Enable Saturation Heal Tweak. When hunger is 20, player regenerates health based on saturation / 6, up to 1 HP per 0.5s")
             .getBoolean(enableSaturationHeal);
 

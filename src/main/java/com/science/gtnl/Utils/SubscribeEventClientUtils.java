@@ -30,6 +30,7 @@ import com.reavaritia.common.render.CustomEntityRenderer;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.common.item.TimeStopManager;
 import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
+import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.EffectLoader;
 import com.science.gtnl.mixins.early.Minecraft.AccessorGuiChat;
 
@@ -50,6 +51,7 @@ public class SubscribeEventClientUtils {
     public static IIcon cheatWrenchIcon;
 
     public static boolean hasHandledDeathMessage = false;
+    public static float lastHealth = 20.0f;
 
     public static void registerAllIcons(net.minecraft.client.renderer.texture.IIconRegister ir) {
         haloNoiseIcon = ir.registerIcon(haloNoiseIconTexture);
@@ -65,22 +67,28 @@ public class SubscribeEventClientUtils {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase != TickEvent.Phase.END && !MainConfig.enableDeathIncompleteMessage) return;
 
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
-        if (mc.thePlayer.isDead && !hasHandledDeathMessage && mc.currentScreen instanceof GuiChat guiChat) {
+        float currentHealth = mc.thePlayer.getHealth();
+
+        if (lastHealth > 0 && currentHealth <= 0
+            && !hasHandledDeathMessage
+            && mc.currentScreen instanceof GuiChat guiChat) {
             String chat = ((AccessorGuiChat) guiChat).getInputField()
                 .getText();
             mc.thePlayer.sendChatMessage(chat + (chat.startsWith("/") ? "" : "-"));
             mc.thePlayer.closeScreen();
-            hasHandledDeathMessage = true; // 标记为已处理
+            hasHandledDeathMessage = true;
         }
 
-        if (!mc.thePlayer.isDead) {
+        if (currentHealth > 0) {
             hasHandledDeathMessage = false;
         }
+
+        lastHealth = currentHealth;
     }
 
     @SideOnly(Side.CLIENT)

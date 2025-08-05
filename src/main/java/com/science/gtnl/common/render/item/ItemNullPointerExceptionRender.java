@@ -42,7 +42,7 @@ public class ItemNullPointerExceptionRender implements IItemRenderer {
         float b = (rgb & 0xFF) / 255.0f;
         GL11.glColor3f(r, g, b);
 
-        float scaleAnim = 1.0f + 0.1f * (float) Math.sin((time % 1000L) / 1000.0f * 2 * Math.PI);
+        float scaleAnim = 1.0f + 0.1f * (float) Math.sin((time % 500L) / 500.0f * 2 * Math.PI);
 
         if (type == ItemRenderType.INVENTORY) {
             GL11.glScalef(80f * scaleAnim, 80f * scaleAnim, 80f * scaleAnim);
