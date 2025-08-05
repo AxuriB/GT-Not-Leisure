@@ -32,6 +32,10 @@ public class ItemNullPointerExceptionRender implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        renderItem(type, item, false);
+    }
+
+    public static void renderItem(ItemRenderType type, ItemStack item, boolean renderInFrame) {
         GL11.glPushMatrix();
 
         long time = System.currentTimeMillis();
@@ -58,6 +62,15 @@ public class ItemNullPointerExceptionRender implements IItemRenderer {
             GL11.glRotatef(-80f, 1f, 0f, 0f);
             GL11.glScalef(20f * scaleAnim, 20f * scaleAnim, 20f * scaleAnim);
             GL11.glTranslatef(-0.08f, -0.53f, 0f);
+        } else if (type == ItemRenderType.ENTITY) {
+            GL11.glScalef(1f, -1f, 1f);
+            GL11.glRotatef(110f, 0f, 0f, 0f);
+            GL11.glScalef(50f * scaleAnim, 50f * scaleAnim, 50f * scaleAnim);
+            if (!renderInFrame) {
+                float rotation = (time % 6000L) / 6000.0f * 360.0f;
+                GL11.glRotatef(rotation, 0f, 1f, 0f);
+            }
+            GL11.glTranslatef(-0.5f, -0.5f, 0f);
         }
 
         IIcon icon = Objects.requireNonNull(item.getItem())

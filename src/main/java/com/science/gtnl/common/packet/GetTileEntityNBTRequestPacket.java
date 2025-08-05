@@ -17,7 +17,7 @@ import lombok.Getter;
 @Getter
 public class GetTileEntityNBTRequestPacket implements IMessage {
 
-    private int x, y, z, blockID, blockMeta;
+    public int x, y, z, blockID, blockMeta;
 
     public GetTileEntityNBTRequestPacket() {}
 

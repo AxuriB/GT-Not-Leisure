@@ -21,7 +21,7 @@ public class TileEntityNanoPhagocytosisPlant extends TileEntity {
     private float radius = 1;
     private float rotationSpeed = 10;
     @Getter
-    private float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0;
+    public float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0;
     private AxisAlignedBB renderBoundingBox;
 
     private ForgeOfGodsStarColor starColor = ForgeOfGodsStarColor.DEFAULT;
@@ -29,7 +29,7 @@ public class TileEntityNanoPhagocytosisPlant extends TileEntity {
     // current color data
     private int currentColor = Color.rgb(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE);
     @Getter
-    private float gamma = DEFAULT_GAMMA;
+    public float gamma = DEFAULT_GAMMA;
 
     // interpolation color data
     private int cycleStep;

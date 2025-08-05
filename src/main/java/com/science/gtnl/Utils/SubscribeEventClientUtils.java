@@ -15,11 +15,14 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -29,7 +32,9 @@ import org.lwjgl.opengl.GL11;
 import com.reavaritia.common.render.CustomEntityRenderer;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.common.item.TimeStopManager;
+import com.science.gtnl.common.item.items.NullPointerException;
 import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
+import com.science.gtnl.common.render.item.ItemNullPointerExceptionRender;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.EffectLoader;
 import com.science.gtnl.mixins.early.Minecraft.AccessorGuiChat;
@@ -116,6 +121,15 @@ public class SubscribeEventClientUtils {
     public void onTextureStitch(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 1) {
             registerAllIcons(event.map);
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderItemInFrame(RenderItemInFrameEvent event) {
+        ItemStack stack = event.item;
+        if (stack != null && stack.getItem() instanceof NullPointerException) {
+            ItemNullPointerExceptionRender.renderItem(IItemRenderer.ItemRenderType.ENTITY, event.item, true);
+            event.setCanceled(true);
         }
     }
 
