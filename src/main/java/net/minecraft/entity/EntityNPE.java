@@ -150,8 +150,10 @@ public class EntityNPE extends Entity implements IProjectile {
             int j = this.worldObj.getBlockMetadata(this.hitBlockX, this.hitBlockY, this.hitBlockZ);
 
             if (block == this.hitBlock && j == this.inData) {
-                this.worldObj.removeEntity(this);
-                throw new NullPointerException("java.lang.NullPointerException");
+                worldObj.removeEntity(this);
+                if (worldObj.isRemote) {
+                    throw new NullPointerException("java.lang.NullPointerException");
+                }
             } else {
                 this.inGround = false;
                 this.motionX *= this.rand.nextFloat() * 0.2F;

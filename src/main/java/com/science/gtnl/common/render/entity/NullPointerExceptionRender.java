@@ -2,6 +2,7 @@ package com.science.gtnl.common.render.entity;
 
 import static net.minecraft.client.renderer.ItemRenderer.renderItemIn2D;
 
+import java.awt.Color;
 import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
@@ -36,7 +37,14 @@ public class NullPointerExceptionRender extends Render {
         this.bindEntityTexture(entityNPE);
         GL11.glPushMatrix();
 
-        GL11.glColor4d(1f, 1f, 1f, 1f);
+        long time = System.currentTimeMillis();
+        float hue = (time % 15000L) / 15000.0f;
+        int rgb = Color.HSBtoRGB(hue, 1.0f, 1.0f);
+        float r = ((rgb >> 16) & 0xFF) / 255.0f;
+        float g = ((rgb >> 8) & 0xFF) / 255.0f;
+        float b = (rgb & 0xFF) / 255.0f;
+        GL11.glColor3f(r, g, b);
+
         GL11.glTranslatef((float) x, (float) y, (float) z);
         GL11.glRotatef(
             entityNPE.prevRotationYaw + (entityNPE.rotationYaw - entityNPE.prevRotationYaw) * partialTicks - 90.0F,
