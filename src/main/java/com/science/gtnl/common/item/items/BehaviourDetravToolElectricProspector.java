@@ -1,6 +1,7 @@
 package com.science.gtnl.common.item.items;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.ScienceNotLeisure.network;
 import static gregtech.api.enums.Mods.VisualProspecting;
 
 import java.util.ArrayList;
@@ -26,14 +27,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.packet.ProspectingPacket;
+import com.science.gtnl.config.MainConfig;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import detrav.DetravScannerMod;
-import detrav.items.DetravMetaGeneratedTool01;
-import detrav.net.DetravNetwork;
-import detrav.net.ProspectingPacket;
 import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
@@ -79,10 +78,10 @@ public class BehaviourDetravToolElectricProspector extends Item {
                 return aStack;
             }
 
-            final int cX = ((int) aPlayer.posX) >> 4;
-            final int cZ = ((int) aPlayer.posZ) >> 4;
+            int cX = ((int) aPlayer.posX) >> 4;
+            int cZ = ((int) aPlayer.posZ) >> 4;
             int size = mRange;
-            final List<Chunk> chunks = new ArrayList<>();
+            List<Chunk> chunks = new ArrayList<>();
             aPlayer.addChatMessage(new ChatComponentText("Scanning..."));
 
             for (int i = -size; i <= size; i++)
@@ -90,21 +89,21 @@ public class BehaviourDetravToolElectricProspector extends Item {
                     chunks.add(aWorld.getChunkFromChunkCoords(cX + i, cZ + j));
             size = size - 1;
 
-            final ProspectingPacket packet = new ProspectingPacket(
+            ProspectingPacket packet = new ProspectingPacket(
                 cX,
                 cZ,
                 (int) aPlayer.posX,
                 (int) aPlayer.posZ,
                 size,
                 data);
-            final String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
+            String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
             for (Chunk c : chunks) {
                 for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
-                    final int ySize = c.getHeightValue(x, z);
+                    int ySize = c.getHeightValue(x, z);
                     for (int y = 1; y < ySize; y++) {
                         switch (data) {
                             case 0, 1 -> {
-                                final Block tBlock = c.getBlock(x, y, z);
+                                Block tBlock = c.getBlock(x, y, z);
                                 short tMetaID = (short) c.getBlockMetadata(x, y, z);
                                 if (tBlock instanceof BlockOresAbstract) {
                                     TileEntity tTileEntity = c.getTileEntityUnsafe(x, y, z);
@@ -181,8 +180,7 @@ public class BehaviourDetravToolElectricProspector extends Item {
                     }
                 }
             }
-            packet.level = 10;
-            DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
+            network.sendTo(packet, (EntityPlayerMP) aPlayer);
             if (!aPlayer.capabilities.isCreativeMode)
                 aStack.setItemDamage(aStack.getItemDamage() + this.mCosts * chunks.size());
 
@@ -225,7 +223,7 @@ public class BehaviourDetravToolElectricProspector extends Item {
     @Override
     public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide,
         float hitX, float hitY, float hitZ) {
-        long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
+        int data = getDetravData(aStack);
         if (data < 2) {
             if (aWorld.getBlock(aX, aY, aZ) == Blocks.bedrock) {
                 if (!aWorld.isRemote) {
@@ -295,7 +293,7 @@ public class BehaviourDetravToolElectricProspector extends Item {
                         break;
                     }
                 }
-                if (DetravScannerMod.DEBUG_ENABLED) aPlayer.addChatMessage(
+                if (MainConfig.enableDebugMode) aPlayer.addChatMessage(
                     new ChatComponentText(
                         EnumChatFormatting.YELLOW + "Chunk at "
                             + aX
@@ -428,9 +426,8 @@ public class BehaviourDetravToolElectricProspector extends Item {
                 addChatMassageByValue(aPlayer, -1, "ERROR, lol ^_^");
             }
         } else if (aRandom.nextInt(100) < chance) {
-            final int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack)
-                .intValue();
-            final String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
+            int data = getDetravData(aStack);
+            String small_ore_keyword = StatCollector.translateToLocal("detrav.scanner.small_ore.keyword");
             for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
                 int ySize = aChunk.getHeightValue(x, z);
                 for (int y = 1; y < ySize; y++) {
@@ -458,7 +455,7 @@ public class BehaviourDetravToolElectricProspector extends Item {
                         if (!name.isEmpty()) addOreToHashMap(name, aPlayer);
                     } else if (BartWorksHelper.isOre(tBlock)) {
                         if (data != 1 && BartWorksHelper.isSmallOre(tBlock)) continue;
-                        final Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(
+                        Werkstoff werkstoff = Werkstoff.werkstoffHashMap.getOrDefault(
                             (short) ((BartWorksHelper.getMetaFromBlock(aChunk, x, y, z, tBlock)) * -1),
                             null);
                         String type = BartWorksHelper.isSmallOre(tBlock) ? "oreSmall" : "ore";
@@ -489,7 +486,7 @@ public class BehaviourDetravToolElectricProspector extends Item {
             if (!aPlayer.capabilities.isCreativeMode) aStack.setItemDamage(aStack.getItemDamage() + this.mCosts);
 
         } else {
-            if (DetravScannerMod.DEBUG_ENABLED)
+            if (MainConfig.enableDebugMode)
                 aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
             if (!aPlayer.capabilities.isCreativeMode) aStack.setItemDamage(aStack.getItemDamage() + this.mCosts / 4);
         }
@@ -498,7 +495,7 @@ public class BehaviourDetravToolElectricProspector extends Item {
     public void addOreToHashMap(String orename, EntityPlayer aPlayer) {
         String oreDistance = orename + StatCollector.translateToLocal("detrav.scanner.distance.texts." + distTextIndex); // orename
         if (!ores.containsKey(oreDistance)) {
-            if (DetravScannerMod.DEBUG_ENABLED) aPlayer
+            if (MainConfig.enableDebugMode) aPlayer
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + " Adding to oremap " + oreDistance));
             ores.put(oreDistance, 1);
         } else {

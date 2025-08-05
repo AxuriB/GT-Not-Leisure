@@ -77,6 +77,7 @@ public class ScienceNotLeisure {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
         proxy.preInit(event);
         MaterialLoader.loadPreInit();
         LanguageManager.init();

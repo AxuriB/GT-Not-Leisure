@@ -2,16 +2,21 @@ package com.science.gtnl;
 
 import static com.science.gtnl.ScienceNotLeisure.network;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventUtils;
+import com.science.gtnl.Utils.detrav.DetravScannerGUI;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.GetTileEntityNBTRequestPacket;
+import com.science.gtnl.common.packet.ProspectingPacket;
 import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.SyncHPCAVariablesPacket;
+import com.science.gtnl.common.packet.TeleportRequestPacket;
 import com.science.gtnl.common.packet.TickratePacket;
 import com.science.gtnl.common.packet.TileEntityNBTPacket;
 import com.science.gtnl.common.packet.TitlePacket;
@@ -23,10 +28,11 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.Mods;
 
-public class CommonProxy {
+public class CommonProxy implements IGuiHandler {
 
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
@@ -50,6 +56,8 @@ public class CommonProxy {
         network.registerMessage(TileEntityNBTPacket.Handler.class, TileEntityNBTPacket.class, 4, Side.CLIENT);
         network.registerMessage(SoundPacket.Handler.class, SoundPacket.class, 5, Side.CLIENT);
         network.registerMessage(SyncHPCAVariablesPacket.Handler.class, SyncHPCAVariablesPacket.class, 6, Side.CLIENT);
+        network.registerMessage(TeleportRequestPacket.Handler.class, TeleportRequestPacket.class, 7, Side.SERVER);
+        network.registerMessage(ProspectingPacket.Handler.class, ProspectingPacket.class, 8, Side.CLIENT);
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
@@ -71,5 +79,22 @@ public class CommonProxy {
             .register(SuperCraftingInputHatchME.class);
 
         // AltarStructure.registerAltarStructureInfo();
+    }
+
+    @Override
+    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        return null;
+    }
+
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        if (ID == DetravScannerGUI.GUI_ID) {
+            return new DetravScannerGUI();
+        }
+        return null;
+    }
+
+    public void openProspectorGUI() {
+        // just Client code
     }
 }

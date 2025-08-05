@@ -1,14 +1,17 @@
 package com.science.gtnl;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.renderer.entity.RenderLeashKnot;
 import net.minecraft.entity.EntityNPE;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
+import com.science.gtnl.Utils.detrav.DetravScannerGUI;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockEternalGregTechWorkshopRender;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockNanoPhagocytosisPlantRender;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
@@ -128,4 +131,15 @@ public class ClientProxy extends CommonProxy {
         super.preInit(event);
     }
 
+    @Override
+    public void openProspectorGUI() {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        player.openGui(
+            ScienceNotLeisure.instance,
+            DetravScannerGUI.GUI_ID,
+            player.worldObj,
+            (int) player.posX,
+            (int) player.posY,
+            (int) player.posZ);
+    }
 }
