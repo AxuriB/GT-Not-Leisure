@@ -41,11 +41,12 @@ public class AnimatedText {
         + ": "
         + AnimatedText.PBTR.get()
         + RESET;
-
     public static final Supplier<String> SNL_SCCR = () -> AnimatedText.SCIENCE_NOT_LEISURE.get() + RESET
         + ": "
         + AnimatedText.SCCR.get()
         + RESET;
+    public static final Supplier<String> SNL_SKYINR = () -> AnimatedText.SCIENCE_NOT_LEISURE
+        .get() + RESET + ": " + AQUA + "Created By: Skyinr" + RESET;
 
     public static final Supplier<String> SCIENCE_NOT_LEISURE = chain(
         text(StatCollector.translateToLocal("Adder")),

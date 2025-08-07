@@ -38,6 +38,7 @@ import com.science.gtnl.common.machine.hatch.HumongousSolidifierHatch;
 import com.science.gtnl.common.machine.hatch.ManaDynamoHatch;
 import com.science.gtnl.common.machine.hatch.ManaEnergyHatch;
 import com.science.gtnl.common.machine.hatch.NinefoldInputHatch;
+import com.science.gtnl.common.machine.hatch.OredictInputBusHatchME;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputProxy;
@@ -1829,6 +1830,13 @@ public class MachineLoader {
         GTNLItemList.Replicator
             .set(new Replicator(REPLICATOR.ID, "Replicator", StatCollector.translateToLocal("Replicator"), 7));
         addItemTooltip(GTNLItemList.Replicator.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.OredictInputBusHatchME.set(
+            new OredictInputBusHatchME(
+                OREDICT_INPUT_BUS_HATCH_ME.ID,
+                "OredictInputBusHatchME",
+                StatCollector.translateToLocal("OredictInputBusHatchME")));
+        addItemTooltip(GTNLItemList.OredictInputBusHatchME.get(1), AnimatedText.SNL_SKYINR);
     }
 
     @Deprecated
