@@ -17,6 +17,5 @@ public class ItemBlockPlayerLeash extends ItemBlock {
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean f3_h) {
         tooltip.add(StatCollector.translateToLocal("Tooltip_PlayerLeash_00"));
-        tooltip.add(StatCollector.translateToLocal("Tooltip_PlayerLeash_01"));
     }
 }

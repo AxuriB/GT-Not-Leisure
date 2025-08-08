@@ -146,7 +146,6 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
             .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_01"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04") + "20480M EU")
             .addInfo(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_02"))

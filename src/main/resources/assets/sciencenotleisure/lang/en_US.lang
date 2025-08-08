@@ -238,8 +238,7 @@ NinefoldInputHatchMAX=Ninefold Input Hatch (MAX)
 HumongousNinefoldInputHatch=Humongous Ninefold Input Hatch
 Tooltip_NinefoldInputHatch_00=Input fluids for multiblock machines
 Tooltip_NinefoldInputHatch_01=Capacity: 
-Tooltip_NinefoldInputHatch_02_00=Can hold
-Tooltip_NinefoldInputHatch_02_01=types of fluids
+Tooltip_NinefoldInputHatch_02=Can hold %s types of fluids
 
 QuadrupleOutputHatchEV=Quadruple Output Hatch (EV)
 NinefoldOutputHatchEV=Ninefold Output Hatch (EV)
@@ -510,7 +509,6 @@ container.ExtremeAnvil=The Final Anvil
 tile.PlayerLeash.name=Leash Barrier
 entity.sciencenotleisure.PlayerLeashKnot.name=Leash Barrier
 Tooltip_PlayerLeash_00=Creates a powerful leash field that allows the placer to fly
-Tooltip_PlayerLeash_01=Effective radius: 10 blocks
 
 MetaItem.0.name=Troll Face
 tooltips.TrollFace=Never Gonna Give You Up~

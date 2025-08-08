@@ -95,7 +95,9 @@ public class FuelRefiningComplexRecipes implements IRecipePool {
             .addTo(FCR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 11L))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 11L))
             .fluidInputs(
                 Materials.Naphtha.getFluid(16000),
                 Materials.Gas.getGas(2000),
@@ -108,7 +110,9 @@ public class FuelRefiningComplexRecipes implements IRecipePool {
             .addTo(FCR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 6L))
+            .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 6L))
             .fluidInputs(
                 Materials.Naphtha.getFluid(16000),
                 Materials.Gas.getGas(2000),

@@ -246,8 +246,7 @@ NinefoldInputHatchMAX=九重输入仓 (MAX)
 HumongousNinefoldInputHatch=巨型九重输入仓
 Tooltip_NinefoldInputHatch_00=为多方块机器输入流体
 Tooltip_NinefoldInputHatch_01=容量：
-Tooltip_NinefoldInputHatch_02_00=可容纳
-Tooltip_NinefoldInputHatch_02_01=种流体
+Tooltip_NinefoldInputHatch_02=可容纳 %s 种流体
 
 QuadrupleOutputHatchEV=四重输出仓 (EV)
 NinefoldOutputHatchEV=九重输出仓 (EV)
@@ -517,8 +516,7 @@ container.ExtremeAnvil=终焉之砧
 
 tile.PlayerLeash.name=拴绳结界
 entity.sciencenotleisure.PlayerLeashKnot.name=拴绳结界
-Tooltip_PlayerLeash_00=创造一个强大的拴绳立场，允许放置其方块的玩家飞行
-Tooltip_PlayerLeash_01=有效半径：10格
+Tooltip_PlayerLeash_00=创造一个强大的拴绳立场，允许放置其方块的玩家在一定范围内飞行
 
 MetaItem.0.name=愚人脸
 tooltips.TrollFace=Never Gonna Give You Up~
@@ -1609,7 +1607,7 @@ NameSteamBeaconModuleI=蒸汽信标模块 I
 NameSteamBeaconModuleII=蒸汽信标模块 II
 NameSteamBeaconModuleIII=蒸汽信标模块 III
 SteamBeaconModuleRecipeType=信标
-Tooltip_SteamBeaconModuleI_00=§a§l村民向您分享了原始药水信标技术！
+Tooltip_SteamBeaconModuleI_00=§a§l村民向您分享了原始信标技术！
 Tooltip_SteamBeaconModuleII_00=§a§l将蒸汽嬗变成药水分子...
 Tooltip_SteamBeaconModuleIII_00=§a§l宇宙没有义务让你理解...喵！
 Tooltip_SteamBeaconModule_00=将信标功能添加到蒸汽楼梯
@@ -1671,7 +1669,7 @@ NameLargeGasCollector=大型集气室
 gtnl.recipe.GasCollectorRecipes=集气室
 LargeGasCollectorRecipeType=集气室
 Tooltip_LargeGasCollector_00=集气室的大型版本
-Tooltip_LargeGasCollector_01=最大并行数为1000000
+Tooltip_LargeGasCollector_01=最大并行数为1,000,000
 Tooltip_LargeGasCollector_Casing=任意脱氧钢机械方块
 
 NameLargeCutter=大型切割机

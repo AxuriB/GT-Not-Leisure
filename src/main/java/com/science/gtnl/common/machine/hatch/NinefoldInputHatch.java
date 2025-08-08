@@ -72,9 +72,9 @@ public class NinefoldInputHatch extends MTEHatchMultiInput implements IAddUIWidg
             StatCollector.translateToLocal("Tooltip_NinefoldInputHatch_01") + GTUtility.formatNumbers(mCapacityPer)
                 + "L");
         desc.add(
-            StatCollector.translateToLocal("Tooltip_NinefoldInputHatch_02_00")
-                + GTUtility.formatNumbers(mInventory.length));
-        desc.add(StatCollector.translateToLocal("Tooltip_NinefoldInputHatch_02_01"));
+            StatCollector.translateToLocalFormatted(
+                "Tooltip_NinefoldInputHatch_02",
+                GTUtility.formatNumbers(mInventory.length)));
 
         return desc.toArray(new String[] {});
     }
