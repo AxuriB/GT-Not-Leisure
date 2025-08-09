@@ -65,6 +65,7 @@ public class ShapedArcaneCraftingRecipes implements IRecipePool {
 
         final IRecipeMap IAA = RecipePool.IndustrialShapedArcaneCraftingRecipes;
 
+        // Shaped
         for (TCRecipeTools.ShapedArcaneCraftingRecipe recipe : TCRecipeTools.ShapedAR) {
             if (shouldSkip(
                 recipe.getOutput()
@@ -75,25 +76,35 @@ public class ShapedArcaneCraftingRecipes implements IRecipePool {
             List<ItemStack> inputItems = new ArrayList<>();
             for (Object input : recipe.getInputItems()) {
                 if (input instanceof ItemStack) {
-                    inputItems.add((ItemStack) input);
+                    ItemStack copy = ((ItemStack) input).copy();
+                    copy.stackSize = 1;
+                    inputItems.add(copy);
                 } else if (input instanceof List) {
                     List<ItemStack> oreDictItems = (List<ItemStack>) input;
                     if (!oreDictItems.isEmpty() && !isOreDictBlacklisted(oreDictItems.get(0))) {
-                        inputItems.add(oreDictItems.get(0));
+                        ItemStack copy = oreDictItems.get(0)
+                            .copy();
+                        copy.stackSize = 1;
+                        inputItems.add(copy);
                     }
                 }
             }
+
+            ItemStack output = recipe.getOutput()
+                .copy();
+            output.stackSize = 1;
 
             GTValues.RA.stdBuilder()
                 .ignoreCollision()
                 .clearInvalid()
                 .itemInputsUnified(inputItems.toArray(new ItemStack[0]))
-                .itemOutputs(recipe.getOutput())
+                .itemOutputs(output)
                 .duration(20)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(IAA);
         }
 
+        // Shapeless
         for (TCRecipeTools.ShapelessArcaneCraftingRecipe recipe : TCRecipeTools.ShaplessAR) {
             if (shouldSkip(
                 recipe.getOutput()
@@ -104,20 +115,29 @@ public class ShapedArcaneCraftingRecipes implements IRecipePool {
             List<ItemStack> inputItems = new ArrayList<>();
             for (Object input : recipe.getInputItems()) {
                 if (input instanceof ItemStack) {
-                    inputItems.add((ItemStack) input);
+                    ItemStack copy = ((ItemStack) input).copy();
+                    copy.stackSize = 1;
+                    inputItems.add(copy);
                 } else if (input instanceof List) {
                     List<ItemStack> oreDictItems = (List<ItemStack>) input;
                     if (!oreDictItems.isEmpty() && !isOreDictBlacklisted(oreDictItems.get(0))) {
-                        inputItems.add(oreDictItems.get(0));
+                        ItemStack copy = oreDictItems.get(0)
+                            .copy();
+                        copy.stackSize = 1;
+                        inputItems.add(copy);
                     }
                 }
             }
+
+            ItemStack output = recipe.getOutput()
+                .copy();
+            output.stackSize = 1;
 
             GTValues.RA.stdBuilder()
                 .ignoreCollision()
                 .clearInvalid()
                 .itemInputsUnified(inputItems.toArray(new ItemStack[0]))
-                .itemOutputs(recipe.getOutput())
+                .itemOutputs(output)
                 .duration(20)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(IAA);
