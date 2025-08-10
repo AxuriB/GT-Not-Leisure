@@ -1,6 +1,7 @@
 package com.science.gtnl.common.machine.hatch;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_FULLAUTOMAINTENANCE;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,9 +17,6 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IConfigurationMaintenance;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -32,7 +30,6 @@ import lombok.Setter;
 
 public class CustomMaintenanceHatch extends MTEHatchMaintenance implements IConfigurationMaintenance, IAddGregtechLogo {
 
-    private static Textures.BlockIcons.CustomIcon face;
     protected int mMinConfigTime;
     protected int mMaxConfigTime;
     protected int mConfigTime = 100;
@@ -125,20 +122,13 @@ public class CustomMaintenanceHatch extends MTEHatchMaintenance implements IConf
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        super.registerIcons(aBlockIconRegister);
-        face = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_FULLAUTOMAINTENANCE");
-    }
-
-    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_FULLAUTOMAINTENANCE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_FULLAUTOMAINTENANCE) };
     }
 
     @Override

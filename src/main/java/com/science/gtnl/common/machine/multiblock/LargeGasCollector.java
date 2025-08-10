@@ -2,6 +2,8 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_LARGE_GAS_COLLECTOR;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_LARGE_GAS_COLLECTOR_ACTIVE;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -30,15 +32,6 @@ import gregtech.common.blocks.BlockCasings2;
 
 public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_GAS_COLLECTOR_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_GAS_COLLECTOR_ACTIVE";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_GAS_COLLECTOR_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_GAS_COLLECTOR_ACTIVE);
-    public static final String TEXTURE_OVERLAY_GAS_COLLECTOR = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_GAS_COLLECTOR";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_GAS_COLLECTOR = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_GAS_COLLECTOR);
-
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LGC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_gas_collector";
     public static final int CASING_INDEX = ((BlockCasings2) sBlockCasings2).getTextureIndex(0);
@@ -66,12 +59,12 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_GAS_COLLECTOR_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_LARGE_GAS_COLLECTOR_ACTIVE)
                     .extFacing()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_GAS_COLLECTOR)
+                    .addIcon(OVERLAY_FRONT_LARGE_GAS_COLLECTOR)
                     .extFacing()
                     .build() };
         }

@@ -2,6 +2,8 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE;
 import static com.science.gtnl.Utils.recipes.RecipeUtil.*;
 import static com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase.ParallelControllerElement.ParallelCon;
 import static gregtech.api.GregTechAPI.*;
@@ -10,7 +12,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -26,8 +27,6 @@ import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -44,8 +43,6 @@ import tectech.thing.casing.BlockGTCasingsTT;
 
 public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implements ISurvivalConstructable {
 
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String SA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/space_assembler";
     public static final String[][] shape = StructureUtils.readStructureFromFile(SA_STRUCTURE_FILE_PATH);
@@ -67,25 +64,17 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(ScreenON)
+                    .addIcon(OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE)
                     .extFacing()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(ScreenOFF)
+                    .addIcon(OVERLAY_FRONT_TECTECH_MULTIBLOCK)
                     .extFacing()
                     .build() };
         }

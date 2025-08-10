@@ -1,6 +1,6 @@
 package com.science.gtnl.common.render.tile;
 
-import static com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray.OVERLAY_FRONT_INDICATOR;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_INDICATOR;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;

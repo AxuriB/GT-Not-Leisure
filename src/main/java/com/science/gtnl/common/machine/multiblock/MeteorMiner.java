@@ -5,6 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElement
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.science.gtnl.ScienceNotLeisure.LOG;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -254,24 +255,6 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MeteorMiner(this.mName);
     }
-
-    public static final String TEXTURE_OVERLAY_FRONT_METEOR_MINER_GLOW = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_FRONT_METEOR_MINER_GLOW";
-    public static final String TEXTURE_OVERLAY_FRONT_METEOR_MINER = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_FRONT_METEOR_MINER";
-    public static final String TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_FRONT_METEOR_MINER_ACTIVE";
-    public static final String TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW";
-
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_METEOR_MINER_GLOW = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_METEOR_MINER_GLOW);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_METEOR_MINER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_METEOR_MINER);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_METEOR_MINER_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW);
 
     @Override
     public int getCasingTextureID() {

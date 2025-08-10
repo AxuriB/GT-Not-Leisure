@@ -3,6 +3,8 @@ package com.science.gtnl.common.machine.multiblock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.Utils.NEGATIVE_ONE;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
@@ -32,7 +34,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -71,8 +72,6 @@ import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -118,8 +117,6 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
     private final int DEPTH_OFF_SET = 0;
     private final ArrayList<MTEHatchDataAccess> mDataAccessHatches = new ArrayList<>();
     private static final int CASING_INDEX = BlockGTCasingsTT.textureOffset + 3;
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
     private boolean isDualInputHatch = false;
     private boolean useSingleAmp = true;
     private int minRecipeTime = 20;
@@ -175,24 +172,16 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         if (sideDirection == facingDirection) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(ScreenON)
+                    .addIcon(OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE)
                     .extFacing()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(ScreenOFF)
+                    .addIcon(OVERLAY_FRONT_TECTECH_MULTIBLOCK)
                     .extFacing()
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
     }
 
     @Override

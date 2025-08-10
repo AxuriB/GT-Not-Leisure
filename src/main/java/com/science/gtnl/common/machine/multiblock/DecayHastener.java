@@ -2,6 +2,8 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_DECAY_HASTENER;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_DECAY_HASTENER_ACTIVE;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -22,7 +24,6 @@ import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -56,22 +57,18 @@ public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements
         return new DecayHastener(this.mName);
     }
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon(
-        "icons/NeutronActivator_Off");
-
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(textureFontOn)
+                    .addIcon(OVERLAY_FRONT_DECAY_HASTENER_ACTIVE)
                     .extFacing()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(textureFontOff)
+                    .addIcon(OVERLAY_FRONT_DECAY_HASTENER)
                     .extFacing()
                     .build() };
         }

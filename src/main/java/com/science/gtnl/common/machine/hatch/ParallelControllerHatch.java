@@ -1,6 +1,6 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_PARALLEL_CONTROLLER;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +17,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
 
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -30,10 +29,6 @@ import lombok.Getter;
 @Getter
 public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLogo {
 
-    public static final String TEXTURE_OVERLAY_PARALLEL_CONTROLLER = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_PARALLEL_CONTROLLER";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_PARALLEL_CONTROLLER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_PARALLEL_CONTROLLER);
     protected int maxParallel;
     protected int parallel = 1;
 
@@ -113,12 +108,12 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PARALLEL_CONTROLLER) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_PARALLEL_CONTROLLER) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PARALLEL_CONTROLLER) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_PARALLEL_CONTROLLER) };
     }
 
     @Override

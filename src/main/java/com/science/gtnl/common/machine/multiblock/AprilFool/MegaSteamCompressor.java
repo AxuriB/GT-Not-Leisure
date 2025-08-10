@@ -2,6 +2,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
@@ -43,22 +44,6 @@ import gregtech.common.tileentities.render.TileEntityBlackhole;
 
 public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompressor> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_MULTI_STEAMHOLE_GLOW = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_MULTI_STEAMHOLE_GLOW";
-    public static final String TEXTURE_OVERLAY_MULTI_STEAMHOLE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_MULTI_STEAMHOLE";
-    public static final String TEXTURE_OVERLAY_MULTI_STEAMHOLE_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_MULTI_STEAMHOLE_ACTIVE";
-    public static final String TEXTURE_OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_MULTI_STEAMHOLE_GLOW = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_MULTI_STEAMHOLE_GLOW);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_MULTI_STEAMHOLE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_MULTI_STEAMHOLE);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_MULTI_STEAMHOLE_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_MULTI_STEAMHOLE_ACTIVE);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SMC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_mega_compressor";
     public static final String[][] shape = StructureUtils.readStructureFromFile(SMC_STRUCTURE_FILE_PATH);
@@ -170,11 +155,11 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_MULTI_STEAMHOLE_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_MEGA_STEAM_COMPRESSOR_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_MULTI_STEAMHOLE_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_MEGA_STEAM_COMPRESSOR_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -183,11 +168,11 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_MULTI_STEAMHOLE)
+                        .addIcon(OVERLAY_FRONT_MEGA_STEAM_COMPRESSOR)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_MULTI_STEAMHOLE_GLOW)
+                        .addIcon(OVERLAY_FRONT_MEGA_STEAM_COMPRESSOR_GLOW)
                         .extFacing()
                         .glow()
                         .build() };

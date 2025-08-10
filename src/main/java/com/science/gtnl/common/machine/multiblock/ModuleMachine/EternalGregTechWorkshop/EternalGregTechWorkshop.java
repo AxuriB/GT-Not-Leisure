@@ -3,6 +3,8 @@ package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTech
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK;
 import static com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.EternalGregTechWorkshopUpgrade.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -79,7 +81,6 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -166,14 +167,6 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     public static final String[][] shape_extra_air = StructureUtils.replaceLetters(shape_extra, "a");
 
     public final int CASING_INDEX = 960;
-
-    public static final String TEXTURE_OVERLAY_FRONT_SCREEN_ON = Mods.GregTech.ID + ":"
-        + "iconsets/GODFORGE_CONTROLLER";
-    public static Textures.BlockIcons.CustomIcon ScreenON = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_SCREEN_ON);
-    public static final String TEXTURE_OVERLAY_FRONT_SCREEN_OFF = Mods.GregTech.ID + ":" + "iconsets/SCREEN_OFF";
-    public static Textures.BlockIcons.CustomIcon ScreenOFF = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_SCREEN_OFF);
 
     private int tCountCasing = 0;
     private int mHeatingCapacity = 0;
@@ -379,23 +372,13 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + 1),
                 TextureFactory.builder()
-                    .addIcon(ScreenON)
+                    .addIcon(OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE)
                     .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(ScreenON)
-                    .extFacing()
-                    .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + 1),
                 TextureFactory.builder()
-                    .addIcon(ScreenOFF)
+                    .addIcon(OVERLAY_FRONT_TECTECH_MULTIBLOCK)
                     .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(ScreenOFF)
-                    .extFacing()
-                    .glow()
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + 1) };

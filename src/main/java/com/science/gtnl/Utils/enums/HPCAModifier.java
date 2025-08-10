@@ -1,17 +1,14 @@
 package com.science.gtnl.Utils.enums;
 
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.*;
 
 import gregtech.api.enums.Textures;
 
 public enum HPCAModifier {
 
-    RED(new Textures.BlockIcons.CustomIcon(RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_FRONT_INDICATOR_RED"), 1, 3, 1, 1,
-        1.5, 1),
-    YELLOW(new Textures.BlockIcons.CustomIcon(RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_FRONT_INDICATOR_YELLOW"), 1.5,
-        1.5, 1, 1.5, 1.25, 1),
-    GREEN(new Textures.BlockIcons.CustomIcon(RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_FRONT_INDICATOR_GREEN"), 1, 1,
-        1, 1, 1, 1);
+    RED(OVERLAY_FRONT_INDICATOR_RED, 1, 3, 1, 1, 1.5, 1),
+    YELLOW(OVERLAY_FRONT_INDICATOR_YELLOW, 1.5, 1.5, 1, 1.5, 1.25, 1),
+    GREEN(OVERLAY_FRONT_INDICATOR_GREEN, 1, 1, 1, 1, 1, 1);
 
     public final Textures.BlockIcons.CustomIcon overlay;
     public final double computationCoefficientX;

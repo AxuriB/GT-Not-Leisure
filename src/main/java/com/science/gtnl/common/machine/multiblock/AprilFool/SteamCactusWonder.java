@@ -2,6 +2,8 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_CACTUS_WONDER;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_CACTUS_WONDER_ACTIVE;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
@@ -49,14 +51,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_CACTUS_WONDER = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_CACTUS_WONDER";
-    public static final String TEXTURE_OVERLAY_CACTUS_WONDER_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_CACTUS_WONDER_ACTIVE";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_CACTUS_WONDER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_CACTUS_WONDER);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_CACTUS_WONDER_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_CACTUS_WONDER_ACTIVE);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "nei";
     private static final String SCW_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_cactus_wonder";
@@ -146,11 +140,11 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
                 Textures.BlockIcons
                     .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_CACTUS_WONDER)
+                    .addIcon(OVERLAY_FRONT_CACTUS_WONDER)
                     .extFacing()
                     .build(),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_CACTUS_WONDER_ACTIVE)
+                    .addIcon(OVERLAY_FRONT_CACTUS_WONDER_ACTIVE)
                     .extFacing()
                     .glow()
                     .build() };

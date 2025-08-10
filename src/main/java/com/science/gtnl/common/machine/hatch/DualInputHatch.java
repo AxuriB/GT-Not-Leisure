@@ -1,13 +1,12 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_DUAL_HATCH;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -26,9 +25,6 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -46,9 +42,6 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
     private final FluidStackTank[] fluidTanks;
     public final int mCapacityPer;
     public final int itemSlotAmount;
-
-    private static final String TEXTURE_OVERLAY_DUAL_HATCH = RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_DUAL_HATCH";
-    private static Textures.BlockIcons.CustomIcon face;
 
     public static class Inventory implements IDualInputInventory {
 
@@ -185,20 +178,13 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        super.registerIcons(aBlockIconRegister);
-        face = new Textures.BlockIcons.CustomIcon(TEXTURE_OVERLAY_DUAL_HATCH);
-    }
-
-    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_DUAL_HATCH) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_DUAL_HATCH) };
     }
 
     @Override

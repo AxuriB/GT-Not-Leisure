@@ -2,8 +2,9 @@ package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.ScienceNotLeisure.network;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -18,7 +19,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,8 +42,6 @@ import com.science.gtnl.common.packet.SyncHPCAVariablesPacket;
 import com.science.gtnl.common.render.tile.HighPerformanceComputationArrayMachineRender;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -88,13 +86,6 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
     public final Table<Integer, Integer, MTEHatchRack> rackTable = HashBasedTable.create();
     public final ArrayList<MTEHatchRack> mRackHatchs = new ArrayList<>();
     public final ArrayList<MTEHatchWirelessComputationOutput> mWirelessComputationOutputHatchs = new ArrayList<>();
-
-    public static Textures.BlockIcons.CustomIcon ScreenOFF;
-    public static Textures.BlockIcons.CustomIcon ScreenON;
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_INDICATOR;
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_INDICATOR_GREEN;
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_INDICATOR_RED;
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_INDICATOR_YELLOW;
 
     public Parameters.Group.ParameterOut maxCurrentTemp, availableData, machineLens, coolantUse;
 
@@ -419,24 +410,12 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
-        OVERLAY_FRONT_INDICATOR = new Textures.BlockIcons.CustomIcon(
-            RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_FRONT_INDICATOR");
-        OVERLAY_FRONT_INDICATOR_GREEN = HPCAModifier.GREEN.overlay;
-        OVERLAY_FRONT_INDICATOR_RED = HPCAModifier.RED.overlay;
-        OVERLAY_FRONT_INDICATOR_YELLOW = HPCAModifier.YELLOW.overlay;
-        super.registerIcons(aBlockIconRegister);
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][3],
-                new TTRenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
+                new TTRenderedExtendedFacingTexture(
+                    aActive ? OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE : OVERLAY_FRONT_TECTECH_MULTIBLOCK) };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][3] };
     }

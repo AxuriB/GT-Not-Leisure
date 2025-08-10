@@ -3,6 +3,8 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_STEAM_LAVA_MAKER;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_STEAM_LAVA_MAKER_ACTIVE;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
@@ -40,13 +42,6 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_LAVAMAKER = RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_LAVAMAKER";
-    public static final String TEXTURE_OVERLAY_LAVAMAKER_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_LAVAMAKER_ACTIVE";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_LAVAMAKER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_LAVAMAKER);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_LAVAMAKER_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_LAVAMAKER_ACTIVE);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SLM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_lava_marker";
     public static final String[][] shape = StructureUtils.readStructureFromFile(SLM_STRUCTURE_FILE_PATH);
@@ -114,25 +109,15 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
                 rTexture = new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(GTUtility.getTextureId((byte) 116, (byte) 27)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_LAVAMAKER_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_STEAM_LAVA_MAKER_ACTIVE)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_LAVAMAKER_ACTIVE)
-                        .extFacing()
-                        .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(GTUtility.getTextureId((byte) 116, (byte) 27)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_LAVAMAKER)
+                        .addIcon(OVERLAY_FRONT_STEAM_LAVA_MAKER)
                         .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_LAVAMAKER)
-                        .extFacing()
-                        .glow()
                         .build() };
             }
         } else {

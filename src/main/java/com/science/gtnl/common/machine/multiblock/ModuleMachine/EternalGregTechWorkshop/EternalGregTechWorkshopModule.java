@@ -3,7 +3,7 @@ package com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTech
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.EternalGregTechWorkshop.ScreenOFF;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -57,7 +57,6 @@ import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -101,11 +100,6 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
     protected final int VERTICAL_OFF_SET = 3;
     protected final int DEPTH_OFF_SET = 0;
     protected final int CASING_INDEX = 960;
-
-    public static final String TEXTURE_OVERLAY_FRONT_SCREEN_ON = Mods.GregTech.ID + ":"
-        + "iconsets/GODFORGE_MODULE_ACTIVE";
-    public static Textures.BlockIcons.CustomIcon ScreenON = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_SCREEN_ON);
 
     public EternalGregTechWorkshopModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -272,23 +266,13 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
         if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
                 TextureFactory.builder()
-                    .addIcon(ScreenON)
+                    .addIcon(OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE)
                     .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(ScreenON)
-                    .extFacing()
-                    .glow()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(ScreenOFF)
+                .addIcon(OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE)
                 .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(ScreenOFF)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }

@@ -1,10 +1,9 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_NINE_HATCH;
 
 import java.util.ArrayList;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,9 +19,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -37,9 +33,6 @@ public class NinefoldInputHatch extends MTEHatchMultiInput implements IAddUIWidg
     private final FluidStack[] mStoredFluid;
     private final FluidStackTank[] fluidTanks;
     public final int mCapacityPer;
-
-    private static final String TEXTURE_OVERLAY_NINE_HATCH = RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_NINE_HATCH";
-    private static Textures.BlockIcons.CustomIcon face;
 
     public NinefoldInputHatch(int aID, int aSlot, String aName, String aNameRegional, int aTier) {
         super(aID, aSlot, aName, aNameRegional, aTier);
@@ -104,19 +97,12 @@ public class NinefoldInputHatch extends MTEHatchMultiInput implements IAddUIWidg
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_NINE_HATCH) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        super.registerIcons(aBlockIconRegister);
-        face = new Textures.BlockIcons.CustomIcon(TEXTURE_OVERLAY_NINE_HATCH);
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_NINE_HATCH) };
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_STEAM_CARPENTER;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_STEAM_CARPENTER_ACTIVE;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -39,13 +41,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class SteamCarpenter extends SteamMultiMachineBase<SteamCarpenter> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_CARPENTER = RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_CARPENTER";
-    public static final String TEXTURE_OVERLAY_CARPENTER_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_CARPENTER_ACTIVE";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_CARPENTER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_CARPENTER);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_CARPENTER_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_CARPENTER_ACTIVE);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_carpenter";
     public static final String[][] shape = StructureUtils.readStructureFromFile(SC_STRUCTURE_FILE_PATH);
@@ -168,7 +163,7 @@ public class SteamCarpenter extends SteamMultiMachineBase<SteamCarpenter> implem
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_CARPENTER_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_STEAM_CARPENTER_ACTIVE)
                         .extFacing()
                         .build() };
             } else {
@@ -176,7 +171,7 @@ public class SteamCarpenter extends SteamMultiMachineBase<SteamCarpenter> implem
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_CARPENTER)
+                        .addIcon(OVERLAY_FRONT_STEAM_CARPENTER)
                         .extFacing()
                         .build() };
             }

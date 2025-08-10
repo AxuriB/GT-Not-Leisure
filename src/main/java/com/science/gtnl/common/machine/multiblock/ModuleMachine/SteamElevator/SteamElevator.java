@@ -2,6 +2,8 @@ package com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE;
 import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.addSteamToGlobalSteamMap;
 import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.getUserSteam;
 import static com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase.ZERO_STRING;
@@ -19,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -60,8 +61,6 @@ import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -99,9 +98,6 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
     private UUID ownerUUID;
     private String costingEUText = ZERO_STRING;
 
-    protected static Textures.BlockIcons.CustomIcon ScreenOFF;
-    protected static Textures.BlockIcons.CustomIcon ScreenON;
-
     protected final int HORIZONTAL_OFF_SET = 17;
     protected final int VERTICAL_OFF_SET = 39;
     protected final int DEPTH_OFF_SET = 14;
@@ -109,14 +105,6 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_elevator";
     public static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_CONTROLLER_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
-    }
 
     @Override
     public String getMachineType() {
@@ -468,7 +456,8 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
-                new TTRenderedExtendedFacingTexture(aActive ? ScreenON : ScreenOFF) };
+                new TTRenderedExtendedFacingTexture(
+                    aActive ? OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE : OVERLAY_FRONT_TECTECH_MULTIBLOCK) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }

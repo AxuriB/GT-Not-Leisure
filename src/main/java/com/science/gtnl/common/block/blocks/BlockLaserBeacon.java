@@ -1,6 +1,6 @@
 package com.science.gtnl.common.block.blocks;
 
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.LASER_BEACON_TOP;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -65,16 +65,11 @@ public class BlockLaserBeacon extends Block implements ITileEntityProvider {
         return "tile.LaserBeacon";
     }
 
-    private static final String TEXTURE_NAME_OVERLAY_ACTIVE = RESOURCE_ROOT_ID + ":" + "iconsets/LASER_BEACON";
-
-    public static Textures.BlockIcons.CustomIcon LASER_BEACON = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_NAME_OVERLAY_ACTIVE);
-
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
         blockIcon = Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
-        topBlockIcon = LASER_BEACON.getIcon();
+        topBlockIcon = LASER_BEACON_TOP.getIcon();
     }
 
     @Override

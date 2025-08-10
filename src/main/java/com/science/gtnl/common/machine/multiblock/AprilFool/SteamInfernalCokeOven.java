@@ -2,6 +2,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -45,18 +46,6 @@ import gtPlusPlus.core.block.ModBlocks;
 public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCokeOven>
     implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_STEAM_COKE_OVEN = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_STEAM_COKE_OVEN";
-    public static final String TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_STEAM_COKE_OVEN_ACTIVE";
-    public static final String TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_STEAM_COKE_OVEN = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_STEAM_COKE_OVEN);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_STEAM_COKE_OVEN_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SICO = RESOURCE_ROOT_ID + ":" + "multiblock/steam_infernal_coke_oven";
     public static final String[][] shape = StructureUtils.readStructureFromFile(SICO);
@@ -123,11 +112,11 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_STEAM_COKE_OVEN_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_STEAM_INFERNAL_COKE_OVEN_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_STEAM_INFERNAL_COKE_OVEN_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -136,7 +125,7 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_STEAM_COKE_OVEN)
+                        .addIcon(OVERLAY_FRONT_STEAM_INFERNAL_COKE_OVEN)
                         .extFacing()
                         .build() };
             }
