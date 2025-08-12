@@ -39,7 +39,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
 import gtnhintergalactic.recipe.IGRecipeMaps;
 import ic2.api.item.IC2Items;
 
@@ -454,7 +453,7 @@ public class DisassemblerHelper {
         Map<GTItemStack, List<GTRecipe>> assemblerRecipes = new HashMap<>();
 
         for (GTRecipe recipe : RecipeMaps.assemblerRecipes.getAllRecipes()) {
-            if (!shouldDisassemble(recipe.mOutputs)) continue;
+            if (recipe.mOutputs == null || recipe.mInputs == null || !shouldDisassemble(recipe.mOutputs)) continue;
 
             GTItemStack key = new GTItemStack(recipe.mOutputs[0]);
             assemblerRecipes.computeIfAbsent(key, k -> new ArrayList<>())
@@ -593,31 +592,11 @@ public class DisassemblerHelper {
         }
     }
 
-    private static GTRecipeBuilder applyDebugAssembler(GTRecipeBuilder builder, List<GTRecipe> original,
-        boolean isHardOverride) {
-        if (debugRecipeToRecipe == null) return builder;
-
-        Optional<GTRecipe> generated = builder.build();
-        if (!generated.isPresent()) return builder;
-
-        GTRecipe result = generated.get();
-        int index = debugIndexBumper.getAndIncrement();
-
-        AssemblerReversed info = new AssemblerReversed(original, index, isHardOverride ? "Hard-override" : "Generated");
-
-        debugRecipeToRecipe.computeIfAbsent(result, k -> new ArrayList<>())
-            .add(info);
-        debugIndexToRecipe.put(index, info);
-
-        builder.setNEIDesc("Debug Index: " + index);
-        return builder;
-    }
-
     public static void handleGTCraftingRecipe(ReversedRecipeRegistry.GTCraftingRecipe recipe) {
         GTRecipe revRecipe = recipe.toReversedSafe();
         if (revRecipe == null) return;
 
-        if (!shouldDisassemble(revRecipe.mInputs)) return;
+        if (revRecipe.mOutputs == null || revRecipe.mInputs == null || !shouldDisassemble(revRecipe.mInputs)) return;
 
         try {
             List<ItemStack> outputs = handleRecipeTransformation(revRecipe.mOutputs, null);
@@ -642,9 +621,24 @@ public class DisassemblerHelper {
         }
     }
 
-    private static ItemStack[] fix(ItemStack[] inputs, boolean aUnsafe) {
-        return GTOreDictUnificator
-            .setStackArray(true, aUnsafe, ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new));
+    private static GTRecipeBuilder applyDebugAssembler(GTRecipeBuilder builder, List<GTRecipe> original,
+        boolean isHardOverride) {
+        if (debugRecipeToRecipe == null) return builder;
+
+        Optional<GTRecipe> generated = builder.build();
+        if (!generated.isPresent()) return builder;
+
+        GTRecipe result = generated.get();
+        int index = debugIndexBumper.getAndIncrement();
+
+        AssemblerReversed info = new AssemblerReversed(original, index, isHardOverride ? "Hard-override" : "Generated");
+
+        debugRecipeToRecipe.computeIfAbsent(result, k -> new ArrayList<>())
+            .add(info);
+        debugIndexToRecipe.put(index, info);
+
+        builder.setNEIDesc("Debug Index: " + index);
+        return builder;
     }
 
     private static void applyDebugCrafting(GTRecipeBuilder builder, ReversedRecipeRegistry.GTCraftingRecipe original) {
