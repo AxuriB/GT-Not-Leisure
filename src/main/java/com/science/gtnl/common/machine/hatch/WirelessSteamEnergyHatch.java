@@ -151,7 +151,7 @@ public class WirelessSteamEnergyHatch extends CustomFluidHatch {
 
             int steamToTransfer = Math.min(maxSteam - currentSteam, steamForUse);
 
-            if (steamToTransfer <= 0) return; // nothing to transfer
+            if (steamToTransfer <= 0) return;
 
             if (!addSteamToGlobalSteamMap(owner_uuid, -steamToTransfer)) return;
             fill(Materials.Steam.getGas(steamToTransfer), true);

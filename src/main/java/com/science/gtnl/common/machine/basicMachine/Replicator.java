@@ -1,6 +1,7 @@
 package com.science.gtnl.common.machine.basicMachine;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -113,6 +114,11 @@ public class Replicator extends MTEBasicMachine {
     @Override
     protected boolean drainEnergyForProcess(long aEUt) {
         return true;
+    }
+
+    @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return getFillableStack() != null;
     }
 
     @Override

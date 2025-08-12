@@ -13,13 +13,11 @@ import com.gtnewhorizons.modularui.api.math.Color;
 
 public class CircularGaugeDrawable implements IDrawable {
 
-    public static final double PI_2 = Math.PI / 2;
-
-    private DoubleSupplier progressSupplier;
-    private float minAngle = (float) Math.toRadians(-235.0);
-    private float maxAngle = (float) Math.toRadians(45.0);
-    private int color = 0xff_431d00;
-    private float lastAngle = Float.NaN;
+    public DoubleSupplier progressSupplier;
+    public float minAngle = (float) Math.toRadians(-235.0);
+    public float maxAngle = (float) Math.toRadians(45.0);
+    public int color = 0xff_431d00;
+    public float lastAngle = Float.NaN;
 
     public CircularGaugeDrawable(DoubleSupplier progressSupplier) {
         this.progressSupplier = progressSupplier;

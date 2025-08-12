@@ -11,4 +11,12 @@ public class TextUtils {
         }
         return "texterError: " + aTextLine;
     }
+
+    public static String insertBlocksAfterColon(String original) {
+        int colonIndex = original.indexOf(':');
+        if (colonIndex != -1) {
+            return original.substring(0, colonIndex + 1) + "blocks/" + original.substring(colonIndex + 1);
+        }
+        return "blocks/" + original;
+    }
 }

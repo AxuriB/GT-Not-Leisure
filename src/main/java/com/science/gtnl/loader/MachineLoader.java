@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import com.google.common.collect.ImmutableSet;
 import com.science.gtnl.Utils.enums.GTNLItemList;
@@ -26,6 +25,7 @@ import com.science.gtnl.common.machine.basicMachine.Replicator;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerSteel;
 import com.science.gtnl.common.machine.basicMachine.SteamTurbine;
+import com.science.gtnl.common.machine.cover.WirelessSteamCover;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.common.machine.hatch.DebugEnergyHatch;
@@ -212,6 +212,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.render.TextureFactory;
@@ -1602,11 +1603,10 @@ public class MachineLoader {
         GTNLItemList.BigSteamInputHatch.set(
             new CustomFluidHatch(
                 ImmutableSet.of(
-                    Materials.Steam.getGas(1)
-                        .getFluid(),
+                    Materials.Steam.mGas,
                     FluidUtils.getSuperHeatedSteam(1)
                         .getFluid(),
-                    FluidRegistry.getFluid("supercriticalsteam"),
+                    Materials.DenseSupercriticalSteam.mGas,
                     MaterialPool.CompressedSteam.getMolten(1)
                         .getFluid()),
                 4096000,
@@ -2156,6 +2156,13 @@ public class MachineLoader {
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
             context -> new CoverSteamRegulator(context, 16777216, TextureFactory.of(OVERLAY_VALVE)));
 
+        CoverRegistry.registerCover(
+            GTNLItemList.PipelessSteamCover.get(1L),
+            TextureFactory.of(
+                MACHINE_CASINGS[1][0],
+                TextureFactory.of(Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0])),
+            WirelessSteamCover::new,
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
     public static void registerGlasses() {

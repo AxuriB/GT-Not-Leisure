@@ -16,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -221,7 +220,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
                 addOutput(FluidUtils.getSuperHeatedSteam((int) Math.min(6400, fueledAmount)));
                 fueledAmount -= (int) Math.min(6400, fueledAmount);
             } else if (currentSteam == 3) {
-                addOutput(FluidRegistry.getFluidStack("supercriticalsteam", (int) Math.min(25600, fueledAmount)));
+                addOutput(Materials.DenseSupercriticalSteam.getGas((int) Math.min(25600, fueledAmount)));
                 fueledAmount -= (int) Math.min(25600, fueledAmount);
             }
 

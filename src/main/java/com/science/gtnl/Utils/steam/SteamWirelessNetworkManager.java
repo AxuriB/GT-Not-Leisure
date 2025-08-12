@@ -71,6 +71,18 @@ public class SteamWirelessNetworkManager {
         return GlobalSteam.getOrDefault(SpaceProjectManager.getLeader(user_uuid), BigInteger.ZERO);
     }
 
+    public static int getUserSteamInt(UUID user_uuid) {
+        BigInteger value = GlobalSteam.getOrDefault(SpaceProjectManager.getLeader(user_uuid), BigInteger.ZERO);
+
+        if (value.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+            return Integer.MAX_VALUE;
+        }
+        if (value.compareTo(BigInteger.valueOf(Integer.MIN_VALUE)) < 0) {
+            return Integer.MIN_VALUE;
+        }
+        return value.intValue();
+    }
+
     // This overwrites the steam in the network. Only use this if you are absolutely sure you know what you are doing.
     public static void setUserSteam(UUID user_uuid, BigInteger steamAmount) {
         try {

@@ -105,6 +105,10 @@ Tooltip_AdvancedSuperInputHatchME_03=警告：快速配方检查可能会很卡.
 ExplosionDynamoHatch=爆炸动力仓
 Tooltip_ExplosionDynamoHatch_00=概念神！
 
+PipelessSteamCover=无管蒸汽覆盖板
+Info_PipelessSteamCover_00=切换到 %s
+Info_PipelessSteamCover_01=蒸汽类型
+
 PipelessSteamHatch=无管蒸汽仓
 Tooltip_PipelessSteamHatch_00=§b§o它从哪儿来的? 能从看似虚无的地方提取蒸汽，
 Tooltip_PipelessSteamHatch_01=§b§o甚至无需任何管道，你开始怀疑自己对烧水的理解.
@@ -721,6 +725,7 @@ MetaItem.101.name=压缩蒸汽涡轮
 tooltips.CompressedSteamTurbine_00=无限吞吐量
 MetaItem.102.name=钢涡轮
 tooltips.SteelTurbine_00=稳如长桌
+MetaItem.103.name=无管蒸汽覆盖板
 
 item.SteamRocket.name=蒸汽火箭
 Tooltip_SteamRocket_00=需要熔融压缩蒸汽作为燃料

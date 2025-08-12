@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.gui;
+package com.science.gtnl.Utils.gui.recipe;
 
 import static gtnhintergalactic.recipe.IGRecipeMaps.SPACE_LOCATION;
 import static gtnhintergalactic.recipe.IGRecipeMaps.SPACE_PROJECT;

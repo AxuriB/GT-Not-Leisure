@@ -14,15 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.science.gtnl.Utils.enums.SteamTypes;
 import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.mixins.late.Gregtech.MTEHatchAccessor;
 
@@ -47,11 +46,10 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
     public WirelessSteamDynamoHatch(final int aID, final String aName, final String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
         this.mLockedFluids = ImmutableSet.of(
-            Materials.Steam.getGas(1)
-                .getFluid(),
+            Materials.Steam.mGas,
             FluidUtils.getSuperHeatedSteam(1)
                 .getFluid(),
-            FluidRegistry.getFluid("supercriticalsteam"),
+            Materials.DenseSupercriticalSteam.mGas,
             MaterialPool.CompressedSteam.getMolten(1)
                 .getFluid());
     }
@@ -59,11 +57,10 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
     public WirelessSteamDynamoHatch(final String aName, int aTier, final ITexture[][][] aTextures, Set<Fluid> aFluid) {
         super(aName, aTier, 3, new String[] { "" }, aTextures);
         this.mLockedFluids = ImmutableSet.of(
-            Materials.Steam.getGas(1)
-                .getFluid(),
+            Materials.Steam.mGas,
             FluidUtils.getSuperHeatedSteam(1)
                 .getFluid(),
-            FluidRegistry.getFluid("supercriticalsteam"),
+            Materials.DenseSupercriticalSteam.mGas,
             MaterialPool.CompressedSteam.getMolten(1)
                 .getFluid());
     }
@@ -244,8 +241,8 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
             int rawAmount = currentSteamStack.amount;
             Fluid fluidType = currentSteamStack.getFluid();
 
-            SteamMultiMachineBase.SteamTypes matchedSteamType = null;
-            for (SteamMultiMachineBase.SteamTypes steamType : SteamMultiMachineBase.SteamTypes.VALUES) {
+            SteamTypes matchedSteamType = null;
+            for (SteamTypes steamType : SteamTypes.VALUES) {
                 if (steamType.fluid != null && steamType.fluid.equals(fluidType)) {
                     matchedSteamType = steamType;
                     break;

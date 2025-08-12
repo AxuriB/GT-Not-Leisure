@@ -97,6 +97,10 @@ Tooltip_AdvancedSuperInputHatchME_03=WARNING: Fast recipe checks can be laggy. U
 ExplosionDynamoHatch=Explosion Dynamo Hatch
 Tooltip_ExplosionDynamoHatch_00=Concept God!
 
+PipelessSteamCover=Pipeless Steam Cover
+Info_PipelessSteamCover_00=Switch to %s
+Info_PipelessSteamCover_01=Steam Type
+
 PipelessSteamHatch=Pipeless Steam Hatch
 Tooltip_PipelessSteamHatch_00=§b§oWhere does it come from? Capable of extracting Steam from seemingly nowhere, and even
 Tooltip_PipelessSteamHatch_01=§b§owithout any type of Pipes, you begin to question what you thought you knew about this
@@ -713,6 +717,7 @@ MetaItem.101.name=Compressed Steam Turbine
 tooltips.CompressedSteamTurbine_00=Infinite Throughtput
 MetaItem.102.name=Steel Turbine
 tooltips.SteelTurbine_00=Stable like a Table
+MetaItem.103.name=Pipeless Steam Cover
 
 item.SteamRocket.name=Steam Rocket
 Tooltip_SteamRocket_00=Requires Molten Compressed Steam as fuel

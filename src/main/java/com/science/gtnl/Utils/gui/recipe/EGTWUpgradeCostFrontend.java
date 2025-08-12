@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.gui;
+package com.science.gtnl.Utils.gui.recipe;
 
 import static gregtech.api.util.GTRecipeConstants.FOG_UPGRADE_NAME_SHORT;
 

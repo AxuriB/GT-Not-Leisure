@@ -35,7 +35,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.ApiStatus;
@@ -59,6 +58,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.SteamTypes;
 import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
@@ -66,11 +66,9 @@ import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
-import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.StructureError;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
@@ -96,7 +94,6 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusOutput;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.MTEHatchCustomFluidBase;
@@ -1036,33 +1033,6 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         return buildHatchAdder(typeToken).adder(SteamMultiMachineBase::addToMachineList)
             .hatchIds(PIPELESS_STEAM_HATCH.ID)
             .shouldReject(t -> !t.mSteamWirelessInputFluids.isEmpty());
-    }
-
-    public enum SteamTypes {
-
-        STEAM("Steam", Materials.Steam.getGas(1)
-            .getFluid(), 1),
-        SH_STEAM("Superheated Steam", FluidUtils.getSuperHeatedSteam(1)
-            .getFluid(), 10),
-        SC_STEAM("Supercritical Steam", FluidRegistry.getFluid("supercriticalsteam"), 50),
-        CM_STEAM("Compressed Steam", MaterialPool.CompressedSteam.getMolten(1)
-            .getFluid(), 1000);
-
-        public static final SteamTypes[] VALUES = values();
-
-        public final String displayName;
-        public final Fluid fluid;
-        public final int efficiencyFactor;
-
-        SteamTypes(String name, Fluid fluid, int efficiency) {
-            this.displayName = name;
-            this.fluid = fluid;
-            this.efficiencyFactor = efficiency;
-        }
-
-        public static List<SteamTypes> getSupportedTypes() {
-            return Arrays.asList(VALUES);
-        }
     }
 
 }

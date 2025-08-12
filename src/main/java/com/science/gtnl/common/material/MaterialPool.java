@@ -277,7 +277,6 @@ public class MaterialPool implements Runnable {
             .addMolten()
             .addMetalItems()
             .addCraftingMetalWorkingItems()
-
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
@@ -471,10 +470,8 @@ public class MaterialPool implements Runnable {
             .addMolten()
             .addMetalItems()
             .addCraftingMetalWorkingItems()
-
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 41,
@@ -556,7 +553,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 47,
@@ -871,7 +867,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes()
             .addMixerRecipes((short) 4),
@@ -894,7 +889,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 73,
@@ -912,7 +906,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 74,
@@ -930,7 +923,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 75,
@@ -948,7 +940,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 76,
@@ -966,7 +957,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 77,
@@ -984,7 +974,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 78,
@@ -1002,7 +991,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 79,
@@ -1020,7 +1008,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 80,
@@ -1038,7 +1025,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 81,
@@ -1056,7 +1042,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 82,
@@ -1074,7 +1059,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 83,
@@ -1092,7 +1076,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 84,
@@ -1110,7 +1093,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 85,
@@ -1128,7 +1110,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 86,
@@ -1146,7 +1127,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 87,
@@ -1164,7 +1144,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 88,
@@ -1182,7 +1161,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 89,
@@ -1200,7 +1178,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 90,
@@ -1218,7 +1195,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 91,
@@ -1236,7 +1212,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 92,
@@ -1254,7 +1229,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 93,
@@ -1272,7 +1246,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 94,
@@ -1440,7 +1413,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 109,
@@ -1458,7 +1430,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 110,
@@ -1476,7 +1447,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 111,
@@ -1617,7 +1587,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 200,
@@ -1635,7 +1604,6 @@ public class MaterialPool implements Runnable {
             .addCraftingMetalWorkingItems()
             .addSimpleMetalWorkingItems()
             .addDoubleAndDensePlates()
-
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes(),
         offsetID_01 + 201,

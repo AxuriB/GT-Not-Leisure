@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.gui;
+package com.science.gtnl.Utils.gui.recipe;
 
 import java.util.List;
 import java.util.function.Supplier;

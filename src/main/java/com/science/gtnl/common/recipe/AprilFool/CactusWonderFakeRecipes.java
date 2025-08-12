@@ -1,7 +1,5 @@
 package com.science.gtnl.common.recipe.AprilFool;
 
-import net.minecraftforge.fluids.FluidRegistry;
-
 import com.science.gtnl.Utils.recipes.SteamAmountSpecialValue;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.loader.RecipePool;
@@ -67,7 +65,7 @@ public class CactusWonderFakeRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.QuadrupleCompressedCactusCharcoal.get(1))
-            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
+            .fluidOutputs(Materials.DenseSupercriticalSteam.getGas(512000))
             .metadata(OFFER_VALUE, 1441625977L)
             .duration(20)
             .eut(0)
@@ -76,7 +74,7 @@ public class CactusWonderFakeRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.QuintupleCompressedCactusCharcoal.get(1))
-            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
+            .fluidOutputs(Materials.DenseSupercriticalSteam.getGas(512000))
             .metadata(OFFER_VALUE, 16218292236L)
             .duration(20)
             .eut(0)
@@ -130,7 +128,7 @@ public class CactusWonderFakeRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.QuadrupleCompressedCactusCoke.get(1))
-            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
+            .fluidOutputs(Materials.DenseSupercriticalSteam.getGas(512000))
             .metadata(OFFER_VALUE, 2883251953L)
             .duration(20)
             .eut(0)
@@ -139,7 +137,7 @@ public class CactusWonderFakeRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.QuintupleCompressedCactusCoke.get(1))
-            .fluidOutputs(FluidRegistry.getFluidStack("supercriticalsteam", 512000))
+            .fluidOutputs(Materials.DenseSupercriticalSteam.getGas(512000))
             .metadata(OFFER_VALUE, 32436584473L)
             .duration(20)
             .eut(0)

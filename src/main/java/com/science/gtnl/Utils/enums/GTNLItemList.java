@@ -223,6 +223,7 @@ public enum GTNLItemList implements IItemContainer {
     SadBapyCatToken,
     CompressedSteamTurbine,
     SteelTurbine,
+    PipelessSteamCover,
 
     TestItem,
     KFCFamily,

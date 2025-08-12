@@ -56,6 +56,7 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.enums.SteamTypes;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;

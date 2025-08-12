@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.gui;
+package com.science.gtnl.Utils.gui.recipe;
 
 import java.util.ArrayList;
 import java.util.List;

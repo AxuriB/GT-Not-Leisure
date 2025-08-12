@@ -610,6 +610,7 @@ public class ItemLoader {
                 "Steel Turbine",
                 102,
                 new String[] { TextUtils.texter("Stable like a Table", "tooltips.SteelTurbine_00") }));
+        GTNLItemList.PipelessSteamCover.set(MetaItemAdder.initItem("Pipeless Steam Cover", 103));
 
     }
 

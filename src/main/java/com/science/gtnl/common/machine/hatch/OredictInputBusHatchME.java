@@ -215,6 +215,7 @@ public class OredictInputBusHatchME extends MTEHatchInputBusME {
                 new TextFieldWidget().setSetter((value) -> oreDict = value)
                     .setGetter(() -> hasOreDict() ? oreDict : "")
                     .setTextAlignment(Alignment.Center)
+                    .setScrollBar()
                     .setTextColor(Color.WHITE.normal)
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .setPos(3, 136)
