@@ -204,15 +204,8 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(2)
-                    .setEUtIncreasePerOC(4)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 / 3.0 - (mParallelTier / 200.0))
-                    .setMaxTierSkips((recipe.mEUt > availableAmperage * availableVoltage) ? 1 : 0);
+                    .setDurationModifier(1 / 3.0 - (mParallelTier / 200.0));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
