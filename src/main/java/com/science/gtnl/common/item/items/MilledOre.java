@@ -28,7 +28,7 @@ public class MilledOre {
         short[] aNaquadahEnrichedFrothRGB = Materials.NaquadahEnriched.mRGBa;
         NaquadahEnrichedFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.naquadahenrichedflotation",
-            "Nquadah Enriched Froth",
+            "Naquadah Enriched Froth",
             32 + 175,
             new short[] { aNaquadahEnrichedFrothRGB[0], aNaquadahEnrichedFrothRGB[1], aNaquadahEnrichedFrothRGB[2],
                 100 },

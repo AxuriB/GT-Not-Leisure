@@ -2850,11 +2850,11 @@ Awe_Cancel_02_02=§f§lMy deeds are unknown, untraceable.
 Awe_Kick=§f§l!!! At a loss !!!
 death.attack.damage.gtnl.AweDamage=%1$s §c§lFailed to complete the §r§d§lViolet Baptism.
 
-NameRealArtificialStar=True·Annihilation Generator
-Tooltip_RealArtificialStar_Controller=The controller block of the True·Annihilation Generator
+NameRealArtificialStar=Real · Annihilation Generator
 ArtificialStar.enableRender.0=Disable effect rendering
 ArtificialStar.enableRender.1=Enable effect rendering
-gtnl.recipe.ArtificialStarGeneratingRecipes=True·Annihilation Generator
+gtnl.recipe.ArtificialStarGeneratingRecipes=Real · Annihilation Generator
+Tooltip_RealArtificialStar_MachineType=Real · Annihilation Generator
 Tooltip_RealArtificialStar_00=§d§lJust replaced the structure of TST, the rest of the functions are consistent
 Tooltip_RealArtificialStar_01=§d§lYou only need to let the proton and antiproton beams pass quietly from both ends
 Tooltip_RealArtificialStar_02=§d§l Through the magnetic field into the containment sphere, easy and pleasant!

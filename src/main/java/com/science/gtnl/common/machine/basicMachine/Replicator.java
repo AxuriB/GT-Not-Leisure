@@ -123,13 +123,15 @@ public class Replicator extends MTEBasicMachine {
 
     @Override
     public int checkRecipe() {
-        ItemStack input = getInputAt(0).copy();
-        input.stackSize = 1;
+        ItemStack input = getInputAt(0);
+        if (input == null) return 0;
+        ItemStack output = input.copy();
+        output.stackSize = 1;
         if (mFluid.getFluid()
             .equals(Materials.UUMatter.mFluid) && mFluid.amount >= 100
-            && canOutput(input)) {
+            && canOutput(output)) {
             this.mFluid.amount -= 100;
-            this.mOutputItems[0] = input;
+            this.mOutputItems[0] = output;
             this.mMaxProgresstime = 1;
             this.mEUt = 0;
             return 2;

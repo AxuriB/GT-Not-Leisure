@@ -2872,10 +2872,10 @@ Awe_Kick=§f§l！！！ 不知所措 ！！！
 death.attack.damage.gtnl.AweDamage=%1$s §c§l没能完成§r§d§l紫罗兰的洗礼。
 
 NameRealArtificialStar=真·湮灭发电机
-Tooltip_RealArtificialStar_Controller=真·湮灭发电机的控制器方块
 ArtificialStar.enableRender.0=关闭特效渲染
 ArtificialStar.enableRender.1=开启特效渲染
 gtnl.recipe.ArtificialStarGeneratingRecipes=真·湮灭发电机
+Tooltip_RealArtificialStar_MachineType=真·湮灭发电机
 Tooltip_RealArtificialStar_00=§d§l只是替换了TST的结构，其余功能一致
 Tooltip_RealArtificialStar_01=§d§l你只需要让正反质子束从两端静静地穿
 Tooltip_RealArtificialStar_02=§d§l 过磁场进入约束球就可以了，轻松愉快！

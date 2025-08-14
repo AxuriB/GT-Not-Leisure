@@ -9,6 +9,7 @@
     "AccelerateEnergyReceive_Mixin",
     "AccelerateTileEntity_Mixin",
     "Modify_CapBankMaxIO_Mixin",
+    "BaseMetaTileEntity_Mixin",
     "MTEAdvAssLineAcceleration_Mixin",
     "ResearchStationAcceleration_Mixin"
   ]
