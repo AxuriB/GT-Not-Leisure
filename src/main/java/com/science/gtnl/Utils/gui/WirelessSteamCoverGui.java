@@ -6,14 +6,12 @@ import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.science.gtnl.Utils.enums.SteamTypes;
-import com.science.gtnl.Utils.text.TextUtils;
 import com.science.gtnl.common.machine.cover.WirelessSteamCover;
 import com.science.gtnl.common.material.MaterialPool;
 
@@ -34,11 +32,6 @@ public class WirelessSteamCoverGui extends CoverGui<WirelessSteamCover> {
     protected String getGuiId() {
         return "cover.wireless_steam";
     }
-
-    public static final UITexture sc_steam = UITexture.fullImage(
-        TextUtils.insertBlocksAfterColon(
-            SteamTypes.DSC_STEAM.fluid.getIcon()
-                .getIconName()));
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column) {
