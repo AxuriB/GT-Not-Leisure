@@ -146,7 +146,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(0)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
                     .extFacing()
@@ -156,7 +156,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(0)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
                     .extFacing()
@@ -167,12 +167,18 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.GTPP_INDEX(0)) };
     }
 
     @Override
     public int getCasingTextureID() {
-        return TAE.GTPP_INDEX(0);
+        return CASING_INDEX;
+    }
+
+    @Override
+    protected void updateHatchTexture() {
+        super.updateHatchTexture();
+        for (MTEHatch h : mMufflerHatches) h.updateTexture(StructureUtils.getTextureIndex(sBlockCasings1, 11));
     }
 
     @Override
