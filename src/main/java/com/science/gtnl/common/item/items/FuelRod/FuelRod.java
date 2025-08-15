@@ -199,21 +199,21 @@ public class FuelRod extends RadioactiveItem implements IReactorComponent, IBoxa
         final int powerInfo = (int) this.Power * 25;
         list.add(
             String.format(
-                StatCollector.translateToLocal("info.fuelRod.tooltip.0"),
+                StatCollector.translateToLocal("Tooltip_FuelRod_00"),
                 getMaxCustomDamage() - getCustomDamage(stack),
                 getMaxCustomDamage()));
         if (this.HeatBonus > 0F)
-            list.add(String.format(StatCollector.translateToLocal("info.fuelRod.tooltip.1"), this.HeatBonus));
+            list.add(String.format(StatCollector.translateToLocal("Tooltip_FuelRod_01"), this.HeatBonus));
         list.add(
             String.format(
                 String.format(
-                    StatCollector.translateToLocal("info.fuelRod.tooltip.2"),
+                    StatCollector.translateToLocal("Tooltip_FuelRod_02"),
                     this.Heat,
                     this.Heat * 6,
                     this.Heat * 24)));
         list.add(
             String.format(
-                StatCollector.translateToLocal("info.fuelRod.tooltip.3"),
+                StatCollector.translateToLocal("Tooltip_FuelRod_03"),
                 powerInfo,
                 powerInfo * 4,
                 powerInfo * 12));
