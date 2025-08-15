@@ -117,6 +117,7 @@ import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.St
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamElevator;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamFlightModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamMonsterRepellentModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamOreProcessorModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamWeatherModule;
 import com.science.gtnl.common.machine.multiblock.NanitesCircuitAssemblyFactory;
 import com.science.gtnl.common.machine.multiblock.NanitesIntegratedProcessingCenter;
@@ -1272,6 +1273,13 @@ public class MachineLoader {
                 "CompoundExtremeCoolingUnit",
                 StatCollector.translateToLocal("NameCompoundExtremeCoolingUnit")));
         addItemTooltip(GTNLItemList.CompoundExtremeCoolingUnit.get(1), AnimatedText.SNL_QYZG);
+
+        GTNLItemList.SteamOreProcessorModule.set(
+            new SteamOreProcessorModule(
+                STEAM_ORE_PROCESSOR_MODULE.ID,
+                "SteamOreProcessorModule",
+                StatCollector.translateToLocal("NameSteamOreProcessorModule")));
+        addItemTooltip(GTNLItemList.SteamOreProcessorModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

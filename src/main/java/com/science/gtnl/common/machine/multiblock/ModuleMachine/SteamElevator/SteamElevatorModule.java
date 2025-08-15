@@ -29,12 +29,16 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamElevatorModule>
     implements ISurvivalConstructable {
 
     protected int mTier;
-    protected final long steamBufferSize;
+    @Getter
+    @Setter
+    protected long steamBufferSize;
     protected boolean isConnected = false;
     protected static final int CONFIG_WINDOW_ID = 10;
     public static final int CASING_INDEX = StructureUtils.getTextureIndex(sBlockCasings2, 0);

@@ -1004,8 +1004,8 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 .setPos(3, 4)
                 .setSize(150, 20))
             .widget(
-                new NumericWidget().setSetter(val -> recipeOcCount = (int) Math.min(4, val))
-                    .setGetter(() -> Math.min(4, recipeOcCount))
+                new NumericWidget().setSetter(val -> recipeOcCount = clampRecipeOcCount((int) val))
+                    .setGetter(() -> clampRecipeOcCount(recipeOcCount))
                     .setBounds(1, Integer.MAX_VALUE)
                     .setDefaultValue(1)
                     .setScrollValues(1, 4, 64)
@@ -1016,10 +1016,14 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                     .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
                     .attachSyncer(
                         new FakeSyncWidget.IntegerSyncer(
-                            () -> Math.min(4, recipeOcCount),
-                            (val) -> recipeOcCount = Math.min(4, val)),
+                            () -> clampRecipeOcCount(recipeOcCount),
+                            (val) -> recipeOcCount = clampRecipeOcCount(val)),
                         builder));
         return builder.build();
+    }
+
+    public int clampRecipeOcCount(int value) {
+        return Math.min(4, value);
     }
 
     public static <T extends SteamMultiMachineBase<T>> HatchElementBuilder<T> buildSteamBigInput(Class<T> typeToken) {

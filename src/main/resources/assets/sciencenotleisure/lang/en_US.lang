@@ -1461,7 +1461,7 @@ Waila_CurrentSteamCost=Current Steam Consumption
 IntegratedOreFactoryRecipeType=Ore Processor, IOF
 Tooltip_IntegratedOreFactory_01=It is OP. I mean ore processor.
 Tooltip_IntegratedOreFactory_02=Do all ore processing in one step.
-Tooltip_IntegratedOreFactory_03=Can process up to 1024 ores at a time.
+Tooltip_IntegratedOreFactory_03=Can process up to 65536 ores at a time.
 Tooltip_IntegratedOreFactory_04=Every ore costs 30EU/t, 2L lubricant, 200L distilled water.
 Tooltip_IntegratedOreFactory_05=Processing time is dependent on mode.
 Tooltip_IntegratedOreFactory_06=Use a screwdriver to switch mode.
@@ -1578,6 +1578,18 @@ Tooltip_SteamElevator_02=Steam is supplied to this controller and gets distribut
 Tooltip_SteamElevator_03=The system automatically activates wireless mode when no steam input hatch is installed in the main structure
 Tooltip_SteamElevator_04=Disabling this controller also pauses all modules
 Tooltip_SteamElevator_Casing=Any Brick Steel Shell
+
+NameSteamOreProcessorModule=Steam Ore Processing Module
+SteamOreProcessorModuleRecipeType=Miniature Ore Processing Factory
+Tooltip_SteamOreProcessorModule_00=§a§lHave you ever wondered about the meaning of its existence?
+Tooltip_SteamOreProcessorModule_01=Do all ore processing in one step
+Tooltip_SteamOreProcessorModule_02=Can process up to 16 ores at a time
+Tooltip_SteamOreProcessorModule_03=Every ore costs 256EU/t, 1L lubricant, 10L distilled water
+Tooltip_SteamOreProcessorModule_04=Processing time is fixed at 128 ticks
+Tooltip_SteamOreProcessorModule_05=Set overclock count to double both parallel and EU consumption
+Tooltip_SteamOreProcessorModule_06=Use a screwdriver to switch mode
+Tooltip_SteamOreProcessorModule_07=Sneak click with screwdriver to void the stone dust
+Info_SteamOreProcessorModule_00=Actual Parallel: 
 
 NameSteamMonsterRepellentModuleI=Steam Monster Repellator Module I
 NameSteamMonsterRepellentModuleII=Steam Monster Repellator Module II

@@ -1587,6 +1587,18 @@ Tooltip_SteamElevator_03=当主结构未安装蒸汽输入仓时自动进入无�
 Tooltip_SteamElevator_04=关闭控制器即可暂停所有模块
 Tooltip_SteamElevator_Casing=任意砖砌钢外壳
 
+NameSteamOreProcessorModule=蒸汽矿石处理模块
+SteamOreProcessorModuleRecipeType=微缩矿石处理厂
+Tooltip_SteamOreProcessorModule_00=§a§l你有想过它存在的意义吗？
+Tooltip_SteamOreProcessorModule_01=一步完成所有矿石处理
+Tooltip_SteamOreProcessorModule_02=一次至多可处理8个矿石
+Tooltip_SteamOreProcessorModule_03=每个矿石消耗128EU/t、1升润滑油、10升蒸馏水
+Tooltip_SteamOreProcessorModule_04=处理时间固定为128tick
+Tooltip_SteamOreProcessorModule_05=设置超频次数来翻倍并行和耗电
+Tooltip_SteamOreProcessorModule_06=使用螺丝刀切换模式
+Tooltip_SteamOreProcessorModule_07=手持螺丝刀Shift+右键以销毁石粉
+Info_SteamOreProcessorModule_00=实际并行：
+
 NameSteamMonsterRepellentModuleI=蒸汽敌对生物驱逐器模块 I
 NameSteamMonsterRepellentModuleII=蒸汽敌对生物驱逐器模块 II
 NameSteamMonsterRepellentModuleIII=蒸汽敌对生物驱逐器模块 III
