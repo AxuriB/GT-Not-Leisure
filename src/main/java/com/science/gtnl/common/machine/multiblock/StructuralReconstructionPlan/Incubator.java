@@ -171,7 +171,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                             ItemUtils
                                 .getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sponge", 1)),
                             0)
-                        : ofBlock(Blocks.sponge, 0)))
+                        : ofBlockAnyMeta(Blocks.sponge, 0)))
             .addElement('E', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
             .build();
     }
