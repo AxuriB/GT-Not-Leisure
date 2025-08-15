@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -53,6 +54,7 @@ import bartworks.util.BioCulture;
 import bartworks.util.Coords;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
@@ -66,6 +68,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -160,7 +163,15 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                         .buildAndChain(),
                     ofHatchAdder(Incubator::addRadiationInputToMachineList, CASING_INDEX, 1),
                     onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
-            .addElement('D', ofBlockAnyMeta(Blocks.sponge))
+            .addElement(
+                'D',
+                ofChain(
+                    Mods.EtFuturumRequiem.isModLoaded()
+                        ? ofBlockAnyMeta(
+                            ItemUtils
+                                .getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sponge", 1)),
+                            0)
+                        : ofBlock(Blocks.sponge, 0)))
             .addElement('E', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
             .build();
     }

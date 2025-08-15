@@ -5,9 +5,11 @@ import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.util.GTModHandler.getModItem;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
@@ -72,6 +74,13 @@ public class ItemUtils {
                 }
             }
         }
+    }
+
+    public static Block getBlockFromItemStack(ItemStack stack) {
+        if (stack != null && stack.getItem() instanceof ItemBlock block) {
+            return Block.getBlockFromItem(block);
+        }
+        return Blocks.air;
     }
 
     public static ItemStack createItemStack(String aModID, String aItem, long aAmount, int aMeta, String aNBTString,

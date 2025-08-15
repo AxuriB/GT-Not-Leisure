@@ -27,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -37,6 +38,7 @@ import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
 import bartworks.util.ResultWrongSievert;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -47,6 +49,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -134,7 +137,15 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
                         .dot(1)
                         .build(),
                     onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
-            .addElement('F', ofBlockAnyMeta(Blocks.sponge))
+            .addElement(
+                'F',
+                ofChain(
+                    Mods.EtFuturumRequiem.isModLoaded()
+                        ? ofBlockAnyMeta(
+                            ItemUtils
+                                .getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sponge", 1)),
+                            0)
+                        : ofBlock(Blocks.sponge, 0)))
             .addElement('G', ofChain(isAir(), ofBlockAnyMeta(Blocks.flowing_water), ofBlockAnyMeta(Blocks.water)))
             .build();
     }

@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.config.MainConfig;
 
-import cpw.mods.fml.common.Loader;
 import io.github.tox1cozz.mixinbooterlegacy.ILateMixinLoader;
 import io.github.tox1cozz.mixinbooterlegacy.LateMixin;
 
