@@ -307,6 +307,7 @@ DebugResearchStation=Debug Research Station
 Tooltip_DebugResearchStation_00=Immediately scans Research Station recipes, requires no energy
 
 Replicator=Replicator
+Enchanting=Enchanting
 
 GasCollectorLV=Basic Gas Collector
 GasCollectorMV=Advanced Gas Collector

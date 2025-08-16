@@ -477,7 +477,7 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
         structureBuild_EM("cap", 1, 2, -1, stackSize, hintsOnly);
 
         byte offset = -2;
-        for (int rackSlices = Math.min(Math.max(stackSize.stackSize, 3), 16); rackSlices > 0; rackSlices--) {
+        for (int rackSlices = Math.min(Math.max(stackSize.stackSize, 3), 15); rackSlices > 0; rackSlices--) {
             structureBuild_EM("slice", 1, 2, offset--, stackSize, hintsOnly);
         }
 
@@ -495,7 +495,7 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
         if (built >= 0) return built;
 
         byte offset = -2;
-        for (int rackSlices = Math.min(Math.max(stackSize.stackSize, 3), 16); rackSlices > 0; rackSlices--) {
+        for (int rackSlices = Math.min(Math.max(stackSize.stackSize, 3), 15); rackSlices > 0; rackSlices--) {
             built = survivalBuildPiece("slice", stackSize, 1, 2, offset--, elementBudget, env, false, true);
             if (built >= 0) return built;
         }

@@ -20,6 +20,7 @@ import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.common.machine.basicMachine.DebugResearchStation;
+import com.science.gtnl.common.machine.basicMachine.Enchanting;
 import com.science.gtnl.common.machine.basicMachine.ManaTank;
 import com.science.gtnl.common.machine.basicMachine.Replicator;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
@@ -1837,7 +1838,10 @@ public class MachineLoader {
 
         GTNLItemList.Replicator
             .set(new Replicator(REPLICATOR.ID, "Replicator", StatCollector.translateToLocal("Replicator"), 7));
-        addItemTooltip(GTNLItemList.Replicator.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.Enchanting
+            .set(new Enchanting(ENCHANTING.ID, "Enchanting", StatCollector.translateToLocal("Enchanting"), 7));
+        addItemTooltip(GTNLItemList.Enchanting.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.OredictInputBusHatchME.set(
             new OredictInputBusHatchME(
