@@ -1,5 +1,7 @@
 package com.science.gtnl;
 
+import codechicken.nei.guihook.GuiContainerManager;
+import com.science.gtnl.client.GTNLTooltipManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.renderer.entity.RenderLeashKnot;
@@ -128,6 +130,7 @@ public class ClientProxy extends CommonProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(new SubscribeEventClientUtils());
+        GuiContainerManager.addTooltipHandler(new GTNLTooltipManager());
         super.preInit(event);
     }
 

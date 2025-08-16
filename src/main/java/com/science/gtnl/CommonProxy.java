@@ -2,6 +2,8 @@ package com.science.gtnl;
 
 import static com.science.gtnl.ScienceNotLeisure.network;
 
+import com.science.gtnl.client.GTNLInputHandler;
+import com.science.gtnl.common.packet.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -11,15 +13,6 @@ import com.science.gtnl.Utils.detrav.DetravScannerGUI;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
-import com.science.gtnl.common.packet.ConfigSyncPacket;
-import com.science.gtnl.common.packet.GetTileEntityNBTRequestPacket;
-import com.science.gtnl.common.packet.ProspectingPacket;
-import com.science.gtnl.common.packet.SoundPacket;
-import com.science.gtnl.common.packet.SyncHPCAVariablesPacket;
-import com.science.gtnl.common.packet.TeleportRequestPacket;
-import com.science.gtnl.common.packet.TickratePacket;
-import com.science.gtnl.common.packet.TileEntityNBTPacket;
-import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
 import com.science.gtnl.config.MainConfig;
 
@@ -45,19 +38,26 @@ public class CommonProxy implements IGuiHandler {
             .bus()
             .register(new SubscribeEventUtils());
 
-        network.registerMessage(TitlePacket.Handler.class, TitlePacket.class, 0, Side.CLIENT);
-        network.registerMessage(TickratePacket.Handler.class, TickratePacket.class, 1, Side.CLIENT);
-        network.registerMessage(ConfigSyncPacket.Handler.class, ConfigSyncPacket.class, 2, Side.CLIENT);
+        MinecraftForge.EVENT_BUS.register(GTNLInputHandler.INSTANCE);
+
+        int i = 0;
+        network.registerMessage(TitlePacket.Handler.class, TitlePacket.class, i++, Side.CLIENT);
+        network.registerMessage(TickratePacket.Handler.class, TickratePacket.class, i++, Side.CLIENT);
+        network.registerMessage(ConfigSyncPacket.Handler.class, ConfigSyncPacket.class, i++, Side.CLIENT);
+        network.registerMessage(TileEntityNBTPacket.Handler.class, TileEntityNBTPacket.class, i++, Side.CLIENT);
+        network.registerMessage(SoundPacket.Handler.class, SoundPacket.class, i++, Side.CLIENT);
+        network.registerMessage(SyncHPCAVariablesPacket.Handler.class, SyncHPCAVariablesPacket.class, 6, Side.CLIENT);
+        network.registerMessage(ProspectingPacket.Handler.class, ProspectingPacket.class, i++, Side.CLIENT);
+
+        i = 64;
         network.registerMessage(
             GetTileEntityNBTRequestPacket.Handler.class,
             GetTileEntityNBTRequestPacket.class,
-            3,
+            i++,
             Side.SERVER);
-        network.registerMessage(TileEntityNBTPacket.Handler.class, TileEntityNBTPacket.class, 4, Side.CLIENT);
-        network.registerMessage(SoundPacket.Handler.class, SoundPacket.class, 5, Side.CLIENT);
-        network.registerMessage(SyncHPCAVariablesPacket.Handler.class, SyncHPCAVariablesPacket.class, 6, Side.CLIENT);
         network.registerMessage(TeleportRequestPacket.Handler.class, TeleportRequestPacket.class, 7, Side.SERVER);
-        network.registerMessage(ProspectingPacket.Handler.class, ProspectingPacket.class, 8, Side.CLIENT);
+        network.registerMessage(KeyBindingHandler.Handler.class, KeyBindingHandler.class,i++,Side.SERVER);
+        network.registerMessage(WirelessPickBlock.Handler.class, WirelessPickBlock.class,i++,Side.SERVER);
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)

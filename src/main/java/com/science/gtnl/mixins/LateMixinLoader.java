@@ -22,6 +22,7 @@ public class LateMixinLoader implements ILateMixinLoader {
 
     static {
         MIXIN_CONFIGS.add("mixins.sciencenotleisure.late.json");
+        MIXIN_CONFIGS.add("mixins.sciencenotleisure.late.rc.json");
 
         if (MainConfig.enableDebugMode) {
             MIXIN_CONFIGS.add("mixins.sciencenotleisure.late.Debug.json");

@@ -2915,3 +2915,7 @@ RealArtificialStar.getInfoData.04=稳定场等级
 RealArtificialStar.getInfoData.05=回收原料几率
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=有概率回收部分材料. 概率受模块等级影响.
 NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=产生：
+
+key.retrieve_item.desc=自AE取出物品
+key.start_craft.desc=向AE请求合成
+text.rc.craft=此物品无对应合成

@@ -1,0 +1,8 @@
+package com.science.gtnl.Utils;
+
+public interface RCWirelessTerminalGuiObject {
+
+    int getInventorySlot();
+    boolean isBauble();
+    boolean isSpecial();
+}
