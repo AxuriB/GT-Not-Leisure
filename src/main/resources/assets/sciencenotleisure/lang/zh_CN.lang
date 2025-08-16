@@ -32,6 +32,7 @@ Tooltip_Tectech_Hatch=支持§9Tec§1Tech§r激光仓！
 Tooltip_PerfectOverclock=机器可进行§c无损超频§7
 Tooltip_PressShift=§r按住 §6Shift §r查看更多信息
 Tooltip_PressCtrl=§r按住 §6Ctrl §r查看更多信息
+Tooltip_Damage=耐久: %s/%s
 
 Info_DetravScanner_TP=传送至矿脉：%s (%s，%s)
 
@@ -527,6 +528,8 @@ tile.PlayerLeash.name=拴绳结界
 entity.sciencenotleisure.PlayerLeashKnot.name=拴绳结界
 Tooltip_PlayerLeash_00=创造一个强大的拴绳立场，允许放置其方块的玩家在一定范围内飞行
 
+ElectricProspectorTool.0.name=魔力传送探矿仪
+
 MetaItem.0.name=愚人脸
 Tooltip_TrollFace=Never Gonna Give You Up~
 MetaItem.1.name=§b激发的混合硅岩燃料棒
@@ -791,7 +794,7 @@ Tooltip_PhysicsCape_00=利用强大的切割磁感线进行发电！
 
 item.InfinityFuelRod.name=燃料棒(无尽)
 item.InfinityFuelRodDepleted.name=枯竭燃料棒(无尽)
-Tooltip_FuelRod_00=耐久：%d/%d
+Tooltip_FuelRod_00=耐久: %d/%d
 Tooltip_FuelRod_01=具有MOX特性 | MOX系数：%d
 Tooltip_FuelRod_02=基础产热(heta/s)：%d/%d/%d
 Tooltip_FuelRod_03=基础发电功率(EU/t)：%d/%d/%d

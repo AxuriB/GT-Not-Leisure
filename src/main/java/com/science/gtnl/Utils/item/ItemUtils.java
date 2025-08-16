@@ -5,9 +5,18 @@ import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.util.GTModHandler.getModItem;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -24,6 +33,8 @@ import baubles.api.BaublesApi;
 import gregtech.api.util.GTModHandler;
 
 public class ItemUtils {
+
+    public static final Random rand = new Random();
 
     public static final UITexture PICTURE_GTNL_LOGO = UITexture
         .fullImage(Mods.ScienceNotLeisure.ID, "gui/picture/logo");
@@ -131,5 +142,89 @@ public class ItemUtils {
 
     public static ItemStack getIntegratedCircuitPlus(int config) {
         return GTNLItemList.CircuitIntegratedPlus.getWithDamage(0, config);
+    }
+
+    public static boolean canBeEnchanted(ItemStack stack) {
+        return canBeEnchanted(stack, 30, false);
+    }
+
+    public static boolean canBeEnchanted(ItemStack stack, boolean allowExisting) {
+        return canBeEnchanted(stack, 30, allowExisting);
+    }
+
+    public static boolean canBeEnchanted(ItemStack stack, int level, boolean allowExisting) {
+        if (stack == null || level <= 0) return false;
+        if (!allowExisting && stack.isItemEnchanted()) return false;
+
+        List<EnchantmentData> enchantments = EnchantmentHelper.buildEnchantmentList(rand, stack, level);
+        return enchantments != null && !enchantments.isEmpty();
+    }
+
+    public static ItemStack enchantItem(ItemStack stack, int level) {
+        return enchantItem(stack, level, false);
+    }
+
+    public static ItemStack enchantItem(ItemStack stack, int level, boolean allowExisting) {
+        if (stack == null || level <= 0) return stack;
+        if (!allowExisting && stack.isItemEnchanted()) return stack;
+
+        boolean isBook = stack.getItem() == Items.book;
+        List<EnchantmentData> enchantments = EnchantmentHelper.buildEnchantmentList(rand, stack, level);
+
+        if (enchantments == null || enchantments.isEmpty()) return stack;
+
+        if (isBook) {
+            stack.func_150996_a(Items.enchanted_book);
+        }
+
+        int skipIndex = isBook && enchantments.size() > 1 ? rand.nextInt(enchantments.size()) : -1;
+
+        for (int i = 0; i < enchantments.size(); i++) {
+            EnchantmentData data = enchantments.get(i);
+
+            if (!isBook || i != skipIndex) {
+                if (isBook) {
+                    Items.enchanted_book.addEnchantment(stack, data);
+                } else {
+                    stack.addEnchantment(data.enchantmentobj, data.enchantmentLevel);
+                }
+            }
+        }
+
+        return stack;
+    }
+
+    public static ItemStack applyRandomEnchantments(ItemStack stack, int count, int minLevel, int maxLevel) {
+        return applyRandomEnchantments(stack, count, minLevel, maxLevel, false);
+    }
+
+    public static ItemStack applyRandomEnchantments(ItemStack stack, int count, int minLevel, int maxLevel,
+        boolean allowExisting) {
+        if (stack == null || count <= 0) return stack;
+        if (!allowExisting && stack.isItemEnchanted()) return stack;
+
+        List<Enchantment> available = new ArrayList<>();
+        for (Enchantment ench : Enchantment.enchantmentsList) {
+            if (ench != null && ench.canApply(stack)) {
+                available.add(ench);
+            }
+        }
+
+        if (available.isEmpty()) return stack;
+
+        Collections.shuffle(available, rand);
+
+        int applyCount = Math.min(count, available.size());
+
+        for (int i = 0; i < applyCount; i++) {
+            Enchantment ench = available.get(i);
+            int level = rand.nextInt(ench.getMaxLevel() - ench.getMinLevel() + 1) + ench.getMinLevel();
+            level = Math.max(minLevel, level);
+            level = Math.min(maxLevel, level);
+
+            stack.addEnchantment(ench, level);
+        }
+
+        return stack;
     }
 }

@@ -12,19 +12,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemStaticDataClientOnly {
 
     @SideOnly(Side.CLIENT)
-    public static Map<Integer, IIcon> iconsMap01 = new HashMap<>();
+    public static Map<Integer, IIcon> iconsMapMetaItem01 = new HashMap<>();
+
     @SideOnly(Side.CLIENT)
-    public static Map<Integer, IIcon> iconsMapRune = new HashMap<>();
+    public static Map<Integer, IIcon> iconsMapElectricProspectorTool = new HashMap<>();
+
     @SideOnly(Side.CLIENT)
     public static Map<Integer, IIcon> iconsMapIzumik = new HashMap<>();
-
-    /**
-     * @param aMetaName The Name of the Icon.
-     * @return Return the Path of the Icon.
-     */
-    @SideOnly(Side.CLIENT)
-    public static String getIconPath01(String aMetaName) {
-        return "gtnhcommunitymod:MetaItem01/" + aMetaName;
-    }
 
 }

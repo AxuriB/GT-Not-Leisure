@@ -24,6 +24,7 @@ Tooltip_Tectech_Hatch=Supports §9Tec§1Tech§r laser hatches!
 Tooltip_PerfectOverclock=Machine can perform §clossless overcloc
 Tooltip_PressShift=§rHold §6Shift §rfor more information
 Tooltip_PressCtrl=§rHold §6Ctrl §rfor more information
+Tooltip_Damage=Durability: %s/%s
 
 Info_DetravScanner_TP=Teleport to vein: %s (%s, %s)
 
@@ -783,7 +784,7 @@ Tooltip_PhysicsCape_00=Generate electricity by harnessing powerful magnetic flux
 
 item.InfinityFuelRod.name=Fuel Rod (Infinite)
 item.InfinityFuelRodDepleted.name=Depleted Fuel Rod (Infinite)
-Tooltip_FuelRod_00=Durability:%d/%d
+Tooltip_FuelRod_00=Durability: %d/%d
 Tooltip_FuelRod_01=Has MOX properties | MOX Coefficient: %d
 Tooltip_FuelRod_02=Base Heat Output (heta/s): %d/%d/%d
 Tooltip_FuelRod_03=Base Power Output (EU/t): %d/%d/%d

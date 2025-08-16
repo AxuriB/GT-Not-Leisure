@@ -1,7 +1,10 @@
-package net.minecraft.entity;
+package Forge;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -12,7 +15,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityNPE extends Entity implements IProjectile {
+public class NullPointerException extends Entity implements IProjectile {
 
     private int hitBlockX = -1;
     private int hitBlockY = -1;
@@ -22,13 +25,13 @@ public class EntityNPE extends Entity implements IProjectile {
     private boolean inGround;
     private int ticksInGround;
 
-    public EntityNPE(World world) {
+    public NullPointerException(World world) {
         super(world);
         this.renderDistanceWeight = 10.0D;
         this.setSize(0.5F, 0.5F);
     }
 
-    public EntityNPE(World world, EntityLivingBase shooter, float velocity) {
+    public NullPointerException(World world, EntityLivingBase shooter, float velocity) {
         super(world);
         this.renderDistanceWeight = 10.0D;
 
@@ -152,7 +155,7 @@ public class EntityNPE extends Entity implements IProjectile {
             if (block == this.hitBlock && j == this.inData) {
                 worldObj.removeEntity(this);
                 if (worldObj.isRemote) {
-                    throw new NullPointerException("java.lang.NullPointerException");
+                    throw new java.lang.NullPointerException("java.lang.NullPointerException");
                 }
             } else {
                 this.inGround = false;

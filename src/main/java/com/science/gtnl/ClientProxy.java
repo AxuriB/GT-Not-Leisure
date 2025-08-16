@@ -3,7 +3,6 @@ package com.science.gtnl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.renderer.entity.RenderLeashKnot;
-import net.minecraft.entity.EntityNPE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -41,6 +40,7 @@ import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.ItemLoader;
 
+import Forge.NullPointerException;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -112,7 +112,7 @@ public class ClientProxy extends CommonProxy {
 
         RenderingRegistry.registerEntityRenderingHandler(EntityPlayerLeashKnot.class, new RenderLeashKnot());
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityNPE.class, new NullPointerExceptionRender());
+        RenderingRegistry.registerEntityRenderingHandler(NullPointerException.class, new NullPointerExceptionRender());
         MinecraftForgeClient
             .registerItemRenderer(ItemLoader.nullPointerException, new ItemNullPointerExceptionRender());
     }

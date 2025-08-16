@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityNPE;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.science.gtnl.loader.ItemLoader;
 
+import Forge.NullPointerException;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -33,7 +33,7 @@ public class NullPointerExceptionRender extends Render {
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
      * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
      */
-    public void doRender(EntityNPE entityNPE, double x, double y, double z, float yaw, float partialTicks) {
+    public void doRender(NullPointerException entityNPE, double x, double y, double z, float yaw, float partialTicks) {
         this.bindEntityTexture(entityNPE);
         GL11.glPushMatrix();
 
@@ -92,6 +92,6 @@ public class NullPointerExceptionRender extends Render {
      */
     @Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTicks) {
-        this.doRender((EntityNPE) entity, x, y, z, yaw, partialTicks);
+        this.doRender((NullPointerException) entity, x, y, z, yaw, partialTicks);
     }
 }
