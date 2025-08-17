@@ -757,6 +757,10 @@ Tooltip_Testitem_11=§f§l如果你遇到了什么问题或者想提出意见，
 Tooltip_Testitem_12=本模组添加的机器meta值从21000开始
 Tooltip_Testitem_13=§c§l另外提醒：不要拿着这个物品右键！
 
+item.NetherTeleporter.name=下界传送仪
+Info_NetherTeleporter_Cooldown=剩余冷却时间: 
+Info_NetherTeleporter_Warning=没有安全的传送点！
+
 item.CircuitIntegratedPlus.name=突破编程电路
 
 item.NullPointerException.name=java.lang.NullPointerException
@@ -1696,6 +1700,7 @@ gtnl.recipe.GasCollectorRecipes=集气室
 LargeGasCollectorRecipeType=集气室
 Tooltip_LargeGasCollector_00=集气室的大型版本
 Tooltip_LargeGasCollector_01=最大并行数为1,000,000
+Tooltip_LargeGasCollector_02=在主世界，末地，下界无需输入物品也可运行
 Tooltip_LargeGasCollector_Casing=任意脱氧钢机械方块
 
 NameLargeCutter=大型切割机

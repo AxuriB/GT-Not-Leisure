@@ -8,9 +8,18 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -18,17 +27,28 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gtneioreplugin.plugin.block.ModBlocks;
 
 public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> implements ISurvivalConstructable {
 
@@ -77,6 +97,124 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
     }
 
     @Override
+    @Nonnull
+    protected CheckRecipeResult doCheckRecipe() {
+        for (ItemStack item : getAllStoredInputs()) {
+            if (item != null) {
+                if (Objects.equals(item.getItem(), ItemList.Circuit_Integrated.getItem())) {
+                    return super.checkProcessing();
+                }
+            }
+        }
+
+        List<ItemStack> itemInputs = new ArrayList<>();
+        int dimID = getBaseMetaTileEntity().getWorld().provider.dimensionId;
+
+        if (dimID == 0) {
+            itemInputs.add(GTUtility.getIntegratedCircuit(1));
+        } else if (dimID == 1) {
+            itemInputs.add(GTUtility.getIntegratedCircuit(2));
+            itemInputs.add(new ItemStack(ModBlocks.getBlock("ED"), 1));
+        } else if (dimID == -1) {
+            itemInputs.add(GTUtility.getIntegratedCircuit(3));
+            itemInputs.add(new ItemStack(ModBlocks.getBlock("Ne"), 1));
+        }
+
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+        // check crafting input hatches first
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+
+                if (!slot.isEmpty()) {
+                    // try to cache the possible recipes from pattern
+                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                            // move on to next slots if it returns false, which means there is no possible recipes with
+                            // given pattern.
+                            continue;
+                        }
+                    }
+
+                    ArrayUtils.addAll(sharedItems, slot.getItemInputs());
+                    ArrayUtils.addAll(sharedItems, itemInputs.toArray(new ItemStack[0]));
+
+                    processingLogic.setInputItems(sharedItems);
+                    processingLogic.setInputFluids(slot.getFluidInputs());
+
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
+                    }
+                }
+            }
+        }
+
+        result = checkRecipeForCustomHatches(result);
+        if (result.wasSuccessful()) {
+            return result;
+        }
+
+        // Use hatch colors if any; fallback to color 1 otherwise.
+        short hatchColors = getHatchColors();
+        boolean doColorChecking = hatchColors != 0;
+        if (!doColorChecking) hatchColors = 0b1;
+
+        for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
+            if (isColorAbsent(hatchColors, color)) continue;
+            processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
+            if (isInputSeparationEnabled()) {
+                if (mInputBusses.isEmpty()) {
+                    processingLogic.setInputItems(itemInputs);
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) return foundResult;
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+                } else {
+                    for (MTEHatchInputBus bus : mInputBusses) {
+                        if (bus instanceof MTEHatchCraftingInputME || bus instanceof SuperCraftingInputHatchME)
+                            continue;
+                        byte busColor = bus.getColor();
+                        if (busColor != -1 && busColor != color) continue;
+                        List<ItemStack> inputItems = new ArrayList<>();
+                        for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                            ItemStack stored = bus.getStackInSlot(i);
+                            if (stored != null) inputItems.add(stored);
+                        }
+                        if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                            inputItems.add(getControllerSlot());
+                        }
+                        ArrayUtils.addAll(inputItems.toArray(new ItemStack[0]), itemInputs.toArray(new ItemStack[0]));
+                        processingLogic.setInputItems(inputItems);
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) return foundResult;
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+                    }
+                }
+            } else {
+                List<ItemStack> inputItems = getStoredInputsForColor(Optional.of(color));
+                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
+                }
+                ArrayUtils.addAll(inputItems.toArray(new ItemStack[0]), itemInputs.toArray(new ItemStack[0]));
+                processingLogic.setInputItems(inputItems);
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) return foundResult;
+                // Recipe failed in interesting way, so remember that
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+            }
+        }
+        return result;
+    }
+
+    @Override
     public int getCasingTextureID() {
         return CASING_INDEX;
     }
@@ -97,6 +235,7 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
         tt.addMachineType(StatCollector.translateToLocal("LargeGasCollectorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeGasCollector_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeGasCollector_01"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_LargeGasCollector_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Tectech_Hatch"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))

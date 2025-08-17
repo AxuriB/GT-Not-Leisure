@@ -1686,6 +1686,7 @@ gtnl.recipe.GasCollectorRecipes=Gas Collector
 LargeGasCollectorRecipeType=Gas Collector
 Tooltip_LargeGasCollector_00=Large version of the Gas Collector
 Tooltip_LargeGasCollector_01=Maximum parallel is 1,000,000
+Tooltip_LargeGasCollector_02=Runs without input items in Overworld, End, Nether
 Tooltip_LargeGasCollector_Casing=Any Solid Steel Machine Casing
 
 NameLargeCutter=Large Cutter

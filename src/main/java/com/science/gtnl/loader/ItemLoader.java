@@ -30,6 +30,7 @@ import com.science.gtnl.common.item.items.FuelRod.FuelRod;
 import com.science.gtnl.common.item.items.FuelRod.FuelRodDepleted;
 import com.science.gtnl.common.item.items.GTNLItemBucket;
 import com.science.gtnl.common.item.items.KFCFamily;
+import com.science.gtnl.common.item.items.NetherTeleporter;
 import com.science.gtnl.common.item.items.NullPointerException;
 import com.science.gtnl.common.item.items.SlimeSaddle;
 import com.science.gtnl.common.item.items.SteamRocketItem;
@@ -50,6 +51,7 @@ public class ItemLoader {
     public static Item steamRocket;
     public static Item nullPointerException;
     public static Item fakeItemSiren;
+    public static Item netherTeleporter;
     public static Item testItem;
     public static Item KFCFamily;
     public static Item twilightSword;
@@ -87,6 +89,7 @@ public class ItemLoader {
         nullPointerException = new NullPointerException();
         fakeItemSiren = new FakeItemSiren();
         testItem = new TestItem();
+        netherTeleporter = new NetherTeleporter();
         electricProspectorTool = new ElectricProspectorTool();
         KFCFamily = new KFCFamily(20, 20, true);
         twilightSword = new TwilightSword();
@@ -159,6 +162,7 @@ public class ItemLoader {
 
         GameRegistry.registerItem(steamRocket, "SteamRocket");
         GameRegistry.registerItem(nullPointerException, "NullPointerException");
+        GameRegistry.registerItem(netherTeleporter, "NetherTeleporter");
         GameRegistry.registerItem(fakeItemSiren, "FakeItemSiren");
         GameRegistry.registerItem(testItem, "TestItem");
         GameRegistry.registerItem(electricProspectorTool, "ElectricProspectorTool");

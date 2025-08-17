@@ -38,12 +38,8 @@ public class SteamRocketItem extends Item implements IHoldableItem {
         this.setMaxStackSize(1);
         this.setTextureName("arrow");
         this.setUnlocalizedName("SteamRocket");
+        this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         GTNLItemList.SteamRocket.set(new ItemStack(this, 1));
-    }
-
-    @Override
-    public CreativeTabs getCreativeTab() {
-        return GTNLCreativeTabs.GTNotLeisureItem;
     }
 
     @Override
