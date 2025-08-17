@@ -8,7 +8,6 @@ import com.science.gtnl.Utils.SubscribeEventUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
-import com.science.gtnl.client.GTNLInputHandler;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.NetWorkHandler;
 import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
@@ -34,8 +33,6 @@ public class CommonProxy implements IGuiHandler {
         FMLCommonHandler.instance()
             .bus()
             .register(new SubscribeEventUtils());
-
-        MinecraftForge.EVENT_BUS.register(GTNLInputHandler.INSTANCE);
 
         NetWorkHandler.registerAllMessage();
     }

@@ -15,6 +15,7 @@ import java.util.Objects;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.Entity;
@@ -38,6 +39,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.input.Keyboard;
 
 import com.mojang.authlib.GameProfile;
 import com.science.gtnl.ScienceNotLeisure;
@@ -412,7 +414,7 @@ public final class Utils {
         return world.rayTraceBlocks(startVec, endVec, true);
     }
 
-    public static boolean onPickEntity(EntityPlayer player, double range) {
+    public static boolean onPickEntity(EntityPlayer player, double range, boolean useAE) {
         MovingObjectPosition target = Utils.rayTrace(player, false, true, true, range);
         if (target == null || target.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) {
             return false;
@@ -440,10 +442,11 @@ public final class Utils {
             }
         }
 
-        return ItemUtils.placeItemInHotbar(player, result);
+        boolean isCreative = player.capabilities.isCreativeMode;
+        return ItemUtils.placeItemInHotbar(player, result, isCreative, useAE);
     }
 
-    public static boolean onPickBlockNBTRange(EntityPlayer player, World world, double reachDistance) {
+    public static boolean onPickBlockNBTRange(EntityPlayer player, World world, double reachDistance, boolean useAE) {
         MovingObjectPosition target = rayTraceBlock(player, reachDistance);
         if (target == null || target.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) return false;
 
@@ -465,14 +468,16 @@ public final class Utils {
                 ScienceNotLeisure.network.sendToServer(new GetTileEntityNBTRequestPacket(x, y, z, blockID, blockMeta));
                 return true;
             } else {
-                return ItemUtils.placeItemInHotbar(player, block.getPickBlock(target, world, x, y, z, player));
+                boolean isCreative = player.capabilities.isCreativeMode;
+                return ItemUtils
+                    .placeItemInHotbar(player, block.getPickBlock(target, world, x, y, z, player), isCreative, useAE);
             }
         }
 
         return false;
     }
 
-    public static boolean onPickBlockRange(EntityPlayer player, World world, double reachDistance) {
+    public static boolean onPickBlockRange(EntityPlayer player, World world, double reachDistance, boolean useAE) {
         MovingObjectPosition target = rayTraceBlock(player, reachDistance);
         Minecraft mc = Minecraft.getMinecraft();
 
@@ -489,7 +494,9 @@ public final class Utils {
             return false;
         }
 
-        return ItemUtils.placeItemInHotbar(player, block.getPickBlock(target, world, x, y, z, player));
+        boolean isCreative = player.capabilities.isCreativeMode;
+        return ItemUtils
+            .placeItemInHotbar(player, block.getPickBlock(target, world, x, y, z, player), isCreative, useAE);
     }
 
     public static MovingObjectPosition rayTrace(EntityPlayer p, boolean hitBlocks, boolean hitEntities,
@@ -567,6 +574,21 @@ public final class Utils {
         }
 
         return pos;
+    }
+
+    public static boolean onBeforePickBlock(EntityClientPlayerMP playerMP, World world, boolean useAE) {
+        boolean isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
+        double reachDistance = 1000;
+        boolean handled = Utils.onPickEntity(playerMP, reachDistance, useAE);
+        if (!handled) {
+            if (isCtrlKeyDown) {
+                return !Utils.onPickBlockNBTRange(playerMP, world, reachDistance, useAE);
+            } else {
+                Utils.onPickBlockRange(playerMP, world, reachDistance, useAE);
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean hasPermission(ICommandSender sender, int permissionLevel) {

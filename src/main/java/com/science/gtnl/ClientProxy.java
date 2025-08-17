@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.client.GTNLInputHandler;
 import com.science.gtnl.client.GTNLTooltipManager;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockEternalGregTechWorkshopRender;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockNanoPhagocytosisPlantRender;
@@ -127,6 +128,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new SubscribeEventClientUtils());
+        MinecraftForge.EVENT_BUS.register(GTNLInputHandler.INSTANCE);
         FMLCommonHandler.instance()
             .bus()
             .register(new SubscribeEventClientUtils());

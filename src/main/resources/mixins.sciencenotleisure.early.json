@@ -6,26 +6,26 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "Forge.FMLProxyPacket_Mixin",
-    "Forge.ForgeHook_Mixin",
-    "Gregtech.MTETieredMachineBlockAccessor",
+    "Forge.MixinFMLProxyPacket",
+    "Forge.MixinForgeHook",
+    "Gregtech.AccessorMTETieredMachineBlock",
     "Minecraft.AccessorGuiChat",
     "Minecraft.AccessorFoodStats",
     "Minecraft.AccessorEntityLivingBase",
-    "Minecraft.EntityPlayer_Mixin",
-    "Minecraft.Entity_Mixin",
-    "Minecraft.EntityLiving_Mixin",
-    "Minecraft.EntityItem_Mixin",
-    "Minecraft.EntityPlayerMP_Mixin",
-    "Minecraft.Explosion_Mixin",
-    "Minecraft.Item_Mixin",
-    "Minecraft.World_Mixin",
-    "Minecraft.WorldServer_Mixin"
+    "Minecraft.MixinEntityPlayer",
+    "Minecraft.MixinEntity",
+    "Minecraft.MixinEntityLiving",
+    "Minecraft.MixinEntityItem",
+    "Minecraft.MixinEntityPlayerMP",
+    "Minecraft.MixinExplosion",
+    "Minecraft.MixinItem",
+    "Minecraft.MixinWorld",
+    "Minecraft.MixinWorldServer"
   ],
   "client": [
     "Minecraft.AccessorEntityRenderer",
-    "Minecraft.Minecraft_Mixin",
-    "Minecraft.WorldClient_Mixin"
+    "Minecraft.MixinMinecraft",
+    "Minecraft.MixinWorldClient"
   ],
   "server": []
 }

@@ -7,9 +7,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "AccessorEntityCreeper",
-    "EntityAICreeperSwell_Mixin",
-    "EntityCreeper_Mixin",
-    "EntitySpider_Mixin"
+    "MixinEntityAICreeperSwell",
+    "MixinEntityCreeper",
+    "MixinEntitySpider"
   ],
   "client": [],
   "server": []

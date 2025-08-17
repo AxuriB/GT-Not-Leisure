@@ -38,7 +38,8 @@ public class TileEntityNBTPacketHandler {
                     result.setTagCompound(itemTag);
                 }
 
-                ItemUtils.placeItemInHotbar(player, result);
+                boolean isCreative = player.capabilities.isCreativeMode;
+                ItemUtils.placeItemInHotbar(player, result, isCreative, true);
             }
         }
     }

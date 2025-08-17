@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BehaviourScanner_Mixin",
-    "VoltageChanceBonus_GT_ParallelHelper_Mixin"
+    "MixinBehaviourScanner",
+    "MixinParallelHelper"
   ]
 }
 

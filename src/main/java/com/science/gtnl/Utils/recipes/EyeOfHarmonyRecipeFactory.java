@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.science.gtnl.mixins.late.Debug.EyeOfHarmonyRecipeAccessor;
+import com.science.gtnl.mixins.late.Debug.AccessorEyeOfHarmonyRecipe;
 
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.plugin.block.ModBlocks;
@@ -35,7 +35,7 @@ public class EyeOfHarmonyRecipeFactory {
             rocketTierOfRecipe,
             baseSuccessChance);
 
-        EyeOfHarmonyRecipeAccessor accessor = (EyeOfHarmonyRecipeAccessor) instance;
+        AccessorEyeOfHarmonyRecipe accessor = (AccessorEyeOfHarmonyRecipe) instance;
 
         accessor.setRecipeTriggerItem(recipeTriggerItem);
         accessor.setOutputItems(outputItems);

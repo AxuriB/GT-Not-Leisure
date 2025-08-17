@@ -16,8 +16,6 @@ public class NetWorkHandler {
         network.registerMessage(TileEntityNBTPacket.Handler.class, TileEntityNBTPacket.class, i++, Side.CLIENT);
         network.registerMessage(SyncHPCAVariablesPacket.Handler.class, SyncHPCAVariablesPacket.class, i++, Side.CLIENT);
         network.registerMessage(ContainerRollBACK.class, ContainerRollBACK.class, i++, Side.CLIENT);
-
-        i = 64;
         network.registerMessage(
             GetTileEntityNBTRequestPacket.Handler.class,
             GetTileEntityNBTRequestPacket.class,

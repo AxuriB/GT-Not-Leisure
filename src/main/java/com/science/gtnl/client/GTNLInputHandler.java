@@ -9,11 +9,10 @@ import java.util.function.BooleanSupplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -25,6 +24,7 @@ import com.cleanroommc.modularui.api.event.MouseInputEvent;
 import com.glodblock.github.client.gui.GuiItemMonitor;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import com.science.gtnl.ScienceNotLeisure;
+import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.common.packet.KeyBindingHandler;
 import com.science.gtnl.common.packet.WirelessPickBlock;
 
@@ -88,15 +88,18 @@ public class GTNLInputHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onInputEvent(final InputEvent.KeyInputEvent event) {
         if (!mc.thePlayer.capabilities.isCreativeMode && tick == 0 && mc.gameSettings.keyBindPickBlock.isPressed()) {
-            if (ForgeHooks.onPickBlock(mc.objectMouseOver, mc.thePlayer, mc.theWorld)) return;
 
-            EntityPlayer player = mc.thePlayer;
+            EntityClientPlayerMP player = mc.thePlayer;
             World world = player.worldObj;
             var target = mc.objectMouseOver;
 
+            if (Utils.onBeforePickBlock(player, world, true)) {
+                tick = 10;
+                return;
+            } else if (ForgeHooks.onPickBlock(mc.objectMouseOver, mc.thePlayer, mc.theWorld)) return;
+
             ItemStack result;
             boolean isCreative = mc.thePlayer.capabilities.isCreativeMode;
-            TileEntity te = null;
 
             if (target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 int x = target.blockX;
@@ -154,15 +157,18 @@ public class GTNLInputHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onInputEvent(final InputEvent.MouseInputEvent event) {
         if (!mc.thePlayer.capabilities.isCreativeMode && tick == 0 && mc.gameSettings.keyBindPickBlock.isPressed()) {
-            if (ForgeHooks.onPickBlock(mc.objectMouseOver, mc.thePlayer, mc.theWorld)) return;
 
-            EntityPlayer player = mc.thePlayer;
+            EntityClientPlayerMP player = mc.thePlayer;
             World world = player.worldObj;
             var target = mc.objectMouseOver;
 
+            if (Utils.onBeforePickBlock(player, world, true)) {
+                tick = 10;
+                return;
+            } else if (ForgeHooks.onPickBlock(mc.objectMouseOver, mc.thePlayer, mc.theWorld)) return;
+
             ItemStack result;
             boolean isCreative = mc.thePlayer.capabilities.isCreativeMode;
-            TileEntity te = null;
 
             if (target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 int x = target.blockX;

@@ -23,7 +23,7 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.science.gtnl.Utils.enums.SteamTypes;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.material.MaterialPool;
-import com.science.gtnl.mixins.late.Gregtech.MTEHatchAccessor;
+import com.science.gtnl.mixins.late.Gregtech.AccessorMTEHatch;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -161,12 +161,12 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
 
-        int mTexturePage = ((MTEHatchAccessor) this).getTexturePage();
+        int mTexturePage = ((AccessorMTEHatch) this).getTexturePage();
         if (mTexturePage < 0 || mTexturePage >= Textures.BlockIcons.casingTexturePages.length) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[0][0] };
         }
 
-        int textureIndex = ((MTEHatchAccessor) this).getTextureIndex();
+        int textureIndex = ((AccessorMTEHatch) this).getTextureIndex();
 
         if (side != aFacing) {
             if (textureIndex > 0 && textureIndex < Textures.BlockIcons.casingTexturePages[mTexturePage].length) {

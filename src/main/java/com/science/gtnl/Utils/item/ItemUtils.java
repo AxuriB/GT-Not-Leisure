@@ -28,8 +28,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.reavaritia.common.item.InfinityTotem;
+import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.common.packet.WirelessPickBlock;
 
 import baubles.api.BaublesApi;
 import gregtech.api.util.GTModHandler;
@@ -240,11 +242,10 @@ public class ItemUtils {
         return skullStack;
     }
 
-    public static boolean placeItemInHotbar(EntityPlayer player, ItemStack result) {
+    public static boolean placeItemInHotbar(EntityPlayer player, ItemStack result, boolean isCreative, boolean useAE) {
         if (result == null) return false;
         Minecraft mc = Minecraft.getMinecraft();
         InventoryPlayer inv = player.inventory;
-        boolean isCreative = player.capabilities.isCreativeMode;
 
         for (int i = 0; i < 9; i++) {
             ItemStack stack = inv.getStackInSlot(i);
@@ -310,6 +311,36 @@ public class ItemUtils {
                 }
             }
             return true;
+        } else if (useAE && !isCreative) {
+            int emptyHotbar = -1;
+            for (int i = 0; i < 9; i++) {
+                if (inv.getStackInSlot(i) == null) {
+                    emptyHotbar = i;
+                    break;
+                }
+            }
+            if (player.isSneaking()) {
+                result.stackSize = 1;
+            } else {
+                result.stackSize = result.getMaxStackSize();
+            }
+
+            if (emptyHotbar != -1) {
+                inv.currentItem = emptyHotbar;
+                ScienceNotLeisure.network.sendToServer(new WirelessPickBlock(result, inv.currentItem));
+                return true;
+            } else {
+                int slot9 = 8;
+                int windowId = player.inventoryContainer.windowId;
+                mc.playerController.windowClick(windowId, slot9 + 36, 0, 0, player);
+                inv.currentItem = slot9;
+                int emptySlot = inv.getFirstEmptyStack();
+                if (emptySlot != -1) {
+                    mc.playerController.windowClick(windowId, emptySlot, 0, 0, player);
+                }
+                ScienceNotLeisure.network.sendToServer(new WirelessPickBlock(result, inv.currentItem));
+                return true;
+            }
         }
 
         if (isCreative) {

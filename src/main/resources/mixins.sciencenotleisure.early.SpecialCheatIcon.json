@@ -8,9 +8,9 @@
   "mixins": [
     "AccessorDrawableBuilder",
     "AccessorDrawableResource",
-    "DrawableResource_Mixin",
-    "LayoutManager_Mixin",
-    "LayoutStyleMinecraft_Mixin"
+    "MixinDrawableResource",
+    "MixinLayoutManager",
+    "MixinLayoutStyleMinecraft"
   ],
   "client": [],
   "server": []
