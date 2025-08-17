@@ -7,11 +7,17 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinAEBaseContainer",
+    "MixinContainerCraftAmount",
+    "MixinContainerCraftConfirm",
     "MixinContainerMEMonitorable",
     "MixinGuiBridge",
     "MixinWirelessTerminalGuiObject"
   ],
-  "client": [],
+  "client": [
+    "MixinGuiAmount",
+    "MixinGuiCraftAmount",
+    "MixinGuiCraftConfirm"
+  ],
   "server": []
 }
 

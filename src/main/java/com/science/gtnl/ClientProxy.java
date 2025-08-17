@@ -1,7 +1,5 @@
 package com.science.gtnl;
 
-import codechicken.nei.guihook.GuiContainerManager;
-import com.science.gtnl.client.GTNLTooltipManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelSlime;
 import net.minecraft.client.renderer.entity.RenderLeashKnot;
@@ -14,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.client.GTNLTooltipManager;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockEternalGregTechWorkshopRender;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockNanoPhagocytosisPlantRender;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
@@ -43,6 +42,7 @@ import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.ItemLoader;
 
+import codechicken.nei.guihook.GuiContainerManager;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;

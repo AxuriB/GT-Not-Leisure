@@ -1,9 +1,5 @@
 package com.science.gtnl;
 
-import static com.science.gtnl.ScienceNotLeisure.network;
-
-import com.science.gtnl.client.GTNLInputHandler;
-import com.science.gtnl.common.packet.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,7 +8,9 @@ import com.science.gtnl.Utils.SubscribeEventUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
+import com.science.gtnl.client.GTNLInputHandler;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
+import com.science.gtnl.common.packet.NetWorkHandler;
 import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
 import com.science.gtnl.config.MainConfig;
 
@@ -22,7 +20,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.Mods;
 
 public class CommonProxy implements IGuiHandler {
@@ -40,24 +37,7 @@ public class CommonProxy implements IGuiHandler {
 
         MinecraftForge.EVENT_BUS.register(GTNLInputHandler.INSTANCE);
 
-        int i = 0;
-        network.registerMessage(TitlePacket.Handler.class, TitlePacket.class, i++, Side.CLIENT);
-        network.registerMessage(TickratePacket.Handler.class, TickratePacket.class, i++, Side.CLIENT);
-        network.registerMessage(ConfigSyncPacket.Handler.class, ConfigSyncPacket.class, i++, Side.CLIENT);
-        network.registerMessage(TileEntityNBTPacket.Handler.class, TileEntityNBTPacket.class, i++, Side.CLIENT);
-        network.registerMessage(SoundPacket.Handler.class, SoundPacket.class, i++, Side.CLIENT);
-        network.registerMessage(SyncHPCAVariablesPacket.Handler.class, SyncHPCAVariablesPacket.class, 6, Side.CLIENT);
-        network.registerMessage(ProspectingPacket.Handler.class, ProspectingPacket.class, i++, Side.CLIENT);
-
-        i = 64;
-        network.registerMessage(
-            GetTileEntityNBTRequestPacket.Handler.class,
-            GetTileEntityNBTRequestPacket.class,
-            i++,
-            Side.SERVER);
-        network.registerMessage(TeleportRequestPacket.Handler.class, TeleportRequestPacket.class, 7, Side.SERVER);
-        network.registerMessage(KeyBindingHandler.Handler.class, KeyBindingHandler.class,i++,Side.SERVER);
-        network.registerMessage(WirelessPickBlock.Handler.class, WirelessPickBlock.class,i++,Side.SERVER);
+        NetWorkHandler.registerAllMessage();
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
