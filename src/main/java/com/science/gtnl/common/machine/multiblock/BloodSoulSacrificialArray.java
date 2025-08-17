@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -46,6 +47,7 @@ import WayofTime.alchemicalWizardry.common.entity.projectile.EntityMeteor;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -245,7 +247,12 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             .addElement('S', ofBlockAnyMeta(ModBlocks.runeOfSacrifice))
             .addElement('T', ofBlockAnyMeta(ModBlocks.runeOfSelfSacrifice))
             .addElement('U', ofBlockAnyMeta(ModBlocks.speedRune))
-            .addElement('V', ofBlockAnyMeta(Blocks.beacon))
+            .addElement(
+                'V',
+                ofChain(
+                    Mods.EtFuturumRequiem.isModLoaded() ? ofBlockAnyMeta(
+                        ItemUtils.getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "beacon", 1)))
+                        : ofBlockAnyMeta(Blocks.beacon)))
             .addElement('W', ofBlockAnyMeta(com.arc.bloodarsenal.common.block.ModBlocks.lp_materializer))
             .addElement('X', ofFrame(Materials.NaquadahAlloy))
             .addElement('Y', ofBlockAnyMeta(ModBlocks.ritualStone))

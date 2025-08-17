@@ -32,9 +32,11 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -169,7 +171,12 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
             .addElement('E', ofBlock(bw_realglas, 15))
             .addElement('F', ofBlock(sBlockGlass1, 2))
             .addElement('G', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-            .addElement('I', ofBlockAnyMeta(Blocks.beacon))
+            .addElement(
+                'I',
+                ofChain(
+                    Mods.EtFuturumRequiem.isModLoaded() ? ofBlockAnyMeta(
+                        ItemUtils.getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "beacon", 1)))
+                        : ofBlockAnyMeta(Blocks.beacon)))
             .build();
     }
 

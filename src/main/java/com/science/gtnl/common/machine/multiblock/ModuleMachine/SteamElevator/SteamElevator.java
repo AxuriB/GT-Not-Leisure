@@ -348,9 +348,9 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
 
         int steamToConsume = (int) Math.ceil((double) actualEU / bestSteam.efficiencyFactor);
 
-        int actualDrained = depleteInput(bestSteam.fluid, steamToConsume);
+        int actualDrained = depleteInput(bestSteam.fluid, steamToConsume * 2);
         if (actualDrained > 0) {
-            long euGenerated = (long) actualDrained * bestSteam.efficiencyFactor;
+            long euGenerated = (long) actualDrained * bestSteam.efficiencyFactor / 2;
             setEUVar(getEUVar() + Math.min(euGenerated, euCanAccept));
         }
     }

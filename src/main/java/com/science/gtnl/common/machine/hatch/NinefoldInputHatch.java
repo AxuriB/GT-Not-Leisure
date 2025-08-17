@@ -1,6 +1,7 @@
 package com.science.gtnl.common.machine.hatch;
 
 import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_NINE_HATCH;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_NINE_HATCH_COLOR;
 
 import java.util.ArrayList;
 
@@ -97,12 +98,16 @@ public class NinefoldInputHatch extends MTEHatchMultiInput implements IAddUIWidg
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_NINE_HATCH) };
+        byte color = getBaseMetaTileEntity().getColorization();
+        ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_FRONT_NINE_HATCH_COLOR[color + 1]);
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_NINE_HATCH), coloredPipeOverlay };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_NINE_HATCH) };
+        byte color = getBaseMetaTileEntity().getColorization();
+        ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_FRONT_NINE_HATCH_COLOR[color + 1]);
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_NINE_HATCH), coloredPipeOverlay };
     }
 
     @Override

@@ -7,6 +7,7 @@ import gregtech.api.enums.Textures;
 public class BlockIcons {
 
     private static final String BASE_REPLICATOR = "basicmachines/replicator/";
+    private static final String BASE_NINE_HATCH = RESOURCE_ROOT_ID + ":iconsets/OVERLAY_NINE_HATCH/";
     private static final String BASE = RESOURCE_ROOT_ID + ":iconsets/";
 
     public static Textures.BlockIcons.CustomIcon LASER_BEACON_TOP = new Textures.BlockIcons.CustomIcon(
@@ -16,10 +17,52 @@ public class BlockIcons {
         "iconsets/OVERLAY_FULLAUTOMAINTENANCE");
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_DUAL_HATCH = new Textures.BlockIcons.CustomIcon(
         BASE + "OVERLAY_DUAL_HATCH");
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH = new Textures.BlockIcons.CustomIcon(
-        BASE + "OVERLAY_NINE_HATCH");
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_PARALLEL_CONTROLLER = new Textures.BlockIcons.CustomIcon(
         BASE + "OVERLAY_PARALLEL_CONTROLLER");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "OVERLAY");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_NONE = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "NONE");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_BLACK = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "BLACK");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_RED = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "RED");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_GREEN = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "GREEN");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_BROWN = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "BROWN");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_BLUE = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "BLUE");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_PURPLE = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "PURPLE");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_CYAN = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "CYAN");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_LIGHTGRAY = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "LIGHTGRAY");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_GRAY = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "GRAY");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_PINK = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "PINK");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_LIME = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "LIME");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_YELLOW = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "YELLOW");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_LIGHTBLUE = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "LIGHTBLUE");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_MAGENTA = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "MAGENTA");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_ORANGE = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "ORANGE");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_WHITE = new Textures.BlockIcons.CustomIcon(
+        BASE_NINE_HATCH + "WHITE");
+
+    public static final Textures.BlockIcons.CustomIcon[] OVERLAY_FRONT_NINE_HATCH_COLOR = {
+        OVERLAY_FRONT_NINE_HATCH_NONE, OVERLAY_FRONT_NINE_HATCH_BLACK, OVERLAY_FRONT_NINE_HATCH_RED,
+        OVERLAY_FRONT_NINE_HATCH_GREEN, OVERLAY_FRONT_NINE_HATCH_BROWN, OVERLAY_FRONT_NINE_HATCH_BLUE,
+        OVERLAY_FRONT_NINE_HATCH_PURPLE, OVERLAY_FRONT_NINE_HATCH_CYAN, OVERLAY_FRONT_NINE_HATCH_LIGHTGRAY,
+        OVERLAY_FRONT_NINE_HATCH_GRAY, OVERLAY_FRONT_NINE_HATCH_PINK, OVERLAY_FRONT_NINE_HATCH_LIME,
+        OVERLAY_FRONT_NINE_HATCH_YELLOW, OVERLAY_FRONT_NINE_HATCH_LIGHTBLUE, OVERLAY_FRONT_NINE_HATCH_MAGENTA,
+        OVERLAY_FRONT_NINE_HATCH_ORANGE, OVERLAY_FRONT_NINE_HATCH_WHITE, };
 
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_INDICATOR = new Textures.BlockIcons.CustomIcon(
         BASE + "Indicator/OVERLAY_FRONT");

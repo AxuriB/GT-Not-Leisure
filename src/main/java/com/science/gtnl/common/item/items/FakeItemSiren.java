@@ -19,6 +19,7 @@ public class FakeItemSiren extends Item {
         this.setUnlocalizedName("FakeItemSiren");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "FakeItemSiren");
+        this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         GTNLItemList.FakeItemSiren.set(new ItemStack(this, 1));
     }
 

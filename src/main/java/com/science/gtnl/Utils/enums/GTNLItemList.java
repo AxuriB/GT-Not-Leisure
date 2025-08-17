@@ -225,6 +225,8 @@ public enum GTNLItemList implements IItemContainer {
     SteelTurbine,
     PipelessSteamCover,
 
+    ManaElectricProspectorTool,
+
     TestItem,
     KFCFamily,
     RecordSus,
@@ -247,6 +249,7 @@ public enum GTNLItemList implements IItemContainer {
     InfinityDyeFluidCell,
     InfinityCobblestoneCell,
     NullPointerException,
+    NetherTeleporter,
 
     SatietyRing,
     SuperReachRing,
@@ -380,6 +383,7 @@ public enum GTNLItemList implements IItemContainer {
     SteamMonsterRepellentModuleIII,
     SteamFlightModule,
     SteamWeatherModule,
+    SteamOreProcessorModule,
 
     CompoundExtremeCoolingUnit,
     EyeOfHarmonyInjector,
@@ -475,6 +479,7 @@ public enum GTNLItemList implements IItemContainer {
     LargeSteamCircuitAssembler,
     GenerationEarthEngine,
 
+    Enchanting,
     OredictInputBusHatchME,
     Replicator,
     SuperInputHatchME,

@@ -87,7 +87,7 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
         super.registerIcons(iconRegister);
         this.itemIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "MetaItem/0");
         for (int meta : MetaSet) {
-            ItemStaticDataClientOnly.iconsMap01
+            ItemStaticDataClientOnly.iconsMapMetaItem01
                 .put(meta, iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "MetaItem/" + meta));
         }
         halo = new IIcon[1];
@@ -97,9 +97,9 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int aMetaData) {
-        return ItemStaticDataClientOnly.iconsMap01.containsKey(aMetaData)
-            ? ItemStaticDataClientOnly.iconsMap01.get(aMetaData)
-            : ItemStaticDataClientOnly.iconsMap01.get(0);
+        return ItemStaticDataClientOnly.iconsMapMetaItem01.containsKey(aMetaData)
+            ? ItemStaticDataClientOnly.iconsMapMetaItem01.get(aMetaData)
+            : ItemStaticDataClientOnly.iconsMapMetaItem01.get(0);
     }
 
     @SideOnly(Side.CLIENT)

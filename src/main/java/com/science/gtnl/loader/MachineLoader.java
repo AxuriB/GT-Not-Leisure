@@ -20,6 +20,7 @@ import com.science.gtnl.Utils.enums.Mods;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.common.machine.basicMachine.DebugResearchStation;
+import com.science.gtnl.common.machine.basicMachine.Enchanting;
 import com.science.gtnl.common.machine.basicMachine.ManaTank;
 import com.science.gtnl.common.machine.basicMachine.Replicator;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
@@ -117,6 +118,7 @@ import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.St
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamElevator;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamFlightModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamMonsterRepellentModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamOreProcessorModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamWeatherModule;
 import com.science.gtnl.common.machine.multiblock.NanitesCircuitAssemblyFactory;
 import com.science.gtnl.common.machine.multiblock.NanitesIntegratedProcessingCenter;
@@ -1273,6 +1275,13 @@ public class MachineLoader {
                 StatCollector.translateToLocal("NameCompoundExtremeCoolingUnit")));
         addItemTooltip(GTNLItemList.CompoundExtremeCoolingUnit.get(1), AnimatedText.SNL_QYZG);
 
+        GTNLItemList.SteamOreProcessorModule.set(
+            new SteamOreProcessorModule(
+                STEAM_ORE_PROCESSOR_MODULE.ID,
+                "SteamOreProcessorModule",
+                StatCollector.translateToLocal("NameSteamOreProcessorModule")));
+        addItemTooltip(GTNLItemList.SteamOreProcessorModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(
             new CheatOreProcessingFactory(
@@ -1829,7 +1838,10 @@ public class MachineLoader {
 
         GTNLItemList.Replicator
             .set(new Replicator(REPLICATOR.ID, "Replicator", StatCollector.translateToLocal("Replicator"), 7));
-        addItemTooltip(GTNLItemList.Replicator.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.Enchanting
+            .set(new Enchanting(ENCHANTING.ID, "Enchanting", StatCollector.translateToLocal("Enchanting"), 7));
+        addItemTooltip(GTNLItemList.Enchanting.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.OredictInputBusHatchME.set(
             new OredictInputBusHatchME(

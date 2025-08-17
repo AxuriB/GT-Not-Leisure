@@ -7,11 +7,16 @@ import static gregtech.api.enums.Mods.VisualProspecting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.SplittableRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -21,22 +26,31 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.science.gtnl.Utils.item.MetaItemStackUtils;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.item.ItemStaticDataClientOnly;
 import com.science.gtnl.common.packet.ProspectingPacket;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.loader.ItemLoader;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import detrav.utils.BartWorksHelper;
 import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,26 +59,97 @@ import gregtech.common.blocks.BlockOresAbstract;
 import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.pollution.Pollution;
 
-public class BehaviourDetravToolElectricProspector extends Item {
+public class ElectricProspectorTool extends Item {
 
+    public String unlocalizedName = "ElectricProspectorTool";
     public static int[] DISTANCEINTS = new int[] { 0, 4, 25, 64 };
     public HashMap<String, Integer> ores;
     public int distTextIndex;
     public int mCosts = 1;
-    public int mRange = 5;
-    public static String CHAT_MSG_SEPARATOR = EnumChatFormatting.STRIKETHROUGH + "--------------------";
+    public static final Map<Integer, Pair<Integer, Long>> mRangeMap = new HashMap<>();
 
-    public BehaviourDetravToolElectricProspector() {
+    public static String CHAT_MSG_SEPARATOR = EnumChatFormatting.STRIKETHROUGH + "--------------------";
+    public static final Set<Integer> metaSet = new HashSet<>();
+
+    public ElectricProspectorTool() {
         super();
-        this.setUnlocalizedName("TestItemBDTEP");
+        this.setUnlocalizedName("ElectricProspectorTool");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
-        this.setTextureName(RESOURCE_ROOT_ID + ":" + "TestItemBDTEP");
-        this.setMaxDamage(9999);
+        this.setTextureName(RESOURCE_ROOT_ID + ":" + "ElectricProspectorTool");
+        this.setMaxStackSize(1);
+    }
+
+    public static ItemStack initItem(String aName, int aMeta, int aRange, long maxDamage) {
+        mRangeMap.put(aMeta, Pair.of(aRange, maxDamage));
+        ItemStack stack = MetaItemStackUtils
+            .initMetaItemStack(aName, aMeta, ItemLoader.electricProspectorTool, metaSet);
+        setToolMaxDamage(stack, maxDamage);
+        return stack;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> toolTip,
+        boolean advancedToolTips) {
+        toolTip.add(
+            StatCollector.translateToLocalFormatted(
+                "Tooltip_Damage",
+                mRangeMap.get(itemStack.getItemDamage())
+                    .getRight() - MetaGeneratedTool.getToolDamage(itemStack),
+                mRangeMap.get(itemStack.getItemDamage())
+                    .getRight()));
+
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack aItemStack) {
+        return "ElectricProspectorTool." + aItemStack.getItemDamage();
+    }
+
+    @Override
+    public String getUnlocalizedName() {
+        return "ElectricProspectorTool";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister iconRegister) {
+        super.registerIcons(iconRegister);
+        this.itemIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "ElectricProspectorTool/0");
+        for (int meta : metaSet) {
+            ItemStaticDataClientOnly.iconsMapElectricProspectorTool
+                .put(meta, iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "ElectricProspectorTool/" + meta));
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int aMetaData) {
+        return ItemStaticDataClientOnly.iconsMapElectricProspectorTool.containsKey(aMetaData)
+            ? ItemStaticDataClientOnly.iconsMapElectricProspectorTool.get(aMetaData)
+            : ItemStaticDataClientOnly.iconsMapElectricProspectorTool.get(0);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> aList) {
+        for (int meta : metaSet) {
+            ItemStack stack = new ItemStack(ItemLoader.electricProspectorTool, 1, meta);
+            setToolMaxDamage(
+                stack,
+                mRangeMap.get(meta)
+                    .getRight());
+            aList.add(stack);
+        }
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (!aWorld.isRemote) {
+            setToolMaxDamage(
+                aStack,
+                mRangeMap.get(aStack.getItemDamage())
+                    .getRight());
             int data = getDetravData(aStack);
             if (aPlayer.isSneaking()) {
                 data++;
@@ -80,7 +165,8 @@ public class BehaviourDetravToolElectricProspector extends Item {
 
             int cX = ((int) aPlayer.posX) >> 4;
             int cZ = ((int) aPlayer.posZ) >> 4;
-            int size = mRange;
+            int size = mRangeMap.get(aStack.getItemDamage())
+                .getLeft();
             List<Chunk> chunks = new ArrayList<>();
             aPlayer.addChatMessage(new ChatComponentText("Scanning..."));
 
@@ -181,8 +267,9 @@ public class BehaviourDetravToolElectricProspector extends Item {
                 }
             }
             network.sendTo(packet, (EntityPlayerMP) aPlayer);
-            if (!aPlayer.capabilities.isCreativeMode)
-                aStack.setItemDamage(aStack.getItemDamage() + this.mCosts * chunks.size());
+            if (!aPlayer.capabilities.isCreativeMode) {
+                setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + this.mCosts * chunks.size() / 4);
+            }
 
             if (VisualProspecting.isModLoaded()) {
                 if (data == 0 || data == 1) {
@@ -205,7 +292,12 @@ public class BehaviourDetravToolElectricProspector extends Item {
                             size * 16));
                 }
             }
+
+            if (MetaGeneratedTool.getToolDamage(aStack) >= MetaGeneratedTool.getToolMaxDamage(aStack)) {
+                if (aStack.stackSize > 0) aStack.stackSize--;
+            }
         }
+
         return aStack;
     }
 
@@ -229,8 +321,9 @@ public class BehaviourDetravToolElectricProspector extends Item {
                 if (!aWorld.isRemote) {
                     FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
                     addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
-                    if (!aPlayer.capabilities.isCreativeMode)
-                        aStack.setItemDamage(aStack.getItemDamage() + this.mCosts);
+                    if (!aPlayer.capabilities.isCreativeMode) {
+                        setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + this.mCosts);
+                    }
                 }
             } else {
                 if (!aWorld.isRemote) {
@@ -252,12 +345,21 @@ public class BehaviourDetravToolElectricProspector extends Item {
         if (data < 3) if (!aWorld.isRemote) {
             FluidStack fStack = UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
             addChatMassageByValue(aPlayer, fStack.amount, fStack.getLocalizedName());
-            if (!aPlayer.capabilities.isCreativeMode) aStack.setItemDamage(aStack.getItemDamage() + this.mCosts);
+            if (!aPlayer.capabilities.isCreativeMode) {
+                setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + this.mCosts);
+            }
             return true;
         }
         if (!aWorld.isRemote) {
+            setToolMaxDamage(
+                aStack,
+                mRangeMap.get(aStack.getItemDamage())
+                    .getRight());
             int polution = getPollution(aWorld, aX, aZ);
             addChatMassageByValue(aPlayer, polution, "Pollution");
+            if (MetaGeneratedTool.getToolDamage(aStack) >= MetaGeneratedTool.getToolMaxDamage(aStack)) {
+                if (aStack.stackSize > 0) aStack.stackSize--;
+            }
         }
         return true;
     }
@@ -269,7 +371,8 @@ public class BehaviourDetravToolElectricProspector extends Item {
 
         ores = new HashMap<>();
 
-        int range = mRange;
+        int range = mRangeMap.get(aStack.getItemDamage())
+            .getLeft();
         if ((range % 2) == 0) {
             range += 1; // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the
             // loop
@@ -415,13 +518,17 @@ public class BehaviourDetravToolElectricProspector extends Item {
                     .getStringLocalization("gt.blockores." + meta + ".name");
                 String name = Materials.getLocalizedNameForItem(format, meta % 1000);
                 addOreToHashMap(name, aPlayer);
-                if (!aPlayer.capabilities.isCreativeMode) aStack.setItemDamage(aStack.getItemDamage() + this.mCosts);
+                if (!aPlayer.capabilities.isCreativeMode) {
+                    setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + this.mCosts);
+                }
             }
         } else if (tAssotiation != null) {
             try {
                 String name = tAssotiation.toString();
                 addChatMassageByValue(aPlayer, -1, name);
-                if (!aPlayer.capabilities.isCreativeMode) aStack.setItemDamage(aStack.getItemDamage() + this.mCosts);
+                if (!aPlayer.capabilities.isCreativeMode) {
+                    setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + this.mCosts);
+                }
             } catch (Exception e) {
                 addChatMassageByValue(aPlayer, -1, "ERROR, lol ^_^");
             }
@@ -483,12 +590,16 @@ public class BehaviourDetravToolElectricProspector extends Item {
                 }
             }
 
-            if (!aPlayer.capabilities.isCreativeMode) aStack.setItemDamage(aStack.getItemDamage() + this.mCosts);
+            if (!aPlayer.capabilities.isCreativeMode) {
+                setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + this.mCosts);
+            }
 
         } else {
             if (MainConfig.enableDebugMode)
                 aPlayer.addChatMessage(new ChatComponentText(EnumChatFormatting.RED + " Failed on this chunk"));
-            if (!aPlayer.capabilities.isCreativeMode) aStack.setItemDamage(aStack.getItemDamage() + this.mCosts / 4);
+            if (!aPlayer.capabilities.isCreativeMode) {
+                setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + this.mCosts / 4);
+            }
         }
     }
 
@@ -542,6 +653,49 @@ public class BehaviourDetravToolElectricProspector extends Item {
             aStack.setTagCompound(nbt);
         }
         nbt.setInteger("DetravData", data);
+    }
+
+    public static boolean setToolDamage(ItemStack aStack, long aDamage) {
+        if (aStack == null) return false;
+
+        NBTTagCompound tag = aStack.getTagCompound();
+        if (tag == null) {
+            tag = new NBTTagCompound();
+            aStack.setTagCompound(tag);
+        }
+
+        NBTTagCompound toolStats;
+        if (tag.hasKey("GT.ToolStats")) {
+            toolStats = tag.getCompoundTag("GT.ToolStats");
+        } else {
+            toolStats = new NBTTagCompound();
+            tag.setTag("GT.ToolStats", toolStats);
+        }
+
+        toolStats.setLong("Damage", aDamage);
+        return true;
+    }
+
+    public static boolean setToolMaxDamage(ItemStack aStack, long aMaxDamage) {
+        if (aStack == null) return false;
+
+        NBTTagCompound tag = aStack.getTagCompound();
+        if (tag == null) {
+            tag = new NBTTagCompound();
+            aStack.setTagCompound(tag);
+        }
+
+        NBTTagCompound toolStats;
+        if (tag.hasKey("GT.ToolStats")) {
+            toolStats = tag.getCompoundTag("GT.ToolStats");
+        } else {
+            toolStats = new NBTTagCompound();
+            tag.setTag("GT.ToolStats", toolStats);
+        }
+
+        toolStats.setLong("MaxDamage", aMaxDamage);
+
+        return true;
     }
 
 }

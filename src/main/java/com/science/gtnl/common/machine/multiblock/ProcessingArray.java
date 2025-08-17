@@ -95,7 +95,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public int getMaxParallelRecipes() {
-        if (getControllerSlot() == null) {
+        if (getControllerSlot() == null && getControllerSlot().getItem() == new ItemStack(sBlockMachines).getItem()) {
             return 0;
         }
         return getControllerSlot().stackSize * 2 + GTUtility.getTier(this.getMaxInputVoltage()) * 4
@@ -345,11 +345,13 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setByte("coilTier", this.mCoilLevel.getTier());
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        mCoilLevel = HeatingCoilLevel.getFromTier(aNBT.getByte("coilTier"));
         if (aNBT.hasKey("mSeparate")) {
             // backward compatibility
             inputSeparation = aNBT.getBoolean("mSeparate");

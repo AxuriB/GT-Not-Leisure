@@ -21,12 +21,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -36,6 +38,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings1;
@@ -147,7 +150,12 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
                     .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(5))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-            .addElement('M', ofBlock(Blocks.beacon, 1))
+            .addElement(
+                'M',
+                ofChain(
+                    Mods.EtFuturumRequiem.isModLoaded() ? ofBlockAnyMeta(
+                        ItemUtils.getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "beacon", 1)))
+                        : ofBlockAnyMeta(Blocks.beacon)))
             .addElement('N', ofBlock(EnderIO.blockIngotStorageEndergy, 3))
             .build();
     }

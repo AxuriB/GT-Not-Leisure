@@ -22,7 +22,7 @@ public class FluidCannerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.glass_bottle, 1))
             .itemOutputs(GTModHandler.getModItem(Botania.ID, "manaResource", 1, 15))
-            .fluidInputs(MaterialPool.EnderAir.getFluidOrGas(1000))
+            .fluidInputs(MaterialPool.EnderAir.getFluidOrGas(599))
             .duration(1)
             .eut(8)
             .addTo(FCR);

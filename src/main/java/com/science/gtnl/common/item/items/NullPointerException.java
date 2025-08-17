@@ -2,7 +2,6 @@ package com.science.gtnl.common.item.items;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
-import net.minecraft.entity.EntityNPE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
@@ -41,7 +40,7 @@ public class NullPointerException extends Item {
             force = 1.0F;
         }
 
-        EntityNPE arrow = new EntityNPE(world, player, force * 2.0F);
+        Forge.NullPointerException arrow = new Forge.NullPointerException(world, player, force * 2.0F);
 
         world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + force * 0.5F);
 
