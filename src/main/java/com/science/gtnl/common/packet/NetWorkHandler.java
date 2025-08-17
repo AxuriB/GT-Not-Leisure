@@ -1,0 +1,31 @@
+package com.science.gtnl.common.packet;
+
+import static com.science.gtnl.ScienceNotLeisure.network;
+
+import cpw.mods.fml.relauncher.Side;
+
+public class NetWorkHandler {
+
+    public static void registerAllMessage() {
+        int i = 0;
+        network.registerMessage(SoundPacket.Handler.class, SoundPacket.class, i++, Side.CLIENT);
+        network.registerMessage(TitlePacket.Handler.class, TitlePacket.class, i++, Side.CLIENT);
+        network.registerMessage(TickratePacket.Handler.class, TickratePacket.class, i++, Side.CLIENT);
+        network.registerMessage(ConfigSyncPacket.Handler.class, ConfigSyncPacket.class, i++, Side.CLIENT);
+        network.registerMessage(ProspectingPacket.Handler.class, ProspectingPacket.class, i++, Side.CLIENT);
+        network.registerMessage(TileEntityNBTPacket.Handler.class, TileEntityNBTPacket.class, i++, Side.CLIENT);
+        network.registerMessage(SyncHPCAVariablesPacket.Handler.class, SyncHPCAVariablesPacket.class, i++, Side.CLIENT);
+        network.registerMessage(ContainerRollBACK.class, ContainerRollBACK.class, i++, Side.CLIENT);
+
+        i = 64;
+        network.registerMessage(
+            GetTileEntityNBTRequestPacket.Handler.class,
+            GetTileEntityNBTRequestPacket.class,
+            i++,
+            Side.SERVER);
+        network.registerMessage(TeleportRequestPacket.Handler.class, TeleportRequestPacket.class, i++, Side.SERVER);
+        network.registerMessage(KeyBindingHandler.class, KeyBindingHandler.class, i++, Side.SERVER);
+        network.registerMessage(WirelessPickBlock.class, WirelessPickBlock.class, i++, Side.SERVER);
+        network.registerMessage(ContainerRollBACK.class, ContainerRollBACK.class, i++, Side.SERVER);
+    }
+}
