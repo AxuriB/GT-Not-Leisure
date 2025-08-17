@@ -2914,3 +2914,7 @@ RealArtificialStar.getInfoData.04=Stability Field Level
 RealArtificialStar.getInfoData.05=Material Recycling Probability
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=Chance to recycle some materials. Probability affected by module level.
 NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=Generates:
+
+key.retrieve_item.desc=Retrieve item from AE
+key.start_craft.desc=Request craft from AE
+text.rc.craft=This item has no corresponding crafting

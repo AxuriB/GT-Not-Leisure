@@ -1,0 +1,482 @@
+package com.science.gtnl.common.packet;
+
+import java.time.Instant;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import com.github.bsideup.jabel.Desugar;
+import com.glodblock.github.client.gui.container.ContainerItemMonitor;
+import com.glodblock.github.inventory.InventoryHandler;
+import com.glodblock.github.inventory.gui.GuiType;
+import com.glodblock.github.inventory.item.IWirelessTerminal;
+import com.glodblock.github.util.BlockPos;
+import com.glodblock.github.util.Util;
+import com.gtnewhorizon.gtnhlib.util.ServerThreadUtil;
+import com.science.gtnl.Utils.MEHandler;
+import com.science.gtnl.Utils.RCAEBaseContainer;
+
+import appeng.api.config.Actionable;
+import appeng.api.config.SecurityPermissions;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.crafting.ICraftingGrid;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.security.ISecurityGrid;
+import appeng.api.networking.security.PlayerSource;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.container.AEBaseContainer;
+import appeng.container.implementations.ContainerCraftAmount;
+import appeng.container.implementations.ContainerMEMonitorable;
+import appeng.core.AppEng;
+import appeng.core.localization.PlayerMessages;
+import appeng.core.sync.GuiBridge;
+import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.WirelessTerminalGuiObject;
+import appeng.me.cache.CraftingGridCache;
+import appeng.util.Platform;
+import appeng.util.item.AEItemStack;
+import baubles.api.BaublesApi;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+
+public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHandler, IMessage> {
+
+    ItemStack stack;
+    String key;
+    boolean isAE = false;
+
+    public KeyBindingHandler() {
+
+    }
+
+    public KeyBindingHandler(String key) {
+        this.key = key;
+    }
+
+    public KeyBindingHandler(String key, ItemStack item, boolean isAE) {
+        this.key = key;
+        this.stack = item;
+        this.isAE = isAE;
+    }
+
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        this.stack = ByteBufUtils.readItemStack(buf);
+        this.key = ByteBufUtils.readUTF8String(buf);
+        this.isAE = buf.readBoolean();
+    }
+
+    @Override
+    public void toBytes(ByteBuf buf) {
+        ByteBufUtils.writeItemStack(buf, this.stack);
+        ByteBufUtils.writeUTF8String(buf, this.key);
+        buf.writeBoolean(this.isAE);
+    }
+
+    private static final Map<UUID, Long> map = new ConcurrentHashMap<>();
+
+    @Override
+    public IMessage onMessage(KeyBindingHandler message, MessageContext ctx) {
+        EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+        var container = player.openContainer;
+        var item = message.stack;
+        switch (message.key) {
+            case "RetrieveItem" -> retrieveItem(player, container, item, message.isAE);
+            case "StartCraft" -> ServerThreadUtil
+                .addScheduledTask(() -> startCraft(player, container, item, message.isAE));
+        }
+        return null;
+    }
+
+    private void retrieveItem(EntityPlayerMP player, Container container, ItemStack item, boolean isAE) {
+        long targetCount = item.getMaxStackSize();
+        if (!isAE) {
+            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                ItemStack ii = player.inventory.getStackInSlot(i);
+                WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(ii, player, i, 0);
+
+                if (obj == null) {
+                    continue;
+                }
+
+                if (!obj.rangeCheck()) {
+                    player.addChatMessage(PlayerMessages.OutOfRange.toChat());
+                } else {
+                    IGridNode gridNode = obj.getActionableNode();
+                    if (gridNode == null) {
+                        player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                        continue;
+                    }
+                    targetCount = wirelessRetrieve(player, item, gridNode, targetCount, obj);
+                    if (targetCount <= 0) {
+                        return;
+                    }
+                }
+            }
+            if (Loader.isModLoaded("Baubles")) {
+                readBaublesR(player, item, targetCount);
+            }
+        } else if (container instanceof AEBaseContainer c && container instanceof IContainerCraftingPacket t) {
+            IGridNode gridNode = t.getNetworkNode();
+            if (gridNode == null) {
+                player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                return;
+            }
+            IGrid grid = gridNode.getGrid();
+            if (securityCheck(player, grid, SecurityPermissions.EXTRACT)) {
+                IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+                var iItemStorageChannel = storageGrid.getItemInventory();
+                var host = c.getTarget();
+                if (host instanceof IActionHost h) {
+                    var aeItem = Optional.ofNullable(
+                        iItemStorageChannel.extractItems(
+                            AEItemStack.create(item)
+                                .setStackSize(targetCount),
+                            Actionable.SIMULATE,
+                            new PlayerSource(player, h)));
+
+                    if (aeItem.isPresent()) {
+                        var aeItem0 = aeItem.get();
+                        var aeItem1 = iItemStorageChannel.extractItems(
+                            AEItemStack.create(item)
+                                .setStackSize(aeItem0.getStackSize()),
+                            Actionable.MODULATE,
+                            new PlayerSource(player, h));
+
+                        placeItemBackInInventory(player, aeItem1.getItemStack());
+                    }
+                }
+            }
+        }
+    }
+
+    private long wirelessRetrieve(EntityPlayerMP player, ItemStack exItem, IGridNode gridNode, long targetCount,
+        WirelessTerminalGuiObject obj) {
+        IGrid grid = gridNode.getGrid();
+        if (securityCheck(player, grid, SecurityPermissions.EXTRACT)) {
+            IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+            var iItemStorageChannel = storageGrid.getItemInventory();
+            var aeItem = Optional.ofNullable(
+                iItemStorageChannel.extractItems(
+                    AEItemStack.create(exItem)
+                        .setStackSize(targetCount),
+                    Actionable.SIMULATE,
+                    new PlayerSource(player, obj)));
+
+            if (aeItem.isPresent()) {
+                var aeItem0 = aeItem.get();
+                var aeItem1 = iItemStorageChannel.extractItems(
+                    AEItemStack.create(exItem)
+                        .setStackSize(aeItem0.getStackSize()),
+                    Actionable.MODULATE,
+                    new PlayerSource(player, obj));
+
+                targetCount -= aeItem1.getStackSize();
+
+                placeItemBackInInventory(player, aeItem1.getItemStack());
+            }
+        }
+        return targetCount;
+    }
+
+    private void startCraft(EntityPlayerMP player, Container container, ItemStack item, boolean isAE) {
+        UUID playUUID = player.getUniqueID();
+        long worldTime = Instant.now()
+            .getEpochSecond();
+        if (map.containsKey(playUUID)) {
+            if (map.get(playUUID) < worldTime) {
+                map.put(playUUID, worldTime);
+            } else {
+                return;
+            }
+        } else {
+            map.put(playUUID, worldTime);
+        }
+        item.stackSize = 1;
+        if (!isAE) {
+            for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                ItemStack ii = player.inventory.getStackInSlot(i);
+                WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(ii, player, i, 0);
+
+                if (obj == null) {
+                    continue;
+                }
+
+                if (!obj.rangeCheck()) {
+                    player.addChatMessage(PlayerMessages.OutOfRange.toChat());
+                } else {
+                    IGridNode gridNode = obj.getActionableNode();
+                    if (gridNode == null) {
+                        player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                        continue;
+                    }
+                    openWirelessCraft(ii, player, item, gridNode, i, false);
+                    return;
+                }
+            }
+            if (Loader.isModLoaded("Baubles")) {
+                readBaublesS(player, item);
+            }
+        } else if (container instanceof ContainerMEMonitorable || container instanceof ContainerItemMonitor) {
+            AEBaseContainer aec;
+            IGridNode gridNode;
+            if (container instanceof ContainerItemMonitor c) {
+                aec = c;
+                gridNode = c.getNetworkNode();
+            } else if (container instanceof ContainerItemMonitor c) {
+                aec = c;
+                gridNode = c.getNetworkNode();
+            } else {
+                return;
+            }
+            if (gridNode == null) {
+                player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                return;
+            }
+            IGrid grid = gridNode.getGrid();
+            if (securityCheck(player, grid, SecurityPermissions.CRAFT)) {
+
+                CraftingGridCache cgc = gridNode.getGrid()
+                    .getCache(ICraftingGrid.class);
+                Iterator<IAEItemStack> iterator = cgc.getCraftingPatterns()
+                    .keySet()
+                    .iterator();
+                boolean isCraftable = false;
+                IAEItemStack aeItem = null;
+                while (iterator.hasNext()) {
+                    aeItem = iterator.next();
+                    if (aeItem.isCraftable()) {
+                        if (ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), item)) {
+                            aeItem = aeItem.copy()
+                                .setStackSize(1);
+                            isCraftable = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isCraftable) {
+                    player.addChatMessage(new ChatComponentTranslation("text.rc.craft"));
+                    return;
+                }
+
+                var host = aec.getTarget();
+                if (host instanceof IActionHost) {
+                    final var oldContainer = player.openContainer;
+
+                    if (Loader.isModLoaded("ae2fc")) ae2fcCraft(host, player, aec);
+                    else Platform.openGUI(
+                        player,
+                        aec.getOpenContext()
+                            .getTile(),
+                        aec.getOpenContext()
+                            .getSide(),
+                        GuiBridge.GUI_CRAFTING_AMOUNT);
+
+                    var newContainer = player.openContainer;
+
+                    if (newContainer instanceof ContainerCraftAmount cca) {
+                        if (newContainer instanceof RCAEBaseContainer rcc) {
+                            rcc.rc$setOldContainer(oldContainer);
+                        }
+                        var item0 = aeItem.getItemStack()
+                            .copy();
+                        item0.stackSize = 1;
+                        cca.getCraftingItem()
+                            .putStack(item0);
+                        cca.setItemToCraft(aeItem);
+                        cca.detectAndSendChanges();
+                    }
+                }
+            }
+        }
+    }
+
+    private void openWirelessCraft(ItemStack terminal, EntityPlayerMP player, ItemStack exItem, IGridNode gridNode,
+        int i, boolean isBauble) {
+        IGrid grid = gridNode.getGrid();
+        if (securityCheck(player, grid, SecurityPermissions.CRAFT)) {
+            IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+            var iItemStorageChannel = storageGrid.getItemInventory();
+
+            CraftingGridCache cgc = gridNode.getGrid()
+                .getCache(ICraftingGrid.class);
+            Iterator<IAEItemStack> iterator = cgc.getCraftingPatterns()
+                .keySet()
+                .iterator();
+            boolean isCraftable = false;
+            IAEItemStack aeItem = null;
+            while (iterator.hasNext()) {
+                aeItem = iterator.next();
+                if (aeItem.isCraftable()) {
+                    if (ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), exItem)) {
+                        aeItem = aeItem.copy()
+                            .setStackSize(1);
+                        isCraftable = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!isCraftable) {
+                player.addChatMessage(new ChatComponentTranslation("text.rc.craft"));
+                return;
+            }
+
+            final var oldContainer = player.openContainer;
+
+            if (Loader.isModLoaded("ae2fc")) ae2fcCraft(terminal, player, new Terminal(i, isBauble));
+            else player.openGui(
+                AppEng.instance(),
+                GuiBridge.GUI_CRAFTING_AMOUNT.ordinal() << 5 | (1 << 4),
+                player.getEntityWorld(),
+                i,
+                isBauble ? 1 : 0,
+                Integer.MIN_VALUE);
+
+            var newContainer = player.openContainer;
+
+            if (newContainer instanceof ContainerCraftAmount cca) {
+                if (newContainer instanceof RCAEBaseContainer rcc) {
+                    rcc.rc$setOldContainer(oldContainer);
+                }
+                var item0 = aeItem.getItemStack()
+                    .copy();
+                item0.stackSize = 1;
+                cca.getCraftingItem()
+                    .putStack(item0);
+                cca.setItemToCraft(aeItem);
+                cca.detectAndSendChanges();
+            }
+        }
+    }
+
+    @Desugar
+    public record Terminal(int i, boolean isBauble) {}
+
+    @cpw.mods.fml.common.Optional.Method(modid = "ae2fc")
+    private void ae2fcCraft(Object host, EntityPlayerMP player, Object a) {
+        if (host instanceof IActionHost) {
+            if (a instanceof AEBaseContainer c) {
+                if (host instanceof IWirelessTerminal wt) {
+                    InventoryHandler.openGui(
+                        player,
+                        player.worldObj,
+                        new BlockPos(
+                            wt.getInventorySlot(),
+                            Util.GuiHelper.encodeType(0, Util.GuiHelper.GuiType.ITEM),
+                            0),
+                        ForgeDirection.UNKNOWN,
+                        GuiType.FLUID_CRAFTING_AMOUNT);
+                } else {
+                    Platform.openGUI(
+                        player,
+                        c.getOpenContext()
+                            .getTile(),
+                        c.getOpenContext()
+                            .getSide(),
+                        GuiBridge.GUI_CRAFTING_AMOUNT);
+                }
+            }
+        } else if (host instanceof ItemStack terminal) {
+            if (a instanceof Terminal t) {
+                player.openGui(
+                    AppEng.instance(),
+                    GuiBridge.GUI_CRAFTING_AMOUNT.ordinal() << 5 | (1 << 4),
+                    player.getEntityWorld(),
+                    t.i,
+                    t.isBauble ? 1 : 0,
+                    Integer.MIN_VALUE);
+            }
+        }
+    }
+
+    @cpw.mods.fml.common.Optional.Method(modid = "Baubles")
+    private void readBaublesS(EntityPlayerMP player, ItemStack exitem) {
+        for (int i = 0; i < BaublesApi.getBaubles(player)
+            .getSizeInventory(); i++) {
+            ItemStack item = BaublesApi.getBaubles(player)
+                .getStackInSlot(i);
+            WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(item, player, i, 1);
+
+            if (obj == null) {
+                continue;
+            }
+
+            if (!obj.rangeCheck()) {
+                player.addChatMessage(PlayerMessages.OutOfRange.toChat());
+            } else {
+                IGridNode gridNode = obj.getActionableNode();
+                if (gridNode == null) {
+                    player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                    continue;
+                }
+                openWirelessCraft(item, player, exitem, gridNode, i, true);
+                return;
+            }
+        }
+    }
+
+    @cpw.mods.fml.common.Optional.Method(modid = "Baubles")
+    private void readBaublesR(EntityPlayerMP player, ItemStack exitem, long targetCount) {
+        var inv = BaublesApi.getBaubles(player);
+        if (inv == null) return;
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack item = inv.getStackInSlot(i);
+            WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(item, player, i, 1);
+
+            if (obj == null) {
+                continue;
+            }
+
+            if (!obj.rangeCheck()) {
+                player.addChatMessage(PlayerMessages.OutOfRange.toChat());
+            } else {
+                IGridNode gridNode = obj.getActionableNode();
+                if (gridNode == null) {
+                    player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                    continue;
+                }
+                targetCount = wirelessRetrieve(player, exitem, gridNode, targetCount, obj);
+                if (targetCount <= 0) {
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean securityCheck(final EntityPlayer player, IGrid gridNode,
+        final SecurityPermissions requiredPermission) {
+        final ISecurityGrid sg = gridNode.getCache(ISecurityGrid.class);
+        return sg.hasPermission(player, requiredPermission);
+    }
+
+    private void placeItemBackInInventory(EntityPlayer player, ItemStack stack) {
+        if (stack == null || stack.stackSize == 0) return;
+
+        if (!player.inventory.addItemStackToInventory(stack)) {
+            player.func_146097_a(stack, false, false);
+        } else if (stack.stackSize > 0) {
+            player.func_146097_a(stack, false, false);
+        }
+
+        if (player instanceof EntityPlayerMP) {
+            ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+        }
+    }
+}

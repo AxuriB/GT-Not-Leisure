@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.client.GTNLTooltipManager;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockEternalGregTechWorkshopRender;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockNanoPhagocytosisPlantRender;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
@@ -41,6 +42,7 @@ import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.ItemLoader;
 
 import Forge.NullPointerException;
+import codechicken.nei.guihook.GuiContainerManager;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -128,6 +130,7 @@ public class ClientProxy extends CommonProxy {
         FMLCommonHandler.instance()
             .bus()
             .register(new SubscribeEventClientUtils());
+        GuiContainerManager.addTooltipHandler(new GTNLTooltipManager());
         super.preInit(event);
     }
 

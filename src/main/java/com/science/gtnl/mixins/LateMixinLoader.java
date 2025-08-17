@@ -24,6 +24,7 @@ public class LateMixinLoader implements ILateMixinLoader {
 
     static {
         addMixinCFG("mixins.sciencenotleisure.late.json");
+        addMixinCFG("mixins.sciencenotleisure.late.rc.json");
         addMixinCFG("mixins.sciencenotleisure.late.Debug.json", () -> MainConfig.enableDebugMode);
         addMixinCFG(
             "mixins.sciencenotleisure.late.Overpowered.json",

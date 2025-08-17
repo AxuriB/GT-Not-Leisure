@@ -68,7 +68,7 @@ public enum Mods {
     public final String ID;
     public final String resourceDomain;
     public final String displayName;
-    public Boolean modLoaded;
+    private Boolean modLoaded;
 
     Mods(String ID, String displayName) {
         this.ID = ID;
