@@ -36,8 +36,14 @@ public class GTNLTooltipManager implements IContainerTooltipHandler {
                     return hotkeys;
                 }
 
-                hotkeys.put("CTRL + Mouse3", StatCollector.translateToLocalFormatted("key.retrieve_item.desc"));
-                hotkeys.put("ALT + Mouse3", StatCollector.translateToLocalFormatted("key.start_craft.desc"));
+                hotkeys.put(
+                    StatCollector.translateToLocal("nei.key.ctrl") + " + "
+                        + StatCollector.translateToLocal("nei.mouse.middle"),
+                    StatCollector.translateToLocal("nei.bookmark.ae_retrieve_item"));
+                hotkeys.put(
+                    StatCollector.translateToLocal("nei.key.alt") + " + "
+                        + StatCollector.translateToLocal("nei.mouse.middle"),
+                    StatCollector.translateToLocal("nei.bookmark.ae_start_craft"));
             }
         }
 

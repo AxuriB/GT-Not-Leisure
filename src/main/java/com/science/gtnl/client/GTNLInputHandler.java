@@ -24,7 +24,7 @@ import com.cleanroommc.modularui.api.event.MouseInputEvent;
 import com.glodblock.github.client.gui.GuiItemMonitor;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.Utils;
+import com.science.gtnl.Utils.ClientUtils;
 import com.science.gtnl.common.packet.KeyBindingHandler;
 import com.science.gtnl.common.packet.WirelessPickBlock;
 
@@ -93,7 +93,7 @@ public class GTNLInputHandler {
             World world = player.worldObj;
             var target = mc.objectMouseOver;
 
-            if (Utils.onBeforePickBlock(player, world, true)) {
+            if (ClientUtils.onBeforePickBlock(player, world, true)) {
                 tick = 10;
                 return;
             } else if (ForgeHooks.onPickBlock(mc.objectMouseOver, mc.thePlayer, mc.theWorld)) return;
@@ -162,7 +162,7 @@ public class GTNLInputHandler {
             World world = player.worldObj;
             var target = mc.objectMouseOver;
 
-            if (Utils.onBeforePickBlock(player, world, true)) {
+            if (ClientUtils.onBeforePickBlock(player, world, true)) {
                 tick = 10;
                 return;
             } else if (ForgeHooks.onPickBlock(mc.objectMouseOver, mc.thePlayer, mc.theWorld)) return;

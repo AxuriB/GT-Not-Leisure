@@ -271,7 +271,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                 }
 
                 if (!isCraftable) {
-                    player.addChatMessage(new ChatComponentTranslation("text.rc.craft"));
+                    player.addChatMessage(new ChatComponentTranslation("nei.bookmark.ae_no_craft"));
                     return;
                 }
 
@@ -334,7 +334,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
             }
 
             if (!isCraftable) {
-                player.addChatMessage(new ChatComponentTranslation("text.rc.craft"));
+                player.addChatMessage(new ChatComponentTranslation("nei.bookmark.ae_no_craft"));
                 return;
             }
 

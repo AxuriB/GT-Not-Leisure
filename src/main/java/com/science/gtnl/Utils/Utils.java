@@ -10,26 +10,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListOpsEntry;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -39,18 +33,15 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.input.Keyboard;
 
 import com.mojang.authlib.GameProfile;
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.common.packet.GetTileEntityNBTRequestPacket;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
 
 @SuppressWarnings("unused")
-public final class Utils {
+public class Utils {
 
     public static final double LOG2 = Math.log(2);
     public static final BigInteger NEGATIVE_ONE = BigInteger.valueOf(-1);
@@ -414,91 +405,6 @@ public final class Utils {
         return world.rayTraceBlocks(startVec, endVec, true);
     }
 
-    public static boolean onPickEntity(EntityPlayer player, double range, boolean useAE) {
-        MovingObjectPosition target = Utils.rayTrace(player, false, true, true, range);
-        if (target == null || target.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) {
-            return false;
-        }
-        Minecraft mc = Minecraft.getMinecraft();
-        ItemStack result = null;
-        Entity entity = target.entityHit;
-        if (entity == null) return false;
-
-        if (entity instanceof EntityItem item) {
-            ItemStack dropItem = item.getEntityItem()
-                .copy();
-            dropItem.stackSize = 1;
-            result = dropItem;
-        } else if (entity instanceof EntityPlayer entityPlayer) {
-            result = ItemUtils.createPlayerSkull(entityPlayer.getCommandSenderName());
-        } else {
-            int entityID = EntityList.getEntityID(entity);
-            if (entityID <= 0) return false;
-            Map<Integer, EntityList.EntityEggInfo> entityEggs = EntityList.entityEggs;
-            for (EntityList.EntityEggInfo obj : entityEggs.values()) {
-                if (obj != null && obj.spawnedID == entityID) {
-                    result = new ItemStack(Items.spawn_egg, 1, obj.spawnedID);
-                }
-            }
-        }
-
-        boolean isCreative = player.capabilities.isCreativeMode;
-        return ItemUtils.placeItemInHotbar(player, result, isCreative, useAE);
-    }
-
-    public static boolean onPickBlockNBTRange(EntityPlayer player, World world, double reachDistance, boolean useAE) {
-        MovingObjectPosition target = rayTraceBlock(player, reachDistance);
-        if (target == null || target.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) return false;
-
-        int x = target.blockX;
-        int y = target.blockY;
-        int z = target.blockZ;
-        Block block = world.getBlock(x, y, z);
-
-        if (!block.isAir(world, x, y, z)) {
-            ItemStack result = block.getPickBlock(target, world, x, y, z, player);
-            if (result == null) return false;
-
-            Item item = result.getItem();
-            int blockID = Item.getIdFromItem(item);
-            int blockMeta = result.getItemDamage();
-
-            TileEntity tileentity = world.getTileEntity(x, y, z);
-            if (tileentity != null) {
-                ScienceNotLeisure.network.sendToServer(new GetTileEntityNBTRequestPacket(x, y, z, blockID, blockMeta));
-                return true;
-            } else {
-                boolean isCreative = player.capabilities.isCreativeMode;
-                return ItemUtils
-                    .placeItemInHotbar(player, block.getPickBlock(target, world, x, y, z, player), isCreative, useAE);
-            }
-        }
-
-        return false;
-    }
-
-    public static boolean onPickBlockRange(EntityPlayer player, World world, double reachDistance, boolean useAE) {
-        MovingObjectPosition target = rayTraceBlock(player, reachDistance);
-        Minecraft mc = Minecraft.getMinecraft();
-
-        if (target == null || target.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
-            return false;
-        }
-
-        int x = target.blockX;
-        int y = target.blockY;
-        int z = target.blockZ;
-
-        Block block = world.getBlock(x, y, z);
-        if (block.isAir(world, x, y, z)) {
-            return false;
-        }
-
-        boolean isCreative = player.capabilities.isCreativeMode;
-        return ItemUtils
-            .placeItemInHotbar(player, block.getPickBlock(target, world, x, y, z, player), isCreative, useAE);
-    }
-
     public static MovingObjectPosition rayTrace(EntityPlayer p, boolean hitBlocks, boolean hitEntities,
         boolean hitEntityItem, double range) {
         final World w = p.getEntityWorld();
@@ -574,21 +480,6 @@ public final class Utils {
         }
 
         return pos;
-    }
-
-    public static boolean onBeforePickBlock(EntityClientPlayerMP playerMP, World world, boolean useAE) {
-        boolean isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-        double reachDistance = 1000;
-        boolean handled = Utils.onPickEntity(playerMP, reachDistance, useAE);
-        if (!handled) {
-            if (isCtrlKeyDown) {
-                return !Utils.onPickBlockNBTRange(playerMP, world, reachDistance, useAE);
-            } else {
-                Utils.onPickBlockRange(playerMP, world, reachDistance, useAE);
-                return true;
-            }
-        }
-        return false;
     }
 
     public static boolean hasPermission(ICommandSender sender, int permissionLevel) {

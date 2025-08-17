@@ -5,6 +5,14 @@ itemGroup.ReAvaritia=Avaritia: Reborn
 StructuralReconstructionPlan=Structural Replacement Plan
 AppliedEnergistics2=Applied Energistics 2
 
+test00=EU减免加成：%s
+test01=速度加成：%s
+test02=成功率加成：%s
+test03=失败率加成：%s
+test04=并行：%s
+test05=产出系数：%s
+test06=允许升压次数：%s
+
 Welcome_GTNL_00=Welcome to GT Not Leisure!
 Welcome_GTNL_01=If this is your first time installing the mod, please check the config files carefully.
 Welcome_GTNL_02=This mod adds a large number of machines and new recipes.
@@ -26,7 +34,9 @@ Tooltip_PressShift=§rHold §6Shift §rfor more information
 Tooltip_PressCtrl=§rHold §6Ctrl §rfor more information
 Tooltip_Damage=Durability: %s/%s
 
-Info_DetravScanner_TP=Teleport to vein: %s (%s, %s)
+nei.bookmark.ae_retrieve_item=Retrieve item from AE
+nei.bookmark.ae_start_craft=Request craft from AE
+nei.bookmark.ae_no_craft=This item has no corresponding crafting
 
 death.attack.damage.gtnl.crushing=%1$s was crushed to death
 
@@ -521,6 +531,9 @@ tile.PlayerLeash.name=Leash Barrier
 entity.sciencenotleisure.PlayerLeashKnot.name=Leash Barrier
 Tooltip_PlayerLeash_00=Creates a powerful leash field that allows the placer to fly
 
+ElectricProspectorTool.0.name=Mana Teleport Prospector Tool
+Info_DetravScanner_TP=Teleport to vein: %s (%s, %s)
+
 MetaItem.0.name=Troll Face
 Tooltip_TrollFace=Never Gonna Give You Up~
 MetaItem.1.name=§bExcited Mixed Naquadah Fuel Rod
@@ -746,6 +759,10 @@ Tooltip_Testitem_10=This is §dmore focused on adding content to the original GT
 Tooltip_Testitem_11=§f§lIf you encounter any issues or want to make suggestions, please submit an issue on Github
 Tooltip_Testitem_12=The machines added by this mod start from meta value 21000
 Tooltip_Testitem_13=§c§lAlso reminder: Do not right-click with this item!
+
+item.NetherTeleporter.name=Nether Teleporter Tool
+Info_NetherTeleporter_Cooldown=Remaining cooldown: 
+Info_NetherTeleporter_Warning=No safe landing spot!
 
 item.CircuitIntegratedPlus.name=Circuit Integrated Plus
 
@@ -2914,7 +2931,3 @@ RealArtificialStar.getInfoData.04=Stability Field Level
 RealArtificialStar.getInfoData.05=Material Recycling Probability
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=Chance to recycle some materials. Probability affected by module level.
 NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=Generates:
-
-key.retrieve_item.desc=Retrieve item from AE
-key.start_craft.desc=Request craft from AE
-text.rc.craft=This item has no corresponding crafting

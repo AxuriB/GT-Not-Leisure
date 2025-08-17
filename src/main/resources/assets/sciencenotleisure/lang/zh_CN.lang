@@ -34,7 +34,9 @@ Tooltip_PressShift=§r按住 §6Shift §r查看更多信息
 Tooltip_PressCtrl=§r按住 §6Ctrl §r查看更多信息
 Tooltip_Damage=耐久: %s/%s
 
-Info_DetravScanner_TP=传送至矿脉：%s (%s，%s)
+nei.bookmark.ae_retrieve_item=自AE取出物品
+nei.bookmark.ae_start_craft=向AE请求合成
+nei.bookmark.ae_no_craft=此物品无对应合成
 
 death.attack.damage.gtnl.crushing=%1$s 被绞碎了
 
@@ -530,6 +532,7 @@ entity.sciencenotleisure.PlayerLeashKnot.name=拴绳结界
 Tooltip_PlayerLeash_00=创造一个强大的拴绳立场，允许放置其方块的玩家在一定范围内飞行
 
 ElectricProspectorTool.0.name=魔力传送探矿仪
+Info_DetravScanner_TP=传送至矿脉：%s (%s，%s)
 
 MetaItem.0.name=愚人脸
 Tooltip_TrollFace=Never Gonna Give You Up~
@@ -759,7 +762,7 @@ Tooltip_Testitem_13=§c§l另外提醒：不要拿着这个物品右键！
 
 item.NetherTeleporter.name=下界传送仪
 Info_NetherTeleporter_Cooldown=剩余冷却时间: 
-Info_NetherTeleporter_Warning=没有安全的传送点！
+Info_NetherTeleporter_Warning=没有安全的落脚点！
 
 item.CircuitIntegratedPlus.name=突破编程电路
 
@@ -2941,7 +2944,3 @@ RealArtificialStar.getInfoData.04=稳定场等级
 RealArtificialStar.getInfoData.05=回收原料几率
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=有概率回收部分材料. 概率受模块等级影响.
 NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=产生：
-
-key.retrieve_item.desc=自AE取出物品
-key.start_craft.desc=向AE请求合成
-text.rc.craft=此物品无对应合成
