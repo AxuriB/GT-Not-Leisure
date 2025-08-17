@@ -261,7 +261,8 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                 while (iterator.hasNext()) {
                     aeItem = iterator.next();
                     if (aeItem.isCraftable()) {
-                        if (ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), item)) {
+                        if (aeItem.getItemStack()
+                            .isItemEqual(item)) {
                             aeItem = aeItem.copy()
                                 .setStackSize(1);
                             isCraftable = true;
@@ -324,7 +325,8 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
             while (iterator.hasNext()) {
                 aeItem = iterator.next();
                 if (aeItem.isCraftable()) {
-                    if (ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), exItem)) {
+                    if (aeItem.getItemStack()
+                        .isItemEqual(exItem)) {
                         aeItem = aeItem.copy()
                             .setStackSize(1);
                         isCraftable = true;
