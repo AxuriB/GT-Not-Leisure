@@ -1,7 +1,6 @@
 package com.reavaritia.common.item;
 
 import static com.reavaritia.ReAvaritia.RESOURCE_ROOT_ID;
-import static com.science.gtnl.common.item.items.TwilightSword.rayTrace;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import com.reavaritia.ReAvaCreativeTabs;
 import com.reavaritia.ReAvaItemList;
 import com.reavaritia.common.SubtitleDisplay;
+import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.config.MainConfig;
 
@@ -497,7 +497,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
         super.onUpdate(stack, world, entity, slot, isSelected);
         if (entity instanceof EntityPlayer player) {
             if (player.getCurrentEquippedItem() == stack && player.swingProgress == 0.5F && !world.isRemote) {
-                MovingObjectPosition rayTraceResult = rayTrace(player, false, true);
+                MovingObjectPosition rayTraceResult = Utils.rayTrace(player, false, true, false, 100);
                 cancelDragonArmor = false;
 
                 if (rayTraceResult != null && rayTraceResult.entityHit != null) {

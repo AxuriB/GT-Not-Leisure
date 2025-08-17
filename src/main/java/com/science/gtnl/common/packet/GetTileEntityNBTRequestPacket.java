@@ -57,26 +57,21 @@ public class GetTileEntityNBTRequestPacket implements IMessage {
             int y = message.getY();
             int z = message.getZ();
             Block block = world.getBlock(x, y, z);
-
             if (block != null) {
+                TileEntity tileentity = world.getTileEntity(x, y, z);
+                if (tileentity != null) {
+                    NBTTagCompound nbt = new NBTTagCompound();
+                    try {
+                        tileentity.writeToNBT(nbt);
+                        nbt.removeTag("x");
+                        nbt.removeTag("y");
+                        nbt.removeTag("z");
 
-                if (player.capabilities.isCreativeMode) {
-                    TileEntity tileentity = world.getTileEntity(x, y, z);
-                    if (tileentity != null) {
-                        NBTTagCompound nbt = new NBTTagCompound();
-                        try {
-                            tileentity.writeToNBT(nbt);
-                            nbt.removeTag("x");
-                            nbt.removeTag("y");
-                            nbt.removeTag("z");
+                        network
+                            .sendTo(new TileEntityNBTPacket(message.getBlockID(), message.getBlockMeta(), nbt), player);
 
-                            network.sendTo(
-                                new TileEntityNBTPacket(message.getBlockID(), message.getBlockMeta(), nbt),
-                                player);
-
-                        } catch (Throwable e) {
-                            e.printStackTrace();
-                        }
+                    } catch (Throwable e) {
+                        e.printStackTrace();
                     }
                 }
             }

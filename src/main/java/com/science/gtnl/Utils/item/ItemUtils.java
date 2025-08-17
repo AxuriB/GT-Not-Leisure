@@ -11,10 +11,12 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -227,4 +229,140 @@ public class ItemUtils {
 
         return stack;
     }
+
+    public static ItemStack createPlayerSkull(String playerName) {
+        ItemStack skullStack = new ItemStack(Items.skull, 1, 3);
+
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("SkullOwner", playerName);
+        skullStack.setTagCompound(tag);
+
+        return skullStack;
+    }
+
+    public static boolean placeItemInHotbar(EntityPlayer player, ItemStack result) {
+        if (result == null) return false;
+        Minecraft mc = Minecraft.getMinecraft();
+        InventoryPlayer inv = player.inventory;
+        boolean isCreative = player.capabilities.isCreativeMode;
+
+        for (int i = 0; i < 9; i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+            if (stack != null && stack.isItemEqual(result) && ItemStack.areItemStackTagsEqual(stack, result)) {
+                inv.currentItem = i;
+                return true;
+            }
+        }
+
+        int foundSlot = -1;
+        for (int i = 9; i < inv.mainInventory.length; i++) {
+            ItemStack stack = inv.getStackInSlot(i);
+            if (stack != null && stack.isItemEqual(result) && ItemStack.areItemStackTagsEqual(stack, result)) {
+                foundSlot = i;
+                break;
+            }
+        }
+
+        if (foundSlot != -1) {
+            int emptyHotbar = -1;
+            for (int i = 0; i < 9; i++) {
+                if (inv.getStackInSlot(i) == null) {
+                    emptyHotbar = i;
+                    break;
+                }
+            }
+
+            if (emptyHotbar != -1) {
+                if (isCreative) {
+                    int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + emptyHotbar;
+                    inv.setInventorySlotContents(emptyHotbar, inv.getStackInSlot(foundSlot));
+                    inv.setInventorySlotContents(foundSlot, null);
+                    inv.currentItem = emptyHotbar;
+                    mc.playerController.sendSlotPacket(inv.getStackInSlot(emptyHotbar), slotIdHotbar);
+                    mc.playerController.sendSlotPacket(null, foundSlot);
+                } else {
+                    int windowId = player.inventoryContainer.windowId;
+                    mc.playerController.windowClick(windowId, foundSlot, 0, 0, player);
+                    mc.playerController.windowClick(windowId, emptyHotbar + 36, 0, 0, player);
+                    inv.currentItem = emptyHotbar;
+                }
+            } else {
+                int slot9 = 8;
+                if (isCreative) {
+                    int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + slot9;
+                    ItemStack hotbar9 = inv.getStackInSlot(slot9);
+                    inv.setInventorySlotContents(slot9, inv.getStackInSlot(foundSlot));
+                    inv.setInventorySlotContents(foundSlot, hotbar9);
+                    inv.currentItem = slot9;
+
+                    mc.playerController.sendSlotPacket(inv.getStackInSlot(slot9), slotIdHotbar);
+                    mc.playerController.sendSlotPacket(hotbar9, foundSlot);
+                } else {
+                    int windowId = player.inventoryContainer.windowId;
+                    mc.playerController.windowClick(windowId, foundSlot, 0, 0, player);
+                    mc.playerController.windowClick(windowId, slot9 + 36, 0, 0, player);
+                    inv.currentItem = slot9;
+
+                    int emptySlot = inv.getFirstEmptyStack();
+                    if (emptySlot != -1) {
+                        mc.playerController.windowClick(windowId, emptySlot, 0, 0, player);
+                    }
+                }
+            }
+            return true;
+        }
+
+        if (isCreative) {
+            int emptyHotbar = -1;
+            for (int i = 0; i < 9; i++) {
+                if (inv.getStackInSlot(i) == null) {
+                    emptyHotbar = i;
+                    break;
+                }
+            }
+            if (emptyHotbar != -1) {
+                int slotId = player.inventoryContainer.inventorySlots.size() - 9 + emptyHotbar;
+                inv.setInventorySlotContents(emptyHotbar, result);
+                inv.currentItem = emptyHotbar;
+                mc.playerController.sendSlotPacket(result, slotId);
+                return true;
+            } else {
+                int slot9 = 8;
+                int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + slot9;
+                inv.setInventorySlotContents(slot9, result);
+                inv.currentItem = slot9;
+                mc.playerController.sendSlotPacket(result, slotIdHotbar);
+                return true;
+            }
+        }
+
+        int emptyHotbar = -1;
+        for (int i = 0; i < 9; i++) {
+            if (inv.getStackInSlot(i) == null) {
+                emptyHotbar = i;
+                break;
+            }
+        }
+
+        if (emptyHotbar != -1) {
+            int windowId = player.inventoryContainer.windowId;
+            inv.setInventorySlotContents(emptyHotbar, result);
+            inv.currentItem = emptyHotbar;
+            mc.playerController.windowClick(windowId, emptyHotbar + 36, 0, 0, player);
+            return true;
+        } else {
+            int slot9 = 8;
+            int windowId = player.inventoryContainer.windowId;
+            mc.playerController.windowClick(windowId, slot9 + 36, 0, 0, player);
+            mc.playerController.windowClick(windowId, slot9 + 36, 0, 0, player);
+            inv.currentItem = slot9;
+
+            int emptySlot = inv.getFirstEmptyStack();
+            if (emptySlot != -1) {
+                mc.playerController.windowClick(windowId, emptySlot, 0, 0, player);
+            }
+            return true;
+        }
+    }
+
 }

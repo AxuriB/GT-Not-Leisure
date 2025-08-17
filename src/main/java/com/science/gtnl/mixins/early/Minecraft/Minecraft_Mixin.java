@@ -1,11 +1,8 @@
 package com.science.gtnl.mixins.early.Minecraft;
 
-import static com.science.gtnl.ScienceNotLeisure.network;
-
 import java.util.Queue;
 import java.util.concurrent.Callable;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundHandler;
@@ -30,18 +27,16 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.client.C16PacketClientStatus;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.Timer;
 import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -50,15 +45,14 @@ import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.reavaritia.common.render.CustomEntityRenderer;
+import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.common.item.TimeStopManager;
-import com.science.gtnl.common.packet.GetTileEntityNBTRequestPacket;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 
@@ -231,7 +225,7 @@ public abstract class Minecraft_Mixin {
             int j;
 
             while (Mouse.next()) {
-                if (net.minecraftforge.client.ForgeHooksClient.postMouseEvent()) continue;
+                if (ForgeHooksClient.postMouseEvent()) continue;
 
                 j = Mouse.getEventButton();
                 KeyBinding.setKeyBindState(j - 100, Mouse.getEventButtonState());
@@ -680,38 +674,18 @@ public abstract class Minecraft_Mixin {
         cancellable = true,
         remap = false)
     private void onBeforePickBlock(CallbackInfo ci) {
-        boolean shouldCancel = mixin$preOnPickBlockSendRequest(this.objectMouseOver, this.thePlayer, this.theWorld);
-        if (shouldCancel) {
-            ci.cancel();
-        }
-    }
-
-    @Unique
-    private static boolean mixin$preOnPickBlockSendRequest(MovingObjectPosition target, EntityPlayer player,
-        World world) {
         boolean isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-        if (isCtrlKeyDown && player.capabilities.isCreativeMode) {
-            ItemStack result;
-
-            if (target != null && target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                int x = target.blockX;
-                int y = target.blockY;
-                int z = target.blockZ;
-                Block block = world.getBlock(x, y, z);
-
-                if (!block.isAir(world, x, y, z)) {
-                    result = block.getPickBlock(target, world, x, y, z, player);
-                    Item item = result.getItem();
-                    int blockID = Item.getIdFromItem(item);
-                    int blockMeta = result.getItemDamage();
-                    TileEntity tileentity = world.getTileEntity(x, y, z);
-                    if (tileentity != null) {
-                        network.sendToServer(new GetTileEntityNBTRequestPacket(x, y, z, blockID, blockMeta));
-                        return true;
-                    }
+        double reachDistance = 1000;
+        boolean handled = Utils.onPickEntity(this.thePlayer, reachDistance);
+        if (!handled) {
+            if (isCtrlKeyDown) {
+                if (!Utils.onPickBlockNBTRange(this.thePlayer, this.theWorld, reachDistance)) {
+                    ci.cancel();
                 }
+            } else {
+                Utils.onPickBlockRange(this.thePlayer, this.theWorld, reachDistance);
+                ci.cancel();
             }
         }
-        return false;
     }
 }

@@ -1,12 +1,6 @@
 package com.science.gtnl.common.packet;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -48,55 +42,7 @@ public class TileEntityNBTPacket implements IMessage {
 
         @Override
         public IMessage onMessage(TileEntityNBTPacket message, MessageContext ctx) {
-            Minecraft mc = Minecraft.getMinecraft();
-            EntityClientPlayerMP player = mc.thePlayer;
-            if (player != null) {
-                int blockId = message.getBlockId();
-                int metadata = message.getMetadata();
-                NBTTagCompound tileEntityNBT = message.getNbt();
-
-                Block block = Block.getBlockById(blockId);
-
-                if (block != null) {
-                    ItemStack itemstack = new ItemStack(block, 1, metadata);
-
-                    if (tileEntityNBT != null && !tileEntityNBT.hasNoTags()) {
-                        NBTTagCompound itemTag = new NBTTagCompound();
-                        itemTag.setTag("BlockEntityTag", tileEntityNBT);
-
-                        NBTTagCompound displayTag = new NBTTagCompound();
-                        NBTTagList loreList = new NBTTagList();
-                        loreList.appendTag(new NBTTagString("§5§o(+NBT)"));
-                        displayTag.setTag("Lore", loreList);
-                        itemTag.setTag("display", displayTag);
-                        itemstack.setTagCompound(itemTag);
-                    }
-
-                    boolean added = false;
-                    for (int i = 0; i < 9; i++) {
-                        ItemStack stackInSlot = player.inventory.getStackInSlot(i);
-                        if (stackInSlot != null && stackInSlot.isItemEqual(itemstack)
-                            && ItemStack.areItemStackTagsEqual(stackInSlot, itemstack)) {
-                            player.inventory.currentItem = i;
-                            added = true;
-                            break;
-                        }
-                    }
-
-                    if (!added) {
-                        int slot = player.inventory.getFirstEmptyStack();
-                        if (slot < 0 || slot >= 9) {
-                            slot = player.inventory.currentItem;
-                        }
-                        player.inventory.setInventorySlotContents(slot, itemstack);
-                        player.inventory.currentItem = slot;
-                    }
-
-                    mc.playerController.sendSlotPacket(
-                        player.inventory.getStackInSlot(player.inventory.currentItem),
-                        player.inventoryContainer.inventorySlots.size() - 9 + player.inventory.currentItem);
-                }
-            }
+            TileEntityNBTPacketHandler.apply(message.getBlockId(), message.getMetadata(), message.getNbt());
             return null;
         }
     }

@@ -3,7 +3,6 @@ package com.science.gtnl.Utils;
 import static com.science.gtnl.config.MainConfig.targetBlockSpecs;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
@@ -11,19 +10,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.function.IntFunction;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandBlockLogic;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.UserListOpsEntry;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Contract;
@@ -31,6 +41,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.authlib.GameProfile;
 import com.science.gtnl.ScienceNotLeisure;
+import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.common.packet.GetTileEntityNBTRequestPacket;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -120,25 +132,6 @@ public final class Utils {
     }
 
     @SafeVarargs
-    public static <T> T[] mergeArrayss(/* @NotNull IntFunction<T[]> generator, */T[]... arrays) {
-        IntFunction<T[]> generator = null;
-        for (T[] array : arrays) {
-            if (array == null) continue;
-            generator = size -> (T[]) Array.newInstance(
-                array.getClass()
-                    .getComponentType(),
-                size);
-            break;
-        }
-        if (generator == null) return null;
-
-        return Arrays.stream(arrays)
-            .filter(a -> a != null && a.length > 0)
-            .flatMap(Arrays::stream)
-            .toArray(generator);
-    }
-
-    @SafeVarargs
     public static <T> T[] mergeArrays(T[]... arrays) {
         int totalLength = 0;
         T[] pattern = null;
@@ -166,36 +159,6 @@ public final class Utils {
         return output;
     }
 
-    /**
-     *
-     * @param isa1 The ItemStack Array 1.
-     * @param isa2 The ItemStack Array 2.
-     * @return The elements of these two arrays are identical and in the same order.
-     */
-    public static boolean itemStackArrayEqualAbsolutely(ItemStack[] isa1, ItemStack[] isa2) {
-        if (isa1.length != isa2.length) return false;
-        for (int i = 0; i < isa1.length; i++) {
-            if (!metaItemEqual(isa1[i], isa2[i])) return false;
-            if (isa1[i].stackSize != isa2[i].stackSize) return false;
-        }
-        return true;
-    }
-
-    public static boolean itemStackArrayEqualFuzzy(ItemStack[] isa1, ItemStack[] isa2) {
-        if (isa1.length != isa2.length) return false;
-        for (ItemStack itemStack1 : isa1) {
-            boolean flag = false;
-            for (ItemStack itemStack2 : isa2) {
-                if (metaItemEqual(itemStack1, itemStack2)) {
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag) return false;
-        }
-        return true;
-    }
-
     public static ItemStack copyAmount(int aAmount, ItemStack aStack) {
         if (isStackInvalid(aStack)) return null;
         ItemStack rStack = aStack.copy();
@@ -218,7 +181,7 @@ public final class Utils {
         if (itemStack == null) return null;
         if (amount < 0) {
             ScienceNotLeisure.LOG
-                .info("Error! Trying to set a item stack size lower than zero! " + itemStack + " to amount " + amount);
+                .info("Error! Trying to set a item stack size lower than zero! {} to amount {}", itemStack, amount);
             return itemStack;
         }
         itemStack.stackSize = amount;
@@ -260,7 +223,7 @@ public final class Utils {
         if (fluidStack == null) return null;
         if (amount < 0) {
             ScienceNotLeisure.LOG
-                .info("Error! Trying to set a item stack size lower than zero! " + fluidStack + " to amount " + amount);
+                .info("Error! Trying to set a item stack size lower than zero! {} to amount {}", fluidStack, amount);
             return fluidStack;
         }
         fluidStack.amount = amount;
@@ -418,6 +381,192 @@ public final class Utils {
             sb.append("!");
         }
         return sb.toString();
+    }
+
+    public static MovingObjectPosition rayTraceBlock(EntityPlayer player, double reachDistance) {
+        World world = player.getEntityWorld();
+
+        float partialTicks = 1.0F;
+        float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;
+        float yaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * partialTicks;
+
+        double posX = player.prevPosX + (player.posX - player.prevPosX) * partialTicks;
+        double posY = player.prevPosY + (player.posY - player.prevPosY) * partialTicks + 1.62D - player.yOffset;
+        double posZ = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks;
+
+        Vec3 startVec = Vec3.createVectorHelper(posX, posY, posZ);
+
+        float fYawRad = (float) Math.toRadians(-yaw) - (float) Math.PI;
+        float fPitchRad = (float) Math.toRadians(-pitch);
+        float cosPitch = -MathHelper.cos(fPitchRad);
+        float sinPitch = MathHelper.sin(fPitchRad);
+        float cosYaw = MathHelper.cos(fYawRad);
+        float sinYaw = MathHelper.sin(fYawRad);
+
+        double dirX = sinYaw * cosPitch;
+        double dirY = sinPitch;
+        double dirZ = cosYaw * cosPitch;
+
+        Vec3 endVec = startVec.addVector(dirX * reachDistance, dirY * reachDistance, dirZ * reachDistance);
+
+        return world.rayTraceBlocks(startVec, endVec, true);
+    }
+
+    public static boolean onPickEntity(EntityPlayer player, double range) {
+        MovingObjectPosition target = Utils.rayTrace(player, false, true, true, range);
+        if (target == null || target.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) {
+            return false;
+        }
+        Minecraft mc = Minecraft.getMinecraft();
+        ItemStack result = null;
+        Entity entity = target.entityHit;
+        if (entity == null) return false;
+
+        if (entity instanceof EntityItem item) {
+            ItemStack dropItem = item.getEntityItem()
+                .copy();
+            dropItem.stackSize = 1;
+            result = dropItem;
+        } else if (entity instanceof EntityPlayer entityPlayer) {
+            result = ItemUtils.createPlayerSkull(entityPlayer.getCommandSenderName());
+        } else {
+            int entityID = EntityList.getEntityID(entity);
+            if (entityID <= 0) return false;
+            Map<Integer, EntityList.EntityEggInfo> entityEggs = EntityList.entityEggs;
+            for (EntityList.EntityEggInfo obj : entityEggs.values()) {
+                if (obj != null && obj.spawnedID == entityID) {
+                    result = new ItemStack(Items.spawn_egg, 1, obj.spawnedID);
+                }
+            }
+        }
+
+        return ItemUtils.placeItemInHotbar(player, result);
+    }
+
+    public static boolean onPickBlockNBTRange(EntityPlayer player, World world, double reachDistance) {
+        MovingObjectPosition target = rayTraceBlock(player, reachDistance);
+        if (target == null || target.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) return false;
+
+        int x = target.blockX;
+        int y = target.blockY;
+        int z = target.blockZ;
+        Block block = world.getBlock(x, y, z);
+
+        if (!block.isAir(world, x, y, z)) {
+            ItemStack result = block.getPickBlock(target, world, x, y, z, player);
+            if (result == null) return false;
+
+            Item item = result.getItem();
+            int blockID = Item.getIdFromItem(item);
+            int blockMeta = result.getItemDamage();
+
+            TileEntity tileentity = world.getTileEntity(x, y, z);
+            if (tileentity != null) {
+                ScienceNotLeisure.network.sendToServer(new GetTileEntityNBTRequestPacket(x, y, z, blockID, blockMeta));
+                return true;
+            } else {
+                return ItemUtils.placeItemInHotbar(player, block.getPickBlock(target, world, x, y, z, player));
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean onPickBlockRange(EntityPlayer player, World world, double reachDistance) {
+        MovingObjectPosition target = rayTraceBlock(player, reachDistance);
+        Minecraft mc = Minecraft.getMinecraft();
+
+        if (target == null || target.typeOfHit != MovingObjectPosition.MovingObjectType.BLOCK) {
+            return false;
+        }
+
+        int x = target.blockX;
+        int y = target.blockY;
+        int z = target.blockZ;
+
+        Block block = world.getBlock(x, y, z);
+        if (block.isAir(world, x, y, z)) {
+            return false;
+        }
+
+        return ItemUtils.placeItemInHotbar(player, block.getPickBlock(target, world, x, y, z, player));
+    }
+
+    public static MovingObjectPosition rayTrace(EntityPlayer p, boolean hitBlocks, boolean hitEntities,
+        boolean hitEntityItem, double range) {
+        final World w = p.getEntityWorld();
+
+        final float f = 1.0F;
+        float f1 = p.prevRotationPitch + (p.rotationPitch - p.prevRotationPitch) * f;
+        final float f2 = p.prevRotationYaw + (p.rotationYaw - p.prevRotationYaw) * f;
+        final double d0 = p.prevPosX + (p.posX - p.prevPosX) * f;
+        final double d1 = p.prevPosY + (p.posY - p.prevPosY) * f + 1.62D - p.yOffset;
+        final double d2 = p.prevPosZ + (p.posZ - p.prevPosZ) * f;
+        final Vec3 vec3 = Vec3.createVectorHelper(d0, d1, d2);
+        final float f3 = MathHelper.cos(-f2 * 0.017453292F - (float) Math.PI);
+        final float f4 = MathHelper.sin(-f2 * 0.017453292F - (float) Math.PI);
+        final float f5 = -MathHelper.cos(-f1 * 0.017453292F);
+        final float f6 = MathHelper.sin(-f1 * 0.017453292F);
+        final float f7 = f4 * f5;
+        final float f8 = f3 * f5;
+
+        final Vec3 vec31 = vec3.addVector(f7 * range, f6 * range, f8 * range);
+
+        final AxisAlignedBB bb = AxisAlignedBB
+            .getBoundingBox(
+                Math.min(vec3.xCoord, vec31.xCoord),
+                Math.min(vec3.yCoord, vec31.yCoord),
+                Math.min(vec3.zCoord, vec31.zCoord),
+                Math.max(vec3.xCoord, vec31.xCoord),
+                Math.max(vec3.yCoord, vec31.yCoord),
+                Math.max(vec3.zCoord, vec31.zCoord))
+            .expand(16, 16, 16);
+
+        Entity entity = null;
+        double closest = 9999999.0D;
+        if (hitEntities) {
+            final List<Entity> list = w.getEntitiesWithinAABBExcludingEntity(p, bb);
+
+            for (Entity o : list) {
+
+                if (!o.isDead && o != p && (hitEntityItem || !(o instanceof EntityItem))) {
+                    if (o.isEntityAlive()) {
+                        if (o.riddenByEntity == p) {
+                            continue;
+                        }
+
+                        f1 = 0.3F;
+                        final AxisAlignedBB boundingBox = o.boundingBox.expand(f1, f1, f1);
+                        final MovingObjectPosition movingObjectPosition = boundingBox.calculateIntercept(vec3, vec31);
+
+                        if (movingObjectPosition != null) {
+                            final double nd = vec3.squareDistanceTo(movingObjectPosition.hitVec);
+
+                            if (nd < closest) {
+                                entity = o;
+                                closest = nd;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        MovingObjectPosition pos = null;
+        Vec3 vec = null;
+
+        if (hitBlocks) {
+            vec = Vec3.createVectorHelper(d0, d1, d2);
+            pos = w.rayTraceBlocks(vec3, vec31, true);
+        }
+
+        if (entity != null && pos != null && pos.hitVec.squareDistanceTo(vec) > closest) {
+            pos = new MovingObjectPosition(entity);
+        } else if (entity != null && pos == null) {
+            pos = new MovingObjectPosition(entity);
+        }
+
+        return pos;
     }
 
     public static boolean hasPermission(ICommandSender sender, int permissionLevel) {
