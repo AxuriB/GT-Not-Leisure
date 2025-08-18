@@ -41,6 +41,7 @@ public class BlastFurnaceRecipes implements IRecipePool {
             .addTo(BFR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Europium, 1),
                 GTUtility.getIntegratedCircuit(11))

@@ -18,6 +18,7 @@ public class NewRemoveAlloyBlastSmelterRecipes implements IRecipePool {
     @Override
     public void loadRecipes() {
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 GTUtility.getIntegratedCircuit(1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Europium, 1))

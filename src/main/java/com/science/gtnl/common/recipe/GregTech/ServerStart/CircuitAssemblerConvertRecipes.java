@@ -301,6 +301,7 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .addTo(CAR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 ItemList.Circuit_Chip_BioCPU.get(1L),
                 ItemList.Circuit_Chip_QuantumCPU.get(4),
@@ -317,6 +318,7 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .addTo(CAR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 ItemList.Circuit_Board_Multifiberglass_Elite.get(1L),
                 ItemList.Circuit_Chip_CrystalCPU.get(1),
@@ -333,6 +335,7 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .addTo(CAR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 ItemList.Circuit_Board_Multifiberglass_Elite.get(1L),
                 ItemList.Circuit_Chip_CrystalSoC.get(1),
@@ -347,6 +350,7 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .addTo(CAR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 ItemList.Circuit_Board_Multifiberglass_Elite.get(1L),
                 ItemList.Circuit_Crystalprocessor.get(2),
@@ -363,6 +367,7 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .addTo(CAR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 ItemList.Circuit_Board_Multifiberglass_Elite.get(1L),
                 ItemList.Circuit_Crystalcomputer.get(2),
@@ -395,6 +400,7 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .addTo(CAR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 ItemList.Circuit_Chip_NeuroCPU.get(1L),
                 ItemList.Circuit_Chip_CrystalCPU.get(1L),
@@ -425,6 +431,7 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .addTo(CAR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 ItemList.Circuit_Board_Wetware_Extreme.get(1L),
                 ItemList.Circuit_Neuroprocessor.get(2),
@@ -441,6 +448,7 @@ public class CircuitAssemblerConvertRecipes implements IRecipePool {
             .addTo(CAR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSE, 2L),
                 ItemList.Circuit_Ultimatecrystalcomputer.get(2),

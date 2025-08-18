@@ -752,6 +752,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .addTo(AssemblyLine);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .metadata(RESEARCH_ITEM, GTNLItemList.Incubator.get(1))
             .metadata(SCANNING, new Scanning(30 * MINUTES, TierEU.RECIPE_ZPM))
             .itemInputs(

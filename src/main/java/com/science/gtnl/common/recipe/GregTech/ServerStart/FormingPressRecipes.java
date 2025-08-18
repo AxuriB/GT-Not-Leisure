@@ -18,8 +18,8 @@ public class FormingPressRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 ItemList.Circuit_Board_Multifiberglass_Elite.get(1),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Titanium, 1),

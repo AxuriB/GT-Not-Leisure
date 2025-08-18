@@ -240,10 +240,13 @@ public class ItemUtils {
         return skullStack;
     }
 
+    public static final boolean isBackHandIns = gregtech.api.enums.Mods.Backhand.isModLoaded();
+
     public static boolean placeItemInHotbar(EntityPlayer player, ItemStack result, boolean isCreative, boolean useAE) {
         if (result == null) return false;
         Minecraft mc = Minecraft.getMinecraft();
         InventoryPlayer inv = player.inventory;
+        int backHandSlot = isBackHandIns ? 1 : 0;
 
         for (int i = 0; i < 9; i++) {
             ItemStack stack = inv.getStackInSlot(i);
@@ -254,7 +257,7 @@ public class ItemUtils {
         }
 
         int foundSlot = -1;
-        for (int i = 9; i < inv.mainInventory.length; i++) {
+        for (int i = 9; i < inv.mainInventory.length + backHandSlot; i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack != null && stack.isItemEqual(result) && ItemStack.areItemStackTagsEqual(stack, result)) {
                 foundSlot = i;
@@ -276,39 +279,20 @@ public class ItemUtils {
             }
 
             if (emptyHotbar != -1) {
-                if (isCreative) {
-                    int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + emptyHotbar;
-                    inv.setInventorySlotContents(emptyHotbar, inv.getStackInSlot(foundSlot));
-                    inv.setInventorySlotContents(foundSlot, null);
-                    inv.currentItem = emptyHotbar;
-                    mc.playerController.sendSlotPacket(inv.getStackInSlot(emptyHotbar), slotIdHotbar);
-                    mc.playerController.sendSlotPacket(null, foundSlot);
-                } else {
-                    int windowId = player.inventoryContainer.windowId;
-                    mc.playerController.windowClick(windowId, foundSlot, 0, 0, player);
-                    mc.playerController.windowClick(windowId, emptyHotbar + 36, 0, 0, player);
-                    inv.currentItem = emptyHotbar;
-                }
+                int windowId = player.inventoryContainer.windowId;
+                mc.playerController.windowClick(windowId, foundSlot, 0, 0, player);
+                mc.playerController.windowClick(windowId, emptyHotbar + 36, 0, 0, player);
+                inv.currentItem = emptyHotbar;
             } else {
                 int slot = inv.currentItem;
-                if (isCreative) {
-                    int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + slot;
-                    ItemStack hotbar9 = inv.getStackInSlot(slot);
-                    inv.setInventorySlotContents(slot, inv.getStackInSlot(foundSlot));
-                    inv.setInventorySlotContents(foundSlot, hotbar9);
+                int windowId = player.inventoryContainer.windowId;
+                mc.playerController.windowClick(windowId, foundSlot, 0, 0, player);
+                mc.playerController.windowClick(windowId, slot + 36, 0, 0, player);
+                inv.currentItem = slot;
 
-                    mc.playerController.sendSlotPacket(inv.getStackInSlot(slot), slotIdHotbar);
-                    mc.playerController.sendSlotPacket(hotbar9, foundSlot);
-                } else {
-                    int windowId = player.inventoryContainer.windowId;
-                    mc.playerController.windowClick(windowId, foundSlot, 0, 0, player);
-                    mc.playerController.windowClick(windowId, slot + 36, 0, 0, player);
-                    inv.currentItem = slot;
-
-                    int emptySlot = inv.getFirstEmptyStack();
-                    if (emptySlot != -1) {
-                        mc.playerController.windowClick(windowId, emptySlot, 0, 0, player);
-                    }
+                int emptySlot = inv.getFirstEmptyStack();
+                if (emptySlot != -1) {
+                    mc.playerController.windowClick(windowId, emptySlot, 0, 0, player);
                 }
             }
             return true;
@@ -363,13 +347,13 @@ public class ItemUtils {
                 int slotId = player.inventoryContainer.inventorySlots.size() - 9 + emptyHotbar;
                 inv.setInventorySlotContents(emptyHotbar, result);
                 inv.currentItem = emptyHotbar;
-                mc.playerController.sendSlotPacket(result, slotId);
+                mc.playerController.sendSlotPacket(result, slotId - backHandSlot);
                 return true;
             } else {
                 int slot = inv.currentItem;
                 int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + slot;
                 inv.setInventorySlotContents(slot, result);
-                mc.playerController.sendSlotPacket(result, slotIdHotbar);
+                mc.playerController.sendSlotPacket(result, slotIdHotbar - backHandSlot);
                 return true;
             }
         }

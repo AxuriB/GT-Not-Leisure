@@ -25,6 +25,7 @@ public class VacuumFurnaceRecipes implements IRecipePool {
     public void loadRecipes() {
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 64),
@@ -43,6 +44,7 @@ public class VacuumFurnaceRecipes implements IRecipePool {
             .addTo(VFR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Erbium, 64),
@@ -59,6 +61,7 @@ public class VacuumFurnaceRecipes implements IRecipePool {
             .addTo(VFR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(GTUtility.getIntegratedCircuit(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 64),

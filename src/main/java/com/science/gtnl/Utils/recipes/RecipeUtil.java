@@ -39,6 +39,7 @@ public class RecipeUtil {
             if (recipe != null) {
                 GTRecipe copiedRecipe = recipe.copy();
                 if (copiedRecipe != null) {
+                    copiedRecipe.setNeiDesc(recipe.getNeiDesc());
                     toMap.add(copiedRecipe);
                 }
             }

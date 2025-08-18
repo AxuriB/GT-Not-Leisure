@@ -34,6 +34,7 @@ public class PreciseAssemblerRecipes implements IRecipePool {
     public void loadRecipes() {
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 GTNLItemList.NeutroniumWafer.get(4),
                 ItemList.Circuit_Chip_Biocell.get(64),

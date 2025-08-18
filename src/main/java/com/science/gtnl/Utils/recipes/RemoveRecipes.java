@@ -23,16 +23,16 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 public class RemoveRecipes {
 
     public static void removeRecipes() {
-        RecipeMapBackend AutoClaveRecipe = RecipeMaps.autoclaveRecipes.getBackend();
-        RecipeMapBackend CircuitAssemblerRecipe = RecipeMaps.circuitAssemblerRecipes.getBackend();
-        RecipeMapBackend FormingPressRecipe = RecipeMaps.formingPressRecipes.getBackend();
-        RecipeMapBackend VacuumFurnaceRecipe = GTPPRecipeMaps.vacuumFurnaceRecipes.getBackend();
-        RecipeMapBackend BlastFurnaceRecipe = RecipeMaps.blastFurnaceRecipes.getBackend();
-        RecipeMapBackend AlloyBlastSmelterRecipe = GTPPRecipeMaps.alloyBlastSmelterRecipes.getBackend();
+        RecipeMapBackend autoClaveRecipe = RecipeMaps.autoclaveRecipes.getBackend();
+        RecipeMapBackend circuitAssemblerRecipe = RecipeMaps.circuitAssemblerRecipes.getBackend();
+        RecipeMapBackend formingPressRecipe = RecipeMaps.formingPressRecipes.getBackend();
+        RecipeMapBackend vacuumFurnaceRecipe = GTPPRecipeMaps.vacuumFurnaceRecipes.getBackend();
+        RecipeMapBackend blastFurnaceRecipe = RecipeMaps.blastFurnaceRecipes.getBackend();
+        RecipeMapBackend alloyBlastSmelterRecipe = GTPPRecipeMaps.alloyBlastSmelterRecipes.getBackend();
         Map<String, Integer> removedRecipeCounts = new HashMap<>();
 
         List<GTRecipe> recipesToRemoveFromAlloyBlastSmelter = new ArrayList<>();
-        for (GTRecipe recipe : AlloyBlastSmelterRecipe.getAllRecipes()) {
+        for (GTRecipe recipe : alloyBlastSmelterRecipe.getAllRecipes()) {
             for (ItemStack input : recipe.mInputs) {
                 if (input != null) {
                     // 熔融铕
@@ -43,10 +43,10 @@ public class RemoveRecipes {
                 }
             }
         }
-        AlloyBlastSmelterRecipe.removeRecipes(recipesToRemoveFromAlloyBlastSmelter);
+        alloyBlastSmelterRecipe.removeRecipes(recipesToRemoveFromAlloyBlastSmelter);
 
         List<GTRecipe> recipesToRemoveFromAutoClave = new ArrayList<>();
-        for (GTRecipe recipe : AutoClaveRecipe.getAllRecipes()) {
+        for (GTRecipe recipe : autoClaveRecipe.getAllRecipes()) {
             for (ItemStack output : recipe.mOutputs) {
                 if (output != null) {
                     // 活性生物晶圆
@@ -57,10 +57,10 @@ public class RemoveRecipes {
                 }
             }
         }
-        AutoClaveRecipe.removeRecipes(recipesToRemoveFromAutoClave);
+        autoClaveRecipe.removeRecipes(recipesToRemoveFromAutoClave);
 
         List<GTRecipe> recipesToRemoveFromFormingPress = new ArrayList<>();
-        for (GTRecipe recipe : FormingPressRecipe.getAllRecipes()) {
+        for (GTRecipe recipe : formingPressRecipe.getAllRecipes()) {
             for (ItemStack output : recipe.mOutputs) {
                 if (output != null) {
                     // 光学CPU密封外壳
@@ -71,10 +71,10 @@ public class RemoveRecipes {
                 }
             }
         }
-        FormingPressRecipe.removeRecipes(recipesToRemoveFromFormingPress);
+        formingPressRecipe.removeRecipes(recipesToRemoveFromFormingPress);
 
         List<GTRecipe> recipesToRemoveFromBlastFurnace = new ArrayList<>();
-        for (GTRecipe recipe : BlastFurnaceRecipe.getAllRecipes()) {
+        for (GTRecipe recipe : blastFurnaceRecipe.getAllRecipes()) {
             for (ItemStack output : recipe.mOutputs) {
                 if (output != null) {
                     // 铕锭
@@ -85,10 +85,10 @@ public class RemoveRecipes {
                 }
             }
         }
-        BlastFurnaceRecipe.removeRecipes(recipesToRemoveFromBlastFurnace);
+        blastFurnaceRecipe.removeRecipes(recipesToRemoveFromBlastFurnace);
 
         List<GTRecipe> recipesToRemoveFromVacuumFurnace = new ArrayList<>();
-        for (GTRecipe recipe : VacuumFurnaceRecipe.getAllRecipes()) {
+        for (GTRecipe recipe : vacuumFurnaceRecipe.getAllRecipes()) {
             for (ItemStack output : recipe.mOutputs) {
                 if (output != null) {
                     // 铂泡沫
@@ -109,7 +109,7 @@ public class RemoveRecipes {
                 }
             }
         }
-        VacuumFurnaceRecipe.removeRecipes(recipesToRemoveFromVacuumFurnace);
+        vacuumFurnaceRecipe.removeRecipes(recipesToRemoveFromVacuumFurnace);
 
         List<GTRecipe> recipesToRemoveFromCircuitAssembler = new ArrayList<>();
         List<ItemStack> targetOutputs = Arrays.asList(
@@ -123,7 +123,7 @@ public class RemoveRecipes {
             ItemList.Circuit_Wetwaresupercomputer.get(1) // 湿件处理器电脑
         );
 
-        for (GTRecipe recipe : CircuitAssemblerRecipe.getAllRecipes()) {
+        for (GTRecipe recipe : circuitAssemblerRecipe.getAllRecipes()) {
             for (ItemStack output : recipe.mOutputs) {
                 if (output == null) continue;
                 for (ItemStack target : targetOutputs) {
@@ -135,7 +135,7 @@ public class RemoveRecipes {
             }
         }
 
-        CircuitAssemblerRecipe.removeRecipes(recipesToRemoveFromCircuitAssembler);
+        circuitAssemblerRecipe.removeRecipes(recipesToRemoveFromCircuitAssembler);
 
         if (MainConfig.enableDebugMode) {
             removedRecipeCounts.put("高压釜", recipesToRemoveFromAutoClave.size());
