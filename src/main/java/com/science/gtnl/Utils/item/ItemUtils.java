@@ -66,7 +66,6 @@ public class ItemUtils {
     }
 
     public static void removeItemFromPlayer(EntityPlayer player, ItemStack stack) {
-        // 从物品栏中移除
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             ItemStack inventoryStack = player.inventory.getStackInSlot(i);
             if (inventoryStack != null && inventoryStack.getItem() instanceof InfinityTotem
@@ -76,7 +75,6 @@ public class ItemUtils {
             }
         }
 
-        // 从饰品栏中移除
         if (Baubles.isModLoaded()) {
             IInventory baublesInventory = BaublesApi.getBaubles(player);
             if (baublesInventory != null) {
@@ -292,21 +290,20 @@ public class ItemUtils {
                     inv.currentItem = emptyHotbar;
                 }
             } else {
-                int slot9 = 8;
+                int slot = inv.currentItem;
                 if (isCreative) {
-                    int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + slot9;
-                    ItemStack hotbar9 = inv.getStackInSlot(slot9);
-                    inv.setInventorySlotContents(slot9, inv.getStackInSlot(foundSlot));
+                    int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + slot;
+                    ItemStack hotbar9 = inv.getStackInSlot(slot);
+                    inv.setInventorySlotContents(slot, inv.getStackInSlot(foundSlot));
                     inv.setInventorySlotContents(foundSlot, hotbar9);
-                    inv.currentItem = slot9;
 
-                    mc.playerController.sendSlotPacket(inv.getStackInSlot(slot9), slotIdHotbar);
+                    mc.playerController.sendSlotPacket(inv.getStackInSlot(slot), slotIdHotbar);
                     mc.playerController.sendSlotPacket(hotbar9, foundSlot);
                 } else {
                     int windowId = player.inventoryContainer.windowId;
                     mc.playerController.windowClick(windowId, foundSlot, 0, 0, player);
-                    mc.playerController.windowClick(windowId, slot9 + 36, 0, 0, player);
-                    inv.currentItem = slot9;
+                    mc.playerController.windowClick(windowId, slot + 36, 0, 0, player);
+                    inv.currentItem = slot;
 
                     int emptySlot = inv.getFirstEmptyStack();
                     if (emptySlot != -1) {
@@ -338,10 +335,9 @@ public class ItemUtils {
                 ScienceNotLeisure.network.sendToServer(new WirelessPickBlock(result, inv.currentItem));
                 return true;
             } else {
-                int slot9 = 8;
+                int slot = inv.currentItem;
                 int windowId = player.inventoryContainer.windowId;
-                mc.playerController.windowClick(windowId, slot9 + 36, 0, 0, player);
-                inv.currentItem = slot9;
+                mc.playerController.windowClick(windowId, slot + 36, 0, 0, player);
                 int emptySlot = inv.getFirstEmptyStack();
                 if (emptySlot != -1) {
                     mc.playerController.windowClick(windowId, emptySlot, 0, 0, player);
@@ -370,10 +366,9 @@ public class ItemUtils {
                 mc.playerController.sendSlotPacket(result, slotId);
                 return true;
             } else {
-                int slot9 = 8;
-                int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + slot9;
-                inv.setInventorySlotContents(slot9, result);
-                inv.currentItem = slot9;
+                int slot = inv.currentItem;
+                int slotIdHotbar = player.inventoryContainer.inventorySlots.size() - 9 + slot;
+                inv.setInventorySlotContents(slot, result);
                 mc.playerController.sendSlotPacket(result, slotIdHotbar);
                 return true;
             }
@@ -398,11 +393,10 @@ public class ItemUtils {
             mc.playerController.windowClick(windowId, emptyHotbar + 36, 0, 0, player);
             return true;
         } else {
-            int slot9 = 8;
+            int slot = inv.currentItem;
             int windowId = player.inventoryContainer.windowId;
-            mc.playerController.windowClick(windowId, slot9 + 36, 0, 0, player);
-            mc.playerController.windowClick(windowId, slot9 + 36, 0, 0, player);
-            inv.currentItem = slot9;
+            mc.playerController.windowClick(windowId, slot + 36, 0, 0, player);
+            mc.playerController.windowClick(windowId, slot + 36, 0, 0, player);
 
             int emptySlot = inv.getFirstEmptyStack();
             if (emptySlot != -1) {

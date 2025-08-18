@@ -30,6 +30,7 @@ public class MaterialLoader {
         ItemLoader.registryOreBlackList();
         WerkstoffAdderRegistry.addWerkstoffAdder(new MaterialPool());
 
+        API.hideItem(GTNLItemList.EternalGregTechWorkshopRender.get(1));
         API.hideItem(GTNLItemList.NanoPhagocytosisPlantRender.get(1));
         API.hideItem(GTNLItemList.ArtificialStarRender.get(1));
         API.hideItem(GTNLItemList.TwilightSword.get(1));
