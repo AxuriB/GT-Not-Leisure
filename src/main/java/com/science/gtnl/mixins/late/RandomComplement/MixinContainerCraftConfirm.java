@@ -1,10 +1,7 @@
 package com.science.gtnl.mixins.late.RandomComplement;
 
-import net.minecraft.inventory.Container;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -17,21 +14,6 @@ public abstract class MixinContainerCraftConfirm implements RCAEBaseContainer {
 
     @Shadow
     public abstract void switchToOriginalGUI();
-
-    @Unique
-    private Container gtnl$oldContainer;
-
-    @Unique
-    @Override
-    public void rc$setOldContainer(Container old) {
-        gtnl$oldContainer = old;
-    }
-
-    @Unique
-    @Override
-    public Container rc$getOldContainer() {
-        return gtnl$oldContainer;
-    }
 
     @Redirect(
         method = "startJob()V",

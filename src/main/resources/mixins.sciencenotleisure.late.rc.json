@@ -10,14 +10,17 @@
     "MixinContainerCraftAmount",
     "MixinContainerCraftConfirm",
     "MixinContainerMEMonitorable",
+    "MixinCPacketCraftRequest",
     "MixinCraftingGridCache",
     "MixinGuiBridge",
     "MixinWirelessTerminalGuiObject"
   ],
   "client": [
+    "MixinFCGuiAmount",
     "MixinGuiAmount",
     "MixinGuiCraftAmount",
-    "MixinGuiCraftConfirm"
+    "MixinGuiCraftConfirm",
+    "MixinGuiFluidCraftAmount"
   ],
   "server": []
 }

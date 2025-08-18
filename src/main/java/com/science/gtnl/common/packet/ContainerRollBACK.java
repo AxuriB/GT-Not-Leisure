@@ -50,8 +50,10 @@ public class ContainerRollBACK implements IMessage, IMessageHandler<ContainerRol
 
     @SideOnly(Side.CLIENT)
     public void ClientRun() {
-        GTNLInputHandler.list.forEach(Runnable::run);
-        GTNLInputHandler.list.clear();
-        GTNLInputHandler.oldGui = null;
+        if (GTNLInputHandler.delayMethod != null) {
+            GTNLInputHandler.delayMethod.run();
+            GTNLInputHandler.delayMethod = null;
+            GTNLInputHandler.oldGui = null;
+        }
     }
 }

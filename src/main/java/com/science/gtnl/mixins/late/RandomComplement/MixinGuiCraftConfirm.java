@@ -23,9 +23,6 @@ import appeng.core.sync.network.NetworkHandler;
 public abstract class MixinGuiCraftConfirm {
 
     @Shadow
-    private GuiButton cancel;
-
-    @Shadow
     private GuiButton start;
 
     @Shadow
@@ -70,9 +67,8 @@ public abstract class MixinGuiCraftConfirm {
         if (btn == this.start || btn == this.startWithFollow) {
             GuiScreen oldGui;
             if ((oldGui = GTNLInputHandler.oldGui) != null) {
-                GTNLInputHandler.list.add(
-                    () -> Minecraft.getMinecraft()
-                        .displayGuiScreen(oldGui));
+                GTNLInputHandler.delayMethod = () -> Minecraft.getMinecraft()
+                    .displayGuiScreen(oldGui);
                 ScienceNotLeisure.network.sendToServer(new ContainerRollBACK());
             }
         }

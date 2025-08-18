@@ -10,17 +10,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.glodblock.github.client.gui.GuiFluidCraftAmount;
+import com.glodblock.github.client.gui.base.FCGuiAmount;
 import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.client.GTNLInputHandler;
 import com.science.gtnl.common.packet.ContainerRollBACK;
 
-import appeng.client.gui.implementations.GuiAmount;
-import appeng.client.gui.implementations.GuiCraftAmount;
+@Mixin(value = GuiFluidCraftAmount.class, remap = false)
+public abstract class MixinGuiFluidCraftAmount extends FCGuiAmount {
 
-@Mixin(value = GuiCraftAmount.class, remap = false)
-public abstract class MixinGuiCraftAmount extends GuiAmount {
-
-    public MixinGuiCraftAmount(Container container) {
+    public MixinGuiFluidCraftAmount(Container container) {
         super(container);
     }
 
@@ -28,7 +27,7 @@ public abstract class MixinGuiCraftAmount extends GuiAmount {
         method = "actionPerformed",
         at = @At(
             value = "INVOKE",
-            target = "Lappeng/core/sync/network/NetworkHandler;sendToServer(Lappeng/core/sync/AppEngPacket;)V",
+            target = "Lcom/glodblock/github/network/wrapper/FCNetworkWrapper;sendToServer(Lcpw/mods/fml/common/network/simpleimpl/IMessage;)V",
             shift = At.Shift.AFTER))
     public void onActionPerformed(GuiButton btn, CallbackInfo ci) {
         if (isShiftKeyDown()) {

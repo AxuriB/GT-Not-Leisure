@@ -1,9 +1,7 @@
 package com.science.gtnl.client;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
@@ -51,7 +49,7 @@ public class GTNLInputHandler {
     public static int counter = 0;
     private static int counter1 = 0;
     public static GuiScreen oldGui = null;
-    public static final List<Runnable> list = new ArrayList<>();
+    public static Runnable delayMethod = null;
 
     private GTNLInputHandler() {
         FMLCommonHandler.instance()

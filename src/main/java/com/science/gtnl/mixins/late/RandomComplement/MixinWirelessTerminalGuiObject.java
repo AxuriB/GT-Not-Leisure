@@ -10,11 +10,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.glodblock.github.util.Util;
 import com.science.gtnl.Utils.RCWirelessTerminalGuiObject;
 
 import appeng.api.features.IWirelessTermHandler;
+import appeng.api.implementations.tiles.IWirelessAccessPoint;
 import appeng.helpers.WirelessTerminalGuiObject;
 
 @SuppressWarnings("AddedMixinMembersNamePattern")
@@ -46,6 +49,13 @@ public abstract class MixinWirelessTerminalGuiObject implements RCWirelessTermin
     @Override
     public abstract int getInventorySlot();
 
+    @Shadow
+    protected abstract boolean testWap(IWirelessAccessPoint wap);
+
+    @Shadow
+    @Final
+    private ItemStack effectiveItem;
+
     @Unique
     @Override
     public boolean isBauble() {
@@ -56,5 +66,14 @@ public abstract class MixinWirelessTerminalGuiObject implements RCWirelessTermin
     @Override
     public boolean isSpecial() {
         return gtnl$isSpecial;
+    }
+
+    @Redirect(
+        method = "rangeCheck",
+        at = @At(
+            value = "INVOKE",
+            target = "Lappeng/helpers/WirelessTerminalGuiObject;testWap(Lappeng/api/implementations/tiles/IWirelessAccessPoint;)Z"))
+    public boolean rangeCheck(WirelessTerminalGuiObject instance, IWirelessAccessPoint wap) {
+        return this.testWap(wap) || Util.hasInfinityBoosterCard(this.effectiveItem);
     }
 }

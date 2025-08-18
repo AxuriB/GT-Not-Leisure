@@ -13,8 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.github.bsideup.jabel.Desugar;
 import com.glodblock.github.client.gui.container.ContainerItemMonitor;
+import com.glodblock.github.common.item.ItemWirelessUltraTerminal;
 import com.glodblock.github.inventory.InventoryHandler;
 import com.glodblock.github.inventory.gui.GuiType;
 import com.glodblock.github.inventory.item.IWirelessTerminal;
@@ -27,8 +27,11 @@ import com.science.gtnl.Utils.RCAEBaseContainer;
 import com.science.gtnl.Utils.RCCraftingGridCache;
 import com.science.gtnl.Utils.SimpleItem;
 
+import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.SecurityPermissions;
+import appeng.api.features.ILocatable;
+import appeng.api.features.IWirelessTermHandler;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingGrid;
@@ -46,6 +49,7 @@ import appeng.core.sync.GuiBridge;
 import appeng.helpers.IContainerCraftingPacket;
 import appeng.helpers.WirelessTerminalGuiObject;
 import appeng.me.cache.CraftingGridCache;
+import appeng.tile.misc.TileSecurity;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
 import baubles.api.BaublesApi;
@@ -105,18 +109,42 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
         return null;
     }
 
-    private void retrieveItem(EntityPlayerMP player, Container container, ItemStack item, boolean isAE) {
-        long targetCount = item.getMaxStackSize();
+    private void retrieveItem(EntityPlayerMP player, Container container, ItemStack exItem, boolean isAE) {
+        long targetCount = exItem.getMaxStackSize();
         if (!isAE) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                ItemStack ii = player.inventory.getStackInSlot(i);
-                WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(ii, player, i, 0);
+                ItemStack item = player.inventory.getStackInSlot(i);
+                WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(item, player, i, 0);
 
                 if (obj == null) {
                     continue;
                 }
 
                 if (!obj.rangeCheck()) {
+                    if (Util.hasInfinityBoosterCard(item)) {
+                        IWirelessTermHandler handler = AEApi.instance()
+                            .registries()
+                            .wireless()
+                            .getWirelessTerminalHandler(item);
+                        String unparsedKey = handler.getEncryptionKey(item);
+                        long parsedKey = Long.parseLong(unparsedKey);
+                        ILocatable securityStation = AEApi.instance()
+                            .registries()
+                            .locatable()
+                            .getLocatableBy(parsedKey);
+                        if (securityStation instanceof TileSecurity t) {
+                            IGridNode gridNode = t.getActionableNode();
+                            if (gridNode == null) {
+                                player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                                continue;
+                            }
+                            targetCount = wirelessRetrieve(player, exItem, gridNode, targetCount, obj);
+                            if (targetCount <= 0) {
+                                return;
+                            }
+                        }
+                        continue;
+                    }
                     player.addChatMessage(PlayerMessages.OutOfRange.toChat());
                 } else {
                     IGridNode gridNode = obj.getActionableNode();
@@ -124,14 +152,14 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                         player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
                         continue;
                     }
-                    targetCount = wirelessRetrieve(player, item, gridNode, targetCount, obj);
+                    targetCount = wirelessRetrieve(player, exItem, gridNode, targetCount, obj);
                     if (targetCount <= 0) {
                         return;
                     }
                 }
             }
             if (Loader.isModLoaded("Baubles")) {
-                readBaublesR(player, item, targetCount);
+                readBaublesR(player, exItem, targetCount);
             }
         } else if (container instanceof AEBaseContainer c && container instanceof IContainerCraftingPacket t) {
             IGridNode gridNode = t.getNetworkNode();
@@ -147,7 +175,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                 if (host instanceof IActionHost h) {
                     var aeItem = Optional.ofNullable(
                         iItemStorageChannel.extractItems(
-                            AEItemStack.create(item)
+                            AEItemStack.create(exItem)
                                 .setStackSize(targetCount),
                             Actionable.SIMULATE,
                             new PlayerSource(player, h)));
@@ -155,7 +183,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                     if (aeItem.isPresent()) {
                         var aeItem0 = aeItem.get();
                         var aeItem1 = iItemStorageChannel.extractItems(
-                            AEItemStack.create(item)
+                            AEItemStack.create(exItem)
                                 .setStackSize(aeItem0.getStackSize()),
                             Actionable.MODULATE,
                             new PlayerSource(player, h));
@@ -196,7 +224,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
         return targetCount;
     }
 
-    private void startCraft(EntityPlayerMP player, Container container, ItemStack item, boolean isAE) {
+    private void startCraft(EntityPlayerMP player, Container container, ItemStack exItem, boolean isAE) {
         UUID playUUID = player.getUniqueID();
         long worldTime = Instant.now()
             .getEpochSecond();
@@ -209,17 +237,39 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
         } else {
             map.put(playUUID, worldTime);
         }
-        item.stackSize = 1;
+        exItem.stackSize = 1;
         if (!isAE) {
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-                ItemStack ii = player.inventory.getStackInSlot(i);
-                WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(ii, player, i, 0);
+                ItemStack item = player.inventory.getStackInSlot(i);
+                WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(item, player, i, 0);
 
                 if (obj == null) {
                     continue;
                 }
 
                 if (!obj.rangeCheck()) {
+                    if (Util.hasInfinityBoosterCard(item)) {
+                        IWirelessTermHandler handler = AEApi.instance()
+                            .registries()
+                            .wireless()
+                            .getWirelessTerminalHandler(item);
+                        String unparsedKey = handler.getEncryptionKey(item);
+                        long parsedKey = Long.parseLong(unparsedKey);
+                        ILocatable securityStation = AEApi.instance()
+                            .registries()
+                            .locatable()
+                            .getLocatableBy(parsedKey);
+                        if (securityStation instanceof TileSecurity t) {
+                            IGridNode gridNode = t.getActionableNode();
+                            if (gridNode == null) {
+                                player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                                continue;
+                            }
+                            openWirelessCraft(item, player, exItem, gridNode, i, false);
+                            return;
+                        }
+                        continue;
+                    }
                     player.addChatMessage(PlayerMessages.OutOfRange.toChat());
                 } else {
                     IGridNode gridNode = obj.getActionableNode();
@@ -227,12 +277,12 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                         player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
                         continue;
                     }
-                    openWirelessCraft(ii, player, item, gridNode, i, false);
+                    openWirelessCraft(item, player, exItem, gridNode, i, false);
                     return;
                 }
             }
             if (Loader.isModLoaded("Baubles")) {
-                readBaublesS(player, item);
+                readBaublesS(player, exItem);
             }
         } else if (container instanceof ContainerMEMonitorable || container instanceof ContainerItemMonitor) {
             AEBaseContainer aec;
@@ -263,7 +313,9 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                         .keySet()) {
                         aeItem = iaeItemStack;
                         if (aeItem.isCraftable()) {
-                            if (ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), item)) {
+                            if (aeItem.getItemStack()
+                                .isItemEqual(exItem)
+                                && ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), exItem)) {
                                 aeItem = aeItem.copy()
                                     .setStackSize(1);
                                 isCraftable = true;
@@ -272,9 +324,9 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                         }
                     }
                 } else {
-                    isCraftable = set.contains(SimpleItem.getInstance(item));
+                    isCraftable = set.contains(SimpleItem.getInstance(exItem));
                     if (isCraftable) {
-                        aeItem = AEItemStack.create(item)
+                        aeItem = AEItemStack.create(exItem)
                             .setStackSize(1);
                     }
                 }
@@ -285,10 +337,8 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                 }
 
                 var host = aec.getTarget();
-                if (host instanceof IActionHost) {
-                    final var oldContainer = player.openContainer;
-
-                    if (Loader.isModLoaded("ae2fc")) ae2fcCraft(host, player, aec);
+                if (host instanceof IActionHost h) {
+                    if (Loader.isModLoaded("ae2fc")) ae2fcCraft(h, player, aec);
                     else Platform.openGUI(
                         player,
                         aec.getOpenContext()
@@ -297,12 +347,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                             .getSide(),
                         GuiBridge.GUI_CRAFTING_AMOUNT);
 
-                    var newContainer = player.openContainer;
-
-                    if (newContainer instanceof ContainerCraftAmount cca) {
-                        if (newContainer instanceof RCAEBaseContainer rcc) {
-                            rcc.rc$setOldContainer(oldContainer);
-                        }
+                    if (player.openContainer instanceof ContainerCraftAmount cca) {
                         var item0 = aeItem.getItemStack();
                         cca.getCraftingItem()
                             .putStack(item0);
@@ -331,7 +376,8 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                     .keySet()) {
                     aeItem = iaeItemStack;
                     if (aeItem.isCraftable()) {
-                        if (ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), exItem)) {
+                        if (aeItem.getItemStack()
+                            .isItemEqual(exItem) && ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), exItem)) {
                             aeItem = aeItem.copy()
                                 .setStackSize(1);
                             isCraftable = true;
@@ -354,14 +400,23 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
 
             final var oldContainer = player.openContainer;
 
-            if (Loader.isModLoaded("ae2fc")) ae2fcCraft(terminal, player, new Terminal(i, isBauble));
-            else player.openGui(
-                AppEng.instance(),
-                GuiBridge.GUI_CRAFTING_AMOUNT.ordinal() << 5 | (1 << 4),
-                player.getEntityWorld(),
-                i,
-                isBauble ? 1 : 0,
-                Integer.MIN_VALUE);
+            if (terminal.getItem() instanceof ItemWirelessUltraTerminal) {
+                var value = Util.GuiHelper.encodeType(0, Util.GuiHelper.GuiType.ITEM);
+                InventoryHandler.openGui(
+                    player,
+                    player.worldObj,
+                    new BlockPos(isBauble ? i + value : i, value, 0),
+                    ForgeDirection.UNKNOWN,
+                    GuiType.FLUID_CRAFTING_AMOUNT);
+            } else {
+                player.openGui(
+                    AppEng.instance(),
+                    GuiBridge.GUI_CRAFTING_AMOUNT.ordinal() << 5 | (1 << 4),
+                    player.getEntityWorld(),
+                    i,
+                    isBauble ? 1 : 0,
+                    Integer.MIN_VALUE);
+            }
 
             var newContainer = player.openContainer;
 
@@ -378,43 +433,23 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
         }
     }
 
-    @Desugar
-    public record Terminal(int i, boolean isBauble) {}
-
     @cpw.mods.fml.common.Optional.Method(modid = "ae2fc")
-    private void ae2fcCraft(Object host, EntityPlayerMP player, Object a) {
-        if (host instanceof IActionHost) {
-            if (a instanceof AEBaseContainer c) {
-                if (host instanceof IWirelessTerminal wt) {
-                    InventoryHandler.openGui(
-                        player,
-                        player.worldObj,
-                        new BlockPos(
-                            wt.getInventorySlot(),
-                            Util.GuiHelper.encodeType(0, Util.GuiHelper.GuiType.ITEM),
-                            0),
-                        ForgeDirection.UNKNOWN,
-                        GuiType.FLUID_CRAFTING_AMOUNT);
-                } else {
-                    Platform.openGUI(
-                        player,
-                        c.getOpenContext()
-                            .getTile(),
-                        c.getOpenContext()
-                            .getSide(),
-                        GuiBridge.GUI_CRAFTING_AMOUNT);
-                }
-            }
-        } else if (host instanceof ItemStack terminal) {
-            if (a instanceof Terminal t) {
-                player.openGui(
-                    AppEng.instance(),
-                    GuiBridge.GUI_CRAFTING_AMOUNT.ordinal() << 5 | (1 << 4),
-                    player.getEntityWorld(),
-                    t.i,
-                    t.isBauble ? 1 : 0,
-                    Integer.MIN_VALUE);
-            }
+    private void ae2fcCraft(IActionHost host, EntityPlayerMP player, AEBaseContainer c) {
+        if (host instanceof IWirelessTerminal wt) {
+            InventoryHandler.openGui(
+                player,
+                player.worldObj,
+                new BlockPos(wt.getInventorySlot(), Util.GuiHelper.encodeType(0, Util.GuiHelper.GuiType.ITEM), 0),
+                ForgeDirection.UNKNOWN,
+                GuiType.FLUID_CRAFTING_AMOUNT);
+        } else {
+            Platform.openGUI(
+                player,
+                c.getOpenContext()
+                    .getTile(),
+                c.getOpenContext()
+                    .getSide(),
+                GuiBridge.GUI_CRAFTING_AMOUNT);
         }
     }
 
@@ -431,6 +466,28 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
             }
 
             if (!obj.rangeCheck()) {
+                if (Util.hasInfinityBoosterCard(item)) {
+                    IWirelessTermHandler handler = AEApi.instance()
+                        .registries()
+                        .wireless()
+                        .getWirelessTerminalHandler(item);
+                    String unparsedKey = handler.getEncryptionKey(item);
+                    long parsedKey = Long.parseLong(unparsedKey);
+                    ILocatable securityStation = AEApi.instance()
+                        .registries()
+                        .locatable()
+                        .getLocatableBy(parsedKey);
+                    if (securityStation instanceof TileSecurity t) {
+                        IGridNode gridNode = t.getActionableNode();
+                        if (gridNode == null) {
+                            player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                            continue;
+                        }
+                        openWirelessCraft(item, player, exitem, gridNode, i, true);
+                        return;
+                    }
+                    continue;
+                }
                 player.addChatMessage(PlayerMessages.OutOfRange.toChat());
             } else {
                 IGridNode gridNode = obj.getActionableNode();
@@ -457,6 +514,30 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
             }
 
             if (!obj.rangeCheck()) {
+                if (Util.hasInfinityBoosterCard(item)) {
+                    IWirelessTermHandler handler = AEApi.instance()
+                        .registries()
+                        .wireless()
+                        .getWirelessTerminalHandler(item);
+                    String unparsedKey = handler.getEncryptionKey(item);
+                    long parsedKey = Long.parseLong(unparsedKey);
+                    ILocatable securityStation = AEApi.instance()
+                        .registries()
+                        .locatable()
+                        .getLocatableBy(parsedKey);
+                    if (securityStation instanceof TileSecurity t) {
+                        IGridNode gridNode = t.getActionableNode();
+                        if (gridNode == null) {
+                            player.addChatMessage(PlayerMessages.DeviceNotLinked.toChat());
+                            continue;
+                        }
+                        targetCount = wirelessRetrieve(player, exitem, gridNode, targetCount, obj);
+                        if (targetCount <= 0) {
+                            return;
+                        }
+                    }
+                    continue;
+                }
                 player.addChatMessage(PlayerMessages.OutOfRange.toChat());
             } else {
                 IGridNode gridNode = obj.getActionableNode();

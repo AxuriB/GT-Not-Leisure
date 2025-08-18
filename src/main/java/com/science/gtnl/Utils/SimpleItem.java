@@ -18,11 +18,7 @@ public record SimpleItem(Item item, int meta, NBTTagCompound nbt) {
     }
 
     public static SimpleItem getInstance(IAEItemStack stack) {
-        return new SimpleItem(
-            stack.getItem(),
-            stack.getItemDamage(),
-            stack.getTagCompound()
-                .getNBTTagCompoundCopy());
+        return getInstance(stack.getItemStack());
     }
 
     @Override
