@@ -10,6 +10,7 @@
     "MixinContainerCraftAmount",
     "MixinContainerCraftConfirm",
     "MixinContainerMEMonitorable",
+    "MixinCraftingGridCache",
     "MixinGuiBridge",
     "MixinWirelessTerminalGuiObject"
   ],

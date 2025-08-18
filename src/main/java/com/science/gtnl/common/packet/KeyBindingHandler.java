@@ -1,7 +1,6 @@
 package com.science.gtnl.common.packet;
 
 import java.time.Instant;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,9 +20,12 @@ import com.glodblock.github.inventory.gui.GuiType;
 import com.glodblock.github.inventory.item.IWirelessTerminal;
 import com.glodblock.github.util.BlockPos;
 import com.glodblock.github.util.Util;
+import com.google.common.collect.Multiset;
 import com.gtnewhorizon.gtnhlib.util.ServerThreadUtil;
 import com.science.gtnl.Utils.MEHandler;
 import com.science.gtnl.Utils.RCAEBaseContainer;
+import com.science.gtnl.Utils.RCCraftingGridCache;
+import com.science.gtnl.Utils.SimpleItem;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.SecurityPermissions;
@@ -253,21 +255,27 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
 
                 CraftingGridCache cgc = gridNode.getGrid()
                     .getCache(ICraftingGrid.class);
-                Iterator<IAEItemStack> iterator = cgc.getCraftingPatterns()
-                    .keySet()
-                    .iterator();
                 boolean isCraftable = false;
                 IAEItemStack aeItem = null;
-                while (iterator.hasNext()) {
-                    aeItem = iterator.next();
-                    if (aeItem.isCraftable()) {
-                        if (aeItem.getItemStack()
-                            .isItemEqual(item)) {
-                            aeItem = aeItem.copy()
-                                .setStackSize(1);
-                            isCraftable = true;
-                            break;
+                Multiset<SimpleItem> set;
+                if ((set = ((RCCraftingGridCache) cgc).rc$getCanCraftableItems()).isEmpty()) {
+                    for (IAEItemStack iaeItemStack : cgc.getCraftingPatterns()
+                        .keySet()) {
+                        aeItem = iaeItemStack;
+                        if (aeItem.isCraftable()) {
+                            if (ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), item)) {
+                                aeItem = aeItem.copy()
+                                    .setStackSize(1);
+                                isCraftable = true;
+                                break;
+                            }
                         }
+                    }
+                } else {
+                    isCraftable = set.contains(SimpleItem.getInstance(item));
+                    if (isCraftable) {
+                        aeItem = AEItemStack.create(item)
+                            .setStackSize(1);
                     }
                 }
 
@@ -295,9 +303,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                         if (newContainer instanceof RCAEBaseContainer rcc) {
                             rcc.rc$setOldContainer(oldContainer);
                         }
-                        var item0 = aeItem.getItemStack()
-                            .copy();
-                        item0.stackSize = 1;
+                        var item0 = aeItem.getItemStack();
                         cca.getCraftingItem()
                             .putStack(item0);
                         cca.setItemToCraft(aeItem);
@@ -317,21 +323,27 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
 
             CraftingGridCache cgc = gridNode.getGrid()
                 .getCache(ICraftingGrid.class);
-            Iterator<IAEItemStack> iterator = cgc.getCraftingPatterns()
-                .keySet()
-                .iterator();
             boolean isCraftable = false;
             IAEItemStack aeItem = null;
-            while (iterator.hasNext()) {
-                aeItem = iterator.next();
-                if (aeItem.isCraftable()) {
-                    if (aeItem.getItemStack()
-                        .isItemEqual(exItem)) {
-                        aeItem = aeItem.copy()
-                            .setStackSize(1);
-                        isCraftable = true;
-                        break;
+            Multiset<SimpleItem> set;
+            if ((set = ((RCCraftingGridCache) cgc).rc$getCanCraftableItems()).isEmpty()) {
+                for (IAEItemStack iaeItemStack : cgc.getCraftingPatterns()
+                    .keySet()) {
+                    aeItem = iaeItemStack;
+                    if (aeItem.isCraftable()) {
+                        if (ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), exItem)) {
+                            aeItem = aeItem.copy()
+                                .setStackSize(1);
+                            isCraftable = true;
+                            break;
+                        }
                     }
+                }
+            } else {
+                isCraftable = set.contains(SimpleItem.getInstance(exItem));
+                if (isCraftable) {
+                    aeItem = AEItemStack.create(exItem)
+                        .setStackSize(1);
                 }
             }
 
@@ -357,9 +369,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                 if (newContainer instanceof RCAEBaseContainer rcc) {
                     rcc.rc$setOldContainer(oldContainer);
                 }
-                var item0 = aeItem.getItemStack()
-                    .copy();
-                item0.stackSize = 1;
+                var item0 = aeItem.getItemStack();
                 cca.getCraftingItem()
                     .putStack(item0);
                 cca.setItemToCraft(aeItem);
