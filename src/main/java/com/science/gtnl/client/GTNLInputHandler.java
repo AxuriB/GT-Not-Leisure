@@ -5,16 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.common.ForgeHooks;
 
 import org.lwjgl.input.Mouse;
 
@@ -24,7 +21,6 @@ import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.ClientUtils;
 import com.science.gtnl.common.packet.KeyBindingHandler;
-import com.science.gtnl.common.packet.WirelessPickBlock;
 
 import appeng.client.gui.implementations.GuiMEMonitorable;
 import codechicken.nei.BookmarkPanel;
@@ -86,68 +82,9 @@ public class GTNLInputHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onInputEvent(final InputEvent.KeyInputEvent event) {
         if (!mc.thePlayer.capabilities.isCreativeMode && tick == 0 && mc.gameSettings.keyBindPickBlock.isPressed()) {
-
             EntityClientPlayerMP player = mc.thePlayer;
             World world = player.worldObj;
-            var target = mc.objectMouseOver;
-
-            if (ClientUtils.onBeforePickBlock(player, world, true)) {
-                tick = 10;
-                return;
-            } else if (ForgeHooks.onPickBlock(mc.objectMouseOver, mc.thePlayer, mc.theWorld)) return;
-
-            ItemStack result;
-            boolean isCreative = mc.thePlayer.capabilities.isCreativeMode;
-
-            if (target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                int x = target.blockX;
-                int y = target.blockY;
-                int z = target.blockZ;
-                Block block = world.getBlock(x, y, z);
-
-                if (block.isAir(world, x, y, z)) {
-                    return;
-                }
-
-                result = block.getPickBlock(target, world, x, y, z, player);
-            } else {
-                if (target.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY || target.entityHit == null
-                    || !isCreative) {
-                    return;
-                }
-
-                result = target.entityHit.getPickedResult(target);
-            }
-
-            if (result == null) {
-                return;
-            }
-
-            if (player.isSneaking()) {
-                result.stackSize = 1;
-            } else {
-                result.stackSize = result.getMaxStackSize();
-            }
-
-            int slot = -1;
-            for (int x = 0; x < 9; x++) {
-                ItemStack stack = player.inventory.getStackInSlot(x);
-                if (stack != null && stack.isItemEqual(result) && ItemStack.areItemStackTagsEqual(stack, result)) {
-                    player.inventory.currentItem = (slot = x);
-                    break;
-                }
-            }
-
-            if (slot == -1 && player.getHeldItem() != null) {
-                for (int i = 0; i < 9; i++) {
-                    if (player.inventory.getStackInSlot(i) == null) {
-                        player.inventory.currentItem = i;
-                        break;
-                    }
-                }
-            }
-
-            ScienceNotLeisure.network.sendToServer(new WirelessPickBlock(result, player.inventory.currentItem));
+            ClientUtils.onBeforePickBlock(player, world, true);
             tick = 10;
         }
     }
@@ -155,68 +92,9 @@ public class GTNLInputHandler {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onInputEvent(final InputEvent.MouseInputEvent event) {
         if (!mc.thePlayer.capabilities.isCreativeMode && tick == 0 && mc.gameSettings.keyBindPickBlock.isPressed()) {
-
             EntityClientPlayerMP player = mc.thePlayer;
             World world = player.worldObj;
-            var target = mc.objectMouseOver;
-
-            if (ClientUtils.onBeforePickBlock(player, world, true)) {
-                tick = 10;
-                return;
-            } else if (ForgeHooks.onPickBlock(mc.objectMouseOver, mc.thePlayer, mc.theWorld)) return;
-
-            ItemStack result;
-            boolean isCreative = mc.thePlayer.capabilities.isCreativeMode;
-
-            if (target.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
-                int x = target.blockX;
-                int y = target.blockY;
-                int z = target.blockZ;
-                Block block = world.getBlock(x, y, z);
-
-                if (block.isAir(world, x, y, z)) {
-                    return;
-                }
-
-                result = block.getPickBlock(target, world, x, y, z, player);
-            } else {
-                if (target.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY || target.entityHit == null
-                    || !isCreative) {
-                    return;
-                }
-
-                result = target.entityHit.getPickedResult(target);
-            }
-
-            if (result == null) {
-                return;
-            }
-
-            if (player.isSneaking()) {
-                result.stackSize = 1;
-            } else {
-                result.stackSize = result.getMaxStackSize();
-            }
-
-            int slot = -1;
-            for (int x = 0; x < 9; x++) {
-                ItemStack stack = player.inventory.getStackInSlot(x);
-                if (stack != null && stack.isItemEqual(result) && ItemStack.areItemStackTagsEqual(stack, result)) {
-                    player.inventory.currentItem = (slot = x);
-                    break;
-                }
-            }
-
-            if (slot == -1 && player.getHeldItem() != null) {
-                for (int i = 0; i < 9; i++) {
-                    if (player.inventory.getStackInSlot(i) == null) {
-                        player.inventory.currentItem = i;
-                        break;
-                    }
-                }
-            }
-
-            ScienceNotLeisure.network.sendToServer(new WirelessPickBlock(result, player.inventory.currentItem));
+            ClientUtils.onBeforePickBlock(player, world, true);
             tick = 10;
         }
     }

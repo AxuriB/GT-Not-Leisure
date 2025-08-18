@@ -266,10 +266,14 @@ public class ItemUtils {
 
         if (foundSlot != -1) {
             int emptyHotbar = -1;
-            for (int i = 0; i < 9; i++) {
-                if (inv.getStackInSlot(i) == null) {
-                    emptyHotbar = i;
-                    break;
+            if (inv.getStackInSlot(inv.currentItem) == null) {
+                emptyHotbar = inv.currentItem;
+            } else {
+                for (int i = 0; i < 9; i++) {
+                    if (inv.getStackInSlot(i) == null) {
+                        emptyHotbar = i;
+                        break;
+                    }
                 }
             }
 
@@ -313,10 +317,14 @@ public class ItemUtils {
             return true;
         } else if (useAE && !isCreative) {
             int emptyHotbar = -1;
-            for (int i = 0; i < 9; i++) {
-                if (inv.getStackInSlot(i) == null) {
-                    emptyHotbar = i;
-                    break;
+            if (inv.getStackInSlot(inv.currentItem) == null) {
+                emptyHotbar = inv.currentItem;
+            } else {
+                for (int i = 0; i < 9; i++) {
+                    if (inv.getStackInSlot(i) == null) {
+                        emptyHotbar = i;
+                        break;
+                    }
                 }
             }
             if (player.isSneaking()) {
@@ -345,10 +353,14 @@ public class ItemUtils {
 
         if (isCreative) {
             int emptyHotbar = -1;
-            for (int i = 0; i < 9; i++) {
-                if (inv.getStackInSlot(i) == null) {
-                    emptyHotbar = i;
-                    break;
+            if (inv.getStackInSlot(inv.currentItem) == null) {
+                emptyHotbar = inv.currentItem;
+            } else {
+                for (int i = 0; i < 9; i++) {
+                    if (inv.getStackInSlot(i) == null) {
+                        emptyHotbar = i;
+                        break;
+                    }
                 }
             }
             if (emptyHotbar != -1) {
@@ -368,10 +380,14 @@ public class ItemUtils {
         }
 
         int emptyHotbar = -1;
-        for (int i = 0; i < 9; i++) {
-            if (inv.getStackInSlot(i) == null) {
-                emptyHotbar = i;
-                break;
+        if (inv.getStackInSlot(inv.currentItem) == null) {
+            emptyHotbar = inv.currentItem;
+        } else {
+            for (int i = 0; i < 9; i++) {
+                if (inv.getStackInSlot(i) == null) {
+                    emptyHotbar = i;
+                    break;
+                }
             }
         }
 
