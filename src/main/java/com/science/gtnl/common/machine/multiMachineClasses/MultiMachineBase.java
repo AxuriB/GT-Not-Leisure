@@ -384,6 +384,25 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
 
     public abstract int getCasingTextureID();
 
+    @Override
+    public long getMaxInputAmps() {
+        return getMaxWorkingInputAmps(getExoticAndNormalEnergyHatchList());
+    }
+
+    public static long getMaxWorkingInputAmps(Collection<? extends MTEHatch> hatches) {
+        List<Long> ampsList = new ArrayList<>();
+        for (MTEHatch tHatch : validMTEList(hatches)) {
+            long currentAmp = tHatch.maxWorkingAmperesIn();
+            ampsList.add(currentAmp);
+        }
+
+        if (ampsList.isEmpty()) {
+            return 0L;
+        }
+
+        return Collections.max(ampsList);
+    }
+
     protected long getMachineVoltageLimit() {
         return GTValues.V[mEnergyHatchTier];
     }

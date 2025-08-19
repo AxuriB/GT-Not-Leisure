@@ -6,13 +6,8 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
-import static gregtech.api.util.GTUtility.validMTEList;
 import static gtPlusPlus.core.block.ModBlocks.blockCasings3Misc;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -325,25 +320,5 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
         if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
             inputSeparation = aNBT.getBoolean("mSeparate");
         }
-    }
-
-    @Override
-    public long getMaxInputAmps() {
-        return getMaxInputAmpsHatch(getExoticAndNormalEnergyHatchList());
-    }
-
-    public static long getMaxInputAmpsHatch(Collection<? extends MTEHatch> hatches) {
-        List<Long> ampsList = new ArrayList<>();
-        for (MTEHatch tHatch : validMTEList(hatches)) {
-            long currentAmp = tHatch.getBaseMetaTileEntity()
-                .getInputAmperage();
-            ampsList.add(currentAmp);
-        }
-
-        if (ampsList.isEmpty()) {
-            return 0L;
-        }
-
-        return Collections.max(ampsList);
     }
 }

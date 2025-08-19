@@ -4,12 +4,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTUtility.validMTEList;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -176,25 +170,5 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
     public int getMaxParallelRecipes() {
         int tier = Math.max(0, GTUtility.getTier(this.getMaxInputVoltage() - 6));
         return 4 + 4 * tier;
-    }
-
-    @Override
-    public long getMaxInputAmps() {
-        return getMaxInputAmpsHatch(getExoticAndNormalEnergyHatchList());
-    }
-
-    public static long getMaxInputAmpsHatch(Collection<? extends MTEHatch> hatches) {
-        List<Long> ampsList = new ArrayList<>();
-        for (MTEHatch tHatch : validMTEList(hatches)) {
-            long currentAmp = tHatch.getBaseMetaTileEntity()
-                .getInputAmperage();
-            ampsList.add(currentAmp);
-        }
-
-        if (ampsList.isEmpty()) {
-            return 0L;
-        }
-
-        return Collections.max(ampsList);
     }
 }

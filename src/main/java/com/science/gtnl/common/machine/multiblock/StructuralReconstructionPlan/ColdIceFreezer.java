@@ -9,10 +9,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
@@ -267,21 +263,6 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public long getMaxInputAmps() {
-        return getMaxInputAmpsHatch(getExoticAndNormalEnergyHatchList());
-    }
-
-    public static long getMaxInputAmpsHatch(Collection<? extends MTEHatch> hatches) {
-        List<Long> ampsList = new ArrayList<>();
-        for (MTEHatch tHatch : validMTEList(hatches)) {
-            long currentAmp = tHatch.getBaseMetaTileEntity()
-                .getInputAmperage();
-            ampsList.add(currentAmp);
-        }
-
-        if (ampsList.isEmpty()) {
-            return 0L;
-        }
-
-        return Collections.max(ampsList);
+        return getMaxWorkingInputAmps(getExoticAndNormalEnergyHatchList());
     }
 }
