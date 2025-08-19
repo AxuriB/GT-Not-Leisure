@@ -102,7 +102,7 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
         for (ItemStack item : getAllStoredInputs()) {
             if (item != null) {
                 if (Objects.equals(item.getItem(), ItemList.Circuit_Integrated.getItem())) {
-                    return super.checkProcessing();
+                    return super.doCheckRecipe();
                 }
             }
         }
