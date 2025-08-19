@@ -5,7 +5,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import com.science.gtnl.common.entity.EntityPlayerLeashKnot;
 
 @Mixin(value = EntityLiving.class)
-public class MixinEntityLiving extends EntityLivingBase {
+public abstract class MixinEntityLiving extends EntityLivingBase {
 
     @Shadow
     private Entity leashedToEntity;
@@ -36,25 +35,5 @@ public class MixinEntityLiving extends EntityLivingBase {
         } else {
             return self.dropItem(item, amount);
         }
-    }
-
-    @Override
-    public ItemStack getHeldItem() {
-        return null;
-    }
-
-    @Override
-    public ItemStack getEquipmentInSlot(int p_71124_1_) {
-        return null;
-    }
-
-    @Override
-    public void setCurrentItemOrArmor(int slotIn, ItemStack itemStackIn) {
-
-    }
-
-    @Override
-    public ItemStack[] getLastActiveItems() {
-        return new ItemStack[0];
     }
 }
