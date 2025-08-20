@@ -113,10 +113,10 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
         if (dimID == 0) {
             itemInputs.add(GTUtility.getIntegratedCircuit(1));
         } else if (dimID == 1) {
-            itemInputs.add(GTUtility.getIntegratedCircuit(2));
+            itemInputs.add(GTUtility.getIntegratedCircuit(3));
             itemInputs.add(new ItemStack(ModBlocks.getBlock("ED"), 1));
         } else if (dimID == -1) {
-            itemInputs.add(GTUtility.getIntegratedCircuit(3));
+            itemInputs.add(GTUtility.getIntegratedCircuit(5));
             itemInputs.add(new ItemStack(ModBlocks.getBlock("Ne"), 1));
         }
 

@@ -29,14 +29,14 @@ public class GasCollectorRecipes implements IRecipePool {
             .addTo(GCR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1), ItemList.Machine_Multi_VacuumFreezer.get(0))
+            .itemInputs(GTUtility.getIntegratedCircuit(2), ItemList.Machine_Multi_VacuumFreezer.get(0))
             .fluidOutputs(Materials.LiquidAir.getFluid(10000))
             .duration(200)
             .eut(TierEU.RECIPE_HV)
             .addTo(GCR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2), new ItemStack(ModBlocks.getBlock("ED"), 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(3), new ItemStack(ModBlocks.getBlock("ED"), 0))
             .fluidOutputs(MaterialPool.EnderAir.getFluidOrGas(10000))
             .duration(200)
             .eut(TierEU.RECIPE_HV)
@@ -44,7 +44,7 @@ public class GasCollectorRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(2),
+                GTUtility.getIntegratedCircuit(4),
                 new ItemStack(ModBlocks.getBlock("ED"), 0),
                 ItemList.Machine_Multi_VacuumFreezer.get(0))
             .fluidOutputs(MaterialPool.FluidEnderAir.getFluidOrGas(10000))
@@ -53,7 +53,7 @@ public class GasCollectorRecipes implements IRecipePool {
             .addTo(GCR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.getIntegratedCircuit(3), new ItemStack(ModBlocks.getBlock("Ne"), 0))
+            .itemInputs(GTUtility.getIntegratedCircuit(5), new ItemStack(ModBlocks.getBlock("Ne"), 0))
             .fluidOutputs(Materials.NetherAir.getFluid(10000))
             .duration(200)
             .eut(TierEU.RECIPE_EV)
@@ -61,7 +61,7 @@ public class GasCollectorRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(3),
+                GTUtility.getIntegratedCircuit(6),
                 new ItemStack(ModBlocks.getBlock("Ne"), 0),
                 ItemList.Machine_Multi_VacuumFreezer.get(0))
             .fluidOutputs(Materials.NetherSemiFluid.getFluid(10000))
