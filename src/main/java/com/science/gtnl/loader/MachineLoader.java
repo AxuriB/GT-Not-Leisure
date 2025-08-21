@@ -154,6 +154,7 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.F
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.Incubator;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.IsaMill;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.KuangBiaoOneGiantNuclearFusionReactor;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeAlloySmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeArcSmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeAssembler;
@@ -186,17 +187,12 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.L
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeSteamMixer;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeSteamOreWasher;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeWiremill;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LuvKuangBiaoOneGiantNuclearFusionReactor;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MegaAlloyBlastSmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MegaBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MolecularTransformer;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.PrecisionAssembler;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.UevKuangBiaoFiveGiantNuclearFusionReactor;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.UhvKuangBiaoFourGiantNuclearFusionReactor;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.UvKuangBiaoThreeGiantNuclearFusionReactor;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumDryingFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumFreezer;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.ZpmKuangBiaoTwoGiantNuclearFusionReactor;
 import com.science.gtnl.common.machine.multiblock.SuperSpaceElevator;
 import com.science.gtnl.common.machine.multiblock.SuperconductingElectromagnetism;
 import com.science.gtnl.common.machine.multiblock.SuperconductingMagneticPresser;
@@ -786,35 +782,35 @@ public class MachineLoader {
         addItemTooltip(GTNLItemList.ResourceCollectionModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.LuvKuangBiaoOneGiantNuclearFusionReactor.set(
-            new LuvKuangBiaoOneGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.LuVTier(
                 LUV_KUANG_BIAO_ONE_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoOneGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameLuvKuangBiaoOneGiantNuclearFusionReactor")));
         addItemTooltip(GTNLItemList.LuvKuangBiaoOneGiantNuclearFusionReactor.get(1), AnimatedText.SNL_QYZG_SRP);
 
         GTNLItemList.ZpmKuangBiaoTwoGiantNuclearFusionReactor.set(
-            new ZpmKuangBiaoTwoGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.ZPMTier(
                 ZPM_KUANG_BIAO_TWO_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoTwoGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameZpmKuangBiaoTwoGiantNuclearFusionReactor")));
         addItemTooltip(GTNLItemList.ZpmKuangBiaoTwoGiantNuclearFusionReactor.get(1), AnimatedText.SNL_QYZG_SRP);
 
         GTNLItemList.UvKuangBiaoThreeGiantNuclearFusionReactor.set(
-            new UvKuangBiaoThreeGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.UVTier(
                 UV_KUANG_BIAO_THREE_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoThreeGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameUvKuangBiaoThreeGiantNuclearFusionReactor")));
         addItemTooltip(GTNLItemList.UvKuangBiaoThreeGiantNuclearFusionReactor.get(1), AnimatedText.SNL_QYZG_SRP);
 
         GTNLItemList.UhvKuangBiaoFourGiantNuclearFusionReactor.set(
-            new UhvKuangBiaoFourGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.UHVTier(
                 UHV_KUANG_BIAO_FOUR_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoFourGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameUhvKuangBiaoFourGiantNuclearFusionReactor")));
         addItemTooltip(GTNLItemList.UhvKuangBiaoFourGiantNuclearFusionReactor.get(1), AnimatedText.SNL_QYZG_SRP);
 
         GTNLItemList.UevKuangBiaoFiveGiantNuclearFusionReactor.set(
-            new UevKuangBiaoFiveGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.UEVTier(
                 UEV_KUANG_BIAO_FIVE_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoFiveGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameUevKuangBiaoFiveGiantNuclearFusionReactor")));

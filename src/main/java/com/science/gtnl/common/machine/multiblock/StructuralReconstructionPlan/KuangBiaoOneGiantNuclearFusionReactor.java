@@ -1,17 +1,19 @@
 package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.ScienceNotLeisure.*;
 import static gregtech.api.GregTechAPI.*;
+import static gregtech.api.enums.GTValues.*;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.GTStructureUtility.*;
+import static gregtech.api.util.GTUtility.*;
 import static gtPlusPlus.core.block.ModBlocks.*;
-import static gtnhlanth.common.register.LanthItemList.ELECTRODE_CASING;
+import static gtnhlanth.common.register.LanthItemList.*;
 
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -55,31 +57,25 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
-public class UevKuangBiaoFiveGiantNuclearFusionReactor
-    extends GTMMultiMachineBase<UevKuangBiaoFiveGiantNuclearFusionReactor> implements ISurvivalConstructable {
+public abstract class KuangBiaoOneGiantNuclearFusionReactor
+    extends GTMMultiMachineBase<KuangBiaoOneGiantNuclearFusionReactor> implements ISurvivalConstructable {
 
     public GTRecipe lastRecipe;
     public long mEUStore;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String KBFR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/kuang_biao_giant_nuclear_fusion_reactor";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(52);
     protected final int HORIZONTAL_OFF_SET = 19;
     protected final int VERTICAL_OFF_SET = 14;
     protected final int DEPTH_OFF_SET = 0;
     public static final String[][] shape = StructureUtils.readStructureFromFile(KBFR_STRUCTURE_FILE_PATH);
 
-    public UevKuangBiaoFiveGiantNuclearFusionReactor(int aID, String aName, String aNameRegional) {
+    public KuangBiaoOneGiantNuclearFusionReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public UevKuangBiaoFiveGiantNuclearFusionReactor(String aName) {
+    public KuangBiaoOneGiantNuclearFusionReactor(String aName) {
         super(aName);
-    }
-
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new UevKuangBiaoFiveGiantNuclearFusionReactor(this.mName);
     }
 
     @Override
@@ -87,11 +83,15 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
         mCountCasing = 0;
         mParallelTier = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
             return false;
         }
 
         mEnergyHatchTier = checkEnergyHatchTier();
+        if (!checkHatch()) {
+            return false;
+        }
+
         mParallelTier = getParallelTier(aStack);
         return mCountCasing >= 1500;
     }
@@ -135,20 +135,26 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
     }
 
     @Override
-    public int getCasingTextureID() {
-        return CASING_INDEX;
-    }
-
-    @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("KuangBiaoOneGiantNuclearFusionReactorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_00"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_00"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_01"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_01",
+                    ((int) getDurationModifier() - 1) * 100))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_02",
+                    (int) getEUtDiscount() * 100))
             .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_03"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04") + "20480M EU")
-            .addInfo(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_02"))
+            .addInfo(
+                StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04") + maxEUStore()
+                    + " EU")
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_05",
+                    TIER_COLORS[getRecipeMaxTier()] + VN[getRecipeMaxTier()]))
             .addInfo(StatCollector.translateToLocal("Tooltip_PerfectOverclock"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_03"))
@@ -157,11 +163,10 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
             .beginStructureBlock(39, 17, 39, true)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_Casing"))
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_Casing"))
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_Casing"))
-            .addMaintenanceHatch(
-                StatCollector.translateToLocal("Tooltip_UevKuangBiaoFiveGiantNuclearFusionReactor_Casing"))
+            .addInputBus(StatCollector.translateToLocal("Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing"))
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing"))
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing"))
+            .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing"))
             .toolTipFinisher();
         return tt;
     }
@@ -179,11 +184,6 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
     @Override
     public int getRecipeCatalystPriority() {
         return -2;
-    }
-
-    @Override
-    public long maxEUStore() {
-        return 20480000000L;
     }
 
     @Override
@@ -306,50 +306,27 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
                     .setAmperage(availableAmperage)
                     .setRecipeEUt(recipe.mEUt)
                     .setEUt(availableVoltage)
-                    .setEUtDiscount(0.5 - (mParallelTier / 50.0))
-                    .setDurationModifier(Math.max(0.0001, 1.0 / 5.0 - (mParallelTier / 200.0)));
+                    .setEUtDiscount(getEUtDiscount() - (mParallelTier / 12.5))
+                    .setDurationModifier(Math.max(0.000001, 1.0 / getDurationModifier() - (mParallelTier / 200.0)));
             }
 
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                UevKuangBiaoFiveGiantNuclearFusionReactor.this.lastRecipe = null;
+                this.lastRecipe = null;
                 if (!mRunningOnLoad) {
                     if (recipe.mSpecialValue > mEUStore) {
                         return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
                     }
-                    if (recipe.mEUt > GTValues.V[14]) {
+                    if (recipe.mEUt > GTValues.V[getRecipeMaxTier() + 1]) {
                         return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                     }
                 }
-                UevKuangBiaoFiveGiantNuclearFusionReactor.this.lastRecipe = recipe;
+                this.lastRecipe = recipe;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
-    public IStructureDefinition<UevKuangBiaoFiveGiantNuclearFusionReactor> getStructureDefinition() {
-        return StructureDefinition.<UevKuangBiaoFiveGiantNuclearFusionReactor>builder()
-            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
-            .addElement('B', ofBlock(sBlockCasings8, 10))
-            .addElement(
-                'C',
-                buildHatchAdder(UevKuangBiaoFiveGiantNuclearFusionReactor.class).casingIndex(CASING_INDEX)
-                    .dot(1)
-                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings6Misc, 0))))
-            .addElement('D', ofBlock(sBlockCasingsDyson, 9))
-            .addElement('E', ofFrame(Materials.Tungsten))
-            .addElement('F', ofFrame(Materials.Infinity))
-            .addElement('G', ofBlock(BlockLoader.metaBlockGlass, 2))
-            .addElement('H', ofBlock(blockCasingsMisc, 5))
-            .addElement('I', ofBlock(Loaders.compactFusionCoil, 4))
-            .addElement('J', ofBlock(blockCasingsMisc, 15))
-            .addElement('K', ofBlock(sBlockCasings10, 3))
-            .build();
     }
 
     @SideOnly(Side.CLIENT)
@@ -364,11 +341,6 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
         if (mMaxProgresstime > 0) plasmaOut = (double) mOutputFluids[0].amount / mMaxProgresstime;
 
         return new String[] {
-            EnumChatFormatting.BLUE + "Fusion Reactor MK "
-                + EnumChatFormatting.RESET
-                + EnumChatFormatting.RED
-                + "IV"
-                + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("scanner.info.UX.0") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
                 + GTUtility.formatNumbers(getMaxParallelRecipes())
@@ -400,4 +372,345 @@ public class UevKuangBiaoFiveGiantNuclearFusionReactor
         return VoidingMode.FLUID_ONLY_MODES;
     }
 
+    @Override
+    public IStructureDefinition<KuangBiaoOneGiantNuclearFusionReactor> getStructureDefinition() {
+        return StructureDefinition.<KuangBiaoOneGiantNuclearFusionReactor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('B', ofBlock(sBlockCasings8, 10))
+            .addElement(
+                'C',
+                buildHatchAdder(KuangBiaoOneGiantNuclearFusionReactor.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(getCasing(), getCasingMeta()))))
+            .addElement('D', ofBlock(getConcrete(), getConcreteMeta()))
+            .addElement('E', ofFrame(Materials.Tungsten))
+            .addElement('F', ofFrame(getFrame()))
+            .addElement('G', ofBlock(BlockLoader.metaBlockGlass, 2))
+            .addElement('H', ofBlock(blockCasingsMisc, 5))
+            .addElement('I', ofBlock(Loaders.compactFusionCoil, getCoilMeta()))
+            .addElement('J', ofBlock(blockCasingsMisc, 15))
+            .addElement('K', ofBlock(sBlockCasings10, 3))
+            .build();
+    }
+
+    @Override
+    public int getCasingTextureID() {
+        return GTUtility.getCasingTextureIndex(getCasing(), getCasingMeta());
+    }
+
+    public abstract double getEUtDiscount();
+
+    public double getDurationModifier() {
+        return 2.0;
+    }
+
+    public abstract Block getCasing();
+
+    public abstract int getCasingMeta();
+
+    public Block getConcrete() {
+        return sBlockCasings9;
+    }
+
+    public int getConcreteMeta() {
+        return 3;
+    }
+
+    public abstract int getCoilMeta();
+
+    public abstract Materials getFrame();
+
+    public abstract int getRecipeMaxTier();
+
+    public static class LuVTier extends KuangBiaoOneGiantNuclearFusionReactor {
+
+        public LuVTier(int aID, String aName, String aNameRegional) {
+            super(aID, aName, aNameRegional);
+        }
+
+        public LuVTier(String aName) {
+            super(aName);
+        }
+
+        @Override
+        public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+            return new LuVTier(this.mName);
+        }
+
+        @Override
+        public long maxEUStore() {
+            return 160000000L;
+        }
+
+        @Override
+        public double getEUtDiscount() {
+            return 8;
+        }
+
+        @Override
+        public Block getCasing() {
+            return sBlockCasings1;
+        }
+
+        @Override
+        public int getCasingMeta() {
+            return 6;
+        }
+
+        @Override
+        public int getCoilMeta() {
+            return 0;
+        }
+
+        @Override
+        public Materials getFrame() {
+            return Materials.NaquadahAlloy;
+        }
+
+        @Override
+        public int getRecipeMaxTier() {
+            return 6;
+        }
+    }
+
+    public static class ZPMTier extends KuangBiaoOneGiantNuclearFusionReactor {
+
+        public ZPMTier(int aID, String aName, String aNameRegional) {
+            super(aID, aName, aNameRegional);
+        }
+
+        public ZPMTier(String aName) {
+            super(aName);
+        }
+
+        @Override
+        public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+            return new ZPMTier(this.mName);
+        }
+
+        @Override
+        public long maxEUStore() {
+            return 320000000L;
+        }
+
+        @Override
+        public double getEUtDiscount() {
+            return 6;
+        }
+
+        @Override
+        public Block getCasing() {
+            return sBlockCasings4;
+        }
+
+        @Override
+        public int getCasingMeta() {
+            return 6;
+        }
+
+        @Override
+        public int getCoilMeta() {
+            return 1;
+        }
+
+        @Override
+        public Materials getFrame() {
+            return Materials.Duranium;
+        }
+
+        @Override
+        public int getRecipeMaxTier() {
+            return 7;
+        }
+    }
+
+    public static class UVTier extends KuangBiaoOneGiantNuclearFusionReactor {
+
+        public UVTier(int aID, String aName, String aNameRegional) {
+            super(aID, aName, aNameRegional);
+        }
+
+        public UVTier(String aName) {
+            super(aName);
+        }
+
+        @Override
+        public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+            return new UVTier(this.mName);
+        }
+
+        @Override
+        public long maxEUStore() {
+            return 640000000L;
+        }
+
+        @Override
+        public double getEUtDiscount() {
+            return 4;
+        }
+
+        @Override
+        public Block getCasing() {
+            return sBlockCasings4;
+        }
+
+        @Override
+        public int getCasingMeta() {
+            return 8;
+        }
+
+        @Override
+        public int getCoilMeta() {
+            return 2;
+        }
+
+        @Override
+        public Materials getFrame() {
+            return Materials.Neutronium;
+        }
+
+        @Override
+        public int getRecipeMaxTier() {
+            return 8;
+        }
+    }
+
+    public static class UHVTier extends KuangBiaoOneGiantNuclearFusionReactor {
+
+        public UHVTier(int aID, String aName, String aNameRegional) {
+            super(aID, aName, aNameRegional);
+        }
+
+        public UHVTier(String aName) {
+            super(aName);
+        }
+
+        @Override
+        public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+            return new UHVTier(this.mName);
+        }
+
+        @Override
+        public int getCasingTextureID() {
+            return TAE.GTPP_INDEX(44);
+        }
+
+        @Override
+        public long maxEUStore() {
+            return 5120000000L;
+        }
+
+        @Override
+        public double getEUtDiscount() {
+            return 2;
+        }
+
+        @Override
+        public Block getCasing() {
+            return blockCasings3Misc;
+        }
+
+        @Override
+        public int getCasingMeta() {
+            return 12;
+        }
+
+        @Override
+        public Block getConcrete() {
+            return sBlockCasingsDyson;
+        }
+
+        @Override
+        public int getConcreteMeta() {
+            return 9;
+        }
+
+        @Override
+        public int getCoilMeta() {
+            return 3;
+        }
+
+        @Override
+        public Materials getFrame() {
+            return Materials.InfinityCatalyst;
+        }
+
+        @Override
+        public int getRecipeMaxTier() {
+            return 9;
+        }
+    }
+
+    public static class UEVTier extends KuangBiaoOneGiantNuclearFusionReactor {
+
+        public UEVTier(int aID, String aName, String aNameRegional) {
+            super(aID, aName, aNameRegional);
+        }
+
+        public UEVTier(String aName) {
+            super(aName);
+        }
+
+        @Override
+        public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
+            return new UEVTier(this.mName);
+        }
+
+        @Override
+        public int getCasingTextureID() {
+            return TAE.GTPP_INDEX(52);
+        }
+
+        @Override
+        public long maxEUStore() {
+            return 20480000000L;
+        }
+
+        @Override
+        public double getEUtDiscount() {
+            return 0.5;
+        }
+
+        @Override
+        public double getDurationModifier() {
+            return 5.0;
+        }
+
+        @Override
+        public Block getCasing() {
+            return blockCasings6Misc;
+        }
+
+        @Override
+        public int getCasingMeta() {
+            return 0;
+        }
+
+        @Override
+        public Block getConcrete() {
+            return sBlockCasingsDyson;
+        }
+
+        @Override
+        public int getConcreteMeta() {
+            return 9;
+        }
+
+        @Override
+        public int getCoilMeta() {
+            return 4;
+        }
+
+        @Override
+        public Materials getFrame() {
+            return Materials.Infinity;
+        }
+
+        @Override
+        public int getRecipeMaxTier() {
+            return 13;
+        }
+    }
 }
