@@ -47,7 +47,7 @@ import net.minecraftforge.event.world.WorldEvent;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.machine.CircuitMaterialHelper;
 import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.api.TickrateAPI;
@@ -75,12 +75,12 @@ public class SubscribeEventUtils {
 
     private static final Set<String> MOD_BLACKLIST = new HashSet<>(
         Arrays.asList(
-            Mods.QzMiner.ID,
-            Mods.Baubles.ID,
-            Mods.ReAvaritia.ID,
-            Mods.ScienceNotLeisure.ID,
-            Mods.Sudoku.ID,
-            Mods.GiveCount.ID));
+            ModList.QzMiner.ID,
+            ModList.Baubles.ID,
+            ModList.ReAvaritia.ID,
+            ModList.ScienceNotLeisure.ID,
+            ModList.Sudoku.ID,
+            ModList.GiveCount.ID));
 
     private static final Map<UUID, Integer> foodTickTimers = new HashMap<>();
 
@@ -100,7 +100,7 @@ public class SubscribeEventUtils {
             if (MainConfig.enableShowJoinMessage || MainConfig.enableDebugMode) {
 
                 if (MainConfig.enableShowAddMods) {
-                    for (Mods mod : Mods.values()) {
+                    for (ModList mod : ModList.values()) {
                         if (mod.isModLoaded() && !MOD_BLACKLIST.contains(mod.getModId())) {
                             String translatedPrefix = StatCollector.translateToLocal("Welcome_GTNL_ModInstall");
                             player.addChatMessage(
@@ -129,7 +129,7 @@ public class SubscribeEventUtils {
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
                 }
 
-                if (!Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
+                if (!ModList.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
                     player.addChatMessage(
                         new ChatComponentTranslation("Welcome_GTNL_RecipeOutputChance_00")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
@@ -470,7 +470,7 @@ public class SubscribeEventUtils {
     // Config
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.modID.equals(Mods.ScienceNotLeisure.ID)) {
+        if (event.modID.equals(ModList.ScienceNotLeisure.ID)) {
             MainConfig.reloadConfig();
         }
     }

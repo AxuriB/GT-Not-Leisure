@@ -9,7 +9,7 @@ import java.util.function.BooleanSupplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.config.MainConfig;
 
 import io.github.tox1cozz.mixinbooterlegacy.ILateMixinLoader;
@@ -28,9 +28,11 @@ public class LateMixinLoader implements ILateMixinLoader {
         addMixinCFG("mixins.sciencenotleisure.late.Debug.json", () -> MainConfig.enableDebugMode);
         addMixinCFG(
             "mixins.sciencenotleisure.late.Overpowered.json",
-            () -> !Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance);
-        addMixinCFG("mixins.sciencenotleisure.late.NoNHU.json", () -> !Mods.NHUtilities.isModLoaded());
-        addMixinCFG("mixins.sciencenotleisure.late.TwistSpaceTechnology.json", Mods.TwistSpaceTechnology::isModLoaded);
+            () -> !ModList.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance);
+        addMixinCFG("mixins.sciencenotleisure.late.NoNHU.json", () -> !ModList.NHUtilities.isModLoaded());
+        addMixinCFG(
+            "mixins.sciencenotleisure.late.TwistSpaceTechnology.json",
+            ModList.TwistSpaceTechnology::isModLoaded);
         addMixinCFG("mixins.sciencenotleisure.late.MeteorOptimize.json", () -> MainConfig.enableMeteorSetBlockOptimize);
         addMixinCFG("mixins.sciencenotleisure.late.OPChange.json", () -> MainConfig.enableIntegratedOreFactoryChange);
     }

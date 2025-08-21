@@ -6,6 +6,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
@@ -16,6 +17,7 @@ import com.science.gtnl.config.MainConfig;
 import appeng.api.AEApi;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -40,7 +42,7 @@ public class CommonProxy implements IGuiHandler {
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         PlayerDollWaila.init();
-        if (!com.science.gtnl.Utils.enums.Mods.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak) {
+        if (!ModList.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak) {
             MinecraftForge.EVENT_BUS.register(new VMTweakHelper());
             FMLCommonHandler.instance()
                 .bus()
@@ -57,6 +59,8 @@ public class CommonProxy implements IGuiHandler {
 
         // AltarStructure.registerAltarStructureInfo();
     }
+
+    public void completeInit(FMLLoadCompleteEvent event) {}
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {

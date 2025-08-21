@@ -39,7 +39,7 @@ public class QuestLoader {
         "config/txloader/load/" + Mods.BetterQuesting.ID + "/lang/zh_CN.lang");
     private static final String RESOURCE_LANG_PATH = "/assets/" + RESOURCE_ROOT_ID + "/quest/lang/zh_CN.lang";
 
-    public static void syncAll() {
+    public static void registry() {
         try {
             syncQuestLinesOrder();
             copyDefaultQuestsFromJar();

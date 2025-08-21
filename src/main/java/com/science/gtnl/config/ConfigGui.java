@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 
 import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.IConfigElement;
@@ -17,7 +17,7 @@ public class ConfigGui extends GuiConfig {
         super(
             parentScreen,
             getConfigElements(),
-            Mods.ScienceNotLeisure.ID,
+            ModList.ScienceNotLeisure.ID,
             false,
             false,
             GuiConfig.getAbridgedConfigPath(MainConfig.config.toString()));

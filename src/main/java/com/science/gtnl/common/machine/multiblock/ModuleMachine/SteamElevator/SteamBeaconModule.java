@@ -39,7 +39,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.kentington.thaumichorizons.common.lib.potion.PotionVisRegen;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 
@@ -774,7 +774,7 @@ public class SteamBeaconModule extends SteamElevatorModule {
         .partly(ThaumicHorizons.resourceDomain, "misc/potions", 256, 256, 54, 198, 72, 216);
 
     public static final UITexture BEACON_MATERIAL = UITexture
-        .fullImage(Mods.ScienceNotLeisure.resourceDomain, "gui/picture/steam_beacon");
+        .fullImage(ModList.ScienceNotLeisure.resourceDomain, "gui/picture/steam_beacon");
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {

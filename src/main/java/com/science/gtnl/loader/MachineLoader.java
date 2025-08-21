@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.Fluid;
 import com.google.common.collect.ImmutableSet;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.GTNLMachineID;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.common.machine.basicMachine.DebugResearchStation;
@@ -1300,7 +1300,7 @@ public class MachineLoader {
             MaterialPool.FluidMana.getFluidOrGas(1)
                 .getFluid());
 
-        if (Mods.TwistSpaceTechnology.isModLoaded()) {
+        if (ModList.TwistSpaceTechnology.isModLoaded()) {
             acceptedFluids.add(
                 FluidUtils.getFluidStack("liquid mana", 1)
                     .getFluid());
@@ -2190,7 +2190,7 @@ public class MachineLoader {
         }
     }
 
-    public static void run() {
+    public static void registry() {
         Logger.INFO("GTNL Content | Registering MTE Block Machine.");
         registerMTEHatch();
         loadMachines();

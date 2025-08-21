@@ -57,7 +57,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.enums.SteamTypes;
 import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
@@ -124,9 +124,9 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     private long uiSteamCapacity = 0;
     private int uiSteamStoredOfAllTypes = 0;
     public static final UITexture STEAM_GAUGE_BG = UITexture
-        .fullImage(Mods.ScienceNotLeisure.ID, "gui/background/steam_dial");
+        .fullImage(ModList.ScienceNotLeisure.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_STEEL_BG = UITexture
-        .fullImage(Mods.ScienceNotLeisure.ID, "gui/background/steam_dial_steel");
+        .fullImage(ModList.ScienceNotLeisure.ID, "gui/background/steam_dial_steel");
 
     public SteamMultiMachineBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

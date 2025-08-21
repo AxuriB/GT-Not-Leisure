@@ -30,7 +30,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import org.lwjgl.opengl.GL11;
 
 import com.reavaritia.common.render.CustomEntityRenderer;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.common.item.TimeStopManager;
 import com.science.gtnl.common.item.items.NullPointerException;
 import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
@@ -49,7 +49,7 @@ import gregtech.client.ElectricJukeboxSound;
 public class SubscribeEventClientUtils {
 
     public static final Random random = new Random();
-    public static String haloNoiseIconTexture = Mods.ScienceNotLeisure.resourceDomain + ":halonoise";
+    public static String haloNoiseIconTexture = ModList.ScienceNotLeisure.resourceDomain + ":halonoise";
     public static IIcon haloNoiseIcon;
 
     public static String cheatWrenchIconTexture = "nei:cheat_speical";

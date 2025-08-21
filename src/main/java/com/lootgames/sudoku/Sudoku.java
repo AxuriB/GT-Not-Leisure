@@ -13,7 +13,7 @@ import com.lootgames.sudoku.config.LGConfigs;
 import com.lootgames.sudoku.packet.GamePackets;
 import com.lootgames.sudoku.sudoku.GameSudoku;
 import com.lootgames.sudoku.sudoku.SudokuOverlayHandler;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -24,13 +24,13 @@ import ru.timeconqueror.lootgames.api.LootGamesAPI;
 @Mod(modid = MODID, version = "0.0.1", name = MODNAME, acceptedMinecraftVersions = "1.7.10")
 public class Sudoku {
 
-    @Mod.Instance(Mods.ModIds.SUDOKU)
+    @Mod.Instance(ModList.ModIds.SUDOKU)
     public static Sudoku instance;
-    public static final String MODID = Mods.ModIds.SUDOKU;
+    public static final String MODID = ModList.ModIds.SUDOKU;
     public static final String MODNAME = "LootGamesSudoku";
     public static final String VERSION = "0.0.1";
     public static final String Arthor = "HFstudio";
-    public static final String RESOURCE_ROOT_ID = Mods.ModIds.SUDOKU;
+    public static final String RESOURCE_ROOT_ID = ModList.ModIds.SUDOKU;
     public static final Logger LOG = LogManager.getLogger(MODID);
 
     @SidedProxy(clientSide = "com.lootgames.sudoku.ClientProxy", serverSide = "com.lootgames.sudoku.CommonProxy")

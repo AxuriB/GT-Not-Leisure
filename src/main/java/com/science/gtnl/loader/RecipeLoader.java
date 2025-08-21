@@ -6,6 +6,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.Nxer.TwistSpaceTechnology.recipe.machineRecipe.expanded.CircuitAssemblyLineWithoutImprintRecipePool;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.machine.ProcessingArrayRecipeLoader;
 import com.science.gtnl.Utils.recipes.RecipeUtil;
 import com.science.gtnl.api.IRecipePool;
@@ -229,7 +230,7 @@ public class RecipeLoader {
 
         new CircuitAssemblyLineRecipes().loadRecipes();
 
-        if (!recipesAdded && com.science.gtnl.Utils.enums.Mods.TwistSpaceTechnology.isModLoaded()) {
+        if (!recipesAdded && ModList.TwistSpaceTechnology.isModLoaded()) {
             CircuitAssemblyLineWithoutImprintRecipePool.loadRecipes();
         }
     }

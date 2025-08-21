@@ -10,7 +10,7 @@ import com.science.gtnl.common.recipe.GregTech.ScriptAvaritia;
 
 public class ScriptLoader {
 
-    public static void run() {
+    public static void registry() {
 
         List<IScriptLoader> scripts = new ArrayList<>(Arrays.asList(new ScriptAvaritia()));
 

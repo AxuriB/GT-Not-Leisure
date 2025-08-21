@@ -7,7 +7,7 @@ import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.gui.recipe.BloodSoulFrontend;
 import com.science.gtnl.Utils.gui.recipe.EGTWUpgradeCostFrontend;
 import com.science.gtnl.Utils.gui.recipe.ExtremeExtremeEntityCrusherFrontend;
@@ -37,7 +37,7 @@ import gregtech.nei.formatter.HeatingCoilSpecialValueFormatter;
 public class RecipePool {
 
     public static final UITexture PROGRESSBAR_GAS_COLLECTOR = UITexture
-        .fullImage(Mods.ScienceNotLeisure.ID, "gui/progressbar/gas_collector");
+        .fullImage(ModList.ScienceNotLeisure.ID, "gui/progressbar/gas_collector");
 
     public static final RecipeMap<RecipeMapBackend> RecombinationFusionReactorRecipes = RecipeMapBuilder
         .of("gtnl.recipe.RecombinationFusionReactorRecipes", RecipeMapBackend::new)

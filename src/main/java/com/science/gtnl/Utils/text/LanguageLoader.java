@@ -9,9 +9,9 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 
-public class LanguageManager {
+public class LanguageLoader {
 
-    public static void init() {
+    public static void registry() {
         if (!FMLCommonHandler.instance()
             .getCurrentLanguage()
             .equals("zh_CN")) return;

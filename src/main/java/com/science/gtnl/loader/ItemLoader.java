@@ -641,6 +641,8 @@ public class ItemLoader {
     public static void registry() {
         registryItems();
         registryMetaItems();
+        registryOreDictionary();
+        registryOreBlackList();
 
         addItemTooltip(
             new ItemStack(ItemLoader.satietyRing, 1),

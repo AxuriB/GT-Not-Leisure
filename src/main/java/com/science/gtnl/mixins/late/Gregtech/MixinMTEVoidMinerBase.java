@@ -22,7 +22,7 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.config.MainConfig;
 
@@ -35,7 +35,7 @@ import gtneioreplugin.plugin.item.ItemDimensionDisplay;
 public abstract class MixinMTEVoidMinerBase extends MTEEnhancedMultiBlockBase<MixinMTEVoidMinerBase> {
 
     @Unique
-    private static final boolean GTNL$enableMixin = !Mods.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak;
+    private static final boolean GTNL$enableMixin = !ModList.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak;
 
     public MixinMTEVoidMinerBase(String aName) {
         super(aName);

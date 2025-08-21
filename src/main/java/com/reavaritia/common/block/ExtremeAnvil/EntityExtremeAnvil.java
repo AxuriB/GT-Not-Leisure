@@ -21,7 +21,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -320,6 +320,6 @@ public class EntityExtremeAnvil extends Entity {
 
     public static void registerEntity() {
         EntityRegistry
-            .registerModEntity(EntityExtremeAnvil.class, "EntityExtremeAnvil", 2, Mods.ReAvaritia.ID, 64, 1, true);
+            .registerModEntity(EntityExtremeAnvil.class, "EntityExtremeAnvil", 2, ModList.ReAvaritia.ID, 64, 1, true);
     }
 }

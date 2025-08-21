@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.GTValues;
@@ -403,7 +403,7 @@ public class GTNL_ParallelHelper extends ParallelHelper {
      */
     @Override
     protected void determineParallel() {
-        if (!Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
+        if (!ModList.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
             // Compute optional bonus based on machine and current EU/t
             OptionalDouble bonusOptional = ChanceBonusManager
                 .getChanceBonusOptional(machine, GTUtility.getTier(recipe.mEUt), chanceMultiplier, recipe);

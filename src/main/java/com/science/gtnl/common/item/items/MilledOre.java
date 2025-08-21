@@ -13,17 +13,17 @@ public class MilledOre {
 
     public static Fluid NaquadahEnrichedFlotationFroth;
 
-    public MilledOre() {
-        items();
-        fluids();
+    public static void registry() {
+        loadItems();
+        loadFluids();
     }
 
-    public void items() {
+    public static void loadItems() {
         GTNLItemList.MilledNaquadahEnriched
             .set(BaseItemMilledOre.generate(Materials.NaquadahEnriched, (int) TierEU.RECIPE_ZPM));
     }
 
-    public void fluids() {
+    public static void loadFluids() {
 
         short[] aNaquadahEnrichedFrothRGB = Materials.NaquadahEnriched.mRGBa;
         NaquadahEnrichedFlotationFroth = FluidUtils.generateFluidNoPrefix(

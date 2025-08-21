@@ -6,7 +6,7 @@ import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.Loader;
 
-public enum Mods {
+public enum ModList {
 
     ScienceNotLeisure(ModIds.SCIENCENOTLEISURE, Names.SCIENCENOTLEISURE),
     EyeOfHarmonyBuffer(ModIds.EYEOFHARMONYBUFFER, Names.EYEOFHARMONYBUFFER),
@@ -70,7 +70,7 @@ public enum Mods {
     public final String displayName;
     private Boolean modLoaded;
 
-    Mods(String ID, String displayName) {
+    ModList(String ID, String displayName) {
         this.ID = ID;
         this.resourceDomain = ID.toLowerCase(Locale.ENGLISH);
         this.displayName = displayName;

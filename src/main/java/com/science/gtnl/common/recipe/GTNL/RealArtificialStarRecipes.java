@@ -1,7 +1,7 @@
 package com.science.gtnl.common.recipe.GTNL;
 
 import static com.science.gtnl.Utils.enums.GTNLItemList.*;
-import static com.science.gtnl.Utils.enums.Mods.TwistSpaceTechnology;
+import static com.science.gtnl.Utils.enums.ModList.TwistSpaceTechnology;
 import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static com.science.gtnl.config.MainConfig.*;
 

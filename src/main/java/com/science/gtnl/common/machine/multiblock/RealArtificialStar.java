@@ -4,7 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.Utils.copyAmount;
 import static com.science.gtnl.Utils.enums.GTNLItemList.StellarConstructionFrameMaterial;
-import static com.science.gtnl.Utils.enums.Mods.TwistSpaceTechnology;
+import static com.science.gtnl.Utils.enums.ModList.TwistSpaceTechnology;
 import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static gregtech.api.GregTechAPI.*;

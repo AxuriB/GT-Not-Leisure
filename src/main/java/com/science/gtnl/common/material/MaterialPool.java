@@ -1609,7 +1609,7 @@ public class MaterialPool implements Runnable {
         offsetID_01 + 201,
         TextureSet.SET_SHINY);
 
-    public static final Werkstoff.GenerationFeatures gf = new Werkstoff.GenerationFeatures();
+    public static Werkstoff.GenerationFeatures gf = new Werkstoff.GenerationFeatures();
 
     @Override
     public void run() {

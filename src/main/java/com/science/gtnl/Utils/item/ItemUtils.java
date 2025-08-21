@@ -1,6 +1,6 @@
 package com.science.gtnl.Utils.item;
 
-import static com.science.gtnl.Utils.enums.Mods.Baubles;
+import static com.science.gtnl.Utils.enums.ModList.Baubles;
 import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -30,10 +30,11 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.reavaritia.common.item.InfinityTotem;
 import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.common.packet.WirelessPickBlock;
 
 import baubles.api.BaublesApi;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
 
 public class ItemUtils {
@@ -41,10 +42,10 @@ public class ItemUtils {
     public static final Random rand = new Random();
 
     public static final UITexture PICTURE_GTNL_LOGO = UITexture
-        .fullImage(Mods.ScienceNotLeisure.ID, "gui/picture/logo");
+        .fullImage(ModList.ScienceNotLeisure.ID, "gui/picture/logo");
 
     public static final UITexture PICTURE_GTNL_STEAM_LOGO = UITexture
-        .fullImage(Mods.ScienceNotLeisure.ID, "gui/picture/steam_logo");
+        .fullImage(ModList.ScienceNotLeisure.ID, "gui/picture/steam_logo");
 
     public static NBTTagCompound writeItemStackToNBT(ItemStack stack) {
         NBTTagCompound compound = new NBTTagCompound();
@@ -240,7 +241,7 @@ public class ItemUtils {
         return skullStack;
     }
 
-    public static final boolean isBackHandIns = gregtech.api.enums.Mods.Backhand.isModLoaded();
+    public static final boolean isBackHandIns = Mods.Backhand.isModLoaded();
 
     public static boolean placeItemInHotbar(EntityPlayer player, ItemStack result, boolean isCreative, boolean useAE) {
         if (result == null) return false;

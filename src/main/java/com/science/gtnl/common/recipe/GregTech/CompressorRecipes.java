@@ -1,6 +1,6 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import static com.science.gtnl.Utils.enums.Mods.ScienceNotLeisure;
+import static com.science.gtnl.Utils.enums.ModList.ScienceNotLeisure;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 

@@ -18,7 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.recipes.ChanceBonusManager;
 import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
@@ -84,7 +84,7 @@ public class MixinBehaviourScanner {
                         }
                     }
 
-                    if (!Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
+                    if (!ModList.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
                         if (meta instanceof MTEMultiBlockBase mte) {
                             GTRecipe recipe = ChanceBonusManager.customProvider.getRecipeForMachine(mte);
                             if (recipe != null) {
