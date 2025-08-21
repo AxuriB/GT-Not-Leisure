@@ -326,7 +326,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         return mCountCasing >= 5 * (mHeight + 1) - 5 && mHeight + 1 >= 3 && mMufflerHatches.size() == 1;

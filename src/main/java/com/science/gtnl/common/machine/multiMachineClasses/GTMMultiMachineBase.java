@@ -84,7 +84,7 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 2;
+        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 4;
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(
             useSingleAmp ? 1
@@ -149,11 +149,6 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
         int ParallelTierItem = getParallelTier(controllerItem);
         mParallelTier = Math.max(mParallelTier, ParallelTierItem);
         return super.checkProcessing();
-    }
-
-    @Override
-    public long getMaxInputAmps() {
-        return getMaxWorkingInputAmps(getExoticAndNormalEnergyHatchList());
     }
 
 }

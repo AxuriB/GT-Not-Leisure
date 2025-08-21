@@ -140,7 +140,7 @@ public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

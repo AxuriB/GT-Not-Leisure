@@ -156,7 +156,7 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
         this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);

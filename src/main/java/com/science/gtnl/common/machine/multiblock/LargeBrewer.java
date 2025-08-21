@@ -210,7 +210,7 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

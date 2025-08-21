@@ -384,8 +384,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
 
     public abstract int getCasingTextureID();
 
-    @Override
-    public long getMaxInputAmps() {
+    public long getRealMaxInputAmps() {
         return getMaxWorkingInputAmps(getExoticAndNormalEnergyHatchList());
     }
 

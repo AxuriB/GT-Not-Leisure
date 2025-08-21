@@ -148,7 +148,7 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         return mCountCasing >= 120 && mMaintenanceHatches.size() == 1

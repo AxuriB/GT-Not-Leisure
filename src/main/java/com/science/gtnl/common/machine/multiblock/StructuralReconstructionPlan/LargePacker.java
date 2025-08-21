@@ -157,7 +157,7 @@ public class LargePacker extends GTMMultiMachineBase<LargePacker> implements ISu
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

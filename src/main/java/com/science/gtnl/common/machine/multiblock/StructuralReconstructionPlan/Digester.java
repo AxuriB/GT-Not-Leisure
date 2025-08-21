@@ -176,7 +176,7 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
         return mCountCasing >= 45;
     }

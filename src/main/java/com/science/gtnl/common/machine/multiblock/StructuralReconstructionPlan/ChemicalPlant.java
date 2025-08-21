@@ -189,7 +189,7 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

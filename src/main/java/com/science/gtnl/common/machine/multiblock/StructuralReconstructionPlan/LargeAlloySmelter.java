@@ -152,7 +152,7 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         if (mMaintenanceHatches.size() != 1 || mMufflerHatches.size() != 1) return false;

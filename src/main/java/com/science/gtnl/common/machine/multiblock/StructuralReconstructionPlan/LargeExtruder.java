@@ -163,7 +163,7 @@ public class LargeExtruder extends GTMMultiMachineBase<LargeExtruder> implements
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
         mParallelTier = getParallelTier(aStack);
         return mCountCasing >= 45;

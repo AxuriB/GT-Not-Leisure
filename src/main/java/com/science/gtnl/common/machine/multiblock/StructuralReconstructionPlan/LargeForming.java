@@ -169,7 +169,7 @@ public class LargeForming extends GTMMultiMachineBase<LargeForming> implements I
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

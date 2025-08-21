@@ -148,7 +148,7 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
         boolean isFlipped = this.getFlip()
             .isHorizontallyFlipped();

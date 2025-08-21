@@ -205,7 +205,7 @@ public class LargeCutter extends GTMMultiMachineBase<LargeCutter> implements ISu
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

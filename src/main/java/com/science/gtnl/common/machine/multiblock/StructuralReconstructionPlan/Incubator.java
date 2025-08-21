@@ -337,7 +337,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         return this.mCountCasing >= 19 && this.mRadHatches.size() <= 1

@@ -239,7 +239,7 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
         replaceWater();
         return mCountCasing >= 55;

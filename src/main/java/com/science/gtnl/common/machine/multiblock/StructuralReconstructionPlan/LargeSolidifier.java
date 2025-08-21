@@ -247,7 +247,7 @@ public class LargeSolidifier extends GTMMultiMachineBase<LargeSolidifier> implem
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

@@ -218,7 +218,7 @@ public class LargeExtractor extends GTMMultiMachineBase<LargeExtractor> implemen
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

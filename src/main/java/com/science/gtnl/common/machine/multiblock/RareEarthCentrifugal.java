@@ -159,7 +159,7 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         if (this.mEnergyHatches.size() > 2) return false;

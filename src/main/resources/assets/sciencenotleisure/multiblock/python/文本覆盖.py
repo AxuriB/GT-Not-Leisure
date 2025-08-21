@@ -17,8 +17,10 @@ def replace_text_in_java_files(root_folder, old_text, new_text):
 if __name__ == "__main__":
     target_folder = "E:/Github/GT-Not-Leisure/src/main/java/com"
 
-    text_to_replace = """import com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;"""
+    text_to_replace = """            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()
+                && getMaxInputAmps() <= 2;"""
 
-    replacement_text = """import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;"""
+    replacement_text = """            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()
+                && getMaxInputAmps() <= 4;"""
 
     replace_text_in_java_files(target_folder, text_to_replace, replacement_text)

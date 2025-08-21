@@ -183,7 +183,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
                     return false;
                 }
             }
-            if (getMaxInputAmps() > 64) return false;
+            if (getRealMaxInputAmps() > 64) return false;
         }
 
         mParallelTier = getParallelTier(aStack);

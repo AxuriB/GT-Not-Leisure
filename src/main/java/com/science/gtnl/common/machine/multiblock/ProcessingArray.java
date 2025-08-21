@@ -273,7 +273,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && getMaxInputAmps() <= 2;
+        boolean useSingleAmp = mEnergyHatches.size() == 1 && getMaxInputAmps() <= 4;
         logic.setAvailableVoltage(GTValues.V[tTier] * (mLastRecipeMap != null ? mLastRecipeMap.getAmperage() : 1));
         logic.setAvailableAmperage(getControllerSlot().stackSize);
         logic.setAmperageOC(!useSingleAmp);

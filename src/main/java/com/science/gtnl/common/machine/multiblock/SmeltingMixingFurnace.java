@@ -248,7 +248,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
                 machineMode == MACHINEMODE_DTPF ? Integer.MAX_VALUE : V[Math.min(mParallelTier + 1, 14)]);
         } else {
             boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()
-                && getMaxInputAmps() <= 2;
+                && getMaxInputAmps() <= 4;
             logic.setAvailableVoltage(getMachineVoltageLimit());
             logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
             logic.setAmperageOC(!useSingleAmp);

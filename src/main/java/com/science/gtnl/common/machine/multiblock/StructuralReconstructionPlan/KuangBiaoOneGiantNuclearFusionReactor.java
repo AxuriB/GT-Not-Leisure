@@ -142,11 +142,11 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_01",
-                    ((int) getDurationModifier() - 1) * 100))
+                    (int) ((getDurationModifier() - 1) * 100)))
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_02",
-                    (int) getEUtDiscount() * 100))
+                    (int) (getEUtDiscount() * 100)))
             .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_03"))
             .addInfo(
                 StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04") + maxEUStore()
