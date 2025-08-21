@@ -19,7 +19,7 @@ import gregtech.api.util.recipe.Sievert;
 
 public class BacterialVatRecipes implements IRecipePool {
 
-    final RecipeMap<?> BVR = BartWorksRecipeMaps.bacterialVatRecipes;
+    public RecipeMap<?> BVR = BartWorksRecipeMaps.bacterialVatRecipes;
 
     @Override
     public void loadRecipes() {

@@ -14,7 +14,7 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 
 public class DesulfurizerRecipes implements IRecipePool {
 
-    final RecipeMap<?> DesR = RecipePool.DesulfurizerRecipes;
+    public RecipeMap<?> DesR = RecipePool.DesulfurizerRecipes;
 
     @Override
     public void loadRecipes() {

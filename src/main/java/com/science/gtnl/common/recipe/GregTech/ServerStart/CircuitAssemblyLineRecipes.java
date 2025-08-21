@@ -22,11 +22,10 @@ import gregtech.api.util.GTRecipe;
 
 public class CircuitAssemblyLineRecipes implements IRecipePool {
 
-    public static final ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
-
-    private static final HashSet<GTRecipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
-    private static final HashSet<GTRecipe> MODIFIED_CAL_RECIPES = new HashSet<>();
-    private static final HashSet<GTRecipe> CONVERTED_CAL_RECIPES = new HashSet<>();
+    public static ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
+    public static HashSet<GTRecipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
+    public static HashSet<GTRecipe> MODIFIED_CAL_RECIPES = new HashSet<>();
+    public static HashSet<GTRecipe> CONVERTED_CAL_RECIPES = new HashSet<>();
 
     @Override
     public void loadRecipes() {

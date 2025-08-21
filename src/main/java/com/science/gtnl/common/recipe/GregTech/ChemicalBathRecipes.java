@@ -24,7 +24,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class ChemicalBathRecipes implements IRecipePool {
 
-    final RecipeMap<?> cBR = RecipeMaps.chemicalBathRecipes;
+    public RecipeMap<?> cBR = RecipeMaps.chemicalBathRecipes;
 
     @Override
     public void loadRecipes() {

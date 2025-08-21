@@ -15,7 +15,7 @@ import gregtech.api.recipe.RecipeMap;
 
 public class SteamWoodcutterRecipes implements IRecipePool {
 
-    final RecipeMap<?> SWR = RecipePool.SteamWoodcutterRecipes;
+    public RecipeMap<?> SWR = RecipePool.SteamWoodcutterRecipes;
 
     @Override
     public void loadRecipes() {

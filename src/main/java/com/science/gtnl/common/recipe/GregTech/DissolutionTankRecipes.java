@@ -14,7 +14,7 @@ import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
 public class DissolutionTankRecipes implements IRecipePool {
 
-    final RecipeMap<?> DTR = LanthanidesRecipeMaps.dissolutionTankRecipes;
+    public RecipeMap<?> DTR = LanthanidesRecipeMaps.dissolutionTankRecipes;
 
     @Override
     public void loadRecipes() {

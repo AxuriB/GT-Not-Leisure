@@ -22,7 +22,7 @@ import gtPlusPlus.core.item.ModItems;
 
 public class BlastFurnaceRecipes implements IRecipePool {
 
-    final RecipeMap<?> BFR = RecipeMaps.blastFurnaceRecipes;
+    public RecipeMap<?> BFR = RecipeMaps.blastFurnaceRecipes;
 
     @Override
     public void loadRecipes() {

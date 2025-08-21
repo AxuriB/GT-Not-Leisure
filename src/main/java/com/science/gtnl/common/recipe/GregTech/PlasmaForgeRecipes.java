@@ -13,7 +13,7 @@ import gregtech.api.util.GTModHandler;
 
 public class PlasmaForgeRecipes implements IRecipePool {
 
-    final RecipeMap<?> PFR = RecipeMaps.plasmaForgeRecipes;
+    public RecipeMap<?> PFR = RecipeMaps.plasmaForgeRecipes;
 
     @Override
     public void loadRecipes() {

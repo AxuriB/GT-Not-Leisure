@@ -23,7 +23,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class InfernalCokeRecipes implements IRecipePool {
 
-    final RecipeMap<?> ICR = RecipePool.InfernalCockRecipes;
+    public RecipeMap<?> ICR = RecipePool.InfernalCockRecipes;
 
     @Override
     public void loadRecipes() {

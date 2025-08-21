@@ -25,7 +25,7 @@ import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ShallowChemicalCouplingRecipes implements IRecipePool {
 
-    final RecipeMap<?> SCCR = RecipePool.ShallowChemicalCouplingRecipes;
+    public RecipeMap<?> SCCR = RecipePool.ShallowChemicalCouplingRecipes;
 
     @Override
     public void loadRecipes() {

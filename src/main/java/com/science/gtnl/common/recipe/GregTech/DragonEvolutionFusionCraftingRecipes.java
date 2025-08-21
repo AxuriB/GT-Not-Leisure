@@ -22,7 +22,7 @@ import kubatech.loaders.DEFCRecipes;
 
 public class DragonEvolutionFusionCraftingRecipes implements IRecipePool {
 
-    final RecipeMap<?> DEFCR = DEFCRecipes.fusionCraftingRecipes;
+    public RecipeMap<?> DEFCR = DEFCRecipes.fusionCraftingRecipes;
 
     @Override
 

@@ -16,7 +16,7 @@ import gtneioreplugin.plugin.block.ModBlocks;
 
 public class GasCollectorRecipes implements IRecipePool {
 
-    final RecipeMap<?> GCR = RecipePool.GasCollectorRecipes;
+    public RecipeMap<?> GCR = RecipePool.GasCollectorRecipes;
 
     @Override
     public void loadRecipes() {

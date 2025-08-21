@@ -45,7 +45,7 @@ import gtnhlanth.common.register.LanthItemList;
 
 public class AssemblerRecipes implements IRecipePool {
 
-    final RecipeMap<?> As = RecipeMaps.assemblerRecipes;
+    public RecipeMap<?> As = RecipeMaps.assemblerRecipes;
 
     @Override
     public void loadRecipes() {

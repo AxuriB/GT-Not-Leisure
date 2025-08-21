@@ -17,7 +17,7 @@ import gregtech.api.util.GTModHandler;
 
 public class FallingTowerRecipes implements IRecipePool {
 
-    final RecipeMap<?> BSTR = RecipePool.FallingTowerRecipes;
+    public RecipeMap<?> BSTR = RecipePool.FallingTowerRecipes;
 
     @Override
     public void loadRecipes() {

@@ -28,7 +28,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class PreciseAssemblerRecipes implements IRecipePool {
 
-    final RecipeMap<?> PAR = GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
+    public RecipeMap<?> PAR = GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 
     @Override
     public void loadRecipes() {

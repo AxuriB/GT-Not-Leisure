@@ -18,7 +18,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CellRegulatorRecipes implements IRecipePool {
 
-    final RecipeMap<?> CRR = RecipePool.CellRegulatorRecipes;
+    public RecipeMap<?> CRR = RecipePool.CellRegulatorRecipes;
 
     @Override
     public void loadRecipes() {

@@ -25,7 +25,7 @@ import gtPlusPlus.core.material.MaterialMisc;
 
 public class CircuitAssemblerConvertRecipes implements IRecipePool {
 
-    final RecipeMap<?> CAR = RecipePool.ConvertToCircuitAssembler;
+    public RecipeMap<?> CAR = RecipePool.ConvertToCircuitAssembler;
 
     @Override
     public void loadRecipes() {

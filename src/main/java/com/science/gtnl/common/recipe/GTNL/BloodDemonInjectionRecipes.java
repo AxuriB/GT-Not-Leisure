@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 
 public class BloodDemonInjectionRecipes implements IRecipePool {
 
-    final RecipeMap<?> BIR = RecipePool.BloodDemonInjectionRecipes;
+    public RecipeMap<?> BIR = RecipePool.BloodDemonInjectionRecipes;
 
     @Override
     public void loadRecipes() {

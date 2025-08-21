@@ -21,7 +21,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class SmeltingMixingFurnaceRecipes implements IRecipePool {
 
-    final RecipeMap<?> SMFR = RecipePool.SmeltingMixingFurnaceRecipes;
+    public RecipeMap<?> SMFR = RecipePool.SmeltingMixingFurnaceRecipes;
 
     @Override
     public void loadRecipes() {

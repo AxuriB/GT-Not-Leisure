@@ -21,8 +21,8 @@ import gregtech.api.util.GTUtility;
 public class CompressorRecipes implements IRecipePool {
 
     final CompressionTierKey COMPRESSION_TIER = CompressionTierKey.INSTANCE;
-    final RecipeMap<?> NCR = RecipeMaps.neutroniumCompressorRecipes;
-    final RecipeMap<?> CR = RecipeMaps.compressorRecipes;
+    public RecipeMap<?> NCR = RecipeMaps.neutroniumCompressorRecipes;
+    public RecipeMap<?> CR = RecipeMaps.compressorRecipes;
 
     @Override
     public void loadRecipes() {

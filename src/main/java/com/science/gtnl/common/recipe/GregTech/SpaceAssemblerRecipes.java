@@ -25,7 +25,7 @@ import tectech.thing.CustomItemList;
 
 public class SpaceAssemblerRecipes implements IRecipePool {
 
-    final RecipeMap<?> SAR = IGRecipeMaps.spaceAssemblerRecipes;
+    public RecipeMap<?> SAR = IGRecipeMaps.spaceAssemblerRecipes;
 
     @Override
     public void loadRecipes() {

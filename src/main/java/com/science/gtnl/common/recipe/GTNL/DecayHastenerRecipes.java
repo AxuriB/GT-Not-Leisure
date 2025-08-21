@@ -17,7 +17,7 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class DecayHastenerRecipes implements IRecipePool {
 
-    final RecipeMap<?> DHR = RecipePool.DecayHastenerRecipes;
+    public RecipeMap<?> DHR = RecipePool.DecayHastenerRecipes;
 
     @Override
     public void loadRecipes() {

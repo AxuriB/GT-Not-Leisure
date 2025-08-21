@@ -12,7 +12,7 @@ import gregtech.api.util.GTUtility;
 
 public class SteamCrackerRecipes implements IRecipePool {
 
-    final RecipeMap<?> SCR = RecipePool.SteamCrackerRecipes;
+    public RecipeMap<?> SCR = RecipePool.SteamCrackerRecipes;
 
     @Override
     public void loadRecipes() {

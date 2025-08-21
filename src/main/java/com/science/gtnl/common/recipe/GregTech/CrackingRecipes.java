@@ -13,7 +13,7 @@ import gregtech.api.util.GTUtility;
 
 public class CrackingRecipes implements IRecipePool {
 
-    final RecipeMap<?> CR = RecipeMaps.crackingRecipes;
+    public RecipeMap<?> CR = RecipeMaps.crackingRecipes;
 
     @Override
     public void loadRecipes() {

@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 
 public class MatterFabricatorRecipes implements IRecipePool {
 
-    final RecipeMap<?> MFR = RecipePool.MatterFabricatorRecipes;
+    public RecipeMap<?> MFR = RecipePool.MatterFabricatorRecipes;
 
     @Override
     public void loadRecipes() {

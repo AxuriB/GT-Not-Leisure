@@ -12,7 +12,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class RareEarthCentrifugalRecipes implements IRecipePool {
 
-    final RecipeMap<?> RECR = RecipePool.RareEarthCentrifugalRecipes;
+    public RecipeMap<?> RECR = RecipePool.RareEarthCentrifugalRecipes;
 
     @Override
     public void loadRecipes() {

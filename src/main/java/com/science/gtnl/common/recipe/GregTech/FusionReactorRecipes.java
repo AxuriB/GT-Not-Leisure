@@ -17,7 +17,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class FusionReactorRecipes implements IRecipePool {
 
-    final RecipeMap<?> fR = RecipeMaps.fusionRecipes;
+    public RecipeMap<?> fR = RecipeMaps.fusionRecipes;
 
     @Override
     public void loadRecipes() {

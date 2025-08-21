@@ -25,7 +25,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class FishingGroundRecipes implements IRecipePool {
 
-    final RecipeMap<?> FGR = RecipePool.FishingGroundRecipes;
+    public RecipeMap<?> FGR = RecipePool.FishingGroundRecipes;
 
     @Override
     public void loadRecipes() {

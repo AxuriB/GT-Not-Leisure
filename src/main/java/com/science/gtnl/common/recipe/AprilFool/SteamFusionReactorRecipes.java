@@ -13,7 +13,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class SteamFusionReactorRecipes implements IRecipePool {
 
-    final RecipeMap<?> SFRR = RecipePool.SteamFusionReactorRecipes;
+    public RecipeMap<?> SFRR = RecipePool.SteamFusionReactorRecipes;
 
     @Override
     public void loadRecipes() {

@@ -27,7 +27,7 @@ import tectech.thing.CustomItemList;
 
 public class EternalGregTechWorkshopUpgradeRecipes implements IRecipePool {
 
-    final RecipeMap<?> EGTWUR = RecipePool.EternalGregTechWorkshopUpgradeRecipes;
+    public RecipeMap<?> EGTWUR = RecipePool.EternalGregTechWorkshopUpgradeRecipes;
 
     @Override
     public void loadRecipes() {

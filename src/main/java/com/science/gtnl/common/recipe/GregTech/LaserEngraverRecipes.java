@@ -17,7 +17,7 @@ import gregtech.api.util.GTUtility;
 
 public class LaserEngraverRecipes implements IRecipePool {
 
-    final RecipeMap<?> lER = RecipeMaps.laserEngraverRecipes;
+    public RecipeMap<?> lER = RecipeMaps.laserEngraverRecipes;
 
     public void recipeWithPurifiedWater(ItemStack[] inputs, ItemStack[] outputs, Materials lowTierWater,
         Materials highTierWater, int duration, int boostedDuration, long eut) {

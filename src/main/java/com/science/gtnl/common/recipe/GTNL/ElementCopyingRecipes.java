@@ -25,7 +25,7 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ElementCopyingRecipes implements IRecipePool {
 
-    final RecipeMap<?> ECR = RecipePool.ElementCopyingRecipes;
+    public RecipeMap<?> ECR = RecipePool.ElementCopyingRecipes;
 
     @Override
     public void loadRecipes() {

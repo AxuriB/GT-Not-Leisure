@@ -89,7 +89,7 @@ public class MeteorsRecipes implements IRecipePool {
             Integer.MAX_VALUE);
     }
 
-    private static final Map<String, Boolean> ORE_DICT_CACHE = new HashMap<>();
+    public static Map<String, Boolean> ORE_DICT_CACHE = new HashMap<>();
 
     public static String[] generateAndMergeMetalBlocks(String[] originalFillers) {
         List<String> metalVariants = new ArrayList<>();
@@ -116,7 +116,7 @@ public class MeteorsRecipes implements IRecipePool {
         return metalVariants.toArray(new String[0]);
     }
 
-    private static boolean isOreDictRegistered(String blockKey) {
+    public static boolean isOreDictRegistered(String blockKey) {
         return ORE_DICT_CACHE.computeIfAbsent(blockKey, k -> {
             String[] parts = blockKey.split(":");
             if (parts.length < 3) return false;

@@ -15,7 +15,7 @@ import gregtech.api.util.GTModHandler;
 
 public class FluidCannerRecipes implements IRecipePool {
 
-    final RecipeMap<?> FCR = RecipeMaps.fluidCannerRecipes;
+    public RecipeMap<?> FCR = RecipeMaps.fluidCannerRecipes;
 
     @Override
     public void loadRecipes() {

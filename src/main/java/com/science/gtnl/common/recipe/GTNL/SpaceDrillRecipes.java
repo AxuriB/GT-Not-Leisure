@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bsideup.jabel.Desugar;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.ResourceCollectionModuleTierKey;
 import com.science.gtnl.api.IRecipePool;
@@ -28,10 +29,10 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class SpaceDrillRecipes implements IRecipePool {
 
-    public static final ResourceCollectionModuleTierKey MINER_TIER = ResourceCollectionModuleTierKey.INSTANCE;
-    public static final RecipeMap<?> SDR = RecipePool.SpaceDrillRecipes;
+    public ResourceCollectionModuleTierKey MINER_TIER = ResourceCollectionModuleTierKey.INSTANCE;
+    public RecipeMap<?> SDR = RecipePool.SpaceDrillRecipes;
 
-    private static void addSpaceDrillOutputRecipe(int circuit, ItemStack drone, FluidStack fuel, FluidStack output,
+    public void addSpaceDrillOutputRecipe(int circuit, ItemStack drone, FluidStack fuel, FluidStack output,
         int minerTier, int duration, long eut) {
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -47,29 +48,11 @@ public class SpaceDrillRecipes implements IRecipePool {
             .addTo(SDR);
     }
 
-    private static class FuelVariant {
+    @Desugar
+    public record FuelVariant(FluidStack fuel, int baseDuration) {}
 
-        public final FluidStack fuel;
-        public final int baseDuration;
-
-        public FuelVariant(FluidStack fuel, int baseDuration) {
-            this.fuel = fuel;
-            this.baseDuration = baseDuration;
-        }
-    }
-
-    private static class MinerTierData {
-
-        public final int tier;
-        public final ItemStack drone;
-        public final int eut;
-
-        public MinerTierData(int tier, ItemStack drone, int eut) {
-            this.tier = tier;
-            this.drone = drone;
-            this.eut = eut;
-        }
-    }
+    @Desugar
+    public record MinerTierData(int tier, ItemStack drone, int eut) {}
 
     @Override
     public void loadRecipes() {
@@ -189,7 +172,7 @@ public class SpaceDrillRecipes implements IRecipePool {
             TierEU.RECIPE_UXV);
     }
 
-    private static FluidStack safeGetFluidStack(String name) {
+    public FluidStack safeGetFluidStack(String name) {
         return FluidRegistry.getFluidStack(name, 10000000);
     }
 }

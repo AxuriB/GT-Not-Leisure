@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 
 public class NatureSpiritArrayRecipes implements IRecipePool {
 
-    final RecipeMap<?> NSAR = RecipePool.NatureSpiritArrayRecipes;
+    public RecipeMap<?> NSAR = RecipePool.NatureSpiritArrayRecipes;
 
     @Override
     public void loadRecipes() {

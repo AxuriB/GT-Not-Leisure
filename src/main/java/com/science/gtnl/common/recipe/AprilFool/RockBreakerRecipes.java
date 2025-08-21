@@ -21,7 +21,7 @@ import gregtech.api.util.GTUtility;
 
 public class RockBreakerRecipes implements IRecipePool {
 
-    final RecipeMap<?> RBR = RecipePool.RockBreakerRecipes;
+    public RecipeMap<?> RBR = RecipePool.RockBreakerRecipes;
 
     @Override
     public void loadRecipes() {

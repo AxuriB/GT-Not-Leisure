@@ -15,7 +15,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class SteamExtractinatorRecipes implements IRecipePool {
 
-    final RecipeMap<?> SER = RecipePool.SteamExtractinatorRecipes;
+    public RecipeMap<?> SER = RecipePool.SteamExtractinatorRecipes;
 
     @Override
     public void loadRecipes() {

@@ -18,7 +18,7 @@ import com.science.gtnl.api.IRecipePool;
 
 public class ShimmerRecipes implements IRecipePool {
 
-    private static final Map<Item, List<ConversionEntry>> conversionMap = new HashMap<>();
+    public static Map<Item, List<ConversionEntry>> conversionMap = new HashMap<>();
 
     @Override
     public void loadRecipes() {

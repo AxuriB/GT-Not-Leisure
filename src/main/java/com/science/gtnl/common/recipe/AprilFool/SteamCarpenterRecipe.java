@@ -14,7 +14,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class SteamCarpenterRecipe implements IRecipePool {
 
-    final RecipeMap<?> SCR = RecipePool.SteamCarpenterRecipes;
+    public RecipeMap<?> SCR = RecipePool.SteamCarpenterRecipes;
 
     @Override
     public void loadRecipes() {

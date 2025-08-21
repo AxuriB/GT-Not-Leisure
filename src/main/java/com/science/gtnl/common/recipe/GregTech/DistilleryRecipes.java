@@ -25,7 +25,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class DistilleryRecipes implements IRecipePool {
 
-    final RecipeMap<?> DR = RecipeMaps.distilleryRecipes;
+    public RecipeMap<?> DR = RecipeMaps.distilleryRecipes;
 
     @Override
     public void loadRecipes() {

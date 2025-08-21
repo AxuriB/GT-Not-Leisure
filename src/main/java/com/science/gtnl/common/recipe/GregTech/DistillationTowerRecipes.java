@@ -15,7 +15,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class DistillationTowerRecipes implements IRecipePool {
 
-    final RecipeMap<?> DTR = RecipeMaps.distillationTowerRecipes;
+    public RecipeMap<?> DTR = RecipeMaps.distillationTowerRecipes;
 
     @Override
     public void loadRecipes() {

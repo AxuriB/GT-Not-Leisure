@@ -14,7 +14,7 @@ import gregtech.api.util.GTUtility;
 
 public class TranscendentPlasmaMixerRecipes implements IRecipePool {
 
-    final RecipeMap<?> TPMP = RecipeMaps.transcendentPlasmaMixerRecipes;
+    public RecipeMap<?> TPMP = RecipeMaps.transcendentPlasmaMixerRecipes;
 
     @Override
     public void loadRecipes() {

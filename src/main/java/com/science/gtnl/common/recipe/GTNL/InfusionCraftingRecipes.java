@@ -63,7 +63,7 @@ public class InfusionCraftingRecipes implements IRecipePool {
     public void loadRecipes() {
         TCRecipeTools.getInfusionCraftingRecipe();
 
-        final IRecipeMap IIC = RecipePool.IndustrialInfusionCraftingRecipes;
+        IRecipeMap IIC = RecipePool.IndustrialInfusionCraftingRecipes;
         for (TCRecipeTools.InfusionCraftingRecipe Recipe : TCRecipeTools.ICR) {
             if (shouldSkip(
                 Recipe.getOutput()

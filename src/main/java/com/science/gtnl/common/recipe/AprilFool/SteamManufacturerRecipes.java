@@ -26,7 +26,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class SteamManufacturerRecipes implements IRecipePool {
 
-    final RecipeMap<?> SMFR = RecipePool.SteamManufacturerRecipes;
+    public RecipeMap<?> SMFR = RecipePool.SteamManufacturerRecipes;
 
     @Override
     public void loadRecipes() {

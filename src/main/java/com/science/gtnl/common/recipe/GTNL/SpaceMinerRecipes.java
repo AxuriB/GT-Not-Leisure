@@ -30,7 +30,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 public class SpaceMinerRecipes implements IRecipePool {
 
     final ResourceCollectionModuleTierKey MINER_TIER = ResourceCollectionModuleTierKey.INSTANCE;
-    final RecipeMap<?> SMR = RecipePool.SpaceMinerRecipes;
+    public RecipeMap<?> SMR = RecipePool.SpaceMinerRecipes;
 
     @Override
     public void loadRecipes() {

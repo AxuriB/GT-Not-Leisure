@@ -14,7 +14,7 @@ import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
 public class DigesterRecipes implements IRecipePool {
 
-    final RecipeMap<?> dR = LanthanidesRecipeMaps.digesterRecipes;
+    public RecipeMap<?> dR = LanthanidesRecipeMaps.digesterRecipes;
 
     @Override
     public void loadRecipes() {

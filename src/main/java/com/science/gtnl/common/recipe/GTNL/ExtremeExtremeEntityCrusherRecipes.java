@@ -26,9 +26,9 @@ import kubatech.loaders.MobHandlerLoader;
 
 public class ExtremeExtremeEntityCrusherRecipes {
 
-    private final RecipeMap<?> EEEC = RecipePool.ExtremeExtremeEntityCrusherRecipes;
+    public RecipeMap<?> EEEC = RecipePool.ExtremeExtremeEntityCrusherRecipes;
 
-    private static final Set<String> registeredSpawnerTypes = new HashSet<>();
+    public static Set<String> registeredSpawnerTypes = new HashSet<>();
 
     @SubscribeEvent
     public void onPostMobRegistration(PostMobRegistrationEvent event) {

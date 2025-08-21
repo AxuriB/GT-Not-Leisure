@@ -10,7 +10,7 @@ import gregtech.api.recipe.RecipeMap;
 
 public class NaquadahReactorRecipes implements IRecipePool {
 
-    final RecipeMap<?> NRR = RecipePool.NaquadahReactorRecipes;
+    public RecipeMap<?> NRR = RecipePool.NaquadahReactorRecipes;
 
     @Override
     public void loadRecipes() {

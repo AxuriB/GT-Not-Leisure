@@ -19,7 +19,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class VacuumFurnaceRecipes implements IRecipePool {
 
-    final RecipeMap<?> VFR = GTPPRecipeMaps.vacuumFurnaceRecipes;
+    public RecipeMap<?> VFR = GTPPRecipeMaps.vacuumFurnaceRecipes;
 
     @Override
     public void loadRecipes() {

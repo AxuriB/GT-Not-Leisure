@@ -24,7 +24,7 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 
 public class PetrochemicalPlantRecipes implements IRecipePool {
 
-    final RecipeMap<?> PPR = RecipePool.PetrochemicalPlantRecipes;
+    public RecipeMap<?> PPR = RecipePool.PetrochemicalPlantRecipes;
 
     @Override
     public void loadRecipes() {

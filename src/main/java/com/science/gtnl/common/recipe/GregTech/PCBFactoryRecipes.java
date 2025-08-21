@@ -17,7 +17,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class PCBFactoryRecipes implements IRecipePool {
 
-    final RecipeMap<?> PCBFR = RecipeMaps.pcbFactoryRecipes;
+    public RecipeMap<?> PCBFR = RecipeMaps.pcbFactoryRecipes;
     private static final PCBFactoryTierKey TIER = PCBFactoryTierKey.INSTANCE;
 
     @Override

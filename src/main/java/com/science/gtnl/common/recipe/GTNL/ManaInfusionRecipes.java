@@ -21,7 +21,7 @@ import gregtech.api.util.GTUtility;
 
 public class ManaInfusionRecipes implements IRecipePool {
 
-    final RecipeMap<?> MIR = RecipePool.ManaInfusionRecipes;
+    public RecipeMap<?> MIR = RecipePool.ManaInfusionRecipes;
 
     @Override
     public void loadRecipes() {

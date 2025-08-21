@@ -16,7 +16,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class AutoclaveRecipes implements IRecipePool {
 
-    final RecipeMap<?> AR = RecipeMaps.autoclaveRecipes;
+    public RecipeMap<?> AR = RecipeMaps.autoclaveRecipes;
 
     @Override
     public void loadRecipes() {

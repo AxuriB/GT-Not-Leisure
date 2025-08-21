@@ -19,7 +19,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class CentrifugeRecipes implements IRecipePool {
 
-    final RecipeMap<?> CNCR = GTPPRecipeMaps.centrifugeNonCellRecipes;
+    public RecipeMap<?> CNCR = GTPPRecipeMaps.centrifugeNonCellRecipes;
 
     @Override
     public void loadRecipes() {

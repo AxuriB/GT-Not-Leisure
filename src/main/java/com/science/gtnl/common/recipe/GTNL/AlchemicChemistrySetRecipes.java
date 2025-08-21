@@ -14,7 +14,7 @@ import gregtech.api.recipe.RecipeMap;
 
 public class AlchemicChemistrySetRecipes implements IRecipePool {
 
-    final RecipeMap<?> ACSR = RecipePool.AlchemicChemistrySetRecipes;
+    public RecipeMap<?> ACSR = RecipePool.AlchemicChemistrySetRecipes;
 
     @Override
     public void loadRecipes() {

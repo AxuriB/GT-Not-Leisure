@@ -19,7 +19,7 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ElectrolyzerRecipes implements IRecipePool {
 
-    final RecipeMap<?> ENCR = GTPPRecipeMaps.electrolyzerNonCellRecipes;
+    public RecipeMap<?> ENCR = GTPPRecipeMaps.electrolyzerNonCellRecipes;
 
     @Override
     public void loadRecipes() {

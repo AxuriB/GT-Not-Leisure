@@ -14,7 +14,7 @@ import gregtech.api.util.GTUtility;
 
 public class ReFusionReactorRecipes implements IRecipePool {
 
-    final RecipeMap<?> RFRR = RecipePool.RecombinationFusionReactorRecipes;
+    public RecipeMap<?> RFRR = RecipePool.RecombinationFusionReactorRecipes;
 
     @Override
     public void loadRecipes() {

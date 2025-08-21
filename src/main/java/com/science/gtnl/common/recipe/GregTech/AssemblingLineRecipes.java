@@ -34,8 +34,10 @@ import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -47,6 +49,8 @@ import tectech.recipe.TTRecipeAdder;
 import tectech.thing.CustomItemList;
 
 public class AssemblingLineRecipes implements IRecipePool {
+
+    public IRecipeMap AL = GTRecipeConstants.AssemblyLine;
 
     @Override
     public void loadRecipes() {
@@ -146,7 +150,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.TeleportationArrayToAlfheim.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(300 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GTModHandler.getModItem(GalaxySpace.ID, "item.RocketControlComputer", 1, 4))
@@ -169,7 +173,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.MeteorMinerSchematic1.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GTModHandler.getModItem(GalaxySpace.ID, "item.RocketControlComputer", 1, 7))
@@ -195,7 +199,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.MeteorMinerSchematic2.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(120 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.MixerUIV.get(1),
@@ -251,7 +255,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.IndustrialArcaneAssembler.get(1))
             .eut(TierEU.RECIPE_UIV)
             .duration(300 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ReAvaItemList.NeutronCollector.get(1))
@@ -273,7 +277,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(ReAvaItemList.DenseNeutronCollector.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(60 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ReAvaItemList.DenseNeutronCollector.get(1))
@@ -295,7 +299,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(ReAvaItemList.DenserNeutronCollector.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(120 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ReAvaItemList.DenserNeutronCollector.get(1))
@@ -318,7 +322,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(ReAvaItemList.DensestNeutronCollector.get(1))
             .eut(TierEU.RECIPE_UEV)
             .duration(60 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRegistry.eic.copy(),
@@ -366,7 +370,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.MegaBlastFurnace.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(30 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             GregtechItemList.ChemicalPlant_Controller.get(1),
@@ -406,7 +410,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.SuperCraftingInputBusME.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Hatch_CraftingInput_Bus_ME.get(1),
@@ -446,7 +450,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(ItemList.Hatch_CraftingInput_Bus_ME.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Hatch_CraftingInput_Bus_Slave.get(1),
@@ -482,7 +486,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(ItemList.Hatch_CraftingInput_Bus_Slave.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(30 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemRefer.Field_Restriction_Glass.get(1),
@@ -520,7 +524,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.LuVParallelControllerCore.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(20 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GTNLItemList.LuVParallelControllerCore.get(1))
@@ -547,7 +551,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.ZPMParallelControllerCore.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(20 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GTNLItemList.ZPMParallelControllerCore.get(1))
@@ -574,7 +578,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.UVParallelControllerCore.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(20 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             GTNLItemList.UVParallelControllerCore.get(1),
@@ -736,20 +740,20 @@ public class AssemblingLineRecipes implements IRecipePool {
             .metadata(RESEARCH_ITEM, GregtechItemList.Controller_IsaMill.get(1))
             .metadata(SCANNING, new Scanning(30 * MINUTES, TierEU.RECIPE_IV))
             .itemInputs(
-                GregtechItemList.Controller_IsaMill.get(4),
-                MaterialsAlloy.ZERON_100.getPlateDouble(16),
-                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 4L },
-                new Object[] { OrePrefixes.circuit.get(Materials.IV), 8L },
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 16L),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 16L),
-                ItemList.Component_Grinder_Tungsten.get(32),
-                ItemList.Conveyor_Module_LuV.get(8),
-                ItemList.Electric_Motor_LuV.get(16))
-            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(64000), Materials.Europium.getMolten(2304))
+                GregtechItemList.Controller_IsaMill.get(1),
+                MaterialsAlloy.ZERON_100.getPlateDouble(8),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2L },
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 4L },
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 4L),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 8L),
+                ItemList.Component_Grinder_Tungsten.get(8),
+                ItemList.Conveyor_Module_LuV.get(4),
+                ItemList.Electric_Motor_LuV.get(8))
+            .fluidInputs(Materials.Grade2PurifiedWater.getFluid(32000), Materials.Europium.getMolten(1296))
             .itemOutputs(GTNLItemList.IsaMill.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(40 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .setNEIDesc("Remove Change by GTNotLeisure")
@@ -770,7 +774,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.LargeIncubator.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(30 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, ItemList.Circuit_Wetwarecomputer.get(1))
@@ -788,7 +792,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(ItemList.Circuit_Wetwaresupercomputer.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(40 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_Wetwaresupercomputer.get(1L),
@@ -877,7 +881,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.FlotationCellRegulator.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.OreDrill3.get(1),
@@ -915,7 +919,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.FuelRefiningComplex.get(1))
             .eut(TierEU.RECIPE_ZPM)
             .duration(50 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             CustomItemList.Godforge_SingularityShieldingCasing.get(1),
@@ -988,7 +992,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.TwilightForestBook.get(1))
             .eut(TierEU.RECIPE_UHV)
             .duration(60 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, GTModHandler.getModItem(BloodMagic.ID, "Altar", 1))
@@ -1016,7 +1020,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.BloodSoulSacrificialArray.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(120 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             new ItemStack(ItemRegistry.cal.getItem(), 1),
@@ -1099,7 +1103,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(ItemList.WormholeGenerator.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(120 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         GTValues.RA.stdBuilder()
             .metadata(RESEARCH_ITEM, new ItemStack(GregTechAPI.sBlockMachines, 1, BioLab_LuV.ID))
@@ -1124,7 +1128,7 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.LargeBioLab.get(1))
             .eut(TierEU.RECIPE_LuV)
             .duration(60 * SECONDS)
-            .addTo(AssemblyLine);
+            .addTo(AL);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             GTNLItemList.LargeAssembler.get(1),

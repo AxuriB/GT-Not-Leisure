@@ -23,7 +23,7 @@ import gregtech.api.util.GTUtility;
 
 public class SteamCarpenterOreRecipe implements IOreRecipeRegistrator {
 
-    final RecipeMap<?> SCR = RecipePool.SteamCarpenterRecipes;
+    public RecipeMap<?> SCR = RecipePool.SteamCarpenterRecipes;
 
     public SteamCarpenterOreRecipe() {
         OrePrefixes.log.add(this);

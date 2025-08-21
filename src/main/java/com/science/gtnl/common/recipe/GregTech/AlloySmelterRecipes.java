@@ -16,7 +16,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class AlloySmelterRecipes implements IRecipePool {
 
-    final RecipeMap<?> aSR = RecipeMaps.alloySmelterRecipes;
+    public RecipeMap<?> aSR = RecipeMaps.alloySmelterRecipes;
 
     @Override
     public void loadRecipes() {

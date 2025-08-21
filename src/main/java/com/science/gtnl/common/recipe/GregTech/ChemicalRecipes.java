@@ -27,7 +27,7 @@ import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 
 public class ChemicalRecipes implements IRecipePool {
 
-    final IRecipeMap UC = GTRecipeConstants.UniversalChemical;
+    public IRecipeMap UC = GTRecipeConstants.UniversalChemical;
 
     @Override
     public void loadRecipes() {

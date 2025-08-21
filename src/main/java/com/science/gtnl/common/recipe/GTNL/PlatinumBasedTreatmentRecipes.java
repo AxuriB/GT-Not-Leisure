@@ -18,7 +18,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class PlatinumBasedTreatmentRecipes implements IRecipePool {
 
-    final RecipeMap<?> PBTR = RecipePool.PlatinumBasedTreatmentRecipes;
+    public RecipeMap<?> PBTR = RecipePool.PlatinumBasedTreatmentRecipes;
 
     @Override
     public void loadRecipes() {

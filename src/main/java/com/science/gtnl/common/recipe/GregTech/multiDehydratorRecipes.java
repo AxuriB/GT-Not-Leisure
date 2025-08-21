@@ -15,7 +15,7 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 
 public class multiDehydratorRecipes implements IRecipePool {
 
-    final RecipeMap<?> mD = GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
+    public RecipeMap<?> mD = GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
 
     @Override
     public void loadRecipes() {

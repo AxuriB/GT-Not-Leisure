@@ -22,7 +22,7 @@ public class PortalToAlfheimOreRecipes implements IOreRecipeRegistrator {
         OrePrefixes.blockGlass.add(this);
     }
 
-    final RecipeMap<?> PTAR = RecipePool.PortalToAlfheimRecipes;
+    public RecipeMap<?> PTAR = RecipePool.PortalToAlfheimRecipes;
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
@@ -38,9 +38,6 @@ public class PortalToAlfheimOreRecipes implements IOreRecipeRegistrator {
     }
 
     public static void addManaInfusionOreRecipes(ItemStack aStack) {
-
-        final RecipeMap<?> MIR = RecipePool.ManaInfusionRecipes;
-
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.copyAmount(0, GTModHandler.getModItem("Botania", "alchemyCatalyst", 1)),
@@ -49,6 +46,6 @@ public class PortalToAlfheimOreRecipes implements IOreRecipeRegistrator {
             .fluidInputs(MaterialPool.FluidMana.getFluidOrGas(200))
             .duration(20)
             .eut(2048)
-            .addTo(MIR);
+            .addTo(RecipePool.ManaInfusionRecipes);
     }
 }

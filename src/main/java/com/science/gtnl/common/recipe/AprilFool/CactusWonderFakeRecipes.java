@@ -13,7 +13,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class CactusWonderFakeRecipes implements IRecipePool {
 
     private static final SteamAmountSpecialValue OFFER_VALUE = SteamAmountSpecialValue.INSTANCE;
-    final RecipeMap<?> CWFR = RecipePool.CactusWonderFakeRecipes;
+    public RecipeMap<?> CWFR = RecipePool.CactusWonderFakeRecipes;
 
     @Override
     public void loadRecipes() {

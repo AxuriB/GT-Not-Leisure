@@ -14,7 +14,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class FormingPressRecipes implements IRecipePool {
 
-    final RecipeMap<?> FPR = RecipeMaps.formingPressRecipes;
+    public RecipeMap<?> FPR = RecipeMaps.formingPressRecipes;
 
     @Override
     public void loadRecipes() {

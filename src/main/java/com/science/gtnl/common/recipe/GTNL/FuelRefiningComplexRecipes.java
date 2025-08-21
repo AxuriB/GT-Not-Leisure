@@ -22,7 +22,7 @@ import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class FuelRefiningComplexRecipes implements IRecipePool {
 
-    final RecipeMap<?> FCR = RecipePool.FuelRefiningComplexRecipes;
+    public RecipeMap<?> FCR = RecipePool.FuelRefiningComplexRecipes;
 
     @Override
     public void loadRecipes() {

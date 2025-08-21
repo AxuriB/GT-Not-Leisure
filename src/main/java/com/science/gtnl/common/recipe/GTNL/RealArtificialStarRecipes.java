@@ -14,7 +14,7 @@ import gregtech.api.util.GTModHandler;
 
 public class RealArtificialStarRecipes implements IRecipePool {
 
-    final RecipeMap<?> RAS = RecipePool.RealArtificialStarRecipes;
+    public RecipeMap<?> RAS = RecipePool.RealArtificialStarRecipes;
 
     @Override
     public void loadRecipes() {

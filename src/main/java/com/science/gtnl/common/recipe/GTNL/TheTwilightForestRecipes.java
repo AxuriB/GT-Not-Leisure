@@ -23,7 +23,7 @@ import gregtech.api.util.GTUtility;
 
 public class TheTwilightForestRecipes implements IRecipePool {
 
-    final RecipeMap<?> TTFR = RecipePool.TheTwilightForestRecipes;
+    public RecipeMap<?> TTFR = RecipePool.TheTwilightForestRecipes;
 
     @Override
     public void loadRecipes() {

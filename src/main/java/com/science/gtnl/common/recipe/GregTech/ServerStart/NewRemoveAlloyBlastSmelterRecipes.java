@@ -13,7 +13,7 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class NewRemoveAlloyBlastSmelterRecipes implements IRecipePool {
 
-    final RecipeMap<?> aBS = GTPPRecipeMaps.alloyBlastSmelterRecipes;
+    public RecipeMap<?> aBS = GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
     @Override
     public void loadRecipes() {

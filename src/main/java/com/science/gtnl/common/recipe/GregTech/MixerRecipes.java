@@ -30,7 +30,7 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class MixerRecipes implements IRecipePool {
 
-    final RecipeMap<?> MNCR = GTPPRecipeMaps.mixerNonCellRecipes;
+    public RecipeMap<?> MNCR = GTPPRecipeMaps.mixerNonCellRecipes;
 
     @Override
     public void loadRecipes() {

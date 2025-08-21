@@ -13,7 +13,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class FluidExtraction implements IRecipePool {
 
-    final RecipeMap<?> fER = RecipeMaps.fluidExtractionRecipes;
+    public RecipeMap<?> fER = RecipeMaps.fluidExtractionRecipes;
 
     @Override
     public void loadRecipes() {

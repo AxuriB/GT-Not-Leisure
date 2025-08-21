@@ -21,7 +21,7 @@ import gregtech.api.util.GTUtility;
 
 public class MolecularTransformerRecipes implements IRecipePool {
 
-    final RecipeMap<?> MTR = RecipePool.MolecularTransformerRecipes;
+    public RecipeMap<?> MTR = RecipePool.MolecularTransformerRecipes;
 
     @Override
     public void loadRecipes() {

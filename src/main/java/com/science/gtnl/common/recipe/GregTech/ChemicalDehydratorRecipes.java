@@ -12,8 +12,8 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ChemicalDehydratorRecipes implements IRecipePool {
 
-    final RecipeMap<?> CDR = GTPPRecipeMaps.chemicalDehydratorRecipes;
-    final RecipeMap<?> CDNCR = GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
+    public RecipeMap<?> CDR = GTPPRecipeMaps.chemicalDehydratorRecipes;
+    public RecipeMap<?> CDNCR = GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
 
     @Override
     public void loadRecipes() {

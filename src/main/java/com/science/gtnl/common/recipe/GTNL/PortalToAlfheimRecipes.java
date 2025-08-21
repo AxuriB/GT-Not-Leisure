@@ -24,7 +24,7 @@ import gregtech.api.util.GTUtility;
 
 public class PortalToAlfheimRecipes implements IRecipePool {
 
-    final RecipeMap<?> PTAR = RecipePool.PortalToAlfheimRecipes;
+    public RecipeMap<?> PTAR = RecipePool.PortalToAlfheimRecipes;
 
     @Override
     public void loadRecipes() {

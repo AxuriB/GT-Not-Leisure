@@ -14,7 +14,7 @@ import gregtech.api.recipe.RecipeMap;
 
 public class LavaMakerRecipes implements IRecipePool {
 
-    final RecipeMap<?> LMR = RecipePool.LavaMakerRecipes;
+    public RecipeMap<?> LMR = RecipePool.LavaMakerRecipes;
 
     @Override
     public void loadRecipes() {

@@ -16,7 +16,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class CuttingRecipes implements IRecipePool {
 
-    final RecipeMap<?> CR = RecipeMaps.cutterRecipes;
+    public RecipeMap<?> CR = RecipeMaps.cutterRecipes;
 
     public void recipeWithPurifiedWater(ItemStack[] inputs, ItemStack[] outputs, Materials lowTierWater,
         Materials highTierWater, int duration, int boostedDuration, long eut) {

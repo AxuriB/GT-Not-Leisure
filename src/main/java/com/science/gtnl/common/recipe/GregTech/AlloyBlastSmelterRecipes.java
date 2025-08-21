@@ -14,7 +14,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class AlloyBlastSmelterRecipes implements IRecipePool {
 
-    final RecipeMap<?> aBS = GTPPRecipeMaps.alloyBlastSmelterRecipes;
+    public RecipeMap<?> aBS = GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
     @Override
     public void loadRecipes() {

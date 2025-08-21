@@ -9,7 +9,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -24,9 +23,6 @@ public class WoodDistillationRecipes implements IOreRecipeRegistrator {
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (aOreDictName.equals("logWood")) {
-
-            final RecipeMap<?> WDR = RecipePool.WoodDistillationRecipes;
-
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(16, aStack))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L))
@@ -51,7 +47,7 @@ public class WoodDistillationRecipes implements IOreRecipeRegistrator {
                 .specialValue(0)
                 .duration(200)
                 .eut(120)
-                .addTo(WDR);
+                .addTo(RecipePool.WoodDistillationRecipes);
         }
     }
 }

@@ -63,7 +63,7 @@ public class ShapedArcaneCraftingRecipes implements IRecipePool {
         TCRecipeTools.getShapedArcaneCraftingRecipe();
         TCRecipeTools.getShapelessArcaneCraftingRecipe();
 
-        final IRecipeMap IAA = RecipePool.IndustrialShapedArcaneCraftingRecipes;
+        IRecipeMap IAA = RecipePool.IndustrialShapedArcaneCraftingRecipes;
 
         // Shaped
         for (TCRecipeTools.ShapedArcaneCraftingRecipe recipe : TCRecipeTools.ShapedAR) {

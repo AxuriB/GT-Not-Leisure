@@ -10,7 +10,7 @@ import gregtech.api.recipe.RecipeMaps;
 
 public class VacuumFreezerRecipes implements IRecipePool {
 
-    final RecipeMap<?> CNCR = RecipeMaps.vacuumFreezerRecipes;
+    public RecipeMap<?> CNCR = RecipeMaps.vacuumFreezerRecipes;
 
     @Override
     public void loadRecipes() {

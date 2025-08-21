@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 
 public class LaserEngraverOreRecipes implements IOreRecipeRegistrator {
 
-    final RecipeMap<?> lER = RecipeMaps.laserEngraverRecipes;
+    public RecipeMap<?> lER = RecipeMaps.laserEngraverRecipes;
 
     public LaserEngraverOreRecipes() {
         OrePrefixes.crafting.add(this);
