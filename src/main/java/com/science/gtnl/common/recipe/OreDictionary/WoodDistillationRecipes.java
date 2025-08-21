@@ -13,7 +13,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.fluids.GTPPFluids;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class WoodDistillationRecipes implements IOreRecipeRegistrator {
 
@@ -48,7 +47,7 @@ public class WoodDistillationRecipes implements IOreRecipeRegistrator {
                     Materials.Hydrogen.getGas(10),
                     Materials.MethylAcetate.getFluid(8),
                     new FluidStack(GTPPFluids.CoalGas, 8),
-                    FluidUtils.getFluidStack("bioethanol", 8))
+                    Materials.Ethanol.getFluid(8))
                 .specialValue(0)
                 .duration(200)
                 .eut(120)

@@ -259,12 +259,4 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
         return SoundResource.GT_MACHINES_MEGA_BLAST_FURNACE_LOOP;
     }
 
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && getMaxInputAmps() <= 2;
-        logic.setAvailableVoltage(getMachineVoltageLimit());
-        logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-        logic.setAmperageOC(!useSingleAmp);
-    }
-
 }

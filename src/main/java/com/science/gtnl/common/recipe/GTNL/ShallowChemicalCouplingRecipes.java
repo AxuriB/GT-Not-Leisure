@@ -1084,6 +1084,7 @@ public class ShallowChemicalCouplingRecipes implements IRecipePool {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
+                    GTUtility.getIntegratedCircuit(1),
                     GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1)),
                     Materials.Sulfur.getDust(1))
                 .fluidInputs(Materials.Ethanol.getFluid(3000), Materials.Oxygen.getGas(24000))
@@ -1096,7 +1097,10 @@ public class ShallowChemicalCouplingRecipes implements IRecipePool {
                 .addTo(SCCR);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1)))
+                .itemInputs(
+
+                    GTUtility.getIntegratedCircuit(2),
+                    GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 1)))
                 .fluidInputs(Materials.Ethanol.getFluid(2000))
                 .itemOutputs()
                 .fluidOutputs(GGMaterial.ether.getFluidOrGas(1000), Materials.Water.getFluid(1000))
