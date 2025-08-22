@@ -792,6 +792,9 @@ fluid.shimmer=微光
 gtnl.potion.shimmering=微光闪烁
 gtnl.recipe.ShimmerRecipes=微光嬗变
 
+gtnl.potion.ghostly_shape=幽灵形态
+Info_GhostlyShape_Cancel=你的某个行为使你退出了幽灵形态
+
 item.SatietyRing.name=饱食指环
 item.SuperReachRing.name=超级触物指环
 item.RejectionRing.name=排斥指环

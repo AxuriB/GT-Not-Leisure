@@ -13,9 +13,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
@@ -37,12 +35,9 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
@@ -59,7 +54,6 @@ import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
-import com.science.gtnl.loader.EffectLoader;
 import com.science.gtnl.mixins.early.Minecraft.AccessorFoodStats;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -243,20 +237,6 @@ public class SubscribeEventUtils {
     }
 
     @SubscribeEvent
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.entityPlayer.isPotionActive(EffectLoader.shimmering)) {
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public void onAttackEntity(AttackEntityEvent event) {
-        if (event.entityPlayer.isPotionActive(EffectLoader.shimmering)) {
-            event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END || event.player.worldObj.isRemote || !MainConfig.enableSaturationHeal)
             return;
@@ -429,24 +409,6 @@ public class SubscribeEventUtils {
                     nbt.setInteger("creeperExplosionDelay", 30);
                     nbt.setBoolean("creeperExplosionDelayed", true);
                 }
-            }
-        }
-        if (event.entityLiving instanceof EntityPlayer player) {
-            if (player.isPotionActive(EffectLoader.shimmering)) {
-                if (event.source == DamageSource.inWall) {
-                    event.setCanceled(true);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void onLivingAttack(LivingAttackEvent event) {
-        if (!(event.entityLiving instanceof EntityPlayer player)) return;
-        if (player.isPotionActive(EffectLoader.shimmering)) {
-            Entity source = event.source.getEntity();
-            if (source instanceof EntityLivingBase && !(source instanceof IBossDisplayData)) {
-                event.setCanceled(true);
             }
         }
     }

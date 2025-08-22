@@ -170,7 +170,7 @@ public class SubscribeEventClientUtils {
     public void onRenderPlayerPre(RenderLivingEvent.Pre event) {
         if (!(event.entity instanceof EntityPlayer player)) return;
 
-        if (player.isPotionActive(EffectLoader.shimmering)) {
+        if (player.isPotionActive(EffectLoader.shimmering) || player.isPotionActive(EffectLoader.ghostly_shape)) {
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.4F);
@@ -181,7 +181,7 @@ public class SubscribeEventClientUtils {
     public void onRenderPlayerPost(RenderLivingEvent.Post event) {
         if (!(event.entity instanceof EntityPlayer player)) return;
 
-        if (player.isPotionActive(EffectLoader.shimmering)) {
+        if (player.isPotionActive(EffectLoader.shimmering) || player.isPotionActive(EffectLoader.ghostly_shape)) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glDisable(GL11.GL_BLEND);
         }

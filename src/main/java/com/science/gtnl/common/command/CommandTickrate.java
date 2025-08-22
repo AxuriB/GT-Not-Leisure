@@ -26,8 +26,8 @@ import com.science.gtnl.config.MainConfig;
  */
 public class CommandTickrate extends CommandBase {
 
-    private List<String> aliases;
-    private List<String> suggestedTickrateValues;
+    public List<String> aliases;
+    public List<String> suggestedTickrateValues;
 
     public CommandTickrate() {
         aliases = Arrays.asList("ticks", "GTNLEarlyCoreMod", "trc", "settickrate");

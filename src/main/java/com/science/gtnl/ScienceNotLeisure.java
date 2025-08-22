@@ -12,6 +12,7 @@ import com.science.gtnl.common.command.CommandEnergyNetwork;
 import com.science.gtnl.common.command.CommandPlaySound;
 import com.science.gtnl.common.command.CommandReloadConfig;
 import com.science.gtnl.common.command.CommandSteamNetwork;
+import com.science.gtnl.common.command.CommandSudo;
 import com.science.gtnl.common.command.CommandTickrate;
 import com.science.gtnl.common.command.CommandTitle;
 import com.science.gtnl.loader.MaterialLoader;
@@ -103,6 +104,7 @@ public class ScienceNotLeisure {
         event.registerServerCommand(new CommandSteamNetwork());
         event.registerServerCommand(new CommandEnergyNetwork());
         event.registerServerCommand(new CommandPlaySound());
+        event.registerServerCommand(new CommandSudo());
     }
 
     @Mod.EventHandler

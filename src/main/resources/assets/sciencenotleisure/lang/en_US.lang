@@ -792,6 +792,9 @@ fluid.shimmer=Shimmer
 gtnl.potion.shimmering=Shimmering
 gtnl.recipe.ShimmerRecipes=Shimmer Transformation
 
+gtnl.potion.ghostly_shape=Ghostly Shape
+Info_GhostlyShape_Cancel=One of your actions canceled the Ghostly Shape effect
+
 item.SatietyRing.name=Ring of Satiety
 item.SuperReachRing.name=Super Reach Ring
 item.RejectionRing.name=Ring of Rejection

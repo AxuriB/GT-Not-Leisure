@@ -7,6 +7,7 @@ import net.minecraft.potion.Potion;
 
 import com.science.gtnl.common.effect.effects.AweEffect;
 import com.science.gtnl.common.effect.effects.PerfectPhysiqueEffect;
+import com.science.gtnl.common.effect.effects.PotionGhostlyShape;
 import com.science.gtnl.common.effect.effects.ShimmeringEffect;
 
 import lombok.extern.log4j.Log4j2;
@@ -17,6 +18,7 @@ public class EffectLoader {
     public static Potion awe;
     public static Potion perfect_physique;
     public static Potion shimmering;
+    public static Potion ghostly_shape;
 
     public static void registry() {
         if (Potion.potionTypes.length < 256) extendPotionArray();
@@ -24,6 +26,7 @@ public class EffectLoader {
         awe = new AweEffect(findNextFreePotionId());
         perfect_physique = new PerfectPhysiqueEffect(findNextFreePotionId());
         shimmering = new ShimmeringEffect(findNextFreePotionId());
+        ghostly_shape = new PotionGhostlyShape(findNextFreePotionId());
     }
 
     public static int findNextFreePotionId() {
