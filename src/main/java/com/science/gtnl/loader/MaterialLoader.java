@@ -35,8 +35,6 @@ public class MaterialLoader {
         ItemLoader.registry();
         WerkstoffAdderRegistry.addWerkstoffAdder(new MaterialPool());
 
-        RocketFuels.addFuel(EntitySteamRocket.class, MaterialPool.CompressedSteam.getMolten(1));
-
         loadOreDictionaryRecipes();
 
         API.hideItem(GTNLItemList.EternalGregTechWorkshopRender.get(1));
@@ -54,6 +52,8 @@ public class MaterialLoader {
         MilledOre.registry();
         EIGBucket.LoadEIGBuckets();
         MachineLoader.registry();
+
+        RocketFuels.addFuel(EntitySteamRocket.class, MaterialPool.CompressedSteam.getMolten(1));
     }
 
     public static void loadCompleteInit() {
