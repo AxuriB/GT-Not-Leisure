@@ -22,11 +22,12 @@ public class EffectLoader {
 
     public static void registry() {
         if (Potion.potionTypes.length < 256) extendPotionArray();
+        int i = findNextFreePotionId();
 
-        awe = new AweEffect(findNextFreePotionId());
-        perfect_physique = new PerfectPhysiqueEffect(findNextFreePotionId());
-        shimmering = new ShimmeringEffect(findNextFreePotionId());
-        ghostly_shape = new PotionGhostlyShape(findNextFreePotionId());
+        awe = new AweEffect(i++);
+        perfect_physique = new PerfectPhysiqueEffect(i++);
+        shimmering = new ShimmeringEffect(i++);
+        ghostly_shape = new PotionGhostlyShape(i++);
     }
 
     public static int findNextFreePotionId() {
