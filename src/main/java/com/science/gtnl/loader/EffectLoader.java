@@ -22,7 +22,7 @@ public class EffectLoader {
 
     public static void registry() {
         if (Potion.potionTypes.length < 256) extendPotionArray();
-        int i = findNextFreePotionId();
+        int i = Math.max(findNextFreePotionId(), 190);
 
         awe = new AweEffect(i++);
         perfect_physique = new PerfectPhysiqueEffect(i++);
