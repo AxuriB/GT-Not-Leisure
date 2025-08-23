@@ -221,18 +221,17 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCDIndustrialMixerActive)
                     .extFacing()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialMixer)
-                    .extFacing()
-                    .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                .addIcon(TexturesGtBlock.oMCDIndustrialMixer)
+                .extFacing()
+                .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
 
     @Override
@@ -258,13 +257,13 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
         if (T == -1) {
             throw new IllegalArgumentException("Invalid circuit item damage: " + H);
         }
-        return NineIndustrialMultiMachineManager.MODE_MAP[machineMode][T];
+        return NineIndustrialMultiMachineManager.getModeMapIndex(machineMode, T);
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return NineIndustrialMultiMachineManager.getAvailableRecipeMaps();
+        return NineIndustrialMultiMachineManager.getAllRecipeMaps();
     }
 
     private static RecipeMap<?> getRecipeMap(int mode) {
