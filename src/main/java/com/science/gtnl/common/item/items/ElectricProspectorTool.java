@@ -101,21 +101,6 @@ public class ElectricProspectorTool extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> toolTip,
-        boolean advancedToolTips) {
-        if (!itemStack.hasTagCompound()) return;
-        int meta = itemStack.stackTagCompound.getInteger("toolMeta");
-        Pair<Integer, Long> rangeAndMax = mRangeMap.get(meta);
-        if (rangeAndMax == null) return;
-
-        long maxDamage = rangeAndMax.getRight();
-        long currentDamage = MetaGeneratedTool.getToolDamage(itemStack);
-
-        toolTip.add(StatCollector.translateToLocalFormatted("Tooltip_Damage", maxDamage - currentDamage, maxDamage));
-    }
-
-    @Override
     public String getUnlocalizedName(ItemStack itemStack) {
         if (!itemStack.hasTagCompound()) return "ElectricProspectorTool";
         int meta = itemStack.stackTagCompound.getInteger("toolMeta");

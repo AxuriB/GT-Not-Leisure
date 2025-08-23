@@ -34,10 +34,12 @@ public class SuperDataAccessHatch extends MTEHatchDataAccess implements IAddGreg
     public SuperDataAccessHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
         mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_SuperDataAccessHatch_00");
+        initializeInventory();
     }
 
     public SuperDataAccessHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        initializeInventory();
     }
 
     @Override
@@ -48,7 +50,6 @@ public class SuperDataAccessHatch extends MTEHatchDataAccess implements IAddGreg
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        initializeInventory();
     }
 
     @Override
