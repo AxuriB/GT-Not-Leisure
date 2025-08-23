@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.FoodStats;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -21,6 +22,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import com.science.gtnl.common.effect.EffectBase;
 import com.science.gtnl.loader.EffectLoader;
+import com.science.gtnl.mixins.early.Minecraft.AccessorFoodStats;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -36,10 +38,20 @@ public class PotionGhostlyShape extends EffectBase {
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
         if (!(event.entity instanceof EntityPlayer player)) return;
+
         PotionEffect effect = player.getActivePotionEffect(this);
         if (effect == null) {
             affectedPlayers.remove(player);
+            return;
         }
+
+        FoodStats fs = player.getFoodStats();
+        AccessorFoodStats acc = (AccessorFoodStats) fs;
+
+        acc.setFoodlevel(fs.getFoodLevel());
+        acc.setFoodSaturationLevel(fs.getSaturationLevel());
+        acc.setFoodExhaustionLevel(0.0f);
+        acc.setFoodTimer(0);
     }
 
     @Override

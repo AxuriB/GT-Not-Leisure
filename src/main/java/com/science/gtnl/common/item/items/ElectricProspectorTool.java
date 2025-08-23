@@ -67,9 +67,9 @@ public class ElectricProspectorTool extends Item {
     public int distTextIndex;
     public int mCosts = 1;
     public static final Map<Integer, Pair<Integer, Long>> mRangeMap = new HashMap<>();
+    public static final Set<Integer> metaSet = new HashSet<>();
 
     public static String CHAT_MSG_SEPARATOR = EnumChatFormatting.STRIKETHROUGH + "--------------------";
-    public static final Set<Integer> metaSet = new HashSet<>();
 
     public ElectricProspectorTool() {
         super();
@@ -77,6 +77,7 @@ public class ElectricProspectorTool extends Item {
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "ElectricProspectorTool");
         this.setMaxStackSize(1);
+        this.setMaxDamage(1);
     }
 
     public static ItemStack initItem(String aName, int aMeta, int aRange, long maxDamage) {
@@ -84,26 +85,41 @@ public class ElectricProspectorTool extends Item {
         ItemStack stack = MetaItemStackUtils
             .initMetaItemStack(aName, aMeta, ItemLoader.electricProspectorTool, metaSet);
         setToolMaxDamage(stack, maxDamage);
+        if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
+        stack.stackTagCompound.setInteger("toolMeta", aMeta);
         return stack;
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return Math.toIntExact(MetaGeneratedTool.getToolDamage(stack));
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return Math.toIntExact(MetaGeneratedTool.getToolMaxDamage(stack));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> toolTip,
         boolean advancedToolTips) {
-        toolTip.add(
-            StatCollector.translateToLocalFormatted(
-                "Tooltip_Damage",
-                mRangeMap.get(itemStack.getItemDamage())
-                    .getRight() - MetaGeneratedTool.getToolDamage(itemStack),
-                mRangeMap.get(itemStack.getItemDamage())
-                    .getRight()));
+        if (!itemStack.hasTagCompound()) return;
+        int meta = itemStack.stackTagCompound.getInteger("toolMeta");
+        Pair<Integer, Long> rangeAndMax = mRangeMap.get(meta);
+        if (rangeAndMax == null) return;
 
+        long maxDamage = rangeAndMax.getRight();
+        long currentDamage = MetaGeneratedTool.getToolDamage(itemStack);
+
+        toolTip.add(StatCollector.translateToLocalFormatted("Tooltip_Damage", maxDamage - currentDamage, maxDamage));
     }
 
     @Override
-    public String getUnlocalizedName(ItemStack aItemStack) {
-        return "ElectricProspectorTool." + aItemStack.getItemDamage();
+    public String getUnlocalizedName(ItemStack itemStack) {
+        if (!itemStack.hasTagCompound()) return "ElectricProspectorTool";
+        int meta = itemStack.stackTagCompound.getInteger("toolMeta");
+        return "ElectricProspectorTool." + meta;
     }
 
     @Override
@@ -134,11 +150,16 @@ public class ElectricProspectorTool extends Item {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> aList) {
         for (int meta : metaSet) {
-            ItemStack stack = new ItemStack(ItemLoader.electricProspectorTool, 1, meta);
+            ItemStack stack = new ItemStack(ItemLoader.electricProspectorTool, 1, 0);
+
             setToolMaxDamage(
                 stack,
                 mRangeMap.get(meta)
                     .getRight());
+
+            if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
+            stack.stackTagCompound.setInteger("toolMeta", meta);
+
             aList.add(stack);
         }
     }
@@ -146,10 +167,11 @@ public class ElectricProspectorTool extends Item {
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         if (!aWorld.isRemote) {
-            setToolMaxDamage(
-                aStack,
-                mRangeMap.get(aStack.getItemDamage())
-                    .getRight());
+            if (!aStack.hasTagCompound()) aStack.setTagCompound(new NBTTagCompound());
+            int meta = aStack.stackTagCompound.getInteger("toolMeta");
+            Pair<Integer, Long> rangeMap = mRangeMap.get(meta);
+            if (rangeMap == null) return aStack;
+            setToolMaxDamage(aStack, rangeMap.getRight());
             int data = getDetravData(aStack);
             if (aPlayer.isSneaking()) {
                 data++;
@@ -165,8 +187,7 @@ public class ElectricProspectorTool extends Item {
 
             int cX = ((int) aPlayer.posX) >> 4;
             int cZ = ((int) aPlayer.posZ) >> 4;
-            int size = mRangeMap.get(aStack.getItemDamage())
-                .getLeft();
+            int size = rangeMap.getLeft();
             List<Chunk> chunks = new ArrayList<>();
             aPlayer.addChatMessage(new ChatComponentText("Scanning..."));
 
@@ -351,10 +372,11 @@ public class ElectricProspectorTool extends Item {
             return true;
         }
         if (!aWorld.isRemote) {
-            setToolMaxDamage(
-                aStack,
-                mRangeMap.get(aStack.getItemDamage())
-                    .getRight());
+            if (!aStack.hasTagCompound()) aStack.setTagCompound(new NBTTagCompound());
+            int meta = aStack.stackTagCompound.getInteger("toolMeta");
+            Pair<Integer, Long> rangeMap = mRangeMap.get(meta);
+            if (rangeMap == null) return true;
+            setToolMaxDamage(aStack, rangeMap.getRight());
             int polution = getPollution(aWorld, aX, aZ);
             addChatMassageByValue(aPlayer, polution, "Pollution");
             if (MetaGeneratedTool.getToolDamage(aStack) >= MetaGeneratedTool.getToolMaxDamage(aStack)) {
@@ -371,8 +393,12 @@ public class ElectricProspectorTool extends Item {
 
         ores = new HashMap<>();
 
-        int range = mRangeMap.get(aStack.getItemDamage())
-            .getLeft();
+        if (!aStack.hasTagCompound()) aStack.setTagCompound(new NBTTagCompound());
+        int meta = aStack.stackTagCompound.getInteger("toolMeta");
+        Pair<Integer, Long> rangeMap = mRangeMap.get(meta);
+        if (rangeMap == null) return;
+
+        int range = rangeMap.getLeft();
         if ((range % 2) == 0) {
             range += 1; // kinda not needed here, divide takes it out, but we put it back in with the range+1 in the
             // loop

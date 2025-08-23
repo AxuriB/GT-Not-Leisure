@@ -739,6 +739,8 @@ MetaItem.102.name=钢涡轮
 Tooltip_SteelTurbine_00=稳如长桌
 MetaItem.103.name=无管蒸汽覆盖板
 
+item.SuspiciousStew.name=迷之炖菜
+
 item.SteamRocket.name=蒸汽火箭
 Tooltip_SteamRocket_00=需要熔融压缩蒸汽作为燃料
 Tooltip_SteamRocket_01=你就是玩缺氧玩的！

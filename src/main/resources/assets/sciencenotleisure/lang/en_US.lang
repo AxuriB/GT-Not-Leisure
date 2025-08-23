@@ -739,6 +739,8 @@ MetaItem.102.name=Steel Turbine
 Tooltip_SteelTurbine_00=Stable like a Table
 MetaItem.103.name=Pipeless Steam Cover
 
+item.SuspiciousStew.name=Suspicious Stew
+
 item.SteamRocket.name=Steam Rocket
 Tooltip_SteamRocket_00=Requires Molten Compressed Steam as fuel
 Tooltip_SteamRocket_01=You must be someone who plays Oxygen Not Included!

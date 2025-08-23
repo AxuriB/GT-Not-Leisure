@@ -250,6 +250,7 @@ public enum GTNLItemList implements IItemContainer {
     InfinityCobblestoneCell,
     NullPointerException,
     NetherTeleporter,
+    SuspiciousStew,
 
     SatietyRing,
     SuperReachRing,

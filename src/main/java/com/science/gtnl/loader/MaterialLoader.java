@@ -58,6 +58,10 @@ public class MaterialLoader {
 
     public static void loadCompleteInit() {
         ScriptLoader.registry();
+
+        if (Mods.Nutrition.isModLoaded()) {
+            NutrientLoader.registry();
+        }
     }
 
     public static void loadOreDictionaryRecipes() {
