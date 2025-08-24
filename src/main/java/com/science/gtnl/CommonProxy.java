@@ -7,6 +7,12 @@ import net.minecraftforge.common.MinecraftForge;
 import com.science.gtnl.Utils.SubscribeEventUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
 import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerAdvancedWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableFurnace;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiAdvancedWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
@@ -24,6 +30,11 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.enums.Mods;
 
 public class CommonProxy implements IGuiHandler {
+
+    public static final int DetravScannerGUI = 0;
+    public static final int PortableBasicWorkBenchGUI = 1;
+    public static final int PortableAdvancedWorkBenchGUI = 2;
+    public static final int PortableFurnaceGUI = 3;
 
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
@@ -64,14 +75,21 @@ public class CommonProxy implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        if (ID == PortableBasicWorkBenchGUI) return new ContainerBasicWorkbench(player, world);
+        if (ID == PortableAdvancedWorkBenchGUI)
+            return new ContainerAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem());
+        if (ID == PortableFurnaceGUI)
+            return new ContainerPortableFurnace(player.inventory, player.worldObj, player.getHeldItem());
         return null;
     }
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == DetravScannerGUI.GUI_ID) {
-            return new DetravScannerGUI();
-        }
+        if (ID == DetravScannerGUI) return new DetravScannerGUI();
+        if (ID == PortableBasicWorkBenchGUI) return new GuiBasicWorkbench(player.inventory, world);
+        if (ID == PortableAdvancedWorkBenchGUI) return new GuiAdvancedWorkbench(
+            new ContainerAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem()));
+        if (ID == PortableFurnaceGUI) return new GuiPortableFurnace(player.inventory);
         return null;
     }
 

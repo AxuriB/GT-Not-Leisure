@@ -531,7 +531,7 @@ tile.PlayerLeash.name=Leash Barrier
 entity.sciencenotleisure.PlayerLeashKnot.name=Leash Barrier
 Tooltip_PlayerLeash_00=Creates a powerful leash field that allows the placer to fly
 
-ElectricProspectorTool.0.name=Mana Teleport Prospector Tool
+item.ElectricProspectorTool.0.name=Mana Teleport Prospector Tool
 Info_DetravScanner_TP=Teleport to vein: %s (%s, %s)
 
 MetaItem.0.name=Troll Face
@@ -761,6 +761,15 @@ Tooltip_Testitem_10=This is §dmore focused on adding content to the original GT
 Tooltip_Testitem_11=§f§lIf you encounter any issues or want to make suggestions, please submit an issue on Github
 Tooltip_Testitem_12=The machines added by this mod start from meta value 21000
 Tooltip_Testitem_13=§c§lAlso reminder: Do not right-click with this item!
+
+item.PortableItem.0.name=Portable Workbench
+item.PortableItem.1.name=Advanced Portable Workbench
+item.PortableItem.2.name=Portable Furnace
+
+item.VeinMiningPickaxe.name=Vein Mining Pickaxe
+Tooltip_VeinMiningPickaxe_00=Max Block Gap: %s
+Tooltip_VeinMiningPickaxe_PreciseMode_On=§aPrecise Mode Enabled
+Tooltip_VeinMiningPickaxe_PreciseMode_Off=§rPrecise Mode Disabled
 
 item.NetherTeleporter.name=Nether Teleporter Tool
 Info_NetherTeleporter_Cooldown=Remaining cooldown: 

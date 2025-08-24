@@ -252,6 +252,9 @@ public enum GTNLItemList implements IItemContainer {
     NetherTeleporter,
     SuspiciousStew,
     VeinMiningPickaxe,
+    PortableBasicWorkBench,
+    PortableAdvancedWorkBench,
+    PortableFurnace,
 
     SatietyRing,
     SuperReachRing,

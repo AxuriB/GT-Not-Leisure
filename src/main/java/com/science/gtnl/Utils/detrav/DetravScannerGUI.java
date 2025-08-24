@@ -19,16 +19,15 @@ import gregtech.api.util.GTUtility;
 
 public class DetravScannerGUI extends GuiScreen {
 
-    public static final int GUI_ID = 21;
-    private static DetravMapTexture map = null;
-    OresList oresList = null;
+    public static DetravMapTexture map = null;
+    public OresList oresList = null;
 
-    private final static int minHeight = 128;
-    private final static int minWidth = 128;
-    private int prevW;
-    private int prevH;
+    public final static int minHeight = 128;
+    public final static int minWidth = 128;
+    public int prevW;
+    public int prevH;
 
-    private static final ResourceLocation back = new ResourceLocation("gregtech:textures/gui/propick.png");
+    public static final ResourceLocation back = new ResourceLocation("gregtech:textures/gui/propick.png");
 
     public DetravScannerGUI() {
 

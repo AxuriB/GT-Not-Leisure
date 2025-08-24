@@ -242,5 +242,7 @@ public class RecipeLoader {
 
         API.addRecipeCatalyst(GTNLItemList.ReactionFurnace.get(1), "smelting");
         API.addRecipeCatalyst(GTNLItemList.LargeSteamFurnace.get(1), "smelting");
+        API.addRecipeCatalyst(GTNLItemList.PortableBasicWorkBench.get(1), "crafting");
+        API.addRecipeCatalyst(GTNLItemList.PortableAdvancedWorkBench.get(1), "crafting");
     }
 }

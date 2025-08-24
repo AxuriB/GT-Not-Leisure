@@ -35,6 +35,7 @@ import com.science.gtnl.common.item.items.GTNLItemBucket;
 import com.science.gtnl.common.item.items.KFCFamily;
 import com.science.gtnl.common.item.items.NetherTeleporter;
 import com.science.gtnl.common.item.items.NullPointerException;
+import com.science.gtnl.common.item.items.PortableItem;
 import com.science.gtnl.common.item.items.SlimeSaddle;
 import com.science.gtnl.common.item.items.SteamRocketItem;
 import com.science.gtnl.common.item.items.SuspiciousStew;
@@ -77,6 +78,7 @@ public class ItemLoader {
     public static ItemInfinityCell infinityCell;
     public static Item suspiciousStew;
     public static Item veinMiningPickaxe;
+    public static Item portableItem;
 
     public static Item electricProspectorTool;
 
@@ -92,6 +94,7 @@ public class ItemLoader {
     public static ItemStack infinityCobblestoneCell;
 
     public static void registryItems() {
+        portableItem = new PortableItem();
         veinMiningPickaxe = new VeinMiningPickaxe();
         suspiciousStew = new SuspiciousStew();
         steamRocket = new SteamRocketItem();
@@ -169,6 +172,7 @@ public class ItemLoader {
             "InfinityCobblestoneCell",
             ItemInfinityCell.SubItem.getInstance(Blocks.cobblestone));
 
+        GameRegistry.registerItem(portableItem, "PortableItem");
         GameRegistry.registerItem(veinMiningPickaxe, "VeinMiningPickaxe");
         GameRegistry.registerItem(suspiciousStew, "SuspiciousStew");
         GameRegistry.registerItem(steamRocket, "SteamRocket");

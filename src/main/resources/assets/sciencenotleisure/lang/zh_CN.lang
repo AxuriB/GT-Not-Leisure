@@ -531,7 +531,7 @@ tile.PlayerLeash.name=拴绳结界
 entity.sciencenotleisure.PlayerLeashKnot.name=拴绳结界
 Tooltip_PlayerLeash_00=创造一个强大的拴绳立场，允许放置其方块的玩家在一定范围内飞行
 
-ElectricProspectorTool.0.name=魔力传送探矿仪
+item.ElectricProspectorTool.0.name=魔力传送探矿仪
 Info_DetravScanner_TP=传送至矿脉：%s (%s，%s)
 
 MetaItem.0.name=愚人脸
@@ -761,6 +761,10 @@ Tooltip_Testitem_10=这是§d更加侧重于为原版GTNH添加内容的模组�
 Tooltip_Testitem_11=§f§l如果你遇到了什么问题或者想提出意见，请在Github提交issue
 Tooltip_Testitem_12=本模组添加的机器meta值从21000开始
 Tooltip_Testitem_13=§c§l另外提醒：不要拿着这个物品右键！
+
+item.PortableItem.0.name=便携工作台
+item.PortableItem.1.name=高级便携工作台
+item.PortableItem.2.name=便携熔炉
 
 item.VeinMiningPickaxe.name=矿脉挖掘镐
 Tooltip_VeinMiningPickaxe_00=最大方块间隔: %s

@@ -104,7 +104,7 @@ public class ElectricProspectorTool extends Item {
     public String getUnlocalizedName(ItemStack itemStack) {
         if (!itemStack.hasTagCompound()) return "ElectricProspectorTool";
         int meta = itemStack.stackTagCompound.getInteger("toolMeta");
-        return "ElectricProspectorTool." + meta;
+        return "item.ElectricProspectorTool." + meta;
     }
 
     @Override

@@ -12,7 +12,7 @@ import com.reavaritia.common.SubscribeEventUtils;
 import com.reavaritia.common.block.BlockRegister;
 import com.reavaritia.common.block.ExtremeAnvil.EntityExtremeAnvil;
 import com.reavaritia.common.block.ExtremeAnvil.ExtremeAnvilPacket;
-import com.reavaritia.common.block.GooeyHandler;
+import com.reavaritia.common.block.GuiHandler;
 import com.reavaritia.common.item.BlazeSword;
 import com.reavaritia.common.item.ChronarchsClock;
 import com.science.gtnl.Utils.enums.ModList;
@@ -54,7 +54,7 @@ public class ReAvaritia {
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
         proxy.makeThingsPretty();
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GooeyHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
     }
 
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the

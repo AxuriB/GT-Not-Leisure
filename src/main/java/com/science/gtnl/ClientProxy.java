@@ -141,7 +141,7 @@ public class ClientProxy extends CommonProxy {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         player.openGui(
             ScienceNotLeisure.instance,
-            DetravScannerGUI.GUI_ID,
+            DetravScannerGUI,
             player.worldObj,
             (int) player.posX,
             (int) player.posY,
