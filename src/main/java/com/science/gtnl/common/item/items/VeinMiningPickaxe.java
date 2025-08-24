@@ -24,6 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bsideup.jabel.Desugar;
@@ -39,7 +40,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
     public VeinMiningPickaxe() {
-        super(ToolMaterial.EMERALD);
+        super(EnumHelper.addToolMaterial("VEIN", 9, 50000, 10, 3, 10));
         this.setUnlocalizedName("VeinMiningPickaxe");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "VeinMiningPickaxe");
@@ -124,6 +125,12 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
     public void clearConnectedBlocks(EntityPlayer player, ItemStack stack, int x, int y, int z, Block targetBlock,
         int targetMeta, int maxGap, boolean preciseMode) {
+        if (player.getFoodStats()
+            .getFoodLevel() <= 0
+            && player.getFoodStats()
+                .getSaturationLevel() <= 0f) {
+            return;
+        }
         World world = player.worldObj;
         Queue<Node> queue = new ArrayDeque<>();
         Set<Long> visited = new HashSet<>();
@@ -156,21 +163,22 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
                 int[] oreIds = OreDictionary.getOreIDs(stackAt);
                 for (int id : oreIds) {
                     String name = OreDictionary.getOreName(id);
-                    if (preciseMode) {
-                        int[] targetIds = OreDictionary.getOreIDs(new ItemStack(targetBlock, 1, targetMeta));
-                        for (int tid : targetIds) {
-                            String tname = OreDictionary.getOreName(tid);
+                    int[] targetIds = OreDictionary.getOreIDs(new ItemStack(targetBlock, 1, targetMeta));
+                    for (int tid : targetIds) {
+                        String tname = OreDictionary.getOreName(tid);
+                        if (preciseMode) {
                             if (tname.equals(name)) {
                                 matches = true;
                                 break;
                             }
-                        }
-                    } else {
-                        if (name.startsWith("ore")) {
-                            matches = true;
-                            break;
+                        } else {
+                            if (tname.startsWith(name)) {
+                                matches = true;
+                                break;
+                            }
                         }
                     }
+
                     if (matches) break;
                 }
             }
@@ -199,8 +207,16 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
                 }
 
                 if (player.worldObj.rand.nextFloat() < 0.5f) {
-                    stack.damageItem(1, player);
-                    if (stack.stackSize <= 0) break;
+                    if (stack.getMaxDamage() > 0) {
+                        int currentDamage = stack.getItemDamage();
+                        if (currentDamage + 1 >= stack.getMaxDamage()) {
+                            world.playSoundEffect(player.posX, player.posY, player.posZ, "random.break", 1.0F, 1.0F);
+                            stack.stackSize = 0;
+                            break;
+                        } else {
+                            stack.setItemDamage(currentDamage + 1);
+                        }
+                    }
                 }
 
             } else {
@@ -233,7 +249,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         for (Map.Entry<ItemStackWrapper, Integer> entry : merged.entrySet()) {
             ItemStack dropStack = entry.getKey().stack.copy();
             dropStack.stackSize = entry.getValue();
-            ToolHelper.dropItem(dropStack, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+            ToolHelper.dropItem(dropStack, world, player.posX, player.posY + 1, player.posZ);
         }
     }
 

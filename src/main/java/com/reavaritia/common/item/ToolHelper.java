@@ -123,7 +123,7 @@ public class ToolHelper {
                     for (Map.Entry<ItemStackWrapper, Integer> entry : merged.entrySet()) {
                         ItemStack dropStack = entry.getKey().stack.copy();
                         dropStack.stackSize = entry.getValue();
-                        dropItem(dropStack, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+                        dropItem(dropStack, world, player.posX, player.posY + 1, player.posZ);
                     }
                 }
             }
@@ -151,12 +151,12 @@ public class ToolHelper {
         return world.rayTraceBlocks(vec3, vec31, wut);
     }
 
-    public static void dropItem(ItemStack drop, World world, int x, int y, int z) {
+    public static void dropItem(ItemStack drop, World world, double x, double y, double z) {
         float f = 0.7F;
         double d0 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
         double d1 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
         double d2 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, (double) x + d0, (double) y + d1, (double) z + d2, drop);
+        EntityItem entityitem = new EntityItem(world, x + d0, y + d1, z + d2, drop);
         entityitem.delayBeforeCanPickup = 10;
         world.spawnEntityInWorld(entityitem);
     }
