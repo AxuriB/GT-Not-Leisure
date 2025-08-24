@@ -102,10 +102,6 @@ public class PortableItem extends Item {
         ItemStack input = inv.getStackInSlot(0);
         ItemStack output = inv.getStackInSlot(2);
 
-        if (input == null) {
-            cookTime = 0;
-        }
-
         if (burnTime > 0) {
             burnTime--;
         }
@@ -119,19 +115,26 @@ public class PortableItem extends Item {
                 || (output.isItemEqual(result) && output.stackSize + result.stackSize <= output.getMaxStackSize()));
         }
 
-        if (burnTime == 0 && canSmelt && fuel != null && isItemFuel(fuel)) {
-            currentItemBurnTime = burnTime = TileEntityFurnace.getItemBurnTime(fuel);
-            if (fuel.stackSize == 1 && fuel.getItem()
-                .hasContainerItem(fuel)) {
-                inv.setInventorySlotContents(
-                    1,
-                    fuel.getItem()
-                        .getContainerItem(fuel));
-            } else {
-                fuel.stackSize--;
-                if (fuel.stackSize <= 0) inv.setInventorySlotContents(1, null);
+        if (burnTime == 0) {
+            currentItemBurnTime = 0;
+            if (canSmelt && fuel != null && isItemFuel(fuel)) {
+                currentItemBurnTime = burnTime = TileEntityFurnace.getItemBurnTime(fuel);
+                if (fuel.stackSize == 1 && fuel.getItem()
+                    .hasContainerItem(fuel)) {
+                    inv.setInventorySlotContents(
+                        1,
+                        fuel.getItem()
+                            .getContainerItem(fuel));
+                } else {
+                    fuel.stackSize--;
+                    if (fuel.stackSize <= 0) inv.setInventorySlotContents(1, null);
+                }
+                dirty = true;
             }
-            dirty = true;
+        }
+
+        if (input == null || !canSmelt) {
+            cookTime = 0;
         }
 
         if (burnTime > 0 && canSmelt) {
@@ -148,7 +151,8 @@ public class PortableItem extends Item {
                 dirty = true;
             }
         } else {
-            cookTime--;
+            cookTime = Math.max(0, cookTime - 1);
+            dirty = true;
         }
 
         if (dirty || burnTime != (stack.hasTagCompound() ? stack.getTagCompound()

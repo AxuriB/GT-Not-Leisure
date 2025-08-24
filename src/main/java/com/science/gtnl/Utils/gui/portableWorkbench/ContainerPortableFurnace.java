@@ -53,6 +53,17 @@ public class ContainerPortableFurnace extends Container {
     }
 
     @Override
+    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer player) {
+        ItemStack result = super.slotClick(slotId, clickedButton, mode, player);
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItemDamage() == 2 && held.getItem() instanceof PortableItem) {
+            PortableItem.saveFurnaceInventory(held, furnaceInventory);
+        }
+
+        return result;
+    }
+
+    @Override
     public void addCraftingToCrafters(ICrafting iCrafting) {
         super.addCraftingToCrafters(iCrafting);
         if (furnaceStack == null) return;
@@ -142,9 +153,9 @@ public class ContainerPortableFurnace extends Container {
                     if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return null;
                 } else if (PortableItem.isItemFuel(stackInSlot)) {
                     if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return null;
-                } else if (index >= 3 && index < 30) {
+                } else if (index < 30) {
                     if (!this.mergeItemStack(stackInSlot, 30, 39, false)) return null;
-                } else if (index >= 30 && index < 39) {
+                } else if (index < 39) {
                     if (!this.mergeItemStack(stackInSlot, 3, 30, false)) return null;
                 }
             } else {
