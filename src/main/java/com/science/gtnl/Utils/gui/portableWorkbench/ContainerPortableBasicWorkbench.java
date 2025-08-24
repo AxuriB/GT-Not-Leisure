@@ -7,9 +7,9 @@ import net.minecraft.world.World;
 
 import com.science.gtnl.common.item.items.PortableItem;
 
-public class ContainerBasicWorkbench extends ContainerWorkbench {
+public class ContainerPortableBasicWorkbench extends ContainerWorkbench {
 
-    public ContainerBasicWorkbench(EntityPlayer player, World world) {
+    public ContainerPortableBasicWorkbench(EntityPlayer player, World world) {
         super(player.inventory, world, 0, 0, 0);
     }
 

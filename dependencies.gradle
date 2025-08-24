@@ -3,6 +3,7 @@ dependencies {
     implementation('com.github.GTNewHorizons:AE2FluidCraft-Rework:1.4.106-gtnh:dev')
     implementation('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-669-GTNH:dev')
     implementation('com.github.GTNewHorizons:Avaritia:1.70:dev')
+    implementation('com.github.GTNewHorizons:Avaritiaddons:1.9.1-GTNH:dev')
     implementation('com.github.GTNewHorizons:BloodArsenal:1.4.10:dev')
     implementation('com.github.GTNewHorizons:BloodMagic:1.7.48:dev')
     implementation('com.github.GTNewHorizons:Botania:1.12.21-GTNH:dev')

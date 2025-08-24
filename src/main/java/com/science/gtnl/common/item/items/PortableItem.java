@@ -4,6 +4,8 @@ import static com.science.gtnl.ScienceNotLeisure.*;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,10 +29,20 @@ public class PortableItem extends Item {
     public static final int BASIC = 0;
     public static final int ADVANCED = 1;
     public static final int FURNACE = 2;
+    public static final int ANVIL = 3;
+    public static final int ENDERCHEST = 4;
+    public static final int ENCHANTING = 5;
+    public static final int COMPRESSEDCHEST = 6;
+    public static final int INFINITYCHEST = 7;
 
+    public IIcon enchantingIcon;
     public IIcon basicIcon;
     public IIcon advancedIcon;
     public IIcon furnaceIcon;
+    public IIcon anvilIcon;
+    public IIcon enderChestIcon;
+    public IIcon compressedChestIcon;
+    public IIcon infinityChestIcon;
 
     public PortableItem() {
         super();
@@ -42,6 +54,10 @@ public class PortableItem extends Item {
         GTNLItemList.PortableBasicWorkBench.set(new ItemStack(this, 1, BASIC));
         GTNLItemList.PortableAdvancedWorkBench.set(new ItemStack(this, 1, ADVANCED));
         GTNLItemList.PortableFurnace.set(new ItemStack(this, 1, FURNACE));
+        GTNLItemList.PortableAnvil.set(new ItemStack(this, 1, ANVIL));
+        GTNLItemList.PortableEnderChest.set(new ItemStack(this, 1, ENDERCHEST));
+        GTNLItemList.PortableCompressedChest.set(new ItemStack(this, 1, COMPRESSEDCHEST));
+        GTNLItemList.PortableInfinityChest.set(new ItemStack(this, 1, INFINITYCHEST));
     }
 
     @Override
@@ -59,6 +75,11 @@ public class PortableItem extends Item {
         basicIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableBasicWorkBench");
         advancedIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableAdvancedWorkBench");
         furnaceIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableFurnace");
+        anvilIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableAnvil");
+        enderChestIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableEnderChest");
+        enchantingIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableEnchanting");
+        compressedChestIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableCompressedChest");
+        infinityChestIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableInfinityChest");
     }
 
     @Override
@@ -66,6 +87,11 @@ public class PortableItem extends Item {
         if (meta == BASIC) return basicIcon;
         if (meta == ADVANCED) return advancedIcon;
         if (meta == FURNACE) return furnaceIcon;
+        if (meta == ANVIL) return anvilIcon;
+        if (meta == ENDERCHEST) return enderChestIcon;
+        if (meta == ENCHANTING) return enchantingIcon;
+        if (meta == COMPRESSEDCHEST) return compressedChestIcon;
+        if (meta == INFINITYCHEST) return infinityChestIcon;
         return basicIcon;
     }
 
@@ -79,6 +105,16 @@ public class PortableItem extends Item {
                 player.openGui(instance, CommonProxy.PortableAdvancedWorkBenchGUI, world, 0, 0, 0);
             } else if (meta == FURNACE) {
                 player.openGui(instance, CommonProxy.PortableFurnaceGUI, world, 0, 0, 0);
+            } else if (meta == ANVIL) {
+                player.openGui(instance, CommonProxy.PortableAnvilGUI, world, 0, 0, 0);
+            } else if (meta == ENDERCHEST) {
+                player.openGui(instance, CommonProxy.PortableEnderChestGUI, world, 0, 0, 0);
+            } else if (meta == ENCHANTING) {
+                player.openGui(instance, CommonProxy.PortableEnchantingGUI, world, 0, 0, 0);
+            } else if (meta == COMPRESSEDCHEST) {
+                player.openGui(instance, CommonProxy.PortableCompressedChestGUI, world, 0, 0, 0);
+            } else if (meta == INFINITYCHEST) {
+                player.openGui(instance, CommonProxy.PortableInfinityChestGUI, world, 0, 0, 0);
             }
         }
         return stack;
@@ -169,8 +205,8 @@ public class PortableItem extends Item {
         }
     }
 
-    public static IInventory getAdvancedInventory(ItemStack stack) {
-        InventoryBasic inv = new InventoryBasic("PortableAdvancedWorkbench", false, 9);
+    public static IInventory getAdvancedInventory(ItemStack stack, int size) {
+        InventoryBasic inv = new InventoryBasic("PortableAdvancedWorkbench", false, size);
 
         if (stack.hasTagCompound()) {
             NBTTagList list = stack.getTagCompound()
@@ -204,6 +240,51 @@ public class PortableItem extends Item {
         }
         stack.getTagCompound()
             .setTag("Items", list);
+    }
+
+    public static void saveInfinityInventory(@Nonnull ItemStack stack, @Nonnull IInventory inv) {
+        NBTTagList list = new NBTTagList();
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack slotStack = inv.getStackInSlot(i);
+            if (slotStack != null) {
+                NBTTagCompound slotTag = new NBTTagCompound();
+                slotTag.setShort("Slot", (short) i);
+                slotStack.writeToNBT(slotTag);
+                slotTag.setInteger("intCount", slotStack.stackSize);
+                if (slotStack.hasTagCompound()) {
+                    slotTag.setTag("tag", slotStack.getTagCompound());
+                }
+                list.appendTag(slotTag);
+            }
+        }
+
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        stack.getTagCompound()
+            .setTag("Contents", list);
+    }
+
+    public static void loadInfinityInventory(@Nonnull ItemStack stack, @Nonnull IInventory inv) {
+        if (!stack.hasTagCompound()) return;
+        NBTTagCompound compound = stack.getTagCompound();
+        if (!compound.hasKey("Contents")) return;
+
+        NBTTagList list = compound.getTagList("Contents", 10);
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound slotTag = list.getCompoundTagAt(i);
+            int slot = slotTag.getShort("Slot");
+            if (slot >= 0 && slot < inv.getSizeInventory()) {
+                ItemStack slotStack = ItemStack.loadItemStackFromNBT(slotTag);
+                if (slotStack != null) {
+                    slotStack.stackSize = slotTag.getInteger("intCount");
+                    if (slotTag.hasKey("tag")) {
+                        slotStack.setTagCompound(slotTag.getCompoundTag("tag"));
+                    }
+                    inv.setInventorySlotContents(slot, slotStack);
+                }
+            }
+        }
     }
 
     public static IInventory getFurnaceInventory(ItemStack stack) {
@@ -252,5 +333,10 @@ public class PortableItem extends Item {
         list.add(new ItemStack(item, 1, BASIC));
         list.add(new ItemStack(item, 1, ADVANCED));
         list.add(new ItemStack(item, 1, FURNACE));
+        list.add(new ItemStack(item, 1, ANVIL));
+        list.add(new ItemStack(item, 1, ENDERCHEST));
+        list.add(new ItemStack(item, 1, ENCHANTING));
+        list.add(new ItemStack(item, 1, COMPRESSEDCHEST));
+        list.add(new ItemStack(item, 1, INFINITYCHEST));
     }
 }

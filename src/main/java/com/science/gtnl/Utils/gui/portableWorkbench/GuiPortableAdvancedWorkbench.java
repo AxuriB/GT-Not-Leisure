@@ -10,11 +10,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiAdvancedWorkbench extends GuiContainer {
+public class GuiPortableAdvancedWorkbench extends GuiContainer {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("textures/gui/container/crafting_table.png");
 
-    public GuiAdvancedWorkbench(ContainerAdvancedWorkbench container) {
+    public GuiPortableAdvancedWorkbench(ContainerPortableAdvancedWorkbench container) {
         super(container);
     }
 

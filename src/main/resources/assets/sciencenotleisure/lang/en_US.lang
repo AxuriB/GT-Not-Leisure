@@ -765,6 +765,11 @@ Tooltip_Testitem_13=§c§lAlso reminder: Do not right-click with this item!
 item.PortableItem.0.name=Portable Workbench
 item.PortableItem.1.name=Advanced Portable Workbench
 item.PortableItem.2.name=Portable Furnace
+item.PortableItem.3.name=Portable Anvil
+item.PortableItem.4.name=Portable Ender Chest
+item.PortableItem.5.name=Portable Enchanting Table
+item.PortableItem.6.name=Portable Compressed Chest
+item.PortableItem.7.name=Portable Infinity Chest
 
 item.VeinMiningPickaxe.name=Vein Mining Pickaxe
 Tooltip_VeinMiningPickaxe_00=Max Block Gap: %s

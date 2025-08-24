@@ -765,6 +765,11 @@ Tooltip_Testitem_13=§c§l另外提醒：不要拿着这个物品右键！
 item.PortableItem.0.name=便携工作台
 item.PortableItem.1.name=高级便携工作台
 item.PortableItem.2.name=便携熔炉
+item.PortableItem.3.name=便携铁砧
+item.PortableItem.4.name=便携末影箱
+item.PortableItem.5.name=便携附魔台
+item.PortableItem.6.name=便携压缩箱子
+item.PortableItem.7.name=便携无尽箱子
 
 item.VeinMiningPickaxe.name=矿脉挖掘镐
 Tooltip_VeinMiningPickaxe_00=最大方块间隔: %s

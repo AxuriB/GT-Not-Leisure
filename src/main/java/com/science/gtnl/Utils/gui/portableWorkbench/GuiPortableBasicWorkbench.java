@@ -8,9 +8,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiBasicWorkbench extends GuiCrafting {
+public class GuiPortableBasicWorkbench extends GuiCrafting {
 
-    public GuiBasicWorkbench(InventoryPlayer playerInv, World world) {
+    public GuiPortableBasicWorkbench(InventoryPlayer playerInv, World world) {
         super(playerInv, world, 0, 0, 0);
     }
 }

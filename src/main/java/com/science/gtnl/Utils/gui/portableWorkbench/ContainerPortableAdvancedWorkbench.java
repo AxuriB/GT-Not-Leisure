@@ -9,18 +9,18 @@ import net.minecraft.world.World;
 
 import com.science.gtnl.common.item.items.PortableItem;
 
-public class ContainerAdvancedWorkbench extends Container {
+public class ContainerPortableAdvancedWorkbench extends Container {
 
     public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
     public IInventory craftResult = new InventoryCraftResult();
     public World worldObj;
     public EntityPlayer player;
 
-    public ContainerAdvancedWorkbench(InventoryPlayer playerInventory, World world, ItemStack stack) {
+    public ContainerPortableAdvancedWorkbench(InventoryPlayer playerInventory, World world, ItemStack stack) {
         this.worldObj = world;
         this.player = playerInventory.player;
 
-        IInventory savedInv = PortableItem.getAdvancedInventory(stack);
+        IInventory savedInv = PortableItem.getAdvancedInventory(stack, 9);
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             craftMatrix.setInventorySlotContents(i, savedInv.getStackInSlot(i));
         }

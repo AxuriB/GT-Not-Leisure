@@ -27,5 +27,15 @@ public class NetWorkHandler {
         network.registerMessage(ContainerRollBACK.class, ContainerRollBACK.class, i++, Side.SERVER);
         network.registerMessage(SudoPacket.Handler.class, SudoPacket.class, i++, Side.CLIENT);
         network.registerMessage(NBTUpdatePacket.Handler.class, NBTUpdatePacket.class, i++, Side.SERVER);
+        network.registerMessage(
+            PortableInfinityChestSyncPacket.Handler.class,
+            PortableInfinityChestSyncPacket.class,
+            i++,
+            Side.SERVER);
+        network.registerMessage(
+            PortableInfinityChestSyncPacket.Handler.class,
+            PortableInfinityChestSyncPacket.class,
+            i++,
+            Side.CLIENT);
     }
 }

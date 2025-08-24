@@ -7,12 +7,22 @@ import net.minecraftforge.common.MinecraftForge;
 import com.science.gtnl.Utils.SubscribeEventUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
 import com.science.gtnl.Utils.enums.ModList;
-import com.science.gtnl.Utils.gui.portableWorkbench.ContainerAdvancedWorkbench;
-import com.science.gtnl.Utils.gui.portableWorkbench.ContainerBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAnvil;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableCompressedChest;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableEnchanting;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableEnderChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableFurnace;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiAdvancedWorkbench;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableInfinityChest;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAnvil;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableEnchanting;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableEnderChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableCompressedChest;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableInfinityChest;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
@@ -35,6 +45,11 @@ public class CommonProxy implements IGuiHandler {
     public static final int PortableBasicWorkBenchGUI = 1;
     public static final int PortableAdvancedWorkBenchGUI = 2;
     public static final int PortableFurnaceGUI = 3;
+    public static final int PortableAnvilGUI = 4;
+    public static final int PortableEnderChestGUI = 5;
+    public static final int PortableEnchantingGUI = 6;
+    public static final int PortableCompressedChestGUI = 7;
+    public static final int PortableInfinityChestGUI = 8;
 
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
@@ -75,21 +90,37 @@ public class CommonProxy implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == PortableBasicWorkBenchGUI) return new ContainerBasicWorkbench(player, world);
+        if (ID == PortableBasicWorkBenchGUI) return new ContainerPortableBasicWorkbench(player, world);
         if (ID == PortableAdvancedWorkBenchGUI)
-            return new ContainerAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem());
+            return new ContainerPortableAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem());
         if (ID == PortableFurnaceGUI)
             return new ContainerPortableFurnace(player.inventory, player.worldObj, player.getHeldItem());
+        if (ID == CommonProxy.PortableAnvilGUI) return new ContainerPortableAnvil(player.inventory, player);
+        if (ID == CommonProxy.PortableEnderChestGUI)
+            return new ContainerPortableEnderChest(player.inventory, player.getInventoryEnderChest());
+        if (ID == CommonProxy.PortableEnchantingGUI) return new ContainerPortableEnchanting(player.inventory, world);
+        if (ID == CommonProxy.PortableCompressedChestGUI)
+            return new ContainerPortableCompressedChest(player.getHeldItem(), player.inventory);
+        if (ID == CommonProxy.PortableInfinityChestGUI)
+            return new ContainerPortableInfinityChest(player.getHeldItem(), player.inventory);
         return null;
     }
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (ID == DetravScannerGUI) return new DetravScannerGUI();
-        if (ID == PortableBasicWorkBenchGUI) return new GuiBasicWorkbench(player.inventory, world);
-        if (ID == PortableAdvancedWorkBenchGUI) return new GuiAdvancedWorkbench(
-            new ContainerAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem()));
+        if (ID == PortableBasicWorkBenchGUI) return new GuiPortableBasicWorkbench(player.inventory, world);
+        if (ID == PortableAdvancedWorkBenchGUI) return new GuiPortableAdvancedWorkbench(
+            new ContainerPortableAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem()));
         if (ID == PortableFurnaceGUI) return new GuiPortableFurnace(player.inventory);
+        if (ID == CommonProxy.PortableAnvilGUI) return new GuiPortableAnvil(player.inventory, world);
+        if (ID == CommonProxy.PortableEnderChestGUI)
+            return new GuiPortableEnderChest(player.inventory, player.getInventoryEnderChest());
+        if (ID == CommonProxy.PortableEnchantingGUI) return new GuiPortableEnchanting(player.inventory, world);
+        if (ID == CommonProxy.PortableCompressedChestGUI)
+            return new GuiPortablePortableCompressedChest(player.getHeldItem(), player.inventory);
+        if (ID == CommonProxy.PortableInfinityChestGUI)
+            return new GuiPortablePortableInfinityChest(player.getHeldItem(), player.inventory);
         return null;
     }
 

@@ -255,6 +255,10 @@ public enum GTNLItemList implements IItemContainer {
     PortableBasicWorkBench,
     PortableAdvancedWorkBench,
     PortableFurnace,
+    PortableAnvil,
+    PortableEnderChest,
+    PortableCompressedChest,
+    PortableInfinityChest,
 
     SatietyRing,
     SuperReachRing,
