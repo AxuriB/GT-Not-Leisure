@@ -26,5 +26,6 @@ public class NetWorkHandler {
         network.registerMessage(WirelessPickBlock.class, WirelessPickBlock.class, i++, Side.SERVER);
         network.registerMessage(ContainerRollBACK.class, ContainerRollBACK.class, i++, Side.SERVER);
         network.registerMessage(SudoPacket.Handler.class, SudoPacket.class, i++, Side.CLIENT);
+        network.registerMessage(NBTUpdatePacket.Handler.class, NBTUpdatePacket.class, i++, Side.SERVER);
     }
 }

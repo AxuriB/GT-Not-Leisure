@@ -41,6 +41,7 @@ import com.science.gtnl.common.item.items.SuspiciousStew;
 import com.science.gtnl.common.item.items.TestItem;
 import com.science.gtnl.common.item.items.TimeStopPocketWatch;
 import com.science.gtnl.common.item.items.TwilightSword;
+import com.science.gtnl.common.item.items.VeinMiningPickaxe;
 
 import appeng.api.storage.StorageChannel;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -75,6 +76,7 @@ public class ItemLoader {
     public static ItemBucket shimmerBucket;
     public static ItemInfinityCell infinityCell;
     public static Item suspiciousStew;
+    public static Item veinMiningPickaxe;
 
     public static Item electricProspectorTool;
 
@@ -90,6 +92,7 @@ public class ItemLoader {
     public static ItemStack infinityCobblestoneCell;
 
     public static void registryItems() {
+        veinMiningPickaxe = new VeinMiningPickaxe();
         suspiciousStew = new SuspiciousStew();
         steamRocket = new SteamRocketItem();
         nullPointerException = new NullPointerException();
@@ -166,6 +169,7 @@ public class ItemLoader {
             "InfinityCobblestoneCell",
             ItemInfinityCell.SubItem.getInstance(Blocks.cobblestone));
 
+        GameRegistry.registerItem(veinMiningPickaxe, "VeinMiningPickaxe");
         GameRegistry.registerItem(suspiciousStew, "SuspiciousStew");
         GameRegistry.registerItem(steamRocket, "SteamRocket");
         GameRegistry.registerItem(nullPointerException, "NullPointerException");

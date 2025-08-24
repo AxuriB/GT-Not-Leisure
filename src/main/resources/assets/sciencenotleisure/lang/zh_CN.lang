@@ -762,6 +762,11 @@ Tooltip_Testitem_11=§f§l如果你遇到了什么问题或者想提出意见，
 Tooltip_Testitem_12=本模组添加的机器meta值从21000开始
 Tooltip_Testitem_13=§c§l另外提醒：不要拿着这个物品右键！
 
+item.VeinMiningPickaxe.name=矿脉挖掘镐
+Tooltip_VeinMiningPickaxe_00=最大方块间隔: %s
+Tooltip_VeinMiningPickaxe_PreciseMode_On=§a精确模式已开启
+Tooltip_VeinMiningPickaxe_PreciseMode_Off=§r精确模式已关闭
+
 item.NetherTeleporter.name=下界传送仪
 Info_NetherTeleporter_Cooldown=剩余冷却时间: 
 Info_NetherTeleporter_Warning=没有安全的落脚点！

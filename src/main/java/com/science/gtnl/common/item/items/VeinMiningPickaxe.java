@@ -1,0 +1,354 @@
+package com.science.gtnl.common.item.items;
+
+import static com.science.gtnl.ScienceNotLeisure.*;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemPickaxe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
+
+import com.github.bsideup.jabel.Desugar;
+import com.reavaritia.common.SubtitleDisplay;
+import com.reavaritia.common.item.ItemStackWrapper;
+import com.reavaritia.common.item.ToolHelper;
+import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.packet.NBTUpdatePacket;
+import com.science.gtnl.loader.ItemLoader;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
+
+    public VeinMiningPickaxe() {
+        super(ToolMaterial.EMERALD);
+        this.setUnlocalizedName("VeinMiningPickaxe");
+        this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
+        this.setTextureName(RESOURCE_ROOT_ID + ":" + "VeinMiningPickaxe");
+        this.setMaxStackSize(1);
+        this.setMaxDamage(50000);
+        MinecraftForge.EVENT_BUS.register(this);
+        GTNLItemList.VeinMiningPickaxe.set(new ItemStack(this, 1));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> toolTip,
+        boolean advancedToolTips) {
+        NBTTagCompound tags = itemStack.getTagCompound();
+        int range = 3;
+        boolean preciseMode = false;
+
+        if (tags != null) {
+            if (tags.hasKey("range")) {
+                range = Math.max(0, Math.min(7, tags.getInteger("range")));
+            }
+            if (tags.hasKey("preciseMode")) {
+                preciseMode = tags.getBoolean("preciseMode");
+            }
+        }
+
+        toolTip.add(StatCollector.translateToLocalFormatted("Tooltip_VeinMiningPickaxe_00", range));
+        toolTip.add(
+            StatCollector.translateToLocal(
+                preciseMode ? "Tooltip_VeinMiningPickaxe_PreciseMode_On"
+                    : "Tooltip_VeinMiningPickaxe_PreciseMode_Off"));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack, int pass) {
+        NBTTagCompound nbt = stack.getTagCompound();
+        return nbt != null && nbt.getBoolean("preciseMode");
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (player.isSneaking()) {
+            NBTTagCompound tags = stack.getTagCompound();
+            if (tags == null) {
+                tags = new NBTTagCompound();
+                stack.setTagCompound(tags);
+            }
+
+            boolean isPreciseMode = !tags.getBoolean("preciseMode");
+            tags.setBoolean("preciseMode", isPreciseMode);
+            player.swingItem();
+
+            if (world.isRemote) {
+                String key = isPreciseMode ? StatCollector.translateToLocal("Tooltip_VeinMiningPickaxe_PreciseMode_On")
+                    : StatCollector.translateToLocal("Tooltip_VeinMiningPickaxe_PreciseMode_Off");
+                showSubtitle(key);
+            }
+        }
+        return stack;
+    }
+
+    @Override
+    public boolean onBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+        if (player.worldObj.isRemote) return false;
+        if (player.isSneaking()) {
+            int range = 3;
+            NBTTagCompound tags = stack.getTagCompound();
+            if (tags != null && tags.hasKey("range")) {
+                range = Math.max(0, Math.min(7, tags.getInteger("range")));
+            }
+
+            boolean preciseMode = tags != null && tags.getBoolean("preciseMode");
+            Block block = player.worldObj.getBlock(x, y, z);
+            int meta = player.worldObj.getBlockMetadata(x, y, z);
+
+            if (block != null) {
+                clearConnectedBlocks(player, stack, x, y, z, block, meta, range, preciseMode);
+            }
+        }
+        return false;
+    }
+
+    public void clearConnectedBlocks(EntityPlayer player, ItemStack stack, int x, int y, int z, Block targetBlock,
+        int targetMeta, int maxGap, boolean preciseMode) {
+        World world = player.worldObj;
+        Queue<Node> queue = new ArrayDeque<>();
+        Set<Long> visited = new HashSet<>();
+        int cleared = 0;
+        int blocksSinceHunger = 0;
+        List<ItemStack> allDrops = new ArrayList<>();
+
+        queue.add(new Node(x, y, z, 0));
+
+        while (!queue.isEmpty() && cleared < 32767) {
+            if (!player.isSneaking()) break;
+
+            Node node = queue.poll();
+            int px = node.x, py = node.y, pz = node.z;
+            int gap = node.gap;
+
+            long key = (((long) px) & 0x3FFFFFF) << 38 | (((long) py) & 0xFFF) << 26 | (((long) pz) & 0x3FFFFFF);
+            if (!visited.add(key)) continue;
+            if (!world.blockExists(px, py, pz)) continue;
+
+            Block block = world.getBlock(px, py, pz);
+            int meta = world.getBlockMetadata(px, py, pz);
+
+            boolean matches = false;
+
+            if (block == targetBlock && (!preciseMode || meta == targetMeta)) {
+                matches = true;
+            } else {
+                ItemStack stackAt = new ItemStack(block, 1, meta);
+                int[] oreIds = OreDictionary.getOreIDs(stackAt);
+                for (int id : oreIds) {
+                    String name = OreDictionary.getOreName(id);
+                    if (preciseMode) {
+                        int[] targetIds = OreDictionary.getOreIDs(new ItemStack(targetBlock, 1, targetMeta));
+                        for (int tid : targetIds) {
+                            String tname = OreDictionary.getOreName(tid);
+                            if (tname.equals(name)) {
+                                matches = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        if (name.startsWith("ore")) {
+                            matches = true;
+                            break;
+                        }
+                    }
+                    if (matches) break;
+                }
+            }
+
+            if (matches) {
+                List<ItemStack> drops = removeBlockAndGetDrops(
+                    player,
+                    stack,
+                    world,
+                    px,
+                    py,
+                    pz,
+                    block,
+                    EnchantmentHelper.getSilkTouchModifier(player),
+                    0);
+                allDrops.addAll(drops);
+
+                cleared++;
+                blocksSinceHunger++;
+                gap = 0;
+
+                if (blocksSinceHunger >= 50) {
+                    blocksSinceHunger = 0;
+                    if (player.getFoodStats()
+                        .getSaturationLevel() > 0f) {
+                        float sat = player.getFoodStats()
+                            .getSaturationLevel();
+                        player.getFoodStats()
+                            .setFoodSaturationLevel(Math.max(0f, sat - 1f));
+                    } else {
+                        player.getFoodStats()
+                            .addExhaustion(1f);
+                    }
+                }
+
+                if (player.worldObj.rand.nextFloat() < 0.5f) {
+                    stack.damageItem(1, player);
+                    if (stack.stackSize <= 0) break;
+                }
+
+            } else {
+                if (gap >= maxGap) continue;
+                gap++;
+            }
+
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        if (Math.abs(dx) + Math.abs(dy) + Math.abs(dz) == 1) {
+                            queue.add(new Node(px + dx, py + dy, pz + dz, gap));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (blocksSinceHunger > 0) {
+            if (player.getFoodStats()
+                .getSaturationLevel() > 0f) {
+                float sat = player.getFoodStats()
+                    .getSaturationLevel();
+                player.getFoodStats()
+                    .setFoodSaturationLevel(Math.max(0f, sat - 1f));
+            } else {
+                player.getFoodStats()
+                    .addExhaustion(1f);
+            }
+        }
+
+        Map<ItemStackWrapper, Integer> merged = new HashMap<>();
+        for (ItemStack drop : allDrops) {
+            if (drop == null) continue;
+            ItemStackWrapper key = new ItemStackWrapper(drop);
+            merged.put(key, merged.getOrDefault(key, 0) + drop.stackSize);
+        }
+        for (Map.Entry<ItemStackWrapper, Integer> entry : merged.entrySet()) {
+            ItemStack dropStack = entry.getKey().stack.copy();
+            dropStack.stackSize = entry.getValue();
+            ToolHelper.dropItem(dropStack, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+        }
+    }
+
+    public List<ItemStack> removeBlockAndGetDrops(EntityPlayer player, ItemStack stack, World world, int x, int y,
+        int z, Block block, boolean silk, int fortune) {
+        List<ItemStack> drops = new ArrayList<>();
+        if (!world.blockExists(x, y, z)) return drops;
+
+        Block blk = world.getBlock(x, y, z);
+        int meta = world.getBlockMetadata(x, y, z);
+
+        if (blk == null || blk.isAir(world, x, y, z)) return drops;
+        if (block != null && blk != block) return drops;
+
+        float hardness = blk.getBlockHardness(world, x, y, z);
+        if (hardness < 0) return drops;
+
+        if (!player.capabilities.isCreativeMode) {
+            blk.onBlockHarvested(world, x, y, z, meta, player);
+            if (blk.removedByPlayer(world, player, x, y, z, true)) {
+                blk.onBlockDestroyedByPlayer(world, x, y, z, meta);
+
+                if (silk) {
+                    ItemStack drop = blk
+                        .getPickBlock(ToolHelper.raytraceFromEntity(world, player, true, 10), world, x, y, z, player);
+                    if (drop != null) drops.add(drop);
+                } else {
+                    drops.addAll(blk.getDrops(world, x, y, z, meta, fortune));
+                }
+            }
+        } else {
+            world.setBlockToAir(x, y, z);
+        }
+        return drops;
+    }
+
+    @Desugar
+    private record Node(int x, int y, int z, int gap) {}
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void showSubtitle(String messageKey) {
+        IChatComponent component = new ChatComponentTranslation(messageKey);
+        component.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE));
+        Minecraft.getMinecraft().ingameGUI.func_110326_a(component.getFormattedText(), true);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void showSubtitle(String messageKey, int range) {
+        IChatComponent component = new ChatComponentTranslation(messageKey, range);
+        component.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE));
+        Minecraft.getMinecraft().ingameGUI.func_110326_a(component.getFormattedText(), true);
+    }
+
+    @SubscribeEvent
+    public void onMouseEvent(MouseEvent event) {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return;
+
+        if (!player.isSneaking()) return;
+
+        ItemStack held = player.getCurrentEquippedItem();
+        if (held == null) return;
+
+        if (held.getItem() != ItemLoader.veinMiningPickaxe) return;
+
+        if (event.dwheel == 0) return;
+
+        NBTTagCompound nbt = held.getTagCompound();
+        if (nbt == null) {
+            nbt = new NBTTagCompound();
+            held.setTagCompound(nbt);
+        }
+
+        int range = nbt.hasKey("range") ? nbt.getInteger("range") : 0;
+
+        if (event.dwheel > 0) {
+            range++;
+        } else {
+            range--;
+        }
+
+        if (range < 0) range = 0;
+        if (range > 7) range = 7;
+
+        nbt.setInteger("range", range);
+
+        showSubtitle("Tooltip_VeinMiningPickaxe_00", range);
+
+        network.sendToServer(new NBTUpdatePacket(player.inventory.currentItem, held));
+
+        event.setCanceled(true);
+    }
+
+}

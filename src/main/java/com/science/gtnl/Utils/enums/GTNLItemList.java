@@ -251,6 +251,7 @@ public enum GTNLItemList implements IItemContainer {
     NullPointerException,
     NetherTeleporter,
     SuspiciousStew,
+    VeinMiningPickaxe,
 
     SatietyRing,
     SuperReachRing,

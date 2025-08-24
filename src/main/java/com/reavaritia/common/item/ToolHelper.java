@@ -1,8 +1,7 @@
 package com.reavaritia.common.item;
 
-import static com.reavaritia.common.ItemLoader.InfinityAxe;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +15,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -31,7 +29,6 @@ public class ToolHelper {
     public static void removeBlocksInIteration(EntityPlayer player, ItemStack stack, World world, int x, int y, int z,
         int xs, int ys, int zs, int xe, int ye, int ze, Block block, Material[] materialsListing, boolean silk,
         int fortune, boolean dispose) {
-        float blockHardness = block == null ? 1F : block.getBlockHardness(world, x, y, z);
 
         if (!hammerdrops.containsKey(player) || hammerdrops.get(player) == null) {
             hammerdrops.put(player, new ArrayList<>());
@@ -51,7 +48,6 @@ public class ToolHelper {
                 materialsListing,
                 silk,
                 fortune,
-                blockHardness,
                 dispose);
 
         int meta = world.getBlockMetadata(x, y, z);
@@ -77,40 +73,62 @@ public class ToolHelper {
     }
 
     public static void removeBlockWithDrops(EntityPlayer player, ItemStack stack, World world, int x, int y, int z,
-        Block block, Material[] materialsListing, boolean silk, int fortune, float blockHardness, boolean dispose) {
+        Block block, Material[] materialsListing, boolean silk, int fortune, boolean dispose) {
+        removeBlockWithDrops(player, stack, world, x, y, z, block, materialsListing, silk, fortune, dispose, false);
+    }
+
+    public static void removeBlockWithDrops(EntityPlayer player, ItemStack stack, World world, int x, int y, int z,
+        Block block, Material[] materialsListing, boolean silk, int fortune, boolean dispose, boolean bypassMaterial) {
         if (!world.blockExists(x, y, z)) return;
 
         Block blk = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
 
+        if (blk == null || blk.isAir(world, x, y, z)) return;
         if (block != null && blk != block) return;
 
-        Material mat = world.getBlock(x, y, z)
-            .getMaterial();
-        if (!world.isRemote && blk != null && !blk.isAir(world, x, y, z)) {
-            if (blk == Blocks.grass && stack.getItem() == InfinityAxe) world.setBlock(x, y, z, Blocks.dirt);
-            if (!blk.canHarvestBlock(player, meta) || !isRightMaterial(mat, materialsListing)) return;
+        Material mat = blk.getMaterial();
+        if (!bypassMaterial && !isRightMaterial(mat, materialsListing)) return;
 
-            if (!player.capabilities.isCreativeMode) {
-                int localMeta = world.getBlockMetadata(x, y, z);
-                blk.onBlockHarvested(world, x, y, z, localMeta, player);
+        float hardness = blk.getBlockHardness(world, x, y, z);
+        if (hardness < 0) return;
 
-                if (blk.removedByPlayer(world, player, x, y, z, true)) {
-                    blk.onBlockDestroyedByPlayer(world, x, y, z, localMeta);
+        if (!player.capabilities.isCreativeMode) {
+            blk.onBlockHarvested(world, x, y, z, meta, player);
+            if (blk.removedByPlayer(world, player, x, y, z, true)) {
+                blk.onBlockDestroyedByPlayer(world, x, y, z, meta);
 
-                    if (!dispose) {
-                        if (blk.getPlayerRelativeBlockHardness(player, world, x, y, z) < 0
-                            && blk.quantityDropped(world.rand) == 0) {
-                            ItemStack drop = blk
-                                .getPickBlock(raytraceFromEntity(world, player, true, 10), world, x, y, z, player);
-                            if (drop == null) drop = new ItemStack(blk, 1, meta);
-                            dropItem(drop, world, x, y, z);
-                        }
-                        blk.harvestBlock(world, player, x, y, z, localMeta);
+                if (!dispose) {
+                    List<ItemStack> drops;
+                    if (silk) {
+                        ItemStack drop = blk.getPickBlock(
+                            ToolHelper.raytraceFromEntity(world, player, true, 10),
+                            world,
+                            x,
+                            y,
+                            z,
+                            player);
+                        drops = drop != null ? Collections.singletonList(drop) : Collections.emptyList();
+                    } else {
+                        drops = blk.getDrops(world, x, y, z, meta, fortune);
+                    }
+
+                    Map<ItemStackWrapper, Integer> merged = new HashMap<>();
+                    for (ItemStack drop : drops) {
+                        if (drop == null) continue;
+                        ItemStackWrapper key = new ItemStackWrapper(drop);
+                        merged.put(key, merged.getOrDefault(key, 0) + drop.stackSize);
+                    }
+
+                    for (Map.Entry<ItemStackWrapper, Integer> entry : merged.entrySet()) {
+                        ItemStack dropStack = entry.getKey().stack.copy();
+                        dropStack.stackSize = entry.getValue();
+                        dropItem(dropStack, world, (int) player.posX, (int) player.posY, (int) player.posZ);
                     }
                 }
-
-            } else world.setBlockToAir(x, y, z);
+            }
+        } else {
+            world.setBlockToAir(x, y, z);
         }
     }
 

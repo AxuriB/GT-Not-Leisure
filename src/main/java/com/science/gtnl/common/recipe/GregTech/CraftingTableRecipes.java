@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import com.dreammaster.item.NHItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.ItemList;
@@ -548,6 +549,12 @@ public class CraftingTableRecipes implements IRecipePool {
         GTModHandler.addShapelessCraftingRecipe(
             tectech.thing.CustomItemList.Machine_DebugGenny.get(1),
             new Object[] { GTNLItemList.DebugEnergyHatch.get(1) });
+
+        GTModHandler.addShapelessCraftingRecipe(
+            MaterialPool.Breel.get(OrePrefixes.dust, 3),
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1) });
 
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(

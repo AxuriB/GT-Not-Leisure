@@ -526,10 +526,7 @@ public class InfinityBucket extends Item implements IFluidContainerItem, Subtitl
     public void showSubtitle(String displayName, int remainingAmount) {
         String amountText = (remainingAmount == INFINITE_FLUID_AMOUNT) ? "∞" : remainingAmount + "L";
 
-        IChatComponent component = new ChatComponentTranslation(
-            StatCollector.translateToLocal("Tooltip_InfinityBucket_01"),
-            displayName,
-            amountText);
+        IChatComponent component = new ChatComponentTranslation("Tooltip_InfinityBucket_01", displayName, amountText);
         component.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE));
 
         Minecraft.getMinecraft().ingameGUI.func_110326_a(component.getFormattedText(), true);
