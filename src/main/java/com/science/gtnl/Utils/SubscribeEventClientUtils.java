@@ -1,5 +1,6 @@
 package com.science.gtnl.Utils;
 
+import static com.science.gtnl.ScienceNotLeisure.*;
 import static com.science.gtnl.common.packet.ClientSoundHandler.PLAYING_SOUNDS;
 import static com.science.gtnl.common.packet.ClientTitleDisplayHandler.*;
 import static com.science.gtnl.common.render.PlayerDollRenderManagerClient.textureCache;
@@ -16,11 +17,13 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderItemInFrameEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -34,9 +37,11 @@ import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.common.item.TimeStopManager;
 import com.science.gtnl.common.item.items.NullPointerException;
 import com.science.gtnl.common.packet.ClientTitleDisplayHandler;
+import com.science.gtnl.common.packet.NBTUpdatePacket;
 import com.science.gtnl.common.render.item.ItemNullPointerExceptionRender;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.EffectLoader;
+import com.science.gtnl.loader.ItemLoader;
 import com.science.gtnl.mixins.early.Minecraft.AccessorGuiChat;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -68,6 +73,46 @@ public class SubscribeEventClientUtils {
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         PLAYING_SOUNDS.clear();
+    }
+
+    @SubscribeEvent
+    public void onMouseEvent(MouseEvent event) {
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return;
+
+        if (!player.isSneaking()) return;
+
+        ItemStack held = player.getCurrentEquippedItem();
+        if (held == null) return;
+
+        if (held.getItem() != ItemLoader.veinMiningPickaxe) return;
+
+        if (event.dwheel == 0) return;
+
+        NBTTagCompound nbt = held.getTagCompound();
+        if (nbt == null) {
+            nbt = new NBTTagCompound();
+            held.setTagCompound(nbt);
+        }
+
+        int range = nbt.hasKey("range") ? nbt.getInteger("range") : 0;
+
+        if (event.dwheel > 0) {
+            range++;
+        } else {
+            range--;
+        }
+
+        if (range < 0) range = 0;
+        if (range > 7) range = 7;
+
+        nbt.setInteger("range", range);
+
+        ClientUtils.showSubtitle("Tooltip_VeinMiningPickaxe_00", range);
+
+        network.sendToServer(new NBTUpdatePacket(player.inventory.currentItem, held));
+
+        event.setCanceled(true);
     }
 
     @SubscribeEvent

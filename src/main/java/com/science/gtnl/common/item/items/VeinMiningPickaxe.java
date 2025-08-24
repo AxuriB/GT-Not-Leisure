@@ -24,8 +24,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.MouseEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bsideup.jabel.Desugar;
@@ -34,10 +32,7 @@ import com.reavaritia.common.item.ItemStackWrapper;
 import com.reavaritia.common.item.ToolHelper;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
-import com.science.gtnl.common.packet.NBTUpdatePacket;
-import com.science.gtnl.loader.ItemLoader;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -50,7 +45,6 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "VeinMiningPickaxe");
         this.setMaxStackSize(1);
         this.setMaxDamage(50000);
-        MinecraftForge.EVENT_BUS.register(this);
         GTNLItemList.VeinMiningPickaxe.set(new ItemStack(this, 1));
     }
 
@@ -309,46 +303,6 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         IChatComponent component = new ChatComponentTranslation(messageKey, range);
         component.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE));
         Minecraft.getMinecraft().ingameGUI.func_110326_a(component.getFormattedText(), true);
-    }
-
-    @SubscribeEvent
-    public void onMouseEvent(MouseEvent event) {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) return;
-
-        if (!player.isSneaking()) return;
-
-        ItemStack held = player.getCurrentEquippedItem();
-        if (held == null) return;
-
-        if (held.getItem() != ItemLoader.veinMiningPickaxe) return;
-
-        if (event.dwheel == 0) return;
-
-        NBTTagCompound nbt = held.getTagCompound();
-        if (nbt == null) {
-            nbt = new NBTTagCompound();
-            held.setTagCompound(nbt);
-        }
-
-        int range = nbt.hasKey("range") ? nbt.getInteger("range") : 0;
-
-        if (event.dwheel > 0) {
-            range++;
-        } else {
-            range--;
-        }
-
-        if (range < 0) range = 0;
-        if (range > 7) range = 7;
-
-        nbt.setInteger("range", range);
-
-        showSubtitle("Tooltip_VeinMiningPickaxe_00", range);
-
-        network.sendToServer(new NBTUpdatePacket(player.inventory.currentItem, held));
-
-        event.setCanceled(true);
     }
 
 }
