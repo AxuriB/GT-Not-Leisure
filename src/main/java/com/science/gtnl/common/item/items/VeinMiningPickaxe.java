@@ -194,16 +194,8 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
                 if (blocksSinceHunger >= 50) {
                     blocksSinceHunger = 0;
-                    if (player.getFoodStats()
-                        .getSaturationLevel() > 0f) {
-                        float sat = player.getFoodStats()
-                            .getSaturationLevel();
-                        player.getFoodStats()
-                            .setFoodSaturationLevel(Math.max(0f, sat - 1f));
-                    } else {
-                        player.getFoodStats()
-                            .addExhaustion(1f);
-                    }
+                    player.getFoodStats()
+                        .addExhaustion(1f);
                 }
 
                 if (player.worldObj.rand.nextFloat() < 0.5f) {
@@ -228,16 +220,8 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         }
 
         if (blocksSinceHunger > 0) {
-            if (player.getFoodStats()
-                .getSaturationLevel() > 0f) {
-                float sat = player.getFoodStats()
-                    .getSaturationLevel();
-                player.getFoodStats()
-                    .setFoodSaturationLevel(Math.max(0f, sat - 1f));
-            } else {
-                player.getFoodStats()
-                    .addExhaustion(1f);
-            }
+            player.getFoodStats()
+                .addExhaustion(1f);
         }
 
         Map<ItemStackWrapper, Integer> merged = new HashMap<>();
