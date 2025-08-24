@@ -58,6 +58,8 @@ public class ContainerPortableFurnace extends Container {
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItemDamage() == 2 && held.getItem() instanceof PortableItem) {
             PortableItem.saveFurnaceInventory(held, furnaceInventory);
+            furnaceInventory = PortableItem.getFurnaceInventory(held);
+            furnaceStack = held;
         }
 
         return result;

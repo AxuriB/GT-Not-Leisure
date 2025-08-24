@@ -2,8 +2,6 @@ package com.science.gtnl.common.machine.hatch;
 
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -13,8 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -48,6 +44,7 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
 
 import appeng.api.config.Actionable;
@@ -68,6 +65,7 @@ import appeng.util.item.AEFluidStack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
+import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -77,7 +75,6 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
@@ -87,34 +84,25 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
-    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable {
+    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
     private static final int SLOT_COUNT = 100;
-    public static final String COPIED_DATA_IDENTIFIER = "stockingHatch";
 
-    protected final FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
-    protected final FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
+    protected FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
+    protected FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
 
     // these two fields should ALWAYS be mutated simultaneously
     // in most cases, you should call setSavedFluid() instead of trying to write to the array directly
     // a desync of these two fields can lead to catastrophe
-    protected final FluidStack[] shadowStoredFluids = new FluidStack[SLOT_COUNT];
-    private final int[] savedStackSizes = new int[SLOT_COUNT];
+    protected FluidStack[] shadowStoredFluids = new FluidStack[SLOT_COUNT];
+    protected final int[] savedStackSizes = new int[SLOT_COUNT];
 
-    private boolean additionalConnection = false;
+    protected boolean additionalConnection = false;
 
-    protected BaseActionSource requestSource = null;
-
-    @Nullable
-    protected AENetworkProxy gridProxy = null;
-
-    private final boolean autoPullAvailable;
-    protected boolean autoPullFluidList = false;
-    protected int minAutoPullAmount = 1;
-    private int autoPullRefreshTime = 100;
-    protected boolean processingRecipe = false;
-    private boolean justHadNewFluids = false;
-    private boolean expediteRecipeCheck = false;
+    protected final boolean autoPullAvailable;
+    protected int autoPullRefreshTime = 100;
+    protected boolean justHadNewFluids = false;
+    protected boolean expediteRecipeCheck = false;
 
     protected static final int CONFIG_WINDOW_ID = 10;
 
@@ -132,23 +120,13 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
     }
 
     @Override
-    public String[] getDescription() {
-        return getDescriptionArray(autoPullAvailable);
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new SuperInputHatchME(mName, autoPullAvailable, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
-    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE) };
-    }
-
-    @Override
-    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_FLUID_HATCH) };
+    public String[] getDescription() {
+        return getDescriptionArray(autoPullAvailable);
     }
 
     @Override
@@ -162,13 +140,6 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
-    }
-
-    @Override
-    protected boolean isAllowedToWork() {
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
-
-        return igte != null && igte.isAllowedToWork();
     }
 
     private void refreshFluidList() {
@@ -249,11 +220,6 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
     }
 
     @Override
-    public void setRecipeCheck(boolean value) {
-        expediteRecipeCheck = value;
-    }
-
-    @Override
     public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
         // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
         // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
@@ -324,7 +290,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
     }
 
-    private void updateValidGridProxySides() {
+    public void updateValidGridProxySides() {
         if (additionalConnection) {
             getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
         } else {
@@ -348,13 +314,25 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
     }
 
     @Override
+    public boolean connectsToAllSides() {
+        return additionalConnection;
+    }
+
+    @Override
+    public void setConnectsToAllSides(boolean connects) {
+        additionalConnection = connects;
+        updateValidGridProxySides();
+    }
+
+    @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
                     (IGridProxyable) getBaseMetaTileEntity(),
                     "proxy",
-                    autoPullAvailable ? ItemList.Hatch_Input_ME_Advanced.get(1) : ItemList.Hatch_Input_ME.get(1),
+                    autoPullAvailable ? GTNLItemList.AdvancedSuperInputHatchME.get(1)
+                        : GTNLItemList.SuperInputHatchME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
@@ -548,26 +526,6 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
     }
 
     @Override
-    public boolean canTankBeEmptied() {
-        return false;
-    }
-
-    @Override
-    public boolean canTankBeFilled() {
-        return false;
-    }
-
-    @Override
-    public boolean doesEmptyContainers() {
-        return false;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
@@ -583,20 +541,18 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
             nbtTagList.appendTag(fluidTag);
         }
 
-        aNBT.setTag("storedFluids", nbtTagList);
-        aNBT.setBoolean("autoPull", autoPullFluidList);
-        aNBT.setInteger("minAmount", minAutoPullAmount);
+        aNBT.setTag("storedFluidsSuper", nbtTagList);
+        aNBT.setInteger("refreshTime", autoPullRefreshTime);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
-        aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("storedFluids")) {
-            NBTTagList nbtTagList = aNBT.getTagList("storedFluids", 10);
+        if (aNBT.hasKey("storedFluidsSuper")) {
+            NBTTagList nbtTagList = aNBT.getTagList("storedFluidsSuper", 10);
             int c = Math.min(nbtTagList.tagCount(), SLOT_COUNT);
             for (int i = 0; i < c; i++) {
                 NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
@@ -610,14 +566,14 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
             }
         }
 
-        minAutoPullAmount = aNBT.getInteger("minAmount");
-        autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
         expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
+        updateValidGridProxySides();
     }
 
     @Override
@@ -719,11 +675,6 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
             }
         }
         return false;
-    }
-
-    @Override
-    public int getGUIHeight() {
-        return 179;
     }
 
     @Override
@@ -951,7 +902,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
                 .setPos(3, 88)
                 .setSize(50, 14))
             .widget(
-                new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
+                new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, this::setRecipeCheck)
                     .setTextureGetter(
                         state -> expediteRecipeCheck ? GTUITextures.OVERLAY_BUTTON_CHECKMARK
                             : GTUITextures.OVERLAY_BUTTON_CROSS)

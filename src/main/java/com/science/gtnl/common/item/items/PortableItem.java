@@ -98,8 +98,8 @@ public class PortableItem extends Item {
         int currentItemBurnTime = stack.hasTagCompound() ? stack.getTagCompound()
             .getInteger("CurrentItemBurnTime") : 0;
 
-        ItemStack fuel = inv.getStackInSlot(1);
         ItemStack input = inv.getStackInSlot(0);
+        ItemStack fuel = inv.getStackInSlot(1);
         ItemStack output = inv.getStackInSlot(2);
 
         if (burnTime > 0) {
@@ -127,6 +127,7 @@ public class PortableItem extends Item {
                             .getContainerItem(fuel));
                 } else {
                     fuel.stackSize--;
+                    inv.setInventorySlotContents(1, fuel);
                     if (fuel.stackSize <= 0) inv.setInventorySlotContents(1, null);
                 }
                 dirty = true;
@@ -144,8 +145,10 @@ public class PortableItem extends Item {
                     inv.setInventorySlotContents(2, result.copy());
                 } else {
                     output.stackSize += result.stackSize;
+                    inv.setInventorySlotContents(2, output);
                 }
                 input.stackSize--;
+                inv.setInventorySlotContents(0, input);
                 if (input.stackSize <= 0) inv.setInventorySlotContents(0, null);
                 cookTime = 0;
                 dirty = true;

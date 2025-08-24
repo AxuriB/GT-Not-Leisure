@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.common.machine.hatch.HumongousSolidifierHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.config.MainConfig;
 
@@ -136,6 +137,9 @@ public class LargeSolidifier extends GTMMultiMachineBase<LargeSolidifier> implem
 
             @Override
             public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+                if (!inv.shouldBeCached()) {
+                    return true;
+                }
                 if (dualInvWithPatternToRecipeCache.containsKey(inv)) {
                     activeDualInv = inv;
                     return true;
@@ -171,7 +175,25 @@ public class LargeSolidifier extends GTMMultiMachineBase<LargeSolidifier> implem
     @Override
     protected CheckRecipeResult checkRecipeForCustomHatches(CheckRecipeResult lastResult) {
         for (MTEHatchInput solidifierHatch : mInputHatches) {
-            if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
+            if (solidifierHatch instanceof HumongousSolidifierHatch hatch) {
+                List<ItemStack> items = hatch.getNonConsumableItems();
+                if (items != null && hatch.mStoredFluid != null) {
+                    for (FluidStack fluid : hatch.mStoredFluid) {
+                        if (fluid == null) continue;
+
+                        processingLogic.setInputItems(items);
+                        processingLogic.setInputFluids(fluid);
+
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) {
+                            return foundResult;
+                        }
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                            lastResult = foundResult;
+                        }
+                    }
+                }
+            } else if (solidifierHatch instanceof MTEHatchSolidifier hatch) {
                 List<ItemStack> items = hatch.getNonConsumableItems();
                 FluidStack fluid = solidifierHatch.getFluid();
 

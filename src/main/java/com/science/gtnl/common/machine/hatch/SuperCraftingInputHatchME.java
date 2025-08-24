@@ -734,6 +734,7 @@ public class SuperCraftingInputHatchME extends MTEHatchInputBus
 
         getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
+        updateValidGridProxySides();
     }
 
     @Override

@@ -2,17 +2,12 @@ package com.science.gtnl.common.machine.hatch;
 
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -45,6 +40,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.Utils;
+import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
 
 import appeng.api.config.Actionable;
@@ -56,7 +52,6 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.AECableType;
 import appeng.core.localization.WailaText;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
@@ -75,7 +70,6 @@ import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.widget.AESlotWidget;
@@ -91,20 +85,11 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     protected static int SIDE_SLOT_COUNT = 100;
     protected static int ALL_SLOT_COUNT = SIDE_SLOT_COUNT * 2 + 1 + 9 * 9;
     public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
-    protected BaseActionSource requestSource = null;
-    protected @Nullable AENetworkProxy gridProxy = null;
-    protected final ItemStack[] shadowInventory = new ItemStack[SIDE_SLOT_COUNT];
-    protected final int[] savedStackSizes = new int[SIDE_SLOT_COUNT];
-    protected boolean processingRecipe = false;
-    protected final boolean autoPullAvailable;
-    protected boolean autoPullItemList = false;
-    protected int minAutoPullStackSize = 1;
-    protected int autoPullRefreshTime = 100;
+    protected ItemStack[] shadowInventory = new ItemStack[SIDE_SLOT_COUNT];
+    protected int[] savedStackSizes = new int[SIDE_SLOT_COUNT];
+    protected boolean autoPullAvailable;
     protected static final int CONFIG_WINDOW_ID = 10;
     protected static final int MANUAL_SLOT_WINDOW = 11;
-    protected boolean additionalConnection = false;
-    protected boolean justHadNewItems = false;
-    protected boolean expediteRecipeCheck = false;
 
     public SuperInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(aID, autoPullAvailable, aName, aNameRegional);
@@ -146,16 +131,6 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH_ACTIVE) };
-    }
-
-    @Override
-    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH) };
-    }
-
-    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
@@ -169,89 +144,11 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    protected boolean isAllowedToWork() {
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
-
-        return igte != null && igte.isAllowedToWork();
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        getProxy().onReady();
-    }
-
-    @Override
-    public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
-        return isOutputFacing(forgeDirection) ? AECableType.SMART : AECableType.NONE;
-    }
-
-    @Override
-    protected void updateValidGridProxySides() {
-        if (additionalConnection) {
-            getProxy().setValidSides(EnumSet.complementOf(EnumSet.of(ForgeDirection.UNKNOWN)));
-        } else {
-            getProxy().setValidSides(EnumSet.of(getBaseMetaTileEntity().getFrontFacing()));
-        }
-    }
-
-    @Override
-    public void onFacingChange() {
-        updateValidGridProxySides();
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        additionalConnection = !additionalConnection;
-        updateValidGridProxySides();
-        aPlayer.addChatComponentMessage(
-            new ChatComponentTranslation("GT5U.hatch.additionalConnection." + additionalConnection));
-        return true;
-    }
-
-    @Override
-    public AENetworkProxy getProxy() {
-        if (gridProxy == null) {
-            if (getBaseMetaTileEntity() instanceof IGridProxyable) {
-                gridProxy = new AENetworkProxy(
-                    (IGridProxyable) getBaseMetaTileEntity(),
-                    "proxy",
-                    autoPullAvailable ? ItemList.Hatch_Input_Bus_ME_Advanced.get(1)
-                        : ItemList.Hatch_Input_Bus_ME.get(1),
-                    true);
-                gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-                updateValidGridProxySides();
-                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                    getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
-            }
-        }
-        return this.gridProxy;
-    }
-
-    @Override
-    public boolean isPowered() {
-        return getProxy() != null && getProxy().isPowered();
-    }
-
-    @Override
-    public boolean isActive() {
-        return getProxy() != null && getProxy().isActive();
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         int[] sizes = new int[100];
         for (int i = 0; i < 100; ++i) sizes[i] = mInventory[i + 100] == null ? 0 : mInventory[i + 100].stackSize;
         aNBT.setIntArray("sizes", sizes);
-        aNBT.setBoolean("autoStock", autoPullItemList);
-        aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
-        aNBT.setBoolean("additionalConnection", additionalConnection);
-        aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
-        aNBT.setInteger("refreshTime", autoPullRefreshTime);
-        getProxy().writeToNBT(aNBT);
     }
 
     @Override
@@ -291,20 +188,6 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
                 }
             }
         }
-        autoPullItemList = aNBT.getBoolean("autoStock");
-        minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
-        additionalConnection = aNBT.getBoolean("additionalConnection");
-        expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
-        if (aNBT.hasKey("refreshTime")) {
-            autoPullRefreshTime = aNBT.getInteger("refreshTime");
-        }
-        getProxy().readFromNBT(aNBT);
-
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
     }
 
     @Override
@@ -313,18 +196,6 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
             ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
             : StatCollector
                 .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -460,19 +331,6 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
             return ret;
         }
         return false;
-    }
-
-    @Override
-    public void setRecipeCheck(boolean value) {
-        expediteRecipeCheck = value;
-    }
-
-    @Override
-    public void setInventorySlotContents(int aIndex, ItemStack aStack) {
-        if (expediteRecipeCheck && aStack != null) {
-            justHadNewItems = true;
-        }
-        super.setInventorySlotContents(aIndex, aStack);
     }
 
     @Override
@@ -724,13 +582,28 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex >= 201 && aIndex < ALL_SLOT_COUNT;
+    public AENetworkProxy getProxy() {
+        if (gridProxy == null) {
+            if (getBaseMetaTileEntity() instanceof IGridProxyable) {
+                gridProxy = new AENetworkProxy(
+                    (IGridProxyable) getBaseMetaTileEntity(),
+                    "proxy",
+                    autoPullAvailable ? GTNLItemList.AdvancedSuperInputBusME.get(1)
+                        : GTNLItemList.SuperInputBusME.get(1),
+                    true);
+                gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+                updateValidGridProxySides();
+                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
+                    getBaseMetaTileEntity().getWorld()
+                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+            }
+        }
+        return this.gridProxy;
     }
 
     @Override
-    public int getGUIHeight() {
-        return 179;
+    public boolean isValidSlot(int aIndex) {
+        return aIndex >= 201 && aIndex < ALL_SLOT_COUNT;
     }
 
     @Override

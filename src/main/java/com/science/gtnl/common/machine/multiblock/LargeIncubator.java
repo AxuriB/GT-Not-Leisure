@@ -308,7 +308,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
         if (mCountCasing < 19 && this.mRadHatches.size() > 1
             && this.mOutputHatches.size() != 1
             && this.mInputHatches.isEmpty()
-            && this.mEnergyHatches.isEmpty()) return false;
+            && (this.mEnergyHatches.isEmpty() || this.mExoticEnergyHatches.isEmpty())) return false;
 
         boolean isFlipped = this.getFlip()
             .isHorizontallyFlipped();

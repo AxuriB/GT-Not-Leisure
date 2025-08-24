@@ -30,21 +30,21 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSolid
 
 public class HumongousSolidifierHatch extends MTEHatchSolidifier implements IAddGregtechLogo {
 
-    private final FluidStackTank[] fluidTanks;
-    private final FluidStack[] mStoredFluid;
-    static final int moldSlot = 2;
+    public final FluidStackTank[] fluidTanks;
+    public final FluidStack[] mStoredFluid;
+    public static final int moldSlot = 2;
     public final int mCapacityPer = Integer.MAX_VALUE;
-    static final ItemStack[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1), ItemList.Shape_Mold_Plate.get(1),
-        ItemList.Shape_Mold_Ingot.get(1), ItemList.Shape_Mold_Casing.get(1), ItemList.Shape_Mold_Gear.get(1),
-        ItemList.Shape_Mold_Gear_Small.get(1), ItemList.Shape_Mold_Credit.get(1), ItemList.Shape_Mold_Nugget.get(1),
-        ItemList.Shape_Mold_Block.get(1), ItemList.Shape_Mold_Ball.get(1), ItemList.Shape_Mold_Cylinder.get(1),
-        ItemList.Shape_Mold_Anvil.get(1), ItemList.Shape_Mold_Arrow.get(1), ItemList.Shape_Mold_Rod.get(1),
-        ItemList.Shape_Mold_Bolt.get(1), ItemList.Shape_Mold_Round.get(1), ItemList.Shape_Mold_Screw.get(1),
-        ItemList.Shape_Mold_Ring.get(1), ItemList.Shape_Mold_Rod_Long.get(1), ItemList.Shape_Mold_Rotor.get(1),
-        ItemList.Shape_Mold_Turbine_Blade.get(1), ItemList.Shape_Mold_Pipe_Tiny.get(1),
-        ItemList.Shape_Mold_Pipe_Small.get(1), ItemList.Shape_Mold_Pipe_Medium.get(1),
-        ItemList.Shape_Mold_Pipe_Large.get(1), ItemList.Shape_Mold_Pipe_Huge.get(1),
-        ItemList.Shape_Mold_ToolHeadDrill.get(1),
+    public static final ItemStack[] solidifierMolds = { ItemList.Shape_Mold_Bottle.get(1),
+        ItemList.Shape_Mold_Plate.get(1), ItemList.Shape_Mold_Ingot.get(1), ItemList.Shape_Mold_Casing.get(1),
+        ItemList.Shape_Mold_Gear.get(1), ItemList.Shape_Mold_Gear_Small.get(1), ItemList.Shape_Mold_Credit.get(1),
+        ItemList.Shape_Mold_Nugget.get(1), ItemList.Shape_Mold_Block.get(1), ItemList.Shape_Mold_Ball.get(1),
+        ItemList.Shape_Mold_Cylinder.get(1), ItemList.Shape_Mold_Anvil.get(1), ItemList.Shape_Mold_Arrow.get(1),
+        ItemList.Shape_Mold_Rod.get(1), ItemList.Shape_Mold_Bolt.get(1), ItemList.Shape_Mold_Round.get(1),
+        ItemList.Shape_Mold_Screw.get(1), ItemList.Shape_Mold_Ring.get(1), ItemList.Shape_Mold_Rod_Long.get(1),
+        ItemList.Shape_Mold_Rotor.get(1), ItemList.Shape_Mold_Turbine_Blade.get(1),
+        ItemList.Shape_Mold_Pipe_Tiny.get(1), ItemList.Shape_Mold_Pipe_Small.get(1),
+        ItemList.Shape_Mold_Pipe_Medium.get(1), ItemList.Shape_Mold_Pipe_Large.get(1),
+        ItemList.Shape_Mold_Pipe_Huge.get(1), ItemList.Shape_Mold_ToolHeadDrill.get(1),
 
         GGItemList.SingleUseFileMold.get(1), GGItemList.SingleUseWrenchMold.get(1),
         GGItemList.SingleUseCrowbarMold.get(1), GGItemList.SingleUseWireCutterMold.get(1),

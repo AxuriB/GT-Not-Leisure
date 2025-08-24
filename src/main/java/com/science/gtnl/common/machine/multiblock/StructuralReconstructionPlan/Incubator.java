@@ -344,7 +344,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             && this.mOutputHatches.size() == 1
             && this.mMaintenanceHatches.size() == 1
             && !this.mInputHatches.isEmpty()
-            && !this.mEnergyHatches.isEmpty();
+            && (!this.mEnergyHatches.isEmpty() || !this.mExoticEnergyHatches.isEmpty());
     }
 
     private int reCalculateFluidAmmount() {
