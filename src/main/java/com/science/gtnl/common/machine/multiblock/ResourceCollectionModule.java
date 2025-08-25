@@ -213,6 +213,7 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     }
 
     public int getMaxParallelRecipes() {
+        mParallelTier = getParallelTier(getControllerSlot());
         if (mParallelTier <= 1) {
             return 8;
         } else {

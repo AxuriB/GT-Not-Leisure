@@ -343,7 +343,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         return new String[] {
             StatCollector.translateToLocal("scanner.info.UX.0") + ": "
                 + EnumChatFormatting.LIGHT_PURPLE
-                + GTUtility.formatNumbers(getMaxParallelRecipes())
+                + GTUtility.formatNumbers(getTrueParallel())
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.fusion.req") + ": "
                 + EnumChatFormatting.RED

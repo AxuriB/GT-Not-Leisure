@@ -169,7 +169,7 @@ public class SteamManufacturer extends SteamMultiMachineBase<SteamManufacturer> 
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(V[9]);
         // We need to trick the GT_ParallelHelper we have enough amps for all recipe parallels.
-        logic.setAvailableAmperage(getMaxParallelRecipes());
+        logic.setAvailableAmperage(getTrueParallel());
         logic.setAmperageOC(false);
     }
 

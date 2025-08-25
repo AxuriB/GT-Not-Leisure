@@ -231,7 +231,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(V[3]);
         // We need to trick the GT_ParallelHelper we have enough amps for all recipe parallels.
-        logic.setAvailableAmperage(getMaxParallelRecipes());
+        logic.setAvailableAmperage(getTrueParallel());
         logic.setAmperageOC(false);
     }
 

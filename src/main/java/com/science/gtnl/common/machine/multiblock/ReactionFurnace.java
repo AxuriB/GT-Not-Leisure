@@ -22,6 +22,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -311,6 +312,13 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
 
     @Override
     public int getMaxParallelRecipes() {
+        mParallelTier = getParallelTier(getControllerSlot());
+        if (mParallelControllerHatches.size() == 1) {
+            for (ParallelControllerHatch module : mParallelControllerHatches) {
+                mParallelTier = module.mTier;
+                return module.getParallel();
+            }
+        }
         if (mParallelTier <= 2) {
             return 8;
         } else {

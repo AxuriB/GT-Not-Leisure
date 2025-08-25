@@ -203,7 +203,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         this.mParallelTier = getParallelTier(controllerItem);
         long energyEU = wirelessMode ? Integer.MAX_VALUE
             : GTValues.VP[mEnergyHatchTier] * (useSingleAmp ? 1 : getMaxInputAmps() / 4); // 能源仓最大输入功率
-        int maxParallel = getMaxParallelRecipes(); // 最大并行数
+        int maxParallel = getTrueParallel(); // 最大并行数
 
         if (energyEU <= 0) return CheckRecipeResultRegistry.POWER_OVERFLOW;
 

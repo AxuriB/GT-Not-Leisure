@@ -146,7 +146,7 @@ public class NanitesIntegratedProcessingCenter
                         module.connect();
                         module.setEUtDiscount(getEUtDiscount());
                         module.setDurationModifier(getSpeedBoost());
-                        module.setMaxParallel(getMaxParallelRecipes());
+                        module.setMaxParallel(getTrueParallel());
                         module.setHeatingCapacity(mHeatingCapacity);
                     } else {
                         module.disconnect();

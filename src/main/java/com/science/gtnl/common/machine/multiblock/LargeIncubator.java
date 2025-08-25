@@ -269,7 +269,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
         }
 
         multiplier = (int) fluidAmount / (recipe.mFluidInputs[0].amount * 1001);
-        multiplier = Math.max(Math.min(multiplier, getMaxParallelRecipes()), 1);
+        multiplier = Math.max(Math.min(multiplier, getTrueParallel()), 1);
 
         tRecipe.mFluidInputs[0].amount *= multiplier * 1001;
         tRecipe.mFluidOutputs[0].amount *= multiplier * 1001;

@@ -470,7 +470,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
                 + " x",
             StatCollector.translateToLocal("GT5U.PA.parallel") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(getMaxParallelRecipes())
+                + GTUtility.formatNumbers(getTrueParallel())
                 + EnumChatFormatting.RESET };
     }
 

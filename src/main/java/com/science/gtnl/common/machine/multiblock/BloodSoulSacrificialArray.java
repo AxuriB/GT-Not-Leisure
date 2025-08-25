@@ -38,6 +38,7 @@ import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -94,6 +95,13 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public int getMaxParallelRecipes() {
+        mParallelTier = getParallelTier(getControllerSlot());
+        if (mParallelControllerHatches.size() == 1) {
+            for (ParallelControllerHatch module : mParallelControllerHatches) {
+                mParallelTier = module.mTier;
+                return module.getParallel();
+            }
+        }
         if (mParallelTier <= 1) {
             return 8;
         } else {

@@ -804,7 +804,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
                             module.connect();
                             module.setEUtDiscount(getEUtDiscount());
                             module.setDurationModifier(getSpeedBoost());
-                            module.setMaxParallel(getMaxParallelRecipes());
+                            module.setMaxParallel(getTrueParallel());
                             module.setMaxUseEUt(getMaxUseEUt());
                             module.setHeat(getHeatingCapacity());
                             EternalGregTechWorkshopModule.queryMilestoneStats(module, this);

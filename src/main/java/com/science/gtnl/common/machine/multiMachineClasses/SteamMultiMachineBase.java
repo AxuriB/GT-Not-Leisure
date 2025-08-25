@@ -286,8 +286,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(StatCollector.translateToLocal("MachineTierTooltip") + EnumChatFormatting.YELLOW + tierMachine);
-        info.add(
-            StatCollector.translateToLocal("ParallelTooltip") + EnumChatFormatting.YELLOW + getMaxParallelRecipes());
+        info.add(StatCollector.translateToLocal("ParallelTooltip") + EnumChatFormatting.YELLOW + getTrueParallel());
         return info.toArray(new String[0]);
     }
 
@@ -313,7 +312,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
-        tag.setInteger("parallel", getMaxParallelRecipes());
+        tag.setInteger("parallel", getTrueParallel());
     }
 
     @Override

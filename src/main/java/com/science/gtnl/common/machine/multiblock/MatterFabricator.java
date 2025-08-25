@@ -173,7 +173,7 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
         final Item matterBall = GameRegistry.findItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial");
         final ItemStack outputItem = new ItemStack(matterBall, 1, 6);
-        final int maxParallel = getMaxParallelRecipes();
+        final int maxParallel = getTrueParallel();
 
         boolean hasCircuit1 = false;
         boolean hasCircuit2 = false;

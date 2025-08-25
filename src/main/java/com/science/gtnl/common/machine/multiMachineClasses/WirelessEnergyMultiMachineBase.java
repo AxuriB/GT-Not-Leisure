@@ -175,7 +175,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         costingEUText = ZERO_STRING;
         totalOverclockedDuration = 0;
         cycleNow = 0;
-        maxParallelStored = getMaxParallelRecipes();
+        maxParallelStored = getTrueParallel();
         if (!wirelessMode) return super.checkProcessing();
 
         boolean succeeded = false;
