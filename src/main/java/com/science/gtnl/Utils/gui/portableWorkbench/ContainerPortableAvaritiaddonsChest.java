@@ -10,10 +10,10 @@ import com.science.gtnl.common.item.items.PortableItem;
 
 public class ContainerPortableAvaritiaddonsChest extends Container {
 
-    public InventoryInfinityChest chestInventory = new InventoryInfinityChest(Integer.MAX_VALUE);
+    public InventoryInfinityChest chestInventory;
 
-    public ContainerPortableAvaritiaddonsChest(ItemStack stack, InventoryPlayer playerInv) {
-        PortableItem.loadInfinityInventory(stack, chestInventory);
+    public ContainerPortableAvaritiaddonsChest(ItemStack stack, InventoryPlayer playerInv, boolean isInfinity) {
+        chestInventory = isInfinity ? PortableItem.getInfinityInventory(stack) : PortableItem.getInventory(stack);
 
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 27; x++) {
@@ -64,7 +64,7 @@ public class ContainerPortableAvaritiaddonsChest extends Container {
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItem() instanceof PortableItem) {
             if (held.getItemDamage() == 6) {
-                PortableItem.saveAdvancedInventory(held, this.chestInventory);
+                PortableItem.saveInventory(held, this.chestInventory);
             } else if (held.getItemDamage() == 7) {
                 PortableItem.saveInfinityInventory(held, this.chestInventory);
 

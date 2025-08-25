@@ -25,7 +25,7 @@ public class ContainerPortableAdvancedWorkbench extends Container {
         this.worldObj = world;
         this.player = playerInventory.player;
 
-        IInventory savedInv = PortableItem.getAdvancedInventory(stack, 9);
+        IInventory savedInv = PortableItem.getInventory(stack, 9);
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             craftMatrix.setInventorySlotContents(i, savedInv.getStackInSlot(i));
         }
@@ -64,7 +64,7 @@ public class ContainerPortableAdvancedWorkbench extends Container {
 
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItemDamage() == 1 && held.getItem() instanceof PortableItem) {
-            PortableItem.saveAdvancedInventory(held, this.craftMatrix);
+            PortableItem.saveInventory(held, this.craftMatrix);
         }
     }
 
@@ -73,7 +73,7 @@ public class ContainerPortableAdvancedWorkbench extends Container {
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItemDamage() == 1 && held.getItem() instanceof PortableItem) {
-            PortableItem.saveAdvancedInventory(held, this.craftMatrix);
+            PortableItem.saveInventory(held, this.craftMatrix);
         }
     }
 
@@ -116,7 +116,7 @@ public class ContainerPortableAdvancedWorkbench extends Container {
 
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItemDamage() == 1 && held.getItem() instanceof PortableItem) {
-            PortableItem.saveAdvancedInventory(held, this.craftMatrix);
+            PortableItem.saveInventory(held, this.craftMatrix);
         }
 
         return itemstack;

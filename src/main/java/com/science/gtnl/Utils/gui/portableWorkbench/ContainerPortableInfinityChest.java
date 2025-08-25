@@ -21,7 +21,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 public class ContainerPortableInfinityChest extends ContainerPortableAvaritiaddonsChest {
 
     public ContainerPortableInfinityChest(@Nonnull ItemStack stack, InventoryPlayer playerInv) {
-        super(stack, playerInv);
+        super(stack, playerInv, true);
     }
 
     @Override

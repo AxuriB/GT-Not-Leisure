@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 
 import com.science.gtnl.CommonProxy;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.gui.portableWorkbench.InventoryInfinityChest;
 import com.science.gtnl.client.GTNLCreativeTabs;
 
 public class PortableItem extends Item {
@@ -206,7 +207,7 @@ public class PortableItem extends Item {
         }
     }
 
-    public static IInventory getAdvancedInventory(ItemStack stack, int size) {
+    public static IInventory getInventory(ItemStack stack, int size) {
         InventoryBasic inv = new InventoryBasic("PortableAdvancedWorkbench", false, size);
 
         if (stack.hasTagCompound()) {
@@ -224,7 +225,25 @@ public class PortableItem extends Item {
         return inv;
     }
 
-    public static void saveAdvancedInventory(ItemStack stack, IInventory inv) {
+    public static InventoryInfinityChest getInventory(ItemStack stack) {
+        InventoryInfinityChest inv = new InventoryInfinityChest(64);
+
+        if (stack.hasTagCompound()) {
+            NBTTagList list = stack.getTagCompound()
+                .getTagList("Items", 10);
+            for (int i = 0; i < list.tagCount(); i++) {
+                NBTTagCompound itemTag = list.getCompoundTagAt(i);
+                int slot = itemTag.getByte("Slot") & 255;
+                if (slot < inv.getSizeInventory()) {
+                    inv.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(itemTag));
+                }
+            }
+        }
+
+        return inv;
+    }
+
+    public static void saveInventory(ItemStack stack, IInventory inv) {
         NBTTagList list = new NBTTagList();
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack s = inv.getStackInSlot(i);
@@ -241,6 +260,30 @@ public class PortableItem extends Item {
         }
         stack.getTagCompound()
             .setTag("Items", list);
+    }
+
+    public static InventoryInfinityChest getInfinityInventory(@Nonnull ItemStack stack) {
+        InventoryInfinityChest inv = new InventoryInfinityChest(Integer.MAX_VALUE);
+        if (!stack.hasTagCompound()) return inv;
+        NBTTagCompound compound = stack.getTagCompound();
+        if (!compound.hasKey("Contents")) return inv;
+
+        NBTTagList list = compound.getTagList("Contents", 10);
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound slotTag = list.getCompoundTagAt(i);
+            int slot = slotTag.getShort("Slot");
+            if (slot >= 0 && slot < inv.getSizeInventory()) {
+                ItemStack slotStack = ItemStack.loadItemStackFromNBT(slotTag);
+                if (slotStack != null) {
+                    slotStack.stackSize = slotTag.getInteger("intCount");
+                    if (slotTag.hasKey("tag")) {
+                        slotStack.setTagCompound(slotTag.getCompoundTag("tag"));
+                    }
+                    inv.setInventorySlotContents(slot, slotStack);
+                }
+            }
+        }
+        return inv;
     }
 
     public static void saveInfinityInventory(@Nonnull ItemStack stack, @Nonnull IInventory inv) {
@@ -264,28 +307,6 @@ public class PortableItem extends Item {
         }
         stack.getTagCompound()
             .setTag("Contents", list);
-    }
-
-    public static void loadInfinityInventory(@Nonnull ItemStack stack, @Nonnull IInventory inv) {
-        if (!stack.hasTagCompound()) return;
-        NBTTagCompound compound = stack.getTagCompound();
-        if (!compound.hasKey("Contents")) return;
-
-        NBTTagList list = compound.getTagList("Contents", 10);
-        for (int i = 0; i < list.tagCount(); i++) {
-            NBTTagCompound slotTag = list.getCompoundTagAt(i);
-            int slot = slotTag.getShort("Slot");
-            if (slot >= 0 && slot < inv.getSizeInventory()) {
-                ItemStack slotStack = ItemStack.loadItemStackFromNBT(slotTag);
-                if (slotStack != null) {
-                    slotStack.stackSize = slotTag.getInteger("intCount");
-                    if (slotTag.hasKey("tag")) {
-                        slotStack.setTagCompound(slotTag.getCompoundTag("tag"));
-                    }
-                    inv.setInventorySlotContents(slot, slotStack);
-                }
-            }
-        }
     }
 
     public static IInventory getFurnaceInventory(ItemStack stack) {
