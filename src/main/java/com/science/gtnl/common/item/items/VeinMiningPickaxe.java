@@ -128,7 +128,8 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         if (player.getFoodStats()
             .getFoodLevel() <= 0
             && player.getFoodStats()
-                .getSaturationLevel() <= 0f) {
+                .getSaturationLevel() <= 0f
+            && !player.capabilities.isCreativeMode) {
             return;
         }
         World world = player.worldObj;
@@ -155,31 +156,32 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
             int meta = world.getBlockMetadata(px, py, pz);
 
             boolean matches = false;
-
-            if (block == targetBlock && (!preciseMode || meta == targetMeta)) {
-                matches = true;
-            } else {
-                ItemStack stackAt = new ItemStack(block, 1, meta);
-                int[] oreIds = OreDictionary.getOreIDs(stackAt);
-                for (int id : oreIds) {
-                    String name = OreDictionary.getOreName(id);
-                    int[] targetIds = OreDictionary.getOreIDs(new ItemStack(targetBlock, 1, targetMeta));
-                    for (int tid : targetIds) {
-                        String tname = OreDictionary.getOreName(tid);
-                        if (preciseMode) {
-                            if (tname.equals(name)) {
-                                matches = true;
-                                break;
-                            }
-                        } else {
-                            if (tname.startsWith(name)) {
-                                matches = true;
-                                break;
+            if (block.getBlockHardness(world, x, y, z) >= 0) {
+                if (block == targetBlock && (!preciseMode || meta == targetMeta)) {
+                    matches = true;
+                } else {
+                    ItemStack stackAt = new ItemStack(block, 1, meta);
+                    int[] oreIds = OreDictionary.getOreIDs(stackAt);
+                    for (int id : oreIds) {
+                        String name = OreDictionary.getOreName(id);
+                        int[] targetIds = OreDictionary.getOreIDs(new ItemStack(targetBlock, 1, targetMeta));
+                        for (int tid : targetIds) {
+                            String tname = OreDictionary.getOreName(tid);
+                            if (preciseMode) {
+                                if (tname.equals(name)) {
+                                    matches = true;
+                                    break;
+                                }
+                            } else {
+                                if (tname.startsWith(name)) {
+                                    matches = true;
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    if (matches) break;
+                        if (matches) break;
+                    }
                 }
             }
 
@@ -206,7 +208,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
                         .addExhaustion(1f);
                 }
 
-                if (player.worldObj.rand.nextFloat() < 0.5f) {
+                if (player.worldObj.rand.nextFloat() < 0.5f && !player.capabilities.isCreativeMode) {
                     if (stack.getMaxDamage() > 0) {
                         int currentDamage = stack.getItemDamage();
                         if (currentDamage + 1 >= stack.getMaxDamage()) {

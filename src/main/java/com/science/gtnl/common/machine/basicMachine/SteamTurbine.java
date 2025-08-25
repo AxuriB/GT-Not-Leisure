@@ -30,13 +30,15 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
             aTier,
             new String[] { StatCollector.translateToLocal("Tooltip_SteamTurbine_00"),
                 StatCollector.translateToLocal("Tooltip_SteamTurbine_01"), "", "" });
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + getEfficiency() / 100 + "%";
+        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + (600 / getEfficiency())
+            + "%";
         mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_SteamTurbine_03") + getCapacity() + "L";
     }
 
     public SteamTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + getEfficiency() / 100 + "%";
+        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + (600 / getEfficiency())
+            + "%";
         mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_SteamTurbine_03") + getCapacity() + "L";
     }
 
@@ -75,12 +77,7 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
 
     @Override
     public int getEfficiency() {
-        return switch (this.mTier) {
-            case 1 -> 10000; // 60000 / 6 = 10000
-            case 2 -> 8000; // 60000 / 9.23 ≈ 6500
-            case 3 -> 6000; // 60000 / 2000 = 3000
-            default -> 10000; // 默认值
-        };
+        return 5 + this.mTier;
     }
 
     @Override
