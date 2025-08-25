@@ -21,7 +21,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import com.science.gtnl.CommonProxy;
@@ -40,7 +39,6 @@ public class PortableItem extends Item {
         this.setMaxStackSize(1);
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setHasSubtypes(true);
-        MinecraftForge.EVENT_BUS.register(this);
         for (PortableType type : PortableType.values()) {
             GTNLItemList.valueOf(type.getUnlocalizedName())
                 .set(new ItemStack(this, 1, type.ordinal()));
