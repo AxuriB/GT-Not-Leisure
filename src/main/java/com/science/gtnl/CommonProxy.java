@@ -39,6 +39,7 @@ import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import gregtech.api.enums.Mods;
 
 public class CommonProxy implements IGuiHandler {
@@ -178,5 +179,9 @@ public class CommonProxy implements IGuiHandler {
 
     public void openProspectorGUI() {
         // just Client code
+    }
+
+    public EntityPlayer getEntityPlayerFromContext(final MessageContext ctx) {
+        return ctx.getServerHandler().playerEntity;
     }
 }

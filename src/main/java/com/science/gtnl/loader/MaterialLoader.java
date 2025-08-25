@@ -1,6 +1,9 @@
 package com.science.gtnl.loader;
 
+import com.cleanroommc.bogosorter.BogoSortAPI;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAvaritiaddonsChest;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableChest;
 import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
 import com.science.gtnl.Utils.text.LanguageLoader;
 import com.science.gtnl.api.TickrateAPI;
@@ -42,6 +45,10 @@ public class MaterialLoader {
         API.hideItem(GTNLItemList.ArtificialStarRender.get(1));
         API.hideItem(GTNLItemList.TwilightSword.get(1));
 
+        if (Mods.InventoryBogoSorter.isModLoaded()) {
+            BogoSortAPI.INSTANCE.addGenericCompat(ContainerPortableChest.class);
+            BogoSortAPI.INSTANCE.addGenericCompat(ContainerPortableAvaritiaddonsChest.class);
+        }
     }
 
     public static void loadInit() {

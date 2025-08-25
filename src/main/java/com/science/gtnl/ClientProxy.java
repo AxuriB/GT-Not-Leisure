@@ -54,6 +54,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import fox.spiteful.avaritia.render.FancyHaloRenderer;
 import gregtech.api.GregTechAPI;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -158,5 +159,10 @@ public class ClientProxy extends CommonProxy {
             (int) player.posX,
             (int) player.posY,
             (int) player.posZ);
+    }
+
+    @Override
+    public EntityPlayer getEntityPlayerFromContext(MessageContext ctx) {
+        return Minecraft.getMinecraft().thePlayer;
     }
 }

@@ -1,5 +1,7 @@
 package com.science.gtnl.Utils.gui.portableWorkbench;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -8,12 +10,20 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import com.cleanroommc.bogosorter.api.IPosSetter;
+import com.cleanroommc.bogosorter.api.ISortableContainer;
+import com.cleanroommc.bogosorter.api.ISortingContextBuilder;
 import com.science.gtnl.common.item.items.PortableItem;
 
-public class ContainerPortableChest extends Container {
+import cpw.mods.fml.common.Optional;
+
+@Optional.Interface(iface = "com.cleanroommc.bogosorter.api.ISortableContainer", modid = "bogosorter")
+public class ContainerPortableChest extends Container implements ISortableContainer {
 
     public IInventory chestInventory;
     public int meta;
+    public int rows;
+    public int cols;
 
     public ContainerPortableChest(InventoryPlayer playerInventory, ItemStack stack, GuiPortableChest.GUI type) {
         this(playerInventory, stack, type.xSize, type.ySize, type.rows, type.cols);
@@ -22,6 +32,8 @@ public class ContainerPortableChest extends Container {
     public ContainerPortableChest(InventoryPlayer playerInventory, ItemStack stack, int xSize, int ySize, int rows,
         int cols) {
 
+        this.rows = rows;
+        this.cols = cols;
         this.chestInventory = new InventoryBasic("PortableChest", false, rows * cols);
         this.meta = stack.getItemDamage();
 
@@ -52,6 +64,17 @@ public class ContainerPortableChest extends Container {
         for (int hotbarSlot = 0; hotbarSlot < 9; hotbarSlot++) {
             this.addSlotToContainer(new Slot(playerInventory, hotbarSlot, leftCol + hotbarSlot * 18, ySize - 24));
         }
+    }
+
+    @Override
+    public void buildSortingContext(ISortingContextBuilder builder) {
+        builder.addSlotGroup(0, rows * cols, rows)
+            .buttonPosSetter(IPosSetter.TOP_RIGHT_VERTICAL);
+    }
+
+    @Override
+    public @Nullable IPosSetter getPlayerButtonPosSetter() {
+        return IPosSetter.TOP_RIGHT_VERTICAL;
     }
 
     @Override

@@ -1,14 +1,22 @@
 package com.science.gtnl.Utils.gui.portableWorkbench;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import com.cleanroommc.bogosorter.api.IPosSetter;
+import com.cleanroommc.bogosorter.api.ISortableContainer;
+import com.cleanroommc.bogosorter.api.ISortingContextBuilder;
 import com.science.gtnl.common.item.items.PortableItem;
 
-public class ContainerPortableAvaritiaddonsChest extends Container {
+import cpw.mods.fml.common.Optional;
+
+@Optional.Interface(iface = "com.cleanroommc.bogosorter.api.ISortableContainer", modid = "bogosorter")
+public class ContainerPortableAvaritiaddonsChest extends Container implements ISortableContainer {
 
     public InventoryInfinityChest chestInventory;
 
@@ -30,6 +38,17 @@ public class ContainerPortableAvaritiaddonsChest extends Container {
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(playerInv, i, 170 + (18 * i), 252));
         }
+    }
+
+    @Override
+    public void buildSortingContext(ISortingContextBuilder builder) {
+        builder.addSlotGroup(0, 243, 27)
+            .buttonPosSetter(IPosSetter.TOP_RIGHT_VERTICAL);
+    }
+
+    @Override
+    public @Nullable IPosSetter getPlayerButtonPosSetter() {
+        return IPosSetter.TOP_RIGHT_VERTICAL;
     }
 
     @Override

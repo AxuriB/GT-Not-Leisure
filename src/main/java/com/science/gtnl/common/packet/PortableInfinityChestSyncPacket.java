@@ -3,6 +3,7 @@ package com.science.gtnl.common.packet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableInfinityChest;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -43,7 +44,7 @@ public final class PortableInfinityChestSyncPacket implements IMessage {
 
         @Override
         public IMessage onMessage(final PortableInfinityChestSyncPacket message, final MessageContext ctx) {
-            final EntityPlayer entityPlayer = ctx.getServerHandler().playerEntity;
+            final EntityPlayer entityPlayer = ScienceNotLeisure.proxy.getEntityPlayerFromContext(ctx);
             if (entityPlayer.openContainer instanceof ContainerPortableInfinityChest container)
                 container.syncData(message.itemStack, message.slot, message.stackSize);
             return null;
