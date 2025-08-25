@@ -27,10 +27,13 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import wanion.avaritiaddons.Avaritiaddons;
 import wanion.avaritiaddons.client.RenderItemInfinity;
 import wanion.avaritiaddons.network.InfinityChestClick;
 
+@SideOnly(Side.CLIENT)
 public class GuiPortablePortableInfinityChest extends GuiPortableAvaritiaddonsChest {
 
     private static final RenderItemInfinity renderItemInfinity = new RenderItemInfinity();

@@ -10,7 +10,9 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
-import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
 import com.science.gtnl.client.GTNLInputHandler;
 import com.science.gtnl.client.GTNLTooltipManager;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockEternalGregTechWorkshopRender;
@@ -43,7 +45,9 @@ import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.ItemLoader;
 
 import Forge.NullPointerException;
+import codechicken.nei.api.API;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.recipe.DefaultOverlayHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -127,13 +131,21 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
         MinecraftForge.EVENT_BUS.register(new SubscribeEventClientUtils());
         MinecraftForge.EVENT_BUS.register(GTNLInputHandler.INSTANCE);
         FMLCommonHandler.instance()
             .bus()
             .register(new SubscribeEventClientUtils());
         GuiContainerManager.addTooltipHandler(new GTNLTooltipManager());
-        super.preInit(event);
+
+        API.registerGuiOverlay(GuiPortableAdvancedWorkbench.class, "crafting");
+        API.registerGuiOverlay(GuiPortableBasicWorkbench.class, "crafting");
+        API.registerGuiOverlay(GuiPortableFurnace.class, "smelting");
+        API.registerGuiOverlay(GuiPortableFurnace.class, "fuel");
+
+        API.registerGuiOverlayHandler(GuiPortableAdvancedWorkbench.class, new DefaultOverlayHandler(), "crafting");
+        API.registerGuiOverlayHandler(GuiPortableBasicWorkbench.class, new DefaultOverlayHandler(), "crafting");
     }
 
     @Override

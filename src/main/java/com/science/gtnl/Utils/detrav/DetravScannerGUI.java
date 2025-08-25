@@ -15,8 +15,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.science.gtnl.common.packet.TeleportRequestPacket;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GTUtility;
 
+@SideOnly(Side.CLIENT)
 public class DetravScannerGUI extends GuiScreen {
 
     public static DetravMapTexture map = null;
