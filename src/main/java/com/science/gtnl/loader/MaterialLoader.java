@@ -1,6 +1,9 @@
 package com.science.gtnl.loader;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
 import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
 import com.science.gtnl.Utils.text.LanguageLoader;
 import com.science.gtnl.api.TickrateAPI;
@@ -15,6 +18,7 @@ import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.WerkstoffAdderRegistry;
 import codechicken.nei.api.API;
+import codechicken.nei.recipe.DefaultOverlayHandler;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTLog;
 import micdoodle8.mods.galacticraft.api.recipe.RocketFuels;
@@ -41,6 +45,14 @@ public class MaterialLoader {
         API.hideItem(GTNLItemList.NanoPhagocytosisPlantRender.get(1));
         API.hideItem(GTNLItemList.ArtificialStarRender.get(1));
         API.hideItem(GTNLItemList.TwilightSword.get(1));
+        API.registerGuiOverlay(GuiPortableAdvancedWorkbench.class, "crafting");
+        API.registerGuiOverlay(GuiPortableBasicWorkbench.class, "crafting");
+        API.registerGuiOverlay(GuiPortableFurnace.class, "smelting");
+        API.registerGuiOverlay(GuiPortableFurnace.class, "fuel");
+
+        API.registerGuiOverlayHandler(GuiPortableAdvancedWorkbench.class, new DefaultOverlayHandler(), "crafting");
+        API.registerGuiOverlayHandler(GuiPortableBasicWorkbench.class, new DefaultOverlayHandler(), "crafting");
+
     }
 
     public static void loadInit() {
