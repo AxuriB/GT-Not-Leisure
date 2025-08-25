@@ -56,6 +56,7 @@ public class PortableItem extends Item {
         GTNLItemList.PortableFurnace.set(new ItemStack(this, 1, FURNACE));
         GTNLItemList.PortableAnvil.set(new ItemStack(this, 1, ANVIL));
         GTNLItemList.PortableEnderChest.set(new ItemStack(this, 1, ENDERCHEST));
+        GTNLItemList.PortableEnchantingTable.set(new ItemStack(this, 1, ENCHANTING));
         GTNLItemList.PortableCompressedChest.set(new ItemStack(this, 1, COMPRESSEDCHEST));
         GTNLItemList.PortableInfinityChest.set(new ItemStack(this, 1, INFINITYCHEST));
     }

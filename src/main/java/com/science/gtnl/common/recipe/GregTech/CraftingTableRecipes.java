@@ -542,6 +542,70 @@ public class CraftingTableRecipes implements IRecipePool {
             new Object[] { "AAA", "ABA", "ACA", 'A', new ItemStack(Blocks.brick_block, 1), 'B',
                 new ItemStack(BOPBlockRegistrator.sapling_Rainforest, 1), 'C', new ItemStack(Items.dye, 1, 15) });
 
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableBasicWorkBench.get(1),
+            new Object[] { " AB", "CDA", "DE ", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1), 'B',
+                new ItemStack(Blocks.crafting_table, 1), 'C', "craftingToolWrench", 'D',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 1), 'E', "craftingToolScrewdriver" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableAdvancedWorkBench.get(1),
+            new Object[] { " AB", "CDA", "EF ", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1),
+                'B', GTModHandler.getModItem(TinkerConstruct.ID, "CraftingStation", 1), 'C', "craftingToolFile", 'D',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1), 'E',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.WroughtIron, 1), 'F',
+                "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableFurnace.get(1),
+            new Object[] { " AB", "CAA", "DE ", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1), 'B',
+                new ItemStack(Blocks.furnace, 1), 'C', "craftingToolWrench", 'D',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 1), 'E', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableAnvil.get(1),
+            new Object[] { "ABC", "DEB", "FGH", 'A', "craftingToolFile", 'B',
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Steel, 1), 'C',
+                new ItemStack(Blocks.anvil, 1), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.block, Materials.Steel, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 1), 'G', "craftingToolHardHammer", 'H',
+                "craftingToolSaw" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableEnderChest.get(1),
+            new Object[] { " AB", "CDA", "EF ", 'A',
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.EndSteel, 1), 'B',
+                GTModHandler.getModItem(EnderStorage.ID, "enderChest", 1, 0), 'C', "craftingToolWrench", 'D',
+                new ItemStack(Items.ender_eye, 1), 'E',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.StainlessSteel, 1), 'F',
+                "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableEnchantingTable.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1),
+                'B', new ItemStack(Blocks.bookshelf, 1), 'C', new ItemStack(Blocks.enchanting_table, 1), 'D',
+                "craftingToolWrench", 'E', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Aluminium, 1), 'G',
+                "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableCompressedChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A',
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.StainlessSteel, 1), 'B',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1), 'C',
+                GTModHandler.getModItem(AvaritiaAddons.ID, "CompressedChest", 1), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.StainlessSteel, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Obsidian, 1), 'G', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableInfinityChest.get(1),
+            new Object[] { "ABC", "DEB", "FDG", 'A', "craftingToolWrench", 'B',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Infinity, 1), 'C',
+                GTModHandler.getModItem(AvaritiaAddons.ID, "InfinityChest", 1), 'D',
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.CosmicNeutronium, 1), 'E',
+                GTModHandler.getModItem(Avaritia.ID, "Resource", 1, 5), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 1), 'G', "craftingToolHardHammer" });
+
         GTModHandler.addShapelessCraftingRecipe(
             GTNLItemList.DebugEnergyHatch.get(1),
             new Object[] { tectech.thing.CustomItemList.Machine_DebugGenny.get(1) });

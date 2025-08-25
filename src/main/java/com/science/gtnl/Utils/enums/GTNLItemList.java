@@ -257,6 +257,7 @@ public enum GTNLItemList implements IItemContainer {
     PortableFurnace,
     PortableAnvil,
     PortableEnderChest,
+    PortableEnchantingTable,
     PortableCompressedChest,
     PortableInfinityChest,
 
