@@ -82,7 +82,6 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
                 ofChain(
                     buildHatchAdder(SteamInfernalCokeOven.class)
                         .atLeast(
-                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             InputBus,
                             SteamHatchElement.OutputBus_Steam,

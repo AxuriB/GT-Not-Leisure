@@ -40,12 +40,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
     public VeinMiningPickaxe() {
-        super(EnumHelper.addToolMaterial("VEIN", 9, 50000, 10, 3, 10));
+        super(EnumHelper.addToolMaterial("VEIN", 15, 500000, 15, 3, 10));
         this.setUnlocalizedName("VeinMiningPickaxe");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "VeinMiningPickaxe");
         this.setMaxStackSize(1);
-        this.setMaxDamage(50000);
+        this.setMaxDamage(500000);
         GTNLItemList.VeinMiningPickaxe.set(new ItemStack(this, 1));
     }
 
@@ -141,7 +141,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
         queue.add(new Node(x, y, z, 0));
 
-        while (!queue.isEmpty() && cleared < 32767) {
+        while (!queue.isEmpty() && cleared < 327670) {
             if (!player.isSneaking()) break;
 
             Node node = queue.poll();
