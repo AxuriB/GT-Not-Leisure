@@ -11,6 +11,7 @@ import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 
 import com.science.gtnl.common.item.items.PortableItem;
@@ -158,7 +159,7 @@ public class ContainerPortableFurnace extends Container {
                 if (FurnaceRecipes.smelting()
                     .getSmeltingResult(stackInSlot) != null) {
                     if (!this.mergeItemStack(stackInSlot, 0, 1, false)) return null;
-                } else if (PortableItem.isItemFuel(stackInSlot)) {
+                } else if (TileEntityFurnace.isItemFuel(stackInSlot)) {
                     if (!this.mergeItemStack(stackInSlot, 1, 2, false)) return null;
                 } else if (index < 30) {
                     if (!this.mergeItemStack(stackInSlot, 30, 39, false)) return null;

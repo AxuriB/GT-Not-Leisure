@@ -39,6 +39,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     extends MultiMachineBase<T> {
 
     protected int totalOverclockedDuration = 0;
+    protected int maxParallelStored = -1;
 
     public WirelessEnergyMultiMachineBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -165,6 +166,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     @Nonnull
     @Override
     public CheckRecipeResult checkProcessing() {
+        maxParallelStored = -1;
         mParallelTier = 0;
         ItemStack controllerItem = getControllerSlot();
         int parallelTierItem = getParallelTier(controllerItem);
@@ -173,6 +175,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         costingEUText = ZERO_STRING;
         totalOverclockedDuration = 0;
         cycleNow = 0;
+        maxParallelStored = getMaxParallelRecipes();
         if (!wirelessMode) return super.checkProcessing();
 
         boolean succeeded = false;
@@ -185,6 +188,10 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
                 break;
             }
             succeeded = true;
+            if (maxParallelStored <= 0) {
+                finalResult = r;
+                break;
+            }
         }
 
         if (!succeeded) return finalResult;
@@ -225,6 +232,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         mOutputItems = mergeArray(mOutputItems, processingLogic.getOutputItems());
         mOutputFluids = mergeArray(mOutputFluids, processingLogic.getOutputFluids());
         totalOverclockedDuration += processingLogic.getDuration();
+        maxParallelStored = maxParallelStored - processingLogic.getCurrentParallels();
 
         endRecipeProcessing();
         return result;
@@ -248,6 +256,9 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
 
     @Override
     public int getMaxParallelRecipes() {
+        if (maxParallelStored >= 0) {
+            return maxParallelStored;
+        }
         if (mParallelControllerHatches.size() == 1) {
             for (ParallelControllerHatch module : mParallelControllerHatches) {
                 mParallelTier = module.mTier;

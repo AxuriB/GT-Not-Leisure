@@ -1,5 +1,7 @@
 package com.science.gtnl.Utils.gui.portableWorkbench;
 
+import static com.science.gtnl.ScienceNotLeisure.*;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -10,13 +12,11 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import wanion.avaritiaddons.common.Reference;
-
 public abstract class GuiPortableAvaritiaddonsChest extends GuiContainer {
 
     private final static ResourceLocation avaritiaddonsChestGui = new ResourceLocation(
-        Reference.MOD_ID,
-        "textures/gui/avaritiaddonsChest.png");
+        RESOURCE_ROOT_ID,
+        "textures/gui/chest/compressed.png");
 
     public GuiPortableAvaritiaddonsChest(@Nonnull final Container container) {
         super(container);

@@ -770,6 +770,16 @@ item.PortableItem.4.name=便携末影箱
 item.PortableItem.5.name=便携附魔台
 item.PortableItem.6.name=便携压缩箱子
 item.PortableItem.7.name=便携无尽箱子
+item.PortableItem.8.name=便携铜箱子
+item.PortableItem.9.name=便携铁箱子
+item.PortableItem.10.name=便携银箱子
+item.PortableItem.11.name=便携钢箱子
+item.PortableItem.12.name=便携金箱子
+item.PortableItem.13.name=便携钻石箱子
+item.PortableItem.14.name=便携水晶箱子
+item.PortableItem.15.name=便携黑曜石箱子
+item.PortableItem.16.name=便携下界合金箱子
+item.PortableItem.17.name=便携玄钢箱子
 
 item.VeinMiningPickaxe.name=矿脉挖掘镐
 Tooltip_VeinMiningPickaxe_00=最大方块间隔: %s

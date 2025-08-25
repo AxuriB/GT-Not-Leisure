@@ -1,0 +1,113 @@
+package com.science.gtnl.Utils.gui.portableWorkbench;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+
+import com.science.gtnl.common.item.items.PortableItem;
+
+public class ContainerPortableChest extends Container {
+
+    public IInventory chestInventory;
+    public int meta;
+
+    public ContainerPortableChest(InventoryPlayer playerInventory, ItemStack stack, GuiPortableChest.GUI type) {
+        this(playerInventory, stack, type.xSize, type.ySize, type.rows, type.cols);
+    }
+
+    public ContainerPortableChest(InventoryPlayer playerInventory, ItemStack stack, int xSize, int ySize, int rows,
+        int cols) {
+
+        this.chestInventory = new InventoryBasic("PortableChest", false, rows * cols);
+        this.meta = stack.getItemDamage();
+
+        IInventory saved = PortableItem.getInventory(stack, rows * cols);
+        for (int i = 0; i < rows * cols; i++) {
+            chestInventory.setInventorySlotContents(i, saved.getStackInSlot(i));
+        }
+
+        for (int chestRow = 0; chestRow < cols; chestRow++) {
+            for (int chestCol = 0; chestCol < rows; chestCol++) {
+                this.addSlotToContainer(
+                    new Slot(chestInventory, chestCol + chestRow * rows, 12 + chestCol * 18, 8 + chestRow * 18));
+            }
+        }
+
+        int leftCol = (xSize - 162) / 2 + 1;
+        for (int playerInvRow = 0; playerInvRow < 3; playerInvRow++) {
+            for (int playerInvCol = 0; playerInvCol < 9; playerInvCol++) {
+                this.addSlotToContainer(
+                    new Slot(
+                        playerInventory,
+                        playerInvCol + playerInvRow * 9 + 9,
+                        leftCol + playerInvCol * 18,
+                        ySize - (4 - playerInvRow) * 18 - 10));
+            }
+        }
+
+        for (int hotbarSlot = 0; hotbarSlot < 9; hotbarSlot++) {
+            this.addSlotToContainer(new Slot(playerInventory, hotbarSlot, leftCol + hotbarSlot * 18, ySize - 24));
+        }
+    }
+
+    @Override
+    public boolean canInteractWith(EntityPlayer player) {
+        ItemStack held = player.getHeldItem();
+        return held != null && held.getItemDamage() == meta && held.getItem() instanceof PortableItem;
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer player) {
+        super.onContainerClosed(player);
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItemDamage() == meta && held.getItem() instanceof PortableItem) {
+            PortableItem.saveInventory(held, chestInventory);
+        }
+    }
+
+    @Override
+    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer player) {
+        ItemStack result = super.slotClick(slotId, clickedButton, mode, player);
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItemDamage() == meta && held.getItem() instanceof PortableItem) {
+            PortableItem.saveInventory(held, chestInventory);
+        }
+        return result;
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+        ItemStack itemstack = null;
+        Slot slot = this.inventorySlots.get(index);
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            int chestSize = chestInventory.getSizeInventory();
+
+            if (index < chestSize) {
+                if (!this.mergeItemStack(itemstack1, chestSize, this.inventorySlots.size(), true)) {
+                    return null;
+                }
+            } else if (!this.mergeItemStack(itemstack1, 0, chestSize, false)) {
+                return null;
+            }
+
+            if (itemstack1.stackSize == 0) {
+                slot.putStack(null);
+            } else {
+                slot.onSlotChanged();
+            }
+        }
+
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItemDamage() == meta && held.getItem() instanceof PortableItem) {
+            PortableItem.saveInventory(held, chestInventory);
+        }
+        return itemstack;
+    }
+}

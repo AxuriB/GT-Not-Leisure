@@ -10,7 +10,6 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import wanion.avaritiaddons.Avaritiaddons;
 
 public final class PortableInfinityChestSyncPacket implements IMessage {
 
@@ -44,7 +43,7 @@ public final class PortableInfinityChestSyncPacket implements IMessage {
 
         @Override
         public IMessage onMessage(final PortableInfinityChestSyncPacket message, final MessageContext ctx) {
-            final EntityPlayer entityPlayer = Avaritiaddons.proxy.getEntityPlayerFromContext(ctx);
+            final EntityPlayer entityPlayer = ctx.getServerHandler().playerEntity;
             if (entityPlayer.openContainer instanceof ContainerPortableInfinityChest container)
                 container.syncData(message.itemStack, message.slot, message.stackSize);
             return null;

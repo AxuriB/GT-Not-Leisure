@@ -606,6 +606,86 @@ public class CraftingTableRecipes implements IRecipePool {
                 GTModHandler.getModItem(Avaritia.ID, "Resource", 1, 5), 'F',
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 1), 'G', "craftingToolHardHammer" });
 
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableCopperChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Copper, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 3), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Copper, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Copper, 1), 'G', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableIronChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Iron, 1), 'B',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 0), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Iron, 1), 'G', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableSilverChest.get(1),
+            new Object[] { "CA ", "ABA", " AD", 'A',
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Silver, 1), 'B',
+                GTNLItemList.PortableCopperChest.get(1), 'C', "craftingToolWrench", 'D', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableSteelChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 4), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 1), 'G', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableGoldenChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Gold, 1), 'B',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 1), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Gold, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Gold, 1), 'G', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableDiamondChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Diamond, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 2), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Diamond, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Diamond, 1), 'G', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableCrystalChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Glass, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Glass, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 5), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Glass, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Glass, 1), 'G', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableObsidianChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Obsidian, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 6), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Obsidian, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Obsidian, 1), 'G', "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableNetheriteChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Netherite, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Netherite, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 8), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Netherite, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Netherite, 1), 'G',
+                "craftingToolHardHammer" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PortableDarkSteelChest.get(1),
+            new Object[] { "ABC", "DEB", "FGA", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.DarkSteel, 1),
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.DarkSteel, 1), 'C',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1, 9), 'D', "craftingToolWrench", 'E',
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.DarkSteel, 1), 'F',
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.DarkSteel, 1), 'G',
+                "craftingToolHardHammer" });
+
         GTModHandler.addShapelessCraftingRecipe(
             GTNLItemList.DebugEnergyHatch.get(1),
             new Object[] { tectech.thing.CustomItemList.Machine_DebugGenny.get(1) });

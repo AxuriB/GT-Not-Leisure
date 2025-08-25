@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -17,33 +18,20 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import com.science.gtnl.CommonProxy;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.gui.portableWorkbench.InventoryInfinityChest;
 import com.science.gtnl.client.GTNLCreativeTabs;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 public class PortableItem extends Item {
-
-    public static final int BASIC = 0;
-    public static final int ADVANCED = 1;
-    public static final int FURNACE = 2;
-    public static final int ANVIL = 3;
-    public static final int ENDERCHEST = 4;
-    public static final int ENCHANTING = 5;
-    public static final int COMPRESSEDCHEST = 6;
-    public static final int INFINITYCHEST = 7;
-
-    public IIcon enchantingIcon;
-    public IIcon basicIcon;
-    public IIcon advancedIcon;
-    public IIcon furnaceIcon;
-    public IIcon anvilIcon;
-    public IIcon enderChestIcon;
-    public IIcon compressedChestIcon;
-    public IIcon infinityChestIcon;
 
     public PortableItem() {
         super();
@@ -52,14 +40,11 @@ public class PortableItem extends Item {
         this.setMaxStackSize(1);
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setHasSubtypes(true);
-        GTNLItemList.PortableBasicWorkBench.set(new ItemStack(this, 1, BASIC));
-        GTNLItemList.PortableAdvancedWorkBench.set(new ItemStack(this, 1, ADVANCED));
-        GTNLItemList.PortableFurnace.set(new ItemStack(this, 1, FURNACE));
-        GTNLItemList.PortableAnvil.set(new ItemStack(this, 1, ANVIL));
-        GTNLItemList.PortableEnderChest.set(new ItemStack(this, 1, ENDERCHEST));
-        GTNLItemList.PortableEnchantingTable.set(new ItemStack(this, 1, ENCHANTING));
-        GTNLItemList.PortableCompressedChest.set(new ItemStack(this, 1, COMPRESSEDCHEST));
-        GTNLItemList.PortableInfinityChest.set(new ItemStack(this, 1, INFINITYCHEST));
+        MinecraftForge.EVENT_BUS.register(this);
+        for (PortableType type : PortableType.values()) {
+            GTNLItemList.valueOf(type.getUnlocalizedName())
+                .set(new ItemStack(this, 1, type.ordinal()));
+        }
     }
 
     @Override
@@ -74,49 +59,23 @@ public class PortableItem extends Item {
 
     @Override
     public void registerIcons(IIconRegister iconRegister) {
-        basicIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableBasicWorkBench");
-        advancedIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableAdvancedWorkBench");
-        furnaceIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableFurnace");
-        anvilIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableAnvil");
-        enderChestIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableEnderChest");
-        enchantingIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableEnchanting");
-        compressedChestIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableCompressedChest");
-        infinityChestIcon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + "PortableInfinityChest");
+        for (PortableType type : PortableType.values()) {
+            type.icon = iconRegister.registerIcon(RESOURCE_ROOT_ID + ":" + type.getUnlocalizedName());
+        }
     }
 
     @Override
     public IIcon getIconFromDamage(int meta) {
-        if (meta == BASIC) return basicIcon;
-        if (meta == ADVANCED) return advancedIcon;
-        if (meta == FURNACE) return furnaceIcon;
-        if (meta == ANVIL) return anvilIcon;
-        if (meta == ENDERCHEST) return enderChestIcon;
-        if (meta == ENCHANTING) return enchantingIcon;
-        if (meta == COMPRESSEDCHEST) return compressedChestIcon;
-        if (meta == INFINITYCHEST) return infinityChestIcon;
-        return basicIcon;
+        PortableType type = PortableType.byMeta(meta);
+        return type != null ? type.icon : null;
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!world.isRemote) {
-            int meta = stack.getItemDamage();
-            if (meta == BASIC) {
-                player.openGui(instance, CommonProxy.PortableBasicWorkBenchGUI, world, 0, 0, 0);
-            } else if (meta == ADVANCED) {
-                player.openGui(instance, CommonProxy.PortableAdvancedWorkBenchGUI, world, 0, 0, 0);
-            } else if (meta == FURNACE) {
-                player.openGui(instance, CommonProxy.PortableFurnaceGUI, world, 0, 0, 0);
-            } else if (meta == ANVIL) {
-                player.openGui(instance, CommonProxy.PortableAnvilGUI, world, 0, 0, 0);
-            } else if (meta == ENDERCHEST) {
-                player.openGui(instance, CommonProxy.PortableEnderChestGUI, world, 0, 0, 0);
-            } else if (meta == ENCHANTING) {
-                player.openGui(instance, CommonProxy.PortableEnchantingGUI, world, 0, 0, 0);
-            } else if (meta == COMPRESSEDCHEST) {
-                player.openGui(instance, CommonProxy.PortableCompressedChestGUI, world, 0, 0, 0);
-            } else if (meta == INFINITYCHEST) {
-                player.openGui(instance, CommonProxy.PortableInfinityChestGUI, world, 0, 0, 0);
+            PortableType type = PortableType.byMeta(stack.getItemDamage());
+            if (type != null && type.guiId >= 0) {
+                player.openGui(instance, type.guiId, world, 0, 0, 0);
             }
         }
         return stack;
@@ -124,7 +83,7 @@ public class PortableItem extends Item {
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity player, int slot, boolean isSelected) {
-        if (stack.getItemDamage() != FURNACE) return;
+        if (stack.getItemDamage() != PortableType.FURNACE.getMeta()) return;
 
         IInventory inv = getFurnaceInventory(stack);
         boolean dirty = false;
@@ -155,7 +114,7 @@ public class PortableItem extends Item {
 
         if (burnTime == 0) {
             currentItemBurnTime = 0;
-            if (canSmelt && fuel != null && isItemFuel(fuel)) {
+            if (canSmelt && fuel != null && TileEntityFurnace.isItemFuel(stack)) {
                 currentItemBurnTime = burnTime = TileEntityFurnace.getItemBurnTime(fuel);
                 if (fuel.stackSize == 1 && fuel.getItem()
                     .hasContainerItem(fuel)) {
@@ -346,19 +305,74 @@ public class PortableItem extends Item {
             .setTag("Items", list);
     }
 
-    public static boolean isItemFuel(ItemStack stack) {
-        return TileEntityFurnace.isItemFuel(stack);
-    }
-
     @Override
     public void getSubItems(Item item, net.minecraft.creativetab.CreativeTabs tab, List<ItemStack> list) {
-        list.add(new ItemStack(item, 1, BASIC));
-        list.add(new ItemStack(item, 1, ADVANCED));
-        list.add(new ItemStack(item, 1, FURNACE));
-        list.add(new ItemStack(item, 1, ANVIL));
-        list.add(new ItemStack(item, 1, ENDERCHEST));
-        list.add(new ItemStack(item, 1, ENCHANTING));
-        list.add(new ItemStack(item, 1, COMPRESSEDCHEST));
-        list.add(new ItemStack(item, 1, INFINITYCHEST));
+        for (PortableType type : PortableType.values()) {
+            list.add(new ItemStack(item, 1, type.ordinal()));
+        }
+    }
+
+    @SubscribeEvent
+    public void onItemEntityDamage(LivingHurtEvent event) {
+        if (!(event.entity instanceof EntityItem entityItem)) return;
+        ItemStack stack = entityItem.getEntityItem();
+        if (stack == null) return;
+
+        if (!(stack.getItem() instanceof PortableItem)) return;
+
+        int meta = stack.getItemDamage();
+
+        boolean isProtected = meta == PortableType.OBSIDIAN.getMeta() || meta == PortableType.NETHERITE.getMeta()
+            || meta == PortableType.DARKSTEEL.getMeta();
+
+        if (!isProtected) return;
+
+        DamageSource source = event.source;
+        if (source.isFireDamage() || source.isExplosion()) {
+            event.setCanceled(true);
+        }
+    }
+
+    public enum PortableType {
+
+        BASIC("BasicWorkBench", CommonProxy.PortableBasicWorkBenchGUI),
+        ADVANCED("AdvancedWorkBench", CommonProxy.PortableAdvancedWorkBenchGUI),
+        FURNACE("Furnace", CommonProxy.PortableFurnaceGUI),
+        ANVIL("Anvil", CommonProxy.PortableAnvilGUI),
+        ENDERCHEST("EnderChest", CommonProxy.PortableEnderChestGUI),
+        ENCHANTING("EnchantingTable", CommonProxy.PortableEnchantingGUI),
+        COMPRESSEDCHEST("CompressedChest", CommonProxy.PortableCompressedChestGUI),
+        INFINITYCHEST("InfinityChest", CommonProxy.PortableInfinityChestGUI),
+        COPPER("CopperChest", CommonProxy.PortableCopperChestGUI),
+        IRON("IronChest", CommonProxy.PortableIronChestGUI),
+        SILVER("SilverChest", CommonProxy.PortableSilverChestGUI),
+        STEEL("SteelChest", CommonProxy.PortableSteelChestGUI),
+        GOLD("GoldenChest", CommonProxy.PortableGoldenChestGUI),
+        DIAMOND("DiamondChest", CommonProxy.PortableDiamondChestGUI),
+        CRYSTAL("CrystalChest", CommonProxy.PortableCrystalChestGUI),
+        OBSIDIAN("ObsidianChest", CommonProxy.PortableObsidianChestGUI),
+        NETHERITE("NetheriteChest", CommonProxy.PortableNetheriteChestGUI),
+        DARKSTEEL("DarkSteelChest", CommonProxy.PortableDarkSteelChestGUI);
+
+        private final String baseName;
+        public final int guiId;
+        public IIcon icon;
+
+        PortableType(String baseName, int guiId) {
+            this.baseName = baseName;
+            this.guiId = guiId;
+        }
+
+        public int getMeta() {
+            return ordinal();
+        }
+
+        public String getUnlocalizedName() {
+            return "Portable" + baseName;
+        }
+
+        public static PortableType byMeta(int meta) {
+            return (meta >= 0 && meta < values().length) ? values()[meta] : null;
+        }
     }
 }

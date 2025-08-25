@@ -10,6 +10,7 @@ import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAnvil;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableCompressedChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableEnchanting;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableEnderChest;
@@ -18,6 +19,7 @@ import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableInfinityChe
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAnvil;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableEnchanting;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableEnderChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
@@ -50,6 +52,16 @@ public class CommonProxy implements IGuiHandler {
     public static final int PortableEnchantingGUI = 6;
     public static final int PortableCompressedChestGUI = 7;
     public static final int PortableInfinityChestGUI = 8;
+    public static final int PortableCopperChestGUI = 9;
+    public static final int PortableIronChestGUI = 10;
+    public static final int PortableSilverChestGUI = 11;
+    public static final int PortableSteelChestGUI = 12;
+    public static final int PortableGoldenChestGUI = 13;
+    public static final int PortableDiamondChestGUI = 14;
+    public static final int PortableCrystalChestGUI = 15;
+    public static final int PortableObsidianChestGUI = 16;
+    public static final int PortableNetheriteChestGUI = 17;
+    public static final int PortableDarkSteelChestGUI = 18;
 
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
@@ -103,6 +115,26 @@ public class CommonProxy implements IGuiHandler {
             return new ContainerPortableCompressedChest(player.getHeldItem(), player.inventory);
         if (ID == CommonProxy.PortableInfinityChestGUI)
             return new ContainerPortableInfinityChest(player.getHeldItem(), player.inventory);
+        if (ID == CommonProxy.PortableCopperChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.COPPER);
+        if (ID == CommonProxy.PortableIronChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.IRON);
+        if (ID == CommonProxy.PortableSilverChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.SILVER);
+        if (ID == CommonProxy.PortableSteelChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.STEEL);
+        if (ID == CommonProxy.PortableGoldenChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.GOLD);
+        if (ID == CommonProxy.PortableDiamondChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.DIAMOND);
+        if (ID == CommonProxy.PortableCrystalChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.CRYSTAL);
+        if (ID == CommonProxy.PortableObsidianChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.OBSIDIAN);
+        if (ID == CommonProxy.PortableNetheriteChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.NETHERITE);
+        if (ID == CommonProxy.PortableDarkSteelChestGUI)
+            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.DARKSTEEL);
         return null;
     }
 
@@ -121,6 +153,26 @@ public class CommonProxy implements IGuiHandler {
             return new GuiPortablePortableCompressedChest(player.getHeldItem(), player.inventory);
         if (ID == CommonProxy.PortableInfinityChestGUI)
             return new GuiPortablePortableInfinityChest(player.getHeldItem(), player.inventory);
+        if (ID == CommonProxy.PortableCopperChestGUI)
+            return new GuiPortableChest.Copper(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableIronChestGUI)
+            return new GuiPortableChest.Iron(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableSilverChestGUI)
+            return new GuiPortableChest.Silver(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableSteelChestGUI)
+            return new GuiPortableChest.Steel(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableGoldenChestGUI)
+            return new GuiPortableChest.Gold(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableDiamondChestGUI)
+            return new GuiPortableChest.Diamond(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableCrystalChestGUI)
+            return new GuiPortableChest.Crystal(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableObsidianChestGUI)
+            return new GuiPortableChest.Obsidian(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableNetheriteChestGUI)
+            return new GuiPortableChest.Netherite(player.inventory, player.getHeldItem());
+        if (ID == CommonProxy.PortableDarkSteelChestGUI)
+            return new GuiPortableChest.DarkSteel(player.inventory, player.getHeldItem());
         return null;
     }
 

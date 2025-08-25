@@ -770,6 +770,16 @@ item.PortableItem.4.name=Portable Ender Chest
 item.PortableItem.5.name=Portable Enchanting Table
 item.PortableItem.6.name=Portable Compressed Chest
 item.PortableItem.7.name=Portable Infinity Chest
+item.PortableItem.8.name=Portable Copper Chest
+item.PortableItem.9.name=Portable Iron Chest
+item.PortableItem.10.name=Portable Silver Chest
+item.PortableItem.11.name=Portable Steel Chest
+item.PortableItem.12.name=Portable Gold Chest
+item.PortableItem.13.name=Portable Diamond Chest
+item.PortableItem.14.name=Portable Crystal Chest
+item.PortableItem.15.name=Portable Obsidian Chest
+item.PortableItem.16.name=Portable Netherite Chest
+item.PortableItem.17.name=Portable Dark Steel Chest
 
 item.VeinMiningPickaxe.name=Vein Mining Pickaxe
 Tooltip_VeinMiningPickaxe_00=Max Block Gap: %s
