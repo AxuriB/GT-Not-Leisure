@@ -147,6 +147,49 @@ public class ItemUtils {
         return GTNLItemList.CircuitIntegratedPlus.getWithDamage(0, config);
     }
 
+    public static boolean setToolDamage(ItemStack aStack, long aDamage) {
+        if (aStack == null) return false;
+
+        NBTTagCompound tag = aStack.getTagCompound();
+        if (tag == null) {
+            tag = new NBTTagCompound();
+            aStack.setTagCompound(tag);
+        }
+
+        NBTTagCompound toolStats;
+        if (tag.hasKey("GT.ToolStats")) {
+            toolStats = tag.getCompoundTag("GT.ToolStats");
+        } else {
+            toolStats = new NBTTagCompound();
+            tag.setTag("GT.ToolStats", toolStats);
+        }
+
+        toolStats.setLong("Damage", aDamage);
+        return true;
+    }
+
+    public static boolean setToolMaxDamage(ItemStack aStack, long aMaxDamage) {
+        if (aStack == null) return false;
+
+        NBTTagCompound tag = aStack.getTagCompound();
+        if (tag == null) {
+            tag = new NBTTagCompound();
+            aStack.setTagCompound(tag);
+        }
+
+        NBTTagCompound toolStats;
+        if (tag.hasKey("GT.ToolStats")) {
+            toolStats = tag.getCompoundTag("GT.ToolStats");
+        } else {
+            toolStats = new NBTTagCompound();
+            tag.setTag("GT.ToolStats", toolStats);
+        }
+
+        toolStats.setLong("MaxDamage", aMaxDamage);
+
+        return true;
+    }
+
     public static boolean canBeEnchanted(ItemStack stack) {
         return canBeEnchanted(stack, 30, false);
     }

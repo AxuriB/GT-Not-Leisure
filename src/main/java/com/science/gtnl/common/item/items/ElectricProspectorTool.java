@@ -2,6 +2,7 @@ package com.science.gtnl.common.item.items;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.ScienceNotLeisure.network;
+import static com.science.gtnl.Utils.item.ItemUtils.*;
 import static gregtech.api.enums.Mods.VisualProspecting;
 
 import java.util.ArrayList;
@@ -664,49 +665,6 @@ public class ElectricProspectorTool extends Item {
             aStack.setTagCompound(nbt);
         }
         nbt.setInteger("DetravData", data);
-    }
-
-    public static boolean setToolDamage(ItemStack aStack, long aDamage) {
-        if (aStack == null) return false;
-
-        NBTTagCompound tag = aStack.getTagCompound();
-        if (tag == null) {
-            tag = new NBTTagCompound();
-            aStack.setTagCompound(tag);
-        }
-
-        NBTTagCompound toolStats;
-        if (tag.hasKey("GT.ToolStats")) {
-            toolStats = tag.getCompoundTag("GT.ToolStats");
-        } else {
-            toolStats = new NBTTagCompound();
-            tag.setTag("GT.ToolStats", toolStats);
-        }
-
-        toolStats.setLong("Damage", aDamage);
-        return true;
-    }
-
-    public static boolean setToolMaxDamage(ItemStack aStack, long aMaxDamage) {
-        if (aStack == null) return false;
-
-        NBTTagCompound tag = aStack.getTagCompound();
-        if (tag == null) {
-            tag = new NBTTagCompound();
-            aStack.setTagCompound(tag);
-        }
-
-        NBTTagCompound toolStats;
-        if (tag.hasKey("GT.ToolStats")) {
-            toolStats = tag.getCompoundTag("GT.ToolStats");
-        } else {
-            toolStats = new NBTTagCompound();
-            tag.setTag("GT.ToolStats", toolStats);
-        }
-
-        toolStats.setLong("MaxDamage", aMaxDamage);
-
-        return true;
     }
 
 }

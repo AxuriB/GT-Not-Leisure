@@ -1,6 +1,7 @@
 package com.science.gtnl.common.item.items;
 
 import static com.science.gtnl.ScienceNotLeisure.*;
+import static com.science.gtnl.Utils.item.ItemUtils.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -13,8 +14,10 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,9 +36,11 @@ import com.reavaritia.common.item.ItemStackWrapper;
 import com.reavaritia.common.item.ToolHelper;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.loader.ItemLoader;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.items.MetaGeneratedTool;
 
 public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
@@ -83,6 +88,29 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
     public boolean hasEffect(ItemStack stack, int pass) {
         NBTTagCompound nbt = stack.getTagCompound();
         return nbt != null && nbt.getBoolean("preciseMode");
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        setToolDamage(stack, damage);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        return Math.toIntExact(MetaGeneratedTool.getToolDamage(stack));
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return Math.toIntExact(MetaGeneratedTool.getToolMaxDamage(stack));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> aList) {
+        ItemStack stack = new ItemStack(ItemLoader.veinMiningPickaxe, 1);
+        setToolMaxDamage(stack, Integer.MAX_VALUE);
+        aList.add(stack);
     }
 
     @Override
@@ -151,6 +179,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         Set<Long> visited = new HashSet<>();
         int cleared = 0;
         int blocksSinceHunger = 0;
+        int toolMaxDamage = Math.toIntExact(MetaGeneratedTool.getToolMaxDamage(stack));
         List<ItemStack> allDrops = new ArrayList<>();
 
         queue.add(new Node(x, y, z, 0));
@@ -223,15 +252,13 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
                 }
 
                 if (player.worldObj.rand.nextFloat() < 0.5f && !player.capabilities.isCreativeMode) {
-                    if (stack.getMaxDamage() > 0) {
-                        int currentDamage = stack.getItemDamage();
-                        if (currentDamage + 1 >= stack.getMaxDamage()) {
+                    if (toolMaxDamage > 0) {
+                        if (MetaGeneratedTool.getToolDamage(stack) + 1 >= toolMaxDamage) {
                             world.playSoundEffect(player.posX, player.posY, player.posZ, "random.break", 1.0F, 1.0F);
-                            stack.stackSize = 0;
-                            stack = null;
+                            if (stack.stackSize > 0) stack.stackSize--;
                             break;
                         } else {
-                            stack.setItemDamage(currentDamage + 1);
+                            setToolDamage(stack, MetaGeneratedTool.getToolDamage(stack) + 1);
                         }
                     }
                 }
