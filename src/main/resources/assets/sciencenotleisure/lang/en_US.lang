@@ -73,6 +73,16 @@ tc.research_text.GTNL_TIME_STOP_POCKET_WATCH=Mastering the Secret of Time
 tc.research_text.GTNL_TIME_STOP_POCKET_WATCH.1=In the ancient manuscripts of the Chronomantic school, records of the “Time Stop Pocket Watch” are scarce. It is said to have been first crafted by an alchemist weary of war and noise, longing to capture eternity within the flow of time. The construction of the watch itself is not complex—the true challenge lies in imbuing it with the essence of stillness. Rumors tell that the infusion must take place on the darkest night of the lunar cycle, surrounded by silent temporal crystals and hushed metals. Every thought of the practitioner must be held in perfect focus, lest the ritual turn awry and time itself lash back. If the ritual succeeds, one may briefly freeze the world’s flow at this very moment—but beware: time is never truly mastered. It merely waits for the moment to retaliate.
 
 OredictInputBusHatchME=Oredict Stocking Input Bus (ME)
+Tooltip_OredictInputBusHatchME_00=Advanced oreDict item input for Multiblocks
+Tooltip_OredictInputBusHatchME_01=Hatch Tier: 
+Tooltip_OredictInputBusHatchME_02=Retrieves directly from ME
+Tooltip_OredictInputBusHatchME_03=Keeps 100 item types in stock
+Tooltip_OredictInputBusHatchME_04=Change ME connection behavior by right-clicking with wire cutter
+Tooltip_OredictInputBusHatchME_05=Configuration data can be copy+pasted using a data stick
+Tooltip_OredictInputBusHatchME_06=Auto-Pull from ME mode will automatically stock the first 100 items in the ME system, updated every 5 seconds.
+Tooltip_OredictInputBusHatchME_07=Toggle by right-clicking with screwdriver, or use the GUI.
+Tooltip_OredictInputBusHatchME_08=Use the GUI to limit the minimum stack size for Auto-Pulling and enable fast recipe checks.
+Tooltip_OredictInputBusHatchME_09=WARNING: Fast recipe checks can be laggy. Use with caution.
 Info_OredictInputBusHatchME_Oredict=OreDict is 
 Info_OredictInputBusHatchME_Oredict_Set=§a%s§r
 Info_OredictInputBusHatchME_Oredict_Unset=§7Unset§r

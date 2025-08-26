@@ -106,7 +106,7 @@ public class SubscribeEventClientUtils {
             }
 
             if (newRange < 0) newRange = 0;
-            if (newRange > 7) newRange = 7;
+            if (newRange > 32) newRange = 32;
 
             if (newRange != oldRange) {
                 nbt.setInteger("range", newRange);

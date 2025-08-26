@@ -65,7 +65,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
         if (tags != null) {
             if (tags.hasKey("range")) {
-                range = Math.max(0, Math.min(7, tags.getInteger("range")));
+                range = Math.max(0, Math.min(32, tags.getInteger("range")));
             }
             if (tags.hasKey("amount")) {
                 amount = Math.max(0, Math.min(327670, tags.getInteger("amount")));
@@ -145,7 +145,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
             NBTTagCompound tags = stack.getTagCompound();
             if (tags != null) {
                 if (tags.hasKey("range")) {
-                    range = Math.max(0, Math.min(7, tags.getInteger("range")));
+                    range = Math.max(0, Math.min(32, tags.getInteger("range")));
                 }
                 if (tags.hasKey("preciseMode")) {
                     preciseMode = tags.getBoolean("preciseMode");

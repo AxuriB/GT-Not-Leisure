@@ -54,6 +54,20 @@ public class OredictInputBusHatchME extends MTEHatchInputBusME {
         return new OredictInputBusHatchME(mName, autoPullAvailable, mTier, mDescriptionArray, mTextures);
     }
 
+    @Override
+    public String[] getDescription() {
+        return new String[] { StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_00"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_01"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_02"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_03"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_04"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_05"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_06"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_07"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_08"),
+            StatCollector.translateToLocal("Tooltip_OredictInputBusHatchME_09") };
+    }
+
     @Nullable
     public String getOreDict() {
         return oreDict;
