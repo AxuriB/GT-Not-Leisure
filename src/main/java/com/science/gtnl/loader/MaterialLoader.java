@@ -44,6 +44,7 @@ public class MaterialLoader {
         API.hideItem(GTNLItemList.NanoPhagocytosisPlantRender.get(1));
         API.hideItem(GTNLItemList.ArtificialStarRender.get(1));
         API.hideItem(GTNLItemList.TwilightSword.get(1));
+        API.hideItem(GTNLItemList.FakeItemSiren.get(1));
 
         if (Mods.InventoryBogoSorter.isModLoaded()) {
             BogoSortAPI.INSTANCE.addGenericCompat(ContainerPortableChest.class);
