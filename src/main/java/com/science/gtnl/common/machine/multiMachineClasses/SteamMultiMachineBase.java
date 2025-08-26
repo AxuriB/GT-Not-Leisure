@@ -37,6 +37,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -82,6 +83,8 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
@@ -90,6 +93,8 @@ import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.render.GTRenderedTexture;
 import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.IDualInputInventory;
+import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
@@ -892,6 +897,129 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_STEAM_LOGO)
                 .setSize(18, 18)
                 .setPos(172, 67));
+    }
+
+    @Override
+    @Nonnull
+    protected CheckRecipeResult doCheckRecipe() {
+        CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
+
+        // check crafting input hatches first
+        for (IDualInputHatch dualInputHatch : mDualInputHatches) {
+            ItemStack[] sharedItems = dualInputHatch.getSharedItems();
+            for (var it = dualInputHatch.inventories(); it.hasNext();) {
+                IDualInputInventory slot = it.next();
+
+                if (!slot.isEmpty()) {
+                    // try to cache the possible recipes from pattern
+                    if (slot instanceof IDualInputInventoryWithPattern withPattern) {
+                        if (!processingLogic.tryCachePossibleRecipesFromPattern(withPattern)) {
+                            // move on to next slots if it returns false, which means there is no possible recipes with
+                            // given pattern.
+                            continue;
+                        }
+                    }
+
+                    processingLogic.setInputItems(ArrayUtils.addAll(sharedItems, slot.getItemInputs()));
+                    processingLogic.setInputFluids(slot.getFluidInputs());
+
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) {
+                        return foundResult;
+                    }
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) {
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        result = foundResult;
+                    }
+                }
+            }
+        }
+
+        result = checkRecipeForCustomHatches(result);
+        if (result.wasSuccessful()) {
+            return result;
+        }
+
+        // Use hatch colors if any; fallback to color 1 otherwise.
+        short hatchColors = getHatchColors();
+        boolean doColorChecking = hatchColors != 0;
+        if (!doColorChecking) hatchColors = 0b1;
+
+        for (byte color = 0; color < (doColorChecking ? 16 : 1); color++) {
+            if (isColorAbsent(hatchColors, color)) continue;
+            processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
+            if (isInputSeparationEnabled()) {
+                if (mInputBusses.isEmpty() && mSteamInputs.isEmpty()) {
+                    CheckRecipeResult foundResult = processingLogic.process();
+                    if (foundResult.wasSuccessful()) return foundResult;
+                    // Recipe failed in interesting way, so remember that and continue searching
+                    if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+                } else {
+                    for (MTEHatchInputBus bus : mInputBusses) {
+                        if (bus instanceof MTEHatchCraftingInputME) continue;
+                        byte busColor = bus.getColor();
+                        if (busColor != -1 && busColor != color) continue;
+                        List<ItemStack> inputItems = new ArrayList<>();
+                        for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                            ItemStack stored = bus.getStackInSlot(i);
+                            if (stored != null) inputItems.add(stored);
+                        }
+                        if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                            inputItems.add(getControllerSlot());
+                        }
+                        processingLogic.setInputItems(inputItems);
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) return foundResult;
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+                    }
+                    for (MTEHatchSteamBusInput bus : mSteamInputs) {
+                        byte busColor = bus.getColor();
+                        if (busColor != -1 && busColor != color) continue;
+                        List<ItemStack> inputItems = new ArrayList<>();
+                        for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
+                            ItemStack stored = bus.getStackInSlot(i);
+                            if (stored != null) inputItems.add(stored);
+                        }
+                        if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                            inputItems.add(getControllerSlot());
+                        }
+                        processingLogic.setInputItems(inputItems);
+                        CheckRecipeResult foundResult = processingLogic.process();
+                        if (foundResult.wasSuccessful()) return foundResult;
+                        // Recipe failed in interesting way, so remember that and continue searching
+                        if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+                    }
+                }
+            } else {
+                List<ItemStack> inputItems = getStoredInputsForColor(Optional.of(color));
+                if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
+                    inputItems.add(getControllerSlot());
+                }
+                processingLogic.setInputItems(inputItems);
+                CheckRecipeResult foundResult = processingLogic.process();
+                if (foundResult.wasSuccessful()) return foundResult;
+                // Recipe failed in interesting way, so remember that
+                if (foundResult != CheckRecipeResultRegistry.NO_RECIPE) result = foundResult;
+            }
+        }
+        return result;
+    }
+
+    public short getHatchColors() {
+        short hatchColors = 0;
+
+        for (var bus : mInputBusses) hatchColors |= (short) (1 << bus.getColor());
+        for (var hatch : mInputHatches) hatchColors |= (short) (1 << hatch.getColor());
+
+        for (var bus : mSteamInputs) hatchColors |= (short) (1 << bus.getColor());
+        for (var hatch : mSteamInputFluids) hatchColors |= (short) (1 << hatch.getColor());
+
+        return hatchColors;
+    }
+
+    public static boolean isColorAbsent(short hatchColors, byte color) {
+        return (hatchColors & (1 << color)) == 0;
     }
 
     @Override
