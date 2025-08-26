@@ -164,8 +164,8 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                         LargeSteamMixer::getTierPlatedCasing,
                         ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
                         -1,
-                        (t, m) -> t.tierAdvancedCasing = m,
-                        t -> t.tierAdvancedCasing)))
+                        (t, m) -> t.tierPlatedCasing = m,
+                        t -> t.tierPlatedCasing)))
             .build();
     }
 
@@ -202,18 +202,13 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
         tierGearCasing = -1;
         tierPipeCasing = -1;
         tierFireboxCasing = -1;
-        tierAdvancedCasing = -1;
         tCountCasing = 0;
         enableHVRecipe = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing < 0 && tierGearCasing < 0
-            && tierPipeCasing < 0
-            && tierFireboxCasing < 0
-            && tierAdvancedCasing < 0) return false;
+        if (tierMachineCasing < 0 && tierGearCasing < 0 && tierPipeCasing < 0 && tierFireboxCasing < 0) return false;
         if (tierMachineCasing == 1 && tierGearCasing == 1
             && tierPipeCasing == 1
             && tierFireboxCasing == 1
-            && tierAdvancedCasing == 1
             && tCountCasing >= 60
             && checkHatches()) {
             tierMachine = 1;
@@ -224,7 +219,6 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
         if (tierMachineCasing == 2 && tierGearCasing == 2
             && tierPipeCasing == 2
             && tierFireboxCasing == 2
-            && tierAdvancedCasing == 2
             && tCountCasing >= 60
             && checkHatches()) {
             tierMachine = 2;

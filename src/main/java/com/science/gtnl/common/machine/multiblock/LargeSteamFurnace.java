@@ -227,7 +227,6 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
         tierFrameCasing = -1;
         tierPlatedCasing = -1;
         tierFireboxCasing = -1;
-        tierAdvancedCasing = -1;
         tierBrickCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
@@ -235,8 +234,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             && tierFrameCasing < 0
             && tierPlatedCasing < 0
             && tierBrickCasing < 0
-            && tierFireboxCasing < 0
-            && tierAdvancedCasing < 0) {
+            && tierFireboxCasing < 0) {
             updateHatchTexture();
             return false;
         }
@@ -245,7 +243,6 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             && tierPlatedCasing == 1
             && tierBrickCasing == 1
             && tierFireboxCasing == 1
-            && tierAdvancedCasing == 1
             && tCountCasing >= 100
             && checkHatches()) {
             tierMachine = 1;
@@ -258,7 +255,6 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             && tierPlatedCasing == 2
             && tierBrickCasing == 2
             && tierFireboxCasing == 2
-            && tierAdvancedCasing == 2
             && tCountCasing >= 100
             && checkHatches()) {
             tierMachine = 2;
