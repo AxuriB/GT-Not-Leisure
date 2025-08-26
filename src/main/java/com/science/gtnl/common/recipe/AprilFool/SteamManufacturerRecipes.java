@@ -503,12 +503,20 @@ public class SteamManufacturerRecipes implements IRecipePool {
             .eut(16)
             .addTo(SMFR);
 
-        // Extractinator Solid Casing
         RA.stdBuilder()
             .itemInputs(
-                new ItemStack(Blocks.brick_block, 6),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 3))
-            .itemOutputs(GTNLItemList.SteelBrickCasing.get(1))
+                new ItemStack(Blocks.brick_block, 3),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 5))
+            .itemOutputs(GTNLItemList.BronzeBrickCasing.get(2))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                new ItemStack(Blocks.brick_block, 3),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 5))
+            .itemOutputs(GTNLItemList.SteelBrickCasing.get(2))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);

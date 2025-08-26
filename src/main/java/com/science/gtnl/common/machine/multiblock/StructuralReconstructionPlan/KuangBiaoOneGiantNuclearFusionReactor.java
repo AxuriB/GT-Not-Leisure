@@ -11,6 +11,7 @@ import static gregtech.api.util.GTUtility.*;
 import static gtPlusPlus.core.block.ModBlocks.*;
 import static gtnhlanth.common.register.LanthItemList.*;
 
+import java.math.BigInteger;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -53,6 +54,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -60,7 +62,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 public abstract class KuangBiaoOneGiantNuclearFusionReactor
     extends GTMMultiMachineBase<KuangBiaoOneGiantNuclearFusionReactor> implements ISurvivalConstructable {
 
-    public GTRecipe lastRecipe;
+    public GTRecipe mLastRecipe;
     public long mEUStore;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String KBFR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
@@ -260,7 +262,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
                             mEfficiencyIncrease = 0;
                             mLastWorkingTick = mTotalRunTime;
                             this.mEUStore = aBaseMetaTileEntity.getStoredEU();
-                            this.lastRecipe = null;
+                            this.mLastRecipe = null;
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 checkRecipe();
                             }
@@ -272,7 +274,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
                                 this.mEUStore = aBaseMetaTileEntity.getStoredEU();
                                 if (checkRecipe()) {
                                     markDirty();
-                                    if (this.mEUStore < this.lastRecipe.mSpecialValue + this.lEUt) {
+                                    if (this.mEUStore < this.mLastRecipe.mSpecialValue + this.lEUt) {
                                         stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                                     }
                                     aBaseMetaTileEntity.decreaseStoredEnergyUnits(this.lEUt, true);
@@ -282,7 +284,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
                         }
                     }
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
-                    this.lastRecipe = null;
+                    this.mLastRecipe = null;
                     stopMachine(ShutDownReasonRegistry.STRUCTURE_INCOMPLETE);
                 }
             }
@@ -313,17 +315,29 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                this.lastRecipe = null;
+                long powerToStart = recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L);
                 if (!mRunningOnLoad) {
-                    if (recipe.mSpecialValue > mEUStore) {
-                        return CheckRecipeResultRegistry.insufficientStartupPower(recipe.mSpecialValue);
+                    if (powerToStart > mEUStore) {
+                        return CheckRecipeResultRegistry.insufficientStartupPower(BigInteger.valueOf(powerToStart));
                     }
                     if (recipe.mEUt > GTValues.V[getRecipeMaxTier() + 1]) {
                         return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                     }
                 }
-                this.lastRecipe = recipe;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
+            }
+
+            @NotNull
+            @Override
+            public CheckRecipeResult process() {
+                CheckRecipeResult result = super.process();
+                if (mRunningOnLoad) mRunningOnLoad = false;
+                if (result.wasSuccessful()) {
+                    KuangBiaoOneGiantNuclearFusionReactor.this.mLastRecipe = lastRecipe;
+                } else {
+                    KuangBiaoOneGiantNuclearFusionReactor.this.mLastRecipe = null;
+                }
+                return result;
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);

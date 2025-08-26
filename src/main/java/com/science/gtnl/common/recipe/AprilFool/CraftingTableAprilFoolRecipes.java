@@ -27,12 +27,6 @@ public class CraftingTableAprilFoolRecipes implements IRecipePool {
                 MaterialPool.Breel.get(OrePrefixes.plateDouble, 1), 'C', ItemList.Casing_SolidSteel.get(1) });
 
         GTModHandler.addCraftingRecipe(
-            GTNLItemList.SteelBrickCasing.get(1),
-            new Object[] { "AAA", "BBB", "BBB", 'A',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 1), 'B',
-                new ItemStack(Blocks.brick_block, 1) });
-
-        GTModHandler.addCraftingRecipe(
             GTNLItemList.ConcentratingSieveMesh.get(1),
             new Object[] { "AAA", "wBh", "AAA", 'A',
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.CrudeSteel, 1), 'B',
