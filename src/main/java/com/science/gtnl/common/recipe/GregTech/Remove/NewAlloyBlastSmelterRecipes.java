@@ -1,4 +1,4 @@
-package com.science.gtnl.common.recipe.GregTech.ServerStart;
+package com.science.gtnl.common.recipe.GregTech.Remove;
 
 import com.science.gtnl.api.IRecipePool;
 
@@ -11,7 +11,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
-public class NewRemoveAlloyBlastSmelterRecipes implements IRecipePool {
+public class NewAlloyBlastSmelterRecipes implements IRecipePool {
 
     public RecipeMap<?> aBS = GTPPRecipeMaps.alloyBlastSmelterRecipes;
 

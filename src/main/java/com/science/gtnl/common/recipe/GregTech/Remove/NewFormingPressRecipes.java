@@ -1,4 +1,4 @@
-package com.science.gtnl.common.recipe.GregTech.ServerStart;
+package com.science.gtnl.common.recipe.GregTech.Remove;
 
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
@@ -12,7 +12,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 
-public class FormingPressRecipes implements IRecipePool {
+public class NewFormingPressRecipes implements IRecipePool {
 
     public RecipeMap<?> FPR = RecipeMaps.formingPressRecipes;
 

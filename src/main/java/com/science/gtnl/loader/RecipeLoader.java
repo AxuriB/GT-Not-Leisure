@@ -87,10 +87,11 @@ import com.science.gtnl.common.recipe.GregTech.MixerRecipes;
 import com.science.gtnl.common.recipe.GregTech.PCBFactoryRecipes;
 import com.science.gtnl.common.recipe.GregTech.PlasmaForgeRecipes;
 import com.science.gtnl.common.recipe.GregTech.PreciseAssemblerRecipes;
+import com.science.gtnl.common.recipe.GregTech.Remove.NewAlloyBlastSmelterRecipes;
+import com.science.gtnl.common.recipe.GregTech.Remove.NewFormingPressRecipes;
+import com.science.gtnl.common.recipe.GregTech.Remove.NewVacuumFurnaceRecipes;
 import com.science.gtnl.common.recipe.GregTech.ServerStart.CircuitAssemblerConvertRecipes;
 import com.science.gtnl.common.recipe.GregTech.ServerStart.CircuitAssemblyLineRecipes;
-import com.science.gtnl.common.recipe.GregTech.ServerStart.FormingPressRecipes;
-import com.science.gtnl.common.recipe.GregTech.ServerStart.NewRemoveAlloyBlastSmelterRecipes;
 import com.science.gtnl.common.recipe.GregTech.SpaceAssemblerRecipes;
 import com.science.gtnl.common.recipe.GregTech.TranscendentPlasmaMixerRecipes;
 import com.science.gtnl.common.recipe.GregTech.VacuumFreezerRecipes;
@@ -125,7 +126,8 @@ public class RecipeLoader {
     }
 
     public static void loadNewRemoveRecipes() {
-        IRecipePool[] recipePools = new IRecipePool[] { new NewRemoveAlloyBlastSmelterRecipes() };
+        IRecipePool[] recipePools = new IRecipePool[] { new NewAlloyBlastSmelterRecipes(),
+            new NewVacuumFurnaceRecipes(), new NewFormingPressRecipes() };
 
         for (IRecipePool recipePool : recipePools) {
             recipePool.loadRecipes();
@@ -171,8 +173,8 @@ public class RecipeLoader {
 
         };
 
-        IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new FormingPressRecipes(),
-            new CircuitAssemblerConvertRecipes(), new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };
+        IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
+            new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };
 
         for (IRecipePool recipePool : recipePools) {
             recipePool.loadRecipes();

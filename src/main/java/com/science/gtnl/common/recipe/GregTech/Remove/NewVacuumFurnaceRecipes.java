@@ -1,4 +1,4 @@
-package com.science.gtnl.common.recipe.GregTech.ServerStart;
+package com.science.gtnl.common.recipe.GregTech.Remove;
 
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
@@ -17,7 +17,7 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
-public class VacuumFurnaceRecipes implements IRecipePool {
+public class NewVacuumFurnaceRecipes implements IRecipePool {
 
     public RecipeMap<?> VFR = GTPPRecipeMaps.vacuumFurnaceRecipes;
 
