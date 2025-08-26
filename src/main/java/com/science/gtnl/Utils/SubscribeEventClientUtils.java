@@ -30,6 +30,7 @@ import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.reavaritia.common.render.CustomEntityRenderer;
@@ -80,14 +81,10 @@ public class SubscribeEventClientUtils {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
 
-        if (!player.isSneaking()) return;
-
         ItemStack held = player.getCurrentEquippedItem();
         if (held == null) return;
 
         if (held.getItem() != ItemLoader.veinMiningPickaxe) return;
-
-        if (event.dwheel == 0) return;
 
         NBTTagCompound nbt = held.getTagCompound();
         if (nbt == null) {
@@ -95,24 +92,51 @@ public class SubscribeEventClientUtils {
             held.setTagCompound(nbt);
         }
 
-        int range = nbt.hasKey("range") ? nbt.getInteger("range") : 0;
+        boolean rightClickHeld = Mouse.isButtonDown(1);
 
-        if (event.dwheel > 0) {
-            range++;
-        } else {
-            range--;
+        if (player.isSneaking() && !rightClickHeld) {
+            if (event.dwheel == 0) return;
+            int oldRange = nbt.hasKey("range") ? nbt.getInteger("range") : 0;
+            int newRange = oldRange;
+
+            if (event.dwheel > 0) {
+                newRange++;
+            } else {
+                newRange--;
+            }
+
+            if (newRange < 0) newRange = 0;
+            if (newRange > 7) newRange = 7;
+
+            if (newRange != oldRange) {
+                nbt.setInteger("range", newRange);
+                ClientUtils.showSubtitle("Tooltip_VeinMiningPickaxe_00", newRange);
+                network.sendToServer(new NBTUpdatePacket(player.inventory.currentItem, held));
+                event.setCanceled(true);
+            }
         }
 
-        if (range < 0) range = 0;
-        if (range > 7) range = 7;
+        if (!player.isSneaking() && rightClickHeld) {
+            if (event.dwheel == 0) return;
+            int oldAmount = nbt.hasKey("amount") ? nbt.getInteger("amount") : 0;
+            int newAmount = oldAmount;
 
-        nbt.setInteger("range", range);
+            if (event.dwheel > 0) {
+                newAmount += 1000;
+            } else {
+                newAmount -= 1000;
+            }
 
-        ClientUtils.showSubtitle("Tooltip_VeinMiningPickaxe_00", range);
+            if (newAmount < 0) newAmount = 0;
+            if (newAmount > 327670) newAmount = 327670;
 
-        network.sendToServer(new NBTUpdatePacket(player.inventory.currentItem, held));
-
-        event.setCanceled(true);
+            if (newAmount != oldAmount) {
+                nbt.setInteger("amount", newAmount);
+                ClientUtils.showSubtitle("Tooltip_VeinMiningPickaxe_01", newAmount);
+                network.sendToServer(new NBTUpdatePacket(player.inventory.currentItem, held));
+                event.setCanceled(true);
+            }
+        }
     }
 
     @SubscribeEvent

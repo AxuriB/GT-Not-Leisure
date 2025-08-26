@@ -783,6 +783,7 @@ item.PortableItem.17.name=Portable Dark Steel Chest
 
 item.VeinMiningPickaxe.name=Vein Mining Pickaxe
 Tooltip_VeinMiningPickaxe_00=Max Block Gap: %s
+Tooltip_VeinMiningPickaxe_01=Max Vein Count: %s
 Tooltip_VeinMiningPickaxe_PreciseMode_On=§aPrecise Mode Enabled
 Tooltip_VeinMiningPickaxe_PreciseMode_Off=§rPrecise Mode Disabled
 

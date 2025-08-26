@@ -40,12 +40,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
     public VeinMiningPickaxe() {
-        super(EnumHelper.addToolMaterial("VEIN", 15, 500000, 15, 3, 10));
+        super(EnumHelper.addToolMaterial("VEIN", 15, Integer.MAX_VALUE, 15, 3, 10));
         this.setUnlocalizedName("VeinMiningPickaxe");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "VeinMiningPickaxe");
         this.setMaxStackSize(1);
-        this.setMaxDamage(500000);
+        this.setMaxDamage(Integer.MAX_VALUE);
         GTNLItemList.VeinMiningPickaxe.set(new ItemStack(this, 1));
     }
 
@@ -55,11 +55,15 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         boolean advancedToolTips) {
         NBTTagCompound tags = itemStack.getTagCompound();
         int range = 3;
+        int amount = 32767;
         boolean preciseMode = false;
 
         if (tags != null) {
             if (tags.hasKey("range")) {
                 range = Math.max(0, Math.min(7, tags.getInteger("range")));
+            }
+            if (tags.hasKey("amount")) {
+                amount = Math.max(0, Math.min(327670, tags.getInteger("amount")));
             }
             if (tags.hasKey("preciseMode")) {
                 preciseMode = tags.getBoolean("preciseMode");
@@ -67,6 +71,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         }
 
         toolTip.add(StatCollector.translateToLocalFormatted("Tooltip_VeinMiningPickaxe_00", range));
+        toolTip.add(StatCollector.translateToLocalFormatted("Tooltip_VeinMiningPickaxe_01", amount));
         toolTip.add(
             StatCollector.translateToLocal(
                 preciseMode ? "Tooltip_VeinMiningPickaxe_PreciseMode_On"
@@ -107,24 +112,33 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         if (player.worldObj.isRemote) return false;
         if (player.isSneaking()) {
             int range = 3;
+            int amount = 32767;
+            boolean preciseMode = false;
             NBTTagCompound tags = stack.getTagCompound();
-            if (tags != null && tags.hasKey("range")) {
-                range = Math.max(0, Math.min(7, tags.getInteger("range")));
+            if (tags != null) {
+                if (tags.hasKey("range")) {
+                    range = Math.max(0, Math.min(7, tags.getInteger("range")));
+                }
+                if (tags.hasKey("preciseMode")) {
+                    preciseMode = tags.getBoolean("preciseMode");
+                }
+                if (tags.hasKey("amount")) {
+                    amount = Math.max(0, Math.min(32767, tags.getInteger("amount")));
+                }
             }
 
-            boolean preciseMode = tags != null && tags.getBoolean("preciseMode");
             Block block = player.worldObj.getBlock(x, y, z);
             int meta = player.worldObj.getBlockMetadata(x, y, z);
 
             if (block != null) {
-                clearConnectedBlocks(player, stack, x, y, z, block, meta, range, preciseMode);
+                clearConnectedBlocks(player, stack, x, y, z, block, meta, range, amount, preciseMode);
             }
         }
         return false;
     }
 
     public void clearConnectedBlocks(EntityPlayer player, ItemStack stack, int x, int y, int z, Block targetBlock,
-        int targetMeta, int maxGap, boolean preciseMode) {
+        int targetMeta, int maxGap, int amount, boolean preciseMode) {
         if (player.getFoodStats()
             .getFoodLevel() <= 0
             && player.getFoodStats()
@@ -141,7 +155,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
         queue.add(new Node(x, y, z, 0));
 
-        while (!queue.isEmpty() && cleared < 327670) {
+        while (!queue.isEmpty() && cleared < amount) {
             if (!player.isSneaking()) break;
 
             Node node = queue.poll();
@@ -173,7 +187,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
                                     break;
                                 }
                             } else {
-                                if (tname.startsWith(name)) {
+                                if ((name.startsWith("ore") && tname.startsWith("ore")) || tname.startsWith(name)) {
                                     matches = true;
                                     break;
                                 }
@@ -214,6 +228,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
                         if (currentDamage + 1 >= stack.getMaxDamage()) {
                             world.playSoundEffect(player.posX, player.posY, player.posZ, "random.break", 1.0F, 1.0F);
                             stack.stackSize = 0;
+                            stack = null;
                             break;
                         } else {
                             stack.setItemDamage(currentDamage + 1);

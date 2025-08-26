@@ -783,6 +783,7 @@ item.PortableItem.17.name=便携玄钢箱子
 
 item.VeinMiningPickaxe.name=矿脉挖掘镐
 Tooltip_VeinMiningPickaxe_00=最大方块间隔: %s
+Tooltip_VeinMiningPickaxe_01=最大连锁数量: %s
 Tooltip_VeinMiningPickaxe_PreciseMode_On=§a精确模式已开启
 Tooltip_VeinMiningPickaxe_PreciseMode_Off=§r精确模式已关闭
 
