@@ -38,7 +38,16 @@ public class ContainerPortableAdvancedWorkbench extends Container {
 
         for (l = 0; l < 3; ++l) {
             for (i1 = 0; i1 < 3; ++i1) {
-                this.addSlotToContainer(new Slot(this.craftMatrix, i1 + l * 3, 30 + i1 * 18, 17 + l * 18));
+                this.addSlotToContainer(new Slot(this.craftMatrix, i1 + l * 3, 30 + i1 * 18, 17 + l * 18) {
+
+                    @Override
+                    public boolean isItemValid(ItemStack stack) {
+                        if (stack != null && stack.getItem() instanceof PortableItem && stack.getItemDamage() == 1) {
+                            return false;
+                        }
+                        return super.isItemValid(stack);
+                    }
+                });
             }
         }
 

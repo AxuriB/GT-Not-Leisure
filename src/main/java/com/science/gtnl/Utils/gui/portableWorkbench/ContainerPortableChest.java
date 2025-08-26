@@ -44,8 +44,18 @@ public class ContainerPortableChest extends Container implements ISortableContai
 
         for (int chestRow = 0; chestRow < cols; chestRow++) {
             for (int chestCol = 0; chestCol < rows; chestCol++) {
-                this.addSlotToContainer(
-                    new Slot(chestInventory, chestCol + chestRow * rows, 12 + chestCol * 18, 8 + chestRow * 18));
+                final int index = chestCol + chestRow * rows;
+                this.addSlotToContainer(new Slot(chestInventory, index, 12 + chestCol * 18, 8 + chestRow * 18) {
+
+                    @Override
+                    public boolean isItemValid(ItemStack stack) {
+                        if (stack != null && stack.getItem() instanceof PortableItem
+                            && (stack.getItemDamage() >= 6 && stack.getItemDamage() <= 17)) {
+                            return false;
+                        }
+                        return super.isItemValid(stack);
+                    }
+                });
             }
         }
 

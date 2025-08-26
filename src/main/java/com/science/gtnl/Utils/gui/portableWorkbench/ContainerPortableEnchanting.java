@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -20,6 +21,16 @@ public class ContainerPortableEnchanting extends ContainerEnchantment {
     public ContainerPortableEnchanting(InventoryPlayer playerInv, World world) {
         super(playerInv, world, 0, 0, 0);
         this.worldPointer = world;
+        this.inventorySlots.set(0, new Slot(this.tableInventory, 0, 25, 47) {
+
+            @Override
+            public boolean isItemValid(ItemStack stack) {
+                if (stack != null && stack.getItem() instanceof PortableItem && stack.getItemDamage() == 5) {
+                    return false;
+                }
+                return super.isItemValid(stack);
+            }
+        });
     }
 
     @Override

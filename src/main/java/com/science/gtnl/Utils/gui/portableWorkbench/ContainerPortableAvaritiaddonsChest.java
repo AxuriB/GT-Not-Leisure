@@ -25,7 +25,17 @@ public class ContainerPortableAvaritiaddonsChest extends Container implements IS
 
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 27; x++) {
-                addSlotToContainer(new Slot(chestInventory, y * 27 + x, 8 + (18 * x), 18 + (18 * y)));
+                addSlotToContainer(new Slot(chestInventory, y * 27 + x, 8 + (18 * x), 18 + (18 * y)) {
+
+                    @Override
+                    public boolean isItemValid(ItemStack stack) {
+                        if (stack != null && stack.getItem() instanceof PortableItem
+                            && (stack.getItemDamage() >= 6 && stack.getItemDamage() <= 17)) {
+                            return false;
+                        }
+                        return super.isItemValid(stack);
+                    }
+                });
             }
         }
 

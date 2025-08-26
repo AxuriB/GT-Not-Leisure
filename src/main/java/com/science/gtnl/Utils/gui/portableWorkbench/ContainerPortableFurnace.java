@@ -31,6 +31,7 @@ public class ContainerPortableFurnace extends Container {
 
     public ContainerPortableFurnace(InventoryPlayer playerInventory, World world, ItemStack stack) {
         this.furnaceStack = stack;
+        this.player = playerInventory.player;
 
         this.furnaceInventory = new InventoryBasic("PortableFurnace", false, 3);
         IInventory saved = PortableItem.getFurnaceInventory(stack);
@@ -38,9 +39,31 @@ public class ContainerPortableFurnace extends Container {
             furnaceInventory.setInventorySlotContents(i, saved.getStackInSlot(i));
         }
 
-        this.addSlotToContainer(new Slot(furnaceInventory, 0, 56, 17)); // input
-        this.addSlotToContainer(new Slot(furnaceInventory, 1, 56, 53)); // fuel
-        this.addSlotToContainer(new SlotFurnace(playerInventory.player, furnaceInventory, 2, 116, 35)); // output
+        Slot inputSlot = new Slot(furnaceInventory, 0, 56, 17) {
+
+            @Override
+            public boolean isItemValid(ItemStack stack) {
+                if (stack != null && stack.getItem() instanceof PortableItem && stack.getItemDamage() == 2) {
+                    return false;
+                }
+                return super.isItemValid(stack);
+            }
+        };
+        Slot fuelSlot = new Slot(furnaceInventory, 1, 56, 53) {
+
+            @Override
+            public boolean isItemValid(ItemStack stack) {
+                if (stack != null && stack.getItem() instanceof PortableItem && stack.getItemDamage() == 2) {
+                    return false;
+                }
+                return super.isItemValid(stack);
+            }
+        };
+        Slot outputSlot = new SlotFurnace(playerInventory.player, furnaceInventory, 2, 116, 35);
+
+        this.addSlotToContainer(inputSlot);
+        this.addSlotToContainer(fuelSlot);
+        this.addSlotToContainer(outputSlot);
 
         for (int l = 0; l < 3; ++l) {
             for (int i1 = 0; i1 < 9; ++i1) {
