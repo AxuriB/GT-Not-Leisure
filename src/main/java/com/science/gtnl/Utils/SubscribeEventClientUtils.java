@@ -10,8 +10,10 @@ import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -70,7 +72,6 @@ public class SubscribeEventClientUtils {
     }
 
     // Player
-    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onClientConnectedToServerEvent(FMLNetworkEvent.ClientConnectedToServerEvent aEvent) {
         PLAYING_SOUNDS.clear();
@@ -165,21 +166,37 @@ public class SubscribeEventClientUtils {
         lastHealth = currentHealth;
     }
 
-    @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onGuiOpen(GuiOpenEvent event) {
+    public void onIngameMenuGuiOpen(GuiOpenEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
-        EntityPlayer player = mc.thePlayer;
+        EntityClientPlayerMP player = mc.thePlayer;
+
+        if (player != null && !player.capabilities.isCreativeMode) {
+            PotionEffect effect = player.getActivePotionEffect(EffectLoader.awe);
+
+            if (effect != null && event.gui instanceof GuiIngameMenu) {
+                ClientTitleDisplayHandler
+                    .displayTitle(StatCollector.translateToLocal("Awe_Cancel_01"), 100, 0xFFFFFF, 3, 10, 20);
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onInventoryGuiOpen(GuiOpenEvent event) {
+        Minecraft mc = Minecraft.getMinecraft();
+        EntityClientPlayerMP player = mc.thePlayer;
 
         if (player != null && !player.capabilities.isCreativeMode) {
             PotionEffect effect = player.getActivePotionEffect(EffectLoader.awe);
 
             if (effect != null && event.gui instanceof GuiInventory) {
-                event.setCanceled(true);
                 String[] messages = { "Awe_Cancel_02_01", "Awe_Cancel_02_02" };
                 String message = messages[random.nextInt(messages.length)];
                 ClientTitleDisplayHandler
                     .displayTitle(StatCollector.translateToLocal(message), 100, 0xFFFFFF, 3, 10, 20);
+
+                event.setCanceled(true);
             }
         }
     }
