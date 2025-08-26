@@ -216,6 +216,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GlassTier;
 import gregtech.common.covers.CoverConveyor;
+import gregtech.common.covers.CoverPump;
 import gregtech.common.covers.CoverSteamRegulator;
 import gregtech.common.covers.CoverSteamValve;
 import gtPlusPlus.api.objects.Logger;
@@ -2142,7 +2143,7 @@ public class MachineLoader {
         CoverRegistry.registerCover(
             GTNLItemList.HydraulicPump.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_PUMP)),
-            context -> new CoverSteamValve(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
 
         CoverRegistry.registerCover(
             GTNLItemList.HydraulicConveyor.get(1L),

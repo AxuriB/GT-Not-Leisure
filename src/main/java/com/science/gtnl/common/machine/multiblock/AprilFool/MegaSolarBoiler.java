@@ -8,6 +8,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -38,6 +39,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -165,9 +167,11 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        return true;
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     private String state;
 
@@ -199,8 +203,8 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
             .widget(new FakeSyncWidget.StringSyncer(() -> state, val -> state = val));
     }
 
-    public boolean depleteInputReal(FluidStack aLiquid) {
-        return depleteInputReal(aLiquid, false);
+    public void depleteInputReal(FluidStack aLiquid) {
+        depleteInputReal(aLiquid, false);
     }
 
     public boolean depleteInputReal(FluidStack aLiquid, boolean simulate) {

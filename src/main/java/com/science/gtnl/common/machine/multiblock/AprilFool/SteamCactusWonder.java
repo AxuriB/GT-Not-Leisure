@@ -9,6 +9,7 @@ import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -107,14 +109,8 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
             .addElement(
                 'C',
                 ofChain(
-                    buildSteamWirelessInput(SteamCactusWonder.class).casingIndex(10)
-                        .dot(1)
-                        .build(),
-                    buildSteamBigInput(SteamCactusWonder.class).casingIndex(10)
-                        .dot(1)
-                        .build(),
                     buildHatchAdder(SteamCactusWonder.class)
-                        .atLeast(Maintenance, SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
+                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
                         .casingIndex(10)
                         .dot(1)
                         .buildAndChain(),
@@ -177,6 +173,9 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
