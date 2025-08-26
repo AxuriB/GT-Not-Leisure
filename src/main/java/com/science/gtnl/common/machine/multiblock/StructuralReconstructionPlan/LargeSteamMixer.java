@@ -1,12 +1,12 @@
 package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 
-import static bartworks.system.material.WerkstoffLoader.BWBlockCasings;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gtPlusPlus.core.block.ModBlocks.*;
 
 import javax.annotation.Nonnull;
 
@@ -161,8 +161,8 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                 'F',
                 GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
-                        LargeSteamMixer::getTierAdvancedCasing,
-                        ImmutableList.of(Pair.of(BWBlockCasings, 32066), Pair.of(BWBlockCasings, 32071)),
+                        LargeSteamMixer::getTierPlatedCasing,
+                        ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
                         -1,
                         (t, m) -> t.tierAdvancedCasing = m,
                         t -> t.tierAdvancedCasing)))

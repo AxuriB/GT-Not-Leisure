@@ -1,6 +1,5 @@
 package com.science.gtnl.common.machine.multiblock;
 
-import static bartworks.system.material.WerkstoffLoader.BWBlockCasings;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
@@ -145,15 +144,6 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
                         (t, m) -> t.tierBrickCasing = m,
                         t -> t.tierBrickCasing)))
             .addElement('G', ofBlock(Blocks.stonebrick, 0))
-            .addElement(
-                'H',
-                GTStructureChannels.TIER_MACHINE_CASING.use(
-                    ofBlocksTiered(
-                        LargeSteamFurnace::getTierAdvancedCasing,
-                        ImmutableList.of(Pair.of(BWBlockCasings, 32066), Pair.of(BWBlockCasings, 32071)),
-                        -1,
-                        (t, m) -> t.tierAdvancedCasing = m,
-                        t -> t.tierAdvancedCasing)))
             .build();
     }
 
