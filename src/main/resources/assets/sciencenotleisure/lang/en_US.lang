@@ -748,6 +748,10 @@ Tooltip_CompressedSteamTurbine_00=Infinite Throughtput
 MetaItem.102.name=Steel Turbine
 Tooltip_SteelTurbine_00=Stable like a Table
 MetaItem.103.name=Pipeless Steam Cover
+MetaItem.104.name=Iron Turbine
+Tooltip_IronTurbine_00=Sturdy and Durable
+MetaItem.105.name=Bronze Turbine
+Tooltip_BronzeTurbine_00=Antique and Solid
 
 item.SuspiciousStew.name=Suspicious Stew
 

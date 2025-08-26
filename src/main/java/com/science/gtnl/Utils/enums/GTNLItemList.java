@@ -224,6 +224,8 @@ public enum GTNLItemList implements IItemContainer {
     CompressedSteamTurbine,
     SteelTurbine,
     PipelessSteamCover,
+    IronTurbine,
+    BronzeTurbine,
 
     ManaElectricProspectorTool,
 

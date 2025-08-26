@@ -648,6 +648,16 @@ public class ItemLoader {
                     TextUtils.texter(
                         "Does not connect to pipes. This cover withdraws Steam from the network.",
                         "Tooltip_WirelessSteamCover_04") }));
+        GTNLItemList.IronTurbine.set(
+            MetaItemAdder.initItem(
+                "Iron Turbine",
+                104,
+                new String[] { TextUtils.texter("Sturdy and Durable", "Tooltip_IronTurbine_00") }));
+        GTNLItemList.BronzeTurbine.set(
+            MetaItemAdder.initItem(
+                "Bronze Turbine",
+                105,
+                new String[] { TextUtils.texter("Antique and Solid", "Tooltip_BronzeTurbine_00") }));
 
         GTNLItemList.ManaElectricProspectorTool
             .set(ElectricProspectorTool.initItem("Mana Electric Prospector Tool", 0, 5, 9999));

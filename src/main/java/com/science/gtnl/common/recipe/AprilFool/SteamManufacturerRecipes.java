@@ -100,7 +100,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 4),
-                GregtechItemList.BasicIronTurbine.get(1))
+                GTNLItemList.IronTurbine.get(1))
             .itemOutputs(GTNLItemList.HydraulicMotor.get(1))
             .duration(1 * SECONDS)
             .eut(16)
@@ -111,7 +111,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 1),
-                GregtechItemList.BasicIronTurbine.get(1),
+                GTNLItemList.IronTurbine.get(1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 1),
                 GTNLItemList.HydraulicMotor.get(1))
             .itemOutputs(GTNLItemList.HydraulicPiston.get(1))
@@ -124,7 +124,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Rubber, 2),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.CrudeSteel, 1),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 1),
-                GregtechItemList.BasicBronzeTurbine.get(1),
+                GTNLItemList.BronzeTurbine.get(1),
                 GTNLItemList.HydraulicMotor.get(2))
             .itemOutputs(GTNLItemList.HydraulicPump.get(1))
             .duration(1 * SECONDS)
@@ -155,7 +155,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
 
         RA.stdBuilder()
             .itemInputs(
-                GregtechItemList.BasicIronTurbine.get(2),
+                GTNLItemList.IronTurbine.get(2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 4),
                 GTNLItemList.HydraulicPump.get(1))
@@ -201,8 +201,8 @@ public class SteamManufacturerRecipes implements IRecipePool {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 2))
-            .itemOutputs(GregtechItemList.BasicIronTurbine.get(1))
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Iron, 2))
+            .itemOutputs(GTNLItemList.IronTurbine.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
@@ -211,8 +211,8 @@ public class SteamManufacturerRecipes implements IRecipePool {
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
-                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 2))
-            .itemOutputs(GregtechItemList.BasicBronzeTurbine.get(1))
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Bronze, 2))
+            .itemOutputs(GTNLItemList.BronzeTurbine.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);

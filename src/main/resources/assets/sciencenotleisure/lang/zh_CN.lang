@@ -748,6 +748,10 @@ Tooltip_CompressedSteamTurbine_00=无限吞吐量
 MetaItem.102.name=钢涡轮
 Tooltip_SteelTurbine_00=稳如长桌
 MetaItem.103.name=无管蒸汽覆盖板
+MetaItem.104.name=铁涡轮
+Tooltip_IronTurbine_00=结实耐用
+MetaItem.105.name=青铜涡轮
+Tooltip_BronzeTurbine_00=古朴厚重
 
 item.SuspiciousStew.name=迷之炖菜
 
