@@ -437,7 +437,7 @@ public class RecipePool {
 
     public static final RecipeMap<RecipeMapBackend> SteamWoodcutterRecipes = RecipeMapBuilder
         .of("gtnl.recipe.SteamWoodcutter")
-        .maxIO(1, 3, 0, 0)
+        .maxIO(1, 4, 0, 0)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .frontend(SteamLogoFrontend::new)
         .neiHandlerInfo((builder -> builder.setDisplayStack(GTNLItemList.SteamWoodcutter.get(1))))

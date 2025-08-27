@@ -506,7 +506,8 @@ public class SteamManufacturerRecipes implements IRecipePool {
         RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.brick_block, 3),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 5))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 3))
             .itemOutputs(GTNLItemList.BronzeBrickCasing.get(2))
             .duration(2 * SECONDS)
             .eut(16)
@@ -515,7 +516,8 @@ public class SteamManufacturerRecipes implements IRecipePool {
         RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.brick_block, 3),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 5))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 3))
             .itemOutputs(GTNLItemList.SteelBrickCasing.get(2))
             .duration(2 * SECONDS)
             .eut(16)

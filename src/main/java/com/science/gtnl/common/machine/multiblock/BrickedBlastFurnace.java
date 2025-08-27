@@ -189,7 +189,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
-        mMaxProgresstime = 20;
+        mMaxProgresstime = 128;
         setEnergyUsage(processingLogic);
 
         mOutputItems = processingLogic.getOutputItems();

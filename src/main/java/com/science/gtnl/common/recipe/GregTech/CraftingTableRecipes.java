@@ -44,13 +44,15 @@ public class CraftingTableRecipes implements IRecipePool {
 
         GTModHandler.addCraftingRecipe(
             GTNLItemList.BronzeBrickCasing.get(2),
-            new Object[] { "AAA", "ABA", "CCC", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1),
-                'B', "craftingToolWrench", 'C', new ItemStack(Blocks.brick_block, 1) });
+            new Object[] { "AAA", "DBD", "CCC", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1),
+                'B', "craftingToolWrench", 'C', new ItemStack(Blocks.brick_block, 1), 'D',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 1) });
 
         GTModHandler.addCraftingRecipe(
             GTNLItemList.SteelBrickCasing.get(2),
-            new Object[] { "AAA", "ABA", "CCC", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1),
-                'B', "craftingToolWrench", 'C', new ItemStack(Blocks.brick_block, 1) });
+            new Object[] { "AAA", "DBD", "CCC", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1),
+                'B', "craftingToolWrench", 'C', new ItemStack(Blocks.brick_block, 1), 'D',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CrudeSteel, 1) });
 
         GTModHandler.addCraftingRecipe(
             GTNLItemList.CheatOreProcessingFactory.get(1),

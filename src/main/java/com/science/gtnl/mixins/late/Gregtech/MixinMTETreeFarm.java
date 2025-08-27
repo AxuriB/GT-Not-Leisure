@@ -1,8 +1,9 @@
 package com.science.gtnl.mixins.late.Gregtech;
 
 import static gregtech.api.enums.GTValues.RA;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
@@ -29,10 +30,44 @@ public class MixinMTETreeFarm {
 
         if (log == null) return;
 
+        ItemStack newSaplingIn = saplingIn.copy();
+        newSaplingIn.stackSize = 0;
+
+        List<ItemStack> outputs = new ArrayList<>();
+        List<Integer> chances = new ArrayList<>();
+
+        ItemStack newLogOut = log.copy();
+        newLogOut.stackSize = 32;
+        outputs.add(newLogOut);
+        chances.add(10000);
+
+        if (saplingOut != null) {
+            ItemStack newSaplingOut = saplingOut.copy();
+            newSaplingOut.stackSize = 2;
+            outputs.add(newSaplingOut);
+            chances.add(1000);
+        }
+        if (leaves != null) {
+            ItemStack newLeavesOut = leaves.copy();
+            newLeavesOut.stackSize = 6;
+            outputs.add(newLeavesOut);
+            chances.add(1500);
+        }
+        if (fruit != null) {
+            ItemStack newFruitOut = fruit.copy();
+            newFruitOut.stackSize = 4;
+            outputs.add(newFruitOut);
+            chances.add(3000);
+        }
+
         RA.stdBuilder()
-            .itemInputs(new ItemStack(saplingIn.getItem(), 0, saplingIn.getItemDamage()))
-            .itemOutputs(new ItemStack(log.getItem(), 64, log.getItemDamage()))
-            .duration(2 * SECONDS + 10 * TICKS)
+            .itemInputs(newSaplingIn)
+            .itemOutputs(outputs.toArray(new ItemStack[0]))
+            .outputChances(
+                chances.stream()
+                    .mapToInt(i -> i)
+                    .toArray())
+            .duration(200)
             .eut(TierEU.RECIPE_LV)
             .addTo(RecipePool.SteamWoodcutterRecipes);
     }
