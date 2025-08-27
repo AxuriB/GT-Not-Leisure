@@ -29,7 +29,6 @@
     "Gregtech.AssLineRemover.MixinGTMod",
     "Gregtech.AssLineRemover.MixinGTRecipeBuilder",
     "Gregtech.AssLineRemover.MixinTTRecipeAdder",
-    "TinkersGregworks.MixinTGregRegistry",
     "NHCoreMod.MixinBacteriaRegistry",
     "ThaumicTinkerer.MixinItemBloodSword"
   ],

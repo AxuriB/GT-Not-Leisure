@@ -1578,8 +1578,7 @@ public class MaterialPool implements Runnable {
                 + "(Gs39TsЖ66TtЖ67〄62Fs⚶45Hy⚶53✢64En⦼53M⎋65⸎46✦◆✦48✧◇✧52Og*52Sh⏧68Tn57)"
                 + "((⌘☯𓍰𓍱𓍲𓍳𓍴𓍵𓍶𓍷𓍸☯⌘)66(⚷⚙⚷Ni4Ti6)40Fc⚙37҈30҉33«»67Rt*51۞47Rc62Si*68)"
                 + "(Fs61Ef30Ut69Tr66Ms40If53He*43Ai32Or55Vy36⬟⯂⬢⬣⯃⯄32Tt33Cc56Vu58Ao52))???144)"),
-        new Werkstoff.Stats().setToxic(true)
-            .setMass(2147483647),
+        new Werkstoff.Stats().setToxic(true),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
