@@ -733,6 +733,17 @@ public class SteamManufacturerRecipes implements IRecipePool {
 
         RA.stdBuilder()
             .itemInputs(
+                GTNLItemList.PipelessSteamHatch.get(4),
+                GTNLItemList.HydraulicSteamReceiver.get(2),
+                MaterialPool.CompressedSteam.get(OrePrefixes.pipeHuge, 2),
+                MaterialPool.Breel.get(OrePrefixes.plateSuperdense, 1))
+            .itemOutputs(GTNLItemList.PipelessSteamCover.get(1))
+            .duration(20 * SECONDS)
+            .eut(400)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 6),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
                 GTUtility.getIntegratedCircuit(1))
