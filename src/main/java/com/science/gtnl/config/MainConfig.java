@@ -91,9 +91,9 @@ public class MainConfig {
 
     // Chronarch's Clock
     public static int chronarchsClockRadius = 6;
-    public static int chronarchsClockSpeedMultiplier = 100;
-    public static int chronarchsClockDurationTicks = 200;
-    public static int chronarchsClockCooldown = 200;
+    public static int chronarchsClockSpeedMultiplier = 1024;
+    public static int chronarchsClockDurationTicks = 600;
+    public static int chronarchsClockCooldown = 300;
 
     // BloodMagic
     public static boolean enableMeteorSetBlockOptimize = false;

@@ -136,7 +136,7 @@ public class ChronarchsClock extends Item implements SubtitleDisplay {
             float delta = (MainConfig.maxTickrate - originalTickrate) / BOOST_DURATION_TICKS;
             currentTickrate = Math.min(currentTickrate + delta, MainConfig.maxTickrate);
 
-            TickrateAPI.changeTickrate(currentTickrate);
+            TickrateAPI.changeServerTickrate(currentTickrate);
             nbt.setBoolean("ClockActive", true);
         }
     }
@@ -159,10 +159,10 @@ public class ChronarchsClock extends Item implements SubtitleDisplay {
         float delta = (MainConfig.maxTickrate - originalTickrate) / RESTORE_DURATION_TICKS;
         currentTickrate = Math.max(currentTickrate - delta, originalTickrate);
 
-        TickrateAPI.changeTickrate(currentTickrate);
+        TickrateAPI.changeServerTickrate(currentTickrate);
 
         if (currentTickrate <= originalTickrate + 0.5f) {
-            TickrateAPI.changeTickrate(originalTickrate);
+            TickrateAPI.changeServerTickrate(originalTickrate);
             currentTickrate = -1f;
             originalTickrate = -1f;
             restoring = false;
