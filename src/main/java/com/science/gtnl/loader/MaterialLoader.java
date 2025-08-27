@@ -17,8 +17,10 @@ import com.science.gtnl.common.recipe.OreDictionary.WoodDistillationRecipes;
 import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.WerkstoffAdderRegistry;
+import bartworks.system.material.Werkstoff;
 import codechicken.nei.api.API;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLog;
 import micdoodle8.mods.galacticraft.api.recipe.RocketFuels;
 
@@ -67,6 +69,25 @@ public class MaterialLoader {
 
     public static void loadCompleteInit() {
         ScriptLoader.registry();
+
+        Werkstoff[] hiddenMaterials = { MaterialPool.Polyimide, MaterialPool.AcrylonitrileButadieneStyrene,
+            MaterialPool.Polyetheretherketone, MaterialPool.HSLASteel, MaterialPool.Actinium,
+            MaterialPool.Rutherfordium, MaterialPool.Dubnium, MaterialPool.Seaborgium, MaterialPool.Technetium,
+            MaterialPool.Bohrium, MaterialPool.Hassium, MaterialPool.Meitnerium, MaterialPool.Darmstadtium,
+            MaterialPool.Roentgenium, MaterialPool.Copernicium, MaterialPool.Moscovium, MaterialPool.Livermorium,
+            MaterialPool.Astatine, MaterialPool.Tennessine, MaterialPool.Francium, MaterialPool.Berkelium,
+            MaterialPool.Einsteinium, MaterialPool.Mendelevium, MaterialPool.Nobelium, MaterialPool.Lawrencium,
+            MaterialPool.Nihonium, MaterialPool.CompressedSteam, MaterialPool.Breel, MaterialPool.Stronze,
+            MaterialPool.Periodicium, MaterialPool.Stargate };
+
+        OrePrefixes[] orePrefixes = { OrePrefixes.ingotHot, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadWrench,
+            OrePrefixes.toolHeadHammer };
+
+        for (OrePrefixes ore : orePrefixes) {
+            for (Werkstoff mat : hiddenMaterials) {
+                API.hideItem(mat.get(ore));
+            }
+        }
 
         if (Mods.Nutrition.isModLoaded()) {
             NutrientLoader.registry();
