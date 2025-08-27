@@ -150,7 +150,7 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
                         .dot(1)
                         .build(),
                     buildHatchAdder(SteamLavaMaker.class)
-                        .atLeast(Maintenance, SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
+                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
                         .dot(1)
                         .buildAndChain(),

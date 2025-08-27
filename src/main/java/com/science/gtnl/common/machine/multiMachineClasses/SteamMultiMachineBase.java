@@ -119,6 +119,8 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     protected int tierMaterialBlock = -1;
     protected int tierGearCasing = -1;
     protected int tierFrameCasing = -1;
+    protected int tierIndustrialCasing = -1;
+    protected int tierMachineFrame = -1;
     protected int tierMachineCasing = -1;
     protected int tierMachine = 0;
     protected int tCountCasing = 0;
@@ -217,6 +219,22 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         return null;
     }
 
+    @Nullable
+    protected static Integer getTierIndustrialCasing(Block block, int meta) {
+        if (block == null) return null;
+        if (block == BlockLoader.metaCasing02 && 1 == meta) return 1;
+        if (block == BlockLoader.metaCasing02 && 2 == meta) return 2;
+        return null;
+    }
+
+    @Nullable
+    protected static Integer getTierMachineFrame(Block block, int meta) {
+        if (block == null) return null;
+        if (block == BlockLoader.metaBlockColumn && 4 == meta) return 1;
+        if (block == BlockLoader.metaBlockColumn && 5 == meta) return 2;
+        return null;
+    }
+
     @Override
     public GTRenderedTexture getFrontOverlay() {
         return null;
@@ -258,6 +276,8 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     protected int getCasingTextureID() {
         if (tierAdvancedCasing == 2 || tierBrickCasing == 2
             || tierPlatedCasing == 2
+            || tierIndustrialCasing == 2
+            || tierMachineFrame == 2
             || tierPipeCasing == 2
             || tierFireboxCasing == 2
             || tierMaterialBlock == 2

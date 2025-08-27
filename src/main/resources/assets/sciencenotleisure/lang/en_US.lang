@@ -388,6 +388,8 @@ MetaCasing.29.name=Hyper Pressure Breel Casing
 MetaCasing.30.name=Breel-Plated Casing
 MetaCasing.31.name=Steam Compact Pipe Casing
 MetaCasing02.0.name=Vibration-Safe Casing
+MetaCasing02.1.name=Industrial Steam Casing
+MetaCasing02.2.name=Advanced Industrial Steam Casing
 
 MetaBlock.0.name=Test Block
 MetaBlock.1.name=§dNew Horizons Coil
@@ -469,6 +471,8 @@ tile.MetaBlockColumn.0.name=Brick Bronze Shell
 tile.MetaBlockColumn.1.name=Brick Steel Shell
 tile.MetaBlockColumn.2.name=Crushing Wheel
 tile.MetaBlockColumn.3.name=Solar Boiling Cell
+tile.MetaBlockColumn.4.name=Bronze Machine Frame
+tile.MetaBlockColumn.5.name=Steel Machine Frame
 
 tile.Stargate0.name=Compressed Stargate
 tile.Stargate1.name=Compressed Stargate - Tier 1
@@ -2167,6 +2171,20 @@ Tooltip_LargeSteamExtruder_00=11% faster than single-block extruders of the same
 Tooltip_LargeSteamExtruder_01=Only consumes 95% of the normal steam requirement.
 Tooltip_LargeSteamExtruder_02=Can process up to 8 items at once.
 Tooltip_LargeSteamExtruder_Casing=Any Copper Plated Bricks or Deoxidized Steel Machine Block
+
+NameLargeSteamCutting=Large Steam Cutting
+LargeSteamCuttingRecipeType=Cutting
+Tooltip_LargeSteamCutting_00=11% faster than single-block cutting of the same tier.
+Tooltip_LargeSteamCutting_01=Only consumes 95% of the normal steam requirement.
+Tooltip_LargeSteamCutting_02=Can process up to 8 items at once.
+Tooltip_LargeSteamCutting_Casing=Any Copper Plated Bricks or Deoxidized Steel Machine Block
+
+NameLargeSteamLathe=Large Steam Lathe
+LargeSteamLatheRecipeType=Lathe
+Tooltip_LargeSteamLathe_00=11% faster than single-block lathe of the same tier.
+Tooltip_LargeSteamLathe_01=Only consumes 95% of the normal steam requirement.
+Tooltip_LargeSteamLathe_02=Can process up to 8 items at once.
+Tooltip_LargeSteamLathe_Casing=Any Copper Plated Bricks or Deoxidized Steel Machine Block
 
 NameRareEarthCentrifugal=Rare Earth Centrifuge
 gtnl.recipe.RareEarthCentrifugalRecipes=Rare Earth Centrifuging

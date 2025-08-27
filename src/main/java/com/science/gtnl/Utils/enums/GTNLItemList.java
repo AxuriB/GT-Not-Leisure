@@ -49,6 +49,8 @@ public enum GTNLItemList implements IItemContainer {
     SteelBrickCasing,
     CrushingWheels,
     SolarBoilingCell,
+    BronzeMachineFrame,
+    SteelMachineFrame,
 
     TestMetaBlock01_0,
     NewHorizonsCoil,
@@ -119,6 +121,8 @@ public enum GTNLItemList implements IItemContainer {
     BreelPlatedCasing,
     SteamCompactPipeCasing,
     VibrationSafeCasing,
+    IndustrialSteamCasing,
+    AdvancedIndustrialSteamCasing,
 
     TrollFace,
     DepletedExcitedNaquadahFuelRod,
@@ -391,6 +395,8 @@ public enum GTNLItemList implements IItemContainer {
     LargeBoilerTungstenSteel,
     LargeSteamMixer,
     ElectricBlastFurnace,
+    LargeSteamLathe,
+    LargeSteamCutting,
 
     EternalGregTechWorkshop,
     EGTWFusionModule,

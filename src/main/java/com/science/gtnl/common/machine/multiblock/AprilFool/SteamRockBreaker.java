@@ -124,7 +124,6 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
                             .build(),
                         buildHatchAdder(SteamRockBreaker.class)
                             .atLeast(
-                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 InputBus,
                                 SteamHatchElement.OutputBus_Steam,
@@ -189,7 +188,6 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
         tierMachineCasing = -1;
         tCountCasing = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing >= 14 && checkHatches()) {
             updateHatchTexture();
             tierMachine = 1;

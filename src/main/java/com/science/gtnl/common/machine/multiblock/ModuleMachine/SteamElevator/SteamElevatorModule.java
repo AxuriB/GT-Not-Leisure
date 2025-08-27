@@ -103,7 +103,6 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
                     buildHatchAdder(SteamElevatorModule.class).casingIndex(getCasingTextureID())
                         .dot(1)
                         .atLeast(
-                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             InputBus,

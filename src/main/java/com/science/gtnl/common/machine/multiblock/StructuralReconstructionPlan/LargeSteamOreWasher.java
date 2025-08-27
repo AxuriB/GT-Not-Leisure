@@ -131,7 +131,6 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
                         buildHatchAdder(LargeSteamOreWasher.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
-                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -192,7 +191,6 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
         tierMachineCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierPipeCasing < 0 && tierMachineCasing < 0) return false;
         if (tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing >= 195 && checkHatches()) {
             tierMachine = 1;
             getCasingTextureID();

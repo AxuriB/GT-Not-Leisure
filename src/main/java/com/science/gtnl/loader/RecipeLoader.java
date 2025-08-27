@@ -13,7 +13,6 @@ import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.machine.OreProcessing.CheatOreProcessingRecipes;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.recipe.AprilFool.CactusWonderFakeRecipes;
-import com.science.gtnl.common.recipe.AprilFool.CraftingTableAprilFoolRecipes;
 import com.science.gtnl.common.recipe.AprilFool.InfernalCokeRecipes;
 import com.science.gtnl.common.recipe.AprilFool.LavaMakerRecipes;
 import com.science.gtnl.common.recipe.AprilFool.RockBreakerRecipes;
@@ -163,25 +162,17 @@ public class RecipeLoader {
             new AlchemicChemistrySetRecipes(), new AdvancedCircuitAssemblyLineRecipes(), new FallingTowerRecipes(),
             new AssemblingLineRecipes(), new GasCollectorRecipes(), new EternalGregTechWorkshopUpgradeRecipes(),
             new FluidCannerRecipes(), new VacuumFreezerRecipes(), new MeteorsRecipes(), new CheatOreProcessingRecipes(),
-            new ShapedArcaneCraftingRecipes(), new InfusionCraftingRecipes(), new ShimmerRecipes() };
-
-        IRecipePool[] recipePoolsAprilFool = new IRecipePool[] { new CraftingTableAprilFoolRecipes(),
+            new ShapedArcaneCraftingRecipes(), new InfusionCraftingRecipes(), new ShimmerRecipes(),
             new SteamManufacturerRecipes(), new SteamCarpenterRecipe(), new LavaMakerRecipes(),
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
-            new RockBreakerRecipes()
-
-        };
+            new RockBreakerRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };
 
         for (IRecipePool recipePool : recipePools) {
             recipePool.loadRecipes();
-        }
-
-        for (IRecipePool recipePoolAprilFool : recipePoolsAprilFool) {
-            recipePoolAprilFool.loadRecipes();
         }
 
         for (IRecipePool recipePoolServerStart : recipePoolsServerStart) {

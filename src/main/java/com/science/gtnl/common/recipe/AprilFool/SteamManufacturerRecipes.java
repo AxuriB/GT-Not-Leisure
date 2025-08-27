@@ -731,5 +731,42 @@ public class SteamManufacturerRecipes implements IRecipePool {
             .eut(400)
             .addTo(SMFR);
 
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GTNLItemList.IndustrialSteamCasing.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GTNLItemList.AdvancedIndustrialSteamCasing.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 4))
+            .itemOutputs(GTNLItemList.BronzeMachineFrame.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4))
+            .itemOutputs(GTNLItemList.SteelMachineFrame.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
     }
 }

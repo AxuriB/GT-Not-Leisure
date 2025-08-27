@@ -100,10 +100,12 @@ import com.science.gtnl.common.machine.multiblock.LargeSteamAlloySmelter;
 import com.science.gtnl.common.machine.multiblock.LargeSteamChemicalBath;
 import com.science.gtnl.common.machine.multiblock.LargeSteamCircuitAssembler;
 import com.science.gtnl.common.machine.multiblock.LargeSteamCrusher;
+import com.science.gtnl.common.machine.multiblock.LargeSteamCutting;
 import com.science.gtnl.common.machine.multiblock.LargeSteamExtractor;
 import com.science.gtnl.common.machine.multiblock.LargeSteamExtruder;
 import com.science.gtnl.common.machine.multiblock.LargeSteamFormingPress;
 import com.science.gtnl.common.machine.multiblock.LargeSteamFurnace;
+import com.science.gtnl.common.machine.multiblock.LargeSteamLathe;
 import com.science.gtnl.common.machine.multiblock.LargeSteamSifter;
 import com.science.gtnl.common.machine.multiblock.LargeSteamThermalCentrifuge;
 import com.science.gtnl.common.machine.multiblock.LibraryOfRuina;
@@ -1279,6 +1281,20 @@ public class MachineLoader {
                 StatCollector.translateToLocal("NameSteamOreProcessorModule")));
         addItemTooltip(GTNLItemList.SteamOreProcessorModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
+        GTNLItemList.LargeSteamLathe.set(
+            new LargeSteamLathe(
+                LARGE_STEAM_LATHE.ID,
+                "LargeSteamLathe",
+                StatCollector.translateToLocal("NameLargeSteamLathe")));
+        addItemTooltip(GTNLItemList.LargeSteamLathe.get(1), AnimatedText.SNL_QYZG);
+
+        GTNLItemList.LargeSteamCutting.set(
+            new LargeSteamCutting(
+                LARGE_STEAM_CUTTING.ID,
+                "LargeSteamCutting",
+                StatCollector.translateToLocal("NameLargeSteamCutting")));
+        addItemTooltip(GTNLItemList.LargeSteamCutting.get(1), AnimatedText.SNL_QYZG);
+
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(
             new CheatOreProcessingFactory(
@@ -2176,7 +2192,9 @@ public class MachineLoader {
 
     public static void registerGlasses() {
         GlassTier.addCustomGlass(ItemRegistry.bw_realglas2, 1, 13, 1);
-        GlassTier.addCustomGlass(BlockLoader.playerDoll, 0, 14, 1);
+        if (MainConfig.enableRegisterPlayerDollGlass) {
+            GlassTier.addCustomGlass(BlockLoader.playerDoll, 0, 14, 1);
+        }
         GlassTier.addCustomGlass(ItemRegistry.bw_realglas2, 2, 14, 2);
         GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 0, 10, 2);
         GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 1, 8, 2);

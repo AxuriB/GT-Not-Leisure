@@ -1405,7 +1405,7 @@ public class MaterialPool implements Runnable {
         new short[] { 211, 211, 211 },
         "CompressedSteam",
         subscriptNumbers("H2O"),
-        new Werkstoff.Stats().setMass(1000),
+        new Werkstoff.Stats().setMass(50),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
@@ -1422,7 +1422,7 @@ public class MaterialPool implements Runnable {
         new short[] { 89, 61, 45 },
         "Stronze",
         subscriptNumbers("(SnCu3)(Fe50C)2"),
-        new Werkstoff.Stats().setMass(800),
+        new Werkstoff.Stats().setMass(40),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
@@ -1439,7 +1439,7 @@ public class MaterialPool implements Runnable {
         new short[] { 69, 60, 55 },
         "Breel",
         subscriptNumbers("(Fe50C)(SnCu3)2"),
-        new Werkstoff.Stats().setMass(800),
+        new Werkstoff.Stats().setMass(40),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()

@@ -80,6 +80,7 @@ public class MainConfig {
 
     // Player Doll
     public static boolean enableCustomPlayerDoll = true;
+    public static boolean enableRegisterPlayerDollGlass = true;
 
     // Extreme Anvil
     public static String unbreakOre = "neutronUnbreak";
@@ -339,6 +340,14 @@ public class MainConfig {
                 enableCustomPlayerDoll,
                 "Enable Custom Player Skin for Player Doll")
             .getBoolean(enableCustomPlayerDoll);
+
+        enableRegisterPlayerDollGlass = config
+            .get(
+                CATEGORY_PLAYER_DOLL,
+                "enableRegisterMAXGlass",
+                enableRegisterPlayerDollGlass,
+                "Make Play Doll to MAX Tier Glass")
+            .getBoolean(enableRegisterPlayerDollGlass);
 
         // Infinity Sword
         enableInfinitySwordBypassMechanism = config

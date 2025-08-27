@@ -214,7 +214,6 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
                         .build(),
                     buildHatchAdder(PrimitiveDistillationTower.class)
                         .atLeast(
-                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             OutputBus,

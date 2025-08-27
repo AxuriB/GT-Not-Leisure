@@ -81,7 +81,6 @@ public class SteamWoodcutter extends SteamMultiMachineBase<SteamWoodcutter> impl
                         .build(),
                     buildHatchAdder(SteamWoodcutter.class)
                         .atLeast(
-                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             InputBus,
                             SteamHatchElement.OutputBus_Steam,

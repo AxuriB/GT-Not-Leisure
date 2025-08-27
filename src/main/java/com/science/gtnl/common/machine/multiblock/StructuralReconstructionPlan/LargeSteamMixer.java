@@ -2,6 +2,7 @@ package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.loader.BlockLoader.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -113,7 +114,6 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                         buildHatchAdder(LargeSteamMixer.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
-                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -161,11 +161,11 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                 'F',
                 GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
-                        LargeSteamMixer::getTierPlatedCasing,
-                        ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
+                        LargeSteamMixer::getTierIndustrialCasing,
+                        ImmutableList.of(Pair.of(metaCasing02, 1), Pair.of(metaCasing02, 2)),
                         -1,
-                        (t, m) -> t.tierPlatedCasing = m,
-                        t -> t.tierPlatedCasing)))
+                        (t, m) -> t.tierIndustrialCasing = m,
+                        t -> t.tierIndustrialCasing)))
             .build();
     }
 
@@ -202,13 +202,14 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
         tierGearCasing = -1;
         tierPipeCasing = -1;
         tierFireboxCasing = -1;
+        tierIndustrialCasing = -1;
         tCountCasing = 0;
         enableHVRecipe = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing < 0 && tierGearCasing < 0 && tierPipeCasing < 0 && tierFireboxCasing < 0) return false;
         if (tierMachineCasing == 1 && tierGearCasing == 1
             && tierPipeCasing == 1
             && tierFireboxCasing == 1
+            && tierIndustrialCasing == 1
             && tCountCasing >= 60
             && checkHatches()) {
             tierMachine = 1;
@@ -219,6 +220,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
         if (tierMachineCasing == 2 && tierGearCasing == 2
             && tierPipeCasing == 2
             && tierFireboxCasing == 2
+            && tierIndustrialCasing == 2
             && tCountCasing >= 60
             && checkHatches()) {
             tierMachine = 2;

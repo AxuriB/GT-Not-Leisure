@@ -83,7 +83,6 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
                         buildHatchAdder(LargeSteamFurnace.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
-                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -144,6 +143,15 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
                         (t, m) -> t.tierBrickCasing = m,
                         t -> t.tierBrickCasing)))
             .addElement('G', ofBlock(Blocks.stonebrick, 0))
+            .addElement(
+                'H',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
+                    ofBlocksTiered(
+                        LargeSteamFurnace::getTierIndustrialCasing,
+                        ImmutableList.of(Pair.of(BlockLoader.metaCasing02, 1), Pair.of(BlockLoader.metaCasing02, 2)),
+                        -1,
+                        (t, m) -> t.tierIndustrialCasing = m,
+                        t -> t.tierIndustrialCasing)))
             .build();
     }
 
@@ -228,13 +236,15 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
         tierPlatedCasing = -1;
         tierFireboxCasing = -1;
         tierBrickCasing = -1;
+        tierIndustrialCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierPipeCasing < 0 && tierMachineCasing < 0
             && tierFrameCasing < 0
             && tierPlatedCasing < 0
             && tierBrickCasing < 0
-            && tierFireboxCasing < 0) {
+            && tierFireboxCasing < 0
+            && tierIndustrialCasing < 0) {
             updateHatchTexture();
             return false;
         }
@@ -243,6 +253,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             && tierPlatedCasing == 1
             && tierBrickCasing == 1
             && tierFireboxCasing == 1
+            && tierIndustrialCasing == 1
             && tCountCasing >= 100
             && checkHatches()) {
             tierMachine = 1;
@@ -255,6 +266,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             && tierPlatedCasing == 2
             && tierBrickCasing == 2
             && tierFireboxCasing == 2
+            && tierIndustrialCasing == 2
             && tCountCasing >= 100
             && checkHatches()) {
             tierMachine = 2;

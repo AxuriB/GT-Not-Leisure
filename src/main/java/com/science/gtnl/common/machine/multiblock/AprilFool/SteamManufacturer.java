@@ -85,7 +85,6 @@ public class SteamManufacturer extends SteamMultiMachineBase<SteamManufacturer> 
                         .build(),
                     buildHatchAdder(SteamManufacturer.class)
                         .atLeast(
-                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             InputBus,
                             SteamHatchElement.OutputBus_Steam,

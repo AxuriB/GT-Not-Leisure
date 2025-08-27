@@ -89,7 +89,6 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                         .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
                         .dot(1)
                         .atLeast(
-                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             InputBus,

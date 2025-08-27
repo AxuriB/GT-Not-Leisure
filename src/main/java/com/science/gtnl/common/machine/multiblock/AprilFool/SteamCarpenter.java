@@ -79,7 +79,6 @@ public class SteamCarpenter extends SteamMultiMachineBase<SteamCarpenter> implem
                         .build(),
                     buildHatchAdder(SteamCarpenter.class)
                         .atLeast(
-                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             InputBus,
                             SteamHatchElement.OutputBus_Steam,

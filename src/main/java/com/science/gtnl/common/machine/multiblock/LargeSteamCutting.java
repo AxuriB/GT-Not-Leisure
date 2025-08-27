@@ -1,13 +1,12 @@
 package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.ScienceNotLeisure.*;
+import static com.science.gtnl.loader.BlockLoader.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.oMCDIndustrialExtruder;
-import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.oMCDIndustrialExtruderActive;
+import static gregtech.api.util.GTStructureUtility.*;
+import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.*;
 
 import javax.annotation.Nonnull;
 
@@ -45,32 +44,32 @@ import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.misc.GTStructureChannels;
 
-public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder> implements ISurvivalConstructable {
+public class LargeSteamCutting extends SteamMultiMachineBase<LargeSteamCutting> implements ISurvivalConstructable {
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new LargeSteamExtruder(this.mName);
+        return new LargeSteamCutting(this.mName);
     }
 
     @Override
     public String getMachineType() {
-        return StatCollector.translateToLocal("LargeSteamExtruderRecipeType");
+        return StatCollector.translateToLocal("LargeSteamCuttingRecipeType");
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String LSE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_extruder";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(LSE_STRUCTURE_FILE_PATH);
+    private static final String LSC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_cutting";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LSC_STRUCTURE_FILE_PATH);
 
-    public LargeSteamExtruder(String aName) {
+    public LargeSteamCutting(String aName) {
         super(aName);
     }
 
-    public LargeSteamExtruder(int aID, String aName, String aNameRegional) {
+    public LargeSteamCutting(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    protected final int HORIZONTAL_OFF_SET = 2;
-    protected final int VERTICAL_OFF_SET = 7;
+    protected final int HORIZONTAL_OFF_SET = 4;
+    protected final int VERTICAL_OFF_SET = 2;
     protected final int DEPTH_OFF_SET = 0;
 
     @Override
@@ -80,11 +79,11 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
             : ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id), TextureFactory.builder()
-                .addIcon(oMCDIndustrialExtruderActive)
+                .addIcon(oMCDIndustrialCuttingMachineActive)
                 .extFacing()
                 .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id), TextureFactory.builder()
-                .addIcon(oMCDIndustrialExtruder)
+                .addIcon(oMCDIndustrialCuttingMachine)
                 .extFacing()
                 .build() };
         }
@@ -92,85 +91,95 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
     }
 
     @Override
-    public IStructureDefinition<LargeSteamExtruder> getStructureDefinition() {
-        return StructureDefinition.<LargeSteamExtruder>builder()
+    public IStructureDefinition<LargeSteamCutting> getStructureDefinition() {
+        return StructureDefinition.<LargeSteamCutting>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
                 GTStructureChannels.TIER_MACHINE_CASING.use(
+                    ofBlocksTiered(
+                        LargeSteamCutting::getTierIndustrialCasing,
+                        ImmutableList.of(Pair.of(metaCasing02, 1), Pair.of(metaCasing02, 2)),
+                        -1,
+                        (t, m) -> t.tierIndustrialCasing = m,
+                        t -> t.tierIndustrialCasing)))
+            .addElement(
+                'B',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofChain(
-                        buildSteamWirelessInput(LargeSteamExtruder.class).casingIndex(getCasingTextureID())
+                        buildSteamWirelessInput(LargeSteamCutting.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .build(),
-                        buildSteamBigInput(LargeSteamExtruder.class).casingIndex(getCasingTextureID())
+                        buildSteamBigInput(LargeSteamCutting.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .build(),
-                        buildSteamInput(LargeSteamExtruder.class).casingIndex(getCasingTextureID())
+                        buildSteamInput(LargeSteamCutting.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .build(),
-                        buildHatchAdder(LargeSteamExtruder.class).casingIndex(getCasingTextureID())
+                        buildHatchAdder(LargeSteamCutting.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
-                                OutputBus)
+                                OutputBus,
+                                InputHatch)
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
                                     ofBlocksTiered(
-                                        LargeSteamExtruder::getTierMachineCasing,
+                                        LargeSteamCutting::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
                                         -1,
                                         (t, m) -> t.tierMachineCasing = m,
                                         t -> t.tierMachineCasing))))))
             .addElement(
-                'B',
+                'C',
                 GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
-                        LargeSteamExtruder::getTierGearCasing,
+                        LargeSteamFormingPress::getTierGearCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
                         -1,
                         (t, m) -> t.tierGearCasing = m,
                         t -> t.tierGearCasing)))
             .addElement(
-                'C',
+                'D',
                 GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
-                        LargeSteamExtruder::getTierPipeCasing,
+                        LargeSteamCutting::getTierPipeCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 12), Pair.of(sBlockCasings2, 13)),
                         -1,
                         (t, m) -> t.tierPipeCasing = m,
                         t -> t.tierPipeCasing)))
             .addElement(
-                'D',
+                'E',
                 GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
-                        LargeSteamExtruder::getTierFrameCasing,
+                        LargeSteamCutting::getTierFrameCasing,
                         ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
                         -1,
                         (t, m) -> t.tierFrameCasing = m,
                         t -> t.tierFrameCasing)))
             .addElement(
-                'E',
+                'F',
                 GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
-                        LargeSteamExtruder::getTierBrickCasing,
+                        LargeSteamCutting::getTierBrickCasing,
                         ImmutableList
                             .of(Pair.of(BlockLoader.metaBlockColumn, 0), Pair.of(BlockLoader.metaBlockColumn, 1)),
                         -1,
                         (t, m) -> t.tierBrickCasing = m,
                         t -> t.tierBrickCasing)))
             .addElement(
-                'F',
+                'G',
                 GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
-                        LargeSteamExtruder::getTierMaterialBlockCasing,
-                        ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(sBlockMetal6, 13)),
+                        LargeSteamCutting::getTierMachineFrame,
+                        ImmutableList.of(Pair.of(metaBlockColumn, 4), Pair.of(metaBlockColumn, 5)),
                         -1,
-                        (t, m) -> t.tierMaterialBlock = m,
-                        t -> t.tierMaterialBlock)))
-            .addElement('G', chainAllGlasses())
+                        (t, m) -> t.tierMachineFrame = m,
+                        t -> t.tierMachineFrame)))
+            .addElement('H', ofBlockAnyMeta(Blocks.diamond_block))
             .build();
     }
 
@@ -206,17 +215,17 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
         tierGearCasing = -1;
         tierMachineCasing = -1;
         tierFrameCasing = -1;
-        tierMaterialBlock = -1;
+        tierIndustrialCasing = -1;
         tierBrickCasing = -1;
-        tierPipeCasing = -1;
+        tierMachineFrame = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
         if (tierGearCasing == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
-            && tierMaterialBlock == 1
+            && tierIndustrialCasing == 1
             && tierBrickCasing == 1
-            && tierPipeCasing == 1
-            && tCountCasing >= 45
+            && tierMachineFrame == 1
+            && tCountCasing >= 30
             && checkHatches()) {
             tierMachine = 1;
             getCasingTextureID();
@@ -225,10 +234,10 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
         }
         if (tierGearCasing == 2 && tierMachineCasing == 2
             && tierFrameCasing == 2
-            && tierMaterialBlock == 2
+            && tierIndustrialCasing == 2
             && tierBrickCasing == 2
-            && tierPipeCasing == 2
-            && tCountCasing >= 45
+            && tierMachineFrame == 2
+            && tCountCasing >= 30
             && checkHatches()) {
             tierMachine = 2;
             getCasingTextureID();
@@ -251,7 +260,7 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.extruderRecipes;
+        return RecipeMaps.cutterRecipes;
     }
 
     @Override
@@ -279,17 +288,17 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("LargeSteamExtruderRecipeType"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamExtruder_00"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamExtruder_01"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamExtruder_02"))
+        tt.addMachineType(StatCollector.translateToLocal("LargeSteamCuttingRecipeType"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCutting_00"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCutting_01"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCutting_02"))
             .addInfo(StatCollector.translateToLocal("HighPressureTooltipNotice"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(5, 8, 5, false)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_LargeSteamExtruder_Casing"), 1)
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamExtruder_Casing"), 1)
+            .beginStructureBlock(9, 4, 5, false)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_LargeSteamCutting_Casing"), 1)
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamCutting_Casing"), 1)
             .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();

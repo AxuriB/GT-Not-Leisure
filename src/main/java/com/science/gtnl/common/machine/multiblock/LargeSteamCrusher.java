@@ -108,7 +108,6 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
                         buildHatchAdder(LargeSteamCrusher.class).casingIndex(getCasingTextureID())
                             .dot(1)
                             .atLeast(
-                                Maintenance,
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
@@ -198,10 +197,6 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
         tierBrickCasing = -1;
         tCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierGearCasing < 0 && tierMachineCasing < 0
-            && tierFrameCasing < 0
-            && tierPlatedCasing < 0
-            && tierBrickCasing < 0) return false;
         if (tierGearCasing == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierPlatedCasing == 1

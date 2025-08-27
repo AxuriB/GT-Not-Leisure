@@ -170,7 +170,6 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
                         .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
                         .dot(1)
                         .atLeast(
-                            Maintenance,
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             InputBus,
