@@ -37,7 +37,7 @@ public class MixinMTETreeFarm {
         List<Integer> chances = new ArrayList<>();
 
         ItemStack newLogOut = log.copy();
-        newLogOut.stackSize = 32;
+        newLogOut.stackSize = 48;
         outputs.add(newLogOut);
         chances.add(10000);
 
@@ -67,7 +67,7 @@ public class MixinMTETreeFarm {
                 chances.stream()
                     .mapToInt(i -> i)
                     .toArray())
-            .duration(200)
+            .duration(40)
             .eut(TierEU.RECIPE_LV)
             .addTo(RecipePool.SteamWoodcutterRecipes);
     }

@@ -21,15 +21,15 @@ public class SteamWoodcutterRecipes implements IRecipePool {
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cactus, 0))
-            .itemOutputs(new ItemStack(Blocks.cactus, 32))
-            .duration(200)
+            .itemOutputs(new ItemStack(Blocks.cactus, 48))
+            .duration(40)
             .eut(TierEU.RECIPE_LV)
             .addTo(SWR);
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.reeds, 0))
-            .itemOutputs(new ItemStack(Items.reeds, 32))
-            .duration(200)
+            .itemOutputs(new ItemStack(Items.reeds, 48))
+            .duration(40)
             .eut(TierEU.RECIPE_LV)
             .addTo(SWR);
     }
