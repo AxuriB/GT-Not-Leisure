@@ -38,6 +38,7 @@ import com.science.gtnl.common.machine.hatch.HumongousNinefoldInputHatch;
 import com.science.gtnl.common.machine.hatch.HumongousSolidifierHatch;
 import com.science.gtnl.common.machine.hatch.ManaDynamoHatch;
 import com.science.gtnl.common.machine.hatch.ManaEnergyHatch;
+import com.science.gtnl.common.machine.hatch.NanitesInputBus;
 import com.science.gtnl.common.machine.hatch.NinefoldInputHatch;
 import com.science.gtnl.common.machine.hatch.OredictInputBusHatchME;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
@@ -1311,7 +1312,7 @@ public class MachineLoader {
         addItemTooltip(GTNLItemList.NineIndustrialMultiMachine.get(1), AnimatedText.SNL_QYZG);
     }
 
-    public static void registerMTEHatch() {
+    public static void loadHatch() {
         Set<Fluid> acceptedFluids = new HashSet<>();
         acceptedFluids.add(
             MaterialPool.FluidMana.getFluidOrGas(1)
@@ -1862,6 +1863,13 @@ public class MachineLoader {
                 "OredictInputBusHatchME",
                 StatCollector.translateToLocal("OredictInputBusHatchME")));
         addItemTooltip(GTNLItemList.OredictInputBusHatchME.get(1), AnimatedText.SNL_SKYINR);
+
+        GTNLItemList.NanitesInputBus.set(
+            new NanitesInputBus(
+                NANITES_INPUT_BUS.ID,
+                "NanitesInputBus",
+                StatCollector.translateToLocal("NanitesInputBus")));
+        addItemTooltip(GTNLItemList.NanitesInputBus.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     @Deprecated
@@ -2211,7 +2219,7 @@ public class MachineLoader {
 
     public static void registry() {
         Logger.INFO("GTNL Content | Registering MTE Block Machine.");
-        registerMTEHatch();
+        loadHatch();
         loadMachines();
         registerMTEWireAndPipe();
         registerBasicMachine();

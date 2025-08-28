@@ -32,7 +32,7 @@ Tooltip_Tectech_Hatch=支持§9Tec§1Tech§r激光仓！
 Tooltip_PerfectOverclock=机器可进行§c无损超频§7
 Tooltip_PressShift=§r按住 §6Shift §r查看更多信息
 Tooltip_PressCtrl=§r按住 §6Ctrl §r查看更多信息
-Tooltip_Damage=耐久: %s/%s
+Tooltip_Damage=耐久：%s/%s
 
 nei.bookmark.ae_retrieve_item=自AE取出物品
 nei.bookmark.ae_start_craft=向AE请求合成
@@ -71,6 +71,10 @@ tc.research_text.GTNL_WELCOME.1=欢迎来到奇思妙想的新世界！
 tc.research_name.GTNL_TIME_STOP_POCKET_WATCH=岁月静滞怀表
 tc.research_text.GTNL_TIME_STOP_POCKET_WATCH=掌握时间的秘密
 tc.research_text.GTNL_TIME_STOP_POCKET_WATCH.1=在古老的时间学派手稿中，有关「岁月静滞怀表」的记载寥寥无几。据说，它最早是由一位厌倦战争与喧嚣的炼金术士打造，他渴望在流逝中捕捉永恒。怀表的构造并不复杂，真正的难点在于为其注入“停滞”的本质。传闻整个仪式必须在月相最黯淡之夜进行，四周环绕以安静的时空晶体与沉默的金属，施术者的每一缕意念都必须精确控制，否则整个注魔仪式会使时间本身反噬施法者。若仪式成功，便可暂时将世界之流冻结于此刻，但切记：时间从不会真正被掌控，它只是在等待反扑的时机。
+
+NanitesInputBus=纳米输入总线
+Tooltip_NanitesInputBus_00=为多方块机器输入纳米蜂群
+Tooltip_NanitesInputBus_01=物品容量：16组
 
 OredictInputBusHatchME=矿辞存储输入总线(ME)
 Tooltip_OredictInputBusHatchME_00=为多方块机器输入矿辞物品(进阶)
@@ -800,13 +804,13 @@ item.PortableItem.16.name=便携下界合金箱子
 item.PortableItem.17.name=便携玄钢箱子
 
 item.VeinMiningPickaxe.name=矿脉挖掘镐
-Tooltip_VeinMiningPickaxe_00=最大方块间隔: %s
-Tooltip_VeinMiningPickaxe_01=最大连锁数量: %s
+Tooltip_VeinMiningPickaxe_00=最大方块间隔：%s
+Tooltip_VeinMiningPickaxe_01=最大连锁数量：%s
 Tooltip_VeinMiningPickaxe_PreciseMode_On=§a精确模式已开启
 Tooltip_VeinMiningPickaxe_PreciseMode_Off=§r精确模式已关闭
 
 item.NetherTeleporter.name=下界传送仪
-Info_NetherTeleporter_Cooldown=剩余冷却时间: 
+Info_NetherTeleporter_Cooldown=剩余冷却时间：
 Info_NetherTeleporter_Warning=没有安全的落脚点！
 
 item.CircuitIntegratedPlus.name=突破编程电路
@@ -850,7 +854,7 @@ Tooltip_PhysicsCape_00=利用强大的切割磁感线进行发电！
 
 item.InfinityFuelRod.name=燃料棒(无尽)
 item.InfinityFuelRodDepleted.name=枯竭燃料棒(无尽)
-Tooltip_FuelRod_00=耐久: %d/%d
+Tooltip_FuelRod_00=耐久：%d/%d
 Tooltip_FuelRod_01=具有MOX特性 | MOX系数：%d
 Tooltip_FuelRod_02=基础产热(heta/s)：%d/%d/%d
 Tooltip_FuelRod_03=基础发电功率(EU/t)：%d/%d/%d
