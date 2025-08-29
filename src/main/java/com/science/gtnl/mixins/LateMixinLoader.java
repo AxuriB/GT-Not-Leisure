@@ -33,7 +33,6 @@ public class LateMixinLoader implements ILateMixinLoader {
         addMixinCFG(
             "mixins.sciencenotleisure.late.TwistSpaceTechnology.json",
             ModList.TwistSpaceTechnology::isModLoaded);
-        addMixinCFG("mixins.sciencenotleisure.late.MeteorOptimize.json", () -> MainConfig.enableMeteorSetBlockOptimize);
         addMixinCFG("mixins.sciencenotleisure.late.OPChange.json", () -> MainConfig.enableIntegratedOreFactoryChange);
     }
 

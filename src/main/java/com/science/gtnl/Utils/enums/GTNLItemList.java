@@ -508,6 +508,7 @@ public enum GTNLItemList implements IItemContainer {
     LargeSteamCircuitAssembler,
     GenerationEarthEngine,
 
+    ItemVaultPortBus,
     NanitesInputBus,
     Enchanting,
     OredictInputBusHatchME,

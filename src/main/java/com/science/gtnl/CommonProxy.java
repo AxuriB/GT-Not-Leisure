@@ -27,6 +27,7 @@ import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableCompresse
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableInfinityChest;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.Utils.text.PlayerDollWaila;
+import com.science.gtnl.common.machine.hatch.ItemVaultPortBus;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.NetWorkHandler;
 import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
@@ -95,6 +96,8 @@ public class CommonProxy implements IGuiHandler {
             .registries()
             .interfaceTerminal()
             .register(SuperCraftingInputHatchME.class);
+
+        ItemVaultPortBus.registerAEIntegration();
 
         // AltarStructure.registerAltarStructureInfo();
     }

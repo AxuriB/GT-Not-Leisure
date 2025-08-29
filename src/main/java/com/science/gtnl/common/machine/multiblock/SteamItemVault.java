@@ -13,7 +13,9 @@ import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -33,11 +35,14 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.item.ItemTank;
+import com.science.gtnl.api.IItemVault;
+import com.science.gtnl.common.machine.hatch.ItemVaultPortBus;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,12 +51,14 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 
-public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implements ISurvivalConstructable {
+public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
+    implements ISurvivalConstructable, IItemVault {
 
     public static int MAX_DISTINCT_ITEMS = 128;
     public static BigInteger MAX_CAPACITY = BigInteger.valueOf(12800000L)
@@ -63,11 +70,12 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
 
     public boolean locked = true;
     public boolean doVoidExcess = false;
-    public byte itemSelector = -1;
+    public int itemSelector = -1;
+    public ItemVaultPortBus portBus = null;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SIV_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_item_vault";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(SIV_STRUCTURE_FILE_PATH);
+    private static final String[][] shape = StructureUtils.readStructureFromFile(SIV_STRUCTURE_FILE_PATH);
     private static final int HORIZONTAL_OFF_SET = 2;
     private static final int VERTICAL_OFF_SET = 5;
     private static final int DEPTH_OFF_SET = 0;
@@ -90,6 +98,12 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
     }
 
     @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        checkMachine(aBaseMetaTileEntity, mInventory[1]);
+        super.onFirstTick(aBaseMetaTileEntity);
+    }
+
+    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
@@ -98,7 +112,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
 
         ItemStack itemStack = getControllerSlot();
         this.itemSelector = (itemStack != null && itemStack.getItem() instanceof ItemIntegratedCircuit)
-            ? (byte) itemStack.getItemDamage()
+            ? itemStack.getItemDamage()
             : -1;
 
         // Suck in items
@@ -210,7 +224,8 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             InputBus,
-                            OutputBus)
+                            OutputBus,
+                            SteamItemVaultPort.SteamItemVaultPortBus)
                         .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(BlockLoader.metaCasing02, 0)))))
             .addElement('D', ofFrame(Materials.Steel))
             .build();
@@ -221,7 +236,17 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        if (portBus != null) portBus.bind(this);
         return tCountCasing >= 30;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        if (portBus != null) {
+            portBus.unbind();
+            portBus = null;
+        }
     }
 
     @Override
@@ -358,7 +383,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         aNBT.setByteArray("capacity", capacity.toByteArray());
         aNBT.setBoolean("doVoidExcess", doVoidExcess);
         aNBT.setBoolean("lockItem", locked);
-        aNBT.setByte("itemSelector", itemSelector);
+        aNBT.setInteger("itemSelector", itemSelector);
 
         NBTTagCompound itemNbt = new NBTTagCompound();
         aNBT.setTag("STORE", itemNbt);
@@ -375,7 +400,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         this.setCapacity(new BigInteger(aNBT.getByteArray("capacity")));
         this.setDoVoidExcess(aNBT.getBoolean("doVoidExcess"));
         this.locked = aNBT.getBoolean("lockItem");
-        this.itemSelector = aNBT.getByte("itemSelector");
+        this.itemSelector = aNBT.getInteger("itemSelector");
 
         NBTTagCompound itemNbt = (NBTTagCompound) aNBT.getTag("STORE");
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
@@ -385,6 +410,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         super.loadNBTData(aNBT);
     }
 
+    @Override
     public int pull(ItemStack aItem, boolean doPull) {
         if (locked) return 0;
         int index = getItemPosition(aItem);
@@ -397,6 +423,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return 0;
     }
 
+    @Override
     public long pull(ItemStack aItem, long amount, boolean doPull) {
         if (locked) return 0;
         int index = getItemPosition(aItem);
@@ -413,6 +440,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return 0;
     }
 
+    @Override
     public ItemStack push(ItemStack aItem, boolean doPush) {
         if (locked) return null;
         int index = getItemPosition(aItem);
@@ -420,6 +448,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return STORE[index].drain(aItem.stackSize, doPush);
     }
 
+    @Override
     public ItemStack push(int amount, boolean doPush) {
         if (locked) return null;
         int index = firstNotNullSlot();
@@ -427,6 +456,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return STORE[index].drain(amount, doPush);
     }
 
+    @Override
     public long push(ItemStack aItem, long amount, boolean doPush) {
         if (locked) return 0;
         int index = getItemPosition(aItem);
@@ -435,10 +465,12 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return STORE[index].amount(amount);
     }
 
+    @Override
     public long getcapacityPerItem() {
         return this.capacityPerItem;
     }
 
+    @Override
     public void setCapacity(BigInteger capacity) {
         if (capacity.compareTo(MAX_CAPACITY) > 0) {
             this.capacity = MAX_CAPACITY;
@@ -458,6 +490,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         }
     }
 
+    @Override
     public int itemCount() {
         int tCount = 0;
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
@@ -466,6 +499,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return tCount;
     }
 
+    @Override
     public int getItemPosition(String itemName) {
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
             if (!STORE[i].isEmpty() && STORE[i].name()
@@ -474,6 +508,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return -1;
     }
 
+    @Override
     public int getItemPosition(ItemStack aItem) {
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
             if (STORE[i].contains(aItem)) return i;
@@ -481,6 +516,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return -1;
     }
 
+    @Override
     public int getNullSlot() {
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
             if (STORE[i].isEmpty()) return i;
@@ -488,14 +524,17 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return -1;
     }
 
+    @Override
     public boolean contains(String itemName) {
         return getItemPosition(itemName) >= 0;
     }
 
+    @Override
     public boolean contains(ItemStack aItem) {
         return getItemPosition(aItem) >= 0;
     }
 
+    @Override
     public int firstNotNullSlot() {
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
             if (!STORE[i].isEmpty()) return i;
@@ -503,6 +542,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return -1;
     }
 
+    @Override
     public ItemTank firstNotNull() {
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
             if (!STORE[i].isEmpty()) return STORE[i];
@@ -510,6 +550,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return null;
     }
 
+    @Override
     public BigInteger getStoredAmount() {
         BigInteger amount = BigInteger.ZERO;
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
@@ -518,14 +559,17 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         return amount;
     }
 
-    public byte getItemSelector() {
+    @Override
+    public int getItemSelector() {
         return itemSelector;
     }
 
+    @Override
     public ItemTank getSelectedItem() {
         return itemSelector != -1 ? STORE[itemSelector] : null;
     }
 
+    @Override
     public void setDoVoidExcess(boolean doVoidExcess) {
         this.doVoidExcess = doVoidExcess;
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
@@ -533,12 +577,58 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault> implem
         }
     }
 
+    @Override
     public ItemTank.ItemTankInfo[] getTankInfo() {
         ItemTank.ItemTankInfo[] info = new ItemTank.ItemTankInfo[MAX_DISTINCT_ITEMS];
         for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
             info[i] = STORE[i].getInfo();
         }
         return info;
+    }
+
+    @Override
+    public ItemTank[] getStore() {
+        return STORE;
+    }
+
+    public boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null) {
+            final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+            if (aMetaTileEntity instanceof ItemVaultPortBus itemVaultPortBus) {
+                if (this.portBus != null) return false;
+                this.portBus = itemVaultPortBus;
+                this.portBus.updateTexture(aBaseCasingIndex);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public enum SteamItemVaultPort implements IHatchElement<SteamItemVault> {
+
+        SteamItemVaultPortBus;
+
+        private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
+
+        @SafeVarargs
+        SteamItemVaultPort(Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Arrays.asList(mteClasses);
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super SteamItemVault> adder() {
+            return SteamItemVault::addMultiHatchToMachineList;
+        }
+
+        @Override
+        public long count(SteamItemVault t) {
+            return t.portBus == null ? 0 : 1;
+        }
     }
 
 }

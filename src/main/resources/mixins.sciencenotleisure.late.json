@@ -8,6 +8,7 @@
   "mixins": [
     "AEFluidCraft.MixinItemFluidPacket",
     "AppliedEnergistics.MixinEntityTinyTNTPrimed",
+    "AppliedEnergistics.MixinTileIOPort",
     "Bartwork.MixinMainMod",
     "Bartwork.MixinCircuitImprintLoader",
     "Bartwork.MixinItemRegistry",

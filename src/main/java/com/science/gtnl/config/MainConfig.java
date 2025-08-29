@@ -96,11 +96,6 @@ public class MainConfig {
     public static int chronarchsClockDurationTicks = 600;
     public static int chronarchsClockCooldown = 300;
 
-    // BloodMagic
-    public static boolean enableMeteorSetBlockOptimize = false;
-    public static int meteorParadigmChunkSize = 1024;
-    public static int meteorParadigmBatchUpdateInterval = 2048;
-
     // NotEnoughItems
     public static boolean enableSpecialCheatIcon = false;
     public static int specialIconType = 0;
@@ -398,32 +393,6 @@ public class MainConfig {
         chronarchsClockCooldown = config
             .get(SUB_CATEGORY_CHRONARCHS_CLOCK, "Cooldown", chronarchsClockCooldown, "Change Chronarchs Clock Cooldown")
             .getInt(chronarchsClockCooldown);
-
-        // Blood Magic
-        meteorParadigmChunkSize = config
-            .get(
-                SUB_CATEGORY_METEOR,
-                "chunkSize",
-                meteorParadigmChunkSize,
-                "Set the chunk size for meteor paradigm operations (default: 1024)")
-            .getInt(meteorParadigmChunkSize);
-
-        meteorParadigmBatchUpdateInterval = config
-            .get(
-                SUB_CATEGORY_METEOR,
-                "batchUpdateInterval",
-                meteorParadigmBatchUpdateInterval,
-                "Set the batch update interval for meteor paradigm operations (default: 2048)")
-            .getInt(meteorParadigmBatchUpdateInterval);
-
-        enableMeteorSetBlockOptimize = config
-            .get(
-                SUB_CATEGORY_METEOR,
-                "enableMeteorSetBlockOptimize",
-                enableMeteorSetBlockOptimize,
-                "Enable multithreaded optimization for setting meteor blocks.\n"
-                    + "This may improve performance but is not guaranteed to be stable.")
-            .getBoolean(enableMeteorSetBlockOptimize);
 
         // Not Enough Items
         enableSpecialCheatIcon = config
