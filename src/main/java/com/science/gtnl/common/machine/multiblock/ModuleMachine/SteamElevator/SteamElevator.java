@@ -17,6 +17,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -65,6 +66,7 @@ import com.science.gtnl.loader.BlockLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IHatchElement;
@@ -217,12 +219,19 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        wirelessMode = false;
         mModuleHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (mSteamInputFluids.isEmpty() && mSteamBigInputFluids.isEmpty() && mSteamWirelessInputFluids.isEmpty()) {
+            wirelessMode = true;
+        }
         getCasingTextureID();
         updateHatchTexture();
         return true;
     }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     public boolean addModuleToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {

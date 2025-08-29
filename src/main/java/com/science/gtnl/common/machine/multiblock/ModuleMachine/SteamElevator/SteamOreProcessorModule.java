@@ -645,6 +645,7 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamOreProcessorModule_05"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamOreProcessorModule_06"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamOreProcessorModule_07"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamOreProcessorModule_08"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))

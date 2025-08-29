@@ -144,6 +144,7 @@ import com.science.gtnl.common.machine.multiblock.ShallowChemicalCoupling;
 import com.science.gtnl.common.machine.multiblock.SmeltingMixingFurnace;
 import com.science.gtnl.common.machine.multiblock.SpaceAssembler;
 import com.science.gtnl.common.machine.multiblock.SteamCracking;
+import com.science.gtnl.common.machine.multiblock.SteamItemVault;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.AlloyBlastSmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.BlazeBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.ChemicalPlant;
@@ -1295,6 +1296,13 @@ public class MachineLoader {
                 "LargeSteamCutting",
                 StatCollector.translateToLocal("NameLargeSteamCutting")));
         addItemTooltip(GTNLItemList.LargeSteamCutting.get(1), AnimatedText.SNL_QYZG);
+
+        GTNLItemList.SteamItemVault.set(
+            new SteamItemVault(
+                STEAM_ITEM_VAULT.ID,
+                "SteamItemVault",
+                StatCollector.translateToLocal("NameSteamItemVault")));
+        addItemTooltip(GTNLItemList.SteamItemVault.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

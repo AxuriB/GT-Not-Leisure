@@ -6,9 +6,12 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.Collection;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +25,7 @@ import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -145,6 +149,9 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
         updateHatchTexture();
         return true;
     }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     @Override
     public ProcessingLogic createProcessingLogic() {

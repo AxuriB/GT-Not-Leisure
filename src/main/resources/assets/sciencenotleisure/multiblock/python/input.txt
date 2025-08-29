@@ -1,52 +1,63 @@
-[22:43:43] [Server thread/INFO] [GregTech GTNH]: 
+[14:40:57] [Server thread/INFO] [GregTech GTNH]: 
 
 Structure:
 
 Blocks:
-A -> ofBlock...(MetaCasing02, 1, ...);
-B -> ofBlock...(gt.blockcasings, 10, ...);
-C -> ofBlock...(gt.blockcasings2, 2, ...);
-D -> ofBlock...(gt.blockcasings2, 12, ...);
-E -> ofBlock...(gt.blockframes, 300, ...);
-F -> ofBlock...(tile.MetaBlockColumn, 4, ...);
-G -> ofBlock...(tile.blockIron, 0, ...);
-H -> ofBlock...(tile.glass, 0, ...);
+A -> ofBlock...(BW_GlasBlocks, 0, ...);
+B -> ofBlock...(MetaCasing, 29, ...);
+C -> ofBlock...(MetaCasing02, 0, ...);
+D -> ofBlock...(gt.blockframes, 305, ...);
 
 Tiles:
 
 Special Tiles:
-I -> ofSpecialTileAdder(gregtech.api.metatileentity.BaseMetaTileEntity, ...); // You will probably want to change it to something else
+E -> ofSpecialTileAdder(gregtech.api.metatileentity.BaseMetaTileEntity, ...); // You will probably want to change it to something else
 
 Offsets:
-3 2 0
+2 5 0
 
 Normal Scan:
 new String[][]{{
-    "       ",
-    "       ",
-    "  BIB  ",
-    " BBBBB "
+    "DDDDD",
+    "CCCCC",
+    "AAAAA",
+    "AAAAA",
+    "AAAAA",
+    "CCECC",
+    "     "
 },{
-    " EFFFE ",
-    " AHHHA ",
-    "BADDDAB",
-    "BAAAAAB"
+    "D   D",
+    "CCCCC",
+    "ABBBA",
+    "ABBBA",
+    "ABBBA",
+    "CCCCC",
+    " CCC "
 },{
-    "BAFFFAB",
-    "BCGGGCB",
-    "BA   AB",
-    "BAAAAAB"
+    "D   D",
+    "CCCCC",
+    "ABBBA",
+    "ABBBA",
+    "ABBBA",
+    "CCCCC",
+    " CCC "
 },{
-    " EFFFE ",
-    " AHHHA ",
-    "BADDDAB",
-    "BAAAAAB"
+    "D   D",
+    "CCCCC",
+    "ABBBA",
+    "ABBBA",
+    "ABBBA",
+    "CCCCC",
+    " CCC "
 },{
-    "       ",
-    "       ",
-    "  BBB  ",
-    " BBBBB "
+    "DDDDD",
+    "CCCCC",
+    "AAAAA",
+    "AAAAA",
+    "AAAAA",
+    "CCCCC",
+    "     "
 }}
 
 
-[22:43:43] [Client thread/INFO]: [CHAT] 已打印到控制台的结构
+[14:40:57] [Client thread/INFO]: [CHAT] Printed structure to console

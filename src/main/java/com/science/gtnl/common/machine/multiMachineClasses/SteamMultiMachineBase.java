@@ -27,6 +27,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -64,6 +65,7 @@ import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.api.mixinHelper.IItemStorage;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
@@ -517,6 +519,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         if (GTUtility.isStackInvalid(aStack)) return false;
         FluidStack aLiquid = GTUtility.getFluidForFilledItem(aStack, true);
         if (aLiquid != null) return depleteInput(aLiquid);
+
         for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
             if (GTUtility.areStacksEqual(
                 aStack,
@@ -530,6 +533,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 }
             }
         }
+
         for (CustomFluidHatch tHatch : validMTEList(mSteamBigInputFluids)) {
             if (GTUtility.areStacksEqual(
                 aStack,
@@ -543,6 +547,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 }
             }
         }
+
         for (CustomFluidHatch tHatch : validMTEList(mSteamWirelessInputFluids)) {
             if (GTUtility.areStacksEqual(
                 aStack,
@@ -556,35 +561,29 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 }
             }
         }
+
         for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
             tHatch.mRecipeMap = getRecipeMap();
-            for (int i = tHatch.getBaseMetaTileEntity()
-                .getSizeInventory() - 1; i >= 0; i--) {
-                if (GTUtility.areStacksEqual(
-                    aStack,
-                    tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i))) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(0).stackSize >= aStack.stackSize) {
-                        tHatch.getBaseMetaTileEntity()
-                            .decrStackSize(0, aStack.stackSize);
+            final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
+            for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
+                if (GTUtility.areStacksEqual(aStack, stackInSlot)) {
+                    if (stackInSlot.stackSize >= aStack.stackSize) {
+                        baseMetaTileEntity.decrStackSize(i, aStack.stackSize);
                         return true;
                     }
                 }
             }
         }
+
         for (MTEHatchInputBus tHatch : validMTEList(mInputBusses)) {
             tHatch.mRecipeMap = getRecipeMap();
-            for (int i = tHatch.getBaseMetaTileEntity()
-                .getSizeInventory() - 1; i >= 0; i--) {
-                if (GTUtility.areStacksEqual(
-                    aStack,
-                    tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(i))) {
-                    if (tHatch.getBaseMetaTileEntity()
-                        .getStackInSlot(0).stackSize >= aStack.stackSize) {
-                        tHatch.getBaseMetaTileEntity()
-                            .decrStackSize(0, aStack.stackSize);
+            final IGregTechTileEntity baseMetaTileEntity = tHatch.getBaseMetaTileEntity();
+            for (int i = baseMetaTileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack stackInSlot = baseMetaTileEntity.getStackInSlot(i);
+                if (GTUtility.areStacksEqual(aStack, stackInSlot)) {
+                    if (stackInSlot.stackSize >= aStack.stackSize) {
+                        baseMetaTileEntity.decrStackSize(i, aStack.stackSize);
                         return true;
                     }
                 }
@@ -718,28 +717,25 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
 
         if (mSteamOutputs != null && !mSteamOutputs.isEmpty()) {
             for (final MTEHatch tBus : validMTEList(mSteamOutputs)) {
-                final IInventory tBusInv = tBus.getBaseMetaTileEntity();
-                for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
-                    ret.add(tBus.getStackInSlot(i));
+                if (!(tBus instanceof MTEHatchOutputBusME)) {
+                    final IInventory tBusInv = tBus.getBaseMetaTileEntity();
+                    for (int i = 0; i < tBusInv.getSizeInventory(); i++) {
+                        final ItemStack stackInSlot = tBus.getStackInSlot(i);
+                        if (stackInSlot == null && tBus instanceof IItemLockable lockable && lockable.isLocked()) {
+                            assert lockable.getLockedItem() != null;
+                            ItemStack fakeItemStack = lockable.getLockedItem()
+                                .copy();
+                            fakeItemStack.stackSize = 0;
+                            ret.add(fakeItemStack);
+                        } else {
+                            ret.add(stackInSlot);
+                        }
+                    }
                 }
             }
         }
 
         return ret;
-    }
-
-    private boolean dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly) {
-        for (MTEHatchOutputBus outputBus : outputBuses) {
-            if (restrictiveBusesOnly && !outputBus.isLocked()) {
-                continue;
-            }
-
-            if (outputBus.storePartial(itemStack)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public long getTotalSteamCapacityLong() {
@@ -831,19 +827,43 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         if (GTUtility.isStackInvalid(aStack)) return false;
         aStack = GTUtility.copy(aStack);
         boolean outputSuccess = true;
-        final List<MTEHatchOutputBus> filteredBuses = filterValidMTEs(mOutputBusses);
-        if (dumpItem(filteredBuses, aStack, true) || dumpItem(filteredBuses, aStack, false)) {
-            return true;
-        }
+        List<MTEHatchOutputBus> filteredBuses = filterValidMTEs(mOutputBusses);
+        if (dumpItemBoolean(filteredBuses, aStack, true)) return true;
+        if (dumpItemBoolean(filteredBuses, aStack, false)) return true;
+        List<MTEHatchSteamBusOutput> filteredSteamBusses = filterValidMTEs(mSteamOutputs);
+        if (dumpItemSteamBoolean(filteredSteamBusses, aStack, true)) return true;
+        if (dumpItemSteamBoolean(filteredSteamBusses, aStack, false)) return true;
 
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
             for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
                 if (!outputSuccess) {
+                    if (tHatch instanceof IItemLockable iItemLockable && iItemLockable.isLocked()
+                        && !GTUtility.areStacksEqual(iItemLockable.getLockedItem(), single)) {
+                        continue;
+                    }
+
                     for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
                         if (tHatch.getBaseMetaTileEntity()
-                            .addStackToSlot(i, single)) outputSuccess = true;
+                            .addStackToSlot(i, single)) {
+                            aStack.stackSize--;
+                            outputSuccess = true;
+                        }
+                    }
+                }
+            }
+            for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
+                if (!outputSuccess) {
+                    if (tHatch.isLocked() && !GTUtility.areStacksEqual(tHatch.getLockedItem(), single)) {
+                        continue;
+                    }
+                    for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
+                        if (tHatch.getBaseMetaTileEntity()
+                            .addStackToSlot(i, single)) {
+                            aStack.stackSize--;
+                            outputSuccess = true;
+                        }
                     }
                 }
             }
@@ -855,6 +875,183 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             }
         }
         return outputSuccess;
+    }
+
+    public ItemStack tryAddOutput(ItemStack aStack) {
+        if (GTUtility.isStackInvalid(aStack)) return aStack;
+        aStack = GTUtility.copyOrNull(aStack);
+        ItemStack itemStack = aStack.copy();
+
+        List<MTEHatchOutputBus> filteredBusses = filterValidMTEs(mOutputBusses);
+        aStack = dumpItem(filteredBusses, aStack, true, false);
+        if (aStack == null || aStack.stackSize <= 0) return new ItemStack(Items.feather, 0);
+        if (aStack.stackSize != itemStack.stackSize) return aStack;
+
+        aStack = dumpItem(filteredBusses, aStack, false, false);
+        if (aStack == null || aStack.stackSize <= 0) return new ItemStack(Items.feather, 0);
+        if (aStack.stackSize != itemStack.stackSize) return aStack;
+
+        List<MTEHatchSteamBusOutput> filteredSteamBusses = filterValidMTEs(mSteamOutputs);
+        aStack = dumpItemSteam(filteredSteamBusses, aStack, true, false);
+        if (aStack == null || aStack.stackSize <= 0) return new ItemStack(Items.feather, 0);
+        if (aStack.stackSize != itemStack.stackSize) return aStack;
+
+        aStack = dumpItemSteam(filteredSteamBusses, aStack, false, false);
+        if (aStack == null || aStack.stackSize <= 0) return new ItemStack(Items.feather, 0);
+        if (aStack.stackSize != itemStack.stackSize) return aStack;
+
+        boolean outputSuccess = true;
+        while (outputSuccess && aStack.stackSize > 0) {
+            outputSuccess = false;
+            ItemStack single = aStack.copy();
+            single.stackSize = 1;
+
+            for (MTEHatchSteamBusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
+                if (!outputSuccess) {
+                    if (tHatch instanceof IItemLockable iItemLockable && iItemLockable.isLocked()
+                        && !GTUtility.areStacksEqual(iItemLockable.getLockedItem(), single)) {
+                        continue;
+                    }
+                    for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
+                        if (tHatch.getBaseMetaTileEntity()
+                            .addStackToSlot(i, single)) {
+                            aStack.stackSize--;
+                            outputSuccess = true;
+                        }
+                    }
+                }
+            }
+
+            for (MTEHatchOutputBus tHatch : filterValidMTEs(mOutputBusses)) {
+                if (!outputSuccess) {
+                    if (tHatch.isLocked() && !GTUtility.areStacksEqual(tHatch.getLockedItem(), single)) {
+                        continue;
+                    }
+                    for (int i = tHatch.getSizeInventory() - 1; i >= 0 && !outputSuccess; i--) {
+                        if (tHatch.getBaseMetaTileEntity()
+                            .addStackToSlot(i, single)) {
+                            aStack.stackSize--;
+                            outputSuccess = true;
+                        }
+                    }
+                }
+            }
+
+            for (MTEHatchOutput tHatch : filterValidMTEs(mOutputHatches)) {
+                if (!outputSuccess && tHatch.outputsItems()) {
+                    if (tHatch.getBaseMetaTileEntity()
+                        .addStackToSlot(1, single)) {
+                        aStack.stackSize--;
+                        outputSuccess = true;
+                    }
+                }
+            }
+        }
+
+        return aStack.stackSize > 0 ? aStack : null;
+    }
+
+    public ItemStack dumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly,
+        boolean simulate) {
+        if (GTUtility.isStackInvalid(itemStack)) return itemStack;
+
+        for (MTEHatchOutputBus outputBus : outputBuses) {
+            if (itemStack.stackSize <= 0) return null;
+
+            if (outputBus instanceof MTEHatchOutputBusME outputBusME) {
+                itemStack = dumpItemME(outputBusME, itemStack, restrictiveBusesOnly, simulate);
+            } else {
+                if (restrictiveBusesOnly && !outputBus.isLocked()) {
+                    continue;
+                }
+
+                if (outputBus.storePartial(itemStack, simulate)) {
+                    return null;
+                }
+            }
+        }
+
+        return itemStack;
+    }
+
+    public ItemStack dumpItemME(MTEHatchOutputBusME outputBus, ItemStack itemStack, boolean restrictiveBusesOnly,
+        boolean simulate) {
+        if (GTUtility.isStackInvalid(itemStack)) return itemStack;
+
+        if (restrictiveBusesOnly && !outputBus.isLocked()) {
+            return itemStack;
+        }
+
+        if (outputBus.storePartial(itemStack, simulate)) {
+            return null;
+        }
+
+        return itemStack;
+    }
+
+    public ItemStack dumpItemSteam(List<MTEHatchSteamBusOutput> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly, boolean simulate) {
+        if (GTUtility.isStackInvalid(itemStack)) return itemStack;
+
+        for (MTEHatchSteamBusOutput outputBus : outputBuses) {
+            if (itemStack.stackSize <= 0) return null;
+
+            if (outputBus instanceof IItemLockable iItemLockable) {
+                if (restrictiveBusesOnly && !iItemLockable.isLocked()) {
+                    continue;
+                }
+                if (iItemLockable instanceof IItemStorage iItemStorage) {
+                    if (iItemStorage.storePartial(itemStack, simulate)) {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        return itemStack;
+    }
+
+    public boolean dumpItemBoolean(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly) {
+        return dumpItemBoolean(outputBuses, itemStack, restrictiveBusesOnly, false);
+    }
+
+    public boolean dumpItemBoolean(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly, boolean simulate) {
+        for (MTEHatchOutputBus outputBus : outputBuses) {
+            if (restrictiveBusesOnly && !outputBus.isLocked()) {
+                continue;
+            }
+
+            if (outputBus.storePartial(itemStack, simulate)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean dumpItemSteamBoolean(List<MTEHatchSteamBusOutput> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly) {
+        return dumpItemSteamBoolean(outputBuses, itemStack, restrictiveBusesOnly, false);
+    }
+
+    public boolean dumpItemSteamBoolean(List<MTEHatchSteamBusOutput> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly, boolean simulate) {
+        for (MTEHatchSteamBusOutput outputBus : outputBuses) {
+            if (outputBus instanceof IItemLockable iItemLockable) {
+                if (restrictiveBusesOnly && !iItemLockable.isLocked()) {
+                    continue;
+                }
+                if (iItemLockable instanceof IItemStorage iItemStorage) {
+                    if (iItemStorage.storePartial(itemStack, simulate)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     @Override

@@ -183,4 +183,11 @@ public class BlockIcons {
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_MEGA_STEAM_COMPRESSOR_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         BASE + "MegaSteamCompressor/OVERLAY_FRONT_ACTIVE_GLOW");
 
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_STEAM_ITEM_VAULT = new Textures.BlockIcons.CustomIcon(
+        BASE + "SteamItemVault/OVERLAY_FRONT");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_STEAM_ITEM_VAULT_ACTIVE = new Textures.BlockIcons.CustomIcon(
+        BASE + "SteamItemVault/OVERLAY_FRONT_ACTIVE");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_STEAM_ITEM_VAULT_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
+        BASE + "SteamItemVault/OVERLAY_FRONT_ACTIVE_GLOW");
+
 }

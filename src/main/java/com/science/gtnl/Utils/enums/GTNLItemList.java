@@ -397,6 +397,7 @@ public enum GTNLItemList implements IItemContainer {
     ElectricBlastFurnace,
     LargeSteamLathe,
     LargeSteamCutting,
+    SteamItemVault,
 
     EternalGregTechWorkshop,
     EGTWFusionModule,

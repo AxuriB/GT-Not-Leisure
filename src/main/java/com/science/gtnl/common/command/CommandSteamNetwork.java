@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -31,16 +32,37 @@ public class CommandSteamNetwork extends CommandBase {
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] ss) {
-        List<String> l = new ArrayList<>();
-        String test = ss.length == 0 ? "" : ss[0].trim();
-        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of("add", "set", "join", "display")
-            .anyMatch(s -> s.startsWith(test)))) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
+        List<String> completions = new ArrayList<>();
+        String currentArg = args.length == 0 ? "" : args[args.length - 1].trim();
+
+        if (args.length == 1) {
             Stream.of("add", "set", "join", "display")
-                .filter(s -> test.isEmpty() || s.startsWith(test))
-                .forEach(l::add);
+                .filter(s -> s.startsWith(currentArg))
+                .forEach(completions::add);
+        } else if (args.length == 2) {
+            String subCommand = args[0].toLowerCase();
+            if ("add".equals(subCommand) || "set".equals(subCommand)
+                || "join".equals(subCommand)
+                || "display".equals(subCommand)) {
+                List<String> onlinePlayerNames = getListOfStringsMatchingLastWord(
+                    args,
+                    MinecraftServer.getServer()
+                        .getAllUsernames());
+                completions.addAll(onlinePlayerNames);
+            }
+        } else if (args.length == 3) {
+            String subCommand = args[0].toLowerCase();
+            if ("join".equals(subCommand)) {
+                List<String> onlinePlayerNames = getListOfStringsMatchingLastWord(
+                    args,
+                    MinecraftServer.getServer()
+                        .getAllUsernames());
+                completions.addAll(onlinePlayerNames);
+            }
         }
-        return l;
+
+        return completions;
     }
 
     @Override

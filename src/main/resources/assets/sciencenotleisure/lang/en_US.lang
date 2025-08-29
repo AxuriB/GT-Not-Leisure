@@ -65,7 +65,7 @@ Interaction_DESCRIPTION_Index_710=Requires Absolute Cleaning Environment
 
 tc.research_category.GTNL=GTNL: Whimsical Thaumaturgy
 tc.research_name.GTNL_WELCOME=Your New Beginning
-tc.research_text.GTNL_WELCOME=并不友善
+tc.research_text.GTNL_WELCOME=No friendly
 tc.research_text.GTNL_WELCOME.1=Welcome to a world of curious thoughts and wonders!
 
 tc.research_name.GTNL_TIME_STOP_POCKET_WATCH=Time Stop Pocket Watch
@@ -1631,6 +1631,25 @@ Tooltip_SuperSpaceElevator_06=The system automatically activates wireless mode w
 Tooltip_SuperSpaceElevator_07=Disabling this controller also pauses all modules
 Tooltip_SuperSpaceElevator_Casing=Any Space Elevator Base Casing
 
+NameSteamItemVault=Steam Item Vault
+SteamItemVaultRecipeType=Item Vault
+Tooltip_SteamItemVault_00=Original-Tech item vault that can hold up to 128 different items!
+Tooltip_SteamItemVault_01=Has 1/128th of the total capacity as capacity for each item
+Tooltip_SteamItemVault_02=Right clicking the controller with a screwdriver will turn on excess voiding
+Tooltip_SteamItemVault_03=Note on bus locking:
+Tooltip_SteamItemVault_04=Use an Integrated Circuit in the GUI slot to limit which item is output
+Tooltip_SteamItemVault_05=Compatible with output bus filtering
+Tooltip_SteamItemVault_06=The index of a stored item can be obtained through the Tricorder
+Tooltip_SteamItemVault_Casing=Any Vibration-Safe Casing
+Info_SteamItemVault_StoredItems=Stored Items:
+Info_SteamItemVault_StoredItems_NULL=NULL
+Info_SteamItemVault_OperationalData=操作数据
+Info_SteamItemVault_Used=Used Capacity: %s
+Info_SteamItemVault_Total=Total Capacity: %s
+Info_SteamItemVault_PerItemCapacity=Per-Item Capacity: %s
+Info_SteamItemVault_RunningCost=Running Cost: %dEU/t
+Info_SteamItemVault_AutoVoiding=Auto-voiding: %b
+
 NameSteamElevator=Steam Elevator
 SteamElevatorRecipeType=Steam Elevator
 Tooltip_SteamElevator_00=§a§lStairway to the Sky?
@@ -1643,13 +1662,14 @@ Tooltip_SteamElevator_Casing=Any Brick Steel Shell
 NameSteamOreProcessorModule=Steam Ore Processing Module
 SteamOreProcessorModuleRecipeType=Miniature Ore Processing Factory
 Tooltip_SteamOreProcessorModule_00=§a§lHave you ever wondered about the meaning of its existence?
-Tooltip_SteamOreProcessorModule_01=Do all ore processing in one step
-Tooltip_SteamOreProcessorModule_02=Can process up to 16 ores at a time
-Tooltip_SteamOreProcessorModule_03=Every ore costs 256EU/t, 1L lubricant, 10L distilled water
-Tooltip_SteamOreProcessorModule_04=Processing time is fixed at 128 ticks
-Tooltip_SteamOreProcessorModule_05=Set overclock count to double both parallel and EU consumption
-Tooltip_SteamOreProcessorModule_06=Use a screwdriver to switch mode
-Tooltip_SteamOreProcessorModule_07=Sneak click with screwdriver to void the stone dust
+Tooltip_SteamOreProcessorModule_01=Adds ore processing module to the Steam Stairway
+Tooltip_SteamOreProcessorModule_02=Do all ore processing in one step
+Tooltip_SteamOreProcessorModule_03=Can process up to 16 ores at a time
+Tooltip_SteamOreProcessorModule_04=Every ore costs 256EU/t, 1L lubricant, 10L distilled water
+Tooltip_SteamOreProcessorModule_05=Processing time is fixed at 128 ticks
+Tooltip_SteamOreProcessorModule_06=Set overclock count to double both parallel and EU consumption
+Tooltip_SteamOreProcessorModule_07=Use a screwdriver to switch mode
+Tooltip_SteamOreProcessorModule_08=Sneak click with screwdriver to void the stone dust
 Info_SteamOreProcessorModule_00=Actual Parallel: 
 
 NameSteamMonsterRepellentModuleI=Steam Monster Repellator Module I
@@ -1677,6 +1697,7 @@ gtnl.recipe.SteamWeatherModuleFakeRecipes=Weather Changes
 SteamWeatherModuleRecipeType=Weather Changes
 Tooltip_SteamWeatherModule_00=§a§lEnrique Pucci... so that's my stand-in... "Weather Report!"
 Tooltip_SteamWeatherModule_01=Adds weather changes module to the Steam Stairway
+Tooltip_SteamWeatherModule_02=Enter a specific material to switch weather, lasting for 1 hour
 
 NameSteamBeaconModuleI=Steam Elevator Beacon Module I
 NameSteamBeaconModuleII=Steam Elevator Beacon Module II
