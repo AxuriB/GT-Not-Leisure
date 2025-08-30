@@ -121,7 +121,7 @@ public class ToolHelper {
                     }
 
                     for (Map.Entry<ItemStackWrapper, Integer> entry : merged.entrySet()) {
-                        ItemStack dropStack = entry.getKey().stack.copy();
+                        ItemStack dropStack = entry.getKey().stack().copy();
                         dropStack.stackSize = entry.getValue();
                         dropItem(dropStack, world, player.posX, player.posY + 1, player.posZ);
                     }
@@ -168,18 +168,18 @@ public class ToolHelper {
             int count = e.getValue();
             ItemStackWrapper wrap = e.getKey();
 
-            int size = wrap.stack.getMaxStackSize();
+            int size = wrap.stack().getMaxStackSize();
             int fullstacks = (int) (double) (count / size);
 
             for (int i = 0; i < fullstacks; i++) {
                 count -= size;
-                ItemStack stack = wrap.stack.copy();
+                ItemStack stack = wrap.stack().copy();
                 stack.stackSize = size;
                 collated.add(stack);
             }
 
             if (count > 0) {
-                ItemStack stack = wrap.stack.copy();
+                ItemStack stack = wrap.stack().copy();
                 stack.stackSize = count;
                 collated.add(stack);
             }
