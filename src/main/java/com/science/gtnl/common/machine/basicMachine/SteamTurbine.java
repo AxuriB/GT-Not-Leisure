@@ -224,6 +224,6 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
 
     @Override
     public long maxEUStore() {
-        return Math.max(getEUVar(), V[mTier] * 128L + getMinimumStoredEU());
+        return Math.max(getEUVar(), V[mTier] * 8192L + getMinimumStoredEU());
     }
 }

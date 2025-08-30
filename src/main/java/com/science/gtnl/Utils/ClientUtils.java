@@ -50,7 +50,7 @@ public class ClientUtils {
         boolean handled = onPickEntity(playerMP, reachDistance, useAE);
         if (!handled) {
             if (isCtrlKeyDown) {
-                return !onPickBlockNBTRange(playerMP, world, reachDistance, useAE);
+                return onPickBlockNBTRange(playerMP, world, reachDistance, useAE);
             } else {
                 onPickBlockRange(playerMP, world, reachDistance, useAE);
                 return true;

@@ -1,5 +1,7 @@
 package com.science.gtnl.loader;
 
+import java.util.Collection;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -107,6 +109,7 @@ import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
+import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
 public class RecipeLoader {
 
@@ -214,8 +217,18 @@ public class RecipeLoader {
             }
         }
 
-        TCResearches.register();
+        Collection<GTRecipe> targetChamberRecipe = LanthanidesRecipeMaps.targetChamberRecipes.getAllRecipes();
+        LanthanidesRecipeMaps.targetChamberRecipes.getBackend()
+            .clearRecipes();
 
+        for (GTRecipe recipe : targetChamberRecipe) {
+            for (ItemStack itemStack : recipe.mOutputs) {
+                itemStack.stackSize *= 3;
+            }
+            LanthanidesRecipeMaps.targetChamberRecipes.add(recipe);
+        }
+
+        TCResearches.register();
     }
 
     private static void loadCircuitRelatedRecipes() {
