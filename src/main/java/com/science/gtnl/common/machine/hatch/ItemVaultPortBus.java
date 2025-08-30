@@ -35,20 +35,16 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 
-@Optional.Interface(iface = "appeng.api.storage.IMEMonitor", modid = Mods.ModIDs.APPLIED_ENERGISTICS2, striprefs = true)
 public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStack> {
 
-    @Optional.Interface(
-        iface = "appeng.api.storage.IExternalStorageHandler",
-        modid = Mods.ModIDs.APPLIED_ENERGISTICS2,
-        striprefs = true)
     public static class AE2ItemVaultPortHatchHandler implements IExternalStorageHandler {
 
         @Override
         @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
         public boolean canHandle(TileEntity te, ForgeDirection d, StorageChannel channel, BaseActionSource mySrc) {
             return channel == StorageChannel.ITEMS && te instanceof BaseMetaTileEntity base
-                && base.getMetaTileEntity() instanceof ItemVaultPortBus;
+                && base.getMetaTileEntity() instanceof ItemVaultPortBus portBus
+                && portBus.controller != null;
         }
 
         @Override
@@ -121,7 +117,6 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
         this.controller = null;
     }
 
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public static void registerAEIntegration() {
         AEApi.instance()
             .registries()
@@ -130,7 +125,6 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out, int iteration) {
         if (controller != null) {
             for (int i = 0; i < SteamItemVault.MAX_DISTINCT_ITEMS; i++) {
@@ -145,7 +139,6 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IItemList<IAEItemStack> getStorageList() {
         IItemList<IAEItemStack> itemList = new ItemList();
         if (controller != null) {
@@ -161,59 +154,50 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> l, Object verificationToken) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.put(l, verificationToken);
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> l) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.remove(l);
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public AccessRestriction getAccess() {
         return AccessRestriction.READ_WRITE;
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public boolean isPrioritized(IAEItemStack input) {
         if (controller == null || input == null) return false;
         return controller.contains(input.getItemStack()) || controller.itemCount() < SteamItemVault.MAX_DISTINCT_ITEMS;
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public boolean canAccept(IAEItemStack input) {
         if (controller == null || input == null) return false;
         return controller.contains(input.getItemStack()) || controller.itemCount() < SteamItemVault.MAX_DISTINCT_ITEMS;
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public int getPriority() {
         return 0;
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public int getSlot() {
         return 0;
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public boolean validForPass(int i) {
         return true;
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IAEItemStack injectItems(IAEItemStack input, Actionable mode, BaseActionSource src) {
         final ItemStack inputStack = input.getItemStack();
         if (inputStack == null) return null;
@@ -228,7 +212,6 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IAEItemStack extractItems(IAEItemStack request, Actionable mode, BaseActionSource src) {
         if (controller == null || getBaseMetaTileEntity() == null) return null;
         if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
@@ -241,7 +224,6 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     }
 
     @Override
-    @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public StorageChannel getChannel() {
         return StorageChannel.ITEMS;
     }

@@ -61,7 +61,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     implements ISurvivalConstructable, IItemVault {
 
     public static int MAX_DISTINCT_ITEMS = 128;
-    public static BigInteger MAX_CAPACITY = BigInteger.valueOf(12800000L)
+    public static final BigInteger MAX_CAPACITY = BigInteger.valueOf(1280000)
         .multiply(BigInteger.valueOf(MAX_DISTINCT_ITEMS));
 
     public BigInteger capacity = MAX_CAPACITY;
@@ -80,8 +80,10 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     private static final int VERTICAL_OFF_SET = 5;
     private static final int DEPTH_OFF_SET = 0;
 
+    public static NumberFormat nf = NumberFormat.getNumberInstance();
+
     public ItemTank[] STORE = IntStream.range(0, MAX_DISTINCT_ITEMS)
-        .mapToObj(i -> new ItemTank(0))
+        .mapToObj(i -> new ItemTank())
         .toArray(ItemTank[]::new);
 
     public SteamItemVault(int aID, String aName, String aNameRegional) {
@@ -101,6 +103,14 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         checkMachine(aBaseMetaTileEntity, mInventory[1]);
         super.onFirstTick(aBaseMetaTileEntity);
+    }
+
+    @Override
+    public void onBlockDestroyed() {
+        if (portBus != null) {
+            portBus.unbind();
+        }
+        super.onBlockDestroyed();
     }
 
     @Override
@@ -289,13 +299,14 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamItemVaultRecipeType"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_00"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_01"))
+            .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_00", MAX_DISTINCT_ITEMS))
+            .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_01", MAX_DISTINCT_ITEMS))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_04"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_05"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_06"))
+            .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_07", nf.format(MAX_CAPACITY)))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
@@ -342,11 +353,10 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public String[] getInfoData() {
         ArrayList<String> ll = new ArrayList<>();
-        NumberFormat nf = NumberFormat.getNumberInstance();
         ll.add(
             EnumChatFormatting.YELLOW + StatCollector.translateToLocal("Info_SteamItemVault_StoredItems")
                 + EnumChatFormatting.RESET);
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
+        for (int i = 0; i < Math.max(32, MAX_DISTINCT_ITEMS); i++) {
             ItemTank tank = STORE[i];
             if (tank.isEmpty()) {
                 ll.add(

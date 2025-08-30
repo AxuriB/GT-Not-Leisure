@@ -30,7 +30,7 @@ public class ItemTank {
     public long mAdjustableMultiplier = 1;
 
     public ItemTank() {
-        mCapacity = Long.MAX_VALUE;
+        this(Long.MAX_VALUE);
     }
 
     public ItemTank(long capacity) {
@@ -39,46 +39,10 @@ public class ItemTank {
         this.mItem = null;
     }
 
-    public ItemTank(ItemStack aItem) {
-        mItem = aItem;
-        if (aItem != null) {
-            mCapacity = aItem.stackSize;
-            mAmount = aItem.stackSize;
-        }
-    }
-
-    public ItemTank(ItemStack aItem, long aCapacity) {
-        mItem = aItem;
-        mCapacity = aCapacity;
-        mAmount = (aItem == null ? 0 : aItem.stackSize);
-    }
-
     public ItemTank(ItemStack stack, long amount, long capacity) {
         this.mItem = stack == null ? null : stack.copy();
         this.mAmount = amount;
         this.mCapacity = capacity;
-    }
-
-    public ItemTank(Item aItem, long aAmount) {
-        this(new ItemStack(aItem, saturatedCast(aAmount)));
-        mAmount = aAmount;
-    }
-
-    public ItemTank(Item aItem, long aAmount, long aCapacity) {
-        this(new ItemStack(aItem, saturatedCast(aAmount)), aCapacity);
-        mAmount = aAmount;
-    }
-
-    public ItemTank(NBTTagCompound aNBT, String aKey, long aCapacity) {
-        this(aNBT.hasKey(aKey) ? aNBT.getCompoundTag(aKey) : null, aCapacity);
-    }
-
-    public ItemTank(NBTTagCompound aNBT, long aCapacity) {
-        mCapacity = aCapacity;
-        if (aNBT != null && !aNBT.hasNoTags()) {
-            mItem = ItemStack.loadItemStackFromNBT(aNBT);
-            mAmount = (isEmpty() ? 0 : aNBT.hasKey("LAmount") ? aNBT.getLong("LAmount") : mItem.stackSize);
-        }
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag, String key) {

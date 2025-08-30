@@ -1636,13 +1636,14 @@ Tooltip_SuperSpaceElevator_Casing=任意太空电梯基座机械方块
 
 NameSteamItemVault=蒸汽物品保险库
 SteamItemVaultRecipeType=物品保险库
-Tooltip_SteamItemVault_00=原始科技保险库，最多可容纳128种不同的物品！
-Tooltip_SteamItemVault_01=总容量的1/128作为每种物品的容量
+Tooltip_SteamItemVault_00=原始科技保险库，最多可容纳%s种不同的物品！
+Tooltip_SteamItemVault_01=总容量的1/%s作为每种物品的容量
 Tooltip_SteamItemVault_02=使用螺丝刀右键控制器方块可开启物品过量销毁功能
 Tooltip_SteamItemVault_03=输入/出总线锁定注意事项：
 Tooltip_SteamItemVault_04=在GUI插槽中使用集成电路来限制输出哪种物品
 Tooltip_SteamItemVault_05=兼容输出总线过滤
 Tooltip_SteamItemVault_06=可以通过三录仪获取存储物品的信息
+Tooltip_SteamItemVault_07=总容量：%s
 Tooltip_SteamItemVault_Casing=任意抗震安全外壳
 Info_SteamItemVault_StoredItems=已存储物品：
 Info_SteamItemVault_StoredItems_NULL=无效
