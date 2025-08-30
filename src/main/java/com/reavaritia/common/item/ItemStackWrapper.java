@@ -2,15 +2,12 @@ package com.reavaritia.common.item;
 
 import java.util.Objects;
 
+import com.github.bsideup.jabel.Desugar;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public class ItemStackWrapper {
-
-    public final ItemStack stack;
-
-    public ItemStackWrapper(ItemStack stack) {
-        this.stack = stack;
-    }
+@Desugar
+public record ItemStackWrapper(ItemStack stack) {
 
     @Override
     public boolean equals(Object otherobj) {
@@ -44,7 +41,7 @@ public class ItemStackWrapper {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return this.stack.toString();
     }
 }

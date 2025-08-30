@@ -202,7 +202,7 @@ public class MatterCluster extends Item implements ICosmicRenderItem {
 
         for (Entry<ItemStackWrapper, Integer> entry : data.entrySet()) {
             NBTTagCompound itemtag = new NBTTagCompound();
-            itemtag.setTag(ITEMTAG, entry.getKey().stack.writeToNBT(new NBTTagCompound()));
+            itemtag.setTag(ITEMTAG, entry.getKey().stack().writeToNBT(new NBTTagCompound()));
             itemtag.setInteger(COUNTTAG, entry.getValue());
             list.appendTag(itemtag);
         }
