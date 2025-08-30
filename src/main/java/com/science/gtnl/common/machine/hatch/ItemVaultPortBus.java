@@ -133,13 +133,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     @Optional.Method(modid = Mods.ModIDs.APPLIED_ENERGISTICS2)
     public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out, int iteration) {
         if (controller != null) {
-            for (int i = 0; i < SteamItemVault.MAX_DISTINCT_ITEMS; i++) {
-                if (!controller.getStore()[i].isEmpty()) {
-                    IAEItemStack s = AEItemStack.create(controller.getStore()[i].get());
-                    s.setStackSize(controller.getStore()[i].amount());
-                    out.add(s);
-                }
-            }
+            return controller.getStore();
         }
         return out;
     }
@@ -149,13 +143,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     public IItemList<IAEItemStack> getStorageList() {
         IItemList<IAEItemStack> itemList = new ItemList();
         if (controller != null) {
-            for (int i = 0; i < SteamItemVault.MAX_DISTINCT_ITEMS; i++) {
-                if (!controller.getStore()[i].isEmpty()) {
-                    IAEItemStack s = AEItemStack.create(controller.getStore()[i].get());
-                    s.setStackSize(controller.getStore()[i].amount());
-                    itemList.add(s);
-                }
-            }
+            return controller.getStore();
         }
         return itemList;
     }
@@ -219,7 +207,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
         if (inputStack == null) return null;
         if (controller == null || getBaseMetaTileEntity() == null) return input;
         if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
-        long amount = controller.pull(input.getItemStack(), input.getStackSize(), mode != Actionable.SIMULATE);
+        long amount = controller.pull(input, mode != Actionable.SIMULATE);
         if (amount == 0) return input;
         if (amount == input.getStackSize()) return null;
         IAEItemStack result = AEItemStack.create(input.getItemStack());
@@ -232,7 +220,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     public IAEItemStack extractItems(IAEItemStack request, Actionable mode, BaseActionSource src) {
         if (controller == null || getBaseMetaTileEntity() == null) return null;
         if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
-        long amount = controller.push(request.getItemStack(), request.getStackSize(), mode != Actionable.SIMULATE);
+        long amount = controller.push(request, mode != Actionable.SIMULATE);
         if (amount == 0) return null;
         if (amount == request.getStackSize()) return request.copy();
         IAEItemStack result = AEItemStack.create(request.getItemStack());

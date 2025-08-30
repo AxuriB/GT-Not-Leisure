@@ -18,28 +18,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.item.ItemTank;
 import com.science.gtnl.api.IItemVault;
 import com.science.gtnl.common.machine.hatch.ItemVaultPortBus;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
+import appeng.api.AEApi;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IItemList;
+import appeng.util.item.AEItemStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
@@ -53,7 +57,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 
@@ -70,7 +73,6 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
     public boolean locked = true;
     public boolean doVoidExcess = false;
-    public int itemSelector = -1;
     public ItemVaultPortBus portBus = null;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -80,9 +82,9 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     private static final int VERTICAL_OFF_SET = 5;
     private static final int DEPTH_OFF_SET = 0;
 
-    public ItemTank[] STORE = IntStream.range(0, MAX_DISTINCT_ITEMS)
-        .mapToObj(i -> new ItemTank(0))
-        .toArray(ItemTank[]::new);
+    public IItemList<IAEItemStack> STORE = AEApi.instance()
+        .storage()
+        .createItemList();
 
     public SteamItemVault(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -110,11 +112,6 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         lEUt = 128;
         mMaxProgresstime = 20;
 
-        ItemStack itemStack = getControllerSlot();
-        this.itemSelector = (itemStack != null && itemStack.getItem() instanceof ItemIntegratedCircuit)
-            ? itemStack.getItemDamage()
-            : -1;
-
         // Suck in items
         ArrayList<ItemStack> inputItems = getStoredInputs();
 
@@ -128,25 +125,10 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
         // Push out items
         if (!this.mOutputBusses.isEmpty() || !this.mSteamOutputs.isEmpty()) {
-            ItemTank sItem = this.getSelectedItem();
-            boolean isItemSelected = this.itemSelector != -1;
-            if (!isItemSelected || !sItem.isEmpty()) {
-                if (isItemSelected) {
-                    ItemStack stack = sItem.get(sItem.getCapacity());
-                    if (stack != null) {
-                        stack.stackSize = stack.stackSize - this.tryAddOutput(stack).stackSize;
-                        if (stack.stackSize > 0) this.push(stack, true);
-                    }
-                } else {
-                    ItemTank first = this.firstNotNull();
-                    if (first != null && !first.isEmpty()) {
-                        ItemStack stack = first.get(first.getCapacity());
-                        if (stack != null) {
-                            stack.stackSize = stack.stackSize - this.tryAddOutput(stack).stackSize;
-                            if (stack.stackSize > 0) this.push(stack, true);
-                        }
-                    }
-                }
+            IAEItemStack stack = STORE.getFirstItem();
+            if (stack != null) {
+                stack.setStackSize(stack.getStackSize() - this.tryAddOutput(stack.getItemStack()).stackSize);
+                if (stack.getStackSize() > 0) this.push(stack, true);
             }
         }
 
@@ -168,6 +150,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             tHatch.mRecipeMap = getRecipeMap();
             IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
             boolean isMEBus = tHatch instanceof MTEHatchInputBusME;
+            assert tileEntity != null;
             for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
                 ItemStack itemStack = tileEntity.getStackInSlot(i);
                 if (itemStack != null) {
@@ -346,24 +329,16 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         ll.add(
             EnumChatFormatting.YELLOW + StatCollector.translateToLocal("Info_SteamItemVault_StoredItems")
                 + EnumChatFormatting.RESET);
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            ItemTank tank = STORE[i];
-            if (tank.isEmpty()) {
-                ll.add(
-                    MessageFormat.format(
-                        "{0} - {1}: {2} ({3}%)",
-                        i,
-                        StatCollector.translateToLocal("Info_SteamItemVault_StoredItems_NULL"),
-                        0,
-                        0));
-            } else {
-                String localizedName = STORE[i].name();
-                String amount = nf.format(STORE[i].amount());
-                String percentage = capacityPerItem > 0 ? String.valueOf(STORE[i].amount() * 100 / capacityPerItem)
-                    : "";
-                ll.add(MessageFormat.format("{0} - {1}: {2} ({3}%)", i, localizedName, amount, percentage));
-            }
+
+        int i = 0;
+        for (IAEItemStack tank : STORE) {
+            String unlocalizedName = tank.getItemStack()
+                .getUnlocalizedName();
+            String amount = nf.format(tank.getStackSize());
+            String percentage = capacityPerItem > 0 ? String.valueOf(tank.getStackSize() * 100 / capacityPerItem) : "";
+            ll.add(MessageFormat.format("{0} - {1}: {2} ({3}%)", i++, unlocalizedName, amount, percentage));
         }
+
         ll.add(
             EnumChatFormatting.YELLOW + StatCollector.translateToLocal("Info_SteamItemVault_OperationalData")
                 + EnumChatFormatting.RESET);
@@ -383,13 +358,14 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         aNBT.setByteArray("capacity", capacity.toByteArray());
         aNBT.setBoolean("doVoidExcess", doVoidExcess);
         aNBT.setBoolean("lockItem", locked);
-        aNBT.setInteger("itemSelector", itemSelector);
 
-        NBTTagCompound itemNbt = new NBTTagCompound();
+        NBTTagList itemNbt = new NBTTagList();
         aNBT.setTag("STORE", itemNbt);
 
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            STORE[i].writeToNBT(itemNbt, String.valueOf(i));
+        for (IAEItemStack aeItem : STORE) {
+            var nbt = new NBTTagCompound();
+            aeItem.writeToNBT(nbt);
+            itemNbt.appendTag(nbt);
         }
 
         super.saveNBTData(aNBT);
@@ -400,11 +376,11 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         this.setCapacity(new BigInteger(aNBT.getByteArray("capacity")));
         this.setDoVoidExcess(aNBT.getBoolean("doVoidExcess"));
         this.locked = aNBT.getBoolean("lockItem");
-        this.itemSelector = aNBT.getInteger("itemSelector");
 
-        NBTTagCompound itemNbt = (NBTTagCompound) aNBT.getTag("STORE");
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            STORE[i].readFromNBT(itemNbt, String.valueOf(i));
+        NBTTagList itemNbt = aNBT.getTagList("STORE", 10);
+
+        for (int i = 0; i < itemNbt.tagCount(); i++) {
+            STORE.add(AEItemStack.loadItemStackFromNBT(itemNbt.getCompoundTagAt(i)));
         }
 
         super.loadNBTData(aNBT);
@@ -413,56 +389,89 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public int pull(ItemStack aItem, boolean doPull) {
         if (locked) return 0;
-        int index = getItemPosition(aItem);
-        if (index >= 0) {
-            return STORE[index].fill(aItem, doPull);
-        } else if (itemCount() < MAX_DISTINCT_ITEMS) {
-            return STORE[getNullSlot()].setCapacity(capacityPerItem)
-                .fill(aItem, doPull);
+        if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
+        var aeItem = getStoredItem(aItem);
+        long size = aeItem == null ? 0 : aeItem.getStackSize();
+        if (size >= capacityPerItem) return doVoidExcess ? aItem.stackSize : 0;
+        if (capacityPerItem - size < aItem.stackSize) {
+            if (doPull) STORE.addStorage(
+                AEItemStack.create(aItem)
+                    .setStackSize(capacityPerItem - size));
+            return doVoidExcess ? aItem.stackSize : (int) (capacityPerItem - size);
+        } else {
+            if (doPull) STORE.addStorage(AEItemStack.create(aItem));
+            return aItem.stackSize;
         }
-        return 0;
     }
 
     @Override
-    public long pull(ItemStack aItem, long amount, boolean doPull) {
+    public long pull(IAEItemStack aItem, boolean doPull) {
         if (locked) return 0;
-        int index = getItemPosition(aItem);
-        if (index >= 0) {
-            ItemTank tank = STORE[index];
-            if (doPull) return tank.add(amount);
-            return doVoidExcess ? amount
-                : tank.amount() + amount > tank.capacity() ? tank.capacity() - tank.amount() : amount;
-        } else if (itemCount() < MAX_DISTINCT_ITEMS) {
-            ItemTank tank = STORE[getNullSlot()];
-            if (doPull) return tank.add(amount, aItem);
-            return doVoidExcess ? amount : Math.min(amount, tank.capacity());
+        if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
+        var aeItem = getStoredItem(aItem.getItemStack());
+        long size = aeItem == null ? 0 : aeItem.getStackSize();
+        if (size >= capacityPerItem) return doVoidExcess ? aItem.getStackSize() : 0;
+        if (capacityPerItem - size < aItem.getStackSize()) {
+            if (doPull) STORE.addStorage(
+                aItem.copy()
+                    .setStackSize(capacityPerItem - size));
+            return doVoidExcess ? aItem.getStackSize() : (int) (capacityPerItem - size);
+        } else {
+            if (doPull) STORE.addStorage(aItem);
+            return aItem.getStackSize();
         }
-        return 0;
     }
 
     @Override
-    public ItemStack push(ItemStack aItem, boolean doPush) {
-        if (locked) return null;
-        int index = getItemPosition(aItem);
-        if (index < 0) return null;
-        return STORE[index].drain(aItem.stackSize, doPush);
+    public void push(ItemStack aItem, boolean doPush) {
+        if (locked) return;
+        var aeItem = getStoredItem(aItem);
+        if (aeItem == null) return;
+        if (aeItem.getStackSize() > aItem.stackSize) {
+            aeItem.setStackSize(aeItem.getStackSize() - aItem.stackSize);
+        } else {
+            var list = AEApi.instance()
+                .storage()
+                .createItemList();
+            STORE.forEach(item -> { if (item != aeItem) list.add(item); });
+            STORE = list;
+        }
     }
 
     @Override
-    public ItemStack push(int amount, boolean doPush) {
-        if (locked) return null;
-        int index = firstNotNullSlot();
-        if (index < 0) return null;
-        return STORE[index].drain(amount, doPush);
+    public void push(int amount, boolean doPush) {
+        if (locked) return;
+        var aeItem = STORE.getFirstItem();
+        if (aeItem == null) return;
+        if (aeItem.getStackSize() > amount) {
+            aeItem.setStackSize(aeItem.getStackSize() - amount);
+        } else {
+            var list = AEApi.instance()
+                .storage()
+                .createItemList();
+            STORE.forEach(item -> { if (item != aeItem) list.add(item); });
+            STORE = list;
+        }
     }
 
     @Override
-    public long push(ItemStack aItem, long amount, boolean doPush) {
+    public long push(IAEItemStack aItem, boolean doPush) {
         if (locked) return 0;
-        int index = getItemPosition(aItem);
-        if (index < 0) return 0;
-        if (doPush) return STORE[index].remove(amount);
-        return STORE[index].amount(amount);
+        var aeItem = getStoredItem(aItem.getItemStack());
+        if (aeItem == null) return 0;
+        if (aeItem.getStackSize() > aItem.getStackSize()) {
+            if (doPush) aeItem.setStackSize(aeItem.getStackSize() - aItem.getStackSize());
+            return aItem.getStackSize();
+        } else {
+            if (doPush) {
+                var list = AEApi.instance()
+                    .storage()
+                    .createItemList();
+                STORE.forEach(item -> { if (item != aeItem) list.add(item); });
+                STORE = list;
+            }
+            return aeItem.getStackSize();
+        }
     }
 
     @Override
@@ -480,114 +489,59 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             this.capacityPerItem = capacity.divide(BigInteger.valueOf(MAX_DISTINCT_ITEMS))
                 .longValue();
         }
-
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            ItemTank tank = STORE[i];
-            if (tank.setCapacity(capacityPerItem)
-                .amount() > capacityPerItem) {
-                STORE[i] = new ItemTank(tank.get(), capacityPerItem, capacityPerItem);
-            }
-        }
     }
 
     @Override
     public int itemCount() {
-        int tCount = 0;
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            if (!STORE[i].isEmpty()) tCount++;
-        }
-        return tCount;
+        return STORE.size();
     }
 
     @Override
-    public int getItemPosition(String itemName) {
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            if (!STORE[i].isEmpty() && STORE[i].name()
-                .equals(itemName)) return i;
-        }
-        return -1;
-    }
-
-    @Override
-    public int getItemPosition(ItemStack aItem) {
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            if (STORE[i].contains(aItem)) return i;
-        }
-        return -1;
-    }
-
-    @Override
-    public int getNullSlot() {
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            if (STORE[i].isEmpty()) return i;
-        }
-        return -1;
-    }
-
-    @Override
-    public boolean contains(String itemName) {
-        return getItemPosition(itemName) >= 0;
-    }
-
-    @Override
-    public boolean contains(ItemStack aItem) {
-        return getItemPosition(aItem) >= 0;
-    }
-
-    @Override
-    public int firstNotNullSlot() {
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            if (!STORE[i].isEmpty()) return i;
-        }
-        return -1;
-    }
-
-    @Override
-    public ItemTank firstNotNull() {
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            if (!STORE[i].isEmpty()) return STORE[i];
+    public IAEItemStack getStoredItem(@Nullable String itemName) {
+        if (itemName == null) return null;
+        for (IAEItemStack aeItem : STORE) {
+            if (aeItem.getItemStack()
+                .getUnlocalizedName()
+                .equals(itemName)) return aeItem;
         }
         return null;
     }
 
     @Override
+    public IAEItemStack getStoredItem(@Nullable ItemStack aItem) {
+        if (aItem == null) return null;
+        for (IAEItemStack aeItem : STORE) {
+            if (GTUtility.areStacksEqual(aeItem.getItemStack(), aItem)) return aeItem;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean contains(String itemName) {
+        return getStoredItem(itemName) != null;
+    }
+
+    @Override
+    public boolean contains(ItemStack aItem) {
+        return getStoredItem(aItem) != null;
+    }
+
+    @Override
     public BigInteger getStoredAmount() {
         BigInteger amount = BigInteger.ZERO;
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            amount = amount.add(BigInteger.valueOf(STORE[i].amount()));
+        for (IAEItemStack item : STORE) {
+            amount = amount.add(BigInteger.valueOf(item.getStackSize()));
         }
         return amount;
     }
 
     @Override
-    public int getItemSelector() {
-        return itemSelector;
-    }
-
-    @Override
-    public ItemTank getSelectedItem() {
-        return itemSelector != -1 ? STORE[itemSelector] : null;
-    }
-
-    @Override
     public void setDoVoidExcess(boolean doVoidExcess) {
         this.doVoidExcess = doVoidExcess;
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            STORE[i].setVoidExcess(doVoidExcess);
-        }
     }
 
     @Override
-    public ItemTank.ItemTankInfo[] getTankInfo() {
-        ItemTank.ItemTankInfo[] info = new ItemTank.ItemTankInfo[MAX_DISTINCT_ITEMS];
-        for (int i = 0; i < MAX_DISTINCT_ITEMS; i++) {
-            info[i] = STORE[i].getInfo();
-        }
-        return info;
-    }
-
-    @Override
-    public ItemTank[] getStore() {
+    public IItemList<IAEItemStack> getStore() {
         return STORE;
     }
 
