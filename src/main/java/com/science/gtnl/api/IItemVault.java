@@ -9,15 +9,15 @@ import appeng.api.storage.data.IItemList;
 
 public interface IItemVault {
 
-    int inputStorage(ItemStack aItem, boolean doInput);
+    int inject(ItemStack aItem, boolean doInput);
 
-    long inputStorage(IAEItemStack aeItem, boolean doInput);
+    long inject(IAEItemStack aeItem, boolean doInput);
 
-    void outputStroage(ItemStack aItem, boolean doOutput);
+    void extract(ItemStack aItem, boolean doOutput);
 
-    void outputStroage(int amount, boolean doOutput);
+    void extract(int amount, boolean doOutput);
 
-    long outputStroage(IAEItemStack aeItem, boolean doOutput);
+    long extract(IAEItemStack aeItem, boolean doOutput);
 
     long getcapacityPerItem();
 

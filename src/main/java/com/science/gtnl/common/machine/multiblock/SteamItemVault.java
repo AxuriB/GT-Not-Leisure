@@ -129,7 +129,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (!inputItems.isEmpty()) {
             for (ItemStack aItem : inputItems) {
                 ItemStack toDeplete = aItem.copy();
-                toDeplete.stackSize = this.inputStorage(aItem, true);
+                toDeplete.stackSize = this.inject(aItem, true);
                 depleteInput(toDeplete);
             }
         }
@@ -139,7 +139,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             IAEItemStack stack = STORE.getFirstItem();
             if (stack != null) {
                 stack.setStackSize(stack.getStackSize() - this.tryAddOutput(stack.getItemStack()).stackSize);
-                if (stack.getStackSize() > 0) this.outputStroage(stack, true);
+                if (stack.getStackSize() > 0) this.extract(stack, true);
             }
         }
 
@@ -416,7 +416,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public int inputStorage(ItemStack aItem, boolean doInput) {
+    public int inject(ItemStack aItem, boolean doInput) {
         if (locked) return 0;
         if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
         var aeItem = getStoredItem(aItem);
@@ -434,7 +434,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public long inputStorage(IAEItemStack aItem, boolean doInput) {
+    public long inject(IAEItemStack aItem, boolean doInput) {
         if (locked) return 0;
         if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
         var aeItem = getStoredItem(aItem.getItemStack());
@@ -452,7 +452,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public void outputStroage(ItemStack aItem, boolean doOutput) {
+    public void extract(ItemStack aItem, boolean doOutput) {
         if (locked) return;
         var aeItem = getStoredItem(aItem);
         if (aeItem == null) return;
@@ -468,7 +468,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public void outputStroage(int amount, boolean doOutput) {
+    public void extract(int amount, boolean doOutput) {
         if (locked) return;
         var aeItem = STORE.getFirstItem();
         if (aeItem == null) return;
@@ -484,7 +484,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public long outputStroage(IAEItemStack aItem, boolean doOutput) {
+    public long extract(IAEItemStack aItem, boolean doOutput) {
         if (locked) return 0;
         var aeItem = getStoredItem(aItem.getItemStack());
         if (aeItem == null) return 0;
