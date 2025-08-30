@@ -59,6 +59,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 
 public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     implements ISurvivalConstructable, IItemVault {
@@ -128,7 +129,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (!inputItems.isEmpty()) {
             for (ItemStack aItem : inputItems) {
                 ItemStack toDeplete = aItem.copy();
-                toDeplete.stackSize = this.pull(aItem, true);
+                toDeplete.stackSize = this.inputStorage(aItem, true);
                 depleteInput(toDeplete);
             }
         }
@@ -138,7 +139,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             IAEItemStack stack = STORE.getFirstItem();
             if (stack != null) {
                 stack.setStackSize(stack.getStackSize() - this.tryAddOutput(stack.getItemStack()).stackSize);
-                if (stack.getStackSize() > 0) this.push(stack, true);
+                if (stack.getStackSize() > 0) this.outputStroage(stack, true);
             }
         }
 
@@ -174,6 +175,20 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             }
         }
 
+        for (MTEHatchSteamBusInput tHatch : validMTEList(mSteamInputs)) {
+            byte busColor = tHatch.getColor();
+            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
+            tHatch.mRecipeMap = getRecipeMap();
+            IGregTechTileEntity tileEntity = tHatch.getBaseMetaTileEntity();
+            assert tileEntity != null;
+            for (int i = tileEntity.getSizeInventory() - 1; i >= 0; i--) {
+                ItemStack itemStack = tileEntity.getStackInSlot(i);
+                if (itemStack != null) {
+                    rList.add(itemStack);
+                }
+            }
+        }
+
         if (!inputsFromME.isEmpty()) {
             rList.addAll(inputsFromME.values());
         }
@@ -184,7 +199,9 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()) this.locked = !aBaseMetaTileEntity.isActive();
+        if (aBaseMetaTileEntity.isServerSide()) {
+            this.locked = !aBaseMetaTileEntity.isActive();
+        }
     }
 
     @Override
@@ -348,7 +365,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             String amount = nf.format(tank.getStackSize());
             String percentage = capacityPerItem > 0 ? String.valueOf(tank.getStackSize() * 100 / capacityPerItem) : "";
             ll.add(MessageFormat.format("{0} - {1}: {2} ({3}%)", i++, unlocalizedName, amount, percentage));
-            if (i >= 32)break;
+            if (i >= 32) break;
         }
 
         ll.add(
@@ -369,7 +386,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByteArray("capacity", capacity.toByteArray());
         aNBT.setBoolean("doVoidExcess", doVoidExcess);
-        aNBT.setBoolean("lockItem", locked);
+        aNBT.setBoolean("locked", locked);
 
         NBTTagList itemNbt = new NBTTagList();
         aNBT.setTag("STORE", itemNbt);
@@ -387,7 +404,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     public void loadNBTData(NBTTagCompound aNBT) {
         this.setCapacity(new BigInteger(aNBT.getByteArray("capacity")));
         this.setDoVoidExcess(aNBT.getBoolean("doVoidExcess"));
-        this.locked = aNBT.getBoolean("lockItem");
+        this.locked = aNBT.getBoolean("locked");
 
         NBTTagList itemNbt = aNBT.getTagList("STORE", 10);
 
@@ -399,43 +416,43 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public int pull(ItemStack aItem, boolean doPull) {
+    public int inputStorage(ItemStack aItem, boolean doInput) {
         if (locked) return 0;
         if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
         var aeItem = getStoredItem(aItem);
         long size = aeItem == null ? 0 : aeItem.getStackSize();
         if (size >= capacityPerItem) return doVoidExcess ? aItem.stackSize : 0;
         if (capacityPerItem - size < aItem.stackSize) {
-            if (doPull) STORE.addStorage(
+            if (doInput) STORE.addStorage(
                 AEItemStack.create(aItem)
                     .setStackSize(capacityPerItem - size));
             return doVoidExcess ? aItem.stackSize : (int) (capacityPerItem - size);
         } else {
-            if (doPull) STORE.addStorage(AEItemStack.create(aItem));
+            if (doInput) STORE.addStorage(AEItemStack.create(aItem));
             return aItem.stackSize;
         }
     }
 
     @Override
-    public long pull(IAEItemStack aItem, boolean doPull) {
+    public long inputStorage(IAEItemStack aItem, boolean doInput) {
         if (locked) return 0;
         if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
         var aeItem = getStoredItem(aItem.getItemStack());
         long size = aeItem == null ? 0 : aeItem.getStackSize();
         if (size >= capacityPerItem) return doVoidExcess ? aItem.getStackSize() : 0;
         if (capacityPerItem - size < aItem.getStackSize()) {
-            if (doPull) STORE.addStorage(
+            if (doInput) STORE.addStorage(
                 aItem.copy()
                     .setStackSize(capacityPerItem - size));
             return doVoidExcess ? aItem.getStackSize() : (int) (capacityPerItem - size);
         } else {
-            if (doPull) STORE.addStorage(aItem);
+            if (doInput) STORE.addStorage(aItem);
             return aItem.getStackSize();
         }
     }
 
     @Override
-    public void push(ItemStack aItem, boolean doPush) {
+    public void outputStroage(ItemStack aItem, boolean doOutput) {
         if (locked) return;
         var aeItem = getStoredItem(aItem);
         if (aeItem == null) return;
@@ -451,7 +468,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public void push(int amount, boolean doPush) {
+    public void outputStroage(int amount, boolean doOutput) {
         if (locked) return;
         var aeItem = STORE.getFirstItem();
         if (aeItem == null) return;
@@ -467,15 +484,15 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public long push(IAEItemStack aItem, boolean doPush) {
+    public long outputStroage(IAEItemStack aItem, boolean doOutput) {
         if (locked) return 0;
         var aeItem = getStoredItem(aItem.getItemStack());
         if (aeItem == null) return 0;
         if (aeItem.getStackSize() > aItem.getStackSize()) {
-            if (doPush) aeItem.setStackSize(aeItem.getStackSize() - aItem.getStackSize());
+            if (doOutput) aeItem.setStackSize(aeItem.getStackSize() - aItem.getStackSize());
             return aItem.getStackSize();
         } else {
-            if (doPush) {
+            if (doOutput) {
                 var list = AEApi.instance()
                     .storage()
                     .createItemList();

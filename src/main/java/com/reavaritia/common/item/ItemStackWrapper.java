@@ -2,9 +2,11 @@ package com.reavaritia.common.item;
 
 import java.util.Objects;
 
-import com.github.bsideup.jabel.Desugar;
 import net.minecraft.item.ItemStack;
+
 import org.jetbrains.annotations.NotNull;
+
+import com.github.bsideup.jabel.Desugar;
 
 @Desugar
 public record ItemStackWrapper(ItemStack stack) {

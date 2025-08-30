@@ -291,7 +291,9 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
             merged.put(key, merged.getOrDefault(key, 0) + drop.stackSize);
         }
         for (Map.Entry<ItemStackWrapper, Integer> entry : merged.entrySet()) {
-            ItemStack dropStack = entry.getKey().stack().copy();
+            ItemStack dropStack = entry.getKey()
+                .stack()
+                .copy();
             dropStack.stackSize = entry.getValue();
             ToolHelper.dropItem(dropStack, world, player.posX, player.posY + 1, player.posZ);
         }
