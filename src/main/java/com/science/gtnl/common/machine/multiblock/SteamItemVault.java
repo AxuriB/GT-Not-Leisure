@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -370,11 +371,12 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         int i = 0;
 
         for (IAEItemStack tank : STORE) {
-            String unlocalizedName = tank.getItemStack()
-                .getUnlocalizedName();
+            String localizedName = Objects.requireNonNull(
+                tank.getItem()
+                    .getItemStackDisplayName(tank.getItemStack()));
             String amount = nf.format(tank.getStackSize());
             String percentage = capacityPerItem > 0 ? String.valueOf(tank.getStackSize() * 100 / capacityPerItem) : "";
-            ll.add(MessageFormat.format("{0} - {1}: {2} ({3}%)", i++, unlocalizedName, amount, percentage));
+            ll.add(MessageFormat.format("{0} - {1}: {2} ({3}%)", i++, localizedName, amount, percentage));
             if (i >= 32) break;
         }
 
@@ -490,14 +492,18 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (locked) return 0;
         var aeItem = getStoredItem(aItem.getItemStack());
         if (aeItem == null) return 0;
-        if (aeItem.getStackSize() > aItem.getStackSize()) {
-            if (doOutput) aeItem.setStackSize(aeItem.getStackSize() - aItem.getStackSize());
-            return aItem.getStackSize();
+        long storedSize = aeItem.getStackSize();
+        long requestSize = aItem.getStackSize();
+        if (storedSize > requestSize) {
+            if (doOutput) {
+                aeItem.setStackSize(storedSize - requestSize);
+            }
+            return requestSize;
         } else {
             if (doOutput) {
                 aeItem.setStackSize(0);
             }
-            return aeItem.getStackSize();
+            return storedSize;
         }
     }
 
