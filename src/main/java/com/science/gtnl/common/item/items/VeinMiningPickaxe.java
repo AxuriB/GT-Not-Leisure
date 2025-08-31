@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
@@ -103,6 +104,32 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
     @Override
     public int getMaxDamage(ItemStack stack) {
         return Math.toIntExact(MetaGeneratedTool.getToolMaxDamage(stack));
+    }
+
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int par4, int par5, int par6,
+        EntityLivingBase entityLiving) {
+        return true;
+    }
+
+    @Override
+    public boolean canHarvestBlock(Block block, ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public float getDigSpeed(ItemStack stack, Block block, int meta) {
+        return 20;
+    }
+
+    @Override
+    public boolean isRepairable() {
+        return false;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack itemstack1, ItemStack itemstack2) {
+        return false;
     }
 
     @Override
