@@ -472,7 +472,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
         this.mEfficiency = 10000 - (getIdealStatus() - getRepairStatus()) * 1000;
         this.mEfficiencyIncrease = 10000;
         this.mMaxProgresstime = (int) (calculator.getDuration() * batchMultiplierMax);
-        this.lEUt = calculator.getConsumption();
+        this.lEUt = VP[GTUtility.getTier(calculator.getConsumption())];
         if (this.lEUt > 0) {
             this.lEUt = -this.lEUt;
         }
