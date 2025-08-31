@@ -16,11 +16,22 @@ public abstract class MixinContainerCraftConfirm implements RCAEBaseContainer {
     public abstract void switchToOriginalGUI();
 
     @Redirect(
-        method = "startJob(Z)V",
+        method = "startJob()V",
         at = @At(
             value = "INVOKE",
             target = "Lappeng/container/implementations/ContainerCraftConfirm;switchToOriginalGUI()V"))
     public void startJob0(ContainerCraftConfirm instance) {
+        if (this.rc$getOldContainer() == null) {
+            this.switchToOriginalGUI();
+        }
+    }
+
+    @Redirect(
+        method = "startJob(Ljava/lang/String;)V",
+        at = @At(
+            value = "INVOKE",
+            target = "Lappeng/container/implementations/ContainerCraftConfirm;switchToOriginalGUI()V"))
+    public void startJob1(ContainerCraftConfirm instance) {
         if (this.rc$getOldContainer() == null) {
             this.switchToOriginalGUI();
         }

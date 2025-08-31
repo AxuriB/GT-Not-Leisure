@@ -81,7 +81,7 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.METHatchAirIntake;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
@@ -105,7 +105,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     public ArrayList<CustomFluidHatch> mFluidBlazeInputHatch = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mFluidManaInputHatch = new ArrayList<>();
     public ArrayList<MTEHatch> mTecTechEnergyHatches = new ArrayList<>();
-    public ArrayList<MTEHatchAirIntake> mAirIntakes = new ArrayList<>();
+    public ArrayList<METHatchAirIntake> mAirIntakes = new ArrayList<>();
     public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
     public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
 

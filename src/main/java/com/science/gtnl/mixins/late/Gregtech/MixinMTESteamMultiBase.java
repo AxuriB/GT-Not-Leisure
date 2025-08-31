@@ -70,9 +70,10 @@ public abstract class MixinMTESteamMultiBase<T extends MTESteamMultiBase<T>> ext
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
-            for (MTEHatchSteamBusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
+            for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
                 if (!outputSuccess) {
-                    if (tHatch.isLocked() && !GTUtility.areStacksEqual(tHatch.getLockedItem(), single)) {
+                    if (tHatch instanceof IItemLockable iItemLockable && iItemLockable.isLocked()
+                        && !GTUtility.areStacksEqual(iItemLockable.getLockedItem(), single)) {
                         continue;
                     }
 
@@ -85,7 +86,7 @@ public abstract class MixinMTESteamMultiBase<T extends MTESteamMultiBase<T>> ext
                     }
                 }
             }
-            for (MTEHatchOutput tHatch : filterValidMTEs(mOutputHatches)) {
+            for (MTEHatchOutput tHatch : validMTEList(mOutputHatches)) {
                 if (!outputSuccess && tHatch.outputsItems()) {
                     if (tHatch.getBaseMetaTileEntity()
                         .addStackToSlot(1, single)) outputSuccess = true;
@@ -105,12 +106,14 @@ public abstract class MixinMTESteamMultiBase<T extends MTESteamMultiBase<T>> ext
     public boolean dumpItemSteam(List<MTEHatchSteamBusOutput> outputBuses, ItemStack itemStack,
         boolean restrictiveBusesOnly, boolean simulate) {
         for (MTEHatchSteamBusOutput outputBus : outputBuses) {
-            if (restrictiveBusesOnly && !outputBus.isLocked()) {
-                continue;
-            }
-            if (outputBus instanceof IItemStorage iItemStorage) {
-                if (iItemStorage.storePartial(itemStack, simulate)) {
-                    return true;
+            if (outputBus instanceof IItemLockable iItemLockable) {
+                if (restrictiveBusesOnly && !iItemLockable.isLocked()) {
+                    continue;
+                }
+                if (iItemLockable instanceof IItemStorage iItemStorage) {
+                    if (iItemStorage.storePartial(itemStack, simulate)) {
+                        return true;
+                    }
                 }
             }
         }
