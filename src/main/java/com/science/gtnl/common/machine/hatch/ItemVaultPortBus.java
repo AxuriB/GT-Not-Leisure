@@ -10,7 +10,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.science.gtnl.api.IItemVault;
-import com.science.gtnl.common.machine.multiblock.SteamItemVault;
 
 import appeng.api.AEApi;
 import appeng.api.config.AccessRestriction;
@@ -109,7 +108,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
                 .build() };
     }
 
-    public void bind(SteamItemVault controller) {
+    public void bind(IItemVault controller) {
         this.controller = controller;
     }
 
@@ -161,13 +160,13 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     @Override
     public boolean isPrioritized(IAEItemStack input) {
         if (controller == null || input == null) return false;
-        return controller.contains(input.getItemStack()) || controller.itemCount() < SteamItemVault.MAX_DISTINCT_ITEMS;
+        return controller.contains(input.getItemStack()) || controller.itemCount() < controller.maxItemCount();
     }
 
     @Override
     public boolean canAccept(IAEItemStack input) {
         if (controller == null || input == null) return false;
-        return controller.contains(input.getItemStack()) || controller.itemCount() < SteamItemVault.MAX_DISTINCT_ITEMS;
+        return controller.contains(input.getItemStack()) || controller.itemCount() < controller.maxItemCount();
     }
 
     @Override
@@ -195,8 +194,8 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
         if (amount == 0) return input;
         if (amount == input.getStackSize()) return null;
         IAEItemStack result = AEItemStack.create(input.getItemStack());
-        result.setStackSize(input.getStackSize() - amount);
-        return result;
+        return result.copy()
+            .setStackSize(input.getStackSize() - amount);
     }
 
     @Override
@@ -207,8 +206,8 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
         if (amount == 0) return null;
         if (amount == request.getStackSize()) return request.copy();
         IAEItemStack result = AEItemStack.create(request.getItemStack());
-        result.setStackSize(amount);
-        return result;
+        return result.copy()
+            .setStackSize(amount);
     }
 
     @Override

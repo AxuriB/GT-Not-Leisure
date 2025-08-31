@@ -1,15 +1,15 @@
 结构方块映射表:
 
 字母对应关系:
-A -> ofBlock...(BW_GlasBlocks, 0, ...)
-B -> ofBlock...(MetaCasing, 29, ...)
-C -> ofBlock...(MetaCasing02, 0, ...)
-D -> ofBlock...(gt.blockframes, 305, ...)
+A -> ofBlock...(tile.cloth, 3, ...)
+B -> ofBlock...(tile.cloth, 5, ...)
+C -> ofBlock...(tile.cloth, 14, ...)
+D -> ofBlock...(tile.glass, 0, ...)
 E -> 控制器位置
 
-偏移值 Offsets: 2 5 0
-结构体高度: 7
+偏移值 Offsets: 3 8 0
+结构体高度: 11
 
-宽: 5
-高: 7
-长: 5
+宽: 7
+高: 11
+长: 7

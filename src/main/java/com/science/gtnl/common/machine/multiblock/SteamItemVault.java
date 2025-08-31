@@ -35,6 +35,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.machine.DebugItemList;
 import com.science.gtnl.api.IItemVault;
 import com.science.gtnl.common.machine.hatch.ItemVaultPortBus;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
@@ -64,8 +65,8 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     implements ISurvivalConstructable, IItemVault {
 
-    public static int MAX_DISTINCT_ITEMS = 128;
-    public static final BigInteger MAX_CAPACITY = BigInteger.valueOf(1280000)
+    public static int MAX_DISTINCT_ITEMS = 256;
+    public static BigInteger MAX_CAPACITY = BigInteger.valueOf(640000)
         .multiply(BigInteger.valueOf(MAX_DISTINCT_ITEMS));
 
     public BigInteger capacity = MAX_CAPACITY;
@@ -79,15 +80,16 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SIV_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_item_vault";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SIV_STRUCTURE_FILE_PATH);
-    private static final int HORIZONTAL_OFF_SET = 2;
-    private static final int VERTICAL_OFF_SET = 5;
+    private static final int HORIZONTAL_OFF_SET = 3;
+    private static final int VERTICAL_OFF_SET = 8;
     private static final int DEPTH_OFF_SET = 0;
 
     public static NumberFormat nf = NumberFormat.getNumberInstance();
 
-    public final IItemList<IAEItemStack> STORE = AEApi.instance()
-        .storage()
-        .createItemList();
+    public DebugItemList STORE = new DebugItemList(
+        AEApi.instance()
+            .storage()
+            .createItemList());
 
     public SteamItemVault(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -100,6 +102,11 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new SteamItemVault(super.mName);
+    }
+
+    @Override
+    public long maxItemCount() {
+        return MAX_DISTINCT_ITEMS;
     }
 
     @Override
@@ -136,8 +143,9 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
         // Push out items
         if (!this.mOutputBusses.isEmpty() || !this.mSteamOutputs.isEmpty()) {
-            IAEItemStack stack = STORE.getFirstItem();
-            if (stack != null) {
+            if (STORE.getFirstItem() != null) {
+                IAEItemStack stack = STORE.getFirstItem()
+                    .copy();
                 stack.setStackSize(stack.getStackSize() - this.tryAddOutput(stack.getItemStack()).stackSize);
                 if (stack.getStackSize() > 0) this.extract(stack, true);
             }
@@ -214,8 +222,8 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     public IStructureDefinition<SteamItemVault> getStructureDefinition() {
         return StructureDefinition.<SteamItemVault>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', chainAllGlasses())
-            .addElement('B', ofBlock(BlockLoader.metaCasing, 29))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 29))
+            .addElement('B', ofFrame(Materials.Steel))
             .addElement(
                 'C',
                 ofChain(
@@ -237,7 +245,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                             OutputBus,
                             SteamItemVaultPort.SteamItemVaultPortBus)
                         .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(BlockLoader.metaCasing02, 0)))))
-            .addElement('D', ofFrame(Materials.Steel))
+            .addElement('D', chainAllGlasses())
             .build();
     }
 
@@ -310,7 +318,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(5, 7, 5, false)
+            .beginStructureBlock(7, 11, 7, false)
             .addInputBus(StatCollector.translateToLocal("Tooltip_SteamItemVault_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_SteamItemVault_Casing"), 1)
             .toolTipFinisher();

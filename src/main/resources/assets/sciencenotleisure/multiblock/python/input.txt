@@ -3,10 +3,10 @@
 Structure:
 
 Blocks:
-A -> ofBlock...(BW_GlasBlocks, 0, ...);
-B -> ofBlock...(MetaCasing, 29, ...);
-C -> ofBlock...(MetaCasing02, 0, ...);
-D -> ofBlock...(gt.blockframes, 305, ...);
+A -> ofBlock...(tile.cloth, 3, ...);
+B -> ofBlock...(tile.cloth, 5, ...);
+C -> ofBlock...(tile.cloth, 14, ...);
+D -> ofBlock...(tile.glass, 0, ...);
 
 Tiles:
 
@@ -14,49 +14,93 @@ Special Tiles:
 E -> ofSpecialTileAdder(gregtech.api.metatileentity.BaseMetaTileEntity, ...); // You will probably want to change it to something else
 
 Offsets:
-2 5 0
+3 8 0
 
 Normal Scan:
 new String[][]{{
-    "DDDDD",
-    "CCCCC",
-    "AAAAA",
-    "AAAAA",
-    "AAAAA",
-    "CCECC",
-    "     "
+    "BBBBBBB",
+    "CCCCCCC",
+    "CCCCCCC",
+    "DDDDDDD",
+    "DDDDDDD",
+    "DDDDDDD",
+    "DDDDDDD",
+    "DDDDDDD",
+    "CCCECCC",
+    "CCCCCCC",
+    "       "
 },{
-    "D   D",
-    "CCCCC",
-    "ABBBA",
-    "ABBBA",
-    "ABBBA",
-    "CCCCC",
-    " CCC "
+    "B     B",
+    "CCCCCCC",
+    "CCCCCCC",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "CCCCCCC",
+    "CCCCCCC",
+    " CCCCC "
 },{
-    "D   D",
-    "CCCCC",
-    "ABBBA",
-    "ABBBA",
-    "ABBBA",
-    "CCCCC",
-    " CCC "
+    "B     B",
+    "CCCCCCC",
+    "CCCCCCC",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "CCCCCCC",
+    "CCCCCCC",
+    " CCCCC "
 },{
-    "D   D",
-    "CCCCC",
-    "ABBBA",
-    "ABBBA",
-    "ABBBA",
-    "CCCCC",
-    " CCC "
+    "B     B",
+    "CCCCCCC",
+    "CCCCCCC",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "CCCCCCC",
+    "CCCCCCC",
+    " CCCCC "
 },{
-    "DDDDD",
-    "CCCCC",
-    "AAAAA",
-    "AAAAA",
-    "AAAAA",
-    "CCCCC",
-    "     "
+    "B     B",
+    "CCCCCCC",
+    "CCCCCCC",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "CCCCCCC",
+    "CCCCCCC",
+    " CCCCC "
+},{
+    "B     B",
+    "CCCCCCC",
+    "CCCCCCC",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "DAAAAAD",
+    "CCCCCCC",
+    "CCCCCCC",
+    " CCCCC "
+},{
+    "BBBBBBB",
+    "CCCCCCC",
+    "CCCCCCC",
+    "DDDDDDD",
+    "DDDDDDD",
+    "DDDDDDD",
+    "DDDDDDD",
+    "DDDDDDD",
+    "CCCCCCC",
+    "CCCCCCC",
+    "       "
 }}
 
 

@@ -25,6 +25,8 @@ public interface IItemVault {
 
     int itemCount();
 
+    long maxItemCount();
+
     IAEItemStack getStoredItem(String itemName);
 
     IAEItemStack getStoredItem(ItemStack aItem);
