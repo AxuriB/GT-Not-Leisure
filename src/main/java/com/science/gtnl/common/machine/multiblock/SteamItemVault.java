@@ -35,7 +35,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.machine.DebugItemList;
 import com.science.gtnl.api.IItemVault;
 import com.science.gtnl.common.machine.hatch.ItemVaultPortBus;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
@@ -86,10 +85,9 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
     public static NumberFormat nf = NumberFormat.getNumberInstance();
 
-    public DebugItemList STORE = new DebugItemList(
-        AEApi.instance()
-            .storage()
-            .createItemList());
+    public IItemList<IAEItemStack> STORE = AEApi.instance()
+        .storage()
+        .createItemList();
 
     public SteamItemVault(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -138,6 +136,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                 ItemStack toDeplete = aItem.copy();
                 toDeplete.stackSize = this.inject(aItem, true);
                 depleteInput(toDeplete);
+                portBus.notifyListeners(toDeplete.stackSize, toDeplete);
             }
         }
 
@@ -147,7 +146,10 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                 IAEItemStack stack = STORE.getFirstItem()
                     .copy();
                 stack.setStackSize(stack.getStackSize() - this.tryAddOutput(stack.getItemStack()).stackSize);
-                if (stack.getStackSize() > 0) this.extract(stack, true);
+                if (stack.getStackSize() > 0) {
+                    this.extract(stack, true);
+                    portBus.notifyListeners(-stack.getStackSize(), stack.getItemStack());
+                }
             }
         }
 
@@ -522,28 +524,9 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public IAEItemStack getStoredItem(@Nullable String itemName) {
-        if (itemName == null) return null;
-        for (IAEItemStack aeItem : STORE) {
-            if (aeItem.getItemStack()
-                .getUnlocalizedName()
-                .equals(itemName)) return aeItem;
-        }
-        return null;
-    }
-
-    @Override
     public IAEItemStack getStoredItem(@Nullable ItemStack aItem) {
         if (aItem == null) return null;
-        for (IAEItemStack aeItem : STORE) {
-            if (GTUtility.areStacksEqual(aeItem.getItemStack(), aItem)) return aeItem;
-        }
-        return null;
-    }
-
-    @Override
-    public boolean contains(String itemName) {
-        return getStoredItem(itemName) != null;
+        return STORE.findPrecise(AEItemStack.create(aItem));
     }
 
     @Override

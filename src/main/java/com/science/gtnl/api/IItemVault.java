@@ -27,11 +27,7 @@ public interface IItemVault {
 
     long maxItemCount();
 
-    IAEItemStack getStoredItem(String itemName);
-
     IAEItemStack getStoredItem(ItemStack aItem);
-
-    boolean contains(String itemName);
 
     boolean contains(ItemStack aItem);
 

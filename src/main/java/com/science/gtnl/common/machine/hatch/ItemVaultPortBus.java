@@ -126,7 +126,12 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     @Override
     public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out, int iteration) {
         if (controller != null) {
-            return controller.getStore();
+            controller.getStore()
+                .forEach(item -> {
+                    if (item != null) {
+                        out.add(item.copy());
+                    }
+                });
         }
         return out;
     }
@@ -213,5 +218,22 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     @Override
     public StorageChannel getChannel() {
         return StorageChannel.ITEMS;
+    }
+
+    public void notifyListeners(long count, ItemStack stack) {
+        if (count == 0 || stack == null) return;
+
+        IItemList<IAEItemStack> change = new ItemList();
+        AEItemStack s = AEItemStack.create(stack);
+        s.setStackSize(count);
+        change.add(s);
+
+        listeners.forEach((l, o) -> {
+            if (l.isValid(o)) {
+                l.postChange(this, change, null);
+            } else {
+                removeListener(l);
+            }
+        });
     }
 }
