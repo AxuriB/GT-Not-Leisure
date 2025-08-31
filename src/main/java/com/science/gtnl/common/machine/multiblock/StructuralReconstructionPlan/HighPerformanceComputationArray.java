@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -37,7 +36,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.science.gtnl.Utils.enums.HPCAModifier;
-import com.science.gtnl.api.ITESRProvider;
 import com.science.gtnl.common.packet.SyncHPCAVariablesPacket;
 import com.science.gtnl.common.render.tile.HighPerformanceComputationArrayMachineRender;
 
@@ -59,6 +57,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.WirelessComputationPacket;
+import gregtech.common.render.IMTERenderer;
 import lombok.Getter;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
@@ -75,7 +74,7 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 import tectech.util.CommonValues;
 
-public class HighPerformanceComputationArray extends TTMultiblockBase implements ISurvivalConstructable, ITESRProvider {
+public class HighPerformanceComputationArray extends TTMultiblockBase implements ISurvivalConstructable, IMTERenderer {
 
     public UUID randomUUID = UUID.randomUUID();
     public int[][] randomColor;
@@ -567,11 +566,8 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (tile instanceof IGregTechTileEntity tileEntity
-            && tileEntity.getMetaTileEntity() instanceof HighPerformanceComputationArray) {
-            HighPerformanceComputationArrayMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
-        }
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        HighPerformanceComputationArrayMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
     }
 
     @Getter

@@ -215,7 +215,6 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.render.TextureFactory;
@@ -2207,9 +2206,7 @@ public class MachineLoader {
 
         CoverRegistry.registerCover(
             GTNLItemList.PipelessSteamCover.get(1L),
-            TextureFactory.of(
-                MACHINE_CASINGS[1][0],
-                TextureFactory.of(Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0])),
+            TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAYS_ENERGY_ON_WIRELESS[0])),
             WirelessSteamCover::new,
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
