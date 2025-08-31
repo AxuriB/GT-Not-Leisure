@@ -85,7 +85,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
     public static NumberFormat nf = NumberFormat.getNumberInstance();
 
-    public IItemList<IAEItemStack> STORE = AEApi.instance()
+    public final IItemList<IAEItemStack> STORE = AEApi.instance()
         .storage()
         .createItemList();
 
@@ -459,11 +459,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (aeItem.getStackSize() > aItem.stackSize) {
             aeItem.setStackSize(aeItem.getStackSize() - aItem.stackSize);
         } else {
-            var list = AEApi.instance()
-                .storage()
-                .createItemList();
-            STORE.forEach(item -> { if (item != aeItem) list.add(item); });
-            STORE = list;
+            aeItem.setStackSize(0);
         }
     }
 
@@ -475,11 +471,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (aeItem.getStackSize() > amount) {
             aeItem.setStackSize(aeItem.getStackSize() - amount);
         } else {
-            var list = AEApi.instance()
-                .storage()
-                .createItemList();
-            STORE.forEach(item -> { if (item != aeItem) list.add(item); });
-            STORE = list;
+            aeItem.setStackSize(0);
         }
     }
 
@@ -493,11 +485,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             return aItem.getStackSize();
         } else {
             if (doOutput) {
-                var list = AEApi.instance()
-                    .storage()
-                    .createItemList();
-                STORE.forEach(item -> { if (item != aeItem) list.add(item); });
-                STORE = list;
+                aeItem.setStackSize(0);
             }
             return aeItem.getStackSize();
         }
