@@ -30,26 +30,55 @@ public class DistilleryRecipes implements IRecipePool {
     @Override
     public void loadRecipes() {
 
-        ItemStack PineLeaves = GTModHandler.getModItem(Forestry.ID, "leaves", 1);
-        NBTTagCompound PineLeavesType = PineLeaves.getTagCompound();
-        if (PineLeavesType != null) {
-            PineLeavesType.setString("species", "forestry.treePine");
-        } else {
-            PineLeavesType = new NBTTagCompound();
-            PineLeavesType.setString("species", "forestry.treePine");
-            PineLeaves.setTagCompound(PineLeavesType);
+        if (Forestry.isModLoaded()) {
+            ItemStack PineLeaves = GTModHandler.getModItem(Forestry.ID, "leaves", 1);
+            NBTTagCompound PineLeavesType = PineLeaves.getTagCompound();
+            if (PineLeavesType != null) {
+                PineLeavesType.setString("species", "forestry.treePine");
+            } else {
+                PineLeavesType = new NBTTagCompound();
+                PineLeavesType.setString("species", "forestry.treePine");
+                PineLeaves.setTagCompound(PineLeavesType);
+            }
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(PineLeaves)
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
+                .fluidInputs(FluidRegistry.getFluidStack("steam", 5000))
+                .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 250))
+                .duration(2000)
+                .eut(2048)
+                .addTo(DR);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(PineLeaves)
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
+                .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5000))
+                .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
+                .duration(1000)
+                .eut(2048)
+                .addTo(DR);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Forestry.ID, "logs", 1, 20))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
+                .fluidInputs(FluidRegistry.getFluidStack("steam", 5000))
+                .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
+                .duration(4000)
+                .eut(2048)
+                .addTo(DR);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTModHandler.getModItem(Forestry.ID, "logs", 1, 20))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
+                .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5000))
+                .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 1000))
+                .duration(3000)
+                .eut(2048)
+                .addTo(DR);
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Forestry.ID, "logs", 1, 20))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
-            .fluidInputs(FluidRegistry.getFluidStack("steam", 5000))
-            .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
-            .duration(4000)
-            .eut(2048)
-            .addTo(DR);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(BOPBlockRegistrator.log_Pine, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
             .fluidInputs(FluidRegistry.getFluidStack("steam", 5000))
@@ -68,15 +97,6 @@ public class DistilleryRecipes implements IRecipePool {
             .addTo(DR);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getModItem(Forestry.ID, "logs", 1, 20))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5000))
-            .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 1000))
-            .duration(3000)
-            .eut(2048)
-            .addTo(DR);
-
-        GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(BOPBlockRegistrator.log_Pine, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
             .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5000))
@@ -91,15 +111,6 @@ public class DistilleryRecipes implements IRecipePool {
             .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 1000))
             .duration(3000)
-            .eut(2048)
-            .addTo(DR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(PineLeaves)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
-            .fluidInputs(FluidRegistry.getFluidStack("steam", 5000))
-            .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 250))
-            .duration(2000)
             .eut(2048)
             .addTo(DR);
 
@@ -118,15 +129,6 @@ public class DistilleryRecipes implements IRecipePool {
             .fluidInputs(FluidRegistry.getFluidStack("steam", 5000))
             .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 250))
             .duration(2000)
-            .eut(2048)
-            .addTo(DR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(PineLeaves)
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5000))
-            .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))
-            .duration(1000)
             .eut(2048)
             .addTo(DR);
 

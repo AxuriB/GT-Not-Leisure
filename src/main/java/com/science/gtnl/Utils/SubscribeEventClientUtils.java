@@ -106,7 +106,7 @@ public class SubscribeEventClientUtils {
                 newRange--;
             }
 
-            if (newRange < 0) newRange = 0;
+            if (newRange < -1) newRange = -1;
             if (newRange > 32) newRange = 32;
 
             if (newRange != oldRange) {

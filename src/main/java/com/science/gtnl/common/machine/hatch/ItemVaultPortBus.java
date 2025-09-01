@@ -108,12 +108,32 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
                 .build() };
     }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (controller != null && !controller.isValid()) {
+                unbind();
+            }
+        }
+    }
+
     public void bind(IItemVault controller) {
         this.controller = controller;
+        updateListeners(controller, +1);
     }
 
     public void unbind() {
+        if (this.controller == null) return;
+        updateListeners(this.controller, -1);
         this.controller = null;
+    }
+
+    private void updateListeners(IItemVault vault, int multiplier) {
+        for (IAEItemStack tank : vault.getStore()) {
+            long delta = multiplier * tank.getStackSize();
+            notifyListeners(delta, tank.getItemStack());
+        }
     }
 
     public static void registerAEIntegration() {

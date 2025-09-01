@@ -31,6 +31,8 @@ public interface IItemVault {
 
     boolean contains(ItemStack aItem);
 
+    boolean isValid();
+
     BigInteger getStoredAmount();
 
     void setDoVoidExcess(boolean doVoidExcess);

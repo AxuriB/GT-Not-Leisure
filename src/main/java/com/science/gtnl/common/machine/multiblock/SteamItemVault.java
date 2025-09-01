@@ -9,6 +9,8 @@ import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
@@ -19,13 +21,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +70,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     implements ISurvivalConstructable, IItemVault {
 
-    public static int MAX_DISTINCT_ITEMS = 256;
+    public static long MAX_DISTINCT_ITEMS = 256;
     public static BigInteger MAX_CAPACITY = BigInteger.valueOf(640000)
         .multiply(BigInteger.valueOf(MAX_DISTINCT_ITEMS));
 
@@ -394,21 +399,52 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         return ll.toArray(new String[0]);
     }
 
+    private String ensureUUID(NBTTagCompound aNBT) {
+        if (aNBT.hasKey("storeUUID")) {
+            return aNBT.getString("storeUUID");
+        } else {
+            String uuid = UUID.randomUUID()
+                .toString();
+            aNBT.setString("storeUUID", uuid);
+            return uuid;
+        }
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        aNBT.setByteArray("capacity", capacity.toByteArray());
+        aNBT.setBoolean("doVoidExcess", doVoidExcess);
+        aNBT.setBoolean("locked", locked);
+
+        String uuid = ensureUUID(aNBT);
+
+        NBTTagCompound storeRoot = new NBTTagCompound();
+        NBTTagList itemNbt = new NBTTagList();
+        for (IAEItemStack aeItem : STORE) {
+            NBTTagCompound nbt = new NBTTagCompound();
+            aeItem.writeToNBT(nbt);
+            itemNbt.appendTag(nbt);
+        }
+        storeRoot.setTag("STORE", itemNbt);
+
+        File worldDir = DimensionManager.getCurrentSaveRootDirectory();
+        File dataDir = new File(worldDir, "data");
+        if (!dataDir.exists()) dataDir.mkdirs();
+
+        File storeFile = new File(dataDir, "ItemVault_" + uuid + ".dat");
+        try {
+            CompressedStreamTools.safeWrite(storeRoot, storeFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setByteArray("capacity", capacity.toByteArray());
         aNBT.setBoolean("doVoidExcess", doVoidExcess);
         aNBT.setBoolean("locked", locked);
-
-        NBTTagList itemNbt = new NBTTagList();
-        aNBT.setTag("STORE", itemNbt);
-
-        for (IAEItemStack aeItem : STORE) {
-            var nbt = new NBTTagCompound();
-            aeItem.writeToNBT(nbt);
-            itemNbt.appendTag(nbt);
-        }
-
+        ensureUUID(aNBT);
         super.saveNBTData(aNBT);
     }
 
@@ -417,13 +453,29 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         this.setCapacity(new BigInteger(aNBT.getByteArray("capacity")));
         this.setDoVoidExcess(aNBT.getBoolean("doVoidExcess"));
         this.locked = aNBT.getBoolean("locked");
+        if (aNBT.hasKey("storeUUID")) {
+            String uuid = aNBT.getString("storeUUID");
+            try {
+                File worldDir = DimensionManager.getCurrentSaveRootDirectory();
+                File dataDir = new File(worldDir, "data");
+                File vaultFile = new File(dataDir, "ItemVault_" + uuid + ".dat");
 
-        NBTTagList itemNbt = aNBT.getTagList("STORE", 10);
+                if (vaultFile.exists()) {
+                    NBTTagCompound fileNBT = CompressedStreamTools.read(vaultFile);
+                    NBTTagList itemNbt = fileNBT.getTagList("STORE", 10);
 
-        for (int i = 0; i < itemNbt.tagCount(); i++) {
-            STORE.add(AEItemStack.loadItemStackFromNBT(itemNbt.getCompoundTagAt(i)));
+                    for (int i = 0; i < itemNbt.tagCount(); i++) {
+                        STORE.add(AEItemStack.loadItemStackFromNBT(itemNbt.getCompoundTagAt(i)));
+                    }
+
+                    if (!vaultFile.delete()) {
+                        System.err.println("Warning: Failed to delete vault file " + vaultFile);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
         super.loadNBTData(aNBT);
     }
 
