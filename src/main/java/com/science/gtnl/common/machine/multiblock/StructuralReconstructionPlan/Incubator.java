@@ -8,8 +8,11 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -53,6 +56,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -67,6 +71,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
@@ -155,9 +160,15 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                 ofChain(
                     buildHatchAdder(Incubator.class).casingIndex(CASING_INDEX)
                         .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                        .atLeast(
+                            InputHatch,
+                            OutputHatch,
+                            InputBus,
+                            OutputBus,
+                            Maintenance,
+                            Energy.or(ExoticEnergy),
+                            RadioHatchElement.RadioHatch)
                         .buildAndChain(),
-                    ofHatchAdder(Incubator::addRadiationInputToMachineList, CASING_INDEX, 1),
                     onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
             .addElement(
                 'D',
@@ -303,11 +314,11 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (!(aMetaTileEntity instanceof MTERadioHatch)) {
+        if (!(aMetaTileEntity instanceof MTERadioHatch radioHatch)) {
             return false;
         } else {
-            ((MTERadioHatch) aMetaTileEntity).updateTexture(CasingIndex);
-            return this.mRadHatches.add((MTERadioHatch) aMetaTileEntity);
+            radioHatch.updateTexture(CasingIndex);
+            return this.mRadHatches.add(radioHatch);
         }
     }
 
@@ -818,6 +829,36 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             } else {
                 this.onRemoval();
             }
+        }
+    }
+
+    private enum RadioHatchElement implements IHatchElement<Incubator> {
+
+        RadioHatch(Incubator::addRadiationInputToMachineList, MTERadioHatch.class) {
+
+            @Override
+            public long count(Incubator bioVat) {
+                return bioVat.mRadHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<Incubator> adder;
+
+        @SafeVarargs
+        RadioHatchElement(IGTHatchAdder<Incubator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super Incubator> adder() {
+            return adder;
         }
     }
 

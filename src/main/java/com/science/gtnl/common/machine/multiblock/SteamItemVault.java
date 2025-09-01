@@ -16,6 +16,7 @@ import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,15 +245,17 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                     buildSteamInput(SteamItemVault.class).casingIndex(getCasingTextureID())
                         .dot(1)
                         .build(),
-                    buildHatchAdder(SteamItemVault.class).casingIndex(getCasingTextureID())
-                        .dot(1)
+                    buildHatchAdder(SteamItemVault.class)
                         .atLeast(
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             InputBus,
                             OutputBus,
-                            SteamItemVaultPort.SteamItemVaultPortBus)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(BlockLoader.metaCasing02, 0)))))
+                            SteamItemVaultPortElement.SteamItemVaultPortBus)
+                        .dot(1)
+                        .casingIndex(getCasingTextureID())
+                        .build(),
+                    onElementPass(x -> x.tCountCasing++, ofBlock(BlockLoader.metaCasing02, 0))))
             .addElement('D', chainAllGlasses())
             .build();
     }
@@ -611,7 +614,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         return STORE;
     }
 
-    public boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    public boolean addPortBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof ItemVaultPortBus itemVaultPortBus) {
@@ -624,15 +627,23 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         return false;
     }
 
-    public enum SteamItemVaultPort implements IHatchElement<SteamItemVault> {
+    public enum SteamItemVaultPortElement implements IHatchElement<SteamItemVault> {
 
-        SteamItemVaultPortBus;
+        SteamItemVaultPortBus(SteamItemVault::addPortBusToMachineList, ItemVaultPortBus.class) {
 
-        private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
+            @Override
+            public long count(SteamItemVault steamItemVault) {
+                return steamItemVault.portBus != null ? 1 : 0;
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<SteamItemVault> adder;
 
         @SafeVarargs
-        SteamItemVaultPort(Class<? extends IMetaTileEntity>... mteClasses) {
-            this.mteClasses = Arrays.asList(mteClasses);
+        SteamItemVaultPortElement(IGTHatchAdder<SteamItemVault> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
         }
 
         @Override
@@ -642,12 +653,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
         @Override
         public IGTHatchAdder<? super SteamItemVault> adder() {
-            return SteamItemVault::addMultiHatchToMachineList;
-        }
-
-        @Override
-        public long count(SteamItemVault t) {
-            return t.portBus == null ? 0 : 1;
+            return adder;
         }
     }
 

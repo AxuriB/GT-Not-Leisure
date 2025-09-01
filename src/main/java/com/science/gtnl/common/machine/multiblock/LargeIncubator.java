@@ -9,6 +9,9 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -40,6 +43,7 @@ import bartworks.util.BioCulture;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -52,6 +56,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.register.LanthItemList;
@@ -130,9 +135,15 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             .addElement(
                 'E',
                 ofChain(
-                    ofHatchAdder(LargeIncubator::addRadiationInputToMachineList, CASING_INDEX, 1),
                     buildHatchAdder(LargeIncubator.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
+                        .atLeast(
+                            InputBus,
+                            OutputBus,
+                            InputHatch,
+                            OutputHatch,
+                            Maintenance,
+                            Energy.or(ExoticEnergy),
+                            RadioHatchElement.RadioHatch)
                         .casingIndex(CASING_INDEX)
                         .dot(1)
                         .build(),
@@ -283,16 +294,16 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
         logic.setSpecialSlotItem(this.getControllerSlot());
     }
 
-    private boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity, int CasingIndex) {
+    public boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity, int CasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (!(aMetaTileEntity instanceof MTERadioHatch)) {
+        if (!(aMetaTileEntity instanceof MTERadioHatch radioHatch)) {
             return false;
         } else {
-            ((MTERadioHatch) aMetaTileEntity).updateTexture(CasingIndex);
-            return this.mRadHatches.add((MTERadioHatch) aMetaTileEntity);
+            radioHatch.updateTexture(CasingIndex);
+            return this.mRadHatches.add(radioHatch);
         }
     }
 
@@ -449,5 +460,35 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             return true;
         }
         return false;
+    }
+
+    private enum RadioHatchElement implements IHatchElement<LargeIncubator> {
+
+        RadioHatch(LargeIncubator::addRadiationInputToMachineList, MTERadioHatch.class) {
+
+            @Override
+            public long count(LargeIncubator bioVat) {
+                return bioVat.mRadHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<LargeIncubator> adder;
+
+        @SafeVarargs
+        RadioHatchElement(IGTHatchAdder<LargeIncubator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super LargeIncubator> adder() {
+            return adder;
+        }
     }
 }
