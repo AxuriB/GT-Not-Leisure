@@ -19,8 +19,8 @@ public class BlockIcons {
         BASE + "OVERLAY_DUAL_HATCH");
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_PARALLEL_CONTROLLER = new Textures.BlockIcons.CustomIcon(
         BASE + "OVERLAY_PARALLEL_CONTROLLER");
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_ITEMVAULTPORTBUS = new Textures.BlockIcons.CustomIcon(
-        BASE + "OVERLAY_FRONT_ITEMVAULTPORTBUS");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_ITEMVAULTPORTHATCH = new Textures.BlockIcons.CustomIcon(
+        BASE + "OVERLAY_FRONT_ITEMVAULTPORTHATCH");
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH = new Textures.BlockIcons.CustomIcon(
         BASE_NINE_HATCH + "OVERLAY");
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_NINE_HATCH_NONE = new Textures.BlockIcons.CustomIcon(

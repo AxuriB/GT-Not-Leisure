@@ -33,6 +33,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,13 +44,15 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.api.IItemVault;
-import com.science.gtnl.common.machine.hatch.ItemVaultPortBus;
+import com.science.gtnl.common.machine.hatch.ItemVaultPortHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
 import appeng.api.AEApi;
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
+import appeng.util.item.AEFluidStack;
 import appeng.util.item.AEItemStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -74,18 +77,25 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     implements ISurvivalConstructable, IItemVault {
 
     public static long MAX_DISTINCT_ITEMS = 256;
-    public static BigInteger MAX_CAPACITY = BigInteger.valueOf(640000)
-        .multiply(BigInteger.valueOf(MAX_DISTINCT_ITEMS));
+    public static long MAX_DISTINCT_FLUIDS = 256;
 
-    public BigInteger capacity = MAX_CAPACITY;
-    public long capacityPerItem = capacity.divide(BigInteger.valueOf(MAX_DISTINCT_ITEMS))
+    public static BigInteger MAX_CAPACITY_ITEM = BigInteger.valueOf(640000)
+        .multiply(BigInteger.valueOf(MAX_DISTINCT_ITEMS));
+    public static BigInteger MAX_CAPACITY_FLUID = BigInteger.valueOf(640000000)
+        .multiply(BigInteger.valueOf(MAX_DISTINCT_FLUIDS));
+
+    public BigInteger capacityItem = MAX_CAPACITY_ITEM;
+    public BigInteger capacityFluid = MAX_CAPACITY_FLUID;
+    public long capacityPerItem = capacityItem.divide(BigInteger.valueOf(MAX_DISTINCT_ITEMS))
+        .longValue();
+    public long capacityPerFluid = capacityFluid.divide(BigInteger.valueOf(MAX_DISTINCT_FLUIDS))
         .longValue();
 
     public boolean locked = true;
     @Setter
     @Getter
     public boolean doVoidExcess = false;
-    public ItemVaultPortBus portBus = null;
+    public ItemVaultPortHatch portBus = null;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SIV_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_item_vault";
@@ -96,9 +106,13 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
     public static NumberFormat nf = NumberFormat.getNumberInstance();
 
-    public IItemList<IAEItemStack> STORE = AEApi.instance()
+    public IItemList<IAEItemStack> STORE_ITEM = AEApi.instance()
         .storage()
         .createItemList();
+
+    public IItemList<IAEFluidStack> STORE_FLUID = AEApi.instance()
+        .storage()
+        .createFluidList();
 
     public SteamItemVault(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -116,6 +130,11 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public long maxItemCount() {
         return MAX_DISTINCT_ITEMS;
+    }
+
+    @Override
+    public long maxFluidCount() {
+        return MAX_DISTINCT_FLUIDS;
     }
 
     @Override
@@ -141,27 +160,32 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         lEUt = 128;
         mMaxProgresstime = 20;
 
-        // Suck in items
         ArrayList<ItemStack> inputItems = getStoredInputs();
+        ArrayList<FluidStack> inputFluids = getStoredFluids();
 
         if (!inputItems.isEmpty()) {
             for (ItemStack aItem : inputItems) {
                 ItemStack toDeplete = aItem.copy();
                 toDeplete.stackSize = this.injectItems(aItem, true);
                 depleteInput(toDeplete);
-                portBus.notifyListeners(toDeplete.stackSize, toDeplete);
             }
         }
 
-        // Push out items
+        if (!inputFluids.isEmpty()) {
+            for (FluidStack aFluid : inputFluids) {
+                FluidStack toDeplete = aFluid.copy();
+                toDeplete.amount = this.injectFluids(aFluid, true);
+                depleteInput(toDeplete, false);
+            }
+        }
+
         if (!this.mOutputBusses.isEmpty() || !this.mSteamOutputs.isEmpty()) {
-            if (STORE.getFirstItem() != null) {
-                IAEItemStack stack = STORE.getFirstItem()
+            if (STORE_ITEM.getFirstItem() != null) {
+                IAEItemStack stack = STORE_ITEM.getFirstItem()
                     .copy();
                 stack.setStackSize(stack.getStackSize() - this.tryAddOutput(stack.getItemStack()).stackSize);
                 if (stack.getStackSize() > 0) {
                     this.extractItems(stack, true);
-                    portBus.notifyListeners(-stack.getStackSize(), stack.getItemStack());
                 }
             }
         }
@@ -257,6 +281,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                             SteamHatchElement.OutputBus_Steam,
                             InputBus,
                             OutputBus,
+                            InputHatch,
                             SteamItemVaultPortElement.SteamItemVaultPortBus)
                         .dot(1)
                         .casingIndex(getCasingTextureID())
@@ -324,14 +349,20 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamItemVaultRecipeType"))
-            .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_00", MAX_DISTINCT_ITEMS))
+            .addInfo(
+                StatCollector
+                    .translateToLocalFormatted("Tooltip_SteamItemVault_00", MAX_DISTINCT_ITEMS, MAX_DISTINCT_FLUIDS))
             .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_01", MAX_DISTINCT_ITEMS))
-            .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_02"))
+            .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_02", MAX_DISTINCT_FLUIDS))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_04"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_05"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_06"))
-            .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_07", nf.format(MAX_CAPACITY)))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_07"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamItemVault_08"))
+            .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_09", nf.format(MAX_CAPACITY_ITEM)))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("Tooltip_SteamItemVault_10", nf.format(MAX_CAPACITY_FLUID)))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
@@ -383,8 +414,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                 + EnumChatFormatting.RESET);
 
         int i = 0;
-
-        for (IAEItemStack tank : STORE) {
+        for (IAEItemStack tank : STORE_ITEM) {
             String localizedName = Objects.requireNonNull(
                 tank.getItem()
                     .getItemStackDisplayName(tank.getItemStack()));
@@ -395,12 +425,36 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         }
 
         ll.add(
+            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("Info_SteamItemVault_StoredFluids")
+                + EnumChatFormatting.RESET);
+
+        int j = 0;
+        for (IAEFluidStack tank : STORE_FLUID) {
+            String localizedName = Objects.requireNonNull(
+                tank.getFluid()
+                    .getLocalizedName(tank.getFluidStack()));
+            String amount = nf.format(tank.getStackSize());
+            String percentage = capacityPerFluid > 0 ? String.valueOf(tank.getStackSize() * 100 / capacityPerFluid)
+                : "";
+            ll.add(MessageFormat.format("{0} - {1}: {2} ({3}%)", j++, localizedName, amount, percentage));
+            if (j >= 32) break;
+        }
+
+        ll.add(
             EnumChatFormatting.YELLOW + StatCollector.translateToLocal("Info_SteamItemVault_OperationalData")
                 + EnumChatFormatting.RESET);
-        ll.add(StatCollector.translateToLocalFormatted("Info_SteamItemVault_Used", nf.format(getStoredAmount())));
-        ll.add(StatCollector.translateToLocalFormatted("Info_SteamItemVault_Total", nf.format(capacity)));
+        ll.add(
+            StatCollector.translateToLocalFormatted("Info_SteamItemVault_ItemUsed", nf.format(getItemStoredAmount())));
+        ll.add(StatCollector.translateToLocalFormatted("Info_SteamItemVault_ItemTotal", nf.format(capacityItem)));
         ll.add(
             StatCollector.translateToLocalFormatted("Info_SteamItemVault_PerItemCapacity", nf.format(capacityPerItem)));
+        ll.add(
+            StatCollector
+                .translateToLocalFormatted("Info_SteamItemVault_FluidUsed", nf.format(getFluidStoredAmount())));
+        ll.add(StatCollector.translateToLocalFormatted("Info_SteamItemVault_FluidTotal", nf.format(capacityFluid)));
+        ll.add(
+            StatCollector
+                .translateToLocalFormatted("Info_SteamItemVault_PerFluidCapacity", nf.format(capacityPerFluid)));
         ll.add(StatCollector.translateToLocalFormatted("Info_SteamItemVault_RunningCost", getActualEnergyUsage()));
         ll.add(StatCollector.translateToLocalFormatted("Info_SteamItemVault_AutoVoiding", doVoidExcess));
         ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
@@ -421,7 +475,8 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
-        aNBT.setByteArray("capacity", capacity.toByteArray());
+        aNBT.setByteArray("capacityItem", capacityItem.toByteArray());
+        aNBT.setByteArray("capacityFluid", capacityFluid.toByteArray());
         aNBT.setBoolean("doVoidExcess", doVoidExcess);
         aNBT.setBoolean("locked", locked);
 
@@ -429,12 +484,19 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
         NBTTagCompound storeRoot = new NBTTagCompound();
         NBTTagList itemNbt = new NBTTagList();
-        for (IAEItemStack aeItem : STORE) {
+        for (IAEItemStack aeItem : STORE_ITEM) {
             NBTTagCompound nbt = new NBTTagCompound();
             aeItem.writeToNBT(nbt);
             itemNbt.appendTag(nbt);
         }
-        storeRoot.setTag("STORE", itemNbt);
+        NBTTagList fluidNbt = new NBTTagList();
+        for (IAEFluidStack aeFluid : STORE_FLUID) {
+            NBTTagCompound nbt = new NBTTagCompound();
+            aeFluid.writeToNBT(nbt);
+            fluidNbt.appendTag(nbt);
+        }
+        storeRoot.setTag("STORE_ITEM", itemNbt);
+        storeRoot.setTag("STORE_FLUID", fluidNbt);
 
         File worldDir = DimensionManager.getCurrentSaveRootDirectory();
         File dataDir = new File(worldDir, "data");
@@ -450,23 +512,32 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByteArray("capacity", capacity.toByteArray());
+        aNBT.setByteArray("capacityItem", capacityItem.toByteArray());
+        aNBT.setByteArray("capacityFluid", capacityFluid.toByteArray());
         aNBT.setBoolean("doVoidExcess", doVoidExcess);
         aNBT.setBoolean("locked", locked);
         ensureUUID(aNBT);
         NBTTagList itemNbt = new NBTTagList();
-        aNBT.setTag("STORE", itemNbt);
-        for (IAEItemStack aeItem : STORE) {
+        aNBT.setTag("STORE_ITEM", itemNbt);
+        NBTTagList fluidNbt = new NBTTagList();
+        aNBT.setTag("STORE_FLUID", fluidNbt);
+        for (IAEItemStack aeItem : STORE_ITEM) {
             var nbt = new NBTTagCompound();
             aeItem.writeToNBT(nbt);
             itemNbt.appendTag(nbt);
+        }
+        for (IAEFluidStack aeFluid : STORE_FLUID) {
+            var nbt = new NBTTagCompound();
+            aeFluid.writeToNBT(nbt);
+            fluidNbt.appendTag(nbt);
         }
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        this.setCapacity(new BigInteger(aNBT.getByteArray("capacity")));
+        this.setCapacityItem(new BigInteger(aNBT.getByteArray("capacityItem")));
+        this.setCapacityFluid(new BigInteger(aNBT.getByteArray("capacityFluid")));
         this.setDoVoidExcess(aNBT.getBoolean("doVoidExcess"));
         this.locked = aNBT.getBoolean("locked");
         if (aNBT.hasKey("storeUUID")) {
@@ -478,10 +549,15 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
                 if (vaultFile.exists()) {
                     NBTTagCompound fileNBT = CompressedStreamTools.read(vaultFile);
-                    NBTTagList itemNbt = fileNBT.getTagList("STORE", 10);
+                    NBTTagList itemNbt = fileNBT.getTagList("STORE_ITEM", 10);
+                    NBTTagList fluidNbt = fileNBT.getTagList("STORE_FLUID", 10);
 
                     for (int i = 0; i < itemNbt.tagCount(); i++) {
-                        STORE.add(AEItemStack.loadItemStackFromNBT(itemNbt.getCompoundTagAt(i)));
+                        STORE_ITEM.add(AEItemStack.loadItemStackFromNBT(itemNbt.getCompoundTagAt(i)));
+                    }
+
+                    for (int i = 0; i < fluidNbt.tagCount(); i++) {
+                        STORE_FLUID.add(AEFluidStack.loadFluidStackFromNBT(itemNbt.getCompoundTagAt(i)));
                     }
 
                     if (!vaultFile.delete()) {
@@ -492,10 +568,16 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                 e.printStackTrace();
             }
         }
-        NBTTagList itemNbt = aNBT.getTagList("STORE", 10);
+        NBTTagList itemNbt = aNBT.getTagList("STORE_ITEM", 10);
         if (itemNbt != null) {
             for (int i = 0; i < itemNbt.tagCount(); i++) {
-                STORE.add(AEItemStack.loadItemStackFromNBT(itemNbt.getCompoundTagAt(i)));
+                STORE_ITEM.add(AEItemStack.loadItemStackFromNBT(itemNbt.getCompoundTagAt(i)));
+            }
+        }
+        NBTTagList fluidNbt = aNBT.getTagList("STORE_FLUID", 10);
+        if (fluidNbt != null) {
+            for (int i = 0; i < fluidNbt.tagCount(); i++) {
+                STORE_FLUID.add(AEFluidStack.loadFluidStackFromNBT(fluidNbt.getCompoundTagAt(i)));
             }
         }
         super.loadNBTData(aNBT);
@@ -504,17 +586,17 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public int injectItems(ItemStack aItem, boolean doInput) {
         if (locked) return 0;
-        if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
+        if (STORE_ITEM.size() >= MAX_DISTINCT_ITEMS) return 0;
         var aeItem = getStoredItem(aItem);
         long size = aeItem == null ? 0 : aeItem.getStackSize();
         if (size >= capacityPerItem) return doVoidExcess ? aItem.stackSize : 0;
         if (capacityPerItem - size < aItem.stackSize) {
-            if (doInput) STORE.addStorage(
+            if (doInput) STORE_ITEM.addStorage(
                 AEItemStack.create(aItem)
                     .setStackSize(capacityPerItem - size));
             return doVoidExcess ? aItem.stackSize : (int) (capacityPerItem - size);
         } else {
-            if (doInput) STORE.addStorage(AEItemStack.create(aItem));
+            if (doInput) STORE_ITEM.addStorage(AEItemStack.create(aItem));
             return aItem.stackSize;
         }
     }
@@ -522,18 +604,54 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public long injectItems(IAEItemStack aItem, boolean doInput) {
         if (locked) return 0;
-        if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
+        if (STORE_ITEM.size() >= MAX_DISTINCT_ITEMS) return 0;
         var aeItem = getStoredItem(aItem.getItemStack());
         long size = aeItem == null ? 0 : aeItem.getStackSize();
         if (size >= capacityPerItem) return doVoidExcess ? aItem.getStackSize() : 0;
         if (capacityPerItem - size < aItem.getStackSize()) {
-            if (doInput) STORE.addStorage(
+            if (doInput) STORE_ITEM.addStorage(
                 aItem.copy()
                     .setStackSize(capacityPerItem - size));
             return doVoidExcess ? aItem.getStackSize() : (int) (capacityPerItem - size);
         } else {
-            if (doInput) STORE.addStorage(aItem);
+            if (doInput) STORE_ITEM.addStorage(aItem);
             return aItem.getStackSize();
+        }
+    }
+
+    @Override
+    public int injectFluids(FluidStack aFluid, boolean doInput) {
+        if (locked) return 0;
+        if (STORE_FLUID.size() >= MAX_DISTINCT_FLUIDS) return 0;
+        var aeFluid = getStoredFluid(aFluid);
+        long size = aeFluid == null ? 0 : aeFluid.getStackSize();
+        if (size >= capacityPerFluid) return doVoidExcess ? aFluid.amount : 0;
+        if (capacityPerFluid - size < aFluid.amount) {
+            if (doInput) STORE_FLUID.addStorage(
+                AEFluidStack.create(aFluid)
+                    .setStackSize(capacityPerFluid - size));
+            return doVoidExcess ? aFluid.amount : (int) (capacityPerFluid - size);
+        } else {
+            if (doInput) STORE_FLUID.addStorage(AEFluidStack.create(aFluid));
+            return aFluid.amount;
+        }
+    }
+
+    @Override
+    public long injectFluids(IAEFluidStack aFluid, boolean doInput) {
+        if (locked) return 0;
+        if (STORE_FLUID.size() >= MAX_DISTINCT_FLUIDS) return 0;
+        var aeFluid = getStoredFluid(aFluid.getFluidStack());
+        long size = aeFluid == null ? 0 : aeFluid.getStackSize();
+        if (size >= capacityPerFluid) return doVoidExcess ? aFluid.getStackSize() : 0;
+        if (capacityPerFluid - size < aFluid.getStackSize()) {
+            if (doInput) STORE_FLUID.addStorage(
+                aFluid.copy()
+                    .setStackSize(capacityPerFluid - size));
+            return doVoidExcess ? aFluid.getStackSize() : (int) (capacityPerFluid - size);
+        } else {
+            if (doInput) STORE_FLUID.addStorage(aFluid);
+            return aFluid.getStackSize();
         }
     }
 
@@ -552,7 +670,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public void extractItems(int amount, boolean doOutput) {
         if (locked) return;
-        var aeItem = STORE.getFirstItem();
+        var aeItem = STORE_ITEM.getFirstItem();
         if (aeItem == null) return;
         if (aeItem.getStackSize() > amount) {
             aeItem.setStackSize(aeItem.getStackSize() - amount);
@@ -581,26 +699,92 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         }
     }
 
-    public void setCapacity(BigInteger capacity) {
-        if (capacity.compareTo(MAX_CAPACITY) > 0) {
-            this.capacity = MAX_CAPACITY;
+    @Override
+    public void extractFluids(FluidStack aFluid, boolean doOutput) {
+        if (locked) return;
+        var aeFluid = getStoredFluid(aFluid);
+        if (aeFluid == null) return;
+        if (aeFluid.getStackSize() > aFluid.amount) {
+            aeFluid.setStackSize(aeFluid.getStackSize() - aFluid.amount);
+        } else {
+            aeFluid.setStackSize(0);
+        }
+    }
+
+    @Override
+    public void extractFluids(int amount, boolean doOutput) {
+        if (locked) return;
+        var aeFluid = STORE_FLUID.getFirstItem();
+        if (aeFluid == null) return;
+        if (aeFluid.getStackSize() > amount) {
+            aeFluid.setStackSize(aeFluid.getStackSize() - amount);
+        } else {
+            aeFluid.setStackSize(0);
+        }
+    }
+
+    @Override
+    public long extractFluids(IAEFluidStack aFluid, boolean doOutput) {
+        if (locked) return 0;
+        var aeFluid = getStoredFluid(aFluid.getFluidStack());
+        if (aeFluid == null) return 0;
+        long storedSize = aeFluid.getStackSize();
+        long requestSize = aFluid.getStackSize();
+        if (storedSize > requestSize) {
+            if (doOutput) {
+                aeFluid.setStackSize(storedSize - requestSize);
+            }
+            return requestSize;
+        } else {
+            if (doOutput) {
+                aeFluid.setStackSize(0);
+            }
+            return storedSize;
+        }
+    }
+
+    public void setCapacityItem(BigInteger capacityItem) {
+        if (capacityItem.compareTo(MAX_CAPACITY_ITEM) > 0) {
+            this.capacityItem = MAX_CAPACITY_ITEM;
             this.capacityPerItem = Long.MAX_VALUE;
         } else {
-            this.capacity = capacity;
-            this.capacityPerItem = capacity.divide(BigInteger.valueOf(MAX_DISTINCT_ITEMS))
+            this.capacityItem = capacityItem;
+            this.capacityPerItem = capacityItem.divide(BigInteger.valueOf(MAX_DISTINCT_ITEMS))
+                .longValue();
+        }
+    }
+
+    public void setCapacityFluid(BigInteger capacityFluid) {
+        if (capacityFluid.compareTo(MAX_CAPACITY_FLUID) > 0) {
+            this.capacityFluid = MAX_CAPACITY_FLUID;
+            this.capacityPerFluid = Long.MAX_VALUE;
+        } else {
+            this.capacityFluid = capacityFluid;
+            this.capacityPerFluid = capacityFluid.divide(BigInteger.valueOf(MAX_DISTINCT_FLUIDS))
                 .longValue();
         }
     }
 
     @Override
     public long itemsCount() {
-        return STORE.size();
+        return STORE_ITEM.size();
+    }
+
+    @Override
+    public long fluidsCount() {
+        return STORE_FLUID.size();
     }
 
     @Override
     public IAEItemStack getStoredItem(@Nullable ItemStack aItem) {
         if (aItem == null) return null;
-        return STORE.findPrecise(AEItemStack.create(aItem));
+        return STORE_ITEM.findPrecise(AEItemStack.create(aItem));
+    }
+
+    @Override
+    public IAEFluidStack getStoredFluid(@Nullable FluidStack aFluid) {
+        if (aFluid == null) return null;
+        return STORE_FLUID.findPrecise(AEFluidStack.create(aFluid));
     }
 
     @Override
@@ -608,25 +792,43 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         return getStoredItem(aItem) != null;
     }
 
-    public BigInteger getStoredAmount() {
+    @Override
+    public boolean containsFluids(FluidStack aFluid) {
+        return getStoredFluid(aFluid) != null;
+    }
+
+    public BigInteger getItemStoredAmount() {
         BigInteger amount = BigInteger.ZERO;
-        for (IAEItemStack item : STORE) {
+        for (IAEItemStack item : STORE_ITEM) {
             amount = amount.add(BigInteger.valueOf(item.getStackSize()));
+        }
+        return amount;
+    }
+
+    public BigInteger getFluidStoredAmount() {
+        BigInteger amount = BigInteger.ZERO;
+        for (IAEFluidStack fluid : STORE_FLUID) {
+            amount = amount.add(BigInteger.valueOf(fluid.getStackSize()));
         }
         return amount;
     }
 
     @Override
     public IItemList<IAEItemStack> getStoreItems() {
-        return STORE;
+        return STORE_ITEM;
+    }
+
+    @Override
+    public IItemList<IAEFluidStack> getStoreFluids() {
+        return STORE_FLUID;
     }
 
     public boolean addPortBusToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof ItemVaultPortBus itemVaultPortBus) {
+            if (aMetaTileEntity instanceof ItemVaultPortHatch itemVaultPortHatch) {
                 if (this.portBus != null) return false;
-                this.portBus = itemVaultPortBus;
+                this.portBus = itemVaultPortHatch;
                 this.portBus.updateTexture(aBaseCasingIndex);
                 return true;
             }
@@ -636,7 +838,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
     public enum SteamItemVaultPortElement implements IHatchElement<SteamItemVault> {
 
-        SteamItemVaultPortBus(SteamItemVault::addPortBusToMachineList, ItemVaultPortBus.class) {
+        SteamItemVaultPortBus(SteamItemVault::addPortBusToMachineList, ItemVaultPortHatch.class) {
 
             @Override
             public long count(SteamItemVault steamItemVault) {
