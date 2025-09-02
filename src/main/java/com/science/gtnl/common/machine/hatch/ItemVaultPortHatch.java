@@ -26,6 +26,7 @@ import appeng.api.storage.IMEInventoryHandler;
 import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
 import appeng.me.helpers.AENetworkProxy;
@@ -43,6 +44,7 @@ public class ItemVaultPortHatch extends MTEHatch
     implements ICellContainer, IGridProxyable, IActionHost, IPowerChannelState {
 
     public IItemVault controller;
+    public AENetworkProxy gridProxy = null;
 
     public IMEInventoryHandler<IAEItemStack> itemHandler;
     public IMEInventoryHandler<IAEFluidStack> fluidHandler;
@@ -121,26 +123,6 @@ public class ItemVaultPortHatch extends MTEHatch
         return 0;
     }
 
-    private AENetworkProxy gridProxy = null;
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        if (gridProxy == null) {
-            if (getBaseMetaTileEntity() instanceof IGridProxyable gridProxyable) {
-                gridProxy = new AENetworkProxy(gridProxyable, "proxy", GTNLItemList.ItemVaultPortHatch.get(1), true);
-                gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-                gridProxy.onReady();
-                var bmte = getBaseMetaTileEntity();
-                if (bmte.getWorld() != null) {
-                    gridProxy.setOwner(
-                        bmte.getWorld()
-                            .getPlayerEntityByName(bmte.getOwnerName()));
-                }
-            }
-        }
-        super.onFirstTick(aBaseMetaTileEntity);
-    }
-
     @Override
     public IGridNode getActionableNode() {
         AENetworkProxy gp = getProxy();
@@ -150,19 +132,16 @@ public class ItemVaultPortHatch extends MTEHatch
     @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
-            if (getBaseMetaTileEntity() instanceof IGridProxyable gridProxyable) {
-                gridProxy = new AENetworkProxy(gridProxyable, "proxy", GTNLItemList.ItemVaultPortHatch.get(1), true);
-                gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-                gridProxy.onReady();
-                var bmte = getBaseMetaTileEntity();
-                if (bmte.getWorld() != null) {
-                    gridProxy.setOwner(
-                        bmte.getWorld()
-                            .getPlayerEntityByName(bmte.getOwnerName()));
-                }
+            gridProxy = new AENetworkProxy(this, "proxy", GTNLItemList.ItemVaultPortHatch.get(1), true);
+            gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+            gridProxy.onReady();
+            var bmte = getBaseMetaTileEntity();
+            if (bmte.getWorld() != null) {
+                gridProxy.setOwner(
+                    bmte.getWorld()
+                        .getPlayerEntityByName(bmte.getOwnerName()));
             }
         }
-
         return gridProxy;
     }
 
@@ -276,6 +255,19 @@ public class ItemVaultPortHatch extends MTEHatch
         public boolean validForPass(int i) {
             return true;
         }
+
+        @Override
+        public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out, int iteration) {
+            if (controller != null) {
+                controller.getStoreItems()
+                    .forEach(item -> {
+                        if (item != null) {
+                            out.add(item.copy());
+                        }
+                    });
+            }
+            return out;
+        }
     }
 
     public class FluidMEInventory implements IMEInventoryHandler<IAEFluidStack> {
@@ -341,6 +333,19 @@ public class ItemVaultPortHatch extends MTEHatch
         @Override
         public boolean validForPass(int i) {
             return true;
+        }
+
+        @Override
+        public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out, int iteration) {
+            if (controller != null) {
+                controller.getStoreFluids()
+                    .forEach(fluid -> {
+                        if (fluid != null) {
+                            out.add(fluid.copy());
+                        }
+                    });
+            }
+            return out;
         }
     }
 
