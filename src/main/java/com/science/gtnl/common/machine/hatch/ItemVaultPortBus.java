@@ -130,7 +130,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     }
 
     private void updateListeners(IItemVault vault, int multiplier) {
-        for (IAEItemStack tank : vault.getStore()) {
+        for (IAEItemStack tank : vault.getStoreItems()) {
             long delta = multiplier * tank.getStackSize();
             notifyListeners(delta, tank.getItemStack());
         }
@@ -146,7 +146,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     @Override
     public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out, int iteration) {
         if (controller != null) {
-            controller.getStore()
+            controller.getStoreItems()
                 .forEach(item -> {
                     if (item != null) {
                         out.add(item.copy());
@@ -160,7 +160,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     public IItemList<IAEItemStack> getStorageList() {
         IItemList<IAEItemStack> itemList = new ItemList();
         if (controller != null) {
-            return controller.getStore();
+            return controller.getStoreItems();
         }
         return itemList;
     }
@@ -185,13 +185,13 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     @Override
     public boolean isPrioritized(IAEItemStack input) {
         if (controller == null || input == null) return false;
-        return controller.contains(input.getItemStack()) || controller.itemCount() < controller.maxItemCount();
+        return controller.containsItems(input.getItemStack()) || controller.itemsCount() < controller.maxItemCount();
     }
 
     @Override
     public boolean canAccept(IAEItemStack input) {
         if (controller == null || input == null) return false;
-        return controller.contains(input.getItemStack()) || controller.itemCount() < controller.maxItemCount();
+        return controller.containsItems(input.getItemStack()) || controller.itemsCount() < controller.maxItemCount();
     }
 
     @Override
@@ -215,7 +215,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
         if (inputStack == null) return null;
         if (controller == null || getBaseMetaTileEntity() == null) return input;
         if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
-        long amount = controller.inject(input, mode != Actionable.SIMULATE);
+        long amount = controller.injectItems(input, mode != Actionable.SIMULATE);
         if (amount == 0) return input;
         if (amount == input.getStackSize()) return null;
         IAEItemStack result = AEItemStack.create(input.getItemStack());
@@ -227,7 +227,7 @@ public class ItemVaultPortBus extends MTEHatch implements IMEMonitor<IAEItemStac
     public IAEItemStack extractItems(IAEItemStack request, Actionable mode, BaseActionSource src) {
         if (controller == null || getBaseMetaTileEntity() == null) return null;
         if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
-        long amount = controller.extract(request, mode != Actionable.SIMULATE);
+        long amount = controller.extractItems(request, mode != Actionable.SIMULATE);
         if (amount == 0) return null;
         if (amount == request.getStackSize()) return request.copy();
         IAEItemStack result = AEItemStack.create(request.getItemStack());

@@ -1,41 +1,85 @@
 package com.science.gtnl.api;
 
-import java.math.BigInteger;
-
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 
 public interface IItemVault {
 
-    int inject(ItemStack aItem, boolean doInput);
+    default int injectItems(ItemStack aItem, boolean doInput) {
+        return 0;
+    }
 
-    long inject(IAEItemStack aeItem, boolean doInput);
+    default long injectItems(IAEItemStack aeItem, boolean doInput) {
+        return 0;
+    }
 
-    void extract(ItemStack aItem, boolean doOutput);
+    default void extractItems(ItemStack aItem, boolean doOutput) {}
 
-    void extract(int amount, boolean doOutput);
+    default void extractItems(int amount, boolean doOutput) {}
 
-    long extract(IAEItemStack aeItem, boolean doOutput);
+    default long extractItems(IAEItemStack aeItem, boolean doOutput) {
+        return 0;
+    }
 
-    long getcapacityPerItem();
+    default long itemsCount() {
+        return 0;
+    }
 
-    void setCapacity(BigInteger capacity);
+    default long maxItemCount() {
+        return 0;
+    }
 
-    int itemCount();
+    default IAEItemStack getStoredItem(ItemStack aItem) {
+        return null;
+    }
 
-    long maxItemCount();
+    default boolean containsItems(ItemStack aItem) {
+        return false;
+    }
 
-    IAEItemStack getStoredItem(ItemStack aItem);
+    default IItemList<IAEItemStack> getStoreItems() {
+        return null;
+    }
 
-    boolean contains(ItemStack aItem);
+    default int injectFluids(FluidStack aFluid, boolean doInput) {
+        return 0;
+    }
+
+    default long injectFluids(IAEFluidStack aeFluid, boolean doInput) {
+        return 0;
+    }
+
+    default void extractFluids(FluidStack aFluid, boolean doOutput) {}
+
+    default void extractFluids(int amount, boolean doOutput) {}
+
+    default long extractFluids(IAEFluidStack aeFluid, boolean doOutput) {
+        return 0;
+    }
+
+    default long fluidsCount() {
+        return 0;
+    }
+
+    default long maxFluidCount() {
+        return 0;
+    }
+
+    default IAEFluidStack getStoredFluid(FluidStack aItem) {
+        return null;
+    }
+
+    default boolean containsFluids(FluidStack aItem) {
+        return false;
+    }
+
+    default IItemList<IAEFluidStack> getStoreFluids() {
+        return null;
+    }
 
     boolean isValid();
-
-    BigInteger getStoredAmount();
-
-    void setDoVoidExcess(boolean doVoidExcess);
-
-    IItemList<IAEItemStack> getStore();
 }

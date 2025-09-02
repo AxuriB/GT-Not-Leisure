@@ -67,6 +67,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
+import lombok.Getter;
+import lombok.Setter;
 
 public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     implements ISurvivalConstructable, IItemVault {
@@ -80,6 +82,8 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         .longValue();
 
     public boolean locked = true;
+    @Setter
+    @Getter
     public boolean doVoidExcess = false;
     public ItemVaultPortBus portBus = null;
 
@@ -116,7 +120,9 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        checkMachine(aBaseMetaTileEntity, mInventory[1]);
+        if (checkStructure(true)) {
+            this.mStartUpCheck = 0;
+        }
         super.onFirstTick(aBaseMetaTileEntity);
     }
 
@@ -141,7 +147,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (!inputItems.isEmpty()) {
             for (ItemStack aItem : inputItems) {
                 ItemStack toDeplete = aItem.copy();
-                toDeplete.stackSize = this.inject(aItem, true);
+                toDeplete.stackSize = this.injectItems(aItem, true);
                 depleteInput(toDeplete);
                 portBus.notifyListeners(toDeplete.stackSize, toDeplete);
             }
@@ -154,7 +160,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                     .copy();
                 stack.setStackSize(stack.getStackSize() - this.tryAddOutput(stack.getItemStack()).stackSize);
                 if (stack.getStackSize() > 0) {
-                    this.extract(stack, true);
+                    this.extractItems(stack, true);
                     portBus.notifyListeners(-stack.getStackSize(), stack.getItemStack());
                 }
             }
@@ -448,6 +454,13 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         aNBT.setBoolean("doVoidExcess", doVoidExcess);
         aNBT.setBoolean("locked", locked);
         ensureUUID(aNBT);
+        NBTTagList itemNbt = new NBTTagList();
+        aNBT.setTag("STORE", itemNbt);
+        for (IAEItemStack aeItem : STORE) {
+            var nbt = new NBTTagCompound();
+            aeItem.writeToNBT(nbt);
+            itemNbt.appendTag(nbt);
+        }
         super.saveNBTData(aNBT);
     }
 
@@ -479,11 +492,17 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                 e.printStackTrace();
             }
         }
+        NBTTagList itemNbt = aNBT.getTagList("STORE", 10);
+        if (itemNbt != null) {
+            for (int i = 0; i < itemNbt.tagCount(); i++) {
+                STORE.add(AEItemStack.loadItemStackFromNBT(itemNbt.getCompoundTagAt(i)));
+            }
+        }
         super.loadNBTData(aNBT);
     }
 
     @Override
-    public int inject(ItemStack aItem, boolean doInput) {
+    public int injectItems(ItemStack aItem, boolean doInput) {
         if (locked) return 0;
         if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
         var aeItem = getStoredItem(aItem);
@@ -501,7 +520,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public long inject(IAEItemStack aItem, boolean doInput) {
+    public long injectItems(IAEItemStack aItem, boolean doInput) {
         if (locked) return 0;
         if (STORE.size() >= MAX_DISTINCT_ITEMS) return 0;
         var aeItem = getStoredItem(aItem.getItemStack());
@@ -519,7 +538,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public void extract(ItemStack aItem, boolean doOutput) {
+    public void extractItems(ItemStack aItem, boolean doOutput) {
         if (locked) return;
         var aeItem = getStoredItem(aItem);
         if (aeItem == null) return;
@@ -531,7 +550,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public void extract(int amount, boolean doOutput) {
+    public void extractItems(int amount, boolean doOutput) {
         if (locked) return;
         var aeItem = STORE.getFirstItem();
         if (aeItem == null) return;
@@ -543,7 +562,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public long extract(IAEItemStack aItem, boolean doOutput) {
+    public long extractItems(IAEItemStack aItem, boolean doOutput) {
         if (locked) return 0;
         var aeItem = getStoredItem(aItem.getItemStack());
         if (aeItem == null) return 0;
@@ -562,12 +581,6 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         }
     }
 
-    @Override
-    public long getcapacityPerItem() {
-        return this.capacityPerItem;
-    }
-
-    @Override
     public void setCapacity(BigInteger capacity) {
         if (capacity.compareTo(MAX_CAPACITY) > 0) {
             this.capacity = MAX_CAPACITY;
@@ -580,7 +593,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public int itemCount() {
+    public long itemsCount() {
         return STORE.size();
     }
 
@@ -591,11 +604,10 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public boolean contains(ItemStack aItem) {
+    public boolean containsItems(ItemStack aItem) {
         return getStoredItem(aItem) != null;
     }
 
-    @Override
     public BigInteger getStoredAmount() {
         BigInteger amount = BigInteger.ZERO;
         for (IAEItemStack item : STORE) {
@@ -605,12 +617,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    public void setDoVoidExcess(boolean doVoidExcess) {
-        this.doVoidExcess = doVoidExcess;
-    }
-
-    @Override
-    public IItemList<IAEItemStack> getStore() {
+    public IItemList<IAEItemStack> getStoreItems() {
         return STORE;
     }
 
