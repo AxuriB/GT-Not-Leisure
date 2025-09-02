@@ -296,7 +296,7 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
                         if (wirelessMode) {
                             perModuleEnergy = Long.MAX_VALUE;
                         } else {
-                            perModuleEnergy = getEUVar() / mModuleHatches.size() * 20;
+                            perModuleEnergy = getEUVar() / mModuleHatches.size();
                         }
                         for (SteamElevatorModule mModule : mModuleHatches) {
                             mModule.connect();
@@ -356,9 +356,9 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
 
         int steamToConsume = (int) Math.ceil((double) actualEU / bestSteam.efficiencyFactor);
 
-        int actualDrained = depleteInput(bestSteam.fluid, steamToConsume * 2);
+        int actualDrained = depleteInput(bestSteam.fluid, steamToConsume);
         if (actualDrained > 0) {
-            long euGenerated = (long) actualDrained * bestSteam.efficiencyFactor / 2;
+            long euGenerated = (long) actualDrained * bestSteam.efficiencyFactor;
             setEUVar(getEUVar() + Math.min(euGenerated, euCanAccept));
         }
     }

@@ -17,10 +17,6 @@ public interface IItemVault {
         return 0;
     }
 
-    default void extractItems(ItemStack aItem, boolean doOutput) {}
-
-    default void extractItems(int amount, boolean doOutput) {}
-
     default long extractItems(IAEItemStack aeItem, boolean doOutput) {
         return 0;
     }
@@ -53,10 +49,6 @@ public interface IItemVault {
         return 0;
     }
 
-    default void extractFluids(FluidStack aFluid, boolean doOutput) {}
-
-    default void extractFluids(int amount, boolean doOutput) {}
-
     default long extractFluids(IAEFluidStack aeFluid, boolean doOutput) {
         return 0;
     }
@@ -82,4 +74,8 @@ public interface IItemVault {
     }
 
     boolean isValid();
+
+    boolean hasItem();
+
+    boolean hasFluid();
 }

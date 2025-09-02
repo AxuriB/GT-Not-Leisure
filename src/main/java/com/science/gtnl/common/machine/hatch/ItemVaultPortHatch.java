@@ -18,8 +18,13 @@ import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.events.MENetworkCellArrayUpdate;
+import appeng.api.networking.events.MENetworkChannelsChanged;
+import appeng.api.networking.events.MENetworkEventSubscribe;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.ICellContainer;
 import appeng.api.storage.IMEInventory;
 import appeng.api.storage.IMEInventoryHandler;
@@ -29,6 +34,7 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
@@ -45,6 +51,7 @@ public class ItemVaultPortHatch extends MTEHatch
 
     public IItemVault controller;
     public AENetworkProxy gridProxy = null;
+    public BaseActionSource machineSource = new MachineSource(this);
 
     public IMEInventoryHandler<IAEItemStack> itemHandler;
     public IMEInventoryHandler<IAEFluidStack> fluidHandler;
@@ -110,11 +117,33 @@ public class ItemVaultPortHatch extends MTEHatch
     }
 
     public void bind(IItemVault controller) {
+        if (this.controller != null && this.controller == controller) return;
+        unbind();
         this.controller = controller;
+        if (this.controller.hasItem()) {
+            for (IAEItemStack item : controller.getStoreItems()) {
+                postUpdateItem(item.getItemStack(), item.getStackSize());
+            }
+        }
+        if (this.controller.hasFluid()) {
+            for (IAEFluidStack fluid : controller.getStoreFluids()) {
+                postUpdateFluid(fluid.getFluidStack(), fluid.getStackSize());
+            }
+        }
     }
 
     public void unbind() {
         if (this.controller == null) return;
+        if (this.controller.hasItem()) {
+            for (IAEItemStack item : controller.getStoreItems()) {
+                postUpdateItem(item.getItemStack(), -item.getStackSize());
+            }
+        }
+        if (this.controller.hasFluid()) {
+            for (IAEFluidStack fluid : controller.getStoreFluids()) {
+                postUpdateFluid(fluid.getFluidStack(), -fluid.getStackSize());
+            }
+        }
         this.controller = null;
     }
 
@@ -191,13 +220,41 @@ public class ItemVaultPortHatch extends MTEHatch
         return new DimensionalCoord(gtm.getWorld(), gtm.getXCoord(), gtm.getYCoord(), gtm.getZCoord());
     }
 
+    public void postUpdateItem(ItemStack itemStack, long amt) {
+        try {
+            getProxy().getStorage()
+                .postAlterationOfStoredItems(
+                    StorageChannel.ITEMS,
+                    Collections.singletonList(
+                        AEItemStack.create(itemStack)
+                            .setStackSize(amt)),
+                    this.machineSource);
+        } catch (GridAccessException e) {
+            // :P
+        }
+    }
+
+    public void postUpdateFluid(FluidStack fluid, long amt) {
+        try {
+            getProxy().getStorage()
+                .postAlterationOfStoredItems(
+                    StorageChannel.FLUIDS,
+                    Collections.singletonList(
+                        AEFluidStack.create(fluid)
+                            .setStackSize(amt)),
+                    this.machineSource);
+        } catch (GridAccessException e) {
+            // :P
+        }
+    }
+
     public class ItemMEInventory implements IMEInventoryHandler<IAEItemStack> {
 
         @Override
         public IAEItemStack injectItems(IAEItemStack input, Actionable mode, BaseActionSource src) {
             final ItemStack inputStack = input.getItemStack();
             if (inputStack == null) return null;
-            if (controller == null || getBaseMetaTileEntity() == null) return input;
+            if (controller == null || getBaseMetaTileEntity() == null || !controller.hasItem()) return input;
             if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
             long amount = controller.injectItems(input, mode != Actionable.SIMULATE);
             if (amount == 0) return input;
@@ -209,7 +266,7 @@ public class ItemVaultPortHatch extends MTEHatch
 
         @Override
         public IAEItemStack extractItems(IAEItemStack request, Actionable mode, BaseActionSource src) {
-            if (controller == null || getBaseMetaTileEntity() == null) return null;
+            if (controller == null || getBaseMetaTileEntity() == null || !controller.hasItem()) return null;
             if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
             long amount = controller.extractItems(request, mode != Actionable.SIMULATE);
             if (amount == 0) return null;
@@ -236,7 +293,7 @@ public class ItemVaultPortHatch extends MTEHatch
 
         @Override
         public boolean canAccept(IAEItemStack input) {
-            if (controller == null || input == null) return false;
+            if (controller == null || input == null || !controller.hasItem()) return false;
             return controller.containsItems(input.getItemStack())
                 || controller.itemsCount() < controller.maxItemCount();
         }
@@ -258,7 +315,7 @@ public class ItemVaultPortHatch extends MTEHatch
 
         @Override
         public IItemList<IAEItemStack> getAvailableItems(IItemList<IAEItemStack> out, int iteration) {
-            if (controller != null) {
+            if (controller != null && controller.hasItem()) {
                 controller.getStoreItems()
                     .forEach(item -> {
                         if (item != null) {
@@ -276,7 +333,7 @@ public class ItemVaultPortHatch extends MTEHatch
         public IAEFluidStack injectItems(IAEFluidStack input, Actionable mode, BaseActionSource src) {
             final FluidStack inputStack = input.getFluidStack();
             if (inputStack == null) return null;
-            if (controller == null || getBaseMetaTileEntity() == null) return input;
+            if (controller == null || getBaseMetaTileEntity() == null || !controller.hasFluid()) return input;
             if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
             long amount = controller.injectFluids(input, mode != Actionable.SIMULATE);
             if (amount == 0) return input;
@@ -288,7 +345,7 @@ public class ItemVaultPortHatch extends MTEHatch
 
         @Override
         public IAEFluidStack extractItems(IAEFluidStack request, Actionable mode, BaseActionSource src) {
-            if (controller == null || getBaseMetaTileEntity() == null) return null;
+            if (controller == null || getBaseMetaTileEntity() == null || !controller.hasFluid()) return null;
             if (mode != Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
             long amount = controller.extractFluids(request, mode != Actionable.SIMULATE);
             if (amount == 0) return null;
@@ -315,7 +372,7 @@ public class ItemVaultPortHatch extends MTEHatch
 
         @Override
         public boolean canAccept(IAEFluidStack input) {
-            if (controller == null || input == null) return false;
+            if (controller == null || input == null || !controller.hasFluid()) return false;
             return controller.containsFluids(input.getFluidStack())
                 || controller.fluidsCount() < controller.maxFluidCount();
         }
@@ -337,7 +394,7 @@ public class ItemVaultPortHatch extends MTEHatch
 
         @Override
         public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out, int iteration) {
-            if (controller != null) {
+            if (controller != null && controller.hasFluid()) {
                 controller.getStoreFluids()
                     .forEach(fluid -> {
                         if (fluid != null) {
@@ -346,6 +403,33 @@ public class ItemVaultPortHatch extends MTEHatch
                     });
             }
             return out;
+        }
+    }
+
+    // not sure if needed
+    @MENetworkEventSubscribe
+    public void powerRender(final MENetworkPowerStatusChange c) {
+        try {
+            AENetworkProxy proxy = getProxy();
+            if (proxy != null && proxy.isActive()) {
+                proxy.getGrid()
+                    .postEvent(new MENetworkCellArrayUpdate());
+            }
+        } catch (GridAccessException e) {
+            // :P
+        }
+    }
+
+    @MENetworkEventSubscribe
+    public void channelRender(final MENetworkChannelsChanged c) {
+        try {
+            AENetworkProxy proxy = getProxy();
+            if (proxy != null && proxy.isActive()) {
+                proxy.getGrid()
+                    .postEvent(new MENetworkCellArrayUpdate());
+            }
+        } catch (GridAccessException e) {
+            // :P
         }
     }
 

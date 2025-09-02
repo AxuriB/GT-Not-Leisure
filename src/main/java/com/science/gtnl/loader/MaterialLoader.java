@@ -45,6 +45,7 @@ public class MaterialLoader {
         API.hideItem(GTNLItemList.EternalGregTechWorkshopRender.get(1));
         API.hideItem(GTNLItemList.NanoPhagocytosisPlantRender.get(1));
         API.hideItem(GTNLItemList.ArtificialStarRender.get(1));
+        API.hideItem(GTNLItemList.NullPointerException.get(1));
         API.hideItem(GTNLItemList.TwilightSword.get(1));
         API.hideItem(GTNLItemList.FakeItemSiren.get(1));
 

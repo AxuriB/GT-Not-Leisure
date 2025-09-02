@@ -517,8 +517,6 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     @Override
     public boolean depleteInput(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return false;
-        FluidStack aLiquid = GTUtility.getFluidForFilledItem(aStack, true);
-        if (aLiquid != null) return depleteInput(aLiquid);
 
         for (MTEHatchCustomFluidBase tHatch : validMTEList(mSteamInputFluids)) {
             if (GTUtility.areStacksEqual(
