@@ -27,6 +27,7 @@ import com.science.gtnl.common.block.Casings.Glow.MetaBlockGlow;
 import com.science.gtnl.common.block.Casings.Special.BlocksStargate;
 import com.science.gtnl.common.block.Casings.Special.StargateMetaBlockBase;
 import com.science.gtnl.common.block.blocks.BlockArtificialStarRender;
+import com.science.gtnl.common.block.blocks.BlockCardboardBox;
 import com.science.gtnl.common.block.blocks.BlockEternalGregTechWorkshopRender;
 import com.science.gtnl.common.block.blocks.BlockHoneyFluid;
 import com.science.gtnl.common.block.blocks.BlockLaserBeacon;
@@ -48,6 +49,7 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 
 public class BlockLoader {
 
+    public static Block cardboardBox;
     public static Block blockArtificialStarRender;
     public static Block laserBeacon;
     public static Block playerDoll;
@@ -80,10 +82,11 @@ public class BlockLoader {
 
     public static void registryBlocks() {
 
-        blockArtificialStarRender = new BlockArtificialStarRender();
+        cardboardBox = new BlockCardboardBox();
         laserBeacon = new BlockLaserBeacon();
         playerDoll = new BlockPlayerDoll();
         blockPlayerLeash = new BlockPlayerLeash();
+        blockArtificialStarRender = new BlockArtificialStarRender();
         blockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
         blockEternalGregTechWorkshopRender = new BlockEternalGregTechWorkshopRender();
 
@@ -108,12 +111,10 @@ public class BlockLoader {
             BlockLoader.metaBlockColumn,
             ItemBlockColumn.class,
             BlockLoader.metaBlockColumn.getUnlocalizedName());
-
         GameRegistry.registerBlock(
             BlockLoader.metaCasing,
             MetaItemBlockCasing.class,
             BlockLoader.metaCasing.getUnlocalizedName());
-
         GameRegistry.registerBlock(
             BlockLoader.metaCasing02,
             MetaItemBlockCasing.class,

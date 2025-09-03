@@ -44,6 +44,7 @@ public enum GTNLItemList implements IItemContainer {
     PlayerDoll,
     HoneyFluidBlock,
     ShimmerFluidBlock,
+    CardboardBox,
 
     BronzeBrickCasing,
     SteelBrickCasing,
@@ -395,9 +396,6 @@ public enum GTNLItemList implements IItemContainer {
     LargeBoilerTungstenSteel,
     LargeSteamMixer,
     ElectricBlastFurnace,
-    LargeSteamLathe,
-    LargeSteamCutting,
-    SteamItemVault,
 
     EternalGregTechWorkshop,
     EGTWFusionModule,
@@ -507,6 +505,10 @@ public enum GTNLItemList implements IItemContainer {
     WhiteNightGenerator,
     LargeSteamCircuitAssembler,
     GenerationEarthEngine,
+    LargeSteamLathe,
+    LargeSteamCutting,
+    SteamItemVault,
+    PrimitiveBrickKiln,
 
     ItemVaultPortHatch,
     NanitesInputBus,

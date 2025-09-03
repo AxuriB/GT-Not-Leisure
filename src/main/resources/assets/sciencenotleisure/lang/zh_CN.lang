@@ -503,6 +503,13 @@ tile.Stargate_Coil_Compressed.7.name=压缩星门线圈-七重
 tile.Stargate_Coil_Compressed.8.name=压缩星门线圈-八重
 tile.Stargate_Coil_Compressed.9.name=压缩星门线圈-九重
 
+tile.CardboardBox.name=纸箱
+Tooltip_CardBoardBox_00_Yes=方块数据：是
+Tooltip_CardBoardBox_00_No=方块数据：否
+Tooltip_CardBoardBox_01=方块：
+Tooltip_CardBoardBox_02=元数据：
+Tooltip_CardBoardBox_03=方块实体：
+
 tile.LaserBeacon.name=激光诱导信标
 Tooltip_LaserBeacon=利用强大的电流产生高精度激光
 
@@ -2162,6 +2169,13 @@ SteamInfernalCokeOvenRecipeType=焦炉
 Tooltip_SteamInfernalCokeOven_00=比粘土高炉更高效运作
 Tooltip_SteamInfernalCokeOven_01=每连续工作5秒，速度提升1%，最高可达600%
 Tooltip_SteamInfernalCokeOven_02=§b§o太棒了！
+
+NamePrimitiveBrickKiln=直焰窑
+gtnl.recipe.PrimitiveBrickKilnRecipes=原始土窑
+PrimitiveBrickKilnRecipeType=原始土窑
+Tooltip_PrimitiveBrickKiln_00=景德镇品质认证！
+Tooltip_PrimitiveBrickKiln_01=一次可处理多达8个物品
+Tooltip_PrimitiveBrickKiln_Casing=任意耐火砖
 
 NameLargeSteamCircuitAssembler=大型蒸汽电路组装机
 LargeSteamCircuitAssemblerRecipeType=电路组装机

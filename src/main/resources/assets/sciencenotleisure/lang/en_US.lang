@@ -503,6 +503,13 @@ tile.Stargate_Coil_Compressed.7.name=Compressed Stargate Coil - Tier 7
 tile.Stargate_Coil_Compressed.8.name=Compressed Stargate Coil - Tier 8
 tile.Stargate_Coil_Compressed.9.name=Compressed Stargate Coil - Tier 9
 
+tile.CardboardBox.name=Cardboard Box
+Tooltip_CardBoardBox_00_Yes=Block Data: Yes
+Tooltip_CardBoardBox_00_No=Block Data：No
+Tooltip_CardBoardBox_01=Block: 
+Tooltip_CardBoardBox_02=Meta: 
+Tooltip_CardBoardBox_03=TileEntity: 
+
 tile.LaserBeacon.name=Laser Beacon
 Tooltip_LaserBeacon=Generates high-precision laser using powerful electric current
 
@@ -2162,6 +2169,13 @@ SteamInfernalCokeOvenRecipeType=Coke Oven
 Tooltip_SteamInfernalCokeOven_00=Works more efficiently than a clay oven
 Tooltip_SteamInfernalCokeOven_01=Every 5 seconds of continuous working it gets 1% faster, up to 600%
 Tooltip_SteamInfernalCokeOven_02=§b§oPoggers
+
+NamePrimitiveBrickKiln=Updraft kiln
+gtnl.recipe.PrimitiveBrickKilnRecipes=Primitive Brick Kiln
+PrimitiveBrickKilnRecipeType=Primitive Brick Kiln
+Tooltip_PrimitiveBrickKiln_00=Jingdezhen Quality Certification!
+Tooltip_PrimitiveBrickKiln_01=Can process up to 8 items at once
+Tooltip_PrimitiveBrickKiln_Casing=Any Firebricks
 
 NameLargeSteamCircuitAssembler=Large Steam Circuit Assembler
 LargeSteamCircuitAssemblerRecipeType=Circuit Assembler

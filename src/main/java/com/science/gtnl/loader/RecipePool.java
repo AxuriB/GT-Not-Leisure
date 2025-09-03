@@ -561,4 +561,12 @@ public class RecipePool {
             builder -> builder.setDisplayStack(GTNLItemList.CompoundExtremeCoolingUnit.get(1))
                 .setMaxRecipesPerPage(1))
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> PrimitiveBrickKilnRecipes = RecipeMapBuilder
+        .of("gtnl.recipe.PrimitiveBrickKilnRecipes")
+        .maxIO(9, 1, 1, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .frontend(GTNLLogoFrontend::new)
+        .neiHandlerInfo(builder -> builder.setDisplayStack(GTNLItemList.PrimitiveBrickKiln.get(1)))
+        .build();
 }

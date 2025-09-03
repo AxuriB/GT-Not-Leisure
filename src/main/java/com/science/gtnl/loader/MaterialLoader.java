@@ -1,5 +1,10 @@
 package com.science.gtnl.loader;
 
+import static com.science.gtnl.Utils.CardboardBoxUtils.*;
+
+import net.minecraftforge.oredict.OreDictionary;
+
+import com.brandon3055.draconicevolution.common.ModBlocks;
 import com.cleanroommc.bogosorter.BogoSortAPI;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAvaritiaddonsChest;
@@ -22,6 +27,7 @@ import codechicken.nei.api.API;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTModHandler;
 import micdoodle8.mods.galacticraft.api.recipe.RocketFuels;
 
 public class MaterialLoader {
@@ -93,6 +99,8 @@ public class MaterialLoader {
         if (Mods.Nutrition.isModLoaded()) {
             NutrientLoader.registry();
         }
+
+        loadCardBoardBoxBlackList();
     }
 
     public static void loadOreDictionaryRecipes() {
@@ -101,5 +109,14 @@ public class MaterialLoader {
         new PortalToAlfheimOreRecipes();
         new LaserEngraverOreRecipes();
         new SteamCarpenterOreRecipe();
+    }
+
+    public static void loadCardBoardBoxBlackList() {
+        addBoxBlacklist(BlockLoader.cardboardBox, OreDictionary.WILDCARD_VALUE);
+        addBoxBlacklist(ModBlocks.reactorCore, OreDictionary.WILDCARD_VALUE);
+        addBoxBlacklist(ModBlocks.chaosCrystal, OreDictionary.WILDCARD_VALUE);
+        addBoxBlacklist(GTModHandler.getModItem(Mods.IndustrialCraft2.ID, "blockGenerator", 1, 5));
+        addBoxBlacklist(
+            GTModHandler.getModItem(Mods.IndustrialCraft2.ID, "blockReactorChamber", 1, OreDictionary.WILDCARD_VALUE));
     }
 }

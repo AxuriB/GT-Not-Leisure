@@ -134,6 +134,7 @@ import com.science.gtnl.common.machine.multiblock.PetrochemicalPlant;
 import com.science.gtnl.common.machine.multiblock.PhotovoltaicPowerStation;
 import com.science.gtnl.common.machine.multiblock.PlatinumBasedTreatment;
 import com.science.gtnl.common.machine.multiblock.PolymerTwistingModule;
+import com.science.gtnl.common.machine.multiblock.PrimitiveBrickKiln;
 import com.science.gtnl.common.machine.multiblock.PrimitiveDistillationTower;
 import com.science.gtnl.common.machine.multiblock.ProcessingArray;
 import com.science.gtnl.common.machine.multiblock.RareEarthCentrifugal;
@@ -1302,6 +1303,13 @@ public class MachineLoader {
                 "SteamItemVault",
                 StatCollector.translateToLocal("NameSteamItemVault")));
         addItemTooltip(GTNLItemList.SteamItemVault.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.PrimitiveBrickKiln.set(
+            new PrimitiveBrickKiln(
+                PRIMITIVE_BRICK_KILN.ID,
+                "PrimitiveBrickKiln",
+                StatCollector.translateToLocal("NamePrimitiveBrickKiln")));
+        addItemTooltip(GTNLItemList.PrimitiveBrickKiln.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(
