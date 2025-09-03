@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -28,7 +27,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -48,7 +46,6 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.api.ITESRProvider;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
@@ -72,6 +69,7 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -81,12 +79,13 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.TileEntityOres;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.block.ModBlocks;
 import lombok.Getter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvivalConstructable, ITESRProvider {
+public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvivalConstructable, IMTERenderer {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String STRUCTURE_PIECE_TIER2 = "tier2";
@@ -124,16 +123,16 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
      */
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int x, int y, int z, Block block, RenderBlocks renderer) {
+    public boolean renderInWorld(ISBRWorldContext ctx) {
         if (MainConfig.enableDebugMode) {
             return true;
         } else {
-            return super.renderInWorld(aWorld, x, y, z, block, renderer);
+            return super.renderInWorld(ctx);
         }
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         if (MainConfig.enableDebugMode) {
             MeteorMinerMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
         }
