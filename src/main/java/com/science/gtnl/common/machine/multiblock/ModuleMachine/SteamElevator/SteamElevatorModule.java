@@ -112,7 +112,8 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
                             InputBus,
                             OutputBus,
                             InputHatch,
-                            OutputHatch)
+                            OutputHatch,
+                            Maintenance)
                         .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0)))))
             .build();
     }
@@ -161,7 +162,9 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setMaxOverclocks(Math.min(4, recipeOcCount))
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setEUtDiscount(1 * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1 / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);

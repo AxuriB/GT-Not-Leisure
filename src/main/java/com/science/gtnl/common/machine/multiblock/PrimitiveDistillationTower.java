@@ -150,9 +150,8 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(0.75)
-                    .setDurationModifier(0.8)
+                    .setEUtDiscount(0.75 * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(0.8 / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -218,7 +217,8 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
                             SteamHatchElement.OutputBus_Steam,
                             OutputBus,
                             InputHatch,
-                            InputBus)
+                            InputBus,
+                            Maintenance)
                         .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
                         .dot(1)
                         .build(),

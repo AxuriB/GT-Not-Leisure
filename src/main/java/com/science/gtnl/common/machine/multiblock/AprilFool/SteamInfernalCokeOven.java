@@ -89,7 +89,8 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
                             InputBus,
                             SteamHatchElement.OutputBus_Steam,
                             OutputBus,
-                            OutputHatch)
+                            OutputHatch,
+                            Maintenance)
                         .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
                         .dot(1)
                         .buildAndChain(),
@@ -188,9 +189,8 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setDurationModifier(1F / speedup)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(1);
+                    .setEUtDiscount(1 * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1 / speedup / Math.pow(2, Math.min(4, recipeOcCount)));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

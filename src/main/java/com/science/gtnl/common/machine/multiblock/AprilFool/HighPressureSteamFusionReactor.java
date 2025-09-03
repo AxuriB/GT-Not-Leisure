@@ -157,10 +157,8 @@ public class HighPressureSteamFusionReactor extends SteamMultiMachineBase<HighPr
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(1)
-                    .setDurationModifier(1)
+                    .setEUtDiscount(1 * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1 / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);

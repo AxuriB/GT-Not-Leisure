@@ -112,7 +112,8 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
-                                OutputBus)
+                                OutputBus,
+                                Maintenance)
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
@@ -236,9 +237,8 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(0.8 * tierMachine)
-                    .setDurationModifier(1.0 / 4.0 / tierMachine)
+                    .setEUtDiscount(0.8 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1.0 / 4.0 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);

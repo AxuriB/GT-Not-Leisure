@@ -136,7 +136,8 @@ public class LargeSteamExtractor extends SteamMultiMachineBase<LargeSteamExtract
                                 SteamHatchElement.InputBus_Steam,
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
-                                OutputBus)
+                                OutputBus,
+                                Maintenance)
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
@@ -233,9 +234,8 @@ public class LargeSteamExtractor extends SteamMultiMachineBase<LargeSteamExtract
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(0.9 * tierMachine)
-                    .setDurationModifier(1 / 1.33 / tierMachine)
+                    .setEUtDiscount(0.9 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1 / 1.33 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);

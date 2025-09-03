@@ -150,7 +150,7 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
                         .dot(1)
                         .build(),
                     buildHatchAdder(SteamLavaMaker.class)
-                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
+                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch, Maintenance)
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 27))
                         .dot(1)
                         .buildAndChain(),
@@ -173,9 +173,8 @@ public class SteamLavaMaker extends SteamMultiMachineBase<SteamLavaMaker> implem
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(1)
-                    .setDurationModifier(1)
+                    .setEUtDiscount(1 * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1 / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);

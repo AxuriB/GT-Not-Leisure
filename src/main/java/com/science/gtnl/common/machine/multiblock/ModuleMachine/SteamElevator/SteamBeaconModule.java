@@ -7,8 +7,6 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -40,8 +38,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.kentington.thaumichorizons.common.lib.potion.PotionVisRegen;
 import com.science.gtnl.Utils.enums.ModList;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -50,7 +46,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -271,14 +266,7 @@ public class SteamBeaconModule extends SteamElevatorModule {
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
-
-            @Override
-            @Nonnull
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return null;
     }
 
     private boolean canActivateNewEffect() {

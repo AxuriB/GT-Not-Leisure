@@ -119,7 +119,8 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                                 InputBus,
                                 OutputBus,
                                 InputHatch,
-                                OutputHatch)
+                                OutputHatch,
+                                Maintenance)
                             .buildAndChain(
                                 onElementPass(
                                     x -> ++x.tCountCasing,
@@ -259,9 +260,10 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(tierMachine + (enableHVRecipe ? 1 : 0))
-                    .setDurationModifier(1 / 0.67 / tierMachine - (enableHVRecipe ? 0.25 : 0))
+                    .setEUtDiscount((tierMachine + (enableHVRecipe ? 1 : 0)) * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(
+                        (1 / 0.67 / tierMachine - (enableHVRecipe ? 0.25 : 0))
+                            / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);

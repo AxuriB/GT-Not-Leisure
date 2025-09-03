@@ -94,7 +94,8 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                             InputBus,
                             OutputBus,
                             InputHatch,
-                            OutputHatch)
+                            OutputHatch,
+                            Maintenance)
                         .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
             .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, 10))
             .addElement('D', ofFrame(Materials.Steel))
@@ -196,7 +197,8 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount));
+                    .setEUtDiscount(1 * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1 / Math.pow(2, Math.min(4, recipeOcCount)));
             }
 
             @NotNull

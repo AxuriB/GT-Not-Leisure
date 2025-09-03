@@ -127,7 +127,8 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
                                 SteamHatchElement.InputBus_Steam,
                                 InputBus,
                                 SteamHatchElement.OutputBus_Steam,
-                                OutputBus)
+                                OutputBus,
+                                Maintenance)
                             .casingIndex(10)
                             .dot(1)
                             .buildAndChain(
@@ -221,9 +222,8 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(1.25 * tierMachine)
-                    .setDurationModifier(1.6 / tierMachine)
+                    .setEUtDiscount(1.25 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1.6 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);

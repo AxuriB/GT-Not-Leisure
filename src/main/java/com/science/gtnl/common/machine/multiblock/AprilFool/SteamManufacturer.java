@@ -88,7 +88,8 @@ public class SteamManufacturer extends SteamMultiMachineBase<SteamManufacturer> 
                             SteamHatchElement.InputBus_Steam,
                             InputBus,
                             SteamHatchElement.OutputBus_Steam,
-                            OutputBus)
+                            OutputBus,
+                            Maintenance)
                         .casingIndex(GTUtility.getTextureId((byte) 116, (byte) 30))
                         .dot(1)
                         .buildAndChain(),
@@ -156,9 +157,8 @@ public class SteamManufacturer extends SteamMultiMachineBase<SteamManufacturer> 
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setMaxOverclocks(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(1)
-                    .setDurationModifier(1)
+                    .setEUtDiscount(1 * Math.pow(4, Math.min(4, recipeOcCount)))
+                    .setDurationModifier(1 / Math.pow(2, Math.min(4, recipeOcCount)))
                     .setMaxTierSkips(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
