@@ -617,15 +617,23 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (size >= capacityPerItem) return doVoidExcess ? aItem.stackSize : 0;
         if (capacityPerItem - size < aItem.stackSize) {
             if (doInput) {
-                STORE_ITEM.addStorage(
-                    AEItemStack.create(aItem)
-                        .setStackSize(capacityPerItem - size));
+                if (aeItem == null) {
+                    STORE_ITEM.addStorage(
+                        AEItemStack.create(aItem)
+                            .setStackSize(capacityPerItem - size));
+                } else {
+                    aeItem.setStackSize(capacityPerItem);
+                }
                 portHatch.postUpdateItem(aItem, capacityPerFluid - size);
             }
             return doVoidExcess ? aItem.stackSize : (int) (capacityPerItem - size);
         } else {
             if (doInput) {
-                STORE_ITEM.addStorage(AEItemStack.create(aItem));
+                if (aeItem == null) {
+                    STORE_ITEM.addStorage(AEItemStack.create(aItem));
+                } else {
+                    aeItem.setStackSize(size + aItem.stackSize);
+                }
                 portHatch.postUpdateItem(aItem, aItem.stackSize);
             }
             return aItem.stackSize;
@@ -641,15 +649,23 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (size >= capacityPerItem) return doVoidExcess ? aItem.getStackSize() : 0;
         if (capacityPerItem - size < aItem.getStackSize()) {
             if (doInput) {
-                STORE_ITEM.addStorage(
-                    aItem.copy()
-                        .setStackSize(capacityPerItem - size));
+                if (aeItem == null) {
+                    STORE_ITEM.addStorage(
+                        aItem.copy()
+                            .setStackSize(capacityPerItem - size));
+                } else {
+                    aeItem.setStackSize(capacityPerItem);
+                }
                 portHatch.postUpdateItem(aItem.getItemStack(), capacityPerFluid - size);
             }
             return doVoidExcess ? aItem.getStackSize() : (int) (capacityPerItem - size);
         } else {
             if (doInput) {
-                STORE_ITEM.addStorage(aItem);
+                if (aeItem == null) {
+                    STORE_ITEM.addStorage(aItem);
+                } else {
+                    aeItem.setStackSize(size + aItem.getStackSize());
+                }
                 portHatch.postUpdateItem(aItem.getItemStack(), aItem.getStackSize());
             }
             return aItem.getStackSize();
@@ -665,15 +681,23 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (size >= capacityPerFluid) return doVoidExcess ? aFluid.amount : 0;
         if (capacityPerFluid - size < aFluid.amount) {
             if (doInput) {
-                STORE_FLUID.addStorage(
-                    AEFluidStack.create(aFluid)
-                        .setStackSize(capacityPerFluid - size));
+                if (aeFluid == null) {
+                    STORE_FLUID.addStorage(
+                        AEFluidStack.create(aFluid)
+                            .setStackSize(capacityPerFluid - size));
+                } else {
+                    aeFluid.setStackSize(capacityPerFluid);
+                }
                 portHatch.postUpdateFluid(aFluid, capacityPerFluid - size);
             }
             return doVoidExcess ? aFluid.amount : (int) (capacityPerFluid - size);
         } else {
             if (doInput) {
-                STORE_FLUID.addStorage(AEFluidStack.create(aFluid));
+                if (aeFluid == null) {
+                    STORE_FLUID.addStorage(AEFluidStack.create(aFluid));
+                } else {
+                    aeFluid.setStackSize(size + aFluid.amount);
+                }
                 portHatch.postUpdateFluid(aFluid, capacityPerFluid - aFluid.amount);
             }
             return aFluid.amount;
@@ -689,15 +713,23 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         if (size >= capacityPerFluid) return doVoidExcess ? aFluid.getStackSize() : 0;
         if (capacityPerFluid - size < aFluid.getStackSize()) {
             if (doInput) {
-                STORE_FLUID.addStorage(
-                    aFluid.copy()
-                        .setStackSize(capacityPerFluid - size));
+                if (aeFluid == null) {
+                    STORE_FLUID.addStorage(
+                        AEFluidStack.create(aFluid)
+                            .setStackSize(capacityPerFluid - size));
+                } else {
+                    aeFluid.setStackSize(capacityPerFluid);
+                }
                 portHatch.postUpdateFluid(aFluid.getFluidStack(), capacityPerFluid - size);
             }
             return doVoidExcess ? aFluid.getStackSize() : capacityPerFluid - size;
         } else {
             if (doInput) {
-                STORE_FLUID.addStorage(aFluid);
+                if (aeFluid == null) {
+                    STORE_FLUID.addStorage(AEFluidStack.create(aFluid));
+                } else {
+                    aeFluid.setStackSize(size + aFluid.getStackSize());
+                }
                 portHatch.postUpdateFluid(aFluid.getFluidStack(), aFluid.getStackSize());
             }
             return aFluid.getStackSize();
