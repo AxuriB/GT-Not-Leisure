@@ -1221,6 +1221,41 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         return result;
     }
 
+    @Override
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
+        ArrayList<FluidStack> rList = new ArrayList<>();
+        Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            byte hatchColor = tHatch.getColor();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
+            setHatchRecipeMap(tHatch);
+            if (tHatch instanceof MTEHatchMultiInput multiInputHatch) {
+                for (FluidStack tFluid : multiInputHatch.getStoredFluid()) {
+                    if (tFluid != null) {
+                        rList.add(tFluid);
+                    }
+                }
+            } else if (tHatch instanceof MTEHatchInputME meHatch) {
+                for (FluidStack fluidStack : meHatch.getStoredFluids()) {
+                    if (fluidStack != null) {
+                        // Prevent the same fluid from different ME hatches from being recognized
+                        inputsFromME.put(fluidStack.getFluid(), fluidStack);
+                    }
+                }
+            } else {
+                FluidStack fillableStack = tHatch.getFillableStack();
+                if (fillableStack != null) {
+                    rList.add(fillableStack);
+                }
+            }
+        }
+
+        if (!inputsFromME.isEmpty()) {
+            rList.addAll(inputsFromME.values());
+        }
+        return rList;
+    }
+
     public short getHatchColors() {
         short hatchColors = 0;
 
