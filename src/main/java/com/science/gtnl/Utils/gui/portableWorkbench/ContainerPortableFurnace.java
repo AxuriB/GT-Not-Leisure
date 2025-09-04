@@ -14,11 +14,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.science.gtnl.common.item.items.PortableItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import org.jetbrains.annotations.NotNull;
 
 public class ContainerPortableFurnace extends Container {
 

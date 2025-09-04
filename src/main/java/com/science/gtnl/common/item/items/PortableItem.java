@@ -303,7 +303,10 @@ public class PortableItem extends Item {
         }
         NBTTagCompound tag = stack.getTagCompound();
         if (!tag.hasKey("PortableID")) {
-            tag.setString("PortableID", UUID.randomUUID().toString());
+            tag.setString(
+                "PortableID",
+                UUID.randomUUID()
+                    .toString());
         }
         return tag.getString("PortableID");
     }

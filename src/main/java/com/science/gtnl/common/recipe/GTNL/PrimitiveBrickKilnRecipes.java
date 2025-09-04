@@ -75,8 +75,8 @@ public class PrimitiveBrickKilnRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 ItemList.Firebrick.get(4),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gypsum, 2),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 2),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gypsum, 1),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quartz, 1))
