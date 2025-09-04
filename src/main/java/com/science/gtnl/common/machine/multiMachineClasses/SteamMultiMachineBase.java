@@ -65,7 +65,6 @@ import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.api.mixinHelper.IItemStorage;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
@@ -675,7 +674,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         }
 
         if (mSteamOutputs != null && !mSteamOutputs.isEmpty()) {
-            for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
+            for (MTEHatchOutputBus tHatch : validMTEList(mSteamOutputs)) {
                 for (int i = tHatch.getBaseMetaTileEntity()
                     .getSizeInventory() - 1; i >= 0; i--) {
                     rList.add(
@@ -829,13 +828,13 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         if (dumpItemBoolean(filteredBuses, aStack, true)) return true;
         if (dumpItemBoolean(filteredBuses, aStack, false)) return true;
         List<MTEHatchSteamBusOutput> filteredSteamBusses = filterValidMTEs(mSteamOutputs);
-        if (dumpItemSteamBoolean(filteredSteamBusses, aStack, true)) return true;
-        if (dumpItemSteamBoolean(filteredSteamBusses, aStack, false)) return true;
+        if (dumpItemBoolean(filteredSteamBusses, aStack, true)) return true;
+        if (dumpItemBoolean(filteredSteamBusses, aStack, false)) return true;
 
         while (outputSuccess && aStack.stackSize > 0) {
             outputSuccess = false;
             ItemStack single = aStack.splitStack(1);
-            for (MTEHatchSteamBusOutput tHatch : validMTEList(mSteamOutputs)) {
+            for (MTEHatchOutputBus tHatch : validMTEList(mSteamOutputs)) {
                 if (!outputSuccess) {
                     if (tHatch.isLocked() && !GTUtility.areStacksEqual(tHatch.getLockedItem(), single)) {
                         continue;
@@ -890,11 +889,11 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         if (aStack.stackSize != itemStack.stackSize) return aStack;
 
         List<MTEHatchSteamBusOutput> filteredSteamBusses = filterValidMTEs(mSteamOutputs);
-        aStack = tryDumpItemSteam(filteredSteamBusses, aStack, true, false);
+        aStack = tryDumpItem(filteredSteamBusses, aStack, true, false);
         if (aStack == null || aStack.stackSize <= 0) return new ItemStack(Items.feather, 0);
         if (aStack.stackSize != itemStack.stackSize) return aStack;
 
-        aStack = tryDumpItemSteam(filteredSteamBusses, aStack, false, false);
+        aStack = tryDumpItem(filteredSteamBusses, aStack, false, false);
         if (aStack == null || aStack.stackSize <= 0) return new ItemStack(Items.feather, 0);
         if (aStack.stackSize != itemStack.stackSize) return aStack;
 
@@ -904,7 +903,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             ItemStack single = aStack.copy();
             single.stackSize = 1;
 
-            for (MTEHatchSteamBusOutput tHatch : filterValidMTEs(mSteamOutputs)) {
+            for (MTEHatchOutputBus tHatch : filterValidMTEs(mSteamOutputs)) {
                 if (!outputSuccess) {
                     if (tHatch.isLocked() && !GTUtility.areStacksEqual(tHatch.getLockedItem(), single)) {
                         continue;
@@ -948,15 +947,15 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         return aStack.stackSize > 0 ? aStack : null;
     }
 
-    public ItemStack tryDumpItem(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack, boolean restrictiveBusesOnly,
-        boolean simulate) {
+    public ItemStack tryDumpItem(List<? extends MTEHatchOutputBus> outputBuses, ItemStack itemStack,
+        boolean restrictiveBusesOnly, boolean simulate) {
         if (GTUtility.isStackInvalid(itemStack)) return itemStack;
 
         for (MTEHatchOutputBus outputBus : outputBuses) {
             if (itemStack.stackSize <= 0) return null;
 
-            if (outputBus instanceof MTEHatchOutputBusME outputBusME) {
-                itemStack = dumpItemME(outputBusME, itemStack, restrictiveBusesOnly, simulate);
+            if (outputBus instanceof MTEHatchOutputBusME) {
+                itemStack = dumpItemME((MTEHatchOutputBusME) outputBus, itemStack, restrictiveBusesOnly, simulate);
             } else {
                 if (restrictiveBusesOnly && !outputBus.isLocked()) {
                     continue;
@@ -986,32 +985,12 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         return itemStack;
     }
 
-    public ItemStack tryDumpItemSteam(List<MTEHatchSteamBusOutput> outputBuses, ItemStack itemStack,
-        boolean restrictiveBusesOnly, boolean simulate) {
-        if (GTUtility.isStackInvalid(itemStack)) return itemStack;
-
-        for (MTEHatchSteamBusOutput outputBus : outputBuses) {
-            if (itemStack.stackSize <= 0) return null;
-
-            if (restrictiveBusesOnly && !outputBus.isLocked()) {
-                continue;
-            }
-            if (outputBus instanceof IItemStorage iItemStorage) {
-                if (iItemStorage.storePartial(itemStack, simulate)) {
-                    return null;
-                }
-            }
-        }
-
-        return itemStack;
-    }
-
-    public boolean dumpItemBoolean(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack,
+    public boolean dumpItemBoolean(List<? extends MTEHatchOutputBus> outputBuses, ItemStack itemStack,
         boolean restrictiveBusesOnly) {
         return dumpItemBoolean(outputBuses, itemStack, restrictiveBusesOnly, false);
     }
 
-    public boolean dumpItemBoolean(List<MTEHatchOutputBus> outputBuses, ItemStack itemStack,
+    public boolean dumpItemBoolean(List<? extends MTEHatchOutputBus> outputBuses, ItemStack itemStack,
         boolean restrictiveBusesOnly, boolean simulate) {
         for (MTEHatchOutputBus outputBus : outputBuses) {
             if (restrictiveBusesOnly && !outputBus.isLocked()) {
@@ -1020,27 +999,6 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
 
             if (outputBus.storePartial(itemStack, simulate)) {
                 return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean dumpItemSteamBoolean(List<MTEHatchSteamBusOutput> outputBuses, ItemStack itemStack,
-        boolean restrictiveBusesOnly) {
-        return dumpItemSteamBoolean(outputBuses, itemStack, restrictiveBusesOnly, false);
-    }
-
-    public boolean dumpItemSteamBoolean(List<MTEHatchSteamBusOutput> outputBuses, ItemStack itemStack,
-        boolean restrictiveBusesOnly, boolean simulate) {
-        for (MTEHatchSteamBusOutput outputBus : outputBuses) {
-            if (restrictiveBusesOnly && !outputBus.isLocked()) {
-                continue;
-            }
-            if (outputBus instanceof IItemStorage iItemStorage) {
-                if (iItemStorage.storePartial(itemStack, simulate)) {
-                    return true;
-                }
             }
         }
 

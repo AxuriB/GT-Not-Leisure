@@ -67,6 +67,17 @@ public class Utils {
             .isClient();
     }
 
+    public static <C extends Collection<E>, E extends MetaTileEntity, T extends E> List<T> filterValidMTEs(
+        C metaTileEntities, Class<T> targetClass) {
+        List<T> result = new ArrayList<>();
+        for (E mte : metaTileEntities) {
+            if (mte != null && mte.isValid() && targetClass.isInstance(mte)) {
+                result.add(targetClass.cast(mte));
+            }
+        }
+        return result;
+    }
+
     // region about ItemStack
     public static boolean metaItemEqual(ItemStack a, ItemStack b) {
         if (a == null || b == null) return false;
