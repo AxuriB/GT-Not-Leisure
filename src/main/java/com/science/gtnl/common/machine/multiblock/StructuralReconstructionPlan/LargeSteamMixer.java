@@ -264,7 +264,8 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                     .setDurationModifier(
                         (1 / 0.67 / tierMachine - (enableHVRecipe ? 0.25 : 0))
                             / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0);
+                    .setMaxTierSkips(0)
+                    .setMaxOverclocks(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

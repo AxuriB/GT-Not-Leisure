@@ -240,7 +240,8 @@ public class LargeSteamHammer extends SteamMultiMachineBase<LargeSteamHammer> im
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
                     .setEUtDiscount(0.75 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
                     .setDurationModifier(1 / 1.33 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0);
+                    .setMaxTierSkips(0)
+                    .setMaxOverclocks(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

@@ -217,7 +217,8 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
                     .setEUtDiscount(0.8 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
                     .setDurationModifier(1 / 1.25 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0);
+                    .setMaxTierSkips(0)
+                    .setMaxOverclocks(0);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
