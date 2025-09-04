@@ -18,22 +18,24 @@ import com.science.gtnl.common.item.items.PortableItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import org.jetbrains.annotations.NotNull;
 
 public class ContainerPortableFurnace extends Container {
 
-    public IInventory furnaceInventory;
     public EntityPlayer player;
     public ItemStack furnaceStack;
 
     public int cookTime;
     public int burnTime;
     public int currentItemBurnTime;
+    private final String portableID;
 
     public ContainerPortableFurnace(InventoryPlayer playerInventory, World world, ItemStack stack) {
         this.furnaceStack = stack;
         this.player = playerInventory.player;
 
-        this.furnaceInventory = new InventoryBasic("PortableFurnace", false, 3);
+        this.portableID = PortableItem.ensurePortableID(stack);
+        IInventory furnaceInventory = new InventoryBasic("PortableFurnace", false, 3);
         IInventory saved = PortableItem.getFurnaceInventory(stack);
         for (int i = 0; i < 3; i++) {
             furnaceInventory.setInventorySlotContents(i, saved.getStackInSlot(i));
@@ -78,19 +80,7 @@ public class ContainerPortableFurnace extends Container {
     @Override
     public boolean canInteractWith(EntityPlayer player) {
         ItemStack held = player.getHeldItem();
-        return held != null && held.getItemDamage() == 2 && held.getItem() instanceof PortableItem;
-    }
-
-    @Override
-    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer player) {
-        ItemStack result = super.slotClick(slotId, clickedButton, mode, player);
-        ItemStack held = player.getHeldItem();
-        if (held != null && held.getItemDamage() == 2 && held.getItem() instanceof PortableItem) {
-            PortableItem.saveFurnaceInventory(held, furnaceInventory);
-            furnaceStack = held;
-        }
-
-        return result;
+        return PortableItem.matchesPortableID(held, portableID);
     }
 
     @Override
@@ -111,28 +101,43 @@ public class ContainerPortableFurnace extends Container {
     }
 
     @Override
+    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer player) {
+        ItemStack result = super.slotClick(slotId, clickedButton, mode, player);
+        saveInv();
+        return result;
+    }
+
+    @Override
     public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-
+        if (player.worldObj.isRemote) return;
         if (furnaceStack == null) return;
+        ItemStack held = player.getHeldItem();
+        if (PortableItem.matchesPortableID(held, portableID)) {
+            this.furnaceStack = held;
+            IInventory furnaceInv = PortableItem.getFurnaceInventory(held);
+            for (int i = 0; i <= 2; i++) {
+                ItemStack stack = furnaceInv.getStackInSlot(i);
+                inventorySlots.get(i).inventory.setInventorySlotContents(i, stack);
+            }
 
-        NBTTagCompound tag = furnaceStack.getTagCompound();
-        if (tag == null) return;
+            NBTTagCompound tag = furnaceStack.getTagCompound();
+            if (tag == null) return;
+            int cookTimeNBT = tag.getInteger("CookTime");
+            int burnTimeNBT = tag.getInteger("BurnTime");
+            int currentItemBurnTimeNBT = tag.getInteger("CurrentItemBurnTime");
 
-        int cookTimeNBT = tag.getInteger("CookTime");
-        int burnTimeNBT = tag.getInteger("BurnTime");
-        int currentItemBurnTimeNBT = tag.getInteger("CurrentItemBurnTime");
+            for (ICrafting crafter : this.crafters) {
+                if (this.cookTime != cookTimeNBT) crafter.sendProgressBarUpdate(this, 0, cookTimeNBT);
+                if (this.burnTime != burnTimeNBT) crafter.sendProgressBarUpdate(this, 1, burnTimeNBT);
+                if (this.currentItemBurnTime != currentItemBurnTimeNBT)
+                    crafter.sendProgressBarUpdate(this, 2, currentItemBurnTimeNBT);
+            }
 
-        for (ICrafting crafter : this.crafters) {
-            if (this.cookTime != cookTimeNBT) crafter.sendProgressBarUpdate(this, 0, cookTimeNBT);
-            if (this.burnTime != burnTimeNBT) crafter.sendProgressBarUpdate(this, 1, burnTimeNBT);
-            if (this.currentItemBurnTime != currentItemBurnTimeNBT)
-                crafter.sendProgressBarUpdate(this, 2, currentItemBurnTimeNBT);
+            this.cookTime = cookTimeNBT;
+            this.burnTime = burnTimeNBT;
+            this.currentItemBurnTime = currentItemBurnTimeNBT;
         }
-
-        this.cookTime = cookTimeNBT;
-        this.burnTime = burnTimeNBT;
-        this.currentItemBurnTime = currentItemBurnTimeNBT;
+        super.detectAndSendChanges();
     }
 
     @SideOnly(Side.CLIENT)
@@ -159,10 +164,7 @@ public class ContainerPortableFurnace extends Container {
     @Override
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
-        ItemStack held = player.getHeldItem();
-        if (held != null && held.getItemDamage() == 2 && held.getItem() instanceof PortableItem) {
-            PortableItem.saveFurnaceInventory(held, furnaceInventory);
-        }
+        saveInv();
     }
 
     @Override
@@ -199,11 +201,34 @@ public class ContainerPortableFurnace extends Container {
             slot.onPickupFromSlot(player, stackInSlot);
         }
 
-        ItemStack held = player.getHeldItem();
-        if (held != null && held.getItemDamage() == 2 && held.getItem() instanceof PortableItem) {
-            PortableItem.saveFurnaceInventory(held, furnaceInventory);
-        }
+        saveInv();
 
         return itemstack;
+    }
+
+    public void saveInv() {
+        if (player.worldObj.isRemote) return;
+        ItemStack held = player.getHeldItem();
+        if (PortableItem.matchesPortableID(held, portableID)) {
+            IInventory furnaceInventory = getIInventory();
+
+            PortableItem.saveFurnaceInventory(held, furnaceInventory);
+            furnaceStack = held;
+        }
+    }
+
+    public @NotNull IInventory getIInventory() {
+        ItemStack input = this.inventorySlots.get(0)
+            .getStack();
+        ItemStack fuel = this.inventorySlots.get(1)
+            .getStack();
+        ItemStack output = this.inventorySlots.get(2)
+            .getStack();
+
+        IInventory furnaceInventory = new InventoryBasic("PortableFurnace", false, 3);
+        furnaceInventory.setInventorySlotContents(0, input);
+        furnaceInventory.setInventorySlotContents(1, fuel);
+        furnaceInventory.setInventorySlotContents(2, output);
+        return furnaceInventory;
     }
 }

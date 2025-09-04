@@ -27,7 +27,7 @@ public class ContainerPortableInfinityChest extends ContainerPortableAvaritiaddo
     @Override
     public boolean canInteractWith(EntityPlayer player) {
         ItemStack held = player.getHeldItem();
-        return held != null && held.getItemDamage() == 7 && held.getItem() instanceof PortableItem;
+        return PortableItem.matchesPortableID(held, portableID);
     }
 
     @Override
@@ -144,21 +144,24 @@ public class ContainerPortableInfinityChest extends ContainerPortableAvaritiaddo
                 else actualSlot.onSlotChanged();
             }
             ItemStack held = player.getHeldItem();
-            if (held != null && held.getItemDamage() == 7 && held.getItem() instanceof PortableItem) {
+            if (PortableItem.matchesPortableID(held, portableID)) {
                 PortableItem.saveInfinityInventory(held, this.chestInventory);
+                itemStack = held;
             }
             return actualSlot.getHasStack() ? actualSlot.getStack()
                 .copy() : null;
         } else if (slot >= 0 && slot < 243 && modifier == 2) {
             ItemStack held = player.getHeldItem();
-            if (held != null && held.getItemDamage() == 7 && held.getItem() instanceof PortableItem) {
+            if (PortableItem.matchesPortableID(held, portableID)) {
                 PortableItem.saveInfinityInventory(held, this.chestInventory);
+                itemStack = held;
             }
             return null;
         } else {
             ItemStack held = player.getHeldItem();
-            if (held != null && held.getItemDamage() == 7 && held.getItem() instanceof PortableItem) {
+            if (PortableItem.matchesPortableID(held, portableID)) {
                 PortableItem.saveInfinityInventory(held, this.chestInventory);
+                itemStack = held;
             }
             return super.slotClick(slot, mouseButton, modifier, player);
         }
@@ -168,7 +171,7 @@ public class ContainerPortableInfinityChest extends ContainerPortableAvaritiaddo
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
-        if (held != null && held.getItemDamage() == 7 && held.getItem() instanceof PortableItem) {
+        if (PortableItem.matchesPortableID(held, portableID)) {
             PortableItem.saveInfinityInventory(held, this.chestInventory);
         }
     }

@@ -19,10 +19,14 @@ import cpw.mods.fml.common.Optional;
 public class ContainerPortableAvaritiaddonsChest extends Container implements ISortableContainer {
 
     public InventoryInfinityChest chestInventory;
+    public ItemStack itemStack;
+    protected final String portableID;
 
     public ContainerPortableAvaritiaddonsChest(ItemStack stack, InventoryPlayer playerInv, boolean isInfinity) {
         chestInventory = isInfinity ? PortableItem.getInfinityInventory(stack) : PortableItem.getInventory(stack);
+        itemStack = stack;
 
+        this.portableID = PortableItem.ensurePortableID(stack);
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 27; x++) {
                 addSlotToContainer(new Slot(chestInventory, y * 27 + x, 8 + (18 * x), 18 + (18 * y)) {
@@ -92,11 +96,12 @@ public class ContainerPortableAvaritiaddonsChest extends Container implements IS
 
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItem() instanceof PortableItem) {
-            if (held.getItemDamage() == 6) {
+            if (held.getItemDamage() == 6 && PortableItem.matchesPortableID(held, portableID)) {
                 PortableItem.saveInventory(held, this.chestInventory);
-            } else if (held.getItemDamage() == 7) {
+                itemStack = held;
+            } else if (held.getItemDamage() == 7 && PortableItem.matchesPortableID(held, portableID)) {
                 PortableItem.saveInfinityInventory(held, this.chestInventory);
-
+                itemStack = held;
             }
         }
         return itemstack;

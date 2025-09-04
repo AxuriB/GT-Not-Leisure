@@ -15,15 +15,16 @@ public class ContainerPortableCompressedChest extends ContainerPortableAvaritiad
     @Override
     public boolean canInteractWith(EntityPlayer player) {
         ItemStack held = player.getHeldItem();
-        return held != null && held.getItemDamage() == 6 && held.getItem() instanceof PortableItem;
+        return PortableItem.matchesPortableID(held, portableID);
     }
 
     @Override
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
-        if (held != null && held.getItemDamage() == 6 && held.getItem() instanceof PortableItem) {
+        if (PortableItem.matchesPortableID(held, portableID)) {
             PortableItem.saveInventory(held, chestInventory);
+            itemStack = held;
         }
     }
 }

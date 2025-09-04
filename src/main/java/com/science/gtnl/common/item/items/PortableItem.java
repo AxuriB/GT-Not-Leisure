@@ -3,6 +3,7 @@ package com.science.gtnl.common.item.items;
 import static com.science.gtnl.ScienceNotLeisure.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -81,10 +82,10 @@ public class PortableItem extends Item {
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity player, int slot, boolean isSelected) {
+        if (world.isRemote) return;
         if (stack.getItemDamage() != PortableType.FURNACE.getMeta()) return;
 
         IInventory inv = getFurnaceInventory(stack);
-        boolean dirty = false;
 
         int burnTime = stack.hasTagCompound() ? stack.getTagCompound()
             .getInteger("BurnTime") : 0;
@@ -116,16 +117,12 @@ public class PortableItem extends Item {
                 currentItemBurnTime = burnTime = TileEntityFurnace.getItemBurnTime(fuel);
                 if (fuel.stackSize == 1 && fuel.getItem()
                     .hasContainerItem(fuel)) {
-                    inv.setInventorySlotContents(
-                        1,
-                        fuel.getItem()
-                            .getContainerItem(fuel));
+                    inv.setInventorySlotContents(1, null);
                 } else {
                     fuel.stackSize--;
                     inv.setInventorySlotContents(1, fuel);
                     if (fuel.stackSize <= 0) inv.setInventorySlotContents(1, null);
                 }
-                dirty = true;
             }
         }
 
@@ -146,22 +143,18 @@ public class PortableItem extends Item {
                 inv.setInventorySlotContents(0, input);
                 if (input.stackSize <= 0) inv.setInventorySlotContents(0, null);
                 cookTime = 0;
-                dirty = true;
             }
         } else {
             cookTime = Math.max(0, cookTime - 1);
-            dirty = true;
         }
 
-        if (dirty || burnTime != (stack.hasTagCompound() ? stack.getTagCompound()
-            .getInteger("BurnTime") : 0)) {
-            if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
-            NBTTagCompound tag = stack.getTagCompound();
-            tag.setInteger("CookTime", cookTime);
-            tag.setInteger("BurnTime", burnTime);
-            tag.setInteger("CurrentItemBurnTime", currentItemBurnTime);
-            saveFurnaceInventory(stack, inv);
-        }
+        if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
+        NBTTagCompound tag = stack.getTagCompound();
+        tag.setInteger("CookTime", cookTime);
+        tag.setInteger("BurnTime", burnTime);
+        tag.setInteger("CurrentItemBurnTime", currentItemBurnTime);
+        stack.setTagCompound(tag);
+        saveFurnaceInventory(stack, inv);
     }
 
     public static IInventory getInventory(ItemStack stack, int size) {
@@ -301,6 +294,25 @@ public class PortableItem extends Item {
         }
         stack.getTagCompound()
             .setTag("Items", list);
+    }
+
+    public static String ensurePortableID(ItemStack stack) {
+        if (stack == null) return null;
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        NBTTagCompound tag = stack.getTagCompound();
+        if (!tag.hasKey("PortableID")) {
+            tag.setString("PortableID", UUID.randomUUID().toString());
+        }
+        return tag.getString("PortableID");
+    }
+
+    public static boolean matchesPortableID(ItemStack held, String targetID) {
+        if (held == null || !(held.getItem() instanceof PortableItem)) return false;
+        if (!held.hasTagCompound()) return false;
+        NBTTagCompound tag = held.getTagCompound();
+        return targetID != null && targetID.equals(tag.getString("PortableID"));
     }
 
     @Override

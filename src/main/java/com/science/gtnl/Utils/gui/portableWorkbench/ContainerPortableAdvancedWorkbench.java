@@ -20,11 +20,15 @@ public class ContainerPortableAdvancedWorkbench extends Container {
     public IInventory craftResult = new InventoryCraftResult();
     public World worldObj;
     public EntityPlayer player;
+    public ItemStack itemStack;
+    private final String portableID;
 
     public ContainerPortableAdvancedWorkbench(InventoryPlayer playerInventory, World world, ItemStack stack) {
         this.worldObj = world;
         this.player = playerInventory.player;
+        this.itemStack = stack;
 
+        this.portableID = PortableItem.ensurePortableID(stack);
         IInventory savedInv = PortableItem.getInventory(stack, 9);
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             craftMatrix.setInventorySlotContents(i, savedInv.getStackInSlot(i));
@@ -72,8 +76,9 @@ public class ContainerPortableAdvancedWorkbench extends Container {
                 .findMatchingRecipe(this.craftMatrix, this.worldObj));
 
         ItemStack held = player.getHeldItem();
-        if (held != null && held.getItemDamage() == 1 && held.getItem() instanceof PortableItem) {
+        if (PortableItem.matchesPortableID(held, portableID)) {
             PortableItem.saveInventory(held, this.craftMatrix);
+            itemStack = held;
         }
     }
 
@@ -81,15 +86,16 @@ public class ContainerPortableAdvancedWorkbench extends Container {
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
-        if (held != null && held.getItemDamage() == 1 && held.getItem() instanceof PortableItem) {
+        if (PortableItem.matchesPortableID(held, portableID)) {
             PortableItem.saveInventory(held, this.craftMatrix);
+            itemStack = held;
         }
     }
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
         ItemStack held = player.getHeldItem();
-        return held != null && held.getItemDamage() == 1 && held.getItem() instanceof PortableItem;
+        return PortableItem.matchesPortableID(held, portableID);
     }
 
     @Override
@@ -124,8 +130,9 @@ public class ContainerPortableAdvancedWorkbench extends Container {
         }
 
         ItemStack held = player.getHeldItem();
-        if (held != null && held.getItemDamage() == 1 && held.getItem() instanceof PortableItem) {
+        if (PortableItem.matchesPortableID(held, portableID)) {
             PortableItem.saveInventory(held, this.craftMatrix);
+            itemStack = held;
         }
 
         return itemstack;
