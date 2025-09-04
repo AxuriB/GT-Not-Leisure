@@ -2136,5 +2136,13 @@ public class AssemblerRecipes implements IRecipePool {
             .duration(200)
             .eut(TierEU.MV)
             .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.paper, 7))
+            .itemOutputs(GTNLItemList.CardboardBox.get(1))
+            .fluidInputs(FluidRegistry.getFluidStack("refinedglue", 200))
+            .duration(20)
+            .eut(16)
+            .addTo(As);
     }
 }

@@ -60,13 +60,13 @@ public class RecipeUtil {
         }
     }
 
-    private static boolean recipesAreEquivalent(GTRecipe r1, GTRecipe r2) {
+    public static boolean recipesAreEquivalent(GTRecipe r1, GTRecipe r2) {
         return itemsMatch(r1.mInputs, r2.mInputs) && itemsMatch(r1.mOutputs, r2.mOutputs)
             && fluidsMatch(r1.mFluidInputs, r2.mFluidInputs)
             && fluidsMatch(r1.mFluidOutputs, r2.mFluidOutputs);
     }
 
-    private static boolean itemsMatch(ItemStack[] a, ItemStack[] b) {
+    public static boolean itemsMatch(ItemStack[] a, ItemStack[] b) {
         if (a == null || b == null) return a == b;
         if (a.length != b.length) return false;
         for (int i = 0; i < a.length; i++) {
@@ -75,7 +75,7 @@ public class RecipeUtil {
         return true;
     }
 
-    private static boolean fluidsMatch(FluidStack[] a, FluidStack[] b) {
+    public static boolean fluidsMatch(FluidStack[] a, FluidStack[] b) {
         if (a == null || b == null) return a == b;
         if (a.length != b.length) return false;
         for (int i = 0; i < a.length; i++) {

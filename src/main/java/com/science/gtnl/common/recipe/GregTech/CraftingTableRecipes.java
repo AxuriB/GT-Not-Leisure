@@ -960,6 +960,16 @@ public class CraftingTableRecipes implements IRecipePool {
                 GTNLItemList.HydraulicConveyor.get(1), 'E', ItemList.Casing_Pipe_Bronze.get(1), 'F',
                 ItemList.Component_Sawblade_Diamond.get(1), 'G', GTNLItemList.HydraulicArm.get(1) });
 
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.CardboardBox.get(1),
+            new Object[] { "ABA", "A A", "AAA", 'A', new ItemStack(Items.paper, 1), 'B',
+                new ItemStack(Items.slime_ball, 1) });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.CardboardBox.get(1),
+            new Object[] { "ABA", "A A", "AAA", 'A', new ItemStack(Items.paper, 1), 'B',
+                GTModHandler.getModItem(IndustrialCraft2.ID, "itemHarz", 1) });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),

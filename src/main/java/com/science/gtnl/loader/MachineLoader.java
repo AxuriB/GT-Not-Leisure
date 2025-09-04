@@ -41,12 +41,16 @@ import com.science.gtnl.common.machine.hatch.ManaEnergyHatch;
 import com.science.gtnl.common.machine.hatch.NanitesInputBus;
 import com.science.gtnl.common.machine.hatch.NinefoldInputHatch;
 import com.science.gtnl.common.machine.hatch.OredictInputBusHatchME;
+import com.science.gtnl.common.machine.hatch.OriginalInputHatch;
+import com.science.gtnl.common.machine.hatch.OriginalOutputHatch;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputProxy;
 import com.science.gtnl.common.machine.hatch.SuperDataAccessHatch;
 import com.science.gtnl.common.machine.hatch.SuperInputBusME;
 import com.science.gtnl.common.machine.hatch.SuperInputHatchME;
+import com.science.gtnl.common.machine.hatch.SuperVoidBus;
+import com.science.gtnl.common.machine.hatch.SuperVoidHatch;
 import com.science.gtnl.common.machine.hatch.TapDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
@@ -1892,6 +1896,31 @@ public class MachineLoader {
                 "ItemVaultPortHatch",
                 StatCollector.translateToLocal("ItemVaultPortHatch")));
         addItemTooltip(GTNLItemList.ItemVaultPortHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.OriginalInputHatch.set(
+            new OriginalInputHatch(
+                ORIGINAL_INPUT_HATCH.ID,
+                "OriginalInputHatch",
+                StatCollector.translateToLocal("OriginalInputHatch")));
+        addItemTooltip(GTNLItemList.OriginalInputHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.OriginalOutputHatch.set(
+            new OriginalOutputHatch(
+                ORIGINAL_OUTPUT_HATCH.ID,
+                "OriginalOutputHatch",
+                StatCollector.translateToLocal("OriginalOutputHatch")));
+        addItemTooltip(GTNLItemList.OriginalOutputHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SuperVoidBus
+            .set(new SuperVoidBus(SUPER_VOID_BUS.ID, "SuperVoidBus", StatCollector.translateToLocal("SuperVoidBus")));
+        addItemTooltip(GTNLItemList.SuperVoidBus.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SuperVoidHatch.set(
+            new SuperVoidHatch(
+                SUPER_VOID_HATCH.ID,
+                "SuperVoidHatch",
+                StatCollector.translateToLocal("SuperVoidHatch")));
+        addItemTooltip(GTNLItemList.SuperVoidHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     @Deprecated

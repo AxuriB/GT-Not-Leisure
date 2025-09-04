@@ -510,6 +510,10 @@ public enum GTNLItemList implements IItemContainer {
     SteamItemVault,
     PrimitiveBrickKiln,
 
+    SuperVoidHatch,
+    SuperVoidBus,
+    OriginalInputHatch,
+    OriginalOutputHatch,
     ItemVaultPortHatch,
     NanitesInputBus,
     Enchanting,
