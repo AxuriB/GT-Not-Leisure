@@ -47,6 +47,7 @@ import com.science.gtnl.common.recipe.GTNL.NatureSpiritArrayRecipes;
 import com.science.gtnl.common.recipe.GTNL.PetrochemicalPlantRecipes;
 import com.science.gtnl.common.recipe.GTNL.PlatinumBasedTreatmentRecipes;
 import com.science.gtnl.common.recipe.GTNL.PortalToAlfheimRecipes;
+import com.science.gtnl.common.recipe.GTNL.PrimitiveBrickKilnRecipes;
 import com.science.gtnl.common.recipe.GTNL.RareEarthCentrifugalRecipes;
 import com.science.gtnl.common.recipe.GTNL.ReFusionReactorRecipes;
 import com.science.gtnl.common.recipe.GTNL.RealArtificialStarRecipes;
@@ -169,7 +170,7 @@ public class RecipeLoader {
             new SteamManufacturerRecipes(), new SteamCarpenterRecipe(), new LavaMakerRecipes(),
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
-            new RockBreakerRecipes() };
+            new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };

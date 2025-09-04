@@ -970,6 +970,12 @@ public class CraftingTableRecipes implements IRecipePool {
             new Object[] { "ABA", "A A", "AAA", 'A', new ItemStack(Items.paper, 1), 'B',
                 GTModHandler.getModItem(IndustrialCraft2.ID, "itemHarz", 1) });
 
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.PrimitiveBrickKiln.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', ItemList.Casing_BronzePlatedBricks.get(1), 'B',
+                "craftingToolWrench", 'C', ItemList.Casing_Firebricks.get(1), 'D', ItemList.Hull_Bronze_Bricks.get(1),
+                'E', ItemList.Casing_Firebox_Bronze.get(1), 'F', "craftingToolHardHammer" });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),

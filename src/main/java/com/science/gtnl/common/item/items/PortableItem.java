@@ -112,7 +112,7 @@ public class PortableItem extends Item {
 
         if (burnTime == 0) {
             currentItemBurnTime = 0;
-            if (canSmelt && fuel != null && TileEntityFurnace.isItemFuel(stack)) {
+            if (canSmelt && fuel != null && TileEntityFurnace.isItemFuel(fuel)) {
                 currentItemBurnTime = burnTime = TileEntityFurnace.getItemBurnTime(fuel);
                 if (fuel.stackSize == 1 && fuel.getItem()
                     .hasContainerItem(fuel)) {
