@@ -1245,7 +1245,10 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                     .setPos(10, 7)
                     .setSize(182, 79));
 
-            setMachineModeIcons();
+            if (supportsMachineModeSwitch() && machineModeIcons == null) {
+                machineModeIcons = new ArrayList<>(4);
+                setMachineModeIcons();
+            }
             builder.widget(createPowerSwitchButton(builder))
                 .widget(createVoidExcessButton(builder))
                 .widget(createInputSeparationButton(builder))

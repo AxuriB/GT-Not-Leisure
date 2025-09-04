@@ -17,11 +17,11 @@ def replace_text_in_java_files(root_folder, old_text, new_text):
 if __name__ == "__main__":
     target_folder = "E:/Github/GT-Not-Leisure/src/main/java/com"
 
-    text_to_replace = """
-                    .setMaxTierSkips(0);"""
+    text_to_replace = """    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();"""
 
-    replacement_text = """
-                    .setMaxTierSkips(0)
-                    .setMaxOverclocks(0);"""
+    replacement_text = """    @Override
+    public void setMachineModeIcons() {"""
 
     replace_text_in_java_files(target_folder, text_to_replace, replacement_text)

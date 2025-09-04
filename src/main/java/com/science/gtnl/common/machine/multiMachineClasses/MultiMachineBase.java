@@ -498,6 +498,10 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                 .setPos(0, 7)
                 .setSize(190, 79));
 
+        if (supportsMachineModeSwitch() && machineModeIcons == null) {
+            machineModeIcons = new ArrayList<>(4);
+            setMachineModeIcons();
+        }
         builder.widget(createPowerSwitchButton(builder))
             .widget(createVoidExcessButton(builder))
             .widget(createInputSeparationButton(builder))

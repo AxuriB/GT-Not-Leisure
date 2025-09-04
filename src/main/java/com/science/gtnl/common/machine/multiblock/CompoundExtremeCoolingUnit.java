@@ -278,7 +278,6 @@ public class CompoundExtremeCoolingUnit extends WirelessEnergyMultiMachineBase<C
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_UNPACKAGER);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
     }
