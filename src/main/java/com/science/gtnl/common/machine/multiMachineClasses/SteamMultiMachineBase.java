@@ -129,9 +129,9 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     protected boolean isBroken = true;
     public ArrayList<CustomFluidHatch> mSteamBigInputFluids = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mSteamWirelessInputFluids = new ArrayList<>();
-    private long uiSteamStored = 0;
-    private long uiSteamCapacity = 0;
-    private int uiSteamStoredOfAllTypes = 0;
+    public long uiSteamStored = 0;
+    public long uiSteamCapacity = 0;
+    public int uiSteamStoredOfAllTypes = 0;
     public static final UITexture STEAM_GAUGE_BG = UITexture
         .fullImage(ModList.ScienceNotLeisure.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_STEEL_BG = UITexture
