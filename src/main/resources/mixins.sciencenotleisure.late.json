@@ -27,8 +27,6 @@
     "Gregtech.MixinMTEDigitalTankBase",
     "Gregtech.MixinMTETreeFarm",
     "Gregtech.MixinMTEHatchDataAccess",
-    "Gregtech.MixinMTESteamMultiBase",
-    "Gregtech.MixinMTEHatchSteamBusOutput",
     "Gregtech.AssLineRemover.MixinGTMod",
     "Gregtech.AssLineRemover.MixinGTRecipeBuilder",
     "Gregtech.AssLineRemover.MixinTTRecipeAdder",
