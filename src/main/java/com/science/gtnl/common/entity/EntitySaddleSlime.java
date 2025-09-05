@@ -76,7 +76,6 @@ public class EntitySaddleSlime extends EntitySlime {
                 this.motionZ = motionZ;
 
                 if (this.onGround) {
-                    this.motionY = 0;
                     if (jumping) {
                         this.motionY = 2.0;
                     } else if (motionX != 0 || motionZ != 0) {

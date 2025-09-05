@@ -283,10 +283,6 @@ public class MainConfig {
             .get(CATEGORY_RECIPE, "enableSomethingRecipe", enableSomethingRecipe, "Enable Something Cheap Recipe")
             .getBoolean(enableSomethingRecipe);
 
-        enableAprilFool = config
-            .get(CATEGORY_RECIPE, "enableAprilFoolRecipe", enableAprilFool, "Force enable April Fool's recipe")
-            .getBoolean(enableAprilFool);
-
         enableShowDelRecipeTitle = config
             .get(
                 CATEGORY_RECIPE,

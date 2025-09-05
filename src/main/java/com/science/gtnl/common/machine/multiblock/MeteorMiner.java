@@ -103,7 +103,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     public boolean isResetting = false;
     public boolean stopAllRendering = false;
     public final Collection<ItemStack> itemDrop = new ArrayList<>();
-    public int tierMachine = 0;
+    public byte tierMachine = 0;
     public int tCountCasing;
 
     public final Deque<BlockPos> scanQueue = new ArrayDeque<>();
@@ -283,7 +283,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
 
     @Override
     public void onValueUpdate(byte aValue) {
-        if ((byte) tierMachine != aValue) {
+        if (tierMachine != aValue) {
             tierMachine = (byte) (aValue & 0x0F);
         }
     }
@@ -291,7 +291,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     @Override
     public byte getUpdateData() {
         if (tierMachine <= 0) return 0;
-        return (byte) tierMachine;
+        return tierMachine;
     }
 
     @Override
@@ -409,7 +409,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         hasFinished = aNBT.getBoolean("hasFinished");
         isWaiting = aNBT.getBoolean("isWaiting");
         stopAllRendering = aNBT.getBoolean("stopAllRendering");
-        tierMachine = aNBT.getInteger("tierMachine");
+        tierMachine = aNBT.getByte("tierMachine");
         fortuneTier = aNBT.getInteger("fortuneTier");
         renderAngle = (float) aNBT.getDouble("renderAngle");
     }

@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -136,7 +135,7 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
             .addInfo(StatCollector.translateToLocal("Tooltip_NineIndustrialMultiMachine_07"));
         for (int i = 0; i < 36; i++) {
             tt.addInfo(
-                I18n.format("Tooltip_NineIndustrialMultiMachine_Mode_" + i) + " - "
+                StatCollector.translateToLocal("Tooltip_NineIndustrialMultiMachine_Mode_" + i) + " - "
                     + EnumChatFormatting.YELLOW
                     + aBuiltStrings[i]
                     + EnumChatFormatting.RESET);
