@@ -42,7 +42,7 @@ public class ConfigData {
 
     public void readFromConfig() {
         enableDeleteRecipe = MainConfig.enableDeleteRecipe;
-        enableAprilFoolRecipe = MainConfig.enableAprilFoolRecipe;
+        enableAprilFoolRecipe = MainConfig.enableAprilFool;
         enableShowDelRecipeTitle = MainConfig.enableShowDelRecipeTitle;
         enableSomethingRecipe = MainConfig.enableSomethingRecipe;
         showTickrateMessages = MainConfig.showTickrateMessages;
@@ -53,7 +53,7 @@ public class ConfigData {
 
     public void writeToConfig() {
         MainConfig.enableDeleteRecipe = enableDeleteRecipe;
-        MainConfig.enableAprilFoolRecipe = enableAprilFoolRecipe;
+        MainConfig.enableAprilFool = enableAprilFoolRecipe;
         MainConfig.enableShowDelRecipeTitle = enableShowDelRecipeTitle;
         MainConfig.enableSomethingRecipe = enableSomethingRecipe;
         MainConfig.showTickrateMessages = showTickrateMessages;

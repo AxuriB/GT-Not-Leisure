@@ -68,7 +68,6 @@ public class MainConfig {
 
     // Recipe
     public static boolean enableDeleteRecipe = true;
-    public static boolean enableAprilFoolRecipe = false;
     public static boolean enableShowDelRecipeTitle = true;
     public static boolean enableSomethingRecipe = true;
 
@@ -140,6 +139,8 @@ public class MainConfig {
     // Debug
     public static boolean enableDebugMode = false;
 
+    public static boolean enableAprilFool = false;
+
     public static Configuration config;
 
     static {
@@ -157,7 +158,7 @@ public class MainConfig {
 
         LocalDate today = LocalDate.now();
         if (today.getMonthValue() == 4 && today.getDayOfMonth() == 1) {
-            enableAprilFoolRecipe = true;
+            enableAprilFool = true;
         }
 
     }
@@ -282,9 +283,9 @@ public class MainConfig {
             .get(CATEGORY_RECIPE, "enableSomethingRecipe", enableSomethingRecipe, "Enable Something Cheap Recipe")
             .getBoolean(enableSomethingRecipe);
 
-        enableAprilFoolRecipe = config
-            .get(CATEGORY_RECIPE, "enableAprilFoolRecipe", enableAprilFoolRecipe, "Force enable April Fool's recipe")
-            .getBoolean(enableAprilFoolRecipe);
+        enableAprilFool = config
+            .get(CATEGORY_RECIPE, "enableAprilFoolRecipe", enableAprilFool, "Force enable April Fool's recipe")
+            .getBoolean(enableAprilFool);
 
         enableShowDelRecipeTitle = config
             .get(

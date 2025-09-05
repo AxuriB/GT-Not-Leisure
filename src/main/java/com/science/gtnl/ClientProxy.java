@@ -34,7 +34,7 @@ import com.science.gtnl.common.render.item.ItemNullPointerExceptionRender;
 import com.science.gtnl.common.render.item.ItemPlayerDollRenderer;
 import com.science.gtnl.common.render.item.ItemSteamRocketRenderer;
 import com.science.gtnl.common.render.item.ItemTwilightSwordRender;
-import com.science.gtnl.common.render.tile.MeteorMinerRenderer;
+import com.science.gtnl.common.render.tile.LaserBeconRenderer;
 import com.science.gtnl.common.render.tile.PlayerDollRenderer;
 import com.science.gtnl.common.render.tile.RealArtificialStarRender;
 import com.science.gtnl.common.render.tile.RenderEternalGregTechWorkshop;
@@ -66,7 +66,7 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserBeacon.class, new MeteorMinerRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserBeacon.class, new LaserBeconRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlayerDoll.class, new PlayerDollRenderer());
         MinecraftForgeClient
@@ -95,7 +95,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(ItemLoader.testItem, new FancyHaloRenderer());
         MinecraftForgeClient.registerItemRenderer(ItemLoader.metaItem, new FancyHaloRenderer());
 
-        if (MainConfig.enableDebugMode) {
+        if (MainConfig.enableAprilFool) {
             MinecraftForgeClient.registerItemRenderer(
                 Item.getItemFromBlock(GregTechAPI.sBlockMachines),
                 new ItemMeteorMinerMachineRender());

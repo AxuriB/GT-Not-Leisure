@@ -198,7 +198,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
                 mUpdated = false;
             }
             if (--mUpdate == 0 || --mStartUpCheck == 0) {
-                checkStructure(true, aBaseMetaTileEntity);
+                checkStructure(true);
                 updateHatchTexture();
             }
 

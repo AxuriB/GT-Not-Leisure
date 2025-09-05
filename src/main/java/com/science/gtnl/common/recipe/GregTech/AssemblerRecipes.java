@@ -2144,5 +2144,27 @@ public class AssemblerRecipes implements IRecipePool {
             .duration(20)
             .eut(16)
             .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Void_Bus.get(1),
+                ItemList.Automation_Filter_LV.get(1),
+                ItemList.ItemFilter_Export.get(1))
+            .itemOutputs(GTNLItemList.SuperVoidBus.get(1))
+            .fluidInputs(Materials.Tin.getMolten(288))
+            .duration(200)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Void.get(1),
+                ItemList.Automation_Filter_LV.get(1),
+                ItemList.ItemFilter_Export.get(1))
+            .itemOutputs(GTNLItemList.SuperVoidHatch.get(1))
+            .fluidInputs(Materials.Tin.getMolten(288))
+            .duration(200)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
     }
 }

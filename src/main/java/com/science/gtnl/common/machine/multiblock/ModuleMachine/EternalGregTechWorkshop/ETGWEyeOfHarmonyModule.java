@@ -704,7 +704,7 @@ public class ETGWEyeOfHarmonyModule extends EternalGregTechWorkshopModule {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (!super.checkMachine(aBaseMetaTileEntity, aStack)) return false;
         if (!mDualInputHatches.isEmpty()) {
             return false;
         }

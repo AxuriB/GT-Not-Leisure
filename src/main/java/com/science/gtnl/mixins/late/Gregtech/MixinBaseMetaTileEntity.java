@@ -25,7 +25,7 @@ public abstract class MixinBaseMetaTileEntity extends CommonBaseMetaTileEntity i
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        if (mMetaTileEntity instanceof MeteorMiner && MainConfig.enableDebugMode) {
+        if (mMetaTileEntity instanceof MeteorMiner && MainConfig.enableAprilFool) {
             return AxisAlignedBB.getBoundingBox(
                 this.xCoord - 256,
                 this.yCoord - 256,

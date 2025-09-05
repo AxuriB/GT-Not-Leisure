@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 
-public class MeteorMinerRenderer extends TileEntitySpecialRenderer {
+public class LaserBeconRenderer extends TileEntitySpecialRenderer {
 
     final private double lineRadius = 0.25;
 
