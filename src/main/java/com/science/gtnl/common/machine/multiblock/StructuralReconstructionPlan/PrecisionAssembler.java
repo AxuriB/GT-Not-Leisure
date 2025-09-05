@@ -306,9 +306,6 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
         }
 
         mEnergyHatchTier = checkEnergyHatchTier();
-
-        updateTexture(aBaseMetaTileEntity, getCasingTextureID());
-        updateHatchTexture();
         return mCountCasing >= 30 && casingTier >= 0;
     }
 

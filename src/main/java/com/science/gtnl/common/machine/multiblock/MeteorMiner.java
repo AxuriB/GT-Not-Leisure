@@ -178,13 +178,15 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
                     .buildAndChain(ofBlock(ModBlocks.blockSpecialMultiCasings, 6)))
             .addElement(
                 'I',
-                buildHatchAdder(MeteorMiner.class).atLeast(InputBus.withAdder(MeteorMiner::addInjector))
+                buildHatchAdder(MeteorMiner.class).hatchClass(MTEHatchInputBus.class)
+                    .shouldReject(t -> !t.mInputBusses.isEmpty())
+                    .adder(MeteorMiner::addInjector)
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(ofBlock(ModBlocks.blockSpecialMultiCasings, 6)))
             .addElement(
                 'J',
-                buildHatchAdder(MeteorMiner.class).atLeast(Maintenance, OutputBus, Energy.or(ExoticEnergy), Maintenance)
+                buildHatchAdder(MeteorMiner.class).atLeast(Maintenance, OutputBus, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 2)))
@@ -345,18 +347,12 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        this.tierMachine = getTierMachine(aStack);
-        if (tierMachine == 1) {
-            if (!checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7) || !checkHatch()) {
-                return false;
-            }
-        } else if (tierMachine == 2) {
-            if (!checkPiece(STRUCTURE_PIECE_TIER2, 9, 15, 3) || !checkHatch()) {
-                return false;
-            }
-        } else {
-            return false;
+        this.tierMachine = 0;
+
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7) && checkHatch()) {
+            tierMachine = 1;
+        } else if (checkPiece(STRUCTURE_PIECE_TIER2, 9, 15, 3) && checkHatch()) {
+            tierMachine = 2;
         }
 
         if (mEnergyHatches.isEmpty() || (mInputBusses.isEmpty() && this.tierMachine == 1)
