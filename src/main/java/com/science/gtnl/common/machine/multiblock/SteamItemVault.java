@@ -15,10 +15,7 @@ import java.math.BigInteger;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -53,7 +50,6 @@ import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -62,7 +58,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
@@ -261,14 +256,19 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                     buildSteamInput(SteamItemVault.class).casingIndex(getCasingTextureID())
                         .dot(1)
                         .build(),
+                    buildHatchAdder(SteamItemVault.class).hatchClass(VaultPortHatch.class)
+                        .shouldReject(t -> t.portHatch != null)
+                        .adder(SteamItemVault::addPortBusToMachineList)
+                        .casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build(),
                     buildHatchAdder(SteamItemVault.class)
                         .atLeast(
                             SteamHatchElement.InputBus_Steam,
                             SteamHatchElement.OutputBus_Steam,
                             InputBus,
                             OutputBus,
-                            InputHatch,
-                            SteamItemVaultPortElement.SteamItemVaultPortBus)
+                            InputHatch)
                         .dot(1)
                         .casingIndex(getCasingTextureID())
                         .build(),
@@ -280,10 +280,6 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
-            if (portHatch != null) {
-                portHatch.unbind();
-                portHatch = null;
-            }
             return false;
         }
         if (portHatch != null && portHatch.controller == null) portHatch.bind(this);
@@ -656,35 +652,4 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
         }
         return false;
     }
-
-    public enum SteamItemVaultPortElement implements IHatchElement<SteamItemVault> {
-
-        SteamItemVaultPortBus(SteamItemVault::addPortBusToMachineList, VaultPortHatch.class) {
-
-            @Override
-            public long count(SteamItemVault steamItemVault) {
-                return steamItemVault.portHatch != null ? 1 : 0;
-            }
-        };
-
-        private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<SteamItemVault> adder;
-
-        @SafeVarargs
-        SteamItemVaultPortElement(IGTHatchAdder<SteamItemVault> adder, Class<? extends IMetaTileEntity>... mteClasses) {
-            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
-            this.adder = adder;
-        }
-
-        @Override
-        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return mteClasses;
-        }
-
-        @Override
-        public IGTHatchAdder<? super SteamItemVault> adder() {
-            return adder;
-        }
-    }
-
 }

@@ -36,6 +36,7 @@ import com.science.gtnl.common.block.blocks.BlockPlayerDoll;
 import com.science.gtnl.common.block.blocks.BlockPlayerLeash;
 import com.science.gtnl.common.block.blocks.BlockShimmerFluid;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
+import com.science.gtnl.common.block.blocks.tile.TileEntityCardboardBox;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
@@ -90,11 +91,12 @@ public class BlockLoader {
         blockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
         blockEternalGregTechWorkshopRender = new BlockEternalGregTechWorkshopRender();
 
+        GameRegistry.registerTileEntity(TileEntityCardboardBox.class, "CardboardBoxTileEntity");
         GameRegistry
             .registerTileEntity(TileEntityEternalGregTechWorkshop.class, "EternalGregTechWorkshopRenderTileEntity");
         GameRegistry.registerTileEntity(TileEntityNanoPhagocytosisPlant.class, "NanoPhagocytosisPlantRenderTileEntity");
         GameRegistry.registerTileEntity(TileEntityArtificialStar.class, "ArtificialStarRenderTileEntity");
-        GameRegistry.registerTileEntity(TileEntityPlayerDoll.class, "playerDollTileEntity");
+        GameRegistry.registerTileEntity(TileEntityPlayerDoll.class, "PlayerDollTileEntity");
         GameRegistry.registerTileEntity(TileEntityLaserBeacon.class, "LaserBeaconTileEntity");
 
         GameRegistry

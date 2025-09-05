@@ -281,17 +281,12 @@ public class SingularityDataHub extends MultiMachineBase<SingularityDataHub>
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         wirelessMode = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
-            || portHatch == null) {
-            if (portHatch != null) {
-                portHatch.unbind();
-                portHatch = null;
-            }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
         if (portHatch.controller == null) portHatch.bind(this);
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return mCountCasing >= 100;
+        return mCountCasing >= 100 && portHatch != null;
     }
 
     @Override
@@ -835,9 +830,9 @@ public class SingularityDataHub extends MultiMachineBase<SingularityDataHub>
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof VaultPortHatch vaultPortHatch) {
-                if (this.portHatch != null) return false;
-                this.portHatch = vaultPortHatch;
-                this.portHatch.updateTexture(aBaseCasingIndex);
+                if (portHatch != null) return false;
+                portHatch = vaultPortHatch;
+                portHatch.updateTexture(aBaseCasingIndex);
                 return true;
             }
         }
