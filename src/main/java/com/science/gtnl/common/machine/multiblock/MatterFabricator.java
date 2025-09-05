@@ -238,7 +238,7 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
             mOutputFluids = outputFluids.toArray(new FluidStack[0]);
         }
 
-        this.mEUt = -(int) Math.min(totalOutput * 4L, Integer.MAX_VALUE);
+        this.lEUt = -(int) Math.min(totalOutput * 4L, Integer.MAX_VALUE);
         this.mProgresstime = 0;
         this.mEfficiency = 10000;
         this.mMaxProgresstime = 200;
@@ -252,14 +252,14 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mProgresstime > 0) {
-                if (!consumeEnergy(-this.mEUt)) {
+                if (!consumeEnergy(-this.lEUt)) {
                     stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 }
             }
         }
     }
 
-    private boolean consumeEnergy(int amount) {
+    public boolean consumeEnergy(long amount) {
         for (MTEHatchEnergy energyHatch : mEnergyHatches) {
             if (energyHatch.getEUVar() >= amount) {
                 energyHatch.setEUVar(energyHatch.getEUVar() - amount);

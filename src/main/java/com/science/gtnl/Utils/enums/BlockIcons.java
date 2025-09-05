@@ -192,4 +192,11 @@ public class BlockIcons {
     public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_STEAM_ITEM_VAULT_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
         BASE + "SteamItemVault/OVERLAY_FRONT_ACTIVE_GLOW");
 
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_SINGULARITY_DATA_HUB = new Textures.BlockIcons.CustomIcon(
+        BASE + "SingularityDataHub/OVERLAY_FRONT");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_SINGULARITY_DATA_HUB_ACTIVE = new Textures.BlockIcons.CustomIcon(
+        BASE + "SingularityDataHub/OVERLAY_FRONT_ACTIVE");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_SINGULARITY_DATA_HUB_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
+        BASE + "SingularityDataHub/OVERLAY_FRONT_ACTIVE_GLOW");
+
 }

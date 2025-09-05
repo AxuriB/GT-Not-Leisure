@@ -35,7 +35,6 @@ import com.science.gtnl.common.machine.hatch.ExplosionDynamoHatch;
 import com.science.gtnl.common.machine.hatch.HumongousInputBus;
 import com.science.gtnl.common.machine.hatch.HumongousNinefoldInputHatch;
 import com.science.gtnl.common.machine.hatch.HumongousSolidifierHatch;
-import com.science.gtnl.common.machine.hatch.ItemVaultPortHatch;
 import com.science.gtnl.common.machine.hatch.ManaDynamoHatch;
 import com.science.gtnl.common.machine.hatch.ManaEnergyHatch;
 import com.science.gtnl.common.machine.hatch.NanitesInputBus;
@@ -52,6 +51,7 @@ import com.science.gtnl.common.machine.hatch.SuperInputHatchME;
 import com.science.gtnl.common.machine.hatch.SuperVoidBus;
 import com.science.gtnl.common.machine.hatch.SuperVoidHatch;
 import com.science.gtnl.common.machine.hatch.TapDynamoHatch;
+import com.science.gtnl.common.machine.hatch.VaultPortHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.common.machine.multiblock.AdvancedCircuitAssemblyLine;
@@ -146,6 +146,7 @@ import com.science.gtnl.common.machine.multiblock.ReactionFurnace;
 import com.science.gtnl.common.machine.multiblock.RealArtificialStar;
 import com.science.gtnl.common.machine.multiblock.ResourceCollectionModule;
 import com.science.gtnl.common.machine.multiblock.ShallowChemicalCoupling;
+import com.science.gtnl.common.machine.multiblock.SingularityDataHub;
 import com.science.gtnl.common.machine.multiblock.SmeltingMixingFurnace;
 import com.science.gtnl.common.machine.multiblock.SpaceAssembler;
 import com.science.gtnl.common.machine.multiblock.SteamCracking;
@@ -1315,6 +1316,13 @@ public class MachineLoader {
                 StatCollector.translateToLocal("NamePrimitiveBrickKiln")));
         addItemTooltip(GTNLItemList.PrimitiveBrickKiln.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
+        GTNLItemList.SingularityDataHub.set(
+            new SingularityDataHub(
+                SINGULARITY_DATA_HUB.ID,
+                "SingularityDataHub",
+                StatCollector.translateToLocal("NameSingularityDataHub")));
+        addItemTooltip(GTNLItemList.SingularityDataHub.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(
             new CheatOreProcessingFactory(
@@ -1890,12 +1898,12 @@ public class MachineLoader {
                 StatCollector.translateToLocal("NanitesInputBus")));
         addItemTooltip(GTNLItemList.NanitesInputBus.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.ItemVaultPortHatch.set(
-            new ItemVaultPortHatch(
-                ITEM_VAULT_PORT_HATCH.ID,
-                "ItemVaultPortHatch",
-                StatCollector.translateToLocal("ItemVaultPortHatch")));
-        addItemTooltip(GTNLItemList.ItemVaultPortHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        GTNLItemList.VaultPortHatch.set(
+            new VaultPortHatch(
+                VAULT_PORT_HATCH.ID,
+                "VaultPortHatch",
+                StatCollector.translateToLocal("VaultPortHatch")));
+        addItemTooltip(GTNLItemList.VaultPortHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.OriginalInputHatch.set(
             new OriginalInputHatch(

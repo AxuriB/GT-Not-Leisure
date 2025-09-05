@@ -46,7 +46,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 
-public class ItemVaultPortHatch extends MTEHatch
+public class VaultPortHatch extends MTEHatch
     implements ICellContainer, IGridProxyable, IActionHost, IPowerChannelState {
 
     public IItemVault controller;
@@ -56,17 +56,17 @@ public class ItemVaultPortHatch extends MTEHatch
     public IMEInventoryHandler<IAEItemStack> itemHandler;
     public IMEInventoryHandler<IAEFluidStack> fluidHandler;
 
-    public ItemVaultPortHatch(int aID, String aName, String aNameRegional) {
+    public VaultPortHatch(int aID, String aName, String aNameRegional) {
         super(
             aID,
             aName,
             aNameRegional,
             3,
             0,
-            new String[] { StatCollector.translateToLocal("Tooltip_ItemVaultPortHatch_00") });
+            new String[] { StatCollector.translateToLocal("Tooltip_VaultPortHatch_00") });
     }
 
-    public ItemVaultPortHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public VaultPortHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         this.itemHandler = new ItemMEInventory();
         this.fluidHandler = new FluidMEInventory();
@@ -74,7 +74,7 @@ public class ItemVaultPortHatch extends MTEHatch
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new ItemVaultPortHatch(mName, mTier, mDescriptionArray, mTextures);
+        return new VaultPortHatch(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class ItemVaultPortHatch extends MTEHatch
     @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
-            gridProxy = new AENetworkProxy(this, "proxy", GTNLItemList.ItemVaultPortHatch.get(1), true);
+            gridProxy = new AENetworkProxy(this, "proxy", GTNLItemList.VaultPortHatch.get(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
             gridProxy.onReady();
             var bmte = getBaseMetaTileEntity();
