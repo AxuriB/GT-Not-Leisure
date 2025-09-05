@@ -79,7 +79,7 @@ public class PrimitiveBrickKilnRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Quartz, 1))
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.QuartzSand, 1))
             .itemOutputs(ItemList.Casing_Firebricks.get(1))
             .fluidInputs(Materials.Water.getFluid(1000))
             .duration(300)

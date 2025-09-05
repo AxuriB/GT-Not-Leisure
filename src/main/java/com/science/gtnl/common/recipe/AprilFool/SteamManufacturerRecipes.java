@@ -445,6 +445,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
         // Steel
         RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(1),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6))
             .itemOutputs(ItemList.Casing_SolidSteel.get(1))
@@ -464,6 +465,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
 
         RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(12),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4))
