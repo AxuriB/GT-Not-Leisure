@@ -31,6 +31,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -67,6 +68,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
@@ -195,16 +197,19 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
             .build();
     }
 
+    public boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
+        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (!(aMetaTileEntity instanceof MTEHatchInputBus bus)) return false;
+        if (bus.getTierForStructure() > 0) return false;
+        bus.updateTexture(aBaseCasingIndex);
+        return mInputBusses.add(bus);
+    }
+
     @Override
     public IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
             && !f.isVerticallyFliped();
-    }
-
-    @Override
-    public void clearHatches() {
-        super.clearHatches();
-        tCountCasing = 0;
     }
 
     @Override
@@ -217,15 +222,6 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     public void onBlockDestroyed() {
         if (renderer != null) renderer.setShouldRender(false);
         super.onBlockDestroyed();
-    }
-
-    public boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof MTEHatchInputBus bus)) return false;
-        if (bus.getTierForStructure() > 0) return false;
-        bus.updateTexture(aBaseCasingIndex);
-        return mInputBusses.add(bus);
     }
 
     @Override
@@ -337,19 +333,6 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         return tt;
     }
 
-    public boolean findLaserRenderer(World w) {
-        this.setStartCoords();
-        if (w.getTileEntity(
-            xStart,
-            getBaseMetaTileEntity().getYCoord() + (this.tierMachine == 1 ? 10 : 15),
-            zStart) instanceof TileEntityLaserBeacon laser) {
-            renderer = laser;
-            renderer.setRotationFields(getDirection(), getRotation(), getFlip());
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
@@ -381,39 +364,23 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         return this.tierMachine > 0;
     }
 
+    public boolean findLaserRenderer(World w) {
+        this.setStartCoords();
+        if (w.getTileEntity(
+            xStart,
+            getBaseMetaTileEntity().getYCoord() + (this.tierMachine == 1 ? 10 : 15),
+            zStart) instanceof TileEntityLaserBeacon laser) {
+            renderer = laser;
+            renderer.setRotationFields(getDirection(), getRotation(), getFlip());
+            return true;
+        }
+        return false;
+    }
+
     public int getTierMachine(ItemStack inventory) {
         if (inventory == null) return 0;
         return inventory.isItemEqual(GTNLItemList.MeteorMinerSchematic2.get(1)) ? 2
             : inventory.isItemEqual(GTNLItemList.MeteorMinerSchematic1.get(1)) ? 1 : 0;
-    }
-
-    public void setFortuneTier() {
-        this.fortuneTier = 0;
-
-        if (this.tierMachine == 2) {
-            this.fortuneTier = 5;
-            return;
-        }
-
-        if (!mInputBusses.isEmpty()) {
-            Optional<ItemStack> input = Optional.ofNullable(
-                mInputBusses.get(0)
-                    .getInventoryHandler()
-                    .getStackInSlot(0));
-            input.ifPresent(stack -> this.fortuneTier = getFortuneTierForItem(stack));
-        }
-    }
-
-    public int getFortuneTierForItem(ItemStack stack) {
-        if (isSpecificItem(stack, Botania.ID, "terraPick")) {
-            return 4;
-        } else if (isSpecificItem(stack, BloodMagic.ID, "boundPickaxe")) {
-            return 3;
-        } else if (isSpecificItem(stack, Thaumcraft.ID, "ItemPickaxeElemental")) {
-            return 2;
-        } else {
-            return 0;
-        }
     }
 
     public boolean isSpecificItem(ItemStack stack, String modId, String itemName) {
@@ -431,7 +398,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         aNBT.setBoolean("hasFinished", hasFinished);
         aNBT.setBoolean("isWaiting", isWaiting);
         aNBT.setBoolean("stopAllRendering", stopAllRendering);
-        aNBT.setInteger("multiTier", tierMachine);
+        aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("fortuneTier", fortuneTier);
         aNBT.setDouble("renderAngle", renderAngle);
     }
@@ -446,7 +413,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         hasFinished = aNBT.getBoolean("hasFinished");
         isWaiting = aNBT.getBoolean("isWaiting");
         stopAllRendering = aNBT.getBoolean("stopAllRendering");
-        tierMachine = aNBT.getInteger("multiTier");
+        tierMachine = aNBT.getInteger("tierMachine");
         fortuneTier = aNBT.getInteger("fortuneTier");
         renderAngle = (float) aNBT.getDouble("renderAngle");
     }
@@ -492,8 +459,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
 
         setElectricityStats();
         if (!isEnergyEnough()) {
-            stopMachine(ShutDownReasonRegistry.NONE);
-            return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
+            return CheckRecipeResultRegistry.insufficientPower(lEUt);
         }
 
         if (hasFinished) {
@@ -557,6 +523,35 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         }
 
         return SimpleCheckRecipeResult.ofSuccess("meteor_mining");
+    }
+
+    public void setFortuneTier() {
+        this.fortuneTier = 0;
+
+        if (this.tierMachine == 2) {
+            this.fortuneTier = 5;
+            return;
+        }
+
+        if (!mInputBusses.isEmpty()) {
+            Optional<ItemStack> input = Optional.ofNullable(
+                mInputBusses.get(0)
+                    .getInventoryHandler()
+                    .getStackInSlot(0));
+            input.ifPresent(stack -> this.fortuneTier = getFortuneTierForItem(stack));
+        }
+    }
+
+    public int getFortuneTierForItem(ItemStack stack) {
+        if (isSpecificItem(stack, Botania.ID, "terraPick")) {
+            return 4;
+        } else if (isSpecificItem(stack, BloodMagic.ID, "boundPickaxe")) {
+            return 3;
+        } else if (isSpecificItem(stack, Thaumcraft.ID, "ItemPickaxeElemental")) {
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
     public void prepareScanQueue() {
@@ -672,17 +667,6 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
             && itemData.mMaterial.mMaterial != Materials.Oilsands;
     }
 
-    public static class BlockPos {
-
-        final int x, y, z;
-
-        BlockPos(int x, int y, int z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-    }
-
     public void setStartCoords() {
         ForgeDirection facing = getBaseMetaTileEntity().getBackFacing();
         if (facing == ForgeDirection.NORTH || facing == ForgeDirection.SOUTH) {
@@ -726,7 +710,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
             .setExtraDurationModifier(mConfigSpeedBoost);
         calculator.calculate();
         this.mMaxProgresstime = (isWaiting) ? 200 : calculator.getDuration();
-        this.mEUt = (int) (calculator.getConsumption() / ((isWaiting) ? 8 : 1));
+        this.lEUt = (int) (calculator.getConsumption() / ((isWaiting) ? 8 : 1));
     }
 
     public boolean isEnergyEnough() {
@@ -741,7 +725,6 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-
         builder.widget(
             new ButtonWidget().setOnClick((clickData, widget) -> this.startReset())
                 .setPlayClickSound(true)
@@ -755,8 +738,8 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("fortune", this.fortuneTier);
-        tag.setInteger("tier", this.tierMachine);
+        tag.setInteger("fortuneTier", this.fortuneTier);
+        tag.setInteger("tierMachine", this.tierMachine);
     }
 
     @Override
@@ -766,11 +749,11 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
             StatCollector.translateToLocal("Info_MeteorMiner_00") + EnumChatFormatting.WHITE
-                + tag.getInteger("tier")
+                + tag.getInteger("tierMachine")
                 + EnumChatFormatting.RESET);
         currentTip.add(
             StatCollector.translateToLocal("Info_MeteorMiner_01") + EnumChatFormatting.WHITE
-                + tag.getInteger("fortune")
+                + tag.getInteger("fortuneTier")
                 + EnumChatFormatting.RESET);
     }
 }
