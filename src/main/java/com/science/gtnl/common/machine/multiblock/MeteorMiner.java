@@ -52,6 +52,7 @@ import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 
+import bartworks.system.material.BWTileEntityMetaGeneratedOre;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -613,7 +614,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         if (GTUtility.isOre(target, meta)) {
             try {
                 TileEntity te = w.getTileEntity(x, y, z);
-                if (te instanceof TileEntityOres gtOre && gtOre.mNatural) {
+                if (te instanceof TileEntityOres || te instanceof BWTileEntityMetaGeneratedOre) {
                     itemDrop.addAll(getOutputByDrops(drops));
                 }
             } catch (Exception e) {

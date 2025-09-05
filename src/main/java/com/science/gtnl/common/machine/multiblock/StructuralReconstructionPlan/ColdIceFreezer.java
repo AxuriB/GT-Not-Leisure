@@ -39,12 +39,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings2;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -202,7 +202,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.advancedFreezerRecipes;
+        return RecipeMaps.vacuumFreezerRecipes;
     }
 
     @Override

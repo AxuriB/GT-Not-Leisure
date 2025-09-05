@@ -148,6 +148,7 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
         }
 
         mParallelTier = getParallelTier(aStack);
+        mEnergyHatchTier = checkEnergyHatchTier();
         return mCountCasing >= 35 && this.mMufflerHatches.size() == 1;
     }
 
