@@ -1,6 +1,8 @@
 package com.science.gtnl.loader;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -95,6 +97,7 @@ import com.science.gtnl.common.recipe.GregTech.Remove.NewVacuumFurnaceRecipes;
 import com.science.gtnl.common.recipe.GregTech.ServerStart.CircuitAssemblerConvertRecipes;
 import com.science.gtnl.common.recipe.GregTech.ServerStart.CircuitAssemblyLineRecipes;
 import com.science.gtnl.common.recipe.GregTech.SpaceAssemblerRecipes;
+import com.science.gtnl.common.recipe.GregTech.TargetChamberRecipes;
 import com.science.gtnl.common.recipe.GregTech.TranscendentPlasmaMixerRecipes;
 import com.science.gtnl.common.recipe.GregTech.VacuumFreezerRecipes;
 import com.science.gtnl.common.recipe.GregTech.VacuumFurnaceRecipes;
@@ -107,6 +110,7 @@ import com.science.gtnl.config.MainConfig;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import codechicken.nei.api.API;
 import goodgenerator.util.CrackRecipeAdder;
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTRecipe;
@@ -145,6 +149,8 @@ public class RecipeLoader {
         CrackRecipeAdder.reAddBlastRecipe(MaterialPool.HSLASteel, 1000, 480, 1711, true);
         CrackRecipeAdder.reAddBlastRecipe(MaterialPool.Germaniumtungstennitride, 800, 30720, 8200, true);
 
+        registerBuffTargetChamberRecipe();
+
         IRecipePool[] recipePools = new IRecipePool[] { new TCRecipePool(), new ChemicalRecipes(),
             new ElectrolyzerRecipes(), new MixerRecipes(), new multiDehydratorRecipes(), new AssemblerRecipes(),
             new AutoclaveRecipes(), new AlloyBlastSmelterRecipes(), new CompressorRecipes(),
@@ -170,7 +176,7 @@ public class RecipeLoader {
             new SteamManufacturerRecipes(), new SteamCarpenterRecipe(), new LavaMakerRecipes(),
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
-            new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes() };
+            new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };
@@ -218,17 +224,6 @@ public class RecipeLoader {
             }
         }
 
-        Collection<GTRecipe> targetChamberRecipe = LanthanidesRecipeMaps.targetChamberRecipes.getAllRecipes();
-        LanthanidesRecipeMaps.targetChamberRecipes.getBackend()
-            .clearRecipes();
-
-        for (GTRecipe recipe : targetChamberRecipe) {
-            for (ItemStack itemStack : recipe.mOutputs) {
-                itemStack.stackSize *= 3;
-            }
-            LanthanidesRecipeMaps.targetChamberRecipes.add(recipe);
-        }
-
         TCResearches.register();
     }
 
@@ -252,5 +247,39 @@ public class RecipeLoader {
         API.addRecipeCatalyst(GTNLItemList.PortableFurnace.get(1), "smelting");
         API.addRecipeCatalyst(GTNLItemList.PortableBasicWorkBench.get(1), "crafting");
         API.addRecipeCatalyst(GTNLItemList.PortableAdvancedWorkBench.get(1), "crafting");
+    }
+
+    private static void registerBuffTargetChamberRecipe() {
+        Collection<GTRecipe> targetChamberRecipe = LanthanidesRecipeMaps.targetChamberRecipes.getAllRecipes();
+        LanthanidesRecipeMaps.targetChamberRecipes.getBackend()
+            .clearRecipes();
+
+        Map<ItemStack, Integer> waferMultiplier = new HashMap<>() {
+
+            {
+                put(ItemList.Circuit_Silicon_Wafer2.get(1), 1);
+                put(ItemList.Circuit_Silicon_Wafer3.get(1), 2);
+                put(ItemList.Circuit_Silicon_Wafer4.get(1), 4);
+                put(ItemList.Circuit_Silicon_Wafer5.get(1), 8);
+                put(ItemList.Circuit_Silicon_Wafer6.get(1), 16);
+                put(ItemList.Circuit_Silicon_Wafer7.get(1), 32);
+            }
+        };
+        for (GTRecipe recipe : targetChamberRecipe) {
+            for (Map.Entry<ItemStack, Integer> entry : waferMultiplier.entrySet()) {
+                if (recipe.mInputs[1].isItemEqual(entry.getKey())) {
+                    int multiplier = entry.getValue();
+                    for (ItemStack itemStack : recipe.mOutputs) {
+                        itemStack.stackSize *= multiplier;
+                    }
+                } else {
+                    for (ItemStack itemStack : recipe.mOutputs) {
+                        itemStack.stackSize *= 4;
+                    }
+                }
+                break;
+            }
+            LanthanidesRecipeMaps.targetChamberRecipes.add(recipe);
+        }
     }
 }
