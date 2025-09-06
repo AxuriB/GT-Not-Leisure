@@ -9,7 +9,7 @@ import com.brandon3055.brandonscore.common.utills.Utills;
 
 public class PortalToAlfheimExplosion implements IProcess {
 
-    public static final DamageSource EXPLOSION = new DamageSource("damage.gtnl.PortalToAlfheimExplode").setExplosion()
+    public static final DamageSource EXPLOSION = new DamageSource("damage.gtnl.portalExplode").setExplosion()
         .setDamageBypassesArmor()
         .setDamageIsAbsolute()
         .setFireDamage()

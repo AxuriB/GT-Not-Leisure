@@ -38,7 +38,12 @@ nei.bookmark.ae_retrieve_item=Retrieve item from AE
 nei.bookmark.ae_start_craft=Request craft from AE
 nei.bookmark.ae_no_craft=This item has no corresponding crafting
 
+error.rc.cpu=§6The CPU is working!
+
 death.attack.damage.gtnl.crushing=%1$s was crushed to death
+death.attack.damage.gtnl.infinity=%1$s was excised from existence
+death.attack.damage.gtnl.portalExplode=%1$s was backlashed by the Alfheim Teleportation Array.
+death.attack.damage.gtnl.awe=%1$s §c§lFailed to complete the §r§d§lViolet Baptism.
 
 Info_SteamNetwork_00=User %s has no global steam network.
 Info_SteamNetwork_01=User %s has %s%s%s Steam in their network.
@@ -930,7 +935,6 @@ Tooltip_InfinitySword_02=§9Crouch and left-click to bypass Draconic Armor's pro
 Damage_InfinitySword=Infinite
 Tooltip_InfinitySword_Aura_00=Skill cooldown! Remaining time: 
 Tooltip_InfinitySword_Aura_01= seconds
-death.attack.damage.gtnl.infinity=%1$s was excised from existence
 item.InfinityPickaxe.name=Pickaxe of World Collapse
 Tooltip_InfinityPickaxe_00=§8§oShatter worlds, break all bounds.
 item.InfinityAxe.name=Axe of Nature's Desolation
@@ -2326,7 +2330,6 @@ Tooltip_TeleportationArrayToAlfheim_01=Requires a Liquid Mana Input Hatch.
 Tooltip_TeleportationArrayToAlfheim_02=Consumes 100L of liquid mana per second to operate.
 Tooltip_TeleportationArrayToAlfheim_03=Place an Eternal Mana Pool or Asgard Dandelion inside the controller to enable infinite mana
 Tooltip_TeleportationArrayToAlfheim_Casing=Any Radiant Naquadah Alloy Machine Block
-death.attack.damage.gtnl.PortalToAlfheimExplode=%1$s was backlashed by the Alfheim Teleportation Array.
 
 NameLapotronChip=Lapotron Factory
 gtnl.recipe.LapotronChipRecipeType=Lapotron Factory
@@ -3017,7 +3020,6 @@ Awe_Cancel_01=§f§lDo not be afraid, I am with you. Unless I allow it, you can 
 Awe_Cancel_02_01=§f§lDo not deny my existence, I am right before your eyes.
 Awe_Cancel_02_02=§f§lMy deeds are unknown, untraceable.
 Awe_Kick=§f§l!!! At a loss !!!
-death.attack.damage.gtnl.AweDamage=%1$s §c§lFailed to complete the §r§d§lViolet Baptism.
 
 NameRealArtificialStar=Real · Annihilation Generator
 ArtificialStar.enableRender.0=Disable effect rendering
@@ -3063,5 +3065,3 @@ RealArtificialStar.getInfoData.04=Stability Field Level
 RealArtificialStar.getInfoData.05=Material Recycling Probability
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=Chance to recycle some materials. Probability affected by module level.
 NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=Generates:
-
-error.rc.cpu=§6The CPU is working!

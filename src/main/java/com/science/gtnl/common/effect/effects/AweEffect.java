@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class AweEffect extends EffectBase {
 
-    public static final DamageSource awe_damage = new DamageSource("damage.gtnl.AweDamage").setExplosion()
+    public static final DamageSource awe_damage = new DamageSource("damage.gtnl.awe").setExplosion()
         .setDamageBypassesArmor()
         .setDamageIsAbsolute()
         .setDamageAllowedInCreativeMode()

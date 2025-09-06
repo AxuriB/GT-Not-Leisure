@@ -38,7 +38,12 @@ nei.bookmark.ae_retrieve_item=自AE取出物品
 nei.bookmark.ae_start_craft=向AE请求合成
 nei.bookmark.ae_no_craft=此物品无对应合成
 
+error.rc.cpu=§6这个CPU正在工作!
+
 death.attack.damage.gtnl.crushing=%1$s 被绞碎了
+death.attack.damage.gtnl.infinity=%1$s 被抹杀了存在
+death.attack.damage.gtnl.portalExplode=%1$s 被精灵传送法阵反噬了
+death.attack.damage.gtnl.awe=%1$s §c§l没能完成§r§d§l紫罗兰的洗礼。
 
 Info_SteamNetwork_00=玩家 %s 没有无线蒸汽网络.
 Info_SteamNetwork_01=玩家 %s 的无线蒸汽网络中有 %s%s%s 蒸汽.
@@ -930,7 +935,6 @@ Tooltip_InfinitySword_02=§9蹲下左键攻击来无视龙之护甲的保护
 Damage_InfinitySword=无限
 Tooltip_InfinitySword_Aura_00=技能冷却中！ 剩余时间： 
 Tooltip_InfinitySword_Aura_01= 秒
-death.attack.damage.gtnl.infinity=%1$s 被抹杀了存在
 item.InfinityPickaxe.name=世界崩解之镐
 Tooltip_InfinityPickaxe_00=§8§o开天裂地，无物不破。
 item.InfinityAxe.name=自然荒芜之斧
@@ -2326,7 +2330,6 @@ Tooltip_TeleportationArrayToAlfheim_01=需要液态魔力输入仓
 Tooltip_TeleportationArrayToAlfheim_02=每秒消耗100L液态魔力进行工作
 Tooltip_TeleportationArrayToAlfheim_03=在控制器内放入永恒魔力池或阿斯加德蒲公英来启用无限魔力
 Tooltip_TeleportationArrayToAlfheim_Casing=任意放射硅岩合金机械方块
-death.attack.damage.gtnl.PortalToAlfheimExplode=%1$s 被精灵传送法阵反噬了
 
 NameLapotronChip=兰波顿工厂
 gtnl.recipe.LapotronChipRecipeType=兰波顿工厂
@@ -3030,7 +3033,6 @@ Awe_Cancel_01=§f§l不要害怕，我与你同在。除非我允许，否则你
 Awe_Cancel_02_01=§f§l不要否认我的存在，我就在你的眼前。
 Awe_Cancel_02_02=§f§l我的事迹，无人知晓，无处可寻。
 Awe_Kick=§f§l！！！ 不知所措 ！！！
-death.attack.damage.gtnl.AweDamage=%1$s §c§l没能完成§r§d§l紫罗兰的洗礼。
 
 NameRealArtificialStar=真·湮灭发电机
 ArtificialStar.enableRender.0=关闭特效渲染
@@ -3076,5 +3078,3 @@ RealArtificialStar.getInfoData.04=稳定场等级
 RealArtificialStar.getInfoData.05=回收原料几率
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=有概率回收部分材料. 概率受模块等级影响.
 NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=产生：
-
-error.rc.cpu=§6这个CPU正在工作!
