@@ -24,6 +24,7 @@ import com.science.gtnl.loader.BlockLoader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 /**
  * Original Author: Mekanism
@@ -89,6 +90,9 @@ public class ItemBlockCardboardBox extends ItemBlock {
 
                 if (world.getTileEntity(x, y, z) != null) {
                     TileEntity tile = world.getTileEntity(x, y, z);
+                    if (tile instanceof IGregTechTileEntity gtTE) {
+                        data.meta = gtTE.getMetaTileID();
+                    }
                     NBTTagCompound tag = new NBTTagCompound();
 
                     tile.writeToNBT(tag);
