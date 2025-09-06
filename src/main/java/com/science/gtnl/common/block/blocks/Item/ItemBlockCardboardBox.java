@@ -38,9 +38,7 @@ public class ItemBlockCardboardBox extends ItemBlock {
 
     public ItemBlockCardboardBox(Block block) {
         super(block);
-        setMaxStackSize(1);
         metaBlock = block;
-
         MinecraftForge.EVENT_BUS.register(this);
     }
 

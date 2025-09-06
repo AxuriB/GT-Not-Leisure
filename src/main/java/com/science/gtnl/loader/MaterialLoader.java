@@ -2,6 +2,7 @@ package com.science.gtnl.loader;
 
 import static com.science.gtnl.Utils.CardboardBoxUtils.*;
 
+import net.minecraft.init.Blocks;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.brandon3055.draconicevolution.common.ModBlocks;
@@ -112,6 +113,8 @@ public class MaterialLoader {
     }
 
     public static void loadCardBoardBoxBlackList() {
+        addBoxBlacklist(Blocks.wooden_door, OreDictionary.WILDCARD_VALUE);
+        addBoxBlacklist(Blocks.iron_door, OreDictionary.WILDCARD_VALUE);
         addBoxBlacklist(BlockLoader.cardboardBox, OreDictionary.WILDCARD_VALUE);
         addBoxBlacklist(ModBlocks.reactorCore, OreDictionary.WILDCARD_VALUE);
         addBoxBlacklist(ModBlocks.chaosCrystal, OreDictionary.WILDCARD_VALUE);
