@@ -7,12 +7,15 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MixinAEBaseContainer",
+    "MixinBlockCraftingUnit",
     "MixinContainerCraftAmount",
     "MixinContainerCraftConfirm",
     "MixinContainerMEMonitorable",
     "MixinCPacketCraftRequest",
     "MixinCraftingGridCache",
     "MixinGuiBridge",
+    "MixinQuantumCluster",
+    "MixinTileQuantumBridge",
     "MixinWirelessTerminalGuiObject"
   ],
   "client": [

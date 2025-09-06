@@ -3063,3 +3063,5 @@ RealArtificialStar.getInfoData.04=Stability Field Level
 RealArtificialStar.getInfoData.05=Material Recycling Probability
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=Chance to recycle some materials. Probability affected by module level.
 NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=Generates:
+
+error.rc.cpu=§6The CPU is working!

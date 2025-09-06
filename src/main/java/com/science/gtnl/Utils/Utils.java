@@ -19,6 +19,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.rcon.RConConsoleSource;
@@ -548,6 +549,20 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static void placeItemBackInInventory(EntityPlayer player, ItemStack stack) {
+        if (stack == null || stack.stackSize == 0) return;
+
+        if (!player.inventory.addItemStackToInventory(stack)) {
+            player.func_146097_a(stack, false, false);
+        } else if (stack.stackSize > 0) {
+            player.func_146097_a(stack, false, false);
+        }
+
+        if (player instanceof EntityPlayerMP) {
+            ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+        }
     }
 
     public static class TargetInfo {
