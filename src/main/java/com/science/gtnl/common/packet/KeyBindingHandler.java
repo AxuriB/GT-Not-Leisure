@@ -26,6 +26,7 @@ import com.science.gtnl.Utils.MEHandler;
 import com.science.gtnl.Utils.RCAEBaseContainer;
 import com.science.gtnl.Utils.RCCraftingGridCache;
 import com.science.gtnl.Utils.SimpleItem;
+import com.science.gtnl.Utils.Utils;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -188,7 +189,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                             Actionable.MODULATE,
                             new PlayerSource(player, h));
 
-                        placeItemBackInInventory(player, aeItem1.getItemStack());
+                        Utils.placeItemBackInInventory(player, aeItem1.getItemStack());
                     }
                 }
             }
@@ -218,7 +219,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
 
                 targetCount -= aeItem1.getStackSize();
 
-                placeItemBackInInventory(player, aeItem1.getItemStack());
+                Utils.placeItemBackInInventory(player, aeItem1.getItemStack());
             }
         }
         return targetCount;
@@ -557,19 +558,5 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
         final SecurityPermissions requiredPermission) {
         final ISecurityGrid sg = gridNode.getCache(ISecurityGrid.class);
         return sg.hasPermission(player, requiredPermission);
-    }
-
-    private void placeItemBackInInventory(EntityPlayer player, ItemStack stack) {
-        if (stack == null || stack.stackSize == 0) return;
-
-        if (!player.inventory.addItemStackToInventory(stack)) {
-            player.func_146097_a(stack, false, false);
-        } else if (stack.stackSize > 0) {
-            player.func_146097_a(stack, false, false);
-        }
-
-        if (player instanceof EntityPlayerMP) {
-            ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
-        }
     }
 }

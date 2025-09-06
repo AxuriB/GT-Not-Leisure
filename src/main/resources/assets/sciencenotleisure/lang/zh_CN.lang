@@ -3076,3 +3076,5 @@ RealArtificialStar.getInfoData.04=稳定场等级
 RealArtificialStar.getInfoData.05=回收原料几率
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=有概率回收部分材料. 概率受模块等级影响.
 NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=产生：
+
+error.rc.cpu=§6这个CPU正在工作!

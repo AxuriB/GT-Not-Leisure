@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.science.gtnl.Utils.CraftingUnitHandler;
 import com.science.gtnl.Utils.SubscribeEventUtils;
-import com.science.gtnl.Utils.detrav.DetravScannerGUI;
 import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAnvil;
@@ -16,15 +16,7 @@ import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableEnchanting;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableEnderChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableFurnace;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableInfinityChest;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAnvil;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableChest;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableEnchanting;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableEnderChest;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableCompressedChest;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableInfinityChest;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.NetWorkHandler;
@@ -85,6 +77,7 @@ public class CommonProxy implements IGuiHandler {
                 .bus()
                 .register(new VMTweakHelper());
         }
+        CraftingUnitHandler.register();
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
@@ -101,77 +94,71 @@ public class CommonProxy implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == PortableBasicWorkBenchGUI) return new ContainerPortableBasicWorkbench(player, world);
-        if (ID == PortableAdvancedWorkBenchGUI)
-            return new ContainerPortableAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem());
-        if (ID == PortableFurnaceGUI)
-            return new ContainerPortableFurnace(player.inventory, player.worldObj, player.getHeldItem());
-        if (ID == CommonProxy.PortableAnvilGUI) return new ContainerPortableAnvil(player.inventory, player);
-        if (ID == CommonProxy.PortableEnderChestGUI)
-            return new ContainerPortableEnderChest(player.inventory, player.getInventoryEnderChest());
-        if (ID == CommonProxy.PortableEnchantingGUI) return new ContainerPortableEnchanting(player.inventory, world);
-        if (ID == CommonProxy.PortableCompressedChestGUI)
-            return new ContainerPortableCompressedChest(player.getHeldItem(), player.inventory);
-        if (ID == CommonProxy.PortableInfinityChestGUI)
-            return new ContainerPortableInfinityChest(player.getHeldItem(), player.inventory);
-        if (ID == CommonProxy.PortableCopperChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.COPPER);
-        if (ID == CommonProxy.PortableIronChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.IRON);
-        if (ID == CommonProxy.PortableSilverChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.SILVER);
-        if (ID == CommonProxy.PortableSteelChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.STEEL);
-        if (ID == CommonProxy.PortableGoldenChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.GOLD);
-        if (ID == CommonProxy.PortableDiamondChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.DIAMOND);
-        if (ID == CommonProxy.PortableCrystalChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.CRYSTAL);
-        if (ID == CommonProxy.PortableObsidianChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.OBSIDIAN);
-        if (ID == CommonProxy.PortableNetheriteChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.NETHERITE);
-        if (ID == CommonProxy.PortableDarkSteelChestGUI)
-            return new ContainerPortableChest(player.inventory, player.getHeldItem(), GuiPortableChest.GUI.DARKSTEEL);
-        return null;
+        return switch (ID) {
+            case PortableBasicWorkBenchGUI -> new ContainerPortableBasicWorkbench(player, world);
+            case PortableAdvancedWorkBenchGUI -> new ContainerPortableAdvancedWorkbench(
+                player.inventory,
+                player.worldObj,
+                player.getHeldItem());
+            case PortableFurnaceGUI -> new ContainerPortableFurnace(
+                player.inventory,
+                player.worldObj,
+                player.getHeldItem());
+            case PortableAnvilGUI -> new ContainerPortableAnvil(player.inventory, player);
+            case PortableEnderChestGUI -> new ContainerPortableEnderChest(
+                player.inventory,
+                player.getInventoryEnderChest());
+            case PortableEnchantingGUI -> new ContainerPortableEnchanting(player.inventory, world);
+            case PortableCompressedChestGUI -> new ContainerPortableCompressedChest(
+                player.getHeldItem(),
+                player.inventory);
+            case PortableInfinityChestGUI -> new ContainerPortableInfinityChest(player.getHeldItem(), player.inventory);
+            case PortableCopperChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.COPPER);
+            case PortableIronChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.IRON);
+            case PortableSilverChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.SILVER);
+            case PortableSteelChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.STEEL);
+            case PortableGoldenChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.GOLD);
+            case PortableDiamondChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.DIAMOND);
+            case PortableCrystalChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.CRYSTAL);
+            case PortableObsidianChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.OBSIDIAN);
+            case PortableNetheriteChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.NETHERITE);
+            case PortableDarkSteelChestGUI -> new ContainerPortableChest(
+                player.inventory,
+                player.getHeldItem(),
+                GuiPortableChest.GUI.DARKSTEEL);
+            default -> null;
+        };
     }
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if (ID == DetravScannerGUI) return new DetravScannerGUI();
-        if (ID == PortableBasicWorkBenchGUI) return new GuiPortableBasicWorkbench(player.inventory, world);
-        if (ID == PortableAdvancedWorkBenchGUI) return new GuiPortableAdvancedWorkbench(
-            new ContainerPortableAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem()));
-        if (ID == PortableFurnaceGUI) return new GuiPortableFurnace(player.inventory);
-        if (ID == CommonProxy.PortableAnvilGUI) return new GuiPortableAnvil(player.inventory, world);
-        if (ID == CommonProxy.PortableEnderChestGUI)
-            return new GuiPortableEnderChest(player.inventory, player.getInventoryEnderChest());
-        if (ID == CommonProxy.PortableEnchantingGUI) return new GuiPortableEnchanting(player.inventory, world);
-        if (ID == CommonProxy.PortableCompressedChestGUI)
-            return new GuiPortablePortableCompressedChest(player.getHeldItem(), player.inventory);
-        if (ID == CommonProxy.PortableInfinityChestGUI)
-            return new GuiPortablePortableInfinityChest(player.getHeldItem(), player.inventory);
-        if (ID == CommonProxy.PortableCopperChestGUI)
-            return new GuiPortableChest.Copper(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableIronChestGUI)
-            return new GuiPortableChest.Iron(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableSilverChestGUI)
-            return new GuiPortableChest.Silver(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableSteelChestGUI)
-            return new GuiPortableChest.Steel(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableGoldenChestGUI)
-            return new GuiPortableChest.Gold(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableDiamondChestGUI)
-            return new GuiPortableChest.Diamond(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableCrystalChestGUI)
-            return new GuiPortableChest.Crystal(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableObsidianChestGUI)
-            return new GuiPortableChest.Obsidian(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableNetheriteChestGUI)
-            return new GuiPortableChest.Netherite(player.inventory, player.getHeldItem());
-        if (ID == CommonProxy.PortableDarkSteelChestGUI)
-            return new GuiPortableChest.DarkSteel(player.inventory, player.getHeldItem());
         return null;
     }
 

@@ -6,13 +6,22 @@ import net.minecraft.client.renderer.entity.RenderLeashKnot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
+import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAnvil;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableChest;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableEnchanting;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableEnderChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableCompressedChest;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableInfinityChest;
 import com.science.gtnl.client.GTNLInputHandler;
 import com.science.gtnl.client.GTNLTooltipManager;
 import com.science.gtnl.common.block.blocks.Item.ItemBlockEternalGregTechWorkshopRender;
@@ -161,5 +170,36 @@ public class ClientProxy extends CommonProxy {
     @Override
     public EntityPlayer getEntityPlayerFromContext(MessageContext ctx) {
         return Minecraft.getMinecraft().thePlayer;
+    }
+
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        return switch (ID) {
+            case DetravScannerGUI -> new DetravScannerGUI();
+            case PortableBasicWorkBenchGUI -> new GuiPortableBasicWorkbench(player.inventory, world);
+            case PortableAdvancedWorkBenchGUI -> new GuiPortableAdvancedWorkbench(
+                new ContainerPortableAdvancedWorkbench(player.inventory, player.worldObj, player.getHeldItem()));
+            case PortableFurnaceGUI -> new GuiPortableFurnace(player.inventory);
+            case PortableAnvilGUI -> new GuiPortableAnvil(player.inventory, world);
+            case PortableEnderChestGUI -> new GuiPortableEnderChest(player.inventory, player.getInventoryEnderChest());
+            case PortableEnchantingGUI -> new GuiPortableEnchanting(player.inventory, world);
+            case PortableCompressedChestGUI -> new GuiPortablePortableCompressedChest(
+                player.getHeldItem(),
+                player.inventory);
+            case PortableInfinityChestGUI -> new GuiPortablePortableInfinityChest(
+                player.getHeldItem(),
+                player.inventory);
+            case PortableCopperChestGUI -> new GuiPortableChest.Copper(player.inventory, player.getHeldItem());
+            case PortableIronChestGUI -> new GuiPortableChest.Iron(player.inventory, player.getHeldItem());
+            case PortableSilverChestGUI -> new GuiPortableChest.Silver(player.inventory, player.getHeldItem());
+            case PortableSteelChestGUI -> new GuiPortableChest.Steel(player.inventory, player.getHeldItem());
+            case PortableGoldenChestGUI -> new GuiPortableChest.Gold(player.inventory, player.getHeldItem());
+            case PortableDiamondChestGUI -> new GuiPortableChest.Diamond(player.inventory, player.getHeldItem());
+            case PortableCrystalChestGUI -> new GuiPortableChest.Crystal(player.inventory, player.getHeldItem());
+            case PortableObsidianChestGUI -> new GuiPortableChest.Obsidian(player.inventory, player.getHeldItem());
+            case PortableNetheriteChestGUI -> new GuiPortableChest.Netherite(player.inventory, player.getHeldItem());
+            case PortableDarkSteelChestGUI -> new GuiPortableChest.DarkSteel(player.inventory, player.getHeldItem());
+            default -> null;
+        };
     }
 }

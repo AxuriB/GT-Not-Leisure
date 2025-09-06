@@ -37,5 +37,6 @@ public class NetWorkHandler {
             PortableInfinityChestSyncPacket.class,
             i++,
             Side.CLIENT);
+        network.registerMessage(StatusMessage.class, StatusMessage.class, i++, Side.CLIENT);
     }
 }
