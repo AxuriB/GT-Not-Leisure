@@ -45,27 +45,26 @@ public class ItemBlockCardboardBox extends ItemBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemstack, EntityPlayer entityplayer, List<String> list, boolean flag) {
+        CardboardBoxUtils.BlockData data = CardboardBoxUtils.getBlockData(itemstack);
         list.add(
-            AnimatedTooltipHandler.BLUE + StatCollector
-                .translateToLocal("Tooltip_CardBoardBox_00_" + (getBlockData(itemstack) != null ? "Yes" : "No")));
+            AnimatedTooltipHandler.BLUE
+                + StatCollector.translateToLocal("Tooltip_CardBoardBox_00_" + (data != null ? "Yes" : "No")));
 
-        if (getBlockData(itemstack) != null) {
+        if (data != null) {
             list.add(
                 StatCollector.translateToLocal("Tooltip_CardBoardBox_01")
-                    + new ItemStack(getBlockData(itemstack).block, getBlockData(itemstack).meta).getDisplayName());
-            list.add(StatCollector.translateToLocal("Tooltip_CardBoardBox_02") + getBlockData(itemstack).meta);
+                    + new ItemStack(data.block, 1, data.meta).getDisplayName());
+            list.add(StatCollector.translateToLocal("Tooltip_CardBoardBox_02") + data.meta);
 
-            if (getBlockData(itemstack).tileTag != null) {
-                list.add(
-                    StatCollector.translateToLocal("Tooltip_CardBoardBox_03")
-                        + getBlockData(itemstack).tileTag.getString("id"));
+            if (data.tileTag != null) {
+                list.add(StatCollector.translateToLocal("Tooltip_CardBoardBox_03") + data.tileTag.getString("id"));
             }
         }
     }
 
     @Override
-    public int getMetadata(int i) {
-        return i;
+    public int getMetadata(int meta) {
+        return meta;
     }
 
     @Override
@@ -130,27 +129,11 @@ public class ItemBlockCardboardBox extends ItemBlock {
             TileEntityCardboardBox tileEntity = (TileEntityCardboardBox) world.getTileEntity(x, y, z);
 
             if (tileEntity != null) {
-                tileEntity.storedData = getBlockData(stack);
+                tileEntity.storedData = CardboardBoxUtils.getBlockData(stack);
             }
         }
 
         return place;
-    }
-
-    public void setBlockData(ItemStack itemstack, CardboardBoxUtils.BlockData data) {
-        if (itemstack.stackTagCompound == null) {
-            itemstack.setTagCompound(new NBTTagCompound());
-        }
-
-        itemstack.stackTagCompound.setTag("blockData", data.write(new NBTTagCompound()));
-    }
-
-    public CardboardBoxUtils.BlockData getBlockData(ItemStack itemstack) {
-        if (itemstack.stackTagCompound == null || !itemstack.stackTagCompound.hasKey("blockData")) {
-            return null;
-        }
-
-        return CardboardBoxUtils.BlockData.read(itemstack.stackTagCompound.getCompoundTag("blockData"));
     }
 
     @SubscribeEvent

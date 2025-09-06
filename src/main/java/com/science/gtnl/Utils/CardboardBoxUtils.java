@@ -58,6 +58,22 @@ public class CardboardBoxUtils {
         return cardboardBoxIgnore;
     }
 
+    public static void setBlockData(ItemStack itemstack, CardboardBoxUtils.BlockData data) {
+        if (itemstack.stackTagCompound == null) {
+            itemstack.setTagCompound(new NBTTagCompound());
+        }
+
+        itemstack.stackTagCompound.setTag("blockData", data.write(new NBTTagCompound()));
+    }
+
+    public static CardboardBoxUtils.BlockData getBlockData(ItemStack itemstack) {
+        if (itemstack.stackTagCompound == null || !itemstack.stackTagCompound.hasKey("blockData")) {
+            return null;
+        }
+
+        return CardboardBoxUtils.BlockData.read(itemstack.stackTagCompound.getCompoundTag("blockData"));
+    }
+
     public static class BlockInfo {
 
         public Block block;

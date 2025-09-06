@@ -64,6 +64,7 @@ public class MaterialLoader {
 
     public static void loadInit() {
         MachineLoader.registerGlasses();
+        WailaLoader.register();
         TickrateAPI.changeTickrate(MainConfig.defaultTickrate);
     }
 

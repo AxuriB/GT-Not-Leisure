@@ -26,7 +26,6 @@ import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableCompressedChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortablePortableInfinityChest;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
-import com.science.gtnl.Utils.text.PlayerDollWaila;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.NetWorkHandler;
 import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
@@ -80,7 +79,6 @@ public class CommonProxy implements IGuiHandler {
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
-        PlayerDollWaila.init();
         if (!ModList.VMTweak.isModLoaded() && MainConfig.enableVoidMinerTweak) {
             MinecraftForge.EVENT_BUS.register(new VMTweakHelper());
             FMLCommonHandler.instance()

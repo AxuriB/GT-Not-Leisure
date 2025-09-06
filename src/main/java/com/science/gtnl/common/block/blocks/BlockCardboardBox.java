@@ -2,7 +2,6 @@ package com.science.gtnl.common.block.blocks;
 
 import static com.science.gtnl.ScienceNotLeisure.*;
 
-import java.util.Objects;
 import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
@@ -136,8 +135,7 @@ public class BlockCardboardBox extends BlockContainer {
 
         if (itemStack.getItemDamage() == 1) {
             if (tileEntity.storedData != null) {
-                ((ItemBlockCardboardBox) Objects.requireNonNull(itemStack.getItem()))
-                    .setBlockData(itemStack, tileEntity.storedData);
+                CardboardBoxUtils.setBlockData(itemStack, tileEntity.storedData);
             }
         }
 
