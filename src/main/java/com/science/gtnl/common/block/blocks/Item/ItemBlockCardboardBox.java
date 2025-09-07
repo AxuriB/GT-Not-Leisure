@@ -54,8 +54,11 @@ public class ItemBlockCardboardBox extends ItemBlock {
         if (data != null) {
             list.add(
                 StatCollector.translateToLocal("Tooltip_CardBoardBox_01")
-                    + new ItemStack(data.block, 1, data.meta).getDisplayName());
-            list.add(StatCollector.translateToLocal("Tooltip_CardBoardBox_02") + data.meta);
+                    + new ItemStack(data.block, 1, data.metaSpecial != -1 ? data.metaSpecial : data.meta)
+                        .getDisplayName());
+            list.add(
+                StatCollector.translateToLocal("Tooltip_CardBoardBox_02")
+                    + (data.metaSpecial != -1 ? data.metaSpecial : data.meta));
 
             if (data.tileTag != null) {
                 list.add(StatCollector.translateToLocal("Tooltip_CardBoardBox_03") + data.tileTag.getString("id"));
@@ -91,7 +94,7 @@ public class ItemBlockCardboardBox extends ItemBlock {
                 if (world.getTileEntity(x, y, z) != null) {
                     TileEntity tile = world.getTileEntity(x, y, z);
                     if (tile instanceof IGregTechTileEntity gtTE) {
-                        data.meta = gtTE.getMetaTileID();
+                        data.metaSpecial = gtTE.getMetaTileID();
                     }
                     NBTTagCompound tag = new NBTTagCompound();
 

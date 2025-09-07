@@ -107,11 +107,13 @@ public class CardboardBoxUtils {
 
         public Block block;
         public int meta;
+        public int metaSpecial = -1;
         public NBTTagCompound tileTag;
 
-        public BlockData(Block b, int j, NBTTagCompound nbtTags) {
-            block = b;
-            meta = j;
+        public BlockData(Block block, int meta, int metaSpecial, NBTTagCompound nbtTags) {
+            this.block = block;
+            this.meta = meta;
+            this.metaSpecial = metaSpecial;
             tileTag = nbtTags;
         }
 
@@ -128,6 +130,7 @@ public class CardboardBoxUtils {
         public NBTTagCompound write(NBTTagCompound nbtTags) {
             nbtTags.setInteger("id", Block.getIdFromBlock(block));
             nbtTags.setInteger("meta", meta);
+            nbtTags.setInteger("metaSpecial", metaSpecial);
 
             if (tileTag != null) {
                 nbtTags.setTag("tileTag", tileTag);
@@ -141,6 +144,7 @@ public class CardboardBoxUtils {
 
             data.block = Block.getBlockById(nbtTags.getInteger("id"));
             data.meta = nbtTags.getInteger("meta");
+            data.metaSpecial = nbtTags.getInteger("metaSpecial");
 
             if (nbtTags.hasKey("tileTag")) {
                 data.tileTag = nbtTags.getCompoundTag("tileTag");

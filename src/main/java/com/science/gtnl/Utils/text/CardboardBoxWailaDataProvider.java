@@ -46,8 +46,11 @@ public class CardboardBoxWailaDataProvider implements IWailaDataProvider {
         if (data != null) {
             currentTip.add(
                 StatCollector.translateToLocal("Tooltip_CardBoardBox_01")
-                    + new ItemStack(data.block, 1, data.meta).getDisplayName());
-            currentTip.add(StatCollector.translateToLocal("Tooltip_CardBoardBox_02") + data.meta);
+                    + new ItemStack(data.block, 1, data.metaSpecial != -1 ? data.metaSpecial : data.meta)
+                        .getDisplayName());
+            currentTip.add(
+                StatCollector.translateToLocal("Tooltip_CardBoardBox_02")
+                    + (data.metaSpecial != -1 ? data.metaSpecial : data.meta));
 
             if (data.tileTag != null) {
                 currentTip
