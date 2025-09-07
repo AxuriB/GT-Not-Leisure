@@ -22,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
@@ -41,6 +42,7 @@ import com.science.gtnl.loader.ItemLoader;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 
 public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
@@ -223,10 +225,14 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
             if (!world.blockExists(px, py, pz)) continue;
 
             Block block = world.getBlock(px, py, pz);
+            TileEntity tileEntity = world.getTileEntity(px, py, pz);
             int meta = world.getBlockMetadata(px, py, pz);
 
             boolean matches = false;
             if (block.getBlockHardness(world, x, y, z) >= 0) {
+                if (tileEntity instanceof IGregTechTileEntity gtTE) {
+                    meta = gtTE.getMetaTileID();
+                }
                 if (block == targetBlock && (!preciseMode || meta == targetMeta)) {
                     matches = true;
                 } else {

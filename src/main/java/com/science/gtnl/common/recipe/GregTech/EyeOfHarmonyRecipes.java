@@ -28,7 +28,7 @@ public class EyeOfHarmonyRecipes {
             if (material == null) continue;
             ItemStack dust = material.getDust(1);
             if (dust != null) {
-                result.add(Pair.of(dust, Long.MAX_VALUE));
+                result.add(Pair.of(dust, (long) Integer.MAX_VALUE));
             }
         }
 
@@ -36,7 +36,7 @@ public class EyeOfHarmonyRecipes {
             if (werkstoff == null) continue;
             ItemStack dust = werkstoff.get(OrePrefixes.dust, 1);
             if (dust != null) {
-                result.add(Pair.of(dust, Long.MAX_VALUE));
+                result.add(Pair.of(dust, (long) Integer.MAX_VALUE));
             }
         }
 
@@ -44,7 +44,7 @@ public class EyeOfHarmonyRecipes {
             if (material == null) continue;
             ItemStack dust = material.getDust(1);
             if (dust != null) {
-                result.add(Pair.of(dust.copy(), Long.MAX_VALUE));
+                result.add(Pair.of(dust.copy(), (long) Integer.MAX_VALUE));
             }
         }
         return result;
@@ -67,6 +67,6 @@ public class EyeOfHarmonyRecipes {
             1145141919810L,
             1145141919810L,
             114514,
-            0.01);
+            100);
     }
 }

@@ -191,7 +191,7 @@ public class SingularityDataHub extends MultiMachineBase<SingularityDataHub>
             }
         }
 
-        if (wirelessMode && addEUToGlobalEnergyMap(ownerUUID, -lEUt)) {
+        if (wirelessMode && addEUToGlobalEnergyMap(ownerUUID, -TierEU.RECIPE_MAX)) {
             lEUt = 0;
         } else if (this.lEUt > 0) this.lEUt = -this.lEUt;
 
@@ -458,6 +458,11 @@ public class SingularityDataHub extends MultiMachineBase<SingularityDataHub>
         return ll.toArray(new String[0]);
     }
 
+    @Override
+    protected long getActualEnergyUsage() {
+        return wirelessMode ? TierEU.RECIPE_MAX / 20 : super.getActualEnergyUsage();
+    }
+
     private String ensureUUID(NBTTagCompound aNBT) {
         if (aNBT.hasKey("storeUUID")) {
             return aNBT.getString("storeUUID");
@@ -693,7 +698,7 @@ public class SingularityDataHub extends MultiMachineBase<SingularityDataHub>
         } else {
             if (doInput) {
                 if (aeFluid == null) {
-                    STORE_FLUID.addStorage(AEFluidStack.create(aFluid));
+                    STORE_FLUID.addStorage(aFluid);
                 } else {
                     aeFluid.setStackSize(size + aFluid.getStackSize());
                 }
