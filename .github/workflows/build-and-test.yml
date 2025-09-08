@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 32
-          ref: edge
+          ref: dev-280
 
       - name: Set up JDK versions
         uses: actions/setup-java@v4
@@ -52,8 +52,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: Edge Build
-          body: Dynamic build of 'edge' branch
-          tag_name: edge-build
+          body: Dynamic build of 'dev-280' branch
+          tag_name: dev-build
           prerelease: true
           files: |
             ./build/libs/*.jar
