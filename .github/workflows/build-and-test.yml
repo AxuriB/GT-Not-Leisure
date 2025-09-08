@@ -2,8 +2,7 @@ name: Release edge build
 
 on:
   push:
-    branches:
-      - edge
+    branches: [ dev-280 ]
 
 permissions:
   contents: write
