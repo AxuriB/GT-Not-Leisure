@@ -1483,7 +1483,6 @@ public class AssemblerRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GregtechItemList.Machine_Adv_DistillationTower.get(1),
-                GregtechItemList.Distillus_Upgrade_Chip.get(1),
                 GregtechItemList.GTPP_Casing_LuV.get(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 4L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorLuV, 8L),
