@@ -51,7 +51,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          name: Edge Build
+          name: Dev Build
           body: Dynamic build of 'dev-280' branch
           tag_name: dev-build
           prerelease: true
