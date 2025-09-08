@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import com.lootgames.sudoku.Sudoku;
 import com.lootgames.sudoku.config.ConfigSudoku;
-import com.lootgames.sudoku.config.LGConfigs;
 
 import ru.timeconqueror.lootgames.LootGames;
 import ru.timeconqueror.lootgames.api.LootGamesAPI;
@@ -26,7 +26,7 @@ public class SudokuActivatorBlock extends GameBlock {
         if (!worldIn.isRemote) {
             BlockPos pos = new BlockPos(x, y, z);
             // snapshot for Sudoku
-            ConfigSudoku.ConfigSudokuSnapshot snapshot = LGConfigs.SUDOKU.snapshot();
+            ConfigSudoku.ConfigSudokuSnapshot snapshot = Sudoku.SUDOKU.snapshot();
             // Setup board area: using allocatedSize as both width and height
             boolean succeed = LootGamesAPI.getFieldManager()
                 .trySetupBoard(

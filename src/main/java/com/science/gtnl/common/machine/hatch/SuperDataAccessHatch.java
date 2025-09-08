@@ -48,11 +48,6 @@ public class SuperDataAccessHatch extends MTEHatchDataAccess implements IAddGreg
     }
 
     @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-    }
-
-    @Override
     public int getGUIWidth() {
         return super.getGUIWidth() + 72;
     }

@@ -80,7 +80,6 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
     public int[][] randomColor;
 
     public int totalLens = 0;
-    public int recipeTime = 20;
 
     public final Table<Integer, Integer, MTEHatchRack> rackTable = HashBasedTable.create();
     public final ArrayList<MTEHatchRack> mRackHatchs = new ArrayList<>();
@@ -253,7 +252,7 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
                             double coolantFactor = modXVal.coolantCoefficientX * modYVal.coolantCoefficientY;
                             double heatFactor = modXVal.heatCoefficientX * modYVal.heatCoefficientY;
 
-                            int rackComputation = rack.tickComponents(1, 1);
+                            int rackComputation = rack.tickComponents(1, 1) * 10;
                             if (rackComputation > 0) {
                                 int coolantUse = (int) (rackComputation * coolantFactor / 1000);
                                 boolean coolant = depleteInput(Materials.SuperCoolant.getFluid(coolantUse));
@@ -348,7 +347,7 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
             }
         }
 
-        mMaxProgresstime = recipeTime;
+        mMaxProgresstime = 40;
         mEfficiencyIncrease = 10000;
         maxCurrentTemp.set(maxTemp);
         if (thingsActive > 0 && eCertainStatus == 0) {

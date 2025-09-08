@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.lootgames.sudoku.block.SudokuBlocks;
-import com.lootgames.sudoku.config.LGConfigs;
+import com.lootgames.sudoku.config.ConfigSudoku;
 import com.lootgames.sudoku.packet.GamePackets;
 import com.lootgames.sudoku.sudoku.GameSudoku;
 import com.lootgames.sudoku.sudoku.SudokuOverlayHandler;
@@ -23,6 +23,8 @@ import ru.timeconqueror.lootgames.api.LootGamesAPI;
 
 @Mod(modid = MODID, version = "0.0.1", name = MODNAME, acceptedMinecraftVersions = "1.7.10")
 public class Sudoku {
+
+    public static ConfigSudoku SUDOKU = new ConfigSudoku();
 
     @Mod.Instance(ModList.ModIds.SUDOKU)
     public static Sudoku instance;
@@ -50,7 +52,7 @@ public class Sudoku {
     public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
         SudokuBlocks.register();
-        LGConfigs.load();
+        SUDOKU.load();
         MinecraftForge.EVENT_BUS.register(new SudokuOverlayHandler());
     }
 }

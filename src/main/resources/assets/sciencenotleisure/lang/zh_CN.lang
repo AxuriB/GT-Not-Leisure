@@ -332,6 +332,9 @@ HumongousInputBusUMV=巨型输入总线 (UMV)
 HumongousInputBusUXV=巨型输入总线 (UXV)
 HumongousInputBusMAX=巨型输入总线 (MAX)
 
+DebugDataAccessHatch=Debug数据访问仓
+Tooltip_DebugDataAccessHatch_00=添加所有装配线配方的闪存
+
 SuperDataAccessHatch=超级数据访问仓
 Tooltip_SuperDataAccessHatch_00=增加81个额外的格子以放置闪存
 

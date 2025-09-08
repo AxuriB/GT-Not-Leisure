@@ -17,6 +17,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -25,20 +26,25 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.common.builder.UIBuilder;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
@@ -507,7 +513,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             .widget(createInputSeparationButton(builder))
             .widget(createBatchModeButton(builder))
             .widget(createLockToSingleRecipeButton(builder))
-            .widget(createStructureUpdateButton(builder));
+            .widget(createStructureUpdateButton(builder))
+            .widget(createMuffleButton(builder));
 
         DynamicPositionedRow configurationElements = new DynamicPositionedRow();
         addConfigurationWidgets(configurationElements, buildContext);
@@ -521,6 +528,27 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             configurationElements.setSpace(2)
                 .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
                 .setPos(getRecipeLockingButtonPos().add(18, 0)));
+    }
+
+    @Override
+    public ButtonWidget createMuffleButton(IWidgetBuilder<?> builder) {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setMuffled(!isMuffled()); })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (isMuffled()) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_ON);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMuffled, this::setMuffled), builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
+            .setPos(152, 91)
+            .setSize(16, 16);
     }
 
     protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {

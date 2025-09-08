@@ -332,8 +332,11 @@ HumongousInputBusUMV=Humongous Input Bus (UMV)
 HumongousInputBusUXV=Humongous Input Bus (UXV)
 HumongousInputBusMAX=Humongous Input Bus (MAX)
 
+DebugDataAccessHatch=Debug Data Access Hatch
+Tooltip_DebugDataAccessHatch_00=Adds all Assembly Line Recipes Data Sticks
+
 SuperDataAccessHatch=Super Data Access Hatch
-Tooltip_SuperDataAccessHatch_00=Adds 81 additional slots for placing flash memory
+Tooltip_SuperDataAccessHatch_00=Adds 81 extra slots for Data Sticks
 
 SteamTurbineLV=Basic Steam Turbine
 SteamTurbineMV=Advanced Steam Turbine

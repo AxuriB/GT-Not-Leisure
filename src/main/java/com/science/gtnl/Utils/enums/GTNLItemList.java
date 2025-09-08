@@ -511,6 +511,7 @@ public enum GTNLItemList implements IItemContainer {
     PrimitiveBrickKiln,
     SingularityDataHub,
 
+    DebugDataAccessHatch,
     SuperVoidHatch,
     SuperVoidBus,
     OriginalInputHatch,

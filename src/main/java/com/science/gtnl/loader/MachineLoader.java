@@ -28,6 +28,7 @@ import com.science.gtnl.common.machine.basicMachine.SteamTurbine;
 import com.science.gtnl.common.machine.cover.WirelessSteamCover;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
+import com.science.gtnl.common.machine.hatch.DebugDataAccessHatch;
 import com.science.gtnl.common.machine.hatch.DebugEnergyHatch;
 import com.science.gtnl.common.machine.hatch.DualInputHatch;
 import com.science.gtnl.common.machine.hatch.DualOutputHatch;
@@ -1929,6 +1930,13 @@ public class MachineLoader {
                 "SuperVoidHatch",
                 StatCollector.translateToLocal("SuperVoidHatch")));
         addItemTooltip(GTNLItemList.SuperVoidHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.DebugDataAccessHatch.set(
+            new DebugDataAccessHatch(
+                DEBUG_DATA_ACCESS_HATCH.ID,
+                "DebugDataAccessHatch",
+                StatCollector.translateToLocal("DebugDataAccessHatch")));
+        addItemTooltip(GTNLItemList.DebugDataAccessHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     @Deprecated
