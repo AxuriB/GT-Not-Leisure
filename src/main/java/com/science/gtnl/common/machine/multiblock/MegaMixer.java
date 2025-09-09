@@ -149,7 +149,7 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
 
         mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
-        return mCountCasing >= 50;
+        return mCountCasing >= 40;
     }
 
     @Override

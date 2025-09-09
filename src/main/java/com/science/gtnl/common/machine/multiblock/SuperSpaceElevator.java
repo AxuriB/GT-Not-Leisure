@@ -312,7 +312,7 @@ public class SuperSpaceElevator extends TTMultiblockBase
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (this.mMachine) return -1;
+        if (this.mMachine && motorTier >= 6) return -1;
 
         int tMotorTier = Math.min(stackSize.stackSize, 6);
 

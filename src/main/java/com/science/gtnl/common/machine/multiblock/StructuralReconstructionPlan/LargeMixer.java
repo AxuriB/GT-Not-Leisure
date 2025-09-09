@@ -152,7 +152,7 @@ public class LargeMixer extends GTMMultiMachineBase<LargeMixer> implements ISurv
         }
 
         mParallelTier = getParallelTier(aStack);
-        return mCountCasing >= 50;
+        return mCountCasing >= 40;
     }
 
     @Override
