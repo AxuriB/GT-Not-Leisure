@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import com.science.gtnl.GuiType;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -24,7 +25,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
-import com.science.gtnl.CommonProxy;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.gui.portableWorkbench.InventoryInfinityChest;
 import com.science.gtnl.client.GTNLCreativeTabs;
@@ -73,8 +73,8 @@ public class PortableItem extends Item {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!world.isRemote) {
             PortableType type = PortableType.byMeta(stack.getItemDamage());
-            if (type != null && type.guiId >= 0) {
-                player.openGui(instance, type.guiId, world, 0, 0, 0);
+            if (type != null && type.getGuiID() >= 0) {
+                player.openGui(instance, type.getGuiID(), world, 0, 0, 0);
             }
         }
         return stack;
@@ -348,32 +348,32 @@ public class PortableItem extends Item {
 
     public enum PortableType {
 
-        BASIC("BasicWorkBench", CommonProxy.PortableBasicWorkBenchGUI),
-        ADVANCED("AdvancedWorkBench", CommonProxy.PortableAdvancedWorkBenchGUI),
-        FURNACE("Furnace", CommonProxy.PortableFurnaceGUI),
-        ANVIL("Anvil", CommonProxy.PortableAnvilGUI),
-        ENDERCHEST("EnderChest", CommonProxy.PortableEnderChestGUI),
-        ENCHANTING("EnchantingTable", CommonProxy.PortableEnchantingGUI),
-        COMPRESSEDCHEST("CompressedChest", CommonProxy.PortableCompressedChestGUI),
-        INFINITYCHEST("InfinityChest", CommonProxy.PortableInfinityChestGUI),
-        COPPER("CopperChest", CommonProxy.PortableCopperChestGUI),
-        IRON("IronChest", CommonProxy.PortableIronChestGUI),
-        SILVER("SilverChest", CommonProxy.PortableSilverChestGUI),
-        STEEL("SteelChest", CommonProxy.PortableSteelChestGUI),
-        GOLD("GoldenChest", CommonProxy.PortableGoldenChestGUI),
-        DIAMOND("DiamondChest", CommonProxy.PortableDiamondChestGUI),
-        CRYSTAL("CrystalChest", CommonProxy.PortableCrystalChestGUI),
-        OBSIDIAN("ObsidianChest", CommonProxy.PortableObsidianChestGUI),
-        NETHERITE("NetheriteChest", CommonProxy.PortableNetheriteChestGUI),
-        DARKSTEEL("DarkSteelChest", CommonProxy.PortableDarkSteelChestGUI);
+        BASIC("BasicWorkBench", GuiType.PortableBasicWorkBenchGUI),
+        ADVANCED("AdvancedWorkBench", GuiType.PortableAdvancedWorkBenchGUI),
+        FURNACE("Furnace", GuiType.PortableFurnaceGUI),
+        ANVIL("Anvil", GuiType.PortableAnvilGUI),
+        ENDERCHEST("EnderChest", GuiType.PortableEnderChestGUI),
+        ENCHANTING("EnchantingTable", GuiType.PortableEnchantingGUI),
+        COMPRESSEDCHEST("CompressedChest", GuiType.PortableCompressedChestGUI),
+        INFINITYCHEST("InfinityChest", GuiType.PortableInfinityChestGUI),
+        COPPER("CopperChest", GuiType.PortableCopperChestGUI),
+        IRON("IronChest", GuiType.PortableIronChestGUI),
+        SILVER("SilverChest", GuiType.PortableSilverChestGUI),
+        STEEL("SteelChest", GuiType.PortableSteelChestGUI),
+        GOLD("GoldenChest", GuiType.PortableGoldenChestGUI),
+        DIAMOND("DiamondChest", GuiType.PortableDiamondChestGUI),
+        CRYSTAL("CrystalChest", GuiType.PortableCrystalChestGUI),
+        OBSIDIAN("ObsidianChest", GuiType.PortableObsidianChestGUI),
+        NETHERITE("NetheriteChest", GuiType.PortableNetheriteChestGUI),
+        DARKSTEEL("DarkSteelChest", GuiType.PortableDarkSteelChestGUI);
 
         private final String baseName;
-        public final int guiId;
+        public final GuiType gui;
         public IIcon icon;
 
-        PortableType(String baseName, int guiId) {
+        PortableType(String baseName, GuiType gui) {
             this.baseName = baseName;
-            this.guiId = guiId;
+            this.gui = gui;
         }
 
         public int getMeta() {
@@ -386,6 +386,10 @@ public class PortableItem extends Item {
 
         public static PortableType byMeta(int meta) {
             return (meta >= 0 && meta < values().length) ? values()[meta] : null;
+        }
+
+        public int getGuiID() {
+            return gui.getID();
         }
     }
 }

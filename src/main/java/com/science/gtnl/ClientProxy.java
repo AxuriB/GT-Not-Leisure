@@ -160,7 +160,7 @@ public class ClientProxy extends CommonProxy {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         player.openGui(
             ScienceNotLeisure.instance,
-            DetravScannerGUI,
+            GuiType.DetravScannerGUI.getID(),
             player.worldObj,
             (int) player.posX,
             (int) player.posY,
@@ -174,7 +174,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return switch (ID) {
+        return switch (GuiType.getGuiType(ID)) {
             case DetravScannerGUI -> new DetravScannerGUI();
             case PortableBasicWorkBenchGUI -> new GuiPortableBasicWorkbench(player.inventory, world);
             case PortableAdvancedWorkBenchGUI -> new GuiPortableAdvancedWorkbench(
@@ -199,7 +199,6 @@ public class ClientProxy extends CommonProxy {
             case PortableObsidianChestGUI -> new GuiPortableChest.Obsidian(player.inventory, player.getHeldItem());
             case PortableNetheriteChestGUI -> new GuiPortableChest.Netherite(player.inventory, player.getHeldItem());
             case PortableDarkSteelChestGUI -> new GuiPortableChest.DarkSteel(player.inventory, player.getHeldItem());
-            default -> null;
         };
     }
 }

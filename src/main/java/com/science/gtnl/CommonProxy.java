@@ -35,26 +35,6 @@ import gregtech.api.enums.Mods;
 
 public class CommonProxy implements IGuiHandler {
 
-    public static final int DetravScannerGUI = 0;
-    public static final int PortableBasicWorkBenchGUI = 1;
-    public static final int PortableAdvancedWorkBenchGUI = 2;
-    public static final int PortableFurnaceGUI = 3;
-    public static final int PortableAnvilGUI = 4;
-    public static final int PortableEnderChestGUI = 5;
-    public static final int PortableEnchantingGUI = 6;
-    public static final int PortableCompressedChestGUI = 7;
-    public static final int PortableInfinityChestGUI = 8;
-    public static final int PortableCopperChestGUI = 9;
-    public static final int PortableIronChestGUI = 10;
-    public static final int PortableSilverChestGUI = 11;
-    public static final int PortableSteelChestGUI = 12;
-    public static final int PortableGoldenChestGUI = 13;
-    public static final int PortableDiamondChestGUI = 14;
-    public static final int PortableCrystalChestGUI = 15;
-    public static final int PortableObsidianChestGUI = 16;
-    public static final int PortableNetheriteChestGUI = 17;
-    public static final int PortableDarkSteelChestGUI = 18;
-
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
@@ -90,11 +70,12 @@ public class CommonProxy implements IGuiHandler {
         // AltarStructure.registerAltarStructureInfo();
     }
 
-    public void completeInit(FMLLoadCompleteEvent event) {}
+    public void completeInit(FMLLoadCompleteEvent event) {
+    }
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return switch (ID) {
+        return switch (GuiType.getGuiType(ID)) {
             case PortableBasicWorkBenchGUI -> new ContainerPortableBasicWorkbench(player, world);
             case PortableAdvancedWorkBenchGUI -> new ContainerPortableAdvancedWorkbench(
                 player.inventory,
@@ -153,7 +134,7 @@ public class CommonProxy implements IGuiHandler {
                 player.inventory,
                 player.getHeldItem(),
                 GuiPortableChest.GUI.DARKSTEEL);
-            default -> null;
+            case DetravScannerGUI -> null;
         };
     }
 
