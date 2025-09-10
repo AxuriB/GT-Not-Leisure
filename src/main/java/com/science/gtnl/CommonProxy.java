@@ -70,8 +70,7 @@ public class CommonProxy implements IGuiHandler {
         // AltarStructure.registerAltarStructureInfo();
     }
 
-    public void completeInit(FMLLoadCompleteEvent event) {
-    }
+    public void completeInit(FMLLoadCompleteEvent event) {}
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {

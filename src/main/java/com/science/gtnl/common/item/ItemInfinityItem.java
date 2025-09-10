@@ -113,7 +113,7 @@ public class ItemInfinityItem extends Item {
         if (!(targetBlock instanceof BlockFluidBase || targetBlock instanceof BlockLiquid)) return stack;
 
         if (player.isSneaking()) {
-            FLUID_CLEAR_EXECUTOR.submit(() -> clearConnectedFluid(world, x, y, z, targetBlock, 65536));
+            FLUID_CLEAR_EXECUTOR.submit(() -> clearConnectedFluid(world, x, y, z, targetBlock, 327670));
         } else {
             world.setBlockToAir(x, y, z);
             playSound(world, x, y, z, targetBlock);

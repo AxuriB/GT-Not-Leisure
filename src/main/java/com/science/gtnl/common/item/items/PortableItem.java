@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-import com.science.gtnl.GuiType;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -25,6 +24,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import com.science.gtnl.GuiType;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.gui.portableWorkbench.InventoryInfinityChest;
 import com.science.gtnl.client.GTNLCreativeTabs;

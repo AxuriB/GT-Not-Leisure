@@ -1,6 +1,7 @@
 package com.science.gtnl;
 
 public enum GuiType {
+
     DetravScannerGUI,
     PortableBasicWorkBenchGUI,
     PortableAdvancedWorkBenchGUI,
