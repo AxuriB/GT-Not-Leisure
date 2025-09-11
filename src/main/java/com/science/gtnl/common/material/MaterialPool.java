@@ -1309,7 +1309,7 @@ public class MaterialPool implements Runnable {
     public static final Werkstoff Resorcinol = new Werkstoff(
         new short[] { 114, 38, 21 },
         "Resorcinol",
-        subscriptNumbers("C6H6O2"),
+        subscriptNumbers("C6H4(OH)2"),
         new Werkstoff.Stats(),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().disable()
