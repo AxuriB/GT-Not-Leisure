@@ -3,7 +3,10 @@ package com.science.gtnl.common.item.items;
 import static com.science.gtnl.ScienceNotLeisure.*;
 
 import java.util.List;
+import java.util.Objects;
 
+import com.science.gtnl.api.IItemStackExtra;
+import gregtech.api.enums.ItemList;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,17 +23,18 @@ import com.science.gtnl.client.GTNLCreativeTabs;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import tectech.thing.CustomItemList;
 
-public class Stick extends Item {
+public class Stick extends Item implements IItemStackExtra {
 
     public IIcon defaultIcon;
-    public ItemStack fakeItem;
 
     public Stick() {
         this.setMaxStackSize(64);
         this.setUnlocalizedName("Stick");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "Stick");
+        this.setHasSubtypes(true);
         GTNLItemList.Stick.set(new ItemStack(this, 1));
     }
 
@@ -65,15 +69,20 @@ public class Stick extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int damage) {
-        return fakeItem != null ? fakeItem.getItem()
-            .getIconFromDamage(damage) : defaultIcon;
+        return defaultIcon;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack itemStack, int p_82790_2_) {
-        return fakeItem != null ? fakeItem.getItem()
-            .getColorFromItemStack(fakeItem, p_82790_2_) : 16777215;
+    public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
+        if (isShiftDown()) {
+            return super.getColorFromItemStack(stack, p_82790_2_);
+        }
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return Objects.requireNonNull(disguised.getItem()).getColorFromItemStack(stack, p_82790_2_);
+        }
+        return super.getColorFromItemStack(stack, p_82790_2_);
     }
 
     @Override
@@ -102,15 +111,15 @@ public class Stick extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getSpriteNumber() {
-        return fakeItem != null ? fakeItem.getItemSpriteNumber() : 1;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean requiresMultipleRenderPasses() {
-        return fakeItem != null && fakeItem.getItem()
-            .requiresMultipleRenderPasses();
+    public int getSpriteNumberExtra(ItemStack stack) {
+        if (isShiftDown()) {
+            return super.getSpriteNumber();
+        }
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return disguised.getItemSpriteNumber();
+        }
+        return super.getSpriteNumber();
     }
 
     @Override
@@ -137,6 +146,7 @@ public class Stick extends Item {
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         list.add(setDisguisedStack(new ItemStack(Items.diamond)));
         list.add(setDisguisedStack(new ItemStack(Blocks.diamond_block)));
+        list.add(setDisguisedStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1)));
     }
 
     public ItemStack getDisguisedStack(ItemStack stack) {
@@ -171,7 +181,6 @@ public class Stick extends Item {
         tag.setInteger("Meta", disguised.getItemDamage());
 
         stack.setTagCompound(tag);
-        ((Stick) stack.getItem()).fakeItem = disguised;
         return stack;
     }
 

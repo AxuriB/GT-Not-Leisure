@@ -28,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.google.common.collect.Multimap;
+import com.science.gtnl.api.IItemStackExtra;
 import com.science.gtnl.common.item.items.Stick;
 
 @Mixin(ItemStack.class)
@@ -38,6 +39,13 @@ public abstract class MixinItemStack {
 
     @Shadow
     int itemDamage;
+
+    @Inject(method = "getItemSpriteNumber", at = @At("HEAD"), cancellable = true)
+    private void getSpriteNumberExtra(CallbackInfoReturnable<Integer> cir) {
+        if (field_151002_e instanceof IItemStackExtra iItemStackExtra) {
+            cir.setReturnValue(iItemStackExtra.getSpriteNumberExtra((ItemStack) (Object) this));
+        }
+    }
 
     @Inject(method = "getTooltip", at = @At("HEAD"), cancellable = true)
     private void onGetTooltip(EntityPlayer player, boolean advanced, CallbackInfoReturnable<List<String>> cir) {

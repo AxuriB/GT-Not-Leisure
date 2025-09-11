@@ -52,10 +52,14 @@ public class ItemBlockCardboardBox extends ItemBlock {
                 + StatCollector.translateToLocal("Tooltip_CardBoardBox_00_" + (data != null ? "Yes" : "No")));
 
         if (data != null) {
-            list.add(
-                StatCollector.translateToLocal("Tooltip_CardBoardBox_01")
-                    + new ItemStack(data.block, 1, data.metaSpecial != -1 ? data.metaSpecial : data.meta)
-                        .getDisplayName());
+            if (Item.getItemFromBlock(data.block) == null) {
+                list.add(StatCollector.translateToLocal("Tooltip_CardBoardBox_01") + data.block.getLocalizedName());
+            } else {
+                list.add(
+                    StatCollector.translateToLocal("Tooltip_CardBoardBox_01")
+                        + new ItemStack(data.block, 1, data.metaSpecial != -1 ? data.metaSpecial : data.meta)
+                            .getDisplayName());
+            }
             list.add(
                 StatCollector.translateToLocal("Tooltip_CardBoardBox_02")
                     + (data.metaSpecial != -1 ? data.metaSpecial : data.meta));

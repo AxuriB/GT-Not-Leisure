@@ -3,6 +3,7 @@ package com.science.gtnl.Utils.text;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -44,10 +45,15 @@ public class CardboardBoxWailaDataProvider implements IWailaDataProvider {
                 + StatCollector.translateToLocal("Tooltip_CardBoardBox_00_" + (data != null ? "Yes" : "No")));
 
         if (data != null) {
-            currentTip.add(
-                StatCollector.translateToLocal("Tooltip_CardBoardBox_01")
-                    + new ItemStack(data.block, 1, data.metaSpecial != -1 ? data.metaSpecial : data.meta)
-                        .getDisplayName());
+            if (Item.getItemFromBlock(data.block) == null) {
+                currentTip
+                    .add(StatCollector.translateToLocal("Tooltip_CardBoardBox_01") + data.block.getLocalizedName());
+            } else {
+                currentTip.add(
+                    StatCollector.translateToLocal("Tooltip_CardBoardBox_01")
+                        + new ItemStack(data.block, 1, data.metaSpecial != -1 ? data.metaSpecial : data.meta)
+                            .getDisplayName());
+            }
             currentTip.add(
                 StatCollector.translateToLocal("Tooltip_CardBoardBox_02")
                     + (data.metaSpecial != -1 ? data.metaSpecial : data.meta));
