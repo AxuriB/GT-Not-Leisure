@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Objects;
 
 import com.science.gtnl.api.IItemStackExtra;
-import gregtech.api.enums.ItemList;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import lombok.val;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,8 +17,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import org.lwjgl.input.Keyboard;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
@@ -28,6 +33,7 @@ import tectech.thing.CustomItemList;
 public class Stick extends Item implements IItemStackExtra {
 
     public IIcon defaultIcon;
+    public static String id = RESOURCE_ROOT_ID + ":" + "Stick";
 
     public Stick() {
         this.setMaxStackSize(64);
@@ -36,6 +42,55 @@ public class Stick extends Item implements IItemStackExtra {
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "Stick");
         this.setHasSubtypes(true);
         GTNLItemList.Stick.set(new ItemStack(this, 1));
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SideOnly(Side.CLIENT)
+    public void onTooltip(ItemTooltipEvent event) {
+        val item = event.itemStack;
+        if (item.getItem() == this && !isShiftDown()) {
+            val fake = getDisguisedStack(item);
+            val list = event.toolTip;
+            String[] oldList = list.toArray(new String[0]);
+            byte i = 0;
+            list.clear();
+            for (String s : oldList) {
+                if (i == 0) {
+                    String name = fake.getDisplayName();
+                    if (fake.hasDisplayName()) {
+                        name = EnumChatFormatting.ITALIC + name + EnumChatFormatting.RESET;
+                    }
+                    int ii;
+                    if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) {
+                        String s1 = "";
+                        if (!name.isEmpty()) {
+                            name = name + " (";
+                            s1 = ")";
+                        }
+                        ii = Item.getIdFromItem(fake.getItem());
+                        if (fake.getHasSubtypes()) {
+                            name = name + String.format("#%04d/%d%s", ii, fake.getItemDamage(), s1);
+                        } else {
+                            name = name + String.format("#%04d%s", ii, s1);
+                        }
+                    } else if (!fake.hasDisplayName() && fake.getItem() == Items.filled_map) {
+                        name = name + " #" + fake.getItemDamage();
+                    }
+                    list.add(name);
+                    i++;
+                    continue;
+                }
+                if (i == 1) {
+                    fake.getItem().addInformation(fake, event.entityPlayer, list, Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+                    i++;
+                }
+                if (id.equals(s)) {
+                    list.add(Item.itemRegistry.getNameForObject(fake.getItem()));
+                    continue;
+                }
+                list.add(s);
+            }
+        }
     }
 
     @Override
@@ -149,7 +204,7 @@ public class Stick extends Item implements IItemStackExtra {
         list.add(setDisguisedStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1)));
     }
 
-    public ItemStack getDisguisedStack(ItemStack stack) {
+    public static ItemStack getDisguisedStack(ItemStack stack) {
         if (!stack.hasTagCompound()) return null;
         NBTTagCompound tag = stack.getTagCompound();
 
