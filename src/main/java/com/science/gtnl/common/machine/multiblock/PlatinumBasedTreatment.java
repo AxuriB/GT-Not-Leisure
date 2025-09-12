@@ -176,7 +176,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
     }
 
     @Override
-    protected void updateHatchTexture() {
+    public void updateHatchTexture() {
         super.updateHatchTexture();
         for (MTEHatch h : mMufflerHatches) h.updateTexture(StructureUtils.getTextureIndex(sBlockCasings1, 11));
     }

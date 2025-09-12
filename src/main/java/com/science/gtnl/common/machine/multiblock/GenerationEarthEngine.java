@@ -35,7 +35,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -94,13 +93,7 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
         return tt;
     }
 
-    protected void updateHatchTexture() {
-        for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mInputBusses) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mOutputHatches) h.updateTexture(getCasingTextureID());
-        for (MTEHatch h : mInputBusses) h.updateTexture(getCasingTextureID());
-    }
-
+    @Override
     public int getCasingTextureID() {
         return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(12);
     }
