@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -177,6 +178,18 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
             return disguised.getItemDamage();
         }
         return super.getDamage(stack);
+    }
+
+    @Override
+    public EnumRarity getRarity(ItemStack stack) {
+        if (isShiftDown() || !MainConfig.enableStickItem) {
+            return super.getRarity(stack);
+        }
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return disguised.getRarity();
+        }
+        return super.getRarity(stack);
     }
 
     @Override
