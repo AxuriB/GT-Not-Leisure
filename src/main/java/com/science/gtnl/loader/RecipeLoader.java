@@ -117,9 +117,11 @@ import cpw.mods.fml.common.registry.VillagerRegistry;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
@@ -277,6 +279,21 @@ public class RecipeLoader {
                         new ItemStack(Items.diamond, 9),
                         new ItemStack(Items.emerald, 9),
                         Stick.setDisguisedStack(GTNLItemList.VeinMiningPickaxe.get(1), 1, true)));
+
+                if (Mods.SGCraft.isModLoaded()) {
+                    recipeList.add(
+                        new MerchantRecipe(
+                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 9),
+                            Stick.setDisguisedStack(GTModHandler.getModItem(Mods.SGCraft.ID, "stargateRing", 1, 0))));
+                    recipeList.add(
+                        new MerchantRecipe(
+                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.NaquadahEnriched, 9),
+                            Stick.setDisguisedStack(GTModHandler.getModItem(Mods.SGCraft.ID, "stargateRing", 1, 1))));
+                    recipeList.add(
+                        new MerchantRecipe(
+                            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadria, 9),
+                            Stick.setDisguisedStack(GTModHandler.getModItem(Mods.SGCraft.ID, "stargateBase", 1))));
+                }
             });
     }
 
