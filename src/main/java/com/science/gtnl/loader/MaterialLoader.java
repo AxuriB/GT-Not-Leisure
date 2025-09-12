@@ -74,9 +74,6 @@ public class MaterialLoader {
         MilledOre.registry();
         EIGBucket.LoadEIGBuckets();
         MachineLoader.registry();
-        if (MainConfig.enableStickItem) {
-            RecipeLoader.loadVillageTrade();
-        }
 
         RocketFuels.addFuel(EntitySteamRocket.class, MaterialPool.CompressedSteam.getMolten(1));
     }
@@ -108,6 +105,10 @@ public class MaterialLoader {
         }
 
         loadCardBoardBoxBlackList();
+
+        if (MainConfig.enableStickItem) {
+            RecipeLoader.loadVillageTrade();
+        }
     }
 
     public static void loadOreDictionaryRecipes() {

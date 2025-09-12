@@ -267,7 +267,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
         if (item != null) {
             return new ItemStack(item, 1, meta);
         }
-        return new ItemStack(ItemLoader.stick, 1);
+        return new ItemStack(Blocks.fire, 1);
     }
 
     public static ItemStack setDisguisedStack(ItemStack disguised) {
@@ -276,7 +276,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
 
     public static ItemStack setDisguisedStack(ItemStack disguised, int amount, boolean enchanted) {
         if (disguised == null || disguised.getItem() == null) {
-            return new ItemStack(ItemLoader.stick);
+            return new ItemStack(Blocks.fire);
         }
 
         ItemStack stack = new ItemStack(ItemLoader.stick, amount);
