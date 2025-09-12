@@ -33,6 +33,8 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
+import gregtech.api.util.GTModHandler;
 import lombok.val;
 import tectech.thing.CustomItemList;
 
@@ -232,6 +234,13 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
         list.add(setDisguisedStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1)));
         list.add(setDisguisedStack(CustomItemList.Machine_Multi_ForgeOfGods.get(1)));
         list.add(setDisguisedStack(GTNLItemList.SatietyRing.get(1)));
+        list.add(setDisguisedStack(GTNLItemList.VeinMiningPickaxe.get(1)));
+
+        if (Mods.SGCraft.isModLoaded()) {
+            list.add(setDisguisedStack(GTModHandler.getModItem(Mods.SGCraft.ID, "stargateRing", 1, 0)));
+            list.add(setDisguisedStack(GTModHandler.getModItem(Mods.SGCraft.ID, "stargateRing", 1, 1)));
+            list.add(setDisguisedStack(GTModHandler.getModItem(Mods.SGCraft.ID, "stargateBase", 1)));
+        }
     }
 
     public static ItemStack getDisguisedStack(ItemStack stack) {
