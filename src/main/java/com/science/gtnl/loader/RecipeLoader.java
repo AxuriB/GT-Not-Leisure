@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
@@ -115,11 +116,13 @@ import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
-import tectech.thing.CustomItemList;
 
 public class RecipeLoader {
 
@@ -248,8 +251,15 @@ public class RecipeLoader {
             .registerVillageTradeHandler(villagerId, (villager, recipeList, random) -> {
                 recipeList.add(
                     new MerchantRecipe(
-                        new ItemStack(Items.diamond, 25),
-                        Stick.setDisguisedStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1))));
+                        new ItemStack(Items.diamond, 9),
+                        Stick.setDisguisedStack(
+                            GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+                            9,
+                            false)));
+                recipeList.add(
+                    new MerchantRecipe(
+                        new ItemStack(Items.emerald, 4),
+                        Stick.setDisguisedStack(new ItemStack(Blocks.diamond_block, 1))));
             });
     }
 
