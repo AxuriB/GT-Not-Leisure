@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.science.gtnl.common.item.items.Stick;
@@ -38,4 +39,16 @@ public abstract class MixinRenderItem {
         }
         return stack.getItem();
     }
+
+    @ModifyVariable(method = "renderItemAndEffectIntoGUI", at = @At("HEAD"), argsOnly = true, index = 3)
+    private ItemStack redirectItemStack(ItemStack original) {
+        if (original != null && original.getItem() instanceof Stick stick && !stick.isShiftDown()) {
+            ItemStack fake = Stick.getDisguisedStack(original);
+            if (fake != null) {
+                return fake;
+            }
+        }
+        return original;
+    }
+
 }
