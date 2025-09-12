@@ -1054,6 +1054,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         for (MTEHatch h : mEnergyHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mExoticEnergyHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mDynamoHatches) h.updateTexture(getCasingTextureID());
+        for (MTEHatch h : mExoticDynamoHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mParallelControllerHatches) h.updateTexture(getCasingTextureID());
     }
 
