@@ -96,7 +96,6 @@ public class ItemLoader {
     public static ItemStack infinityCobblestoneCell;
 
     public static void registryItems() {
-        stick = new Stick();
         portableItem = new PortableItem();
         veinMiningPickaxe = new VeinMiningPickaxe();
         suspiciousStew = new SuspiciousStew();
@@ -142,7 +141,6 @@ public class ItemLoader {
             .setTextureName(RESOURCE_ROOT_ID + ":" + "MetaItem/0");
         honeyBucket = GTNLItemBucket.create(BlockLoader.honeyFluid);
         shimmerBucket = GTNLItemBucket.create(BlockLoader.shimmerFluid);
-
         superReachRing = new SuperReachRing();
         satietyRing = new SatietyRing();
         rejectionRing = new RejectionRing();
@@ -151,6 +149,7 @@ public class ItemLoader {
         royalGel = new RoyalGel();
         luckyHorseshoe = new LuckyHorseshoe();
         infinityCell = new ItemInfinityCell();
+        stick = new Stick();
 
         var subDyeItems = new ItemInfinityCell.SubItem[16];
         for (short i = 0; i < 16; i++) {

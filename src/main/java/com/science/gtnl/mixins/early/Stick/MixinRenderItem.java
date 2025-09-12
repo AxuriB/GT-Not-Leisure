@@ -17,8 +17,7 @@ public abstract class MixinRenderItem {
         method = "renderItemIntoGUI(Lnet/minecraft/client/gui/FontRenderer;Lnet/minecraft/client/renderer/texture/TextureManager;Lnet/minecraft/item/ItemStack;IIZ)V",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
     private Item redirectGetItem(ItemStack stack) {
-        if (Stick.isShiftDown()) return stack.getItem();
-        if (stack != null && stack.getItem() instanceof Stick stick) {
+        if (stack != null && stack.getItem() instanceof Stick stick && !stick.isShiftDown()) {
             ItemStack disguised = stick.getDisguisedStack(stack);
             if (disguised != null) {
                 return disguised.getItem();
@@ -31,8 +30,8 @@ public abstract class MixinRenderItem {
         method = "doRender(Lnet/minecraft/entity/item/EntityItem;DDDFF)V",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
     private Item redirectGetItemForBlockCheck(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof Stick stick) {
-            ItemStack disguised = stick.getDisguisedStack(stack);
+        if (stack != null && stack.getItem() instanceof Stick stick && !stick.isShiftDown()) {
+            ItemStack disguised = Stick.getDisguisedStack(stack);
             if (disguised != null) {
                 return disguised.getItem();
             }

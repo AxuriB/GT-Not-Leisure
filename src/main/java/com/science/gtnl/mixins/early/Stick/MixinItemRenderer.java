@@ -51,20 +51,20 @@ public abstract class MixinItemRenderer {
         remap = false)
     public void renderItem(EntityLivingBase entityLivingBase, ItemStack itemStack, int p_78443_3_,
         IItemRenderer.ItemRenderType type, CallbackInfo ci) {
-        if (Stick.isShiftDown()) return;
-        GL11.glPushMatrix();
-        TextureManager texturemanager = this.mc.getTextureManager();
         Item item = itemStack.getItem();
         Block block = Block.getBlockFromItem(item);
 
-        ItemStack fakeItemStack = null;
+        if (!(item instanceof Stick stick)) return;
+        if (stick.isShiftDown()) return;
 
-        if (item instanceof Stick stick) {
-            fakeItemStack = stick.getDisguisedStack(itemStack);
-            if (fakeItemStack != null) {
-                item = fakeItemStack.getItem();
-                block = Block.getBlockFromItem(item);
-            }
+        GL11.glPushMatrix();
+        TextureManager texturemanager = this.mc.getTextureManager();
+
+        ItemStack fakeItemStack;
+        fakeItemStack = Stick.getDisguisedStack(itemStack);
+        if (fakeItemStack != null) {
+            item = fakeItemStack.getItem();
+            block = Block.getBlockFromItem(item);
         }
 
         if (block != null && block.getRenderBlockPass() != 0) {

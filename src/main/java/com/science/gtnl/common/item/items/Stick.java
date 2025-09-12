@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMerchant;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IItemStackExtra;
+import com.science.gtnl.api.IKeyHandler;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.loader.ItemLoader;
 
@@ -33,7 +35,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import lombok.val;
 import tectech.thing.CustomItemList;
 
-public class Stick extends Item implements IItemStackExtra {
+public class Stick extends Item implements IItemStackExtra, IKeyHandler {
 
     public IIcon defaultIcon;
     public static String id = RESOURCE_ROOT_ID + ":" + "Stick";
@@ -212,10 +214,21 @@ public class Stick extends Item implements IItemStackExtra {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isShiftDown() {
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiMerchant) {
+            return false;
+        }
+
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+    }
+
+    @Override
     public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         list.add(setDisguisedStack(new ItemStack(Items.diamond)));
         list.add(setDisguisedStack(new ItemStack(Blocks.diamond_block)));
         list.add(setDisguisedStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1)));
+        list.add(setDisguisedStack(GTNLItemList.SatietyRing.get(1)));
     }
 
     public static ItemStack getDisguisedStack(ItemStack stack) {
@@ -233,11 +246,15 @@ public class Stick extends Item implements IItemStackExtra {
     }
 
     public static ItemStack setDisguisedStack(ItemStack disguised) {
+        return setDisguisedStack(disguised, 1, false);
+    }
+
+    public static ItemStack setDisguisedStack(ItemStack disguised, int amount, boolean enchanted) {
         if (disguised == null || disguised.getItem() == null) {
             return new ItemStack(ItemLoader.stick);
         }
 
-        ItemStack stack = new ItemStack(ItemLoader.stick);
+        ItemStack stack = new ItemStack(ItemLoader.stick, amount);
 
         NBTTagCompound tag = new NBTTagCompound();
 
@@ -248,12 +265,9 @@ public class Stick extends Item implements IItemStackExtra {
 
         tag.setString("ID", regName);
         tag.setInteger("Meta", disguised.getItemDamage());
+        tag.setBoolean("Enchanted", enchanted);
 
         stack.setTagCompound(tag);
         return stack;
-    }
-
-    public static boolean isShiftDown() {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
     }
 }

@@ -21,8 +21,8 @@ public abstract class MixinTooltipHandlerWaila {
     @Inject(method = "handleItemTooltip", at = @At("HEAD"), cancellable = true)
     public void handleItemTooltip(GuiContainer arg0, ItemStack itemstack, int arg2, int arg3, List<String> currenttip,
         CallbackInfoReturnable<List<String>> cir) {
-        if (!Stick.isShiftDown() && itemstack != null) {
-            if (itemstack.getItem() instanceof Stick) {
+        if (itemstack != null) {
+            if (itemstack.getItem() instanceof Stick stick && !stick.isShiftDown()) {
                 ItemStack fakeItem = Stick.getDisguisedStack(itemstack);
                 if (fakeItem != null) {
                     String fakeCanonicalName = ModIdentification.nameFromStack(fakeItem);
