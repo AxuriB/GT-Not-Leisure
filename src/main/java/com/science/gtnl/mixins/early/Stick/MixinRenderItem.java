@@ -18,7 +18,7 @@ public abstract class MixinRenderItem {
         at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
     private Item redirectGetItem(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof Stick stick && !stick.isShiftDown()) {
-            ItemStack disguised = stick.getDisguisedStack(stack);
+            ItemStack disguised = Stick.getDisguisedStack(stack);
             if (disguised != null) {
                 return disguised.getItem();
             }

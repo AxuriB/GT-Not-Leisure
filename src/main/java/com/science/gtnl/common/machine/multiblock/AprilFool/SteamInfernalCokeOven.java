@@ -3,6 +3,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.enums.BlockIcons.*;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -44,7 +45,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings1;
-import gtPlusPlus.core.block.ModBlocks;
 
 public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCokeOven>
     implements ISurvivalConstructable {
@@ -95,7 +95,7 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
                         .dot(1)
                         .buildAndChain(),
                     ofBlock(GregTechAPI.sBlockCasings1, 10)))
-            .addElement('B', ofBlock(ModBlocks.blockCasingsMisc, 2))
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 13))
             .addElement('C', ofBlock(Blocks.nether_brick, 0))
             .build();
     }

@@ -26,6 +26,7 @@ public class MainConfig {
         + "player_doll";
     public static final String CATEGORY_NOT_ENOUGH_ITEMS = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER
         + "not_enough_items";
+    public static final String CATEGORY_STICK = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "stick";
     public static final String CATEGORY_SUPER_CREEPER = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER
         + "super_creeper";
     public static final String CATEGORY_MESSAGE = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "message";
@@ -393,6 +394,11 @@ public class MainConfig {
         chronarchsClockCooldown = config
             .get(SUB_CATEGORY_CHRONARCHS_CLOCK, "Cooldown", chronarchsClockCooldown, "Change Chronarchs Clock Cooldown")
             .getInt(chronarchsClockCooldown);
+
+        // Stick
+        enableStickItem = config
+            .get(CATEGORY_STICK, "enableStickItem", enableStickItem, "Enable stick fake item and block")
+            .getBoolean(enableStickItem);
 
         // Not Enough Items
         enableSpecialCheatIcon = config

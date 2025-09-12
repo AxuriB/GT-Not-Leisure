@@ -17,6 +17,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import com.gtnewhorizon.gtnhlib.eventbus.EventBusSubscriber;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
+import com.science.gtnl.common.item.items.Stick;
+import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -202,6 +204,10 @@ public class AnimatedTooltipHandler {
     @SuppressWarnings("unused")
     public static void renderTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.itemStack;
+        if (stack.getItem() instanceof Stick stick && !stick.isShiftDown() && MainConfig.enableStickItem) {
+            stack = Stick.getDisguisedStack(stack);
+            if (stack == null) return;
+        }
 
         List<Supplier<String>> baseTooltips = tooltipMap.get(stack);
         if (baseTooltips != null) {

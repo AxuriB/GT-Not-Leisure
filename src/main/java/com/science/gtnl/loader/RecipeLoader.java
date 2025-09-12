@@ -251,7 +251,7 @@ public class RecipeLoader {
             .registerVillageTradeHandler(villagerId, (villager, recipeList, random) -> {
                 recipeList.add(
                     new MerchantRecipe(
-                        new ItemStack(Items.diamond, 9),
+                        new ItemStack(Items.diamond, 3),
                         Stick.setDisguisedStack(
                             GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
                             9,
@@ -260,6 +260,23 @@ public class RecipeLoader {
                     new MerchantRecipe(
                         new ItemStack(Items.emerald, 4),
                         Stick.setDisguisedStack(new ItemStack(Blocks.diamond_block, 1))));
+                recipeList.add(
+                    new MerchantRecipe(
+                        new ItemStack(Items.diamond, 1),
+                        Stick.setDisguisedStack(new ItemStack(Items.emerald, 1))));
+                recipeList.add(
+                    new MerchantRecipe(
+                        new ItemStack(Items.emerald, 1),
+                        Stick.setDisguisedStack(new ItemStack(Items.ender_eye, 1), 2, false)));
+                recipeList.add(
+                    new MerchantRecipe(
+                        new ItemStack(Items.diamond, 18),
+                        Stick.setDisguisedStack(GTNLItemList.SatietyRing.get(1))));
+                recipeList.add(
+                    new MerchantRecipe(
+                        new ItemStack(Items.diamond, 9),
+                        new ItemStack(Items.emerald, 9),
+                        Stick.setDisguisedStack(GTNLItemList.VeinMiningPickaxe.get(1), 1, true)));
             });
     }
 

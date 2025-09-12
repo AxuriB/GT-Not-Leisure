@@ -26,6 +26,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IItemStackExtra;
 import com.science.gtnl.api.IKeyHandler;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.ItemLoader;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -52,6 +53,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     @SideOnly(Side.CLIENT)
     public void onTooltip(ItemTooltipEvent event) {
+        if (!MainConfig.enableStickItem) return;
         val item = event.itemStack;
         if (item.getItem() == this && !isShiftDown()) {
             val fake = getDisguisedStack(item);
@@ -112,7 +114,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass) {
-        if (isShiftDown()) return defaultIcon;
+        if (isShiftDown() || !MainConfig.enableStickItem) return defaultIcon;
         ItemStack disguised = getDisguisedStack(stack);
         if (disguised != null) {
             return disguised.getIconIndex();
@@ -123,7 +125,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack stack) {
-        if (isShiftDown()) return defaultIcon;
+        if (isShiftDown() || !MainConfig.enableStickItem) return defaultIcon;
         ItemStack disguised = getDisguisedStack(stack);
         if (disguised != null) {
             return disguised.getIconIndex();
@@ -140,7 +142,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
-        if (isShiftDown()) {
+        if (isShiftDown() || !MainConfig.enableStickItem) {
             return super.getColorFromItemStack(stack, p_82790_2_);
         }
         ItemStack disguised = getDisguisedStack(stack);
@@ -153,7 +155,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        if (isShiftDown()) {
+        if (isShiftDown() || !MainConfig.enableStickItem) {
             return super.getItemStackDisplayName(stack);
         }
         ItemStack disguised = getDisguisedStack(stack);
@@ -165,7 +167,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
 
     @Override
     public int getDamage(ItemStack stack) {
-        if (isShiftDown()) {
+        if (isShiftDown() || !MainConfig.enableStickItem) {
             return super.getDamage(stack);
         }
         ItemStack disguised = getDisguisedStack(stack);
@@ -178,7 +180,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
     @Override
     @SideOnly(Side.CLIENT)
     public int getSpriteNumberExtra(ItemStack stack) {
-        if (isShiftDown()) {
+        if (isShiftDown() || !MainConfig.enableStickItem) {
             return super.getSpriteNumber();
         }
         ItemStack disguised = getDisguisedStack(stack);
@@ -191,7 +193,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
-        if (stack.hasTagCompound() && isShiftDown()) {
+        if (stack.hasTagCompound() && isShiftDown() && MainConfig.enableStickItem) {
             ItemStack disguised = getDisguisedStack(stack);
             if (disguised != null) {
                 boolean enchanted = stack.getTagCompound()
@@ -228,6 +230,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
         list.add(setDisguisedStack(new ItemStack(Items.diamond)));
         list.add(setDisguisedStack(new ItemStack(Blocks.diamond_block)));
         list.add(setDisguisedStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1)));
+        list.add(setDisguisedStack(CustomItemList.Machine_Multi_ForgeOfGods.get(1)));
         list.add(setDisguisedStack(GTNLItemList.SatietyRing.get(1)));
     }
 
@@ -242,7 +245,7 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
         if (item != null) {
             return new ItemStack(item, 1, meta);
         }
-        return null;
+        return new ItemStack(ItemLoader.stick, 1);
     }
 
     public static ItemStack setDisguisedStack(ItemStack disguised) {
