@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -319,7 +320,7 @@ public class PortableItem extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, net.minecraft.creativetab.CreativeTabs tab, List<ItemStack> list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (PortableType type : PortableType.values()) {
             list.add(new ItemStack(item, 1, type.ordinal()));
         }

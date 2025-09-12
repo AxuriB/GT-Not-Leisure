@@ -4,7 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.village.MerchantRecipe;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -14,6 +17,7 @@ import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.machine.ProcessingArrayRecipeLoader;
 import com.science.gtnl.Utils.recipes.RecipeUtil;
 import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.item.items.Stick;
 import com.science.gtnl.common.machine.OreProcessing.CheatOreProcessingRecipes;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.recipe.AprilFool.CactusWonderFakeRecipes;
@@ -109,10 +113,14 @@ import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import codechicken.nei.api.API;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
@@ -225,6 +233,34 @@ public class RecipeLoader {
         }
 
         TCResearches.register();
+    }
+
+    public static void loadVillageTrade() {
+        for (int id = 0; id < 5; id++) {
+            registerTradeForVillager(id);
+        }
+
+        for (int id : VillagerRegistry.getRegisteredVillagers()) {
+            registerTradeForVillager(id);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void registerTradeForVillager(int villagerId) {
+        VillagerRegistry.instance()
+            .registerVillageTradeHandler(villagerId, (villager, recipeList, random) -> {
+                recipeList.add(
+                    new MerchantRecipe(
+                        new ItemStack(Items.diamond, 9),
+                        Stick.setDisguisedStack(
+                            GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
+                            9,
+                            false)));
+                recipeList.add(
+                    new MerchantRecipe(
+                        new ItemStack(Items.emerald, 4),
+                        Stick.setDisguisedStack(new ItemStack(Blocks.diamond_block, 1))));
+            });
     }
 
     private static void loadCircuitRelatedRecipes() {

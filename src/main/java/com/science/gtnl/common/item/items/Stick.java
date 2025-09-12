@@ -1,0 +1,273 @@
+package com.science.gtnl.common.item.items;
+
+import static com.science.gtnl.ScienceNotLeisure.*;
+
+import java.util.List;
+import java.util.Objects;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMerchant;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+
+import org.lwjgl.input.Keyboard;
+
+import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.api.IItemStackExtra;
+import com.science.gtnl.api.IKeyHandler;
+import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.loader.ItemLoader;
+
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import lombok.val;
+import tectech.thing.CustomItemList;
+
+public class Stick extends Item implements IItemStackExtra, IKeyHandler {
+
+    public IIcon defaultIcon;
+    public static String id = RESOURCE_ROOT_ID + ":" + "Stick";
+
+    public Stick() {
+        this.setMaxStackSize(64);
+        this.setUnlocalizedName("Stick");
+        this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
+        this.setTextureName(RESOURCE_ROOT_ID + ":" + "Stick");
+        this.setHasSubtypes(true);
+        GTNLItemList.Stick.set(new ItemStack(this, 1));
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SideOnly(Side.CLIENT)
+    public void onTooltip(ItemTooltipEvent event) {
+        val item = event.itemStack;
+        if (item.getItem() == this && !isShiftDown()) {
+            val fake = getDisguisedStack(item);
+            val list = event.toolTip;
+            String[] oldList = list.toArray(new String[0]);
+            byte i = 0;
+            list.clear();
+            for (String s : oldList) {
+                if (i == 0) {
+                    String name = fake.getDisplayName();
+                    if (fake.hasDisplayName()) {
+                        name = EnumChatFormatting.ITALIC + name + EnumChatFormatting.RESET;
+                    }
+                    int ii;
+                    if (Minecraft.getMinecraft().gameSettings.advancedItemTooltips) {
+                        String s1 = "";
+                        if (!name.isEmpty()) {
+                            name = name + " (";
+                            s1 = ")";
+                        }
+                        ii = Item.getIdFromItem(fake.getItem());
+                        if (fake.getHasSubtypes()) {
+                            name = name + String.format("#%04d/%d%s", ii, fake.getItemDamage(), s1);
+                        } else {
+                            name = name + String.format("#%04d%s", ii, s1);
+                        }
+                    } else if (!fake.hasDisplayName() && fake.getItem() == Items.filled_map) {
+                        name = name + " #" + fake.getItemDamage();
+                    }
+                    list.add(name);
+                    i++;
+                    continue;
+                }
+                if (i == 1) {
+                    fake.getItem()
+                        .addInformation(
+                            fake,
+                            event.entityPlayer,
+                            list,
+                            Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+                    i++;
+                }
+                if (id.equals(s)) {
+                    list.add(Item.itemRegistry.getNameForObject(fake.getItem()));
+                    continue;
+                }
+                list.add(s);
+            }
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister reg) {
+        this.defaultIcon = reg.registerIcon(RESOURCE_ROOT_ID + ":" + "Stick");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(ItemStack stack, int pass) {
+        if (isShiftDown()) return defaultIcon;
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return disguised.getIconIndex();
+        }
+        return defaultIcon;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconIndex(ItemStack stack) {
+        if (isShiftDown()) return defaultIcon;
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return disguised.getIconIndex();
+        }
+        return defaultIcon;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int damage) {
+        return defaultIcon;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getColorFromItemStack(ItemStack stack, int p_82790_2_) {
+        if (isShiftDown()) {
+            return super.getColorFromItemStack(stack, p_82790_2_);
+        }
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return Objects.requireNonNull(disguised.getItem())
+                .getColorFromItemStack(stack, p_82790_2_);
+        }
+        return super.getColorFromItemStack(stack, p_82790_2_);
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        if (isShiftDown()) {
+            return super.getItemStackDisplayName(stack);
+        }
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return disguised.getDisplayName();
+        }
+        return super.getItemStackDisplayName(stack);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        if (isShiftDown()) {
+            return super.getDamage(stack);
+        }
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return disguised.getItemDamage();
+        }
+        return super.getDamage(stack);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getSpriteNumberExtra(ItemStack stack) {
+        if (isShiftDown()) {
+            return super.getSpriteNumber();
+        }
+        ItemStack disguised = getDisguisedStack(stack);
+        if (disguised != null) {
+            return disguised.getItemSpriteNumber();
+        }
+        return super.getSpriteNumber();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
+        if (stack.hasTagCompound() && isShiftDown()) {
+            ItemStack disguised = getDisguisedStack(stack);
+            if (disguised != null) {
+                boolean enchanted = stack.getTagCompound()
+                    .hasKey("Enchanted")
+                    && stack.getTagCompound()
+                        .getBoolean("Enchanted");
+                list.add(
+                    StatCollector.translateToLocalFormatted(
+                        enchanted ? "Tooltip_Stick_01" : "Tooltip_Stick_00",
+                        disguised.getDisplayName()));
+            }
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean hasEffect(ItemStack stack, int pass) {
+        return stack.hasTagCompound() && stack.getTagCompound()
+            .getBoolean("Enchanted");
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean isShiftDown() {
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiMerchant) {
+            return false;
+        }
+
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+    }
+
+    @Override
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+        list.add(setDisguisedStack(new ItemStack(Items.diamond)));
+        list.add(setDisguisedStack(new ItemStack(Blocks.diamond_block)));
+        list.add(setDisguisedStack(CustomItemList.Machine_Multi_EyeOfHarmony.get(1)));
+        list.add(setDisguisedStack(GTNLItemList.SatietyRing.get(1)));
+    }
+
+    public static ItemStack getDisguisedStack(ItemStack stack) {
+        if (!stack.hasTagCompound()) return null;
+        NBTTagCompound tag = stack.getTagCompound();
+
+        String id = tag.getString("ID");
+        int meta = tag.getInteger("Meta");
+
+        Item item = (Item) Item.itemRegistry.getObject(id);
+        if (item != null) {
+            return new ItemStack(item, 1, meta);
+        }
+        return null;
+    }
+
+    public static ItemStack setDisguisedStack(ItemStack disguised) {
+        return setDisguisedStack(disguised, 1, false);
+    }
+
+    public static ItemStack setDisguisedStack(ItemStack disguised, int amount, boolean enchanted) {
+        if (disguised == null || disguised.getItem() == null) {
+            return new ItemStack(ItemLoader.stick);
+        }
+
+        ItemStack stack = new ItemStack(ItemLoader.stick, amount);
+
+        NBTTagCompound tag = new NBTTagCompound();
+
+        String regName = Item.itemRegistry.getNameForObject(disguised.getItem());
+        if (regName == null) {
+            return stack;
+        }
+
+        tag.setString("ID", regName);
+        tag.setInteger("Meta", disguised.getItemDamage());
+        tag.setBoolean("Enchanted", enchanted);
+
+        stack.setTagCompound(tag);
+        return stack;
+    }
+}

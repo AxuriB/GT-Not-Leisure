@@ -19,6 +19,7 @@
     "Minecraft.MixinEntityItem",
     "Minecraft.MixinEntityPlayerMP",
     "Minecraft.MixinExplosion",
+    "Minecraft.MixinItemStack",
     "Minecraft.MixinItem",
     "Minecraft.MixinWorld",
     "Minecraft.MixinWorldServer"

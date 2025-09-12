@@ -810,6 +810,10 @@ Tooltip_Testitem_11=§f§l如果你遇到了什么问题或者想提出意见，
 Tooltip_Testitem_12=本模组添加的机器meta值从21000开始
 Tooltip_Testitem_13=§c§l另外提醒：不要拿着这个物品右键！
 
+item.Stick.name=纸板
+Tooltip_Stick_00=§5§o仔细检查，%s是一个由纸板做的假东西，希望你能得到一张收据
+Tooltip_Stick_01=§5§o仔细检查，%s是一个由附魔的纸板做的假东西，希望你能得到一张收据
+
 item.PortableItem.0.name=便携工作台
 item.PortableItem.1.name=高级便携工作台
 item.PortableItem.2.name=便携熔炉

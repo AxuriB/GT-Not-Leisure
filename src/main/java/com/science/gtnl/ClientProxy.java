@@ -129,6 +129,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(NullPointerException.class, new NullPointerExceptionRender());
         MinecraftForgeClient
             .registerItemRenderer(ItemLoader.nullPointerException, new ItemNullPointerExceptionRender());
+
+        MinecraftForge.EVENT_BUS.register(ItemLoader.stick);
     }
 
     @Override

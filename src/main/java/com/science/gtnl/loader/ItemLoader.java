@@ -38,6 +38,7 @@ import com.science.gtnl.common.item.items.NullPointerException;
 import com.science.gtnl.common.item.items.PortableItem;
 import com.science.gtnl.common.item.items.SlimeSaddle;
 import com.science.gtnl.common.item.items.SteamRocketItem;
+import com.science.gtnl.common.item.items.Stick;
 import com.science.gtnl.common.item.items.SuspiciousStew;
 import com.science.gtnl.common.item.items.TestItem;
 import com.science.gtnl.common.item.items.TimeStopPocketWatch;
@@ -76,6 +77,7 @@ public class ItemLoader {
     public static ItemBucket honeyBucket;
     public static ItemBucket shimmerBucket;
     public static ItemInfinityCell infinityCell;
+    public static Item stick;
     public static Item suspiciousStew;
     public static Item veinMiningPickaxe;
     public static Item portableItem;
@@ -139,7 +141,6 @@ public class ItemLoader {
             .setTextureName(RESOURCE_ROOT_ID + ":" + "MetaItem/0");
         honeyBucket = GTNLItemBucket.create(BlockLoader.honeyFluid);
         shimmerBucket = GTNLItemBucket.create(BlockLoader.shimmerFluid);
-
         superReachRing = new SuperReachRing();
         satietyRing = new SatietyRing();
         rejectionRing = new RejectionRing();
@@ -148,6 +149,7 @@ public class ItemLoader {
         royalGel = new RoyalGel();
         luckyHorseshoe = new LuckyHorseshoe();
         infinityCell = new ItemInfinityCell();
+        stick = new Stick();
 
         var subDyeItems = new ItemInfinityCell.SubItem[16];
         for (short i = 0; i < 16; i++) {
@@ -172,6 +174,7 @@ public class ItemLoader {
             "InfinityCobblestoneCell",
             ItemInfinityCell.SubItem.getInstance(Blocks.cobblestone));
 
+        GameRegistry.registerItem(stick, "Stick");
         GameRegistry.registerItem(portableItem, "PortableItem");
         GameRegistry.registerItem(veinMiningPickaxe, "VeinMiningPickaxe");
         GameRegistry.registerItem(suspiciousStew, "SuspiciousStew");
