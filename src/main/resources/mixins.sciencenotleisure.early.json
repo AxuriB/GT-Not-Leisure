@@ -18,10 +18,8 @@
     "Minecraft.MixinEntityLiving",
     "Minecraft.MixinEntityItem",
     "Minecraft.MixinEntityPlayerMP",
-    "Minecraft.MixinRenderItem",
     "Minecraft.MixinExplosion",
     "Minecraft.MixinItemStack",
-    "Minecraft.MixinItemRenderer",
     "Minecraft.MixinItem",
     "Minecraft.MixinWorld",
     "Minecraft.MixinWorldServer"

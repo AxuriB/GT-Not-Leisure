@@ -810,6 +810,10 @@ Tooltip_Testitem_11=§f§lIf you encounter any issues or want to make suggestion
 Tooltip_Testitem_12=The machines added by this mod start from meta value 21000
 Tooltip_Testitem_13=§c§lAlso reminder: Do not right-click with this item!
 
+item.Stick.name=Stick
+Tooltip_Stick_00=§5§oLook closely, %s is a fake thing made of cardboard. Hopefully, you can get a receipt.
+Tooltip_Stick_01=§5§oLook closely, %s is a fake thing made of enchanted cardboard. Hopefully, you can get a receipt.
+
 item.PortableItem.0.name=Portable Workbench
 item.PortableItem.1.name=Advanced Portable Workbench
 item.PortableItem.2.name=Portable Furnace

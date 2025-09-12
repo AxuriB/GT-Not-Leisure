@@ -19,6 +19,7 @@ public class EarlyMixinLoader {
         addMixinCFG("mixins.sciencenotleisure.early.json");
         addMixinCFG("mixins.sciencenotleisure.early.SuperCreeper.json", () -> MainConfig.enableSuperCreeper);
         addMixinCFG("mixins.sciencenotleisure.early.SpecialCheatIcon.json", () -> MainConfig.enableSpecialCheatIcon);
+        addMixinCFG("mixins.sciencenotleisure.early.Stick.json", () -> MainConfig.enableStickItem);
     }
 
     public static List<String> getMixinConfigs() {

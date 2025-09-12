@@ -8,6 +8,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import com.brandon3055.draconicevolution.common.ModBlocks;
 import com.cleanroommc.bogosorter.BogoSortAPI;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAvaritiaddonsChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableChest;
 import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
@@ -55,6 +56,7 @@ public class MaterialLoader {
         API.hideItem(GTNLItemList.NullPointerException.get(1));
         API.hideItem(GTNLItemList.TwilightSword.get(1));
         API.hideItem(GTNLItemList.FakeItemSiren.get(1));
+        API.hideItem(ModList.ScienceNotLeisure.ID + ":" + GTNLItemList.Stick.name());
 
         if (Mods.InventoryBogoSorter.isModLoaded()) {
             BogoSortAPI.INSTANCE.addGenericCompat(ContainerPortableChest.class);

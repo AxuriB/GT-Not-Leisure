@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.early.Minecraft;
+package com.science.gtnl.mixins.early.Stick;
 
 import static net.minecraft.client.renderer.ItemRenderer.*;
 

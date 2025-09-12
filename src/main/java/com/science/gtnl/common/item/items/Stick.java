@@ -5,29 +5,32 @@ import static com.science.gtnl.ScienceNotLeisure.*;
 import java.util.List;
 import java.util.Objects;
 
-import com.science.gtnl.api.IItemStackExtra;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import lombok.val;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+
 import org.lwjgl.input.Keyboard;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.api.IItemStackExtra;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.loader.ItemLoader;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lombok.val;
 import tectech.thing.CustomItemList;
 
 public class Stick extends Item implements IItemStackExtra {
@@ -81,7 +84,12 @@ public class Stick extends Item implements IItemStackExtra {
                     continue;
                 }
                 if (i == 1) {
-                    fake.getItem().addInformation(fake, event.entityPlayer, list, Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
+                    fake.getItem()
+                        .addInformation(
+                            fake,
+                            event.entityPlayer,
+                            list,
+                            Minecraft.getMinecraft().gameSettings.advancedItemTooltips);
                     i++;
                 }
                 if (id.equals(s)) {
@@ -135,7 +143,8 @@ public class Stick extends Item implements IItemStackExtra {
         }
         ItemStack disguised = getDisguisedStack(stack);
         if (disguised != null) {
-            return Objects.requireNonNull(disguised.getItem()).getColorFromItemStack(stack, p_82790_2_);
+            return Objects.requireNonNull(disguised.getItem())
+                .getColorFromItemStack(stack, p_82790_2_);
         }
         return super.getColorFromItemStack(stack, p_82790_2_);
     }
@@ -180,12 +189,17 @@ public class Stick extends Item implements IItemStackExtra {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
-        if (stack.hasTagCompound()) {
-            if (isShiftDown()) {
-                ItemStack disguised = getDisguisedStack(stack);
-                if (disguised != null) {
-                    list.add("§5§o仔细检查," + disguised.getDisplayName() + "是一个由纸板做的假东西，希望你能得到一张收据");
-                }
+        if (stack.hasTagCompound() && isShiftDown()) {
+            ItemStack disguised = getDisguisedStack(stack);
+            if (disguised != null) {
+                boolean enchanted = stack.getTagCompound()
+                    .hasKey("Enchanted")
+                    && stack.getTagCompound()
+                        .getBoolean("Enchanted");
+                list.add(
+                    StatCollector.translateToLocalFormatted(
+                        enchanted ? "Tooltip_Stick_01" : "Tooltip_Stick_00",
+                        disguised.getDisplayName()));
             }
         }
     }
@@ -218,12 +232,12 @@ public class Stick extends Item implements IItemStackExtra {
         return null;
     }
 
-    public ItemStack setDisguisedStack(ItemStack disguised) {
+    public static ItemStack setDisguisedStack(ItemStack disguised) {
         if (disguised == null || disguised.getItem() == null) {
-            return new ItemStack(this);
+            return new ItemStack(ItemLoader.stick);
         }
 
-        ItemStack stack = new ItemStack(this);
+        ItemStack stack = new ItemStack(ItemLoader.stick);
 
         NBTTagCompound tag = new NBTTagCompound();
 

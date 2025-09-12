@@ -95,6 +95,9 @@ public class MainConfig {
     public static int chronarchsClockDurationTicks = 600;
     public static int chronarchsClockCooldown = 300;
 
+    // Stick
+    public static boolean enableStickItem = true;
+
     // NotEnoughItems
     public static boolean enableSpecialCheatIcon = false;
     public static int specialIconType = 0;

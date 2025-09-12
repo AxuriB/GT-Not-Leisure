@@ -11,12 +11,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.science.gtnl.api.IItemStackExtra;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 @Mixin(ItemStack.class)
 public abstract class MixinItemStack {
 
     @Shadow
     private Item field_151002_e;
 
+    @SideOnly(Side.CLIENT)
     @Inject(method = "getItemSpriteNumber", at = @At("HEAD"), cancellable = true)
     private void getSpriteNumberExtra(CallbackInfoReturnable<Integer> cir) {
         if (field_151002_e instanceof IItemStackExtra iItemStackExtra) {
