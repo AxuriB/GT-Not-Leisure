@@ -511,6 +511,7 @@ public enum GTNLItemList implements IItemContainer {
     SteamItemVault,
     PrimitiveBrickKiln,
     SingularityDataHub,
+    ElectrocellGenerator,
 
     DebugDataAccessHatch,
     SuperVoidHatch,

@@ -1844,6 +1844,12 @@ LargeBrewer_Mode_1=Fluid Heater
 LargeBrewer_Mode_2=Fermenter
 Tooltip_LargeBrewer_Casing=Any coke oven machine block
 
+NameElectrocellGenerator=Electrocell Generator
+gtnl.recipe.ElectrocellGeneratorRecipes=Electrochemical Reaction
+ElectrocellGeneratorRecipeType=Electrochemical Reaction
+Tooltip_ElectrocellGenerator_00=Clean, eco-friendly, and efficient!
+Tooltip_ElectrocellGenerator_Casing=Any Solid Steel Machine Casing
+
 NameLargeNaquadahReactor=Large Naquadah Reactor
 gtnl.recipe.NaquadahReactorRecipes=Naquadah Reaction
 LargeNaquadahReactorRecipeType=Naquadah Reaction

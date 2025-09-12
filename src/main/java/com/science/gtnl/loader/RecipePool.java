@@ -569,4 +569,12 @@ public class RecipePool {
         .frontend(GTNLLogoFrontend::new)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTNLItemList.PrimitiveBrickKiln.get(1)))
         .build();
+
+    public static final RecipeMap<RecipeMapBackend> ElectrocellGeneratorRecipes = RecipeMapBuilder
+        .of("gtnl.recipe.ElectrocellGeneratorRecipes")
+        .maxIO(2, 1, 1, 1)
+        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
+        .frontend(GTNLLogoFrontend::new)
+        .neiHandlerInfo(builder -> builder.setDisplayStack(GTNLItemList.ElectrocellGenerator.get(1)))
+        .build();
 }

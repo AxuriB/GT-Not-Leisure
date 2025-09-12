@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +46,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -63,7 +63,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -84,15 +83,11 @@ import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.config.ASMConfiguration;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchAirIntake;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchInputBattery;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchOutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteamBusInput;
 import lombok.Getter;
 import lombok.Setter;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 
 public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MTEExtendedPowerMultiBlockBase<T>
     implements IConstructable, ISurvivalConstructable {
@@ -105,15 +100,11 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         super(aName);
     }
 
-    public ArrayList<MTEHatch> mTecTechDynamoHatches = new ArrayList<>();
+    public ArrayList<MTEHatch> mExoticDynamoHatches = new ArrayList<>();
     public ArrayList<ParallelControllerHatch> mParallelControllerHatches = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mFluidIceInputHatch = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mFluidBlazeInputHatch = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mFluidManaInputHatch = new ArrayList<>();
-    public ArrayList<MTEHatch> mTecTechEnergyHatches = new ArrayList<>();
-    public ArrayList<MTEHatchAirIntake> mAirIntakes = new ArrayList<>();
-    public ArrayList<MTEHatchInputBattery> mChargeHatches = new ArrayList<>();
-    public ArrayList<MTEHatchOutputBattery> mDischargeHatches = new ArrayList<>();
 
     public GTCoilTracker.MultiCoilLease coilLease = null;
 
@@ -532,7 +523,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
 
     @Override
     public ButtonWidget createMuffleButton(IWidgetBuilder<?> builder) {
-        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setMuffled(!isMuffled()); })
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> setMuffled(!isMuffled()))
             .setPlayClickSound(true)
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
@@ -752,33 +743,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             || addOutputBusToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
-    @Override
-    public void explodeMultiblock() {
-        MetaTileEntity tTileEntity;
-        for (final Iterator<MTEHatchInputBattery> localIterator = this.mChargeHatches.iterator(); localIterator
-            .hasNext(); tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(GTValues.V[8])) {
-            tTileEntity = localIterator.next();
-        }
-        for (final Iterator<MTEHatchOutputBattery> localIterator = this.mDischargeHatches.iterator(); localIterator
-            .hasNext(); tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(GTValues.V[8])) {
-            tTileEntity = localIterator.next();
-        }
-        for (final Iterator<MTEHatch> localIterator = this.mTecTechDynamoHatches.iterator(); localIterator
-            .hasNext(); tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(GTValues.V[8])) {
-            tTileEntity = localIterator.next();
-        }
-        for (final Iterator<MTEHatch> localIterator = this.mTecTechEnergyHatches.iterator(); localIterator
-            .hasNext(); tTileEntity.getBaseMetaTileEntity()
-                .doExplosion(GTValues.V[8])) {
-            tTileEntity = localIterator.next();
-        }
-
-        super.explodeMultiblock();
-    }
-
     public boolean checkHatch() {
         return mMaintenanceHatches.size() <= 1 && (this.getPollutionPerSecond(null) <= 0 || !mMufflerHatches.isEmpty())
             && mParallelControllerHatches.size() <= 1;
@@ -787,12 +751,11 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     @Override
     public void clearHatches() {
         super.clearHatches();
-        this.mChargeHatches.clear();
-        this.mDischargeHatches.clear();
-        this.mAirIntakes.clear();
-        this.mTecTechEnergyHatches.clear();
-        this.mTecTechDynamoHatches.clear();
+        this.mExoticEnergyHatches.clear();
+        this.mExoticDynamoHatches.clear();
         this.mParallelControllerHatches.clear();
+        this.mFluidManaInputHatch.clear();
+        this.mFluidIceInputHatch.clear();
     }
 
     public IMetaTileEntity getMetaTileEntity(final IGregTechTileEntity aTileEntity) {
@@ -809,43 +772,31 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         if (aTileEntity instanceof MTEHatchInput || aTileEntity instanceof MTEHatchInputBus
             || aTileEntity instanceof MTEHatchSteamBusInput) {
             if (aTileEntity instanceof MTEHatchInput) {
-                ((MTEHatchInput) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInput) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
-                    log("Remapped Input Hatch to " + aMap.unlocalizedName + ".");
+                    ScienceNotLeisure.LOG.warn("Remapped Input Hatch to {}.", aMap.unlocalizedName);
                 } else {
-                    log("Cleared Input Hatch.");
+                    ScienceNotLeisure.LOG.warn("Cleared Input Hatch.");
                 }
             } else if (aTileEntity instanceof MTEHatchInputBus) {
-                ((MTEHatchInputBus) aTileEntity).mRecipeMap = null;
                 ((MTEHatchInputBus) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
-                    log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
+                    ScienceNotLeisure.LOG.warn("Remapped Input Bus to {}.", aMap.unlocalizedName);
                 } else {
-                    log("Cleared Input Bus.");
+                    ScienceNotLeisure.LOG.warn("Cleared Input Bus.");
                 }
             } else {
                 ((MTEHatchSteamBusInput) aTileEntity).mRecipeMap = null;
                 ((MTEHatchSteamBusInput) aTileEntity).mRecipeMap = aMap;
                 if (aMap != null) {
-                    log("Remapped Input Bus to " + aMap.unlocalizedName + ".");
+                    ScienceNotLeisure.LOG.warn("Remapped Input Bus to {}.", aMap.unlocalizedName);
                 } else {
-                    log("Cleared Input Bus.");
+                    ScienceNotLeisure.LOG.warn("Cleared Input Bus.");
                 }
             }
             return true;
         } else {
             return false;
-        }
-    }
-
-    public void log(String s) {
-        if (!ASMConfiguration.debug.disableAllLogging) {
-            if (ASMConfiguration.debug.debugMode) {
-                Logger.INFO(s);
-            } else {
-                Logger.MACHINE_INFO(s);
-            }
         }
     }
 
@@ -913,10 +864,10 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         if (aList.isEmpty()) {
             if (aTileEntity instanceof MTEHatch) {
                 if (GTplusplus.CURRENT_LOAD_PHASE == GTplusplus.INIT_PHASE.STARTED) {
-                    log(
-                        "Adding " + aTileEntity.getInventoryName()
-                            + " at "
-                            + new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
+                    ScienceNotLeisure.LOG.warn(
+                        "Adding {} at {}",
+                        aTileEntity.getInventoryName(),
+                        new BlockPos(aTileEntity.getBaseMetaTileEntity()).getLocationString());
                 }
                 updateTexture(aTileEntity, aBaseCasingIndex);
                 return aList.add((E) aTileEntity);
@@ -924,10 +875,10 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         } else {
             IGregTechTileEntity aCur = aTileEntity.getBaseMetaTileEntity();
             if (aList.contains(aTileEntity)) {
-                log(
-                    "Found Duplicate " + aTileEntity.getInventoryName()
-                        + " @ "
-                        + new BlockPos(aCur).getLocationString());
+                ScienceNotLeisure.LOG.warn(
+                    "Found Duplicate {} @ {}",
+                    aTileEntity.getInventoryName(),
+                    new BlockPos(aCur).getLocationString());
                 return false;
             }
             BlockPos aCurPos = new BlockPos(aCur);
@@ -937,7 +888,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                     BlockPos aPos = new BlockPos(b);
                     if (aCurPos.equals(aPos)) {
                         if (GTplusplus.CURRENT_LOAD_PHASE == GTplusplus.INIT_PHASE.STARTED) {
-                            log("Found Duplicate " + b.getInventoryName() + " at " + aPos.getLocationString());
+                            ScienceNotLeisure.LOG
+                                .warn("Found Duplicate {} at {}", b.getInventoryName(), aPos.getLocationString());
                         }
                         return false;
                     }
@@ -945,7 +897,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             }
             if (aTileEntity instanceof MTEHatch) {
                 if (GTplusplus.CURRENT_LOAD_PHASE == GTplusplus.INIT_PHASE.STARTED) {
-                    log("Adding " + aCur.getInventoryName() + " at " + aCurPos.getLocationString());
+                    ScienceNotLeisure.LOG.warn("Adding {} at {}", aCur.getInventoryName(), aCurPos.getLocationString());
                 }
                 updateTexture(aTileEntity, aBaseCasingIndex);
                 return aList.add((E) aTileEntity);
@@ -959,7 +911,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         if (aEU <= 0) {
             return true;
         }
-        if (!mDynamoHatches.isEmpty()) {
+        if (!mDynamoHatches.isEmpty() || !mExoticDynamoHatches.isEmpty()) {
             return addEnergyOutputMultipleDynamos(aEU, true);
         }
         return false;
@@ -979,6 +931,15 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             }
             totalOutput += aTotal;
         }
+        for (MTEHatch aDynamo : filterValidMTEs(mExoticDynamoHatches)) {
+            long aVoltage = aDynamo.maxEUOutput();
+            long aTotal = aDynamo.maxAmperesOut() * aVoltage;
+            // Check against voltage to check when hatch mixing
+            if (aFirstVoltageFound == -1) {
+                aFirstVoltageFound = aVoltage;
+            }
+            totalOutput += aTotal;
+        }
 
         long actualOutputEU = Math.min(totalOutput, aEU);
 
@@ -988,6 +949,23 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         int aRemainder;
         int ampsOnCurrentHatch;
         for (MTEHatchDynamo aDynamo : filterValidMTEs(mDynamoHatches)) {
+            leftToInject = actualOutputEU - injected;
+            aVoltage = aDynamo.maxEUOutput();
+            aAmpsToInject = (int) (leftToInject / aVoltage);
+            aRemainder = (int) (leftToInject - (aAmpsToInject * aVoltage));
+            ampsOnCurrentHatch = (int) Math.min(aDynamo.maxAmperesOut(), aAmpsToInject);
+            for (int i = 0; i < ampsOnCurrentHatch; i++) {
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(aVoltage, false);
+            }
+            injected += aVoltage * ampsOnCurrentHatch;
+            if (aRemainder > 0 && ampsOnCurrentHatch < aDynamo.maxAmperesOut()) {
+                aDynamo.getBaseMetaTileEntity()
+                    .increaseStoredEnergyUnits(aRemainder, false);
+                injected += aRemainder;
+            }
+        }
+        for (MTEHatch aDynamo : filterValidMTEs(mExoticDynamoHatches)) {
             leftToInject = actualOutputEU - injected;
             aVoltage = aDynamo.maxEUOutput();
             aAmpsToInject = (int) (leftToInject / aVoltage);
@@ -1065,7 +1043,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         mMaxParallel = parallel;
     }
 
-    protected void updateHatchTexture() {
+    public void updateHatchTexture() {
         for (MTEHatch h : mInputBusses) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mOutputBusses) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureID());
@@ -1079,7 +1057,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         for (MTEHatch h : mParallelControllerHatches) h.updateTexture(getCasingTextureID());
     }
 
-    public enum ParallelControllerElement implements IHatchElement<MultiMachineBase<?>> {
+    public enum CustomHatchElement implements IHatchElement<MultiMachineBase<?>> {
 
         ParallelCon(MultiMachineBase::addParallelControllerToMachineList, ParallelControllerHatch.class) {
 
@@ -1087,14 +1065,21 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             public long count(MultiMachineBase<?> tileEntity) {
                 return tileEntity.mParallelControllerHatches.size();
             }
+        },
+
+        ExoticDynamo(MultiMachineBase::addTectechDynamoToMachineList, MTEHatchDynamoMulti.class) {
+
+            @Override
+            public long count(MultiMachineBase<?> tileEntity) {
+                return tileEntity.mExoticDynamoHatches.size();
+            }
         };
 
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MultiMachineBase<?>> adder;
 
         @SafeVarargs
-        ParallelControllerElement(IGTHatchAdder<MultiMachineBase<?>> adder,
-            Class<? extends IMetaTileEntity>... mteClasses) {
+        CustomHatchElement(IGTHatchAdder<MultiMachineBase<?>> adder, Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -1121,6 +1106,22 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mParallelControllerHatches.add(hatch);
+        }
+        return false;
+    }
+
+    public boolean addTectechDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) {
+            return false;
+        }
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) {
+            return false;
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamoMulti hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            return mExoticDynamoHatches.add(hatch);
         }
         return false;
     }

@@ -83,6 +83,7 @@ import com.science.gtnl.common.machine.multiblock.DecayHastener;
 import com.science.gtnl.common.machine.multiblock.Desulfurizer;
 import com.science.gtnl.common.machine.multiblock.DraconicFusionCrafting;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.common.machine.multiblock.ElectrocellGenerator;
 import com.science.gtnl.common.machine.multiblock.ElementCopying;
 import com.science.gtnl.common.machine.multiblock.EngravingLaserPlant;
 import com.science.gtnl.common.machine.multiblock.EyeOfHarmonyInjector;
@@ -1323,6 +1324,13 @@ public class MachineLoader {
                 "SingularityDataHub",
                 StatCollector.translateToLocal("NameSingularityDataHub")));
         addItemTooltip(GTNLItemList.SingularityDataHub.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.ElectrocellGenerator.set(
+            new ElectrocellGenerator(
+                ELECTROCELL_GENERATOR.ID,
+                "ElectrocellGenerator",
+                StatCollector.translateToLocal("NameElectrocellGenerator")));
+        addItemTooltip(GTNLItemList.ElectrocellGenerator.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

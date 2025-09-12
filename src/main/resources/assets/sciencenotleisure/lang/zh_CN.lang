@@ -1844,6 +1844,12 @@ LargeBrewer_Mode_1=流体加热器
 LargeBrewer_Mode_2=发酵槽
 Tooltip_LargeBrewer_Casing=任意焦炉机械方块
 
+NameElectrocellGenerator=电化学电池发电机
+gtnl.recipe.ElectrocellGeneratorRecipes=电化学反应
+ElectrocellGeneratorRecipeType=电化学反应
+Tooltip_ElectrocellGenerator_00=干净环保且高效！
+Tooltip_ElectrocellGenerator_Casing=任意脱氧钢机械方块
+
 NameLargeNaquadahReactor=大型硅岩反应堆
 gtnl.recipe.NaquadahReactorRecipes=硅岩反应
 LargeNaquadahReactorRecipeType=硅岩反应

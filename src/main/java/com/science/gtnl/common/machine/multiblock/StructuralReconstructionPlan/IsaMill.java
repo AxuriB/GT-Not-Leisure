@@ -321,15 +321,11 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
     private void damageMillingBall(ItemStack aStack) {
         if (MathUtils.randFloat(0, 10000000) / 10000000f < (1.2f - (0.2 * 1))) {
             int damage = getMillingBallDamage(aStack) + 1;
-            log("damage milling ball " + damage);
             if (damage >= getMaxBallDurability(aStack)) {
-                log("consuming milling ball");
                 aStack.stackSize -= 1;
             } else {
                 setDamage(aStack, damage);
             }
-        } else {
-            log("not damaging milling ball");
         }
     }
 
