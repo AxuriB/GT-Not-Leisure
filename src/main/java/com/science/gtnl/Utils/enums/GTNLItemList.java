@@ -513,6 +513,12 @@ public enum GTNLItemList implements IItemContainer {
     SingularityDataHub,
     ElectrocellGenerator,
 
+    DieselGeneratorLV,
+    DieselGeneratorMV,
+    DieselGeneratorHV,
+    GasTurbineLV,
+    GasTurbineMV,
+    GasTurbineHV,
     DebugDataAccessHatch,
     SuperVoidHatch,
     SuperVoidBus,

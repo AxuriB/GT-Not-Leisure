@@ -1,12 +1,12 @@
 package com.science.gtnl.Utils;
 
+import java.util.Objects;
+
 import net.minecraft.block.Block;
 
 import com.github.bsideup.jabel.Desugar;
 
 import appeng.api.definitions.IBlockDefinition;
-
-import java.util.Objects;
 
 @Desugar
 public record BlockState(Block block, int meta) {

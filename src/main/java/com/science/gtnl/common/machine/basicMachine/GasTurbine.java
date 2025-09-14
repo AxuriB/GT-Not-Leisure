@@ -1,11 +1,10 @@
 package com.science.gtnl.common.machine.basicMachine;
 
-import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -17,29 +16,26 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 
-public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo {
+public class GasTurbine extends MTEBasicGenerator implements IAddGregtechLogo {
 
-    public SteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
+    public GasTurbine(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
             aName,
             aNameRegional,
             aTier,
-            new String[] { StatCollector.translateToLocal("Tooltip_SteamTurbine_00"),
-                StatCollector.translateToLocal("Tooltip_SteamTurbine_01"), "", "" });
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + (800 / getEfficiency())
-            + "%";
-        mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_SteamTurbine_03") + getCapacity() + "L";
+            new String[] { StatCollector.translateToLocal("Tooltip_GasTurbine_00"), "", "" });
+        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_GasTurbine_01") + getEfficiency() + "%";
+        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_GasTurbine_02") + getCapacity() + "L";
     }
 
-    public SteamTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
+    public GasTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + (800 / getEfficiency())
-            + "%";
-        mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_SteamTurbine_03") + getCapacity() + "L";
+        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_GasTurbine_01") + getEfficiency() + "%";
+        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_GasTurbine_02") + getCapacity() + "L";
     }
 
     @Override
@@ -49,7 +45,7 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new SteamTurbine(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+        return new GasTurbine(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -62,12 +58,7 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return null;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return mDescriptionArray;
+        return RecipeMaps.gasTurbineFuels;
     }
 
     @Override
@@ -77,32 +68,21 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
 
     @Override
     public int getEfficiency() {
-        return 7 + this.mTier;
+        return 115 - 15 * this.mTier;
     }
 
     @Override
-    public int consumedFluidPerOperation(FluidStack aLiquid) {
-        return getEfficiency();
-    }
-
-    @Override
-    public long getFuelValue(FluidStack aLiquid, boolean aLong) {
-        return getFuelValue(aLiquid);
-    }
-
-    @Override
-    public int getFuelValue(FluidStack aLiquid) {
-        if (aLiquid == null) return 0;
-        return GTModHandler.isAnySteam(aLiquid) ? 4 : 0;
+    public String[] getDescription() {
+        return mDescriptionArray;
     }
 
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_FRONT),
+                TextureFactory.of(GAS_TURBINE_FRONT),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_FRONT_GLOW)
+                    .addIcon(GAS_TURBINE_FRONT_GLOW)
                     .glow()
                     .build()),
             OVERLAYS_ENERGY_OUT[this.mTier] };
@@ -112,9 +92,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_BACK),
+                TextureFactory.of(GAS_TURBINE_BACK),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_BACK_GLOW)
+                    .addIcon(GAS_TURBINE_BACK_GLOW)
                     .glow()
                     .build()) };
     }
@@ -123,9 +103,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_BOTTOM),
+                TextureFactory.of(GAS_TURBINE_BOTTOM),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_BOTTOM_GLOW)
+                    .addIcon(GAS_TURBINE_BOTTOM_GLOW)
                     .glow()
                     .build()) };
     }
@@ -134,9 +114,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getTop(byte aColor) {
         return new ITexture[] { super.getTop(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_TOP),
+                TextureFactory.of(GAS_TURBINE_TOP),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_TOP_GLOW)
+                    .addIcon(GAS_TURBINE_TOP_GLOW)
                     .glow()
                     .build()) };
     }
@@ -145,9 +125,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_SIDE),
+                TextureFactory.of(GAS_TURBINE_SIDE),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_SIDE_GLOW)
+                    .addIcon(GAS_TURBINE_SIDE_GLOW)
                     .glow()
                     .build()) };
     }
@@ -156,9 +136,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_FRONT_ACTIVE),
+                TextureFactory.of(GAS_TURBINE_FRONT_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_FRONT_ACTIVE_GLOW)
+                    .addIcon(GAS_TURBINE_FRONT_ACTIVE_GLOW)
                     .glow()
                     .build()),
             OVERLAYS_ENERGY_OUT[this.mTier] };
@@ -168,9 +148,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_BACK_ACTIVE),
+                TextureFactory.of(GAS_TURBINE_BACK_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_BACK_ACTIVE_GLOW)
+                    .addIcon(GAS_TURBINE_BACK_ACTIVE_GLOW)
                     .glow()
                     .build()) };
     }
@@ -179,9 +159,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_BOTTOM_ACTIVE),
+                TextureFactory.of(GAS_TURBINE_BOTTOM_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_BOTTOM_ACTIVE_GLOW)
+                    .addIcon(GAS_TURBINE_BOTTOM_ACTIVE_GLOW)
                     .glow()
                     .build()) };
     }
@@ -190,9 +170,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_TOP_ACTIVE),
+                TextureFactory.of(GAS_TURBINE_TOP_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_TOP_ACTIVE_GLOW)
+                    .addIcon(GAS_TURBINE_TOP_ACTIVE_GLOW)
                     .glow()
                     .build()) };
     }
@@ -201,9 +181,9 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0],
             TextureFactory.of(
-                TextureFactory.of(STEAM_TURBINE_SIDE_ACTIVE),
+                TextureFactory.of(GAS_TURBINE_SIDE_ACTIVE),
                 TextureFactory.builder()
-                    .addIcon(STEAM_TURBINE_SIDE_ACTIVE_GLOW)
+                    .addIcon(GAS_TURBINE_SIDE_ACTIVE_GLOW)
                     .glow()
                     .build()) };
     }

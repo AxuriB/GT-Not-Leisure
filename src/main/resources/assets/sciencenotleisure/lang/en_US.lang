@@ -346,6 +346,20 @@ Tooltip_SteamTurbine_01=Base efficiency: 2L steam/EU
 Tooltip_SteamTurbine_02=Fuel efficiency: 
 Tooltip_SteamTurbine_03=Fluid capacity: 
 
+GasTurbineLV=Basic Gas Turbine
+GasTurbineMV=Advanced Gas Turbine
+GasTurbineHV=Advanced Gas Turbine II
+Tooltip_GasTurbine_00=Requires flammable Gasses
+Tooltip_GasTurbine_01=Fuel efficiency: 
+Tooltip_GasTurbine_02=Fluid capacity: 
+
+DieselGeneratorLV=Basic Combustion Generator
+DieselGeneratorMV=Advanced Combustion Generator
+DieselGeneratorHV=Advanced Combustion Generator II
+Tooltip_DieselGenerator_00=Requires liquid Fuel
+Tooltip_DieselGenerator_01=Fuel efficiency: 
+Tooltip_DieselGenerator_02=Fluid capacity: 
+
 DebugResearchStation=Debug Research Station
 Tooltip_DebugResearchStation_00=Immediately scans Research Station recipes, requires no energy
 

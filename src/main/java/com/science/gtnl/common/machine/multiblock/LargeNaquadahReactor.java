@@ -34,6 +34,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
 
@@ -44,6 +45,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -59,17 +61,17 @@ import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
 public class LargeNaquadahReactor extends TTMultiblockBase implements IConstructable, ISurvivalConstructable {
 
-    private int tCountCasing;
+    public int tCountCasing;
+    public double mConfigSpeedBoost = 1;
     private boolean Oxygen = false;
     private int multiplier = 1;
     private long setEUt = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LNR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_naquadah_reactor";
     public static final String[][] shape = StructureUtils.readStructureFromFile(LNR_STRUCTURE_FILE_PATH);
-    protected final int HORIZONTAL_OFF_SET = 12;
-    protected final int VERTICAL_OFF_SET = 12;
-    protected final int DEPTH_OFF_SET = 0;
-    protected static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(10);
+    private final int HORIZONTAL_OFF_SET = 12;
+    private final int VERTICAL_OFF_SET = 12;
+    private final int DEPTH_OFF_SET = 0;
 
     public LargeNaquadahReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -107,9 +109,9 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
             .addElement('B', ofBlock(BlockLoader.metaCasing, 5))
             .addElement(
                 'C',
-                buildHatchAdder(LargeNaquadahReactor.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeNaquadahReactor.class).casingIndex(getCasingTextureID())
                     .dot(1)
-                    .atLeast(Maintenance, InputHatch, OutputHatch, Dynamo.or(DynamoMulti), Maintenance)
+                    .atLeast(Maintenance, InputHatch, OutputHatch, Dynamo.or(DynamoMulti))
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('D', ofBlock(sBlockCasingsTT, 0))
             .addElement('E', ofFrame(Materials.Naquadria))
@@ -137,7 +139,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
     }
 
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return ((BlockCasings8) sBlockCasings8).getTextureIndex(10);
     }
 
     @Override
@@ -246,7 +248,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
 
         mOutputFluids = new FluidStack[] { new FluidStack(byproductFluid.getFluid(), 160 * multiplier) };
 
-        mMaxProgresstime = baseTime;
+        mMaxProgresstime = (int) (baseTime * mConfigSpeedBoost);
         setEUt *= multiplier;
 
         if (Oxygen) {
@@ -284,6 +286,27 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
             }
         }
         return remaining <= 0;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick % 20 == 0) {
+                boolean found = false;
+                for (MTEHatchMaintenance module : mMaintenanceHatches) {
+                    if (module instanceof CustomMaintenanceHatch customMaintenanceHatch) {
+                        if (customMaintenanceHatch.isConfiguration()) {
+                            mConfigSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
+                        }
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    mConfigSpeedBoost = 1;
+                }
+            }
+        }
     }
 
     @Override

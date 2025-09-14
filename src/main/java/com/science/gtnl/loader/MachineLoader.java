@@ -19,7 +19,9 @@ import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.common.machine.basicMachine.DebugResearchStation;
+import com.science.gtnl.common.machine.basicMachine.DieselGenerator;
 import com.science.gtnl.common.machine.basicMachine.Enchanting;
+import com.science.gtnl.common.machine.basicMachine.GasTurbine;
 import com.science.gtnl.common.machine.basicMachine.ManaTank;
 import com.science.gtnl.common.machine.basicMachine.Replicator;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
@@ -2092,7 +2094,7 @@ public class MachineLoader {
         GTNLItemList.SteamTurbineLV.set(
             new SteamTurbine(
                 STEAM_TURBINE_LV.ID,
-                "BasicSteamTurbine",
+                "SteamTurbineLV",
                 StatCollector.translateToLocal("SteamTurbineLV"),
                 1));
         addItemTooltip(GTNLItemList.SteamTurbineLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
@@ -2100,7 +2102,7 @@ public class MachineLoader {
         GTNLItemList.SteamTurbineMV.set(
             new SteamTurbine(
                 STEAM_TURBINE_MV.ID,
-                "AdvancedSteamTurbine",
+                "SteamTurbineMV",
                 StatCollector.translateToLocal("SteamTurbineMV"),
                 2));
         addItemTooltip(GTNLItemList.SteamTurbineMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
@@ -2108,7 +2110,7 @@ public class MachineLoader {
         GTNLItemList.SteamTurbineHV.set(
             new SteamTurbine(
                 STEAM_TURBINE_HV.ID,
-                "AdvancedSteamTurbineII",
+                "SteamTurbineHV",
                 StatCollector.translateToLocal("SteamTurbineHV"),
                 3));
         addItemTooltip(GTNLItemList.SteamTurbineHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
@@ -2225,6 +2227,42 @@ public class MachineLoader {
 
             addItemTooltip(tier.itemEnum.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
         }
+
+        GTNLItemList.GasTurbineLV
+            .set(new GasTurbine(GAS_TURBINE_LV.ID, "GasTurbineLV", StatCollector.translateToLocal("GasTurbineLV"), 1));
+        addItemTooltip(GTNLItemList.GasTurbineLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.GasTurbineMV
+            .set(new GasTurbine(GAS_TURBINE_MV.ID, "GasTurbineMV", StatCollector.translateToLocal("GasTurbineMV"), 2));
+        addItemTooltip(GTNLItemList.GasTurbineMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.GasTurbineHV
+            .set(new GasTurbine(GAS_TURBINE_HV.ID, "GasTurbineHV", StatCollector.translateToLocal("GasTurbineHV"), 3));
+        addItemTooltip(GTNLItemList.GasTurbineHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.DieselGeneratorLV.set(
+            new DieselGenerator(
+                DIESEL_GENERATOR_LV.ID,
+                "DieselGeneratorLV",
+                StatCollector.translateToLocal("DieselGeneratorLV"),
+                1));
+        addItemTooltip(GTNLItemList.DieselGeneratorLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.DieselGeneratorMV.set(
+            new DieselGenerator(
+                DIESEL_GENERATOR_MV.ID,
+                "DieselGeneratorMV",
+                StatCollector.translateToLocal("DieselGeneratorMV"),
+                2));
+        addItemTooltip(GTNLItemList.DieselGeneratorMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.DieselGeneratorHV.set(
+            new DieselGenerator(
+                DIESEL_GENERATOR_HV.ID,
+                "DieselGeneratorHV",
+                StatCollector.translateToLocal("DieselGeneratorHV"),
+                3));
+        addItemTooltip(GTNLItemList.DieselGeneratorHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     public static void registerMTEWireAndPipe() {
