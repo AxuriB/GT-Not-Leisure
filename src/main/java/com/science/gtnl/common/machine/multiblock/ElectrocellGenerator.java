@@ -10,10 +10,16 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
+import static gregtech.api.util.GTUtility.*;
+
+import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
 
 import com.dreammaster.block.BlockList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -21,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.gui.recipe.ElectrocellGeneratorFrontend;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -31,7 +38,11 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator> implements ISurvivalConstructable {
@@ -42,6 +53,7 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String EG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/electrocell_generator";
     public static final String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
+    public double generatorValue = 1;
 
     public MTEHatchInputBus mLeftInputBusses = null;
     public MTEHatchInputBus mRightInputBusses = null;
@@ -164,6 +176,57 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
     }
 
     @Override
+    public @NotNull CheckRecipeResult checkProcessing() {
+        mEfficiency = 10000;
+        mEfficiencyIncrease = 10000;
+        generatorValue = 1;
+
+        Pair<ItemStack, ItemStack> inputItems = getStoredInputsItems();
+        ItemStack leftItem = inputItems.getLeft();
+        ItemStack rightItem = inputItems.getRight();
+
+        for (GTRecipe recipe : RecipePool.ElectrocellGeneratorRecipes.getAllRecipes()) {
+            if (GTUtility.areStacksEqual(recipe.mInputs[0], leftItem)
+                && GTUtility.areStacksEqual(recipe.mInputs[1], rightItem)) {
+                if (depleteInput(leftItem) && depleteInput(rightItem)) {
+                    mMaxProgresstime = recipe.mDuration;
+                    generatorValue = recipe.mSpecialValue / 100D;
+                    lEUt = Objects.requireNonNull(
+                        recipe.getMetadata(ElectrocellGeneratorFrontend.SpecialValueFormatter.INSTANCE));
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
+                }
+            }
+        }
+
+        return CheckRecipeResultRegistry.NO_RECIPE;
+    }
+
+    public Pair<ItemStack, ItemStack> getStoredInputsItems() {
+        ItemStack leftStack = null;
+        ItemStack rightStack = null;
+
+        if (mLeftInputBusses != null) {
+            mLeftInputBusses.mRecipeMap = getRecipeMap();
+            IGregTechTileEntity tileEntity = mLeftInputBusses.getBaseMetaTileEntity();
+            int lastIndex = tileEntity.getSizeInventory() - 1;
+            if (lastIndex >= 0) {
+                leftStack = tileEntity.getStackInSlot(lastIndex);
+            }
+        }
+
+        if (mRightInputBusses != null) {
+            mRightInputBusses.mRecipeMap = getRecipeMap();
+            IGregTechTileEntity tileEntity = mRightInputBusses.getBaseMetaTileEntity();
+            int lastIndex = tileEntity.getSizeInventory() - 1;
+            if (lastIndex >= 0) {
+                rightStack = tileEntity.getStackInSlot(lastIndex);
+            }
+        }
+
+        return Pair.of(leftStack, rightStack);
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
@@ -211,6 +274,7 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof MTEHatchInputBus inputBus) {
+                if (inputBus.getTierForStructure() > 0) return false;
                 if (mLeftInputBusses != null) return false;
                 mLeftInputBusses = inputBus;
                 mLeftInputBusses.updateTexture(aBaseCasingIndex);
@@ -224,6 +288,7 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
         if (aTileEntity != null) {
             final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
             if (aMetaTileEntity instanceof MTEHatchInputBus inputBus) {
+                if (inputBus.getTierForStructure() > 0) return false;
                 if (mRightInputBusses != null) return false;
                 mRightInputBusses = inputBus;
                 mRightInputBusses.updateTexture(aBaseCasingIndex);

@@ -1860,6 +1860,8 @@ Tooltip_LargeBrewer_Casing=Any coke oven machine block
 
 NameElectrocellGenerator=Electrocell Generator
 gtnl.recipe.ElectrocellGeneratorRecipes=Electrochemical Reaction
+NEI.ElectrocellGenerator.specialValue=Generation Coefficient: %s
+NEI.ElectrocellGenerator.generatorEUt=Base Power Output: %s EU/t
 ElectrocellGeneratorRecipeType=Electrochemical Reaction
 Tooltip_ElectrocellGenerator_00=Clean, eco-friendly, and efficient!
 Tooltip_ElectrocellGenerator_Casing=Any Solid Steel Machine Casing

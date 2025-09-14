@@ -6,10 +6,12 @@ import java.util.Comparator;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.gui.recipe.BloodSoulFrontend;
 import com.science.gtnl.Utils.gui.recipe.EGTWUpgradeCostFrontend;
+import com.science.gtnl.Utils.gui.recipe.ElectrocellGeneratorFrontend;
 import com.science.gtnl.Utils.gui.recipe.ExtremeExtremeEntityCrusherFrontend;
 import com.science.gtnl.Utils.gui.recipe.FallingTowerFrontend;
 import com.science.gtnl.Utils.gui.recipe.GTNLLogoFrontend;
@@ -572,9 +574,10 @@ public class RecipePool {
 
     public static final RecipeMap<RecipeMapBackend> ElectrocellGeneratorRecipes = RecipeMapBuilder
         .of("gtnl.recipe.ElectrocellGeneratorRecipes")
-        .maxIO(2, 1, 1, 1)
-        .progressBar(GTUITextures.PROGRESSBAR_ARROW_MULTIPLE)
-        .frontend(GTNLLogoFrontend::new)
+        .maxIO(2, 1, 1, 2)
+        .progressBar(GTUITextures.PROGRESSBAR_SIFT, ProgressBar.Direction.DOWN)
+        .progressBarPos(78, 26)
+        .frontend(ElectrocellGeneratorFrontend::new)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTNLItemList.ElectrocellGenerator.get(1)))
         .build();
 }

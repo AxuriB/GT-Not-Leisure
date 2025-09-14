@@ -2,6 +2,8 @@ package com.science.gtnl.Utils.gui.recipe;
 
 import java.util.List;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -11,8 +13,11 @@ import com.science.gtnl.Utils.item.ItemUtils;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class GeneralFrontend extends RecipeMapFrontend {
 
     private static final int xDirMaxCount = 4;

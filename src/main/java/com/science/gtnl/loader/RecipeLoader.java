@@ -38,6 +38,7 @@ import com.science.gtnl.common.recipe.GTNL.BloodDemonInjectionRecipes;
 import com.science.gtnl.common.recipe.GTNL.CellRegulatorRecipes;
 import com.science.gtnl.common.recipe.GTNL.DecayHastenerRecipes;
 import com.science.gtnl.common.recipe.GTNL.DesulfurizerRecipes;
+import com.science.gtnl.common.recipe.GTNL.ElectrocellGeneratorRecipes;
 import com.science.gtnl.common.recipe.GTNL.ElementCopyingRecipes;
 import com.science.gtnl.common.recipe.GTNL.EternalGregTechWorkshopUpgradeRecipes;
 import com.science.gtnl.common.recipe.GTNL.FallingTowerRecipes;
@@ -191,7 +192,8 @@ public class RecipeLoader {
             new SteamManufacturerRecipes(), new SteamCarpenterRecipe(), new LavaMakerRecipes(),
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
-            new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes() };
+            new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes(),
+            new ElectrocellGeneratorRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };

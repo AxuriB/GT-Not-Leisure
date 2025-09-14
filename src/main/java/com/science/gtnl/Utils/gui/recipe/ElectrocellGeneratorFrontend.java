@@ -1,0 +1,119 @@
+package com.science.gtnl.Utils.gui.recipe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.science.gtnl.Utils.item.ItemUtils;
+
+import codechicken.nei.PositionedStack;
+import gregtech.api.recipe.BasicUIPropertiesBuilder;
+import gregtech.api.recipe.NEIRecipePropertiesBuilder;
+import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.nei.GTNEIDefaultHandler;
+import gregtech.nei.RecipeDisplayInfo;
+import gregtech.nei.formatter.INEISpecialInfoFormatter;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class ElectrocellGeneratorFrontend extends RecipeMapFrontend {
+
+    public ElectrocellGeneratorFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
+        NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        super(uiPropertiesBuilder, neiPropertiesBuilder.neiSpecialInfoFormatter(SpecialValueFormatter.INSTANCE));
+    }
+
+    @Override
+    public void addGregTechLogo(ModularWindow.Builder builder, Pos2d windowOffset) {
+        builder.widget(
+            new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_LOGO)
+                .setSize(18, 18)
+                .setPos(uiProperties.logoPos.add(windowOffset)));
+    }
+
+    @Override
+    public List<Pos2d> getItemInputPositions(int itemInputCount) {
+        return ImmutableList.of(new Pos2d(43, 7), new Pos2d(115, 7));
+    }
+
+    @Override
+    public List<Pos2d> getItemOutputPositions(int itemInputCount) {
+        return ImmutableList.of(new Pos2d(79, 45));
+    }
+
+    @Override
+    public List<Pos2d> getFluidInputPositions(int fluidOutputCount) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<Pos2d> getFluidOutputPositions(int itemInputCount) {
+        return ImmutableList.of(new Pos2d(79, 63), new Pos2d(79, 7));
+    }
+
+    private static final Int2ObjectOpenHashMap<PositionedStack> fluidInputCache = new Int2ObjectOpenHashMap<>();
+
+    @Override
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        final GTRecipe recipe = neiCachedRecipe.mRecipe;
+        final int recipeKey = recipe.hashCode();
+
+        PositionedStack cachedStack = fluidInputCache.get(recipeKey);
+        if (cachedStack == null) {
+            final FluidStack[] fluids = recipe.mFluidInputs;
+            final int len = fluids.length;
+
+            ItemStack[] itemStacks = new ItemStack[len];
+            for (int i = 0; i < len; i++) {
+                itemStacks[i] = GTUtility.getFluidDisplayStack(fluids[i], true);
+            }
+
+            cachedStack = new PositionedStack(itemStacks, 75, -3, false);
+            fluidInputCache.put(recipeKey, cachedStack);
+        }
+
+        neiCachedRecipe.mInputs.add(cachedStack);
+        super.drawNEIOverlays(neiCachedRecipe);
+    }
+
+    public static class SpecialValueFormatter extends RecipeMetadataKey<Integer> implements INEISpecialInfoFormatter {
+
+        public static final SpecialValueFormatter INSTANCE = new SpecialValueFormatter();
+
+        public SpecialValueFormatter() {
+            super(Integer.class, "electricellgeneratorfrontend_metadata");
+        }
+
+        @Override
+        public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
+            int generatorEUt = cast(value, 1);
+            recipeInfo.drawText(
+                StatCollector.translateToLocalFormatted("NEI.ElectrocellGenerator.generatorEUt", generatorEUt));
+        }
+
+        @Override
+        public List<String> format(RecipeDisplayInfo recipeInfo) {
+            List<String> specialInfo = new ArrayList<>();
+            specialInfo.add(
+                StatCollector.translateToLocalFormatted(
+                    "NEI.ElectrocellGenerator.specialValue",
+                    recipeInfo.recipe.mSpecialValue / 100D));
+            return specialInfo;
+        }
+    }
+}

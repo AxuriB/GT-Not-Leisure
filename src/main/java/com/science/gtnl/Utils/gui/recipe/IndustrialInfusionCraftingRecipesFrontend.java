@@ -3,6 +3,8 @@ package com.science.gtnl.Utils.gui.recipe;
 import java.util.List;
 import java.util.function.Supplier;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -11,8 +13,11 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class IndustrialInfusionCraftingRecipesFrontend extends GTNLLogoFrontend {
 
     private static final int xDirMaxCount = 5;
