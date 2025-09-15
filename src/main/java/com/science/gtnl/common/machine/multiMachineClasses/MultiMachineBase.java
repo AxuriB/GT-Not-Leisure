@@ -50,8 +50,8 @@ import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.api.IConfigurationMaintenance;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
-import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 
@@ -147,7 +147,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             if (aTick % 20 == 0) {
                 boolean found = false;
                 for (MTEHatchMaintenance module : mMaintenanceHatches) {
-                    if (module instanceof CustomMaintenanceHatch customMaintenanceHatch) {
+                    if (module instanceof IConfigurationMaintenance customMaintenanceHatch) {
                         if (customMaintenanceHatch.isConfiguration()) {
                             mConfigSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
                         }

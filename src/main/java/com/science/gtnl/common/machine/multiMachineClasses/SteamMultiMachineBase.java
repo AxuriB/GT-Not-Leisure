@@ -65,8 +65,8 @@ import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.api.IConfigurationMaintenance;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
-import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -362,7 +362,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             if (aTick % 20 == 0) {
                 boolean found = false;
                 for (MTEHatchMaintenance module : mMaintenanceHatches) {
-                    if (module instanceof CustomMaintenanceHatch customMaintenanceHatch) {
+                    if (module instanceof IConfigurationMaintenance customMaintenanceHatch) {
                         if (customMaintenanceHatch.isConfiguration())
                             configSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
                         found = true;
