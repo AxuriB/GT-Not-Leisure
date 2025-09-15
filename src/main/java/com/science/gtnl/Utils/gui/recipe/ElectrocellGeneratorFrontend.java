@@ -89,17 +89,17 @@ public class ElectrocellGeneratorFrontend extends RecipeMapFrontend {
         super.drawNEIOverlays(neiCachedRecipe);
     }
 
-    public static class SpecialValueFormatter extends RecipeMetadataKey<Integer> implements INEISpecialInfoFormatter {
+    public static class SpecialValueFormatter extends RecipeMetadataKey<Long> implements INEISpecialInfoFormatter {
 
         public static final SpecialValueFormatter INSTANCE = new SpecialValueFormatter();
 
         public SpecialValueFormatter() {
-            super(Integer.class, "electricellgeneratorfrontend_metadata");
+            super(Long.class, "electricellgeneratorfrontend_metadata");
         }
 
         @Override
         public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
-            int generatorEUt = cast(value, 1);
+            long generatorEUt = cast(value, 1L);
             recipeInfo.drawText(
                 StatCollector.translateToLocalFormatted("NEI.ElectrocellGenerator.generatorEUt", generatorEUt));
         }

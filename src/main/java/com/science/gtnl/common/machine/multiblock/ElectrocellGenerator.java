@@ -10,13 +10,15 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
-import static gregtech.api.util.GTUtility.*;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
@@ -54,6 +56,10 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
     private static final String EG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/electrocell_generator";
     public static final String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
     public double generatorValue = 1;
+    public FluidStack matchedFluid;
+    public FluidStack outputFluid;
+
+    public static final double[] FLUID_MULTIPLIERS = { 1.0, 1.8, 2.5, 3.5 };
 
     public MTEHatchInputBus mLeftInputBusses = null;
     public MTEHatchInputBus mRightInputBusses = null;
@@ -180,20 +186,41 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
         generatorValue = 1;
+        matchedFluid = null;
 
         Pair<ItemStack, ItemStack> inputItems = getStoredInputsItems();
         ItemStack leftItem = inputItems.getLeft();
         ItemStack rightItem = inputItems.getRight();
+        ArrayList<FluidStack> fluidStacks = getStoredFluids();
 
         for (GTRecipe recipe : RecipePool.ElectrocellGeneratorRecipes.getAllRecipes()) {
             if (GTUtility.areStacksEqual(recipe.mInputs[0], leftItem)
                 && GTUtility.areStacksEqual(recipe.mInputs[1], rightItem)) {
-                if (depleteInput(leftItem) && depleteInput(rightItem)) {
-                    mMaxProgresstime = recipe.mDuration;
-                    generatorValue = recipe.mSpecialValue / 100D;
-                    lEUt = Objects.requireNonNull(
-                        recipe.getMetadata(ElectrocellGeneratorFrontend.SpecialValueFormatter.INSTANCE));
-                    return CheckRecipeResultRegistry.SUCCESSFUL;
+                if (recipe.mFluidInputs != null && !fluidStacks.isEmpty()) {
+                    double multiplier = 1;
+
+                    for (int i = 0; i < recipe.mFluidInputs.length; i++) {
+                        for (FluidStack stored : fluidStacks) {
+                            if (GTUtility.areFluidsEqual(recipe.mFluidInputs[i], stored)) {
+                                matchedFluid = stored.copy();
+                                if (i < FLUID_MULTIPLIERS.length) {
+                                    multiplier = FLUID_MULTIPLIERS[i];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (matchedFluid != null) {
+                        if (depleteInput(leftItem) && depleteInput(rightItem)) {
+                            mMaxProgresstime = recipe.mDuration;
+                            generatorValue = recipe.mSpecialValue / 100D * multiplier;
+                            lEUt = Objects.requireNonNull(
+                                recipe.getMetadata(ElectrocellGeneratorFrontend.SpecialValueFormatter.INSTANCE));
+                            outputFluid = recipe.mFluidOutputs[0];
+                            return CheckRecipeResultRegistry.SUCCESSFUL;
+                        }
+                    }
                 }
             }
         }
@@ -224,6 +251,40 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
         }
 
         return Pair.of(leftStack, rightStack);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+
+        aNBT.setDouble("generatorValue", generatorValue);
+
+        if (matchedFluid != null) {
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            matchedFluid.writeToNBT(fluidTag);
+            aNBT.setTag("matchedFluid", fluidTag);
+        }
+
+        if (outputFluid != null) {
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            outputFluid.writeToNBT(fluidTag);
+            aNBT.setTag("outputFluid", fluidTag);
+        }
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+
+        generatorValue = aNBT.getDouble("generatorValue");
+
+        if (aNBT.hasKey("matchedFluid")) {
+            matchedFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("matchedFluid"));
+        }
+
+        if (aNBT.hasKey("outputFluid")) {
+            outputFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("outputFluid"));
+        }
     }
 
     @Override

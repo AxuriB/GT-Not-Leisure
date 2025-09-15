@@ -57,6 +57,7 @@ public abstract class MixinMTEIntegratedOreFactory {
             .addInfo("")
             .addInfo("")
             .addInfo("")
+            .addInfo("")
             .addInfo(StatCollector.translateToLocal("Tooltip_IntegratedOreFactory_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_IntegratedOreFactory_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_IntegratedOreFactory_03"))
