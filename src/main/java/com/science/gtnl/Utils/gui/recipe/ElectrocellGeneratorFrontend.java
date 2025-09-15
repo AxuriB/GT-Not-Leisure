@@ -27,11 +27,12 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class ElectrocellGeneratorFrontend extends RecipeMapFrontend {
+
+    public static List<GTRecipe> initializedRecipes = new ArrayList<>();
 
     public ElectrocellGeneratorFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
@@ -66,15 +67,11 @@ public class ElectrocellGeneratorFrontend extends RecipeMapFrontend {
         return ImmutableList.of(new Pos2d(79, 63), new Pos2d(79, 7));
     }
 
-    private static final Int2ObjectOpenHashMap<PositionedStack> fluidInputCache = new Int2ObjectOpenHashMap<>();
-
     @Override
     public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         final GTRecipe recipe = neiCachedRecipe.mRecipe;
-        final int recipeKey = recipe.hashCode();
 
-        PositionedStack cachedStack = fluidInputCache.get(recipeKey);
-        if (cachedStack == null) {
+        if (!initializedRecipes.contains(recipe)) {
             final FluidStack[] fluids = recipe.mFluidInputs;
             final int len = fluids.length;
 
@@ -83,11 +80,12 @@ public class ElectrocellGeneratorFrontend extends RecipeMapFrontend {
                 itemStacks[i] = GTUtility.getFluidDisplayStack(fluids[i], true);
             }
 
-            cachedStack = new PositionedStack(itemStacks, 75, -3, false);
-            fluidInputCache.put(recipeKey, cachedStack);
+            PositionedStack stack = new PositionedStack(itemStacks, 75, -3, false);
+            neiCachedRecipe.mInputs.add(stack);
+
+            initializedRecipes.add(recipe);
         }
 
-        neiCachedRecipe.mInputs.add(cachedStack);
         super.drawNEIOverlays(neiCachedRecipe);
     }
 

@@ -1,6 +1,7 @@
 package com.science.gtnl.Utils;
 
 import static com.science.gtnl.ScienceNotLeisure.network;
+import static com.science.gtnl.Utils.gui.recipe.ElectrocellGeneratorFrontend.*;
 import static com.science.gtnl.Utils.steam.GlobalSteamWorldSavedData.loadInstance;
 import static com.science.gtnl.common.render.PlayerDollRenderManager.*;
 
@@ -334,6 +335,7 @@ public class SubscribeEventUtils {
         BLACKLISTED_SKIN_URLS.clear();
         BLACKLISTED_CAPE_URLS.clear();
         UUID_CACHE.clear();
+        initializedRecipes.clear();
     }
 
     @SubscribeEvent
