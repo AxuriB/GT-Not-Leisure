@@ -151,7 +151,7 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
 
     @Override
     public ItemStack[] getSharedItems() {
-        return null;
+        return new ItemStack[] {};
     }
 
     @Override
