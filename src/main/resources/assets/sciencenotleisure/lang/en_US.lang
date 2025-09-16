@@ -824,6 +824,10 @@ Tooltip_Testitem_11=§f§lIf you encounter any issues or want to make suggestion
 Tooltip_Testitem_12=The machines added by this mod start from meta value 21000
 Tooltip_Testitem_13=§c§lAlso reminder: Do not right-click with this item!
 
+item.WirelessUpgradeChip.name=Wireless Upgrade Chip
+Tooltip_WirelessUpgradeChip_00=Enables wireless grid mode for certain machines
+Tooltip_WirelessUpgradeChip_01=Not effective on machines that already have this upgrade installed
+
 item.Stick.name=Stick
 Tooltip_Stick_00=§5§oLook closely, %s is a fake thing made of cardboard. Hopefully, you can get a receipt.
 Tooltip_Stick_01=§5§oLook closely, %s is a fake thing made of enchanted cardboard. Hopefully, you can get a receipt.
@@ -1566,8 +1570,9 @@ Tooltip_WirelessEnergyMultiMachine_04=Parallel control cores provide an addition
 Tooltip_WirelessEnergyMultiMachine_05=Speed boost changed from additive to multiplicative, each level provides 75% speed boost
 Tooltip_WirelessEnergyMultiMachine_06=Supports cross-recipe parallelism in wireless mode
 Tooltip_WirelessEnergyMultiMachine_07=Machine can perform §clossless overclocking§7
-Tooltip_WirelessEnergyMultiMachine_08=Automatically enters wireless mode if no energy hatch is installed
+Tooltip_WirelessEnergyMultiMachine_08=Automatically enters wireless mode if no energy storage is installed and a wireless upgrade is installed
 Tooltip_WirelessEnergyMultiMachine_09=In wireless mode, the voltage is the parallel control core level + 1, ampere is 4 ^ level - 2
+Waila_WirelessUpgrade=Wireless Upgrade Installed
 Waila_WirelessMode=Wireless Mode
 Waila_CurrentEuCost=Current EU Consumption
 Waila_CurrentSteamCost=Current Steam Consumption
@@ -2509,9 +2514,9 @@ FOGAlloySmelterModuleRecipeType=Alloy Smelter
 Tooltip_FOGAlloySmelterModule_00=This is a module of the Godforge
 Tooltip_FOGAlloySmelterModule_01=Must be part of a Godforge to function
 Tooltip_FOGAlloySmelterModule_02=Used for alloy smelting under focused temperatures.
-Tooltip_FOGAlloySmelterModule_03=The fifth module of the Godforge, this module melts materials directly into their liquid form
-Tooltip_FOGAlloySmelterModule_04=If an output material does not have a liquid form, it will be output
-Tooltip_FOGAlloySmelterModule_05=as a regular solid instead
+Tooltip_FOGAlloySmelterModule_03=The fifth module of the Godforge, capable of refining materials directly into alloys
+Tooltip_FOGAlloySmelterModule_04=It can still function even without high temperatures
+Tooltip_FOGAlloySmelterModule_05=Does not require Godforge upgrades
 Tooltip_FOGAlloySmelterModule_06=This module has the fastest processing speed.
 
 NameFOGAlloyBlastSmelterModule=Solar Focused Fusion Core

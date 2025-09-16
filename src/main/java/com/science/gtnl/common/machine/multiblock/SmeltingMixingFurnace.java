@@ -222,7 +222,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
 
         mParallelTier = getParallelTier(aStack);
         mEnergyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         return this.mCountCasing > 15;
     }
 
@@ -239,7 +239,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
+    public void setProcessingLogicPower(ProcessingLogic logic) {
         if (wirelessMode) {
             logic.setAvailableAmperage((long) Math.pow(4, mParallelTier) * 8L - 2L);
             logic.setAmperageOC(false);

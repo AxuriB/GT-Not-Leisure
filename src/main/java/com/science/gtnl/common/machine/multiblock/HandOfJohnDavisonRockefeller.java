@@ -186,7 +186,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
         mSpeedCount = mGlassTier + GTUtility.getTier(this.getMaxInputVoltage());
         mParallelTier = getParallelTier(aStack);
         mEnergyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         return mCountCasing >= 80;
     }
 

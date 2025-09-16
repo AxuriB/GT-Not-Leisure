@@ -44,6 +44,7 @@ import com.science.gtnl.common.item.items.TestItem;
 import com.science.gtnl.common.item.items.TimeStopPocketWatch;
 import com.science.gtnl.common.item.items.TwilightSword;
 import com.science.gtnl.common.item.items.VeinMiningPickaxe;
+import com.science.gtnl.common.item.items.WirelessUpgradeChip;
 
 import appeng.api.storage.StorageChannel;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -77,6 +78,7 @@ public class ItemLoader {
     public static ItemBucket honeyBucket;
     public static ItemBucket shimmerBucket;
     public static ItemInfinityCell infinityCell;
+    public static Item wirelessUpgradeChip;
     public static Item stick;
     public static Item suspiciousStew;
     public static Item veinMiningPickaxe;
@@ -102,6 +104,7 @@ public class ItemLoader {
         steamRocket = new SteamRocketItem();
         nullPointerException = new NullPointerException();
         fakeItemSiren = new FakeItemSiren();
+        wirelessUpgradeChip = new WirelessUpgradeChip();
         testItem = new TestItem();
         netherTeleporter = new NetherTeleporter();
         electricProspectorTool = new ElectricProspectorTool();
@@ -174,6 +177,7 @@ public class ItemLoader {
             "InfinityCobblestoneCell",
             ItemInfinityCell.SubItem.getInstance(Blocks.cobblestone));
 
+        GameRegistry.registerItem(wirelessUpgradeChip, "WirelessUpgradeChip");
         GameRegistry.registerItem(stick, "Stick");
         GameRegistry.registerItem(portableItem, "PortableItem");
         GameRegistry.registerItem(veinMiningPickaxe, "VeinMiningPickaxe");

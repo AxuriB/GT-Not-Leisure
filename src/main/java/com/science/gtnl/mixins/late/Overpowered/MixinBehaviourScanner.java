@@ -25,6 +25,7 @@ import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -52,7 +53,7 @@ public class MixinBehaviourScanner {
                 aPlayer)) {
                 TileEntity tile = aWorld.getTileEntity(aX, aY, aZ);
                 if (tile instanceof BaseMetaTileEntity baseMetaTileEntity) {
-                    Object meta = baseMetaTileEntity.getMetaTileEntity();
+                    IMetaTileEntity meta = baseMetaTileEntity.getMetaTileEntity();
                     if (meta instanceof WirelessSteamDynamoHatch || meta instanceof WirelessSteamEnergyHatch) {
                         String username = aPlayer.getCommandSenderName();
                         String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;

@@ -137,7 +137,7 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
 
         isOreModule = true;
         mEnergyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         return true;
     }
 }

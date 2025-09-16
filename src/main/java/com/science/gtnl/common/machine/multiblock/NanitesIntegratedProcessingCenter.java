@@ -255,7 +255,7 @@ public class NanitesIntegratedProcessingCenter
 
         mParallelTier = getParallelTier(aStack);
         mEnergyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
 

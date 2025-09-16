@@ -526,7 +526,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
 
         mParallelTier = getParallelTier(aStack);
         mEnergyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         return mCountCasing > 1 && checkHatch();
     }
 

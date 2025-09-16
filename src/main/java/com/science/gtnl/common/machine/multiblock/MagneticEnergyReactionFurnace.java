@@ -201,7 +201,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
         if (getMCoilLevel() == HeatingCoilLevel.None) return false;
         mParallelTier = getParallelTier(aStack);
         mEnergyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         return mCountCasing > 50;
     }
 

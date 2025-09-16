@@ -129,7 +129,7 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
 
         isPolModule = true;
         mEnergyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
 
         return true;
     }

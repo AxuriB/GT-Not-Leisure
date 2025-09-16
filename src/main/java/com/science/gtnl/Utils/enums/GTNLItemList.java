@@ -278,6 +278,7 @@ public enum GTNLItemList implements IItemContainer {
     PortableNetheriteChest,
     PortableDarkSteelChest,
     Stick,
+    WirelessUpgradeChip,
 
     SatietyRing,
     SuperReachRing,

@@ -32,14 +32,16 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import lombok.Getter;
+import lombok.Setter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMultiMachineBase<T>>
     extends MultiMachineBase<T> {
 
-    protected int totalOverclockedDuration = 0;
-    protected int maxParallelStored = -1;
+    public int totalOverclockedDuration = 0;
+    public int maxParallelStored = -1;
 
     public WirelessEnergyMultiMachineBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -51,17 +53,34 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
 
     public static final String ZERO_STRING = "0";
 
-    protected UUID ownerUUID;
-    protected boolean isRecipeProcessing = false;
-    protected boolean wirelessMode = getDefaultWirelessMode();
-    protected BigInteger costingEU = BigInteger.ZERO;
-    protected String costingEUText = ZERO_STRING;
-    protected int cycleNum = 100_000;
-    protected int cycleNow = 0;
+    public UUID ownerUUID;
+    public boolean isRecipeProcessing = false;
+    public boolean wirelessMode = getDefaultWirelessMode();
+    @Getter
+    @Setter
+    public boolean wirelessUpgrade = false;
+    public BigInteger costingEU = BigInteger.ZERO;
+    public String costingEUText = ZERO_STRING;
+    public int cycleNum = 100_000;
+    public int cycleNow = 0;
+
+    public void setWirelessMode(boolean mode) {
+        if (wirelessUpgrade) {
+            wirelessMode = mode;
+        } else {
+            wirelessMode = false;
+        }
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
         aNBT.setBoolean("wirelessMode", wirelessMode);
         aNBT.setInteger("parallelTier", mParallelTier);
     }
@@ -69,6 +88,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        wirelessUpgrade = aNBT.getBoolean("wirelessUpgrade");
         wirelessMode = aNBT.getBoolean("wirelessMode");
         mParallelTier = aNBT.getInteger("parallelTier");
     }
@@ -99,6 +119,9 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.getBoolean("wirelessUpgrade")) {
+            currentTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("Waila_WirelessUpgrade"));
+        }
         if (tag.getBoolean("wirelessMode")) {
             currentTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("Waila_WirelessMode"));
             currentTip.add(
@@ -118,6 +141,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
+            tag.setBoolean("wirelessUpgrade", wirelessUpgrade);
             tag.setBoolean("wirelessMode", wirelessMode);
             if (wirelessMode) tag.setString("costingEUText", costingEUText);
         }
@@ -136,7 +160,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     }
 
     @Override
-    protected boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOverclock() {
         return true;
     }
 
@@ -146,7 +170,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+            public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4) {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
@@ -155,7 +179,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
 
             @Nonnull
             @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+            public GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.4 - (mParallelTier / 50.0))
                     .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier));
@@ -239,7 +263,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
+    public void setProcessingLogicPower(ProcessingLogic logic) {
         if (wirelessMode) {
             logic.setAvailableVoltage(V[Math.min(mParallelTier + 1, 14)]);
             logic.setAvailableAmperage((long) Math.pow(4, mParallelTier) * 8L - 2L);

@@ -1342,16 +1342,21 @@ public class MachineLoader {
                 FOG_ALLOY_SMELTER_MODULE.ID,
                 "NameFOGAlloySmelterModule",
                 StatCollector.translateToLocal("NameFOGAlloySmelterModule")));
+        addItemTooltip(GTNLItemList.FOGAlloySmelterModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
         GTNLItemList.FOGAlloyBlastSmelterModule.set(
             new FOGAlloyBlastSmelterModule(
                 FOG_ALLOY_BLAST_SMELTER_MODULE.ID,
                 "NameFOGAlloyBlastSmelterModule",
                 StatCollector.translateToLocal("NameFOGAlloyBlastSmelterModule")));
+        addItemTooltip(GTNLItemList.FOGAlloyBlastSmelterModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
         GTNLItemList.FOGExtractorModule.set(
             new FOGExtractorModule(
                 FOG_EXTRACTOR_MODULE.ID,
                 "NameFOGExtractorModule",
                 StatCollector.translateToLocal("NameFOGExtractorModule")));
+        addItemTooltip(GTNLItemList.FOGExtractorModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

@@ -824,6 +824,10 @@ Tooltip_Testitem_11=§f§l如果你遇到了什么问题或者想提出意见，
 Tooltip_Testitem_12=本模组添加的机器meta值从21000开始
 Tooltip_Testitem_13=§c§l另外提醒：不要拿着这个物品右键！
 
+item.WirelessUpgradeChip.name=无线升级芯片
+Tooltip_WirelessUpgradeChip_00=为部分机器开启无线电网模式
+Tooltip_WirelessUpgradeChip_01=对已经安装升级的机器无效
+
 item.Stick.name=纸板
 Tooltip_Stick_00=§5§o仔细检查，%s是一个由纸板做的假东西，希望你能得到一张收据
 Tooltip_Stick_01=§5§o仔细检查，%s是一个由附魔的纸板做的假东西，希望你能得到一张收据
@@ -1566,8 +1570,9 @@ Tooltip_WirelessEnergyMultiMachine_04=并行控制核心将额外提供16倍的�
 Tooltip_WirelessEnergyMultiMachine_05=加速由加算改为乘算，每级提供75%的加速
 Tooltip_WirelessEnergyMultiMachine_06=无线模式下支持跨配方并行
 Tooltip_WirelessEnergyMultiMachine_07=机器可进行§c无损超频§7
-Tooltip_WirelessEnergyMultiMachine_08=不安装能源仓将自动进入无线模式
+Tooltip_WirelessEnergyMultiMachine_08=不安装能源仓且安装无线升级将自动进入无线模式
 Tooltip_WirelessEnergyMultiMachine_09=无线模式下电压为并行控制核心等级 + 1，电流为 4 ^ 等级 - 2
+Waila_WirelessUpgrade=已安装无线升级
 Waila_WirelessMode=无线模式
 Waila_CurrentEuCost=当前EU消耗
 Waila_CurrentSteamCost=当前蒸汽消耗
@@ -2522,9 +2527,9 @@ FOGAlloySmelterModuleRecipeType=合金炉
 Tooltip_FOGAlloySmelterModule_00=这是诸神之锻炉的一个模块
 Tooltip_FOGAlloySmelterModule_01=必须安装于诸神之锻炉上才能工作.
 Tooltip_FOGAlloySmelterModule_02=用于聚焦温度下的合金冶炼.
-Tooltip_FOGAlloySmelterModule_03=诸神之锻炉的第五种模块，能够将材料直接融化成液态合金
-Tooltip_FOGAlloySmelterModule_04=若有输出材料没有液体形式，
-Tooltip_FOGAlloySmelterModule_05=它将仍以固体形式输出.
+Tooltip_FOGAlloySmelterModule_03=诸神之锻炉的第五种模块，能够将材料直接精炼成合金
+Tooltip_FOGAlloySmelterModule_04=即使没有高温，它也仍然可以胜任工作.
+Tooltip_FOGAlloySmelterModule_05=它不需要诸神之锻炉的升级.
 Tooltip_FOGAlloySmelterModule_06=这一模块拥有最快的处理速度.
 
 NameFOGAlloyBlastSmelterModule=太阳聚焦融合核心

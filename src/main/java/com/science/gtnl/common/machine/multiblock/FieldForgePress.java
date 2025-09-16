@@ -169,7 +169,7 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
             return false;
         mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         return mCountCasing > 1800;
     }
 

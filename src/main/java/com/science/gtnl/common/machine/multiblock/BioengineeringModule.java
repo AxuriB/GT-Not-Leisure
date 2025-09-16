@@ -129,7 +129,7 @@ public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule
 
         isBioModule = true;
         mEnergyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
 
         return true;
     }

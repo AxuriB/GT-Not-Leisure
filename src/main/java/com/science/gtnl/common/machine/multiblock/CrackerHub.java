@@ -190,7 +190,7 @@ public class CrackerHub extends WirelessEnergyMultiMachineBase<CrackerHub> {
         if (getMCoilLevel() == HeatingCoilLevel.None) return false;
         mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         return mMufflerHatches.size() == 16 && mCountCasing > 100;
     }
 

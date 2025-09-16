@@ -189,7 +189,7 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
             return false;
         mEnergyHatchTier = checkEnergyHatchTier();
         mParallelTier = getParallelTier(aStack);
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
         return mCountCasing > 1200;
     }
 
