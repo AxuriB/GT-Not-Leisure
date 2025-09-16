@@ -512,6 +512,9 @@ public enum GTNLItemList implements IItemContainer {
     PrimitiveBrickKiln,
     SingularityDataHub,
     ElectrocellGenerator,
+    FOGAlloySmelterModule,
+    FOGAlloyBlastSmelterModule,
+    FOGExtractorModule,
 
     DieselGeneratorLV,
     DieselGeneratorMV,

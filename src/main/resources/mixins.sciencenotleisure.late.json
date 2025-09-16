@@ -22,6 +22,7 @@
     "Gregtech.MixinMTEVoidMinerBase",
     "Gregtech.MixinBaseMetaTileEntity",
     "Gregtech.MixinGTShapedRecipe",
+    "Gregtech.MixinGodForgeMath",
     "Gregtech.MixinGTShapelessRecipe",
     "Gregtech.MixinMTEBetterJukebox",
     "Gregtech.MixinMTEDigitalTankBase",

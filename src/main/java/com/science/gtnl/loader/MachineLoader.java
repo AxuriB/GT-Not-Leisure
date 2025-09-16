@@ -89,6 +89,9 @@ import com.science.gtnl.common.machine.multiblock.ElectrocellGenerator;
 import com.science.gtnl.common.machine.multiblock.ElementCopying;
 import com.science.gtnl.common.machine.multiblock.EngravingLaserPlant;
 import com.science.gtnl.common.machine.multiblock.EyeOfHarmonyInjector;
+import com.science.gtnl.common.machine.multiblock.FOGAlloyBlastSmelterModule;
+import com.science.gtnl.common.machine.multiblock.FOGAlloySmelterModule;
+import com.science.gtnl.common.machine.multiblock.FOGExtractorModule;
 import com.science.gtnl.common.machine.multiblock.FieldForgePress;
 import com.science.gtnl.common.machine.multiblock.FuelRefiningComplex;
 import com.science.gtnl.common.machine.multiblock.GenerationEarthEngine;
@@ -1333,6 +1336,22 @@ public class MachineLoader {
                 "ElectrocellGenerator",
                 StatCollector.translateToLocal("NameElectrocellGenerator")));
         addItemTooltip(GTNLItemList.ElectrocellGenerator.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.FOGAlloySmelterModule.set(
+            new FOGAlloySmelterModule(
+                FOG_ALLOY_SMELTER_MODULE.ID,
+                "NameFOGAlloySmelterModule",
+                StatCollector.translateToLocal("NameFOGAlloySmelterModule")));
+        GTNLItemList.FOGAlloyBlastSmelterModule.set(
+            new FOGAlloyBlastSmelterModule(
+                FOG_ALLOY_BLAST_SMELTER_MODULE.ID,
+                "NameFOGAlloyBlastSmelterModule",
+                StatCollector.translateToLocal("NameFOGAlloyBlastSmelterModule")));
+        GTNLItemList.FOGExtractorModule.set(
+            new FOGExtractorModule(
+                FOG_EXTRACTOR_MODULE.ID,
+                "NameFOGExtractorModule",
+                StatCollector.translateToLocal("NameFOGExtractorModule")));
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(
