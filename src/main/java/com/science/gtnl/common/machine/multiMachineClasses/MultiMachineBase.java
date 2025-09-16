@@ -538,8 +538,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMuffled, this::setMuffled), builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
-            .setPos(152, 91)
-            .setSize(16, 16);
+            .setPos(200, 0)
+            .setSize(12, 12);
     }
 
     protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {

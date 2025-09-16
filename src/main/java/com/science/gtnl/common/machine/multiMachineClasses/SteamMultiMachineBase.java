@@ -50,6 +50,7 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
@@ -1255,7 +1256,8 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 .widget(createModeSwitchButton(builder))
                 .widget(createBatchModeButton(builder))
                 .widget(createLockToSingleRecipeButton(builder))
-                .widget(createStructureUpdateButton(builder));
+                .widget(createStructureUpdateButton(builder))
+                .widget(createMuffleButton(builder));
             if (supportsPowerPanel()) {
                 builder.widget(createPowerPanelButton(builder));
                 buildContext.addSyncedWindow(POWER_PANEL_WINDOW_ID, this::createPowerPanel);
@@ -1315,6 +1317,27 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             new ItemDrawable(GTNLItemList.FakeItemSiren.get(1)).asWidget()
                 .setPos(-64 + 21 - 7, 100 - 20)
                 .setEnabled(w -> uiSteamStored == 0));
+    }
+
+    @Override
+    public ButtonWidget createMuffleButton(IWidgetBuilder<?> builder) {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> setMuffled(!isMuffled()))
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (isMuffled()) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_ON);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMuffled, this::setMuffled), builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
+            .setPos(200, 0)
+            .setSize(12, 12);
     }
 
     public ModularWindow createRecipeOcCountWindow(final EntityPlayer player) {
