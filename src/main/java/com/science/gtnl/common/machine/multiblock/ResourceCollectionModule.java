@@ -5,6 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.sBlockCasingsSE;
 import static net.minecraft.item.ItemStack.areItemStacksEqual;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -129,12 +130,14 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
+        machineModeIcons = new ArrayList<>(4);
         setMachineModeIcons();
         builder.widget(
             new DynamicTextWidget(
                 () -> new Text(
-                    StatCollector.translateToLocal("Interaction_DESCRIPTION_Index_400")
-                        + StatCollector.translateToLocal("ResourceCollectionModule_Mode_" + this.machineMode))
+                    StatCollector.translateToLocalFormatted(
+                        "gt.interact.desc.mb.mode",
+                        StatCollector.translateToLocal("ResourceCollectionModule_Mode_" + this.machineMode)))
                             .color(Color.WHITE.normal)).setPos(10, 77));
 
         builder.widget(createModeSwitchButton(builder));

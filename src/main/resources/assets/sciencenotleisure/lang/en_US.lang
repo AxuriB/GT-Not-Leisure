@@ -2856,15 +2856,7 @@ IndustrialArcaneAssembler_Mode_1=Industrial Infusion Matrix
 Tooltip_IndustrialArcaneAssembler_00=§d§oThrough powerful technological means, we have finally mastered the incredibly mysterious magic
 Tooltip_IndustrialArcaneAssembler_01=Fixed and behaves as 2147483647
 Tooltip_IndustrialArcaneAssembler_02=Requires a Crystal Studded Cosmic Neutronium Wand in the controller to form!
-Tooltip_IndustrialArcaneAssembler_03=12x Hyperdimensional Mechanical Block
-Tooltip_IndustrialArcaneAssembler_04=189x Dimensional Infusion Mechanical Block
-Tooltip_IndustrialArcaneAssembler_05=7337x Heating Pipes
-Tooltip_IndustrialArcaneAssembler_06=51008x Heat-Resistant Ternary Metal Mechanical Block
-Tooltip_IndustrialArcaneAssembler_07=11667x Endless Reinforced Boron Glass Block
-Tooltip_IndustrialArcaneAssembler_08=2913x Universal Endless Energy Glass
-Tooltip_IndustrialArcaneAssembler_09=3446x Quantum Glass
-Tooltip_IndustrialArcaneAssembler_10=824x Beacon
-Tooltip_EnergeticIndustrialArcaneAssembler_Casing=Any Hyperdimensional Mechanical Block
+Tooltip_EnergeticIndustrialArcaneAssembler_Casing=Any Pressure Suppression Machine Block
 
 NameLibraryOfRuina=§eLibrary of Ruina
 gtnl.recipe.TheTwilightForestRecipes=Eternal Twilight

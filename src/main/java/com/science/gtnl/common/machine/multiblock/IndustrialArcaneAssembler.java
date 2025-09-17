@@ -1,13 +1,13 @@
 package com.science.gtnl.common.machine.multiblock;
 
-import static bartworks.common.loaders.ItemRegistry.bw_realglas;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.*;
+import static tectech.thing.casing.TTCasingsContainer.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,15 +15,12 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -32,14 +29,12 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
-import gregtech.api.enums.Mods;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -47,11 +42,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
-import tectech.thing.block.BlockQuantumGlass;
+import gregtech.common.blocks.BlockCasings10;
 
 public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcaneAssembler>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+    implements ISurvivalConstructable {
 
     private static final int ShapedArcaneCrafting = 0;
     private static final int InfusionCrafting = 1;
@@ -59,9 +53,9 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
     public static final String LAA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/industrial_arcane_assembler";
     public static final String[][] shape = StructureUtils.readStructureFromFile(LAA_STRUCTURE_FILE_PATH);
-    protected final int HORIZONTAL_OFF_SET = 45;
-    protected final int VERTICAL_OFF_SET = 84;
-    protected final int DEPTH_OFF_SET = 45;
+    protected final int HORIZONTAL_OFF_SET = 9;
+    protected final int VERTICAL_OFF_SET = 9;
+    protected final int DEPTH_OFF_SET = 3;
 
     public IndustrialArcaneAssembler(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -111,7 +105,7 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings1) sBlockCasings1).getTextureIndex(12);
+        return ((BlockCasings10) sBlockCasings10).getTextureIndex(3);
     }
 
     @Override
@@ -138,15 +132,7 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(91, 150, 91, true)
-            .addStructureInfo(StatCollector.translateToLocal("Tooltip_IndustrialArcaneAssembler_03"))
-            .addStructureInfo(StatCollector.translateToLocal("Tooltip_IndustrialArcaneAssembler_04"))
-            .addStructureInfo(StatCollector.translateToLocal("Tooltip_IndustrialArcaneAssembler_05"))
-            .addStructureInfo(StatCollector.translateToLocal("Tooltip_IndustrialArcaneAssembler_06"))
-            .addStructureInfo(StatCollector.translateToLocal("Tooltip_IndustrialArcaneAssembler_07"))
-            .addStructureInfo(StatCollector.translateToLocal("Tooltip_IndustrialArcaneAssembler_08"))
-            .addStructureInfo(StatCollector.translateToLocal("Tooltip_IndustrialArcaneAssembler_09"))
-            .addStructureInfo(StatCollector.translateToLocal("Tooltip_IndustrialArcaneAssembler_10"))
+            .beginStructureBlock(19, 19, 19, true)
             .addInputBus(StatCollector.translateToLocal("Tooltip_EnergeticIndustrialArcaneAssembler_Casing"))
             .addOutputBus(StatCollector.translateToLocal("Tooltip_EnergeticIndustrialArcaneAssembler_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_EnergeticIndustrialArcaneAssembler_Casing"))
@@ -158,58 +144,50 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
     public IStructureDefinition<IndustrialArcaneAssembler> getStructureDefinition() {
         return StructureDefinition.<IndustrialArcaneAssembler>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings10, 7))
+            .addElement('B', ofBlock(sBlockCasingsTT, 0))
+            .addElement('C', ofBlock(sBlockCasings1, 13))
+            .addElement('D', ofBlock(sBlockCasings8, 7))
+            .addElement('E', ofBlock(sBlockCasings10, 6))
+            .addElement('F', ofBlock(sBlockCasings10, 8))
             .addElement(
-                'A',
+                'G',
                 buildHatchAdder(IndustrialArcaneAssembler.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
-                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings1, 12))))
-            .addElement('B', ofBlock(sBlockCasings1, 13))
-            .addElement('C', ofBlock(sBlockCasings10, 11))
-            .addElement('D', ofBlock(sBlockCasings9, 11))
-            .addElement('E', ofBlock(bw_realglas, 15))
-            .addElement('F', ofBlock(sBlockGlass1, 2))
-            .addElement('G', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-            .addElement(
-                'I',
-                ofChain(
-                    Mods.EtFuturumRequiem.isModLoaded() ? ofBlockAnyMeta(
-                        ItemUtils.getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "beacon", 1)))
-                        : ofBlockAnyMeta(Blocks.beacon)))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 3))))
+            .addElement('H', ofBlock(sBlockCasingsTT, 4))
+            .addElement('I', ofBlock(sBlockCasings9, 12))
+            .addElement('J', ofFrame(Materials.Neutronium))
+            .addElement('K', ofFrame(Materials.DarkIron))
+            .addElement('L', ofBlock(sBlockGlass1, 2))
             .build();
     }
 
     @Override
-    public void onPreviewConstruct(@NotNull ItemStack trigger) {
-        if (trigger.stackSize > 1) {
-            buildPiece(STRUCTURE_PIECE_MAIN, trigger, false, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
-        }
-    }
-
-    @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        this.buildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        int realBudget = elementBudget >= 500 ? elementBudget : Math.min(500, elementBudget * 5);
-
-        if (stackSize.stackSize > 1) {
-            return this.survivalBuildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                HORIZONTAL_OFF_SET,
-                VERTICAL_OFF_SET,
-                DEPTH_OFF_SET,
-                realBudget,
-                env,
-                false,
-                true);
-        } else {
-            return -1;
-        }
+        return this.survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFF_SET,
+            VERTICAL_OFF_SET,
+            DEPTH_OFF_SET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override
