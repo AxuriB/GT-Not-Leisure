@@ -859,7 +859,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
                 protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                     long powerToStart = recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L);
                     if (!mRunningOnLoad) {
-                        if (powerToStart > mEUStore) {
+                        if (powerToStart > mEUStore && !wirelessMode) {
                             return CheckRecipeResultRegistry.insufficientStartupPower(BigInteger.valueOf(powerToStart));
                         }
                         if (recipe.mEUt > GTValues.V[getRecipeMaxTier() + 1]) {
