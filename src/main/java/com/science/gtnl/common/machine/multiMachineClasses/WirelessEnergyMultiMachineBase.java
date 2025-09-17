@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.api.IWirelessEnergy;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -38,7 +39,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMultiMachineBase<T>>
-    extends MultiMachineBase<T> {
+    extends MultiMachineBase<T> implements IWirelessEnergy {
 
     public int totalOverclockedDuration = 0;
     public int maxParallelStored = -1;
@@ -55,6 +56,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
 
     public UUID ownerUUID;
     public boolean isRecipeProcessing = false;
+    @Getter
     public boolean wirelessMode = getDefaultWirelessMode();
     @Getter
     @Setter
@@ -64,6 +66,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     public int cycleNum = 100_000;
     public int cycleNow = 0;
 
+    @Override
     public void setWirelessMode(boolean mode) {
         if (wirelessUpgrade) {
             wirelessMode = mode;
@@ -74,6 +77,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
         aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
     }
 

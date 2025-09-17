@@ -11,8 +11,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.api.IWirelessEnergy;
 import com.science.gtnl.client.GTNLCreativeTabs;
-import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,10 +40,10 @@ public class WirelessUpgradeChip extends Item {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
         float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
-            if (world.getTileEntity(x, y, z) instanceof BaseMetaTileEntity baseMetaTileEntity && baseMetaTileEntity
-                .getMetaTileEntity() instanceof WirelessEnergyMultiMachineBase<?>wirelessEnergyMultiMachineBase) {
-                if (!wirelessEnergyMultiMachineBase.isWirelessUpgrade()) {
-                    wirelessEnergyMultiMachineBase.setWirelessUpgrade(true);
+            if (world.getTileEntity(x, y, z) instanceof BaseMetaTileEntity baseMetaTileEntity
+                && baseMetaTileEntity.getMetaTileEntity() instanceof IWirelessEnergy wirelessEnergyMulti) {
+                if (!wirelessEnergyMulti.isWirelessUpgrade()) {
+                    wirelessEnergyMulti.setWirelessUpgrade(true);
                     stack.splitStack(1);
                     return true;
                 }

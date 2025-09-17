@@ -2,22 +2,33 @@ package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.*;
+import static com.science.gtnl.Utils.Utils.*;
+import static com.science.gtnl.Utils.Utils.mergeArray;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.GTValues.*;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.*;
+import static gregtech.common.misc.WirelessNetworkManager.*;
 import static gtPlusPlus.core.block.ModBlocks.*;
 import static gtnhlanth.common.register.LanthItemList.*;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -30,6 +41,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.api.IWirelessEnergy;
+import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -58,6 +71,10 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import lombok.Getter;
+import lombok.Setter;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class KuangBiaoOneGiantNuclearFusionReactor
     extends GTMMultiMachineBase<KuangBiaoOneGiantNuclearFusionReactor> implements ISurvivalConstructable {
@@ -656,7 +673,24 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
     }
 
-    public static class UEVTier extends KuangBiaoOneGiantNuclearFusionReactor {
+    public static class UEVTier extends KuangBiaoOneGiantNuclearFusionReactor implements IWirelessEnergy {
+
+        public int totalOverclockedDuration = 0;
+        public int maxParallelStored = -1;
+
+        public static final String ZERO_STRING = "0";
+
+        public UUID ownerUUID;
+        public boolean isRecipeProcessing = false;
+        @Getter
+        public boolean wirelessMode = false;
+        @Getter
+        @Setter
+        public boolean wirelessUpgrade = false;
+        public BigInteger costingEU = BigInteger.ZERO;
+        public String costingEUText = ZERO_STRING;
+        public int cycleNum = 100_000;
+        public int cycleNow = 0;
 
         public UEVTier(int aID, String aName, String aNameRegional) {
             super(aID, aName, aNameRegional);
@@ -667,8 +701,206 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
 
         @Override
+        public void setWirelessMode(boolean mode) {
+            if (wirelessUpgrade) {
+                wirelessMode = mode;
+            } else {
+                wirelessMode = false;
+            }
+        }
+
+        @Override
         public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
             return new UEVTier(this.mName);
+        }
+
+        @Override
+        public MultiblockTooltipBuilder createTooltip() {
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            tt.addMachineType(StatCollector.translateToLocal("KuangBiaoOneGiantNuclearFusionReactorRecipeType"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_00"))
+                .addInfo(
+                    StatCollector.translateToLocalFormatted(
+                        "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_01",
+                        (int) ((getDurationModifier() - 1) * 100)))
+                .addInfo(
+                    StatCollector.translateToLocalFormatted(
+                        "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_02",
+                        (int) (getEUtDiscount() * 100)))
+                .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_03"))
+                .addInfo(
+                    StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04") + maxEUStore()
+                        + " EU")
+                .addInfo(
+                    StatCollector.translateToLocalFormatted(
+                        "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_05",
+                        TIER_COLORS[getRecipeMaxTier()] + VN[getRecipeMaxTier()]))
+                .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_02"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_03"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_04"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_05"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_06"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_07"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_08"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_09"))
+                .addInfo(StatCollector.translateToLocal("Tooltip_Tectech_Hatch"))
+                .addSeparator()
+                .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
+                .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
+                .beginStructureBlock(39, 17, 39, true)
+                .addInputBus(StatCollector.translateToLocal("Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing"))
+                .addOutputBus(StatCollector.translateToLocal("Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing"))
+                .addEnergyHatch(StatCollector.translateToLocal("Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing"))
+                .addMaintenanceHatch(
+                    StatCollector.translateToLocal("Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing"))
+                .toolTipFinisher();
+            return tt;
+        }
+
+        @Override
+        public void setItemNBT(NBTTagCompound aNBT) {
+            super.setItemNBT(aNBT);
+            aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
+        }
+
+        @Override
+        public void saveNBTData(NBTTagCompound aNBT) {
+            super.saveNBTData(aNBT);
+            aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
+            aNBT.setBoolean("wirelessMode", wirelessMode);
+        }
+
+        @Override
+        public void loadNBTData(NBTTagCompound aNBT) {
+            super.loadNBTData(aNBT);
+            wirelessUpgrade = aNBT.getBoolean("wirelessUpgrade");
+            wirelessMode = aNBT.getBoolean("wirelessMode");
+        }
+
+        @Override
+        public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+            super.onFirstTick(aBaseMetaTileEntity);
+            this.ownerUUID = aBaseMetaTileEntity.getOwnerUuid();
+        }
+
+        @Override
+        public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
+            super.getWailaBody(itemStack, currentTip, accessor, config);
+            final NBTTagCompound tag = accessor.getNBTData();
+            if (tag.getBoolean("wirelessUpgrade")) {
+                currentTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("Waila_WirelessUpgrade"));
+            }
+            if (tag.getBoolean("wirelessMode")) {
+                currentTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("Waila_WirelessMode"));
+                currentTip.add(
+                    EnumChatFormatting.AQUA + StatCollector.translateToLocal("Waila_CurrentEuCost")
+                        + EnumChatFormatting.RESET
+                        + ": "
+                        + EnumChatFormatting.GOLD
+                        + tag.getString("costingEUText")
+                        + EnumChatFormatting.RESET
+                        + " EU");
+            }
+        }
+
+        @Override
+        public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x,
+            int y, int z) {
+            super.getWailaNBTData(player, tile, tag, world, x, y, z);
+            final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
+            if (tileEntity != null) {
+                tag.setBoolean("wirelessUpgrade", wirelessUpgrade);
+                tag.setBoolean("wirelessMode", wirelessMode);
+                if (wirelessMode) tag.setString("costingEUText", costingEUText);
+            }
+        }
+
+        @Override
+        public void startRecipeProcessing() {
+            isRecipeProcessing = true;
+            super.startRecipeProcessing();
+        }
+
+        @Override
+        public void endRecipeProcessing() {
+            super.endRecipeProcessing();
+            isRecipeProcessing = false;
+        }
+
+        @Override
+        public ProcessingLogic createProcessingLogic() {
+            return new GTNL_ProcessingLogic() {
+
+                @NotNull
+                @Override
+                protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                    GTNL_OverclockCalculator logic = super.createOverclockCalculator(recipe)
+                        .setExtraDurationModifier(mConfigSpeedBoost)
+                        .setAmperageOC(true)
+                        .setDurationDecreasePerOC(4)
+                        .setEUtIncreasePerOC(4)
+                        .setAmperage(availableAmperage)
+                        .setRecipeEUt(recipe.mEUt)
+                        .setEUt(availableVoltage)
+                        .setEUtDiscount(0.4 - (mParallelTier / 50.0))
+                        .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier));
+
+                    if (wirelessMode) {
+                        logic.setEUt(V[Math.min(mParallelTier + 1, 14)]);
+                        logic.setAmperage((long) Math.pow(4, mParallelTier) * 8L - 2L);
+                        logic.setAmperageOC(false);
+                    }
+                    return logic;
+                }
+
+                @NotNull
+                @Override
+                protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                    long powerToStart = recipe.getMetadataOrDefault(GTRecipeConstants.FUSION_THRESHOLD, 0L);
+                    if (!mRunningOnLoad) {
+                        if (powerToStart > mEUStore) {
+                            return CheckRecipeResultRegistry.insufficientStartupPower(BigInteger.valueOf(powerToStart));
+                        }
+                        if (recipe.mEUt > GTValues.V[getRecipeMaxTier() + 1]) {
+                            return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                        }
+                    }
+                    return CheckRecipeResultRegistry.SUCCESSFUL;
+                }
+
+                @NotNull
+                @Override
+                public CheckRecipeResult process() {
+                    CheckRecipeResult result = super.process();
+                    if (mRunningOnLoad) mRunningOnLoad = false;
+                    if (result.wasSuccessful()) {
+                        KuangBiaoOneGiantNuclearFusionReactor.UEVTier.this.mLastRecipe = lastRecipe;
+                    } else {
+                        KuangBiaoOneGiantNuclearFusionReactor.UEVTier.this.mLastRecipe = null;
+                    }
+                    return result;
+                }
+
+            }.setMaxParallelSupplier(this::getTrueParallel);
+        }
+
+        @Override
+        public int getMaxParallelRecipes() {
+            if (maxParallelStored >= 0) {
+                return maxParallelStored;
+            }
+            if (mParallelControllerHatches.size() == 1) {
+                for (ParallelControllerHatch module : mParallelControllerHatches) {
+                    mParallelTier = module.mTier;
+                    return module.getParallel();
+                }
+            } else if (mParallelTier <= 1) {
+                return 8;
+            } else {
+                return (int) Math.pow(4, mParallelTier - 2) * 16;
+            }
+            return 8;
         }
 
         @Override
@@ -683,12 +915,12 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
 
         @Override
         public double getEUtDiscount() {
-            return 0.5;
+            return 0.4;
         }
 
         @Override
         public double getDurationModifier() {
-            return 5.0;
+            return 10.0;
         }
 
         @Override
@@ -724,6 +956,89 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         @Override
         public int getRecipeMaxTier() {
             return 13;
+        }
+
+        @Override
+        public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+            wirelessMode = false;
+            boolean result = super.checkMachine(aBaseMetaTileEntity, aStack);
+            setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+            return result;
+        }
+
+        @Nonnull
+        @Override
+        public CheckRecipeResult checkProcessing() {
+            maxParallelStored = -1;
+            mParallelTier = 0;
+            ItemStack controllerItem = getControllerSlot();
+            int parallelTierItem = getParallelTier(controllerItem);
+            mParallelTier = Math.max(mParallelTier, parallelTierItem);
+            costingEU = BigInteger.ZERO;
+            costingEUText = ZERO_STRING;
+            totalOverclockedDuration = 0;
+            cycleNow = 0;
+            maxParallelStored = getTrueParallel();
+            if (!wirelessMode) return super.checkProcessing();
+
+            boolean succeeded = false;
+            CheckRecipeResult finalResult = CheckRecipeResultRegistry.SUCCESSFUL;
+            for (cycleNow = 0; cycleNow < cycleNum; cycleNow++) {
+                CheckRecipeResult r = wirelessModeProcessOnce();
+
+                if (!r.wasSuccessful()) {
+                    finalResult = r;
+                    break;
+                }
+                succeeded = true;
+                if (maxParallelStored <= 0) {
+                    finalResult = r;
+                    break;
+                }
+            }
+
+            if (!succeeded) return finalResult;
+            updateSlots();
+            if (totalOverclockedDuration > 0) {
+                totalOverclockedDuration = (int) Math
+                    .max(1, totalOverclockedDuration * Math.pow(0.75, mParallelTier - 4) / (cycleNow + 1));
+            } else {
+                totalOverclockedDuration = 1;
+            }
+            costingEUText = GTUtility.formatNumbers(costingEU);
+
+            mEfficiency = 10000;
+            mEfficiencyIncrease = 10000;
+            mMaxProgresstime = totalOverclockedDuration;
+
+            return CheckRecipeResultRegistry.SUCCESSFUL;
+        }
+
+        public CheckRecipeResult wirelessModeProcessOnce() {
+            if (!isRecipeProcessing) startRecipeProcessing();
+            setupProcessingLogic(processingLogic);
+
+            CheckRecipeResult result = doCheckRecipe();
+            if (!result.wasSuccessful()) {
+                return result;
+            }
+
+            BigInteger costEU = BigInteger.valueOf(processingLogic.getCalculatedEut())
+                .multiply(BigInteger.valueOf(processingLogic.getDuration()));
+
+            if (!addEUToGlobalEnergyMap(ownerUUID, costEU.multiply(NEGATIVE_ONE))) {
+                return CheckRecipeResultRegistry.insufficientPower(costEU.longValue());
+            }
+
+            costingEU = costingEU.add(costEU);
+
+            mOutputItems = mergeArray(mOutputItems, processingLogic.getOutputItems());
+            mOutputFluids = mergeArray(mOutputFluids, processingLogic.getOutputFluids());
+            totalOverclockedDuration += processingLogic.getDuration();
+            maxParallelStored = maxParallelStored - processingLogic.getCurrentParallels();
+
+            endRecipeProcessing();
+            return result;
         }
     }
 }
