@@ -53,7 +53,6 @@ import tectech.thing.block.BlockQuantumGlass;
 public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcaneAssembler>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
-    protected static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(12);
     private static final int ShapedArcaneCrafting = 0;
     private static final int InfusionCrafting = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -112,7 +111,7 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return ((BlockCasings1) sBlockCasings1).getTextureIndex(12);
     }
 
     @Override
@@ -161,7 +160,7 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                buildHatchAdder(IndustrialArcaneAssembler.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(IndustrialArcaneAssembler.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings1, 12))))
