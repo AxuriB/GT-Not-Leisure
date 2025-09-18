@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
+import appeng.container.implementations.ContainerCraftAmount;
+import appeng.container.implementations.ContainerCraftConfirm;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
@@ -124,6 +126,9 @@ public class GTNLInputHandler {
                     oldGui instanceof GuiMEMonitorable || oldGui instanceof GuiItemMonitor));
             if (key.getKey()
                 .equals("StartCraft")) {
+                var player = Minecraft.getMinecraft().thePlayer;
+                if (player.openContainer instanceof ContainerCraftAmount
+                    || player.openContainer instanceof ContainerCraftConfirm) return false;
                 GTNLInputHandler.oldGui = oldGui;
             }
             return true;

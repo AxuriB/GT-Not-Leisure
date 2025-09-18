@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import appeng.container.implementations.ContainerCraftConfirm;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -239,6 +240,8 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
         }
         exItem.stackSize = 1;
         if (!isAE) {
+            if (player.openContainer instanceof ContainerCraftAmount
+                || player.openContainer instanceof ContainerCraftConfirm)return;
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack item = player.inventory.getStackInSlot(i);
                 WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(item, player, i, 0);
