@@ -519,10 +519,15 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     costingEU = BigInteger.valueOf(recipe.mEUt)
                         .multiply(BigInteger.valueOf(recipe.mDuration))
                         .multiply(BigInteger.valueOf(parallel));
+
                 } else {
                     needEU += (long) recipe.mEUt * recipe.mDuration * parallel;
                 }
                 needTime += recipe.mDuration;
+            }
+
+            if (wirelessMode && !addEUToGlobalEnergyMap(ownerUUID, costingEU.multiply(NEGATIVE_ONE))) {
+                return CheckRecipeResultRegistry.insufficientPower(costingEU.longValue());
             }
 
             if (!wirelessMode && !batchMode) {
@@ -586,9 +591,6 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
         if (wirelessMode) {
             costingEUText = GTUtility.formatNumbers(costingEU);
-            if (!addEUToGlobalEnergyMap(ownerUUID, costingEU.multiply(NEGATIVE_ONE))) {
-                return CheckRecipeResultRegistry.insufficientPower(costingEU.longValue());
-            }
             this.lEUt = 0;
             this.mMaxProgresstime = batchMode ? 128 : minRecipeTime;
         } else {
