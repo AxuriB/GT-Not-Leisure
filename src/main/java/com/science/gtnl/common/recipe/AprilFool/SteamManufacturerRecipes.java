@@ -455,9 +455,9 @@ public class SteamManufacturerRecipes implements IRecipePool {
 
         RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4))
             .itemOutputs(ItemList.Casing_Gearbox_Steel.get(1))
             .duration(2 * SECONDS)
             .eut(16)

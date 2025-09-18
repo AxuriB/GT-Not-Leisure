@@ -5,7 +5,6 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.Utils.NEGATIVE_ONE;
 import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK;
 import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE;
-import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
@@ -65,6 +64,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -563,7 +563,11 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 }
             }
 
-            if (!totalOutputs.isEmpty() && !canOutputAll(totalOutputs.toArray(new ItemStack[0]))) {
+            if (totalOutputs.isEmpty()) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            if (!canOutputAll(totalOutputs.toArray(new ItemStack[0]))) {
                 return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
             }
 
@@ -579,10 +583,6 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     depleteInputLong(fluid, (long) fluid.amount * parallel, allFluids, false);
                 }
             }
-        }
-
-        if (totalOutputs.isEmpty()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         mOutputItems = totalOutputs.toArray(new ItemStack[0]);
@@ -601,8 +601,8 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         this.mEfficiency = 10000;
         this.mEfficiencyIncrease = 10000;
 
-        if (GTValues.D1) {
-            GT_FML_LOGGER.info("Recipe successful");
+        if (MainConfig.enableDebugMode) {
+            ScienceNotLeisure.LOG.info("Recipe successful");
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
