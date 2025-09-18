@@ -2,7 +2,6 @@ package com.science.gtnl.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableList;
@@ -14,21 +13,17 @@ import appeng.api.storage.data.IAEItemStack;
 
 public class CraftableItemMap extends HashMap<IAEItemStack, ImmutableList<ICraftingPatternDetails>> {
 
-    private final Multiset<SimpleItem> outputs = HashMultiset.create();
+    private final Multiset<IAEItemStack> outputs = HashMultiset.create();
 
     @Override
     public ImmutableList<ICraftingPatternDetails> put(IAEItemStack key, ImmutableList<ICraftingPatternDetails> value) {
-        outputs.add(SimpleItem.getInstance(key));
+        outputs.add(key);
         return super.put(key, value);
     }
 
     @Override
     public void putAll(Map<? extends IAEItemStack, ? extends ImmutableList<ICraftingPatternDetails>> map) {
-        outputs.addAll(
-            map.keySet()
-                .stream()
-                .map(SimpleItem::getInstance)
-                .collect(Collectors.toList()));
+        outputs.addAll(map.keySet());
         super.putAll(map);
     }
 
@@ -45,7 +40,7 @@ public class CraftableItemMap extends HashMap<IAEItemStack, ImmutableList<ICraft
         super.clear();
     }
 
-    public Multiset<SimpleItem> getCanCraftableItems() {
+    public Multiset<IAEItemStack> getCanCraftableItems() {
         return ImmutableMultiset.copyOf(outputs);
     }
 }

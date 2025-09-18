@@ -16,7 +16,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multiset;
 import com.science.gtnl.Utils.CraftableItemMap;
 import com.science.gtnl.Utils.RCCraftingGridCache;
-import com.science.gtnl.Utils.SimpleItem;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
@@ -38,7 +37,7 @@ public class MixinCraftingGridCache implements RCCraftingGridCache {
 
     @Unique
     @Override
-    public Multiset<SimpleItem> rc$getCanCraftableItems() {
+    public Multiset<IAEItemStack> rc$getCanCraftableItems() {
         if (craftableItems instanceof CraftableItemMap map) {
             return map.getCanCraftableItems();
         }

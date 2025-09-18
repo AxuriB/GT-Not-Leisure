@@ -25,7 +25,6 @@ import com.gtnewhorizon.gtnhlib.util.ServerThreadUtil;
 import com.science.gtnl.Utils.MEHandler;
 import com.science.gtnl.Utils.RCAEBaseContainer;
 import com.science.gtnl.Utils.RCCraftingGridCache;
-import com.science.gtnl.Utils.SimpleItem;
 import com.science.gtnl.Utils.Utils;
 
 import appeng.api.AEApi;
@@ -303,34 +302,13 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
             }
             IGrid grid = gridNode.getGrid();
             if (securityCheck(player, grid, SecurityPermissions.CRAFT)) {
-
                 CraftingGridCache cgc = gridNode.getGrid()
                     .getCache(ICraftingGrid.class);
-                boolean isCraftable = false;
-                IAEItemStack aeItem = null;
-                Multiset<SimpleItem> set;
-                if ((set = ((RCCraftingGridCache) cgc).rc$getCanCraftableItems()).isEmpty()) {
-                    for (IAEItemStack iaeItemStack : cgc.getCraftingPatterns()
-                        .keySet()) {
-                        aeItem = iaeItemStack;
-                        if (aeItem.isCraftable()) {
-                            if (aeItem.getItemStack()
-                                .isItemEqual(exItem)
-                                && ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), exItem)) {
-                                aeItem = aeItem.copy()
-                                    .setStackSize(1);
-                                isCraftable = true;
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    isCraftable = set.contains(SimpleItem.getInstance(exItem));
-                    if (isCraftable) {
-                        aeItem = AEItemStack.create(exItem)
-                            .setStackSize(1);
-                    }
-                }
+                IAEItemStack aeItem = AEItemStack.create(exItem)
+                    .setStackSize(1);
+                Multiset<IAEItemStack> set = ((RCCraftingGridCache) cgc).rc$getCanCraftableItems();
+                boolean isCraftable = set.contains(aeItem) || cgc.getCraftingPatterns()
+                    .containsKey(aeItem);
 
                 if (!isCraftable) {
                     player.addChatMessage(new ChatComponentTranslation("nei.bookmark.ae_no_craft"));
@@ -369,30 +347,11 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
 
             CraftingGridCache cgc = gridNode.getGrid()
                 .getCache(ICraftingGrid.class);
-            boolean isCraftable = false;
-            IAEItemStack aeItem = null;
-            Multiset<SimpleItem> set;
-            if ((set = ((RCCraftingGridCache) cgc).rc$getCanCraftableItems()).isEmpty()) {
-                for (IAEItemStack iaeItemStack : cgc.getCraftingPatterns()
-                    .keySet()) {
-                    aeItem = iaeItemStack;
-                    if (aeItem.isCraftable()) {
-                        if (aeItem.getItemStack()
-                            .isItemEqual(exItem) && ItemStack.areItemStackTagsEqual(aeItem.getItemStack(), exItem)) {
-                            aeItem = aeItem.copy()
-                                .setStackSize(1);
-                            isCraftable = true;
-                            break;
-                        }
-                    }
-                }
-            } else {
-                isCraftable = set.contains(SimpleItem.getInstance(exItem));
-                if (isCraftable) {
-                    aeItem = AEItemStack.create(exItem)
-                        .setStackSize(1);
-                }
-            }
+            IAEItemStack aeItem = AEItemStack.create(exItem)
+                .setStackSize(1);
+            Multiset<IAEItemStack> set = ((RCCraftingGridCache) cgc).rc$getCanCraftableItems();
+            boolean isCraftable = set.contains(aeItem) || cgc.getCraftingPatterns()
+                .containsKey(aeItem);
 
             if (!isCraftable) {
                 player.addChatMessage(new ChatComponentTranslation("nei.bookmark.ae_no_craft"));
