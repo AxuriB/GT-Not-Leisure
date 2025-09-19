@@ -190,7 +190,7 @@ public class PrimitiveBrickKiln extends SteamMultiMachineBase<PrimitiveBrickKiln
             return true;
         }
         if (tierMachineCasing == 2 && tierFireboxCasing == 2
-            && tierPipeCasing == 1
+            && tierPipeCasing == 2
             && tCountCasing >= 40
             && checkHatches()) {
             tierMachine = 2;
