@@ -209,7 +209,7 @@ public class LargeSteamCutting extends SteamMultiMachineBase<LargeSteamCutting> 
             && tierIndustrialCasing == 1
             && tierBrickCasing == 1
             && tierMachineFrame == 1
-            && mCountCasing >= 30) {
+            && mCountCasing >= 15) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -220,7 +220,7 @@ public class LargeSteamCutting extends SteamMultiMachineBase<LargeSteamCutting> 
             && tierIndustrialCasing == 2
             && tierBrickCasing == 2
             && tierMachineFrame == 2
-            && mCountCasing >= 30) {
+            && mCountCasing >= 15) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
