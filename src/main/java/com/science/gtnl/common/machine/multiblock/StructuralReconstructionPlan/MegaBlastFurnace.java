@@ -170,7 +170,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return mParallelTier >= 10;
     }
 
@@ -240,7 +240,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
             public CheckRecipeResult process() {
                 setEuModifier(getEuModifier());
                 setSpeedBonus(getSpeedBonus());
-                setOverclock(isEnablePerfectOverclock() ? 4 : 2, 4);
+                setOverclock(isEnablePerfectOC() ? 4 : 2, 4);
                 return super.process();
             }
 

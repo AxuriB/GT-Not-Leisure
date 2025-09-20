@@ -385,7 +385,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return true;
     }
 

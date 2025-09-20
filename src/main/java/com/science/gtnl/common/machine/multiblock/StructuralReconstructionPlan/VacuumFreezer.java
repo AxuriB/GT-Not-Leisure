@@ -58,7 +58,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return false;
     }
 

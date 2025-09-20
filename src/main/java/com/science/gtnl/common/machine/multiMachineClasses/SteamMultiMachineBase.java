@@ -396,10 +396,45 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost);
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
+                    .setPerfectOC(isEnablePerfectOverclock())
+                    .setMaxTierSkips(getMaxTierSkip())
+                    .setMaxOverclocks(getMaxOverclocks());
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    /**
+     * Proxy Perfect Overclock Supplier.
+     *
+     * @return If true, enable Perfect Overclock.
+     */
+    @ApiStatus.OverrideOnly
+    protected boolean isEnablePerfectOverclock() {
+        return false;
+    }
+
+    @ApiStatus.OverrideOnly
+    protected int getMaxOverclocks() {
+        return 0;
+    }
+
+    @ApiStatus.OverrideOnly
+    protected int getMaxTierSkip() {
+        return 0;
+    }
+
+    @ApiStatus.OverrideOnly
+    protected double getEUtDiscount() {
+        return 1 * Math.pow(4, Math.min(4, recipeOcCount));
+    }
+
+    @ApiStatus.OverrideOnly
+    protected double getDurationModifier() {
+        return 1 / Math.pow(2, Math.min(4, recipeOcCount));
     }
 
     @Override

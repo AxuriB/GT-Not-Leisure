@@ -35,7 +35,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 
 public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImplosionCompressor>
     implements ISurvivalConstructable {
@@ -43,7 +42,6 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String ELC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/electric_implosion_compressor";
-    public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(0);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 7;
     protected final int DEPTH_OFF_SET = 0;
@@ -92,7 +90,7 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 0);
     }
 
     @Override
@@ -129,27 +127,27 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
             .addElement('B', ofBlock(sBlockCasings2, 15))
             .addElement(
                 'C',
-                buildHatchAdder(ElectricImplosionCompressor.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(ElectricImplosionCompressor.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 0))))
             .addElement('D', ofFrame(Materials.TungstenSteel))
-            .addElement('E', Muffler.newAny(CASING_INDEX, 1))
+            .addElement('E', Muffler.newAny(getCasingTextureID(), 1))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 35;
+    }
 
-        mParallelTier = getParallelTier(aStack);
-        mEnergyHatchTier = checkEnergyHatchTier();
-        return mCountCasing >= 35 && this.mMufflerHatches.size() == 1;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && mMufflerHatches.size() == 1;
     }
 
     @Override
@@ -182,8 +180,8 @@ public class ElectricImplosionCompressor extends GTMMultiMachineBase<ElectricImp
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUt(getMaxInputEu())
                     .setAmperage(1)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 / 1.67 - (mParallelTier / 200.0));
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

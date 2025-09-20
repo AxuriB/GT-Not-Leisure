@@ -62,7 +62,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
     }
 
     @Override
-    protected boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return true;
     }
 

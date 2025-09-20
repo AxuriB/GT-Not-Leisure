@@ -137,6 +137,13 @@ public class GTNL_OverclockCalculator extends OverclockCalculator {
         return this;
     }
 
+    /** Enables Perfect OC in calculation */
+    @Nonnull
+    public GTNL_OverclockCalculator setPerfectOC(boolean enable) {
+        this.durationDecreasePerOC = enable ? 4 : 2;
+        return this;
+    }
+
     /** Set if we should be calculating overclocking using EBF's perfectOC */
     @Nonnull
     @Override

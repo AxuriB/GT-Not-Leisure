@@ -151,7 +151,7 @@ public class LargeCanning extends GTMMultiMachineBase<LargeCanning> implements I
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return true;
     }
 

@@ -132,6 +132,7 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
         isPolModule = false;
     }
 
+    @Override
     public double getEUtDiscount() {
         return setEUtDiscount;
     }
@@ -140,7 +141,8 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
         setEUtDiscount = discount;
     }
 
-    public double getSpeedBoost() {
+    @Override
+    public double getDurationModifier() {
         return setDurationModifier;
     }
 

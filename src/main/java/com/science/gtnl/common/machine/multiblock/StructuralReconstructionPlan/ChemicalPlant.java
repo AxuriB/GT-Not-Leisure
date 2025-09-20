@@ -11,38 +11,27 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(0);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String CP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/chemical_plant";
     protected final int HORIZONTAL_OFF_SET = 0;
@@ -56,11 +45,6 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
 
     public ChemicalPlant(String aName) {
         super(aName);
-    }
-
-    @Override
-    public boolean isEnablePerfectOverclock() {
-        return true;
     }
 
     @Override
@@ -98,7 +82,7 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 0);
     }
 
     @Override
@@ -143,7 +127,7 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
                     .use(activeCoils(ofCoil(ChemicalPlant::setMCoilLevel, ChemicalPlant::getMCoilLevel))))
             .addElement(
                 'B',
-                buildHatchAdder(ChemicalPlant.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(ChemicalPlant.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 0))))
@@ -173,48 +157,31 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
+        setupParameters();
         return mCountCasing >= 50;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None;
+    }
 
-            @NotNull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return new GTNL_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setEUtDiscount(0.8 * Math.pow(0.95, getMCoilLevel().getTier()))
-                    .setDurationModifier(1 / 1.67 * Math.pow(0.95, getMCoilLevel().getTier()));
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getEUtDiscount() {
+        return 0.8 * Math.pow(0.95, getMCoilLevel().getTier());
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 / 1.67 * Math.pow(0.95, getMCoilLevel().getTier());
+    }
+
+    @Override
+    public boolean isEnablePerfectOC() {
+        return true;
     }
 
     @Override

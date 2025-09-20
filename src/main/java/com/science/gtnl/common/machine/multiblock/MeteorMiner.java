@@ -149,7 +149,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return false;
     }
 

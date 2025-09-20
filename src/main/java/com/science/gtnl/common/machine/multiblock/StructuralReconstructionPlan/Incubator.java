@@ -40,7 +40,6 @@ import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.SideReference;
 import bartworks.API.recipe.BartWorksRecipeMaps;
@@ -74,7 +73,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalConstructable {
 
@@ -89,7 +87,6 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     private BioCulture mCulture;
     private ItemStack mStack;
     private boolean needsVisualUpdate = true;
-    private static final int CASING_INDEX = 210;
     private int mSievert;
     private int mNeededSievert;
     private boolean isVisibleFluid = false;
@@ -115,11 +112,11 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return 210;
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return false;
     }
 
@@ -158,7 +155,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             .addElement(
                 'C',
                 ofChain(
-                    buildHatchAdder(Incubator.class).casingIndex(CASING_INDEX)
+                    buildHatchAdder(Incubator.class).casingIndex(getCasingTextureID())
                         .dot(1)
                         .atLeast(
                             InputHatch,
@@ -246,8 +243,8 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.8)
-                    .setDurationModifier(1 / 1.67);
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
             @NotNull
@@ -256,6 +253,16 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                 return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 / 1.67;
     }
 
     @Override
@@ -324,13 +331,20 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        this.mRadHatches.clear();
-        this.mGlassTier = -1;
-        this.mCountCasing = 0;
-
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
             || !checkHatch()) return false;
+        setupParameters();
+        return this.mCountCasing >= 19;
+    }
 
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        this.mRadHatches.clear();
+    }
+
+    @Override
+    public boolean checkHatch() {
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -341,17 +355,8 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                 return false;
             }
         }
-
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-
-        return this.mCountCasing >= 19 && this.mRadHatches.size() <= 1
+        return super.checkHatch() && checkEnergyHatch()
+            && this.mRadHatches.size() <= 1
             && this.mOutputHatches.size() == 1
             && this.mMaintenanceHatches.size() == 1
             && !this.mInputHatches.isEmpty()
@@ -426,7 +431,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()
@@ -436,17 +441,18 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override

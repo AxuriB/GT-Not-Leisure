@@ -20,10 +20,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -44,15 +42,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings2;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings2) sBlockCasings2).getTextureIndex(1);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String CIF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/cold_ice_freeze";
     public static final String[][] shape = StructureUtils.readStructureFromFile(CIF_STRUCTURE_FILE_PATH);
@@ -109,13 +104,13 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
                     buildHatchAdder(ColdIceFreezer.class)
                         .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
                         .dot(1)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .build(),
                     onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 1)),
                     buildHatchAdder(ColdIceFreezer.class).adder(ColdIceFreezer::addFluidIceInputHatch)
                         .hatchId(21502)
                         .shouldReject(x -> !x.mFluidIceInputHatch.isEmpty())
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .build()))
             .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 15))
@@ -147,28 +142,29 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mFluidIceInputHatch.clear();
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
         }
+        return mCountCasing >= 50;
+    }
 
-        return mCountCasing >= 50 && this.mMufflerHatches.size() == 1;
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mFluidIceInputHatch.clear();
     }
 
     @Override
     public boolean checkHatch() {
-        return super.checkHatch() && !mFluidIceInputHatch.isEmpty();
+        return super.checkHatch() && !mFluidIceInputHatch.isEmpty()
+            && mMufflerHatches.size() == 1
+            && checkEnergyHatch();
+    }
+
+    @Override
+    public void updateHatchTexture() {
+        super.updateHatchTexture();
+        for (MTEHatch h : mMufflerHatches) h.updateTexture(TAE.getIndexFromPage(2, 10));
     }
 
     @Override
@@ -179,7 +175,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public int getCasingTextureID() {
-        return TAE.getIndexFromPage(2, 10);
+        return StructureUtils.getTextureIndex(sBlockCasings2, 1);
     }
 
     @Override
@@ -206,10 +202,13 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic().setSpeedBonus(1.0 / 2.5)
-            .setEuModifier(0.8)
-            .setMaxParallelSupplier(this::getTrueParallel);
+    public double getDurationModifier() {
+        return 1.0 / 2.5;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8;
     }
 
     @Override

@@ -197,14 +197,8 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(1 * Math.pow(4, Math.min(4, recipeOcCount)))
-                    .setDurationModifier(1 / Math.pow(2, Math.min(4, recipeOcCount)));
-            }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                return super.validateRecipe(recipe);
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
             @NotNull
@@ -221,6 +215,16 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                 return super.clear();
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    protected double getEUtDiscount() {
+        return 1 * Math.pow(4, Math.min(4, recipeOcCount));
+    }
+
+    @Override
+    protected double getDurationModifier() {
+        return 1 / Math.pow(2, Math.min(4, recipeOcCount));
     }
 
     @Override

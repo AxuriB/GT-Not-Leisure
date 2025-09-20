@@ -60,7 +60,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return true;
     }
 

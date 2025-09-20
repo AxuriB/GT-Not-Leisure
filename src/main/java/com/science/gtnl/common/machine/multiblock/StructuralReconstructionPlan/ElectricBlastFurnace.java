@@ -42,14 +42,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
 import gregtech.common.misc.GTStructureChannels;
 
 public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/electric_blast_furnace";
-    public static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(11);
     public static final String[][] shape = StructureUtils.readStructureFromFile(EBF_STRUCTURE_FILE_PATH);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 4;
@@ -76,7 +74,7 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
                 'A',
                 buildHatchAdder(ElectricBlastFurnace.class)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings1, 11))))
             .addElement('B', ofBlock(sBlockCasings2, 0))
@@ -87,7 +85,7 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
                 GTStructureChannels.HEATING_COIL
                     .use(activeCoils(ofCoil(ElectricBlastFurnace::setMCoilLevel, ElectricBlastFurnace::getMCoilLevel))))
             .addElement('F', ofFrame(Materials.StainlessSteel))
-            .addElement('G', Muffler.newAny(CASING_INDEX, 1))
+            .addElement('G', Muffler.newAny(getCasingTextureID(), 1))
             .build();
     }
 
@@ -123,11 +121,6 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
-        return false;
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
@@ -157,7 +150,7 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings1, 11);
     }
 
     @Override
@@ -174,20 +167,39 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(ElectricBlastFurnace.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(false)
-                    .setEUtDiscount(0.9 * Math.pow(0.95, getMCoilLevel().getTier()))
-                    .setDurationModifier(1.0 / 1.25 * Math.pow(0.95, getMCoilLevel().getTier()));
+                    .setMachineHeat(getMachineHeat())
+                    .setHeatOC(isEnableHeatOC())
+                    .setHeatDiscount(isEnableHeatDiscount())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= ElectricBlastFurnace.this.mHeatingCapacity
-                    ? CheckRecipeResultRegistry.SUCCESSFUL
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.9 * Math.pow(0.95, getMCoilLevel().getTier());
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / 1.25 * Math.pow(0.95, getMCoilLevel().getTier());
+    }
+
+    @Override
+    public int getMachineHeat() {
+        return mHeatingCapacity;
+    }
+
+    @Override
+    public boolean isEnableHeatOC() {
+        return true;
     }
 
     @Override
@@ -224,23 +236,23 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
-        this.mHeatingCapacity = 0;
-        mCountCasing = 0;
-        mEnergyHatchTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-        mEnergyHatchTier = checkEnergyHatchTier();
+        setupParameters();
+        return mCountCasing >= 30;
+    }
 
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None;
+    }
 
-        if (mMaintenanceHatches.size() != 1 || mMufflerHatches.size() != 1) return false;
-
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-        return mCountCasing >= 30;
     }
 
     @Override

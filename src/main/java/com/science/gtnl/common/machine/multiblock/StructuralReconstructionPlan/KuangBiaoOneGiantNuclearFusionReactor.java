@@ -99,19 +99,10 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (!checkHatch()) {
-            return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
+        setupParameters();
         return mCountCasing >= 1500;
     }
 
@@ -161,11 +152,11 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_01",
-                    (int) ((getDurationModifier() - 1) * 100)))
+                    (int) ((getMachineDurationModifier() - 1) * 100)))
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_02",
-                    (int) (getEUtDiscount() * 100)))
+                    (int) (getMachineEUtDiscount() * 100)))
             .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_03"))
             .addInfo(
                 StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04") + maxEUStore()
@@ -193,11 +184,6 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.fusionRecipes;
-    }
-
-    @Override
-    public boolean isEnablePerfectOverclock() {
-        return true;
     }
 
     @Override
@@ -318,14 +304,9 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(getEUtDiscount() - (mParallelTier / 12.5))
-                    .setDurationModifier(Math.max(0.000001, 1.0 / getDurationModifier() - (mParallelTier / 200.0)));
+                    .setPerfectOC(isEnablePerfectOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
             @NotNull
@@ -357,6 +338,21 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return getMachineEUtDiscount() - (mParallelTier / 12.5);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return Math.max(0.000001, 1.0 / getMachineDurationModifier() - (mParallelTier / 200.0));
+    }
+
+    @Override
+    public boolean isEnablePerfectOC() {
+        return true;
     }
 
     @SideOnly(Side.CLIENT)
@@ -430,9 +426,9 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         return GTUtility.getCasingTextureIndex(getCasing(), getCasingMeta());
     }
 
-    public abstract double getEUtDiscount();
+    public abstract double getMachineEUtDiscount();
 
-    public double getDurationModifier() {
+    public double getMachineDurationModifier() {
         return 2.0;
     }
 
@@ -475,7 +471,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
 
         @Override
-        public double getEUtDiscount() {
+        public double getMachineEUtDiscount() {
             return 8;
         }
 
@@ -526,7 +522,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
 
         @Override
-        public double getEUtDiscount() {
+        public double getMachineEUtDiscount() {
             return 6;
         }
 
@@ -577,7 +573,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
 
         @Override
-        public double getEUtDiscount() {
+        public double getMachineEUtDiscount() {
             return 4;
         }
 
@@ -633,7 +629,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
 
         @Override
-        public double getEUtDiscount() {
+        public double getMachineEUtDiscount() {
             return 2;
         }
 
@@ -722,11 +718,11 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
                 .addInfo(
                     StatCollector.translateToLocalFormatted(
                         "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_01",
-                        (int) ((getDurationModifier() - 1) * 100)))
+                        (int) ((getMachineDurationModifier() - 1) * 100)))
                 .addInfo(
                     StatCollector.translateToLocalFormatted(
                         "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_02",
-                        (int) (getEUtDiscount() * 100)))
+                        (int) (getMachineEUtDiscount() * 100)))
                 .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_03"))
                 .addInfo(
                     StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04") + maxEUStore()
@@ -914,12 +910,12 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
 
         @Override
-        public double getEUtDiscount() {
+        public double getMachineEUtDiscount() {
             return 0.4;
         }
 
         @Override
-        public double getDurationModifier() {
+        public double getMachineDurationModifier() {
             return 10.0;
         }
 

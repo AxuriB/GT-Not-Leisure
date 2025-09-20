@@ -1562,8 +1562,8 @@ Tooltip_GTMMultiMachine_02=初始并行为8
 Tooltip_GTMMultiMachine_03=在控制器内放入并行控制核心来提升最大并行数和减少耗电！ 
 Tooltip_GTMMultiMachine_04=支持§9Tec§1Tech§r多安能源仓！ 
 
-Tooltip_WirelessEnergyMultiMachine_00=比相同电压的机器快900%
-Tooltip_WirelessEnergyMultiMachine_01=只需要使用配方要求功率的40%
+Tooltip_WirelessEnergyMultiMachine_00=比相同电压的机器快900% → 400%
+Tooltip_WirelessEnergyMultiMachine_01=只需要使用配方要求功率的40% → 60%
 Tooltip_WirelessEnergyMultiMachine_02=初始并行为8
 Tooltip_WirelessEnergyMultiMachine_03=在控制器内放入并行控制核心来提升最大并行数和减少耗电！ 
 Tooltip_WirelessEnergyMultiMachine_04=并行控制核心将额外提供16倍的并行！ 

@@ -53,7 +53,7 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return false;
     }
 

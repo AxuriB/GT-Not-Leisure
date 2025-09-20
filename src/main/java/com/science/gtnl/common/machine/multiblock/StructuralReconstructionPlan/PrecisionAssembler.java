@@ -216,7 +216,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return casingTier >= 4;
     }
 
@@ -345,7 +345,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
             public CheckRecipeResult process() {
                 setEuModifier(getEuModifier());
                 setSpeedBonus(getSpeedBonus());
-                setOverclock(isEnablePerfectOverclock() ? 4 : 2, 4);
+                setOverclock(isEnablePerfectOC() ? 4 : 2, 4);
                 return super.process();
             }
 

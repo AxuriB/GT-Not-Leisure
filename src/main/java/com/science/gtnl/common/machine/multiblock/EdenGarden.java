@@ -134,7 +134,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return true;
     }
 

@@ -159,7 +159,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return tierCasing >= 4;
     }
 

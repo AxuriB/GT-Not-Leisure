@@ -26,7 +26,6 @@ import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.Utils.recipes.IsaMillTierKey;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.TAE;
@@ -51,11 +50,9 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers.MTEHatchMillingBalls;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalConstructable {
 
-    protected static final int CASING_INDEX = TAE.GTPP_INDEX(2);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String IM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/isa_mill";
     protected final int HORIZONTAL_OFF_SET = 2;
@@ -108,12 +105,12 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
                     buildHatchAdder(IsaMill.class).adder(IsaMill::addMillingBallsHatch)
                         .hatchClass(MTEHatchMillingBalls.class)
                         .shouldReject(t -> !t.mMillingBallBuses.isEmpty())
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .build(),
                     buildHatchAdder(IsaMill.class)
                         .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .build(),
                     onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings5Misc, 0))))
@@ -144,15 +141,21 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mGlassTier = -1;
-        mParallelTier = 0;
-        mMillingBallBuses.clear();
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 48;
+    }
 
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mMillingBallBuses.clear();
+    }
+
+    @Override
+    public boolean checkHatch() {
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -163,19 +166,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
                 return false;
             }
         }
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
-        return mCountCasing >= 48 && mMillingBallBuses.size() == 1;
+        return super.checkHatch() && mMillingBallBuses.size() == 1;
     }
 
     @Override
@@ -214,11 +205,6 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
-        return true;
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
@@ -238,7 +224,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(2);
     }
 
     @Override
@@ -371,18 +357,27 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setEUtDiscount(1 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 - (mParallelTier / 200.0));
+                    .setPerfectOC(isEnablePerfectOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
         }.enablePerfectOverclock()
             .setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public boolean isEnablePerfectOC() {
+        return true;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 1 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 - (mParallelTier / 200.0);
     }
 }

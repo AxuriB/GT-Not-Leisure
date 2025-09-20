@@ -24,21 +24,18 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import bartworks.util.BWUtil;
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -46,18 +43,14 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class Digester extends GTMMultiMachineBase<Digester> implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String D_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/digester";
     protected final int HORIZONTAL_OFF_SET = 3;
@@ -143,7 +136,7 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
             .addElement('A', ofBlock(sBlockCasings1, 11))
             .addElement(
                 'B',
-                buildHatchAdder(Digester.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(Digester.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 0))))
@@ -157,28 +150,18 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 45;
+    }
 
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-        mParallelTier = getParallelTier(aStack);
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-        return mCountCasing >= 45;
     }
 
     @Override
@@ -202,11 +185,6 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
-        return true;
-    }
-
-    @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
@@ -219,20 +197,19 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setMachineHeat(Digester.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true)
-                    .enablePerfectOC()
-                    .setEUtDiscount(0.8 - ((mParallelTier + mHeatingCapacity / 1800.0) / 50.0))
-                    .setDurationModifier(1 / 1.67 - ((mParallelTier + mHeatingCapacity / 1800.0) / 200.0));
+                    .setMachineHeat(getMachineHeat())
+                    .setHeatOC(isEnableHeatOC())
+                    .setHeatDiscount(isEnableHeatDiscount())
+                    .setPerfectOC(isEnablePerfectOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
                 if (checkForNitricAcid()) {
-                    return recipe.mSpecialValue <= Digester.this.getMCoilLevel()
-                        .getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
-                            : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+                    return recipe.mSpecialValue <= getMCoilLevel().getHeat() ? CheckRecipeResultRegistry.SUCCESSFUL
+                        : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
                 }
                 return SimpleCheckRecipeResult.ofFailure("no_nitricacid");
             }
@@ -240,8 +217,38 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
     }
 
     @Override
+    public double getEUtDiscount() {
+        return 0.8 - ((mParallelTier + mHeatingCapacity / 1800.0) / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 / 1.67 - ((mParallelTier + mHeatingCapacity / 1800.0) / 200.0);
+    }
+
+    @Override
+    public int getMachineHeat() {
+        return mHeatingCapacity;
+    }
+
+    @Override
+    public boolean isEnableHeatOC() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnableHeatDiscount() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnablePerfectOC() {
+        return true;
+    }
+
+    @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 0);
     }
 
     public boolean checkForNitricAcid() {
@@ -296,9 +303,9 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
 
         boolean isValidFluid = tAmount >= 42;
         if (isValidFluid) {
-            Logger.WARNING("Filled structure.");
+            ScienceNotLeisure.LOG.warn("Filled structure.");
         } else {
-            Logger.WARNING("Did not fill structure.");
+            ScienceNotLeisure.LOG.warn("Did not fill structure.");
         }
         return isValidFluid;
     }

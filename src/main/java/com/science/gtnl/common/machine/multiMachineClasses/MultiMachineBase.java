@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -47,6 +49,7 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.science.gtnl.ScienceNotLeisure;
+import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -54,6 +57,7 @@ import com.science.gtnl.api.IConfigurationMaintenance;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
+import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -74,6 +78,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.data.GTCoilTracker;
@@ -88,6 +93,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchSteam
 import lombok.Getter;
 import lombok.Setter;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MTEExtendedPowerMultiBlockBase<T>
     implements IConstructable, ISurvivalConstructable {
@@ -123,6 +129,26 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     public HeatingCoilLevel mCoilLevel = HeatingCoilLevel.None;
     public int mHeatingCapacity = 0;
     public int mCoilTier = 0;
+
+    public static final Map<ItemStack, Integer> PARALLEL_TIERS = new HashMap<>() {
+
+        {
+            put(GTNLItemList.LVParallelControllerCore.get(1), 1);
+            put(GTNLItemList.MVParallelControllerCore.getInternalStack_unsafe(), 2);
+            put(GTNLItemList.HVParallelControllerCore.getInternalStack_unsafe(), 3);
+            put(GTNLItemList.EVParallelControllerCore.getInternalStack_unsafe(), 4);
+            put(GTNLItemList.IVParallelControllerCore.getInternalStack_unsafe(), 5);
+            put(GTNLItemList.LuVParallelControllerCore.getInternalStack_unsafe(), 6);
+            put(GTNLItemList.ZPMParallelControllerCore.getInternalStack_unsafe(), 7);
+            put(GTNLItemList.UVParallelControllerCore.getInternalStack_unsafe(), 8);
+            put(GTNLItemList.UHVParallelControllerCore.getInternalStack_unsafe(), 9);
+            put(GTNLItemList.UEVParallelControllerCore.getInternalStack_unsafe(), 10);
+            put(GTNLItemList.UIVParallelControllerCore.getInternalStack_unsafe(), 11);
+            put(GTNLItemList.UMVParallelControllerCore.getInternalStack_unsafe(), 12);
+            put(GTNLItemList.UXVParallelControllerCore.getInternalStack_unsafe(), 13);
+            put(GTNLItemList.MAXParallelControllerCore.getInternalStack_unsafe(), 14);
+        }
+    };
 
     public void repairMachine() {
         mHardHammer = true;
@@ -325,18 +351,18 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
 
             @NotNull
             @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                setOverclock(isEnablePerfectOverclock() ? 4 : 2, 4);
-                return super.process();
-            }
-
-            @NotNull
-            @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost);
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setHeatOC(isEnableHeatOC())
+                    .setMachineHeat(getMachineHeat())
+                    .setHeatDiscount(isEnableHeatDiscount())
+                    .setAmperageOC(isEnableAmperageOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
+                    .setPerfectOC(isEnablePerfectOC())
+                    .setMaxTierSkips(getMaxTierSkip())
+                    .setMaxOverclocks(getMaxOverclocks());
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);
@@ -347,8 +373,49 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      *
      * @return If true, enable Perfect Overclock.
      */
-    protected boolean isEnablePerfectOverclock() {
+    @ApiStatus.OverrideOnly
+    public boolean isEnablePerfectOC() {
         return false;
+    }
+
+    @ApiStatus.OverrideOnly
+    public boolean isEnableHeatOC() {
+        return false;
+    }
+
+    @ApiStatus.OverrideOnly
+    public boolean isEnableHeatDiscount() {
+        return false;
+    }
+
+    @ApiStatus.OverrideOnly
+    public boolean isEnableAmperageOC() {
+        return false;
+    }
+
+    @ApiStatus.OverrideOnly
+    public int getMachineHeat() {
+        return 0;
+    }
+
+    @ApiStatus.OverrideOnly
+    public int getMaxOverclocks() {
+        return Integer.MAX_VALUE;
+    }
+
+    @ApiStatus.OverrideOnly
+    public int getMaxTierSkip() {
+        return Integer.MAX_VALUE;
+    }
+
+    @ApiStatus.OverrideOnly
+    public double getDurationModifier() {
+        return 1.0F;
+    }
+
+    @ApiStatus.OverrideOnly
+    public double getEUtDiscount() {
+        return 1.0F;
     }
 
     /**
@@ -356,8 +423,9 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      *
      * @return The value (or a method to get the value) of Eu Modifier (dynamically) .
      */
+    @Deprecated
     @ApiStatus.OverrideOnly
-    protected float getEuModifier() {
+    protected double getEuModifier() {
         return 1.0F;
     }
 
@@ -366,8 +434,9 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      *
      * @return The value (or a method to get the value) of Speed Multiplier (dynamically) .
      */
+    @Deprecated
     @ApiStatus.OverrideOnly
-    protected float getSpeedBonus() {
+    protected double getSpeedBonus() {
         return 1.0F;
     }
 
@@ -412,6 +481,16 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             tier = Math.max(tHatch.mTier, tier);
         }
         return tier;
+    }
+
+    public int getParallelTier(ItemStack inventory) {
+        if (inventory == null) return 0;
+        for (Map.Entry<ItemStack, Integer> entry : PARALLEL_TIERS.entrySet()) {
+            if (GTUtility.areStacksEqual(inventory, entry.getKey())) {
+                return entry.getValue();
+            }
+        }
+        return 0;
     }
 
     @FunctionalInterface
@@ -738,6 +817,18 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             && mParallelControllerHatches.size() <= 1;
     }
 
+    public boolean checkEnergyHatch() {
+        if (MainConfig.enableMachineAmpLimit) {
+            for (MTEHatch hatch : getExoticEnergyHatches()) {
+                if (hatch instanceof MTEHatchEnergyTunnel) {
+                    return false;
+                }
+            }
+            return getRealMaxInputAmps() <= 64;
+        }
+        return true;
+    }
+
     @Override
     public void clearHatches() {
         super.clearHatches();
@@ -746,6 +837,16 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         this.mParallelControllerHatches.clear();
         this.mFluidManaInputHatch.clear();
         this.mFluidIceInputHatch.clear();
+        mCountCasing = 0;
+        mParallelTier = 0;
+        mEnergyHatchTier = 0;
+        mHeatingCapacity = 0;
+        mGlassTier = -1;
+        this.setMCoilLevel(HeatingCoilLevel.None);
+    }
+
+    public void setupParameters() {
+        mEnergyHatchTier = checkEnergyHatchTier();
     }
 
     public IMetaTileEntity getMetaTileEntity(final IGregTechTileEntity aTileEntity) {

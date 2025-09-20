@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
-import appeng.container.implementations.ContainerCraftAmount;
-import appeng.container.implementations.ContainerCraftConfirm;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiScreen;
@@ -25,6 +23,8 @@ import com.science.gtnl.Utils.ClientUtils;
 import com.science.gtnl.common.packet.KeyBindingHandler;
 
 import appeng.client.gui.implementations.GuiMEMonitorable;
+import appeng.container.implementations.ContainerCraftAmount;
+import appeng.container.implementations.ContainerCraftConfirm;
 import codechicken.nei.BookmarkPanel;
 import codechicken.nei.LayoutManager;
 import codechicken.nei.Widget;

@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import appeng.container.implementations.ContainerCraftConfirm;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -43,6 +42,7 @@ import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.container.AEBaseContainer;
 import appeng.container.implementations.ContainerCraftAmount;
+import appeng.container.implementations.ContainerCraftConfirm;
 import appeng.container.implementations.ContainerMEMonitorable;
 import appeng.core.AppEng;
 import appeng.core.localization.PlayerMessages;
@@ -241,7 +241,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
         exItem.stackSize = 1;
         if (!isAE) {
             if (player.openContainer instanceof ContainerCraftAmount
-                || player.openContainer instanceof ContainerCraftConfirm)return;
+                || player.openContainer instanceof ContainerCraftConfirm) return;
             for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
                 ItemStack item = player.inventory.getStackInSlot(i);
                 WirelessTerminalGuiObject obj = MEHandler.getTerminalGuiObject(item, player, i, 0);

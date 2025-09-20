@@ -117,6 +117,7 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
         isConnected = false;
     }
 
+    @Override
     public double getEUtDiscount() {
         return mEUtDiscount;
     }
@@ -133,7 +134,8 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
         return mHeatingCapacity;
     }
 
-    public double getSpeedBoost() {
+    @Override
+    public double getDurationModifier() {
         return mSpeedBoost;
     }
 
@@ -192,7 +194,7 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setMachineHeat(getHeat())
                     .setEUtDiscount(getEUtDiscount())
-                    .setDurationModifier(getSpeedBoost());
+                    .setDurationModifier(getDurationModifier());
             }
         }.setMaxParallelSupplier(this::getMaxParallel);
     }
@@ -251,7 +253,7 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean isEnablePerfectOC() {
         return true;
     }
 
