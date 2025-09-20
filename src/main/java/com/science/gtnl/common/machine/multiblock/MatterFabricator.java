@@ -60,7 +60,6 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/matter_fabricator";
-    public static final int CASING_INDEX = BlockGTCasingsTT.textureOffset;
     protected final int HORIZONTAL_OFF_SET = 4;
     protected final int VERTICAL_OFF_SET = 2;
     protected final int DEPTH_OFF_SET = 0;
@@ -99,7 +98,7 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return BlockGTCasingsTT.textureOffset;
     }
 
     @Override
@@ -138,7 +137,7 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
             .addElement('F', ofBlock(sBlockCasings8, 10))
             .addElement(
                 'G',
-                buildHatchAdder(MatterFabricator.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(MatterFabricator.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 0))))

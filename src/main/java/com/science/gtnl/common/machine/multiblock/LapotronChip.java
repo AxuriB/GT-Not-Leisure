@@ -28,7 +28,6 @@ import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -38,8 +37,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings8;
 
 public class LapotronChip extends MultiMachineBase<LapotronChip>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -93,7 +90,7 @@ public class LapotronChip extends MultiMachineBase<LapotronChip>
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(11);
+        return StructureUtils.getTextureIndex(sBlockCasings1, 11);
     }
 
     @Override
@@ -135,7 +132,7 @@ public class LapotronChip extends MultiMachineBase<LapotronChip>
                 'E',
                 buildHatchAdder(LapotronChip.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Maintenance, Energy, Energy.or(ExoticEnergy))
-                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 10))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('F', ofBlock(BlockLoader.metaBlockGlow, 0))

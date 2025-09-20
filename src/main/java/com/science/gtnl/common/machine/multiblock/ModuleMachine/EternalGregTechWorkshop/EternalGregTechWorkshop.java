@@ -166,8 +166,6 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     public static final String[][] shape_extra = StructureUtils.readStructureFromFile(EGTWE_STRUCTURE_FILE_PATH);
     public static final String[][] shape_extra_air = StructureUtils.replaceLetters(shape_extra, "a");
 
-    public final int CASING_INDEX = 960;
-
     private int tCountCasing = 0;
     private int mHeatingCapacity = 0;
     private int mMachineTier = 0;
@@ -370,18 +368,18 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + 1),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID() + 1),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE)
                     .extFacing()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + 1),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID() + 1),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_TECTECH_MULTIBLOCK)
                     .extFacing()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX + 1) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID() + 1) };
     }
 
     @Override
@@ -396,7 +394,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return 960;
     }
 
     @Override
@@ -426,7 +424,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
                 'N',
                 buildHatchAdder(EternalGregTechWorkshop.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch)
-                    .casingIndex(CASING_INDEX + 1)
+                    .casingIndex(getCasingTextureID() + 1)
                     .dot(1)
                     .buildAndChain(
                         onElementPass(x -> ++x.tCountCasing, ofBlock(TTCasingsContainer.GodforgeCasings, 1))))
@@ -444,7 +442,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
                 'Y',
                 HatchElementBuilder.<EternalGregTechWorkshop>builder()
                     .atLeast(EternalGregTechWorkshop.moduleElement.Module)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(TTCasingsContainer.GodforgeCasings, 0))
             .addElement(

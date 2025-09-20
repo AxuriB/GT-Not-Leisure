@@ -53,7 +53,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 
@@ -98,7 +97,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
             .addElement('B', ofBlock(sBlockCasings2, 0))
-            .addElement('S', Muffler.newAny(((BlockCasings8) sBlockCasings8).getTextureIndex(10), 2))
+            .addElement('S', Muffler.newAny(StructureUtils.getTextureIndex(sBlockCasings8, 10), 2))
             .addElement('C', ofBlock(sBlockCasings2, 12))
             .addElement('D', ofBlock(sBlockCasings2, 13))
             .addElement('E', ofBlock(sBlockCasings2, 14))

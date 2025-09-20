@@ -27,7 +27,6 @@ import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
 import crazypants.enderio.EnderIO;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -40,8 +39,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings8;
 import gtPlusPlus.core.block.ModBlocks;
 import kubatech.loaders.BlockLoader;
 import tectech.thing.block.BlockQuantumGlass;
@@ -95,7 +92,7 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(12);
+        return StructureUtils.getTextureIndex(sBlockCasings1, 12);
     }
 
     @Override
@@ -140,7 +137,7 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
                 'L',
                 buildHatchAdder(GenerationEarthEngine.class)
                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
-                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(5))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 5))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
             .addElement(

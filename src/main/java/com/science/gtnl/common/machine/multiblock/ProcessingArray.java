@@ -61,7 +61,6 @@ import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -78,7 +77,6 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String PA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/processing_array";
     public static final String[][] shape = StructureUtils.readStructureFromFile(PA_STRUCTURE_FILE_PATH);
-    public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(2);
 
     public ProcessingArray(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -140,7 +138,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 2);
     }
 
     @Override
@@ -309,7 +307,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
                 'A',
                 buildHatchAdder(ProcessingArray.class)
                     .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 2))))
             .addElement('B', ofBlock(sBlockCasings2, 14))
@@ -318,7 +316,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
                 GTStructureChannels.HEATING_COIL
                     .use(activeCoils(ofCoil(ProcessingArray::setMCoilLevel, ProcessingArray::getMCoilLevel))))
             .addElement('D', ofFrame(Materials.Titanium))
-            .addElement('E', Muffler.newAny(CASING_INDEX, 1))
+            .addElement('E', Muffler.newAny(getCasingTextureID(), 1))
             .build();
     }
 

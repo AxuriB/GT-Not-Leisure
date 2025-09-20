@@ -44,7 +44,6 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_mixer";
-    public static final int CASING_INDEX = StructureUtils.getTextureIndex(sBlockCasings8, 7);
     protected final int HORIZONTAL_OFF_SET = 5;
     protected final int VERTICAL_OFF_SET = 7;
     protected final int DEPTH_OFF_SET = 0;
@@ -85,7 +84,7 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 7);
     }
 
     @Override
@@ -125,7 +124,7 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
             .addElement('A', ofBlock(sBlockCasingsTT, 0))
             .addElement(
                 'B',
-                buildHatchAdder(MegaMixer.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(MegaMixer.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))

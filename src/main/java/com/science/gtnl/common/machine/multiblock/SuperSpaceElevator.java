@@ -75,6 +75,7 @@ import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
+import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 import kubatech.loaders.BlockLoader;
 import lombok.Getter;
@@ -107,7 +108,6 @@ public class SuperSpaceElevator extends TTMultiblockBase
     /** Multiplier for the internal EU buffer */
     private static final int INTERNAL_BUFFER_MULTIPLIER = 256;
 
-    public static final int CASING_INDEX_BASE = 32 * 128;
     private static final String STRUCTURE_PIECE_MAIN = "main_base";
     private static final String STRUCTURE_PIECE_EXTENDED = "main_extended";
     private static final int STRUCTURE_PIECE_MAIN_HOR_OFFSET = 32;
@@ -248,7 +248,7 @@ public class SuperSpaceElevator extends TTMultiblockBase
             .addElement(
                 'F',
                 buildHatchAdder(SuperSpaceElevator.class).atLeast(Energy.or(ExoticEnergy), Dynamo)
-                    .casingIndex(CASING_INDEX_BASE)
+                    .casingIndex(TileEntitySpaceElevator.CASING_INDEX_BASE)
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsSE, 0))))
             .addElement('G', ofBlock(sBlockCasingsDyson, 9))
@@ -269,14 +269,14 @@ public class SuperSpaceElevator extends TTMultiblockBase
                         HatchElement.DynamoMulti,
                         HatchElement.InputData,
                         HatchElement.OutputData)
-                    .casingIndex(CASING_INDEX_BASE)
+                    .casingIndex(TileEntitySpaceElevator.CASING_INDEX_BASE)
                     .dot(1)
                     .buildAndChain(sBlockCasingsSE, 0))
             .addElement(
                 'M',
                 HatchElementBuilder.<SuperSpaceElevator>builder()
                     .atLeast(ProjectModuleElement.ProjectModule)
-                    .casingIndex(CASING_INDEX_BASE)
+                    .casingIndex(TileEntitySpaceElevator.CASING_INDEX_BASE)
                     .dot(1)
                     .buildAndChain(sBlockCasingsSE, 0))
             .addElement(
@@ -540,10 +540,11 @@ public class SuperSpaceElevator extends TTMultiblockBase
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE),
+            return new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
                 new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
     }
 
     @Override

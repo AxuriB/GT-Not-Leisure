@@ -27,7 +27,6 @@ import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMa
 import com.science.gtnl.loader.BlockLoader;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -41,7 +40,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings9;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
@@ -139,7 +137,7 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
                 'L',
                 buildHatchAdder(NeutroniumWireCutting.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings9, 12))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings9, 12))))
             .addElement('M', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))

@@ -50,7 +50,6 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SCC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/shallow_chemical_coupling";
-    private static final int CASING_INDEX = GTUtility.getTextureId((byte) 116, (byte) 19);
     public static final String[][] shape = StructureUtils.readStructureFromFile(SCC_STRUCTURE_FILE_PATH);
     protected final int HORIZONTAL_OFF_SET = 3;
     protected final int VERTICAL_OFF_SET = 9;
@@ -75,7 +74,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                buildHatchAdder(ShallowChemicalCoupling.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(ShallowChemicalCoupling.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(BlockLoader.metaCasing, 19))))
@@ -158,7 +157,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return GTUtility.getTextureId((byte) 116, (byte) 19);
     }
 
     @Override

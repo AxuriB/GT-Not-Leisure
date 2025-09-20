@@ -40,7 +40,6 @@ import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMa
 import com.science.gtnl.loader.BlockLoader;
 
 import goodgenerator.loader.Loaders;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
@@ -56,7 +55,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings9;
 import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
@@ -150,7 +148,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12);
+        return StructureUtils.getTextureIndex(sBlockCasings9, 12);
     }
 
     @Override
@@ -220,7 +218,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
                 'a',
                 buildHatchAdder(NanoPhagocytosisPlant.class)
                     .atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy), ParallelCon)
-                    .casingIndex(((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(12))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings9, 12))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings9, 12))))
             .build();

@@ -38,7 +38,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -54,7 +53,6 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
     protected final int HORIZONTAL_OFF_SET = 20;
     protected final int VERTICAL_OFF_SET = 4;
     protected final int DEPTH_OFF_SET = 0;
-    public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(3);
 
     public HandOfJohnDavisonRockefeller(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -89,7 +87,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings10, 3);
     }
 
     @Override
@@ -140,7 +138,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
             .addElement('C', ofBlockAnyMeta(FOCUS_MANIPULATION_CASING))
             .addElement(
                 'D',
-                buildHatchAdder(HandOfJohnDavisonRockefeller.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(HandOfJohnDavisonRockefeller.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 3))))

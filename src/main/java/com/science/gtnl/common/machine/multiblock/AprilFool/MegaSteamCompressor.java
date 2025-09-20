@@ -3,6 +3,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.enums.BlockIcons.*;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
@@ -38,7 +39,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.render.TileEntityBlackhole;
 
@@ -78,15 +78,15 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                 'B',
                 ofChain(
                     buildSteamWirelessInput(MegaSteamCompressor.class)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings2, 0))
                         .dot(1)
                         .build(),
                     buildSteamInput(MegaSteamCompressor.class)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings2, 0))
                         .dot(1)
                         .build(),
                     buildHatchAdder(MegaSteamCompressor.class)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings2, 0))
                         .dot(1)
                         .atLeast(
                             SteamHatchElement.InputBus_Steam,
@@ -96,7 +96,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                             InputHatch,
                             OutputHatch,
                             Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
+                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0)))))
             .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, 10))
             .addElement('D', ofFrame(Materials.Steel))
             .build();
@@ -152,8 +152,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
         if (side == facing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                    Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings2, 0)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MEGA_STEAM_COMPRESSOR_ACTIVE)
                         .extFacing()
@@ -165,8 +164,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                         .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                    Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings2, 0)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MEGA_STEAM_COMPRESSOR)
                         .extFacing()
@@ -178,8 +176,8 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
+            rTexture = new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings2, 0)) };
         }
         return rTexture;
     }

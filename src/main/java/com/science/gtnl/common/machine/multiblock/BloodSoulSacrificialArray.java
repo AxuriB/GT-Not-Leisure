@@ -65,7 +65,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -508,7 +507,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override

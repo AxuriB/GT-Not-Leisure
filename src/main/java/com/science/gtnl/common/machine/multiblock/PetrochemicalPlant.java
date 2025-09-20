@@ -39,7 +39,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
@@ -51,7 +50,6 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
     protected final int HORIZONTAL_OFF_SET = 22;
     protected final int VERTICAL_OFF_SET = 56;
     protected final int DEPTH_OFF_SET = 0;
-    protected static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(3);
 
     public PetrochemicalPlant(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -101,7 +99,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings10, 3);
     }
 
     @Override
@@ -139,7 +137,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
         return StructureDefinition.<PetrochemicalPlant>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlockAnyMeta(Blocks.yszUnit))
-            .addElement('B', Muffler.newAny(CASING_INDEX, 8))
+            .addElement('B', Muffler.newAny(getCasingTextureID(), 8))
             .addElement('C', ofBlock(sBlockCasings2, 0))
             .addElement('D', ofBlock(sBlockCasings2, 12))
             .addElement('E', ofBlock(sBlockCasings2, 13))
@@ -159,7 +157,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
                 'O',
                 buildHatchAdder(PetrochemicalPlant.class)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 3))))
             .addElement('P', ofBlock(sBlockCasings10, 4))

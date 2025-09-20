@@ -51,7 +51,6 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String PBT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/platinum_based_treatment";
-    private static final int CASING_INDEX = TAE.getIndexFromPage(2, 2);
     public static final String[][] shape = StructureUtils.readStructureFromFile(PBT_STRUCTURE_FILE_PATH);
     private final int HORIZONTAL_OFF_SET = 7;
     private final int VERTICAL_OFF_SET = 15;
@@ -93,7 +92,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
             .addElement('N', ofBlock(blockCasings2Misc, 11))
             .addElement(
                 'O',
-                buildHatchAdder(PlatinumBasedTreatment.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(PlatinumBasedTreatment.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, InputBus, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 2))))
@@ -172,7 +171,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.getIndexFromPage(2, 2);
     }
 
     @Override

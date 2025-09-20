@@ -1,6 +1,7 @@
 package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
@@ -21,6 +22,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
@@ -41,13 +43,10 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings2;
-import gregtech.common.blocks.BlockCasings3;
 
 public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveDistillationTower>
     implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
     public static final String STRUCTURE_PIECE_BASE = "base";
     public static final String STRUCTURE_PIECE_LAYER = "layer";
     public static final String STRUCTURE_PIECE_LAYER_HINT = "layerHint";
@@ -67,7 +66,7 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
+        return StructureUtils.getTextureIndex(sBlockCasings2, 0);
     }
 
     @Override
@@ -201,15 +200,15 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
                 'A',
                 ofChain(
                     buildSteamWirelessInput(PrimitiveDistillationTower.class)
-                        .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings3, 14))
                         .dot(1)
                         .build(),
                     buildSteamBigInput(PrimitiveDistillationTower.class)
-                        .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings3, 14))
                         .dot(1)
                         .build(),
                     buildSteamInput(PrimitiveDistillationTower.class)
-                        .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings3, 14))
                         .dot(1)
                         .build(),
                     buildHatchAdder(PrimitiveDistillationTower.class)
@@ -220,32 +219,32 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
                             InputHatch,
                             InputBus,
                             Maintenance)
-                        .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings3, 14))
                         .dot(1)
                         .build(),
-                    onElementPass(PrimitiveDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings3, 14))))
+                    onElementPass(PrimitiveDistillationTower::onCasingFound, ofBlock(sBlockCasings3, 14))))
             .addElement(
                 'B',
                 ofChain(
                     onElementPass(PrimitiveDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings2, 0)),
                     buildHatchAdder(PrimitiveDistillationTower.class).atLeast(layeredOutputHatch)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .build(),
-                    ofHatchAdder(PrimitiveDistillationTower::addLayerOutputHatch, CASING_INDEX, 1)))
+                    ofHatchAdder(PrimitiveDistillationTower::addLayerOutputHatch, getCasingTextureID(), 1)))
             .addElement(
                 'C',
                 ofChain(
                     onElementPass(
                         t -> t.onTopLayerFound(false),
-                        ofHatchAdder(PrimitiveDistillationTower::addOutputToMachineList, CASING_INDEX, 1)),
+                        ofHatchAdder(PrimitiveDistillationTower::addOutputToMachineList, getCasingTextureID(), 1)),
                     onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTechAPI.sBlockCasings2, 0)),
                     isAir()))
             .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 0))
             .addElement(
                 'D',
-                buildHatchAdder(PrimitiveDistillationTower.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(PrimitiveDistillationTower.class).casingIndex(getCasingTextureID())
                     .atLeast(OutputHatch)
                     .dot(1)
                     .buildAndChain(GregTechAPI.sBlockCasings2, 0))

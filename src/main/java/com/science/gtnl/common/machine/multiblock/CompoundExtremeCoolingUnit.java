@@ -50,7 +50,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
@@ -111,7 +110,7 @@ public class CompoundExtremeCoolingUnit extends WirelessEnergyMultiMachineBase<C
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings2) sBlockCasings2).getTextureIndex(1);
+        return StructureUtils.getTextureIndex(sBlockCasings2, 1);
     }
 
     @Override

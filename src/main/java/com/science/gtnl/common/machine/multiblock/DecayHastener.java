@@ -31,14 +31,12 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String DH_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/decay_hastener";
-    protected static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(10);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 11;
     protected final int DEPTH_OFF_SET = 0;
@@ -77,7 +75,7 @@ public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override
@@ -116,7 +114,7 @@ public class DecayHastener extends GTMMultiMachineBase<DecayHastener> implements
             .addElement('D', ofBlock(sBlockCasings6, 8))
             .addElement(
                 'E',
-                buildHatchAdder(DecayHastener.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(DecayHastener.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))

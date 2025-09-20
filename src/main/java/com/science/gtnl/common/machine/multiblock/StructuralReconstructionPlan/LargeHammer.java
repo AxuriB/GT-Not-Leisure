@@ -44,7 +44,6 @@ public class LargeHammer extends GTMMultiMachineBase<LargeHammer> implements ISu
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_hammer";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 7;
     protected final int DEPTH_OFF_SET = 0;
@@ -83,7 +82,7 @@ public class LargeHammer extends GTMMultiMachineBase<LargeHammer> implements ISu
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(33);
     }
 
     @Override
@@ -125,7 +124,7 @@ public class LargeHammer extends GTMMultiMachineBase<LargeHammer> implements ISu
             .addElement('E', ofBlock(sBlockMetal7, 12))
             .addElement(
                 'F',
-                buildHatchAdder(LargeHammer.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeHammer.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 1))))

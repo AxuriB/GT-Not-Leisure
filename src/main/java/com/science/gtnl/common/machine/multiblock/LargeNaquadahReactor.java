@@ -53,7 +53,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings8;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
@@ -139,7 +138,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
     }
 
     public int getCasingTextureID() {
-        return ((BlockCasings8) sBlockCasings8).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override

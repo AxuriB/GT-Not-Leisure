@@ -3,6 +3,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_STEAM_GATE_ASSEMBLER;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -27,8 +28,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
 
 public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler> implements ISurvivalConstructable {
 
@@ -100,8 +99,7 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
         ITexture[] rTexture;
         if (side == facing) {
             rTexture = new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
+                Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings2, 0)),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_STEAM_GATE_ASSEMBLER)
                     .extFacing()
@@ -112,8 +110,8 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
                     .glow()
                     .build() };
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
+            rTexture = new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings2, 0)) };
         }
         return rTexture;
     }
@@ -131,19 +129,19 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
                 'A',
                 ofChain(
                     buildSteamWirelessInput(SteamGateAssembler.class)
-                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings1, 10))
                         .dot(1)
                         .build(),
                     buildSteamBigInput(SteamGateAssembler.class)
-                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings1, 10))
                         .dot(1)
                         .build(),
                     buildSteamInput(SteamGateAssembler.class)
-                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings1, 10))
                         .dot(1)
                         .build(),
                     buildHatchAdder(SteamGateAssembler.class)
-                        .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings1, 10))
                         .dot(1)
                         .atLeast(
                             SteamHatchElement.InputBus_Steam,
@@ -156,19 +154,19 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
                 'B',
                 ofChain(
                     buildSteamWirelessInput(SteamGateAssembler.class)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings2, 0))
                         .dot(1)
                         .build(),
                     buildSteamBigInput(SteamGateAssembler.class)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings2, 0))
                         .dot(1)
                         .build(),
                     buildSteamInput(SteamGateAssembler.class)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings2, 0))
                         .dot(1)
                         .build(),
                     buildHatchAdder(SteamGateAssembler.class)
-                        .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings2, 0))
                         .dot(1)
                         .atLeast(
                             SteamHatchElement.InputBus_Steam,
@@ -176,11 +174,11 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
                             InputBus,
                             OutputBus,
                             Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 0)))))
-            .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 2))
-            .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
-            .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))
-            .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 13))
+                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0)))))
+            .addElement('C', ofBlock(sBlockCasings2, 2))
+            .addElement('D', ofBlock(sBlockCasings2, 3))
+            .addElement('E', ofBlock(sBlockCasings2, 12))
+            .addElement('F', ofBlock(sBlockCasings2, 13))
             .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 13))
             .addElement('H', ofBlock(GregTechAPI.sBlockCasings3, 14))
             .build();

@@ -45,7 +45,6 @@ public class LargeMixer extends GTMMultiMachineBase<LargeMixer> implements ISurv
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_mixer";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(11);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 4;
     protected final int DEPTH_OFF_SET = 0;
@@ -84,7 +83,7 @@ public class LargeMixer extends GTMMultiMachineBase<LargeMixer> implements ISurv
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(11);
     }
 
     @Override
@@ -125,7 +124,7 @@ public class LargeMixer extends GTMMultiMachineBase<LargeMixer> implements ISurv
             .addElement('D', ofBlock(sBlockCasings2, 15))
             .addElement(
                 'E',
-                buildHatchAdder(LargeMixer.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeMixer.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasingsMisc, 11))))

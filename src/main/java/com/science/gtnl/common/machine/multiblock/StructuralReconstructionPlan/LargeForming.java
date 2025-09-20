@@ -48,7 +48,6 @@ public class LargeForming extends GTMMultiMachineBase<LargeForming> implements I
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_forming";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     protected final int HORIZONTAL_OFF_SET = 3;
     protected final int VERTICAL_OFF_SET = 2;
     protected final int DEPTH_OFF_SET = 0;
@@ -87,7 +86,7 @@ public class LargeForming extends GTMMultiMachineBase<LargeForming> implements I
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(33);
     }
 
     @Override
@@ -144,7 +143,7 @@ public class LargeForming extends GTMMultiMachineBase<LargeForming> implements I
             .addElement('B', ofBlock(sBlockCasings2, 5))
             .addElement(
                 'C',
-                buildHatchAdder(LargeForming.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeForming.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 1))))

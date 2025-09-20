@@ -43,7 +43,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
@@ -54,7 +53,6 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LGC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_gas_collector";
-    public static final int CASING_INDEX = ((BlockCasings2) sBlockCasings2).getTextureIndex(0);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 2;
     protected final int DEPTH_OFF_SET = 0;
@@ -216,7 +214,7 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings2, 0);
     }
 
     @Override
@@ -256,7 +254,7 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                buildHatchAdder(LargeGasCollector.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeGasCollector.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 0))))

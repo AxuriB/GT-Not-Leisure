@@ -32,7 +32,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings9;
 
 public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISurvivalConstructable {
 
@@ -76,7 +75,7 @@ public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISu
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings9) sBlockCasings9).getTextureIndex(12);
+        return StructureUtils.getTextureIndex(sBlockCasings9, 12);
     }
 
     @Override

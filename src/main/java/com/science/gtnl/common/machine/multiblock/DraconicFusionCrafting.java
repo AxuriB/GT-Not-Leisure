@@ -38,7 +38,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
 import kubatech.loaders.BlockLoader;
 import kubatech.loaders.DEFCRecipes;
 import tectech.thing.casing.TTCasingsContainer;
@@ -48,7 +47,6 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String DFC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/draconic_fusion_crafting";
-    public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(12);
     protected final int HORIZONTAL_OFF_SET = 14;
     protected final int VERTICAL_OFF_SET = 33;
     protected final int DEPTH_OFF_SET = 5;
@@ -88,7 +86,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings10, 12);
     }
 
     @Override
@@ -126,7 +124,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
             .addElement('B', ofBlock(com.science.gtnl.loader.BlockLoader.metaCasing, 14))
             .addElement(
                 'C',
-                buildHatchAdder(DraconicFusionCrafting.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(DraconicFusionCrafting.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 12))))

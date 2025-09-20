@@ -61,7 +61,6 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
     private static final int HORIZONTAL_OFF_SET = 16;
     private static final int VERTICAL_OFF_SET = 12;
     private static final int DEPTH_OFF_SET = 1;
-    public static final int CASING_INDEX = TAE.getIndexFromPage(3, 3);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String MERF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/magnetic_energy_reaction_furnace";
@@ -111,7 +110,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.getIndexFromPage(3, 3);
     }
 
     @Override
@@ -157,7 +156,7 @@ public class MagneticEnergyReactionFurnace extends WirelessEnergyMultiMachineBas
                 'L',
                 buildHatchAdder(MagneticEnergyReactionFurnace.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings4Misc, 3))))
             .addElement('M', ofBlock(sBlockCasingsSE, 9))

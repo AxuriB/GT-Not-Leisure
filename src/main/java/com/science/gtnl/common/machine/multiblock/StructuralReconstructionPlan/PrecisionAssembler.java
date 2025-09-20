@@ -67,7 +67,6 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     public static final String LPA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/precise_assembler";
     private static final int MACHINEMODE_ASSEMBLER = 0;
     private static final int MACHINEMODE_PRECISION = 1;
-    private static final int CASING_INDEX = 1540;
     protected final int HORIZONTAL_OFF_SET = 4;
     protected final int VERTICAL_OFF_SET = 4;
     protected final int DEPTH_OFF_SET = 0;
@@ -91,7 +90,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        int id = Math.max(CASING_INDEX, CASING_INDEX + casingTier);
+        int id = Math.max(getCasingTextureID(), getCasingTextureID() + casingTier);
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id),
                 TextureFactory.of(TexturesGtBlock.oMCDIndustrialCuttingMachineActive), TextureFactory.builder()
@@ -122,8 +121,8 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     @Override
     public int getCasingTextureID() {
         if (casingTier >= 0) {
-            return CASING_INDEX + casingTier;
-        } else return CASING_INDEX;
+            return getCasingTextureID() + casingTier;
+        } else return getCasingTextureID();
     }
 
     @Override

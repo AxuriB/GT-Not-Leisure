@@ -45,7 +45,6 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_assembler";
-    public static final int CASING_INDEX = TAE.getIndexFromPage(0, 10);
     protected final int HORIZONTAL_OFF_SET = 6;
     protected final int VERTICAL_OFF_SET = 1;
     protected final int DEPTH_OFF_SET = 0;
@@ -94,7 +93,7 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.getIndexFromPage(0, 10);
     }
 
     @Override
@@ -134,7 +133,7 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
             .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
             .addElement(
                 'B',
-                buildHatchAdder(LargeAssembler.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeAssembler.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings2Misc, 12))))

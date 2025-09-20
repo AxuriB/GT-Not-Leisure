@@ -60,7 +60,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings8;
 import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -264,14 +263,14 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
                     buildHatchAdder(TeleportationArrayToAlfheim.class)
                         .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
                         .dot(1)
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 10))
                         .build(),
                     onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings8, 10)),
                     buildHatchAdder(TeleportationArrayToAlfheim.class)
                         .adder(TeleportationArrayToAlfheim::addFluidManaInputHatch)
                         .hatchId(21501)
                         .shouldReject(x -> !x.mFluidManaInputHatch.isEmpty())
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 10))
                         .dot(1)
                         .build()))
             .addElement('F', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
@@ -315,7 +314,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override

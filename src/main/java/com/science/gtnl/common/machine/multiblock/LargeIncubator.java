@@ -68,7 +68,6 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     private int height = 1;
     private Fluid mFluid = FluidRegistry.LAVA;
     private BioCulture mCulture;
-    private static final int CASING_INDEX = 210;
     private int mSievert;
     private int mNeededSievert;
     private boolean isVisibleFluid = false;
@@ -94,7 +93,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return 210;
     }
 
     @Override
@@ -144,7 +143,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
                             Maintenance,
                             Energy.or(ExoticEnergy),
                             RadioHatchElement.RadioHatch)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .build(),
                     onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
@@ -404,7 +403,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()
@@ -414,17 +413,18 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override

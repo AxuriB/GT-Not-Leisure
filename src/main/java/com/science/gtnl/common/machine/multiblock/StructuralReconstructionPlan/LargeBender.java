@@ -42,7 +42,6 @@ public class LargeBender extends GTMMultiMachineBase<LargeBender> implements ISu
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_bender";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 3;
     protected final int DEPTH_OFF_SET = 0;
@@ -81,7 +80,7 @@ public class LargeBender extends GTMMultiMachineBase<LargeBender> implements ISu
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(33);
     }
 
     @Override
@@ -138,7 +137,7 @@ public class LargeBender extends GTMMultiMachineBase<LargeBender> implements ISu
             .addElement('B', ofBlock(sBlockCasings2, 15))
             .addElement(
                 'C',
-                buildHatchAdder(LargeBender.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeBender.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 1))))

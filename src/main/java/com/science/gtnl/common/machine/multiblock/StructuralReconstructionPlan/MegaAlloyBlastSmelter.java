@@ -50,7 +50,6 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MABS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/mega_alloy_blast_smelter";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(15);
     protected final int HORIZONTAL_OFF_SET = 5;
     protected final int VERTICAL_OFF_SET = 15;
     protected final int DEPTH_OFF_SET = 0;
@@ -89,7 +88,7 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(15);
     }
 
     @Override
@@ -144,11 +143,11 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
             .addElement('H', ofBlock(blockCasingsMisc, 14))
             .addElement(
                 'I',
-                buildHatchAdder(MegaAlloyBlastSmelter.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(MegaAlloyBlastSmelter.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasingsMisc, 15))))
-            .addElement('J', Muffler.newAny(CASING_INDEX, 1))
+            .addElement('J', Muffler.newAny(getCasingTextureID(), 1))
             .build();
     }
 

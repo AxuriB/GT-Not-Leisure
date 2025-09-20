@@ -62,7 +62,6 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
 
     private static final int MACHINEMODE_TOWER = 0;
     private static final int MACHINEMODE_DISTILLERY = 1;
-    protected static final int CASING_INDEX = TAE.GTPP_INDEX(11);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 0;
     protected final int DEPTH_OFF_SET = 0;
@@ -102,7 +101,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(11);
     }
 
     @Override
@@ -132,16 +131,17 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+            return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureID()), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
                 .extFacing()
                 .build(),
@@ -151,7 +151,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
                     .glow()
                     .build() };
         }
-        return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
@@ -257,7 +257,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
                 ofChain(
                     buildHatchAdder(LargeDistillery.class)
                         .atLeast(Maintenance, Energy.or(ExoticEnergy), OutputBus, InputHatch, InputBus, Maintenance)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .build(),
                     onElementPass(LargeDistillery::onCasingFound, ofBlock(blockCasingsMisc, 11))))
@@ -265,31 +265,31 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
                 'B',
                 ofChain(
                     buildHatchAdder(LargeDistillery.class).atLeast(layeredOutputHatch)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .build(),
-                    ofHatchAdder(LargeDistillery::addEnergyInputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(LargeDistillery::addLayerOutputHatch, CASING_INDEX, 1),
-                    ofHatchAdder(LargeDistillery::addMaintenanceToMachineList, CASING_INDEX, 1),
+                    ofHatchAdder(LargeDistillery::addEnergyInputToMachineList, getCasingTextureID(), 1),
+                    ofHatchAdder(LargeDistillery::addLayerOutputHatch, getCasingTextureID(), 1),
+                    ofHatchAdder(LargeDistillery::addMaintenanceToMachineList, getCasingTextureID(), 1),
                     onElementPass(LargeDistillery::onCasingFound, ofBlock(blockCasingsMisc, 11))))
             .addElement('C', ofBlock(sBlockCasings2, 13))
             .addElement(
                 'D',
                 ofChain(
-                    ofHatchAdder(LargeDistillery::addOutputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(LargeDistillery::addMaintenanceToMachineList, CASING_INDEX, 1),
+                    ofHatchAdder(LargeDistillery::addOutputToMachineList, getCasingTextureID(), 1),
+                    ofHatchAdder(LargeDistillery::addMaintenanceToMachineList, getCasingTextureID(), 1),
                     ofBlock(blockCasingsMisc, 11),
                     isAir()))
             .addElement(
                 'E',
                 buildHatchAdder(LargeDistillery.class).atLeast(layeredOutputHatch)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .disallowOnly(ForgeDirection.UP)
                     .buildAndChain(blockCasingsMisc, 11))
             .addElement('F', ofBlock(blockCasingsMisc, 11))
-            .addElement('G', Muffler.newAny(CASING_INDEX, 1))
+            .addElement('G', Muffler.newAny(getCasingTextureID(), 1))
             .build();
     }
 

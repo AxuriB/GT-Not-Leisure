@@ -34,7 +34,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
@@ -42,7 +41,6 @@ public class LargeMacerationTower extends GTMMultiMachineBase<LargeMacerationTow
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LMT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_maceration_tower";
-    public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(14);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 1;
     protected final int DEPTH_OFF_SET = 0;
@@ -81,7 +79,7 @@ public class LargeMacerationTower extends GTMMultiMachineBase<LargeMacerationTow
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 14);
     }
 
     @Override
@@ -116,7 +114,7 @@ public class LargeMacerationTower extends GTMMultiMachineBase<LargeMacerationTow
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement(
                 'A',
-                buildHatchAdder(LargeMacerationTower.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeMacerationTower.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 14))))

@@ -31,13 +31,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
 
 public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransformer> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/molecular_transformer";
-    public static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(0);
     protected final int HORIZONTAL_OFF_SET = 4;
     protected final int VERTICAL_OFF_SET = 9;
     protected final int DEPTH_OFF_SET = 0;
@@ -76,7 +74,7 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 0);
     }
 
     @Override
@@ -114,7 +112,7 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
             .addElement('E', ofBlock(sBlockCasings4, 0))
             .addElement(
                 'F',
-                buildHatchAdder(MolecularTransformer.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(MolecularTransformer.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 0))))

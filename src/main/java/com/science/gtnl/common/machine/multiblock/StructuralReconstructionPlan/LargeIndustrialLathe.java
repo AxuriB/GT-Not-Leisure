@@ -44,7 +44,6 @@ public class LargeIndustrialLathe extends GTMMultiMachineBase<LargeIndustrialLat
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LIL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_industrial_lathe";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     protected final int HORIZONTAL_OFF_SET = 3;
     protected final int VERTICAL_OFF_SET = 3;
     protected final int DEPTH_OFF_SET = 0;
@@ -93,7 +92,7 @@ public class LargeIndustrialLathe extends GTMMultiMachineBase<LargeIndustrialLat
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(33);
     }
 
     @Override
@@ -132,7 +131,7 @@ public class LargeIndustrialLathe extends GTMMultiMachineBase<LargeIndustrialLat
             .addElement('D', ofFrame(Materials.Tungsten))
             .addElement(
                 'E',
-                buildHatchAdder(LargeIndustrialLathe.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeIndustrialLathe.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 1))))

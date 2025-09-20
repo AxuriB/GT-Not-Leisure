@@ -49,7 +49,6 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String FRC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/fuel_refining_complex";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
     protected final int HORIZONTAL_OFF_SET = 8;
     protected final int VERTICAL_OFF_SET = 12;
     protected final int DEPTH_OFF_SET = 0;
@@ -88,7 +87,7 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(33);
     }
 
     @Override
@@ -138,7 +137,7 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
             .addElement('K', ofBlock(blockCasings2Misc, 4))
             .addElement(
                 'L',
-                buildHatchAdder(FuelRefiningComplex.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(FuelRefiningComplex.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 1))))

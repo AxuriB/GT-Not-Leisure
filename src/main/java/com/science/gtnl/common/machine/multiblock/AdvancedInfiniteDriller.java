@@ -69,7 +69,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings8;
 import gtneioreplugin.plugin.block.ModBlocks;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -88,7 +87,6 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
     protected final int HORIZONTAL_OFF_SET = 12;
     protected final int VERTICAL_OFF_SET = 39;
     protected final int DEPTH_OFF_SET = 0;
-    private static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(10);
 
     public AdvancedInfiniteDriller(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -153,7 +151,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
             .addElement('I', ofBlock(sBlockCasings8, 7))
             .addElement(
                 'J',
-                buildHatchAdder(AdvancedInfiniteDriller.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(AdvancedInfiniteDriller.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
@@ -182,7 +180,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override

@@ -43,11 +43,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
 
 public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(11);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String WD_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/wood_distillation";
     public static final String[][] shape = StructureUtils.readStructureFromFile(WD_STRUCTURE_FILE_PATH);
@@ -98,7 +96,7 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings1, 11);
     }
 
     @Override
@@ -134,7 +132,7 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
             .addElement('A', ofBlock(BlockLoader.metaCasing, 2))
             .addElement(
                 'B',
-                buildHatchAdder(WoodDistillation.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(WoodDistillation.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings1, 11))))
@@ -146,7 +144,7 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
             .addElement('H', ofBlock(sBlockCasings4, 10))
             .addElement('I', ofBlock(sBlockCasings6, 3))
             .addElement('J', ofFrame(Materials.StainlessSteel))
-            .addElement('K', Muffler.newAny(CASING_INDEX, 2))
+            .addElement('K', Muffler.newAny(getCasingTextureID(), 2))
             .build();
     }
 

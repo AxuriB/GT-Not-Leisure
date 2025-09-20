@@ -19,18 +19,15 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.loader.BlockLoader;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.blocks.BlockCasings8;
 
 public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModule> {
 
-    public static final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String PTM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/polymer_twisting_module";
     public static final String[][] shape = StructureUtils.readStructureFromFile(PTM_STRUCTURE_FILE_PATH);
@@ -50,7 +47,7 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 0);
     }
 
     @Override
@@ -79,7 +76,7 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
                 'A',
                 buildHatchAdder(PolymerTwistingModule.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 0))))
             .addElement('B', ofBlock(BlockLoader.metaCasing, 4))

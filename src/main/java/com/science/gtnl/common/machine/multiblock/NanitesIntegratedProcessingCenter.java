@@ -34,7 +34,6 @@ import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMa
 import com.science.gtnl.loader.BlockLoader;
 
 import bartworks.util.BWUtil;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -50,14 +49,12 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.register.LanthItemList;
 
 public class NanitesIntegratedProcessingCenter
     extends WirelessEnergyMultiMachineBase<NanitesIntegratedProcessingCenter> {
 
-    public final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10);
     private final int HORIZONTAL_OFF_SET = 15;
     private final int VERTICAL_OFF_SET = 20;
     private final int DEPTH_OFF_SET = 0;
@@ -116,7 +113,7 @@ public class NanitesIntegratedProcessingCenter
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override
@@ -175,7 +172,7 @@ public class NanitesIntegratedProcessingCenter
                 'A',
                 buildHatchAdder(NanitesIntegratedProcessingCenter.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('B', ofBlock(sBlockCasingsTT, 0))
@@ -204,7 +201,7 @@ public class NanitesIntegratedProcessingCenter
                 ofChain(
                     HatchElementBuilder.<NanitesIntegratedProcessingCenter>builder()
                         .atLeast(moduleElement.Module)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .buildAndChain(sBlockCasings8, 10),
                     ofBlock(sBlockCasings8, 7),

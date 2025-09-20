@@ -59,6 +59,7 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.enums.SteamTypes;
@@ -71,7 +72,6 @@ import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.loader.BlockLoader;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.StructureError;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
@@ -91,8 +91,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.render.GTRenderedTexture;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
@@ -287,9 +285,9 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             || tierFrameCasing == 2
             || tierMachineCasing == 2
             || tierMachine == 2) {
-            return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
+            return StructureUtils.getTextureIndex(sBlockCasings2, 0);
         }
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings1, 10);
     }
 
     protected boolean checkHatches() {

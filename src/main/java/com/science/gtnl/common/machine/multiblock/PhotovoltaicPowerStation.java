@@ -41,8 +41,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings2;
-import gregtech.common.blocks.BlockCasings4;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase<PhotovoltaicPowerStation>
@@ -316,7 +314,7 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
 
         @Override
         protected int getCasingTextureIndex() {
-            return ((BlockCasings2) sBlockCasings2).getTextureIndex(0);
+            return StructureUtils.getTextureIndex(sBlockCasings2, 0);
         }
 
         @Override
@@ -379,7 +377,7 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
 
         @Override
         protected int getCasingTextureIndex() {
-            return ((BlockCasings4) sBlockCasings4).getTextureIndex(2);
+            return StructureUtils.getTextureIndex(sBlockCasings4, 2);
         }
 
         @Override
@@ -442,7 +440,7 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
 
         @Override
         protected int getCasingTextureIndex() {
-            return ((BlockCasings4) sBlockCasings4).getTextureIndex(0);
+            return StructureUtils.getTextureIndex(sBlockCasings4, 0);
         }
 
         @Override

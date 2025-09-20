@@ -31,7 +31,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
@@ -40,7 +39,6 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LPO_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_pyrolyse_oven";
-    public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(1);
     protected final int HORIZONTAL_OFF_SET = 6;
     protected final int VERTICAL_OFF_SET = 4;
     protected final int DEPTH_OFF_SET = 0;
@@ -79,7 +77,7 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 1);
     }
 
     @Override
@@ -118,7 +116,7 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
                 'B',
                 buildHatchAdder(LargePyrolyseOven.class)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 1))))
             .addElement(
@@ -127,7 +125,7 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
                     .use(activeCoils(ofCoil(LargePyrolyseOven::setMCoilLevel, LargePyrolyseOven::getMCoilLevel))))
             .addElement('D', ofFrame(Materials.StainlessSteel))
             .addElement('E', ofFrame(Materials.PulsatingIron))
-            .addElement('F', Muffler.newAny(CASING_INDEX, 2))
+            .addElement('F', Muffler.newAny(getCasingTextureID(), 2))
             .build();
     }
 

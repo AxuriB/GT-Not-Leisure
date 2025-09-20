@@ -27,7 +27,6 @@ import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,8 +40,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
-import gregtech.common.blocks.BlockCasings9;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 
 public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implements ISurvivalConstructable {
@@ -51,7 +48,6 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
     private static final int RECIPE_DURATION = 128;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String RF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/reaction_furnace";
-    public static final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7);
     protected final int HORIZONTAL_OFF_SET = 15;
     protected final int VERTICAL_OFF_SET = 18;
     protected final int DEPTH_OFF_SET = 3;
@@ -90,7 +86,7 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(11);
+        return StructureUtils.getTextureIndex(sBlockCasings9, 11);
     }
 
     @Override
@@ -131,7 +127,7 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
             .addElement('E', ofBlock(sBlockCasings8, 10))
             .addElement(
                 'F',
-                buildHatchAdder(ReactionFurnace.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(ReactionFurnace.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))

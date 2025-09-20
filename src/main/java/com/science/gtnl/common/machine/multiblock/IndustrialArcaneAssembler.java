@@ -42,7 +42,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
 
 public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcaneAssembler>
     implements ISurvivalConstructable {
@@ -105,7 +104,7 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings10) sBlockCasings10).getTextureIndex(3);
+        return StructureUtils.getTextureIndex(sBlockCasings10, 3);
     }
 
     @Override

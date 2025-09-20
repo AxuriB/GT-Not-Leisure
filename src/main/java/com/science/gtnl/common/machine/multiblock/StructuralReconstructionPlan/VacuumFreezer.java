@@ -36,11 +36,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings2;
 
 public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings2) sBlockCasings2).getTextureIndex(1);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String VF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/vacuum_freezer";
     public static final String[][] shape = StructureUtils.readStructureFromFile(VF_STRUCTURE_FILE_PATH);
@@ -97,7 +95,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings2, 1);
     }
 
     @Override
@@ -134,7 +132,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
             .addElement('B', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
             .addElement(
                 'C',
-                buildHatchAdder(VacuumFreezer.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(VacuumFreezer.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 1))))

@@ -37,7 +37,6 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
     protected long steamBufferSize;
     protected boolean isConnected = false;
     protected static final int CONFIG_WINDOW_ID = 10;
-    public static final int CASING_INDEX = StructureUtils.getTextureIndex(sBlockCasings2, 0);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SEM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_elevator_module";
     public static final String[][] shape = StructureUtils.readStructureFromFile(SEM_STRUCTURE_FILE_PATH);
@@ -62,22 +61,23 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
                     .extFacing()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR)
-                .extFacing()
-                .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR)
+                    .extFacing()
+                    .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
     protected int getCasingTextureID() {
-        return CASING_INDEX;
+        return getCasingTextureID();
     }
 
     @Override

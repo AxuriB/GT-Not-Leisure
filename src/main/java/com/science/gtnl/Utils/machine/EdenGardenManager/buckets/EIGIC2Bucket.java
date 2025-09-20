@@ -82,7 +82,7 @@ public class EIGIC2Bucket extends EIGBucket {
 
     public EIGIC2Bucket(EdenGarden greenhouse, ItemStack seed) {
         super(seed, 1, null);
-        this.useNoHumidity = greenhouse.isInNoHumidityMode();
+        this.useNoHumidity = greenhouse.useNoHumidity;
         this.recalculateDrops(greenhouse);
     }
 

@@ -42,7 +42,6 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
     protected final int HORIZONTAL_OFF_SET = 7;
     protected final int VERTICAL_OFF_SET = 0;
     protected final int DEPTH_OFF_SET = 12;
-    protected static final int CASING_INDEX = 1028;
 
     public ElementCopying(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -77,7 +76,7 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return 1028;
     }
 
     @Override
@@ -114,7 +113,7 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
             .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
             .addElement(
                 'C',
-                buildHatchAdder(ElementCopying.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(ElementCopying.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))

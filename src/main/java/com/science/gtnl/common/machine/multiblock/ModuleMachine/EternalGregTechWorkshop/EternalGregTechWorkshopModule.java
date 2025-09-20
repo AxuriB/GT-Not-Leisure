@@ -99,7 +99,6 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
     protected final int HORIZONTAL_OFF_SET = 4;
     protected final int VERTICAL_OFF_SET = 3;
     protected final int DEPTH_OFF_SET = 0;
-    protected final int CASING_INDEX = 960;
 
     public EternalGregTechWorkshopModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -259,24 +258,25 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return 960;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE)
                     .extFacing()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE)
-                .extFacing()
-                .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_GOD_FORGE_MODULE_ACTIVE)
+                    .extFacing()
+                    .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
@@ -307,7 +307,7 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
                     isAir(),
                     buildHatchAdder(EternalGregTechWorkshopModule.class)
                         .atLeast(InputBus, OutputBus, InputHatch, OutputHatch)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .buildAndChain(
                             onElementPass(x -> ++x.tCountCasing, ofBlock(TTCasingsContainer.GodforgeCasings, 0)))))

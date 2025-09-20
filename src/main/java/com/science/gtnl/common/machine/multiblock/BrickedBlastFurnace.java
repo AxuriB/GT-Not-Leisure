@@ -34,7 +34,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 
 public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> implements ISurvivalConstructable {
 
@@ -44,7 +43,6 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
     protected final int HORIZONTAL_OFF_SET = 7;
     protected final int VERTICAL_OFF_SET = 12;
     protected final int DEPTH_OFF_SET = 0;
-    protected static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(15);
 
     public BrickedBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -116,7 +114,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
             .addElement('A', ofBlock(sBlockCasings3, 13))
             .addElement(
                 'B',
-                buildHatchAdder(BrickedBlastFurnace.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(BrickedBlastFurnace.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputBus, OutputBus)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 15))))
@@ -128,7 +126,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 15);
     }
 
     @Override

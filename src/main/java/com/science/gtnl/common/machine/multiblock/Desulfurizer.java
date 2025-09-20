@@ -23,7 +23,6 @@ import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.RecipePool;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -36,7 +35,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
@@ -70,7 +68,7 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(1);
+        return StructureUtils.getTextureIndex(sBlockCasings4, 1);
     }
 
     @Override
@@ -140,7 +138,7 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
                 'E',
                 buildHatchAdder(Desulfurizer.class)
                     .atLeast(Maintenance, InputHatch, OutputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                    .casingIndex(((BlockCasings4) sBlockCasings4).getTextureIndex(1))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings4, 1))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 1))))
             .addElement(

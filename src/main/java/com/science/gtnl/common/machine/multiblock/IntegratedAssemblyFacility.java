@@ -31,7 +31,6 @@ import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMa
 import com.science.gtnl.loader.BlockLoader;
 
 import goodgenerator.loader.Loaders;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -45,7 +44,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.register.LanthItemList;
 
@@ -105,7 +103,7 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7);
+        return StructureUtils.getTextureIndex(sBlockCasings8, 7);
     }
 
     @Override
@@ -145,7 +143,7 @@ public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<I
                 'C',
                 buildHatchAdder(IntegratedAssemblyFacility.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(7))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 7))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
             .addElement('D', ofBlock(sBlockCasings2, 6))

@@ -3,6 +3,7 @@ package com.science.gtnl.common.machine.multiblock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.text.TextUtils.texter;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.UniversalSingularities;
@@ -45,8 +46,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
-import gregtech.common.blocks.BlockCasings9;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import kubatech.loaders.BlockLoader;
@@ -60,7 +59,6 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String WNG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/white_night_generator";
     public static final String[][] shape = StructureUtils.readStructureFromFile(WNG_STRUCTURE_FILE_PATH);
-    public static final int CASING_INDEX = ((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13);
     public int multiTier = 0;
     public String ownerName;
     public UUID ownerUUID;
@@ -217,7 +215,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
                 'A',
                 buildHatchAdder(WhiteNightGenerator.class).atLeast(Maintenance, Dynamo)
                     .dot(1)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings10, 13))))
             .addElement('B', ofBlock(GregTechAPI.sBlockCasingsDyson, 1))
             .addElement('C', ofBlock(BlockLoader.defcCasingBlock, 12))
@@ -227,13 +225,13 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
             .addElement('G', ofFrame(MaterialsUEVplus.SixPhasedCopper))
             .addElement('H', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
             .addElement('I', ofBlock(ModBlocks.blockCasings3Misc, 11))
-            .addElement('J', ofBlock(GregTechAPI.sBlockCasings9, 5))
+            .addElement('J', ofBlock(sBlockCasings9, 5))
             .addElement('K', ofBlock(Loaders.gravityStabilizationCasing, 0))
             .addElement('L', ofBlock(GregTechAPI.sBlockCasingsDyson, 8))
-            .addElement('M', ofBlock(GregTechAPI.sBlockCasings9, 5))
+            .addElement('M', ofBlock(sBlockCasings9, 5))
             .addElement('N', ofBlock(GregTechAPI.sBlockCasings10, 14))
             .addElement('O', ofBlock(GregTechAPI.sBlockCasings10, 14))
-            .addElement('P', ofBlock(GregTechAPI.sBlockCasings9, 5))
+            .addElement('P', ofBlock(sBlockCasings9, 5))
             .addElement('Q', ofFrame(MaterialsKevlar.Kevlar))
             .build();
     }
@@ -360,6 +358,6 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(5);
+        return StructureUtils.getTextureIndex(sBlockCasings9, 5);
     }
 }

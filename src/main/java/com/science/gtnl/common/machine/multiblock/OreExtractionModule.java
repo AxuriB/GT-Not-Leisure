@@ -21,18 +21,15 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.loader.BlockLoader;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.blocks.BlockCasings4;
 
 public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> {
 
-    public static final int CASING_INDEX = ((BlockCasings4) GregTechAPI.sBlockCasings4).getTextureIndex(0);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String OEM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/ore_extraction_module";
     public static final String[][] shape = StructureUtils.readStructureFromFile(OEM_STRUCTURE_FILE_PATH);
@@ -52,7 +49,7 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 0);
     }
 
     @Override
@@ -87,7 +84,7 @@ public class OreExtractionModule extends NanitesBaseModule<OreExtractionModule> 
                 'G',
                 buildHatchAdder(OreExtractionModule.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 0))))
             .addElement('H', ofBlock(blockCasings4Misc, 11))

@@ -40,7 +40,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
@@ -48,7 +47,6 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LEL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_engraving_laser";
-    public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(1);
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 3;
     protected final int DEPTH_OFF_SET = 0;
@@ -108,7 +106,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings10, 1);
     }
 
     @Override
@@ -146,7 +144,7 @@ public class LargeEngravingLaser extends GTMMultiMachineBase<LargeEngravingLaser
             .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
             .addElement(
                 'B',
-                buildHatchAdder(LargeEngravingLaser.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(LargeEngravingLaser.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 1))))

@@ -86,7 +86,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gtPlusPlus.core.block.ModBlocks;
 import gtnhlanth.common.register.LanthItemList;
@@ -116,11 +115,6 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     public EIGMode mode = EIGModes.Normal;
     public boolean useNoHumidity = false;
 
-    public boolean isInNoHumidityMode() {
-        return this.useNoHumidity;
-    }
-
-    public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(5);
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/eden_garden";
     public static final String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
@@ -130,7 +124,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings10, 5);
     }
 
     @Override
@@ -154,7 +148,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                     buildHatchAdder(EdenGarden.class)
                         .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
                         .dot(1)
-                        .casingIndex(((BlockCasings10) sBlockCasings10).getTextureIndex(4))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings10, 4))
                         .build(),
                     onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 4))))
             .addElement('C', ofBlock(sBlockCasings10, 5))
@@ -964,7 +958,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()

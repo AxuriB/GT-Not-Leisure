@@ -67,7 +67,6 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
     protected final int DEPTH_OFF_SET = 0;
     private static final int MACHINEMODE_SMF = 0;
     private static final int MACHINEMODE_DTPF = 1;
-    protected static final int CASING_INDEX = BlockGTCasingsTT.textureOffset;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String SMF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/smelting_mixing_furnace";
     public static final String[][] shape = StructureUtils.readStructureFromFile(SMF_STRUCTURE_FILE_PATH);
@@ -135,7 +134,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return BlockGTCasingsTT.textureOffset;
     }
 
     @Override
@@ -171,7 +170,7 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
                         Energy,
                         Energy.or(ExoticEnergy),
                         ParallelCon)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++this.mCountCasing, ofBlock(sBlockCasingsTT, 0))))
             .build();

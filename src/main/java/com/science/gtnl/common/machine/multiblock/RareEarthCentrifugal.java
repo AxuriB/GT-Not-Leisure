@@ -2,6 +2,7 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
@@ -19,7 +20,6 @@ import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -29,7 +29,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings3;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
@@ -42,7 +41,6 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
     protected final int HORIZONTAL_OFF_SET = 2;
     protected final int VERTICAL_OFF_SET = 2;
     protected final int DEPTH_OFF_SET = 0;
-    public static final int CASING_INDEX = ((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(12);
 
     public RareEarthCentrifugal(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -82,7 +80,7 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings3, 12);
     }
 
     @Override
@@ -117,7 +115,7 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
             .addElement('B', ofBlock(BlockLoader.metaCasing, 12))
             .addElement(
                 'C',
-                buildHatchAdder(RareEarthCentrifugal.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(RareEarthCentrifugal.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(
