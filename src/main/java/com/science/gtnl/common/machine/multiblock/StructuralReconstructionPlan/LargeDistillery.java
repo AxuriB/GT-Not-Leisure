@@ -308,6 +308,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
 
     @Override
     public void clearHatches() {
+        super.clearHatches();
         mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
     }
