@@ -10,6 +10,11 @@ public class BlockIcons {
     private static final String BASE_NINE_HATCH = RESOURCE_ROOT_ID + ":iconsets/OVERLAY_NINE_HATCH/";
     private static final String BASE = RESOURCE_ROOT_ID + ":iconsets/";
 
+    public static Textures.BlockIcons.CustomIcon OVERLAY_ENERGY_TRANSFER_NODE = new Textures.BlockIcons.CustomIcon(
+        BASE + "OVERLAY_ENERGY_TRANSFER_NODE");
+    public static Textures.BlockIcons.CustomIcon OVERLAY_ENERGY_TRANSFER_NODE_ACTIVE = new Textures.BlockIcons.CustomIcon(
+        BASE + "OVERLAY_ENERGY_TRANSFER_NODE_ACTIVE");
+
     public static Textures.BlockIcons.CustomIcon LASER_BEACON_TOP = new Textures.BlockIcons.CustomIcon(
         BASE + "LASER_BEACON_TOP");
 

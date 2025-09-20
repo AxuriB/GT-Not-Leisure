@@ -85,7 +85,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("isActive")) {
             currentTip.add(
-                EnumChatFormatting.AQUA + texter("Current Generating : ", "Waila.RealArtificialStar.1")
+                EnumChatFormatting.AQUA + texter("Current Generating : ", "Info_RealArtificialStar_00")
                     + EnumChatFormatting.GOLD
                     + tag.getLong("currentOutputEU")
                     + EnumChatFormatting.RED

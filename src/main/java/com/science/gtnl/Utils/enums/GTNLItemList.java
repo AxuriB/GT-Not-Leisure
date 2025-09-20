@@ -517,6 +517,7 @@ public enum GTNLItemList implements IItemContainer {
     FOGAlloyBlastSmelterModule,
     FOGExtractorModule,
 
+    EnergyTransferNode,
     DieselGeneratorLV,
     DieselGeneratorMV,
     DieselGeneratorHV,

@@ -77,7 +77,7 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
 
     @Override
     protected int getCasingTextureID() {
-        return getCasingTextureID();
+        return StructureUtils.getTextureIndex(sBlockCasings2, 0);
     }
 
     @Override

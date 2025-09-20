@@ -57,6 +57,7 @@ import com.science.gtnl.common.machine.hatch.TapDynamoHatch;
 import com.science.gtnl.common.machine.hatch.VaultPortHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
+import com.science.gtnl.common.machine.hatch.test.EnergyTransferNode;
 import com.science.gtnl.common.machine.multiblock.AdvancedCircuitAssemblyLine;
 import com.science.gtnl.common.machine.multiblock.AdvancedInfiniteDriller;
 import com.science.gtnl.common.machine.multiblock.AprilFool.HighPressureSteamFusionReactor;
@@ -2287,6 +2288,13 @@ public class MachineLoader {
                 StatCollector.translateToLocal("DieselGeneratorHV"),
                 3));
         addItemTooltip(GTNLItemList.DieselGeneratorHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyTransferNode.set(
+            new EnergyTransferNode(
+                ENERGY_TRANSFER_NODE.ID,
+                "EnergyTransferNode",
+                StatCollector.translateToLocal("EnergyTransferNode")));
+        addItemTooltip(GTNLItemList.EnergyTransferNode.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     public static void registerMTEWireAndPipe() {

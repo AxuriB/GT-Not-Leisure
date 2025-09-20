@@ -121,7 +121,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     @Override
     public int getCasingTextureID() {
         if (mCasingTier >= 0) {
-            return getCasingTextureID() + mCasingTier;
+            return 1540 + mCasingTier;
         } else return getCasingTextureID();
     }
 
