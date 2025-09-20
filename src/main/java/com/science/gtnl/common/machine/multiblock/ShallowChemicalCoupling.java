@@ -118,7 +118,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

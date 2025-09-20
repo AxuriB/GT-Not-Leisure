@@ -10,8 +10,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import java.util.Arrays;
 import java.util.Collection;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -25,8 +23,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import cpw.mods.fml.relauncher.Side;
@@ -37,11 +33,9 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -184,25 +178,20 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = -1;
-        tierPipeCasing = -1;
-        tierMachineCasing = -1;
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing >= 195 && checkHatches()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
+        if (tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing >= 195) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        if (tierPipeCasing == 2 && tierMachineCasing == 2 && tCountCasing >= 195 && checkHatches()) {
+        if (tierPipeCasing == 2 && tierMachineCasing == 2 && tCountCasing >= 195) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        getCasingTextureID();
-        updateHatchTexture();
         return false;
     }
 
@@ -217,20 +206,13 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * 0.6 * tierMachine;
+    }
 
-        return new GTNL_ProcessingLogic() {
-
-            @Override
-            @Nonnull
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(0.6 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
-                    .setDurationModifier(1.0 / 20.0 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0)
-                    .setMaxOverclocks(0);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / 20.0 / tierMachine;
     }
 
     @Override

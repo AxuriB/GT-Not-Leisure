@@ -144,7 +144,7 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
 
     @Override
     public double getDurationModifier() {
-        return 1 / 1.67 - (mParallelTier / 200.0) - (getMCoilLevel().getTier() / 50.0);
+        return 1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0) - (getMCoilLevel().getTier() / 50.0);
     }
 
     @Override

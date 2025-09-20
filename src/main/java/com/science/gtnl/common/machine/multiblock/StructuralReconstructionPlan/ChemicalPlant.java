@@ -180,7 +180,7 @@ public class ChemicalPlant extends GTMMultiMachineBase<ChemicalPlant> implements
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

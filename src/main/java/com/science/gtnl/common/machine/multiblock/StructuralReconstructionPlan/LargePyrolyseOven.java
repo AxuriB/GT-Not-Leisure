@@ -19,7 +19,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -27,13 +26,11 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> implements ISurvivalConstructable {
 
@@ -131,27 +128,16 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 120;
+    }
 
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-
-        return mCountCasing >= 120 && mMaintenanceHatches.size() == 1
-            && getMCoilLevel() != HeatingCoilLevel.None
-            && this.mMufflerHatches.size() == 2;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None && mMufflerHatches.size() == 2;
     }
 
     @Override

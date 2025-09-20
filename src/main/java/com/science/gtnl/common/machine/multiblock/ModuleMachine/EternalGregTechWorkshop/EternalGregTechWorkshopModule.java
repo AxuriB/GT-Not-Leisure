@@ -252,7 +252,7 @@ public abstract class EternalGregTechWorkshopModule extends MultiMachineBase<Ete
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

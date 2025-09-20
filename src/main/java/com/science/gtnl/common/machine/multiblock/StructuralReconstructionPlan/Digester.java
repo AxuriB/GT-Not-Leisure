@@ -198,9 +198,9 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setMachineHeat(getMachineHeat())
-                    .setHeatOC(isEnableHeatOC())
-                    .setHeatDiscount(isEnableHeatDiscount())
-                    .setPerfectOC(isEnablePerfectOC())
+                    .setHeatOC(getHeatOC())
+                    .setHeatDiscount(getHeatDiscount())
+                    .setPerfectOC(getPerfectOC())
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier());
             }
@@ -232,17 +232,17 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
     }
 
     @Override
-    public boolean isEnableHeatOC() {
+    public boolean getHeatOC() {
         return true;
     }
 
     @Override
-    public boolean isEnableHeatDiscount() {
+    public boolean getHeatDiscount() {
         return true;
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

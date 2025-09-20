@@ -194,7 +194,7 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
                     .setRecipeEUt(recipe.mEUt)
                     .setEUt(availableVoltage)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0) * Math.pow(0.90, mGlassTier))
-                    .setDurationModifier(1 / 1.67 - (mParallelTier / 200.0));
+                    .setDurationModifier(1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

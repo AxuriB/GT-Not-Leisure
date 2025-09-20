@@ -175,16 +175,14 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierPipeCasing = -1;
-        tierMachineCasing = -1;
-        tCountCasing = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing >= 14 && checkHatches()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
+        if (tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing >= 14) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierPipeCasing == 2 && tierMachineCasing == 2 && tCountCasing >= 14 && checkHatches()) {
+        if (tierPipeCasing == 2 && tierMachineCasing == 2 && tCountCasing >= 14) {
             updateHatchTexture();
             tierMachine = 2;
             return true;
@@ -203,12 +201,12 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
     }
 
     @Override
-    protected double getEUtDiscount() {
+    public double getEUtDiscount() {
         return 1.25 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount));
     }
 
     @Override
-    protected double getDurationModifier() {
+    public double getDurationModifier() {
         return 1.6 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount));
     }
 

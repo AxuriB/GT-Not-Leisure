@@ -357,7 +357,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setPerfectOC(isEnablePerfectOC())
+                    .setPerfectOC(getPerfectOC())
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier());
             }
@@ -367,7 +367,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 
@@ -378,6 +378,6 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
 
     @Override
     public double getDurationModifier() {
-        return 1 - (mParallelTier / 200.0);
+        return 1 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 }

@@ -191,7 +191,7 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(1 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 - (mParallelTier / 200.0));
+                    .setDurationModifier(1 - (Math.max(0, mParallelTier - 1) / 50.0));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

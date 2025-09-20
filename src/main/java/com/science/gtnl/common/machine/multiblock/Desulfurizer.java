@@ -57,7 +57,7 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

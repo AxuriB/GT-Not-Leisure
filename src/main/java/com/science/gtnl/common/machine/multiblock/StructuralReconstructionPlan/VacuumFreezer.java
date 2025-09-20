@@ -56,7 +56,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return false;
     }
 
@@ -163,14 +163,11 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        return mCountCasing >= 135 || !checkHatch();
+        setupParameters();
+        return mCountCasing >= 135;
     }
 
     @Override

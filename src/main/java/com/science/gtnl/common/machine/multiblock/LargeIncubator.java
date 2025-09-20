@@ -87,7 +87,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

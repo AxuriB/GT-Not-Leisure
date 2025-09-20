@@ -116,7 +116,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return false;
     }
 

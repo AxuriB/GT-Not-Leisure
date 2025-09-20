@@ -45,19 +45,13 @@ import gregtech.common.misc.GTStructureChannels;
 public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompressor>
     implements ISurvivalConstructable {
 
-    @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new LargeSteamCompressor(this.mName);
-    }
-
-    @Override
-    public String getMachineType() {
-        return StatCollector.translateToLocal("LargeSteamCompressorRecipeType");
-    }
-
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String LSC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_compressor";
     public static final String[][] shape = StructureUtils.readStructureFromFile(LSC_STRUCTURE_FILE_PATH);
+
+    private static final int HORIZONTAL_OFF_SET = 3;
+    private static final int VERTICAL_OFF_SET = 5;
+    private static final int DEPTH_OFF_SET = 0;
 
     public LargeSteamCompressor(String aName) {
         super(aName);
@@ -67,9 +61,15 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
         super(aID, aName, aNameRegional);
     }
 
-    private static final int HORIZONTAL_OFF_SET = 3;
-    private static final int VERTICAL_OFF_SET = 5;
-    private static final int DEPTH_OFF_SET = 0;
+    @Override
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new LargeSteamCompressor(this.mName);
+    }
+
+    @Override
+    public String getMachineType() {
+        return StatCollector.translateToLocal("LargeSteamCompressorRecipeType");
+    }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
@@ -183,18 +183,12 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = -1;
-        tierMaterialBlock = -1;
-        tierMachineCasing = -1;
-        tierFrameCasing = -1;
-        tierGearCasing = -1;
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
         if (tierMaterialBlock == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierGearCasing == 1
-            && tCountCasing >= 95
-            && checkHatches()) {
+            && tCountCasing >= 95) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -203,15 +197,12 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
         if (tierMaterialBlock == 2 && tierMachineCasing == 2
             && tierFrameCasing == 2
             && tierGearCasing == 2
-            && tCountCasing >= 95
-            && checkHatches()) {
+            && tCountCasing >= 95) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        getCasingTextureID();
-        updateHatchTexture();
         return false;
     }
 
@@ -247,12 +238,22 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(0.8 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
-                    .setDurationModifier(1.0 / 2.0 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0)
-                    .setMaxOverclocks(0);
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
+                    .setMaxTierSkips(getMaxTierSkip())
+                    .setMaxOverclocks(getMaxOverclocks());
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * 0.8 * tierMachine;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / 2.0 / tierMachine;
     }
 
     @Override

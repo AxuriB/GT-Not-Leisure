@@ -184,7 +184,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatches();
     }
 
     @Override
@@ -216,12 +216,12 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
     }
 
     @Override
-    protected double getEUtDiscount() {
+    public double getEUtDiscount() {
         return 1 * Math.pow(4, Math.min(4, recipeOcCount));
     }
 
     @Override
-    protected double getDurationModifier() {
+    public double getDurationModifier() {
         return 1 / Math.pow(2, Math.min(4, recipeOcCount));
     }
 

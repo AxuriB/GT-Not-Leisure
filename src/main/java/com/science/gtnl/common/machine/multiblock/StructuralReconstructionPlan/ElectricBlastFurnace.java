@@ -168,8 +168,8 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(getMachineHeat())
-                    .setHeatOC(isEnableHeatOC())
-                    .setHeatDiscount(isEnableHeatDiscount())
+                    .setHeatOC(getHeatOC())
+                    .setHeatDiscount(getHeatDiscount())
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier());
             }
@@ -198,7 +198,7 @@ public class ElectricBlastFurnace extends MultiMachineBase<ElectricBlastFurnace>
     }
 
     @Override
-    public boolean isEnableHeatOC() {
+    public boolean getHeatOC() {
         return true;
     }
 

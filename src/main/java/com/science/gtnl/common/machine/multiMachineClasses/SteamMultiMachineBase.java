@@ -397,7 +397,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier())
-                    .setPerfectOC(isEnablePerfectOverclock())
+                    .setPerfectOC(getPerfectOC())
                     .setMaxTierSkips(getMaxTierSkip())
                     .setMaxOverclocks(getMaxOverclocks());
             }
@@ -411,27 +411,27 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
      * @return If true, enable Perfect Overclock.
      */
     @ApiStatus.OverrideOnly
-    protected boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return false;
     }
 
     @ApiStatus.OverrideOnly
-    protected int getMaxOverclocks() {
+    public int getMaxOverclocks() {
         return 0;
     }
 
     @ApiStatus.OverrideOnly
-    protected int getMaxTierSkip() {
+    public int getMaxTierSkip() {
         return 0;
     }
 
     @ApiStatus.OverrideOnly
-    protected double getEUtDiscount() {
+    public double getEUtDiscount() {
         return 1 * Math.pow(4, Math.min(4, recipeOcCount));
     }
 
     @ApiStatus.OverrideOnly
-    protected double getDurationModifier() {
+    public double getDurationModifier() {
         return 1 / Math.pow(2, Math.min(4, recipeOcCount));
     }
 
@@ -1057,6 +1057,19 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         mSteamWirelessInputFluids.clear();
         mSteamInputs.clear();
         mSteamOutputs.clear();
+        tierAdvancedCasing = -1;
+        tierBrickCasing = -1;
+        tierPlatedCasing = -1;
+        tierPipeCasing = -1;
+        tierFireboxCasing = -1;
+        tierMaterialBlock = -1;
+        tierGearCasing = -1;
+        tierFrameCasing = -1;
+        tierIndustrialCasing = -1;
+        tierMachineFrame = -1;
+        tierMachineCasing = -1;
+        tierMachine = -1;
+        tCountCasing = 0;
     }
 
     @Override

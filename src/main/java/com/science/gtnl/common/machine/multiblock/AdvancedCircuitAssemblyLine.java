@@ -125,7 +125,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

@@ -383,7 +383,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

@@ -194,7 +194,7 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(FuelRefiningComplex.this.mHeatingCapacity)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setDurationModifier(0.6 - (mParallelTier / 200.0));
+                    .setDurationModifier(0.6 - (Math.max(0, mParallelTier - 1) / 50.0));
             }
 
             @NotNull

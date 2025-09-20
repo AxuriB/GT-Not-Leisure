@@ -192,7 +192,8 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
                     .setRecipeEUt(recipe.mEUt)
                     .setEUt(availableVoltage)
                     .setEUtDiscount(mLockedToSingleRecipe ? 1 : 0.6 - (mParallelTier / 50.0))
-                    .setDurationModifier(Math.min(0.01, 1.0 / (5 + runningSpeedBoost) - (mParallelTier / 200.0)));
+                    .setDurationModifier(
+                        Math.min(0.01, 1.0 / (5 + runningSpeedBoost) - (Math.max(0, mParallelTier - 1) / 50.0)));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

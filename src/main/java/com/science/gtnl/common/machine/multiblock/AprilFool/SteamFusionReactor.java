@@ -132,7 +132,7 @@ public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier())
-                    .setPerfectOC(isEnablePerfectOverclock())
+                    .setPerfectOC(getPerfectOC())
                     .setMaxTierSkips(getMaxTierSkip())
                     .setMaxOverclocks(getMaxOverclocks());
             }
@@ -202,7 +202,7 @@ public class SteamFusionReactor extends SteamMultiMachineBase<SteamFusionReactor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatches();
     }
 
     @Override

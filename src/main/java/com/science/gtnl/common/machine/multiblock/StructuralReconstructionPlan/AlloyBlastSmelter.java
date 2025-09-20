@@ -173,7 +173,7 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
     }
 
     @Override
-    public boolean isEnableHeatOC() {
+    public boolean getHeatOC() {
         return true;
     }
 
@@ -184,7 +184,7 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
 
     @Override
     public double getDurationModifier() {
-        return 1 - (mParallelTier / 200.0);
+        return 1 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 
     @Override

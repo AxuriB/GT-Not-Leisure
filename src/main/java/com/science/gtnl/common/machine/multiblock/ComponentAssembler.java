@@ -101,7 +101,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return false;
     }
 

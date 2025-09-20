@@ -241,8 +241,8 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(getMachineHeat())
-                    .setHeatOC(isEnableHeatOC())
-                    .setHeatDiscount(isEnableHeatDiscount())
+                    .setHeatOC(getHeatOC())
+                    .setHeatDiscount(getHeatDiscount())
                     .setDurationModifier(getDurationModifier());
             }
 
@@ -260,12 +260,12 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
     }
 
     @Override
-    public boolean isEnableHeatDiscount() {
+    public boolean getHeatDiscount() {
         return true;
     }
 
     @Override
-    public boolean isEnableHeatOC() {
+    public boolean getHeatOC() {
         return true;
     }
 

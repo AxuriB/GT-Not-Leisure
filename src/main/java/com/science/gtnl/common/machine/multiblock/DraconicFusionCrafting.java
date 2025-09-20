@@ -157,7 +157,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return tierCasing >= 4;
     }
 
@@ -186,10 +186,10 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
                         .setDurationDecreasePerOC(4)
                         .setEUtIncreasePerOC(4)
                         .setEUtDiscount(0.5 - (mParallelTier / 50.0))
-                        .setDurationModifier(1.0 / 2.0 - (mParallelTier / 200.0));
+                        .setDurationModifier(1.0 / 2.0 - (Math.max(0, mParallelTier - 1) / 50.0));
                 } else return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.5 - (mParallelTier / 50.0))
-                    .setDurationModifier(1.0 / 2.0 - (mParallelTier / 200.0));
+                    .setDurationModifier(1.0 / 2.0 - (Math.max(0, mParallelTier - 1) / 50.0));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

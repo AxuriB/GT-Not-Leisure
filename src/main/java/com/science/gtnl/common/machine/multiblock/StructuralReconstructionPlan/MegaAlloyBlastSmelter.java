@@ -23,8 +23,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import bartworks.util.BWUtil;
@@ -34,12 +32,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -153,27 +149,23 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
-            || mEnergyHatches.size() != 1
-            || mMufflerHatches.size() != 1) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        this.mHeatingCapacity = (int) this.getMCoilLevel()
-            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+        setupParameters();
         return mCountCasing >= 290;
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
-        return true;
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None && mMufflerHatches.size() == 1;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        this.mHeatingCapacity = (int) this.getMCoilLevel()
+            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
     }
 
     @Override
@@ -197,28 +189,28 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public boolean getPerfectOC() {
+        return true;
+    }
 
-            @Nonnull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setMachineHeat(MegaAlloyBlastSmelter.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(false)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setEUtDiscount(Math.max(0.005, 0.8 - (mParallelTier / 50.0)))
-                    .setDurationModifier(Math.max(0.005, 1.0 / 2.0 - (mParallelTier / 200.0)));
-            }
+    @Override
+    public int getMachineHeat() {
+        return mHeatingCapacity;
+    }
 
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public boolean getHeatOC() {
+        return true;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return Math.max(0.005, 0.8 - (mParallelTier / 50.0));
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return Math.max(0.005, 1.0 / 2.0 - (Math.max(0, mParallelTier - 1) / 50.0));
     }
 
     @Nonnull

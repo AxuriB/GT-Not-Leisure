@@ -20,8 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -110,7 +108,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
             .addElement(
                 'L',
                 GTStructureChannels.HEATING_COIL
-                    .use(activeCoils(ofCoil(MegaBlastFurnace::setCoilLevel, MegaBlastFurnace::getCoilLevel))))
+                    .use(activeCoils(ofCoil(MegaBlastFurnace::setMCoilLevel, MegaBlastFurnace::getMCoilLevel))))
             .addElement('M', ofBlock(sBlockCasings8, 1))
             .addElement('N', ofBlock(sBlockCasings8, 2))
             .addElement('O', ofBlock(Loaders.FRF_Casings, 0))
@@ -149,14 +147,6 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
         return tt;
     }
 
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
-    }
-
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
@@ -169,7 +159,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return mParallelTier >= 10;
     }
 
@@ -234,34 +224,50 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                setOverclock(isEnablePerfectOC() ? 4 : 2, 4);
-                return super.process();
-            }
-
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(MegaBlastFurnace.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setDurationModifier(Math.max(0.005, 1.0 / 5.0 - (mParallelTier / 200.0)));
+                    .setMachineHeat(getMachineHeat())
+                    .setHeatOC(getHeatOC())
+                    .setHeatDiscount(getHeatDiscount())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
+                    .setPerfectOC(getPerfectOC());
             }
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= MegaBlastFurnace.this.mHeatingCapacity
-                    ? CheckRecipeResultRegistry.SUCCESSFUL
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMachineHeat() {
+        return mHeatingCapacity;
+    }
+
+    @Override
+    public boolean getHeatOC() {
+        return true;
+    }
+
+    @Override
+    public boolean getHeatDiscount() {
+        return true;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return Math.max(0.005, 1.0 / 5.0 - (Math.max(0, mParallelTier - 1) / 50.0));
     }
 
     @Override
@@ -294,7 +300,7 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        this.setCoilLevel(HeatingCoilLevel.None);
+        this.setMCoilLevel(HeatingCoilLevel.None);
         return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
@@ -309,25 +315,23 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
-        this.mHeatingCapacity = 0;
-        mCountCasing = 0;
-        mParallelTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        if (mMaintenanceHatches.size() != 1 && mMufflerHatches.size() != 1) return false;
-
-        this.mHeatingCapacity = (int) this.getCoilLevel()
-            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
+        setupParameters();
         return mCountCasing >= 3500;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        this.mHeatingCapacity = (int) this.getMCoilLevel()
+            .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None;
     }
 
     @Override

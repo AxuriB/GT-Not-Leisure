@@ -7,14 +7,11 @@ import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -22,18 +19,14 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -41,6 +34,21 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class LargeSteamCentrifuge extends SteamMultiMachineBase<LargeSteamCentrifuge>
     implements ISurvivalConstructable {
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    public static final String LSCen_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_centrifuge";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LSCen_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 3;
+    protected final int VERTICAL_OFF_SET = 9;
+    protected final int DEPTH_OFF_SET = 0;
+
+    public LargeSteamCentrifuge(String aName) {
+        super(aName);
+    }
+
+    public LargeSteamCentrifuge(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -51,22 +59,6 @@ public class LargeSteamCentrifuge extends SteamMultiMachineBase<LargeSteamCentri
     public String getMachineType() {
         return StatCollector.translateToLocal("LargeSteamCentrifugeRecipeType");
     }
-
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String LSCen_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_centrifuge";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(LSCen_STRUCTURE_FILE_PATH);
-
-    public LargeSteamCentrifuge(String aName) {
-        super(aName);
-    }
-
-    public LargeSteamCentrifuge(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-    }
-
-    protected final int HORIZONTAL_OFF_SET = 3;
-    protected final int VERTICAL_OFF_SET = 9;
-    protected final int DEPTH_OFF_SET = 0;
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
@@ -181,18 +173,12 @@ public class LargeSteamCentrifuge extends SteamMultiMachineBase<LargeSteamCentri
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = -1;
-        tierPipeCasing = -1;
-        tierMachineCasing = -1;
-        tierFrameCasing = -1;
-        tierGearCasing = -1;
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
         if (tierPipeCasing == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierGearCasing == 1
-            && tCountCasing >= 130
-            && checkHatches()) {
+            && tCountCasing >= 130) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -208,8 +194,6 @@ public class LargeSteamCentrifuge extends SteamMultiMachineBase<LargeSteamCentri
             updateHatchTexture();
             return true;
         }
-        getCasingTextureID();
-        updateHatchTexture();
         return false;
     }
 
@@ -229,20 +213,13 @@ public class LargeSteamCentrifuge extends SteamMultiMachineBase<LargeSteamCentri
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * tierMachine;
+    }
 
-        return new GTNL_ProcessingLogic() {
-
-            @Override
-            @Nonnull
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
-                    .setDurationModifier(1 / 1.43 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0)
-                    .setMaxOverclocks(0);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / 1.43 / tierMachine;
     }
 
     @Override

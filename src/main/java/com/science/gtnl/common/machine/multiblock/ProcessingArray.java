@@ -87,7 +87,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return false;
     }
 

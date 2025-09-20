@@ -23,31 +23,23 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import bartworks.util.BWUtil;
-import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace> implements ISurvivalConstructable {
 
@@ -206,53 +198,39 @@ public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public boolean getHeatOC() {
+        return true;
+    }
 
-            @Nonnull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setMachineHeat(VacuumDryingFurnace.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(false)
-                    .setEUtDiscount(0.6 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 / 2.5 - (mParallelTier / 200.0) * ((machineMode >= 2) ? 1 : 0.1));
-            }
+    @Override
+    public int getMachineHeat() {
+        return mHeatingCapacity;
+    }
 
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getEUtDiscount() {
+        return 0.6 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 / 2.5 - (Math.max(0, mParallelTier - 1) / 50.0) * ((machineMode >= 2) ? 1 : 0.1);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mHeatingCapacity = 0;
-        mCountCasing = 0;
-        mParallelTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 10;
+    }
 
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
-
-        if (mMaintenanceHatches.size() != 1 && mMufflerHatches.size() != 1) return false;
-
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
-        return mCountCasing >= 10;
     }
 
     @Override

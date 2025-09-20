@@ -304,7 +304,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setPerfectOC(isEnablePerfectOC())
+                    .setPerfectOC(getPerfectOC())
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier());
             }
@@ -347,11 +347,11 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
 
     @Override
     public double getDurationModifier() {
-        return Math.max(0.000001, 1.0 / getMachineDurationModifier() - (mParallelTier / 200.0));
+        return Math.max(0.000001, 1.0 / getMachineDurationModifier() - (Math.max(0, mParallelTier - 1) / 50.0));
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 

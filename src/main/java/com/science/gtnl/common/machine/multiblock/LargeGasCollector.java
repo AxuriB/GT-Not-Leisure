@@ -223,7 +223,7 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return false;
     }
 

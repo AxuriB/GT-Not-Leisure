@@ -152,7 +152,7 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 
@@ -163,7 +163,7 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
 
     @Override
     public double getDurationModifier() {
-        return Math.max(0.05, 1.0 / 4.0 - (mParallelTier / 200.0));
+        return Math.max(0.05, 1.0 / 4.0 - (Math.max(0, mParallelTier - 1) / 50.0));
     }
 
     @Override

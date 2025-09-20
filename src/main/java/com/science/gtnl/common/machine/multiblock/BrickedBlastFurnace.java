@@ -53,7 +53,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return false;
     }
 

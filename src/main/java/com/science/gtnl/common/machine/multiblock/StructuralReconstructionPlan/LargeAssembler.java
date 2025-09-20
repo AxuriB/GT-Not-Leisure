@@ -183,6 +183,6 @@ public class LargeAssembler extends GTMMultiMachineBase<LargeAssembler> implemen
 
     @Override
     public double getDurationModifier() {
-        return 1 / 3.0 - (mParallelTier / 200.0);
+        return 1 / 3.0 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 }

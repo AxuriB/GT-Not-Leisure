@@ -146,7 +146,7 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return true;
     }
 
@@ -157,7 +157,7 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
 
     @Override
     public double getDurationModifier() {
-        return 1 - (mParallelTier / 200.0);
+        return 1 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 
     @Override

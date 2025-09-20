@@ -16,7 +16,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -24,8 +23,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.enums.Materials;
@@ -34,12 +31,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -195,21 +190,14 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = -1;
-        tierMachineCasing = -1;
-        tierGearCasing = -1;
-        tierPipeCasing = -1;
-        tierFireboxCasing = -1;
-        tierIndustrialCasing = -1;
-        tCountCasing = 0;
         enableHVRecipe = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
         if (tierMachineCasing == 1 && tierGearCasing == 1
             && tierPipeCasing == 1
             && tierFireboxCasing == 1
             && tierIndustrialCasing == 1
-            && tCountCasing >= 60
-            && checkHatches()) {
+            && tCountCasing >= 60) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -219,16 +207,13 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
             && tierPipeCasing == 2
             && tierFireboxCasing == 2
             && tierIndustrialCasing == 2
-            && tCountCasing >= 60
-            && checkHatches()) {
+            && tCountCasing >= 60) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
             enableHVRecipe = getUpgradeTier(aStack);
             return true;
         }
-        getCasingTextureID();
-        updateHatchTexture();
         return false;
     }
 
@@ -249,22 +234,13 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * (tierMachine + (enableHVRecipe ? 1 : 0));
+    }
 
-        return new GTNL_ProcessingLogic() {
-
-            @Override
-            @Nonnull
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount((tierMachine + (enableHVRecipe ? 1 : 0)) * Math.pow(4, Math.min(4, recipeOcCount)))
-                    .setDurationModifier(
-                        (1 / 0.67 / tierMachine - (enableHVRecipe ? 0.25 : 0))
-                            / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0)
-                    .setMaxOverclocks(0);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getDurationModifier() {
+        return (1 / 0.67 / tierMachine - (enableHVRecipe ? 0.25 : 0)) / Math.pow(2, Math.min(4, recipeOcCount));
     }
 
     @Override

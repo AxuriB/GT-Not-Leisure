@@ -354,13 +354,13 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setHeatOC(isEnableHeatOC())
+                    .setHeatOC(getHeatOC())
                     .setMachineHeat(getMachineHeat())
-                    .setHeatDiscount(isEnableHeatDiscount())
-                    .setAmperageOC(isEnableAmperageOC())
+                    .setHeatDiscount(getHeatDiscount())
+                    .setAmperageOC(getAmperageOC())
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier())
-                    .setPerfectOC(isEnablePerfectOC())
+                    .setPerfectOC(getPerfectOC())
                     .setMaxTierSkips(getMaxTierSkip())
                     .setMaxOverclocks(getMaxOverclocks());
             }
@@ -374,22 +374,22 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
      * @return If true, enable Perfect Overclock.
      */
     @ApiStatus.OverrideOnly
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return false;
     }
 
     @ApiStatus.OverrideOnly
-    public boolean isEnableHeatOC() {
+    public boolean getHeatOC() {
         return false;
     }
 
     @ApiStatus.OverrideOnly
-    public boolean isEnableHeatDiscount() {
+    public boolean getHeatDiscount() {
         return false;
     }
 
     @ApiStatus.OverrideOnly
-    public boolean isEnableAmperageOC() {
+    public boolean getAmperageOC() {
         return false;
     }
 

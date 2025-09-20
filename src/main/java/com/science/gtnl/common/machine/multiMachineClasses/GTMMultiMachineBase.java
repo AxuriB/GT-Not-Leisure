@@ -23,7 +23,7 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
     }
 
     @Override
-    public boolean isEnablePerfectOC() {
+    public boolean getPerfectOC() {
         return false;
     }
 
@@ -56,7 +56,7 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
     }
 
     @Override
-    public boolean isEnableAmperageOC() {
+    public boolean getAmperageOC() {
         return true;
     }
 
@@ -67,7 +67,7 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
 
     @Override
     public double getDurationModifier() {
-        return 1 / 1.67 - (mParallelTier / 200.0);
+        return 1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 
     @Override

@@ -1034,7 +1034,8 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     .setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0) * ((mParallelTier >= 12) ? 0.2 : 1))
                     .setDurationModifier(
-                        (1 / 1.67 - (mParallelTier / 200.0)) * ((mParallelTier >= 12) ? 1.0 / 20.0 : 1));
+                        (1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0))
+                            * ((mParallelTier >= 12) ? 1.0 / 20.0 : 1));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }

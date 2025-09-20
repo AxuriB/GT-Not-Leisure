@@ -258,7 +258,7 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setDurationModifier(1.0 / 2.25 - (mParallelTier / 200.0));
+                    .setDurationModifier(1.0 / 2.25 - (Math.max(0, mParallelTier - 1) / 50.0));
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
