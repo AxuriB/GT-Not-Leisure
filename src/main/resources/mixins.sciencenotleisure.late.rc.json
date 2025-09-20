@@ -12,7 +12,6 @@
     "MixinContainerCraftConfirm",
     "MixinContainerMEMonitorable",
     "MixinCPacketCraftRequest",
-    "MixinCraftingGridCache",
     "MixinGuiBridge",
     "MixinQuantumCluster",
     "MixinTileQuantumBridge",

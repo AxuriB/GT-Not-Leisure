@@ -20,11 +20,9 @@ import com.glodblock.github.inventory.gui.GuiType;
 import com.glodblock.github.inventory.item.IWirelessTerminal;
 import com.glodblock.github.util.BlockPos;
 import com.glodblock.github.util.Util;
-import com.google.common.collect.Multiset;
 import com.gtnewhorizon.gtnhlib.util.ServerThreadUtil;
 import com.science.gtnl.Utils.MEHandler;
 import com.science.gtnl.Utils.RCAEBaseContainer;
-import com.science.gtnl.Utils.RCCraftingGridCache;
 import com.science.gtnl.Utils.Utils;
 
 import appeng.api.AEApi;
@@ -309,8 +307,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                     .getCache(ICraftingGrid.class);
                 IAEItemStack aeItem = AEItemStack.create(exItem)
                     .setStackSize(1);
-                Multiset<IAEItemStack> set = ((RCCraftingGridCache) cgc).rc$getCanCraftableItems();
-                boolean isCraftable = set.contains(aeItem) || cgc.getCraftingPatterns()
+                boolean isCraftable = cgc.getCraftingPatterns()
                     .containsKey(aeItem);
 
                 if (!isCraftable) {
@@ -352,8 +349,7 @@ public class KeyBindingHandler implements IMessage, IMessageHandler<KeyBindingHa
                 .getCache(ICraftingGrid.class);
             IAEItemStack aeItem = AEItemStack.create(exItem)
                 .setStackSize(1);
-            Multiset<IAEItemStack> set = ((RCCraftingGridCache) cgc).rc$getCanCraftableItems();
-            boolean isCraftable = set.contains(aeItem) || cgc.getCraftingPatterns()
+            boolean isCraftable = cgc.getCraftingPatterns()
                 .containsKey(aeItem);
 
             if (!isCraftable) {
