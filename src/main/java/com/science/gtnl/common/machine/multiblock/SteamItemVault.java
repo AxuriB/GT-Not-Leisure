@@ -272,7 +272,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
                         .dot(1)
                         .casingIndex(getCasingTextureID())
                         .build(),
-                    onElementPass(x -> x.tCountCasing++, ofBlock(BlockLoader.metaCasing02, 0))))
+                    onElementPass(x -> x.mCountCasing++, ofBlock(BlockLoader.metaCasing02, 0))))
             .addElement('D', chainAllGlasses())
             .build();
     }
@@ -283,7 +283,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
             return false;
         }
         if (portHatch != null && portHatch.controller == null) portHatch.bind(this);
-        return tCountCasing >= 30;
+        return mCountCasing >= 30;
     }
 
     @Override

@@ -17,15 +17,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
@@ -35,12 +31,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -170,30 +164,26 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        return mCountCasing >= 220 && this.mMufflerHatches.size() == 2;
+        setupParameters();
+        return mCountCasing >= 220;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public boolean checkHatch() {
+        return super.checkHatch() && mMufflerHatches.size() == 2;
+    }
 
-            @NotNull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(1 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 - (Math.max(0, mParallelTier - 1) / 50.0));
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getEUtDiscount() {
+        return 1 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 
     @Nonnull

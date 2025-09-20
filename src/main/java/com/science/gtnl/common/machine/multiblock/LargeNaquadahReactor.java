@@ -256,7 +256,6 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
         }
 
         mEfficiency = 10000;
-        mProgresstime = 0;
         return CheckRecipeResultRegistry.GENERATING;
     }
 
@@ -412,7 +411,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
-            && mMaintenanceHatches.size() == 1
+            && mMaintenanceHatches.size() <= 1
             && tCountCasing >= 110;
     }
 

@@ -118,6 +118,19 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        wirelessMode = false;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        mParallelTier = getParallelTier(getControllerSlot());
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+    }
+
+    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
@@ -184,10 +197,20 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
             @Override
             public GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.4 - (mParallelTier / 50.0))
-                    .setDurationModifier(1.0 / 10.0 * Math.pow(0.75, mParallelTier));
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.4 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / 10.0 * Math.pow(0.75, mParallelTier);
     }
 
     @Nonnull

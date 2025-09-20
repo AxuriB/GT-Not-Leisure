@@ -20,7 +20,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -35,7 +34,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssembler>
     implements ISurvivalConstructable {
@@ -161,15 +159,15 @@ public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssem
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mGlassTier = -1;
-        mParallelTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 30;
+    }
 
-        mEnergyHatchTier = checkEnergyHatchTier();
+    @Override
+    public boolean checkHatch() {
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UV && mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -180,17 +178,6 @@ public class LargeCircuitAssembler extends GTMMultiMachineBase<LargeCircuitAssem
                 return false;
             }
         }
-
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
-        return mCountCasing >= 30 && this.mEnergyHatches.size() <= 2;
+        return super.checkHatch() && this.mEnergyHatches.size() <= 2;
     }
 }

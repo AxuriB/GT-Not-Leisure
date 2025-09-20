@@ -76,9 +76,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDriller>
     implements ISurvivalConstructable {
 
-    private static int excessFuel = 0;
-    private static int drillTier = 0;
-    private static int needEu = 0;
+    private int excessFuel = 0;
+    private int drillTier = 0;
+    private int needEu = 0;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String AID_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
@@ -358,7 +358,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
             }
 
             if (mOutputFluids != null) {
-                this.mMaxProgresstime = (5750000 / excessFuel) - 475;
+                this.mMaxProgresstime = (int) (((5750000 / excessFuel) - 475) * mConfigSpeedBoost);
                 this.lEUt = -needEu;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -493,18 +493,24 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        drillTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
             || !mOutputHatches.isEmpty()) {
             return false;
         }
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        drillTier = checkDrillTier();
-
+        setupParameters();
         return mCountCasing >= 570;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        drillTier = 0;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        drillTier = checkDrillTier();
     }
 
     public int checkDrillTier() {

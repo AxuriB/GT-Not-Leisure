@@ -23,7 +23,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
@@ -33,7 +32,6 @@ import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -48,8 +46,6 @@ public class LapotronChip extends MultiMachineBase<LapotronChip>
     protected final int HORIZONTAL_OFF_SET = 88;
     protected final int VERTICAL_OFF_SET = 97;
     protected final int DEPTH_OFF_SET = 11;
-
-    public int tCountCasing = 0;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/lapotron_chip";
@@ -134,7 +130,7 @@ public class LapotronChip extends MultiMachineBase<LapotronChip>
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Maintenance, Energy, Energy.or(ExoticEnergy))
                     .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 10))
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
             .addElement('F', ofBlock(BlockLoader.metaBlockGlow, 0))
             .addElement(
                 'G',
@@ -227,22 +223,18 @@ public class LapotronChip extends MultiMachineBase<LapotronChip>
         return -1;
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
-        return tCountCasing >= 10000;
+        }
+        setupParameters();
+        return mCountCasing >= 10000;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipePool.LapotronChipRecipes;
-    }
-
-    @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic().setSpeedBonus(1F)
-            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

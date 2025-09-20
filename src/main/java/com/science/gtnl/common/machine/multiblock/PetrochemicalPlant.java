@@ -197,24 +197,21 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mCoilTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 5;
+    }
 
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
-
-        return mCountCasing >= 5 && getMCoilLevel() != HeatingCoilLevel.None
-            && this.mMufflerHatches.size() == 8
-            && (mCoilTier = getMCoilLevel().getTier() + 1) > 0;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None && mMufflerHatches.size() == 8;
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (this.mCoilTier * 16);
+        return getMCoilLevel().getTier() * 16;
     }
 
     @Nonnull
@@ -241,7 +238,8 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
         if (outputItems != null) {
             for (ItemStack itemStack : outputItems) {
                 if (itemStack != null) {
-                    itemStack.stackSize *= this.mCoilTier * GTUtility.getTier(this.getMaxInputVoltage()) * 10;
+                    itemStack.stackSize *= getMCoilLevel().getTier() * GTUtility.getTier(this.getMaxInputVoltage())
+                        * 10;
                 }
             }
         }
@@ -253,7 +251,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
         if (outputFluids != null) {
             for (FluidStack fluidStack : outputFluids) {
                 if (fluidStack != null) {
-                    long totalAmount = (long) fluidStack.amount * this.mCoilTier
+                    long totalAmount = (long) fluidStack.amount * getMCoilLevel().getTier()
                         * GTUtility.getTier(this.getMaxInputVoltage())
                         * 10;
 

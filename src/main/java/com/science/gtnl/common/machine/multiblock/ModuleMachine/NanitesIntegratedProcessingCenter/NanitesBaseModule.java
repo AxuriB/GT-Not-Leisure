@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter;
 
 import static gregtech.api.enums.GTValues.V;
 
@@ -78,17 +78,16 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        isOreModule = false;
+        isBioModule = false;
+        isPolModule = false;
+    }
+
+    @Override
     public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
 
             @Nonnull
             @Override
@@ -97,7 +96,8 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
                     .setRecipeHeat(recipe.mSpecialValue)
                     .setMachineHeat(mHeatingCapacity)
                     .setEUtDiscount(setEUtDiscount)
-                    .setDurationModifier(setDurationModifier);
+                    .setDurationModifier(setDurationModifier)
+                    .setPerfectOC(true);
             }
 
             @NotNull

@@ -10,7 +10,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -337,24 +336,26 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mFluidManaInputHatch.clear();
-        enableInfinityMana = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        ItemStack item = getControllerSlot();
-        if (areStacksEqualExtended(item, GTModHandler.getModItem(Botania.ID, "pool", 1, 1))
-            || areStacksEqualExtended(item, asgardandelion)) {
-            enableInfinityMana = true;
-        }
-
+        setupParameters();
         return mCountCasing >= 350;
     }
 
-    private static boolean areStacksEqualExtended(ItemStack lhs, ItemStack rhs) {
-        if (lhs == null) return rhs == null;
-        if (rhs == null) return false;
-        return lhs.getItem() == rhs.getItem() && (Objects.equals(lhs.stackTagCompound, rhs.stackTagCompound));
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        if (GTUtility.areStacksEqual(getControllerSlot(), GTModHandler.getModItem(Botania.ID, "pool", 1, 1))
+            || GTUtility.areStacksEqual(getControllerSlot(), asgardandelion)) {
+            enableInfinityMana = true;
+        }
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mFluidManaInputHatch.clear();
+        enableInfinityMana = false;
     }
 
     @Override

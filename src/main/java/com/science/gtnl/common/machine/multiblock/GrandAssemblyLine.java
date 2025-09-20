@@ -101,7 +101,6 @@ import gregtech.common.tileentities.machines.IDualInputInventory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.casing.BlockGTCasingsTT;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> implements ISurvivalConstructable {
 
@@ -919,28 +918,15 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-        mDataAccessHatches.clear();
-        isDualInputHatch = false;
-        useSingleAmp = true;
-        wirelessMode = false;
-
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
             || !checkHatch()) return false;
-        useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 4;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
+        return mCountCasing >= 590;
+    }
 
-        if (mParallelTier < 9 && MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (mEnergyHatches.size() + mExoticEnergyHatches.size() > 1 || getRealMaxInputAmps() > 64) return false;
-        }
-
+    @Override
+    public boolean checkHatch() {
+        setupParameters();
+        if (mParallelTier < 9 && !checkEnergyHatch()) return false;
         if (mParallelTier >= 12 && mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
             wirelessMode = true;
             useSingleAmp = false;
@@ -951,26 +937,24 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             isDualInputHatch = true;
             if (!mInputBusses.isEmpty() || !mInputHatches.isEmpty()) return false;
         }
-
-        return mDataAccessHatches.size() <= 1 && mMaintenanceHatches.size() <= 1 && mCountCasing >= 590;
+        return super.checkHatch() && !(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty())
+            && mDataAccessHatches.size() <= 1
+            && mMaintenanceHatches.size() <= 1;
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(wirelessMode ? Long.MAX_VALUE : getMachineVoltageLimit());
-        logic.setAvailableAmperage(wirelessMode ? Long.MAX_VALUE : useSingleAmp ? 1 : getMaxInputAmps() / 4);
-        logic.setAmperageOC(false);
+    public void clearHatches() {
+        super.clearHatches();
+        mDataAccessHatches.clear();
+        isDualInputHatch = false;
+        useSingleAmp = true;
+        wirelessMode = false;
     }
 
-    public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchDataAccess) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
-        }
-        return false;
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 4;
     }
 
     @Override
@@ -1003,26 +987,6 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         return VoidingMode.ITEM_ONLY_MODES;
     }
 
-    public enum DataHatchElement implements IHatchElement<GrandAssemblyLine> {
-
-        DataAccess;
-
-        @Override
-        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(MTEHatchDataAccess.class);
-        }
-
-        @Override
-        public IGTHatchAdder<GrandAssemblyLine> adder() {
-            return GrandAssemblyLine::addDataAccessToMachineList;
-        }
-
-        @Override
-        public long count(GrandAssemblyLine t) {
-            return t.mDataAccessHatches.size();
-        }
-    }
-
     @Override
     public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
@@ -1032,12 +996,22 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return GTNL_OverclockCalculator.ofNoOverclock(recipe)
                     .setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0) * ((mParallelTier >= 12) ? 0.2 : 1))
-                    .setDurationModifier(
-                        (1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0))
-                            * ((mParallelTier >= 12) ? 1.0 / 20.0 : 1));
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
+                    .setAmperage(wirelessMode ? Long.MAX_VALUE : useSingleAmp ? 1 : getMaxInputAmps() / 4)
+                    .setEUt(wirelessMode ? Long.MAX_VALUE : getMachineVoltageLimit());
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0) * ((mParallelTier >= 12) ? 0.2 : 1);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return (1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0)) * ((mParallelTier >= 12) ? 1.0 / 20.0 : 1);
     }
 
     public static final int PARALLEL_WINDOW_ID = 10;
@@ -1126,6 +1100,37 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     + tag.getString("costingEUText")
                     + EnumChatFormatting.RESET
                     + " EU");
+        }
+    }
+
+    public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchDataAccess) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    public enum DataHatchElement implements IHatchElement<GrandAssemblyLine> {
+
+        DataAccess;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchDataAccess.class);
+        }
+
+        @Override
+        public IGTHatchAdder<GrandAssemblyLine> adder() {
+            return GrandAssemblyLine::addDataAccessToMachineList;
+        }
+
+        @Override
+        public long count(GrandAssemblyLine t) {
+            return t.mDataAccessHatches.size();
         }
     }
 

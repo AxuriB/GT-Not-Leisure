@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -119,15 +119,16 @@ public class BioengineeringModule extends NanitesBaseModule<BioengineeringModule
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        isBioModule = false;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-
-        isBioModule = true;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
-
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
+        }
+        setupParameters();
         return true;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        isBioModule = true;
     }
 }

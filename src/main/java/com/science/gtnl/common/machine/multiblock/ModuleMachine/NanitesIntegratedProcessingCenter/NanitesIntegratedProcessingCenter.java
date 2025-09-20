@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -22,8 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -31,6 +29,8 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
+import com.science.gtnl.common.machine.multiblock.OreExtractionModule;
+import com.science.gtnl.common.machine.multiblock.PolymerTwistingModule;
 import com.science.gtnl.loader.BlockLoader;
 
 import bartworks.util.BWUtil;
@@ -240,37 +240,33 @@ public class NanitesIntegratedProcessingCenter
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        moduleHatches.clear();
-        mGlassTier = -1;
-        mParallelTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+        setupParameters();
+        return mHeatingCapacity > 0;
+    }
 
-        mParallelTier = getParallelTier(aStack);
-        mEnergyHatchTier = checkEnergyHatchTier();
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+    }
 
-        return mHeatingCapacity > 0 && mGlassTier > 0 && mCountCasing > 1;
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        moduleHatches.clear();
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None && mGlassTier > 0 && mCountCasing > 1;
     }
 
     @Override
     public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
 
             @Nonnull
             @Override

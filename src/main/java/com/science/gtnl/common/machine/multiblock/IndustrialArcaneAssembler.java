@@ -41,6 +41,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcaneAssembler>
@@ -191,15 +192,17 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        ItemStack item = getControllerSlot();
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 25;
+    }
 
-        return mCountCasing >= 3 && item != null
-            && item.isItemEqual(GTModHandler.getModItem(Thaumcraft.ID, "WandCasting", 1, 9000));
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && GTUtility
+            .areStacksEqual(getControllerSlot(), GTModHandler.getModItem(Thaumcraft.ID, "WandCasting", 1, 9000));
     }
 
     @Override

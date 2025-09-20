@@ -146,21 +146,22 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-        this.mHeatingCapacity = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
-        this.mHeatingCapacity = (int) getMCoilLevel().getHeat();
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-
+        setupParameters();
         return mCountCasing >= 245;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        this.mHeatingCapacity = (int) getMCoilLevel().getHeat();
     }
 
     @Override
@@ -189,22 +190,31 @@ public class FuelRefiningComplex extends GTMMultiMachineBase<FuelRefiningComplex
 
             @NotNull
             @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(FuelRefiningComplex.this.mHeatingCapacity)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setDurationModifier(0.6 - (Math.max(0, mParallelTier - 1) / 50.0));
+            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= FuelRefiningComplex.this.mHeatingCapacity
-                    ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat(mHeatingCapacity)
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 }

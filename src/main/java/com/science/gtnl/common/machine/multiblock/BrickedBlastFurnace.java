@@ -151,12 +151,9 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
         return mCountCasing >= 350;
     }
 

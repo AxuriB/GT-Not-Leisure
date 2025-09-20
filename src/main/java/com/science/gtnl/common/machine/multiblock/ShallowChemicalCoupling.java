@@ -169,25 +169,44 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
     public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
 
+            @Override
+            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
+            }
+
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(ShallowChemicalCoupling.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(false)
-                    .setEUtDiscount(Math.pow(0.85, getMCoilLevel().getTier()))
-                    .setDurationModifier(Math.pow(0.85, getMCoilLevel().getTier()));
+                    .setMachineHeat(getMachineHeat())
+                    .setHeatOC(getHeatOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
-            @Override
-            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= ShallowChemicalCoupling.this.mHeatingCapacity
-                    ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
-            }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public boolean getHeatOC() {
+        return true;
+    }
+
+    @Override
+    public int getMachineHeat() {
+        return mHeatingCapacity;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * Math.pow(0.85, getMCoilLevel().getTier());
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() * Math.pow(0.85, getMCoilLevel().getTier());
     }
 
     @Override
@@ -219,36 +238,33 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
-        this.mHeatingCapacity = 0;
-        mParallelTier = 0;
-        mCountCasing = 0;
-        mEnergyHatchTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 30;
+    }
 
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat();
-        mEnergyHatchTier = checkEnergyHatchTier();
+    }
 
+    @Override
+    public boolean checkHatch() {
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
             }
         }
-
         for (MTEHatch mExoticEnergyHatch : this.mExoticEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV && mExoticEnergyHatch.mTier > mGlassTier) {
                 return false;
             }
         }
-
-        mParallelTier = getParallelTier(aStack);
-
-        return mCountCasing >= 30;
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None;
     }
 
     @Override

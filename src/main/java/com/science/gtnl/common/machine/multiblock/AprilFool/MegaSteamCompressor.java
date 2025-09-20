@@ -96,7 +96,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
                             InputHatch,
                             OutputHatch,
                             Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0)))))
+                        .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 0)))))
             .addElement('C', ofBlock(GregTechAPI.sBlockCasings1, 10))
             .addElement('D', ofFrame(Materials.Steel))
             .build();

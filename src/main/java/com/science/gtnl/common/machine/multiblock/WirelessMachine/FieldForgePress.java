@@ -1,76 +1,63 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
-
-import javax.annotation.Nonnull;
+import static gtPlusPlus.core.block.ModBlocks.blockCasings3Misc;
+import static gtPlusPlus.core.block.ModBlocks.blockCustomMachineCasings;
+import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
+import tectech.thing.casing.BlockGTCasingsTT;
 
-public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBase<NanitesCircuitAssemblyFactory> {
+public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePress> {
 
-    private static final int HORIZONTAL_OFF_SET = 14;
-    private static final int VERTICAL_OFF_SET = 8;
-    private static final int DEPTH_OFF_SET = 2;
+    private static final int HORIZONTAL_OFF_SET = 8;
+    private static final int VERTICAL_OFF_SET = 23;
+    private static final int DEPTH_OFF_SET = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String NCAF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/nanites_circuit_assembly_factory";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(NCAF_STRUCTURE_FILE_PATH);
+    private static final String FFP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/field_forge_press";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(FFP_STRUCTURE_FILE_PATH);
 
-    public NanitesCircuitAssemblyFactory(String aName) {
+    public FieldForgePress(String aName) {
         super(aName);
     }
 
-    public NanitesCircuitAssemblyFactory(int aID, String aName, String aNameRegional) {
+    public FieldForgePress(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new NanitesCircuitAssemblyFactory(this.mName);
+        return new FieldForgePress(this.mName);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("NanitesCircuitAssemblyFactoryRecipeType"))
+        tt.addMachineType(StatCollector.translateToLocal("FieldForgePressRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_02"))
@@ -85,18 +72,19 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(29, 10, 13, true)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_NanitesCircuitAssemblyFactory_Casing"), 1)
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_NanitesCircuitAssemblyFactory_Casing"), 1)
-            .addInputHatch(StatCollector.translateToLocal("Tooltip_NanitesCircuitAssemblyFactory_Casing"), 1)
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_NanitesCircuitAssemblyFactory_Casing"), 1)
+            .beginStructureBlock(15, 25, 27, true)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
+            .addInputHatch(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
+            .addOutputHatch(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public int getCasingTextureID() {
-        return StructureUtils.getTextureIndex(GregTechAPI.sBlockCasings8, 10);
+        return BlockGTCasingsTT.textureOffset + 4;
     }
 
     @Override
@@ -118,35 +106,32 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
     }
 
     @Override
-    public IStructureDefinition<NanitesCircuitAssemblyFactory> getStructureDefinition() {
-        return StructureDefinition.<NanitesCircuitAssemblyFactory>builder()
+    public IStructureDefinition<FieldForgePress> getStructureDefinition() {
+        return StructureDefinition.<FieldForgePress>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(sBlockCasings1, 13))
-            .addElement('B', ofBlock(BlockLoader.metaCasing, 18))
-            .addElement('C', ofBlock(sBlockCasingsSE, 0))
-            .addElement('D', ofBlock(ModBlocks.blockCasings5Misc, 12))
-            .addElement(
-                'E',
-                buildHatchAdder(NanitesCircuitAssemblyFactory.class)
-                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(getCasingTextureID())
-                    .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
-            .addElement('F', ofBlock(BlockLoader.metaBlockGlass, 2))
-            .addElement(
-                'G',
-                ofBlockAnyMeta(
-                    Block.getBlockFromItem(
-                        MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
-                            .getItem())))
+            .addElement('A', ofBlock(sBlockCasings4, 12))
+            .addElement('B', ofBlock(sBlockCasings1, 14))
+            .addElement('C', ofBlock(sBlockCasings10, 3))
+            .addElement('D', ofBlock(sBlockCasings1, 13))
+            .addElement('E', ofBlock(sBlockCasings8, 7))
+            .addElement('F', ofBlock(sBlockCasings9, 9))
+            .addElement('G', ofBlock(blockCasings3Misc, 1))
             .addElement(
                 'H',
+                buildHatchAdder(FieldForgePress.class)
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))
+            .addElement('I', ofBlock(blockCustomMachineCasings, 3))
+            .addElement('J', ofBlock(sBlockCasings8, 10))
+            .addElement('K', ofBlock(BlockLoader.metaCasing, 12))
+            .addElement(
+                'L',
                 ofBlockAnyMeta(
                     Block.getBlockFromItem(
-                        MaterialsAlloy.PIKYONIUM.getFrameBox(1)
+                        MaterialsAlloy.INCONEL_792.getFrameBox(1)
                             .getItem())))
-            .addElement('I', ofFrame(Materials.Quantium))
-            .addElement('J', ofBlock(BlockLoader.metaCasing, 4))
             .build();
     }
 
@@ -178,51 +163,16 @@ public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBas
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        wirelessMode = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
-        return mCountCasing > 500;
+        }
+        setupParameters();
+        return mCountCasing > 1800;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.circuitAssemblerRecipes;
-    }
-
-    @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4 && wirelessMode) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return super.validateRecipe(recipe);
-            }
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
-
-            @Nonnull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier))
-                    .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier));
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        return RecipeMaps.hammerRecipes;
     }
 
 }

@@ -149,7 +149,7 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
                             InputBus,
                             OutputBus,
                             Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings1, 10)))))
+                        .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings1, 10)))))
             .addElement(
                 'B',
                 ofChain(
@@ -174,7 +174,7 @@ public class SteamGateAssembler extends SteamMultiMachineBase<SteamGateAssembler
                             InputBus,
                             OutputBus,
                             Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0)))))
+                        .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 0)))))
             .addElement('C', ofBlock(sBlockCasings2, 2))
             .addElement('D', ofBlock(sBlockCasings2, 3))
             .addElement('E', ofBlock(sBlockCasings2, 12))

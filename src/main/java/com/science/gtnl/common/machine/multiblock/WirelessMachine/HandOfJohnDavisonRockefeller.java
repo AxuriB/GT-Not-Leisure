@@ -1,9 +1,8 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
 import static gtPlusPlus.core.block.ModBlocks.blockCustomMachineCasings;
@@ -13,15 +12,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -30,12 +25,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -172,73 +163,45 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mGlassTier = -1;
-        mSpeedCount = 0;
-        mParallelTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        mSpeedCount = mGlassTier + GTUtility.getTier(this.getMaxInputVoltage());
-        mParallelTier = getParallelTier(aStack);
-        mEnergyHatchTier = checkEnergyHatchTier();
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+        setupParameters();
         return mCountCasing >= 80;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public void clearHatches() {
+        super.clearHatches();
+        mSpeedCount = 0;
+    }
 
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4 && wirelessMode) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return super.validateRecipe(recipe);
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        mSpeedCount = mGlassTier + GTUtility.getTier(this.getMaxInputVoltage());
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        double discount = 1.0;
+        for (int i = 0; i < mSpeedCount; i++) {
+            discount *= 0.95;
+        }
+        return (0.4 - (mParallelTier / 50.0)) * discount;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        double speedBoost = 1.0;
+        for (int i = 0; i < mSpeedCount; i++) {
+            speedBoost -= 0.025;
+            if (speedBoost < 0.1) {
+                speedBoost = 0.1;
+                break;
             }
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
-
-            @NotNull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(calculateEUtDiscount(mSpeedCount))
-                    .setDurationModifier(calculateSpeedBoost(mSpeedCount));
-            }
-
-            private double calculateEUtDiscount(double levels) {
-                double discount = 1.0;
-                for (int i = 0; i < levels; i++) {
-                    discount *= 0.95;
-                }
-                return (0.4 - (mParallelTier / 50.0)) * discount;
-            }
-
-            private double calculateSpeedBoost(double levels) {
-                double speedBoost = 1.0;
-                for (int i = 0; i < levels; i++) {
-                    speedBoost -= 0.025;
-                    if (speedBoost < 0.1) {
-                        speedBoost = 0.1;
-                        break;
-                    }
-                }
-                return (0.1 * Math.pow(0.75, mParallelTier)) * speedBoost;
-            }
-
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }
+        return (0.1 * Math.pow(0.75, mParallelTier)) * speedBoost;
     }
 
 }

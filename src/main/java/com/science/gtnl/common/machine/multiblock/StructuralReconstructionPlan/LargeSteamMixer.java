@@ -7,7 +7,6 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gtPlusPlus.core.block.ModBlocks.*;
 
 import javax.annotation.Nonnull;
 
@@ -115,7 +114,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
                                 Maintenance)
                             .buildAndChain(
                                 onElementPass(
-                                    x -> ++x.tCountCasing,
+                                    x -> ++x.mCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamMixer::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -197,7 +196,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
             && tierPipeCasing == 1
             && tierFireboxCasing == 1
             && tierIndustrialCasing == 1
-            && tCountCasing >= 60) {
+            && mCountCasing >= 60) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -207,7 +206,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
             && tierPipeCasing == 2
             && tierFireboxCasing == 2
             && tierIndustrialCasing == 2
-            && tCountCasing >= 60) {
+            && mCountCasing >= 60) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();

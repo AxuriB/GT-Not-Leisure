@@ -149,11 +149,6 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     }
 
     @Override
-    public boolean getPerfectOC() {
-        return false;
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
         return 1;
     }
@@ -347,17 +342,26 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.tierMachine = 0;
-
         if (checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7) && checkHatch()) {
             tierMachine = 1;
         } else if (checkPiece(STRUCTURE_PIECE_TIER2, 9, 15, 3) && checkHatch()) {
             tierMachine = 2;
         }
-
-        if (mEnergyHatches.isEmpty() || (mInputBusses.isEmpty() && this.tierMachine == 1)
-            || !findLaserRenderer(getBaseMetaTileEntity().getWorld())) return false;
+        if (mInputBusses.isEmpty() && this.tierMachine == 1 || !findLaserRenderer(getBaseMetaTileEntity().getWorld()))
+            return false;
+        setupParameters();
         return this.tierMachine > 0;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        this.tierMachine = 0;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && !mEnergyHatches.isEmpty();
     }
 
     public boolean findLaserRenderer(World w) {

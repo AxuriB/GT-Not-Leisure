@@ -23,10 +23,8 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.enums.Materials;
@@ -34,7 +32,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
@@ -43,7 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase<PhotovoltaicPowerStation>
+public abstract class PhotovoltaicPowerStation extends MultiMachineBase<PhotovoltaicPowerStation>
     implements ISurvivalConstructable {
 
     protected int tCountCasing;
@@ -78,6 +75,11 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
     }
 
     @Override
+    public int getCasingTextureID() {
+        return StructureUtils.getTextureIndex(getCasingBlock(), getCasingMeta());
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
@@ -88,24 +90,6 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_LOGO)
-                .setSize(18, 18)
-                .setPos(172, 67));
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
     }
 
     @Override
@@ -139,15 +123,15 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
                 if (base.getWorld()
                     .isRaining()) output /= 2;
 
-                this.mEUt = output;
+                this.lEUt = output;
                 this.mEfficiency = 10000;
                 this.mProgresstime = 0;
-                this.mMaxProgresstime = 1024;
+                this.mMaxProgresstime = (int) (1024 * mConfigSpeedBoost);
                 return CheckRecipeResultRegistry.GENERATING;
             }
         }
 
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = 0;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
@@ -190,9 +174,14 @@ public abstract class PhotovoltaicPowerStation extends MTEEnhancedMultiBlockBase
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
             && mMaintenanceHatches.size() == 1
             && tCountCasing >= 8;
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return 1;
     }
 
     @Override

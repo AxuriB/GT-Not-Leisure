@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static bartworks.common.loaders.ItemRegistry.bw_realglas2;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -7,7 +7,6 @@ import static com.science.gtnl.Utils.Utils.NEGATIVE_ONE;
 import static com.science.gtnl.Utils.Utils.mergeArray;
 import static goodgenerator.loader.Loaders.FRF_Coil_4;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -34,8 +33,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -198,14 +195,10 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mCountCasing = 0;
-        wirelessMode = false;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+        }
+        setupParameters();
         return this.mCountCasing > 256;
     }
 
@@ -230,11 +223,6 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return Integer.MAX_VALUE;
     }
 
     private ItemStack getCircuit(ItemStack[] t) {
@@ -275,15 +263,6 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
             private ItemStack lastCircuit = null;
             private int lastMode = -1;
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
-
             @Nonnull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
@@ -310,12 +289,10 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
             @Override
             protected GTNL_ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 return new GTNL_ParallelHelper().setRecipe(recipe)
-                    .setItemInputs(inputItems)
-                    .setFluidInputs(inputFluids)
-                    .setAvailableEUt(Integer.MAX_VALUE)
+                    .setAvailableEUt(Long.MAX_VALUE)
                     .setMachine(machine, protectItems, protectFluids)
                     .setRecipeLocked(recipeLockableMachine, isRecipeLocked)
-                    .setEUtModifier(0)
+                    .setEUtModifier(0.0000000001)
                     .setMaxParallel(Integer.MAX_VALUE)
                     .setConsumption(true)
                     .setOutputCalculation(true);
@@ -330,16 +307,22 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
                     return 128;
                 }
             }
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return super.validateRecipe(recipe);
-            }
         };
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.000000000001;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 0.000000000001;
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return Integer.MAX_VALUE;
     }
 
     @Override

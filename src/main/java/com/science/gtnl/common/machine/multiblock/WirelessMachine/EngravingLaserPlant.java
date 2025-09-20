@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
@@ -14,22 +14,17 @@ import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -41,21 +36,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
 public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<EngravingLaserPlant> {
 
-    private int casingTier;
+    private int mCasingTier;
     private static final int HORIZONTAL_OFF_SET = 10;
     private static final int VERTICAL_OFF_SET = 9;
     private static final int DEPTH_OFF_SET = 0;
@@ -164,8 +155,8 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
                         .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                         .collect(Collectors.toList()),
                     -2,
-                    (t, meta) -> t.casingTier = meta,
-                    t -> t.casingTier))
+                    (t, meta) -> t.mCasingTier = meta,
+                    t -> t.mCasingTier))
             .addElement('K', ofBlock(sBlockCasings10, 11))
             .addElement('L', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
             .addElement('M', ofFrame(Materials.Neutronium))
@@ -200,63 +191,46 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingTier = -2;
-        mCountCasing = 0;
-        wirelessMode = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+        }
+        setupParameters();
         return mCountCasing > 750;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public boolean checkHatch() {
+        return super.checkHatch() && mCasingTier >= 0;
+    }
 
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4 && wirelessMode) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return super.validateRecipe(recipe);
-            }
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mCasingTier = -2;
+    }
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
+    @Override
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * Math.pow(0.95, mGlassTier) * Math.pow(0.95, mCasingTier);
+    }
 
-            @Nonnull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(
-                        0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier) * Math.pow(0.95, casingTier))
-                    .setDurationModifier(
-                        0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier) * Math.pow(0.95, casingTier));
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() * Math.pow(0.95, mGlassTier) * Math.pow(0.95, mCasingTier);
     }
 
     public long getMachineVoltageLimit() {
-        if (casingTier < 0) return 0;
+        if (mCasingTier < 0) return 0;
         if (wirelessMode) {
-            if (casingTier >= 11) {
+            if (mCasingTier >= 11) {
                 return V[Math.min(mParallelTier + 1, 14)];
             } else {
-                return V[Math.min(Math.min(mParallelTier + 1, casingTier + 3), 14)];
+                return V[Math.min(Math.min(mParallelTier + 1, mCasingTier + 3), 14)];
             }
-        } else if (casingTier >= 11) {
+        } else if (mCasingTier >= 11) {
             return V[mEnergyHatchTier];
         } else {
-            return V[Math.min(casingTier + 3, mEnergyHatchTier)];
+            return V[Math.min(mCasingTier + 3, mEnergyHatchTier)];
         }
     }
 
@@ -280,14 +254,14 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mGlassTier", mGlassTier);
-        aNBT.setInteger("casingTier", casingTier);
+        aNBT.setInteger("casingTier", mCasingTier);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mGlassTier = aNBT.getInteger("mGlassTier");
-        casingTier = aNBT.getInteger("casingTier");
+        mCasingTier = aNBT.getInteger("casingTier");
     }
 
     @Override
@@ -296,7 +270,7 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? GTValues.VN[casingTier + 1] : "None!");
+            + (mCasingTier >= 0 ? GTValues.VN[mCasingTier + 1] : "None!");
         return ret;
     }
 

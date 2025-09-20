@@ -19,7 +19,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.dreammaster.item.NHItemList;
+import com.dreammaster.gthandler.CustomItemList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -38,12 +38,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
-    public int multiTier = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/library_of_ruina";
     public static final String[][] shape = StructureUtils.readStructureFromFile(LOR_STRUCTURE_FILE_PATH);
@@ -219,26 +219,19 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mParallelTier = 0;
-        mCountCasing = 0;
-        this.multiTier = getMultiTier(aStack);
-
-        if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && mCountCasing >= 920
-            && multiTier == 1) {
-            replaceWaterWithPortal();
-            mEnergyHatchTier = checkEnergyHatchTier();
-            mParallelTier = getParallelTier(aStack);
-            return true;
-        } else {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             replacePortalWithWater();
             return false;
         }
+        replaceWaterWithPortal();
+        setupParameters();
+        return mCountCasing >= 920;
     }
 
-    public int getMultiTier(ItemStack inventory) {
-        if (inventory == null) return 0;
-        return inventory.isItemEqual(NHItemList.TwilightCrystal.getIS(1)) ? 1 : 0;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch()
+            && GTUtility.areStacksEqual(getControllerSlot(), CustomItemList.TwilightCrystal.get(1));
     }
 
     public void replaceWaterWithPortal() {

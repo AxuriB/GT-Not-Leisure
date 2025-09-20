@@ -23,19 +23,15 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhintergalactic.recipe.IGRecipeMaps;
@@ -166,36 +162,20 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mGlassTier = -1;
-        mParallelTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
+        setupParameters();
         return mCountCasing >= 10;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0) * Math.pow(0.90, mGlassTier);
+    }
 
-            @NotNull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(2)
-                    .setEUtIncreasePerOC(4)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0) * Math.pow(0.90, mGlassTier))
-                    .setDurationModifier(1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0));
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getDurationModifier() {
+        return 1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 }

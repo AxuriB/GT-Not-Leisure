@@ -186,19 +186,10 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        repairMachine();
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        if (!checkHatch()) {
-            return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
-
+        setupParameters();
         return true;
     }
 
@@ -486,13 +477,14 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return GTNL_OverclockCalculator.ofNoOverclock(recipe)
                     .setExtraDurationModifier(mConfigSpeedBoost)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(1)
-                    .setDurationModifier(1 - (mParallelTier / 50.0));
+                    .setDurationModifier(getDurationModifier());
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 - (mParallelTier / 50.0);
     }
 
     public String getOwner() {
@@ -548,5 +540,18 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             + EnumChatFormatting.RESET
             + " LP";
         return info;
+    }
+
+    @Override
+    public void checkMaintenance() {}
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCheckMaintenance() {
+        return false;
     }
 }

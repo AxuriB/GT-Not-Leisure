@@ -123,7 +123,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     protected int tierMachineFrame = -1;
     protected int tierMachineCasing = -1;
     protected int tierMachine = 0;
-    protected int tCountCasing = 0;
+    protected int mCountCasing = 0;
     protected boolean isBroken = true;
     public ArrayList<CustomFluidHatch> mSteamBigInputFluids = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mSteamWirelessInputFluids = new ArrayList<>();
@@ -1069,7 +1069,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         tierMachineFrame = -1;
         tierMachineCasing = -1;
         tierMachine = -1;
-        tCountCasing = 0;
+        mCountCasing = 0;
     }
 
     @Override

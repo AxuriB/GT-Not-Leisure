@@ -8,8 +8,6 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
 import static gtPlusPlus.core.block.ModBlocks.*;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -20,8 +18,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -41,7 +37,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -137,11 +132,6 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
     }
 
     @Override
-    public boolean getPerfectOC() {
-        return true;
-    }
-
-    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
@@ -186,18 +176,18 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public double getEUtDiscount() {
+        return 1.0 - getMCoilLevel().getTier() * 0.05;
+    }
 
-            @Nonnull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(1.0 - getMCoilLevel().getTier() * 0.05)
-                    .setDurationModifier(1.0 - getMCoilLevel().getTier() * 0.05);
-            }
+    @Override
+    public double getDurationModifier() {
+        return 1.0 - getMCoilLevel().getTier() * 0.05;
+    }
 
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public boolean getPerfectOC() {
+        return true;
     }
 
     @Override
@@ -233,15 +223,15 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mEnergyHatchTier = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
+        setupParameters();
+        return mCountCasing >= 30;
+    }
+
+    @Override
+    public boolean checkHatch() {
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV && mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -252,10 +242,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
                 return false;
             }
         }
-
-        if (mMaintenanceHatches.size() != 1 || mMufflerHatches.size() != 6) return false;
-
-        return mCountCasing >= 30;
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None && mMufflerHatches.size() == 6;
     }
 
     @Override

@@ -87,11 +87,6 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     }
 
     @Override
-    public boolean getPerfectOC() {
-        return true;
-    }
-
-    @Override
     public int getCasingTextureID() {
         return 210;
     }
@@ -223,15 +218,9 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setEUtDiscount(0.6)
-                    .setDurationModifier(1.0 / 5.0);
+                    .setPerfectOC(getPerfectOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
             @NotNull
@@ -240,6 +229,21 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
                 return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };
+    }
+
+    @Override
+    public boolean getPerfectOC() {
+        return true;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.6;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / 5.0;
     }
 
     @Override
@@ -308,18 +312,10 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        this.mRadHatches.clear();
-        this.mGlassTier = -1;
-        this.mCountCasing = 0;
-
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
-            || !checkHatch()) return false;
-
-        if (mCountCasing < 19 && this.mRadHatches.size() > 1
-            && this.mOutputHatches.size() != 1
-            && this.mInputHatches.isEmpty()
-            && (this.mEnergyHatches.isEmpty() || this.mExoticEnergyHatches.isEmpty())) return false;
-
+            || !checkHatch()) {
+            return false;
+        }
         boolean isFlipped = this.getFlip()
             .isHorizontallyFlipped();
         StructureUtils.setStringBlockXZ(
@@ -331,8 +327,22 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             isFlipped,
             "G",
             Blocks.water);
+        setupParameters();
+        return mCountCasing < 19;
+    }
 
-        return true;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && this.mRadHatches.size() <= 1
+            && !this.mOutputHatches.isEmpty()
+            && !this.mInputHatches.isEmpty()
+            && !(this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty());
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        this.mRadHatches.clear();
     }
 
     private int reCalculateFluidAmmount() {

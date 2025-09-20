@@ -19,6 +19,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.NanitesBaseModule;
 import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.enums.Materials;

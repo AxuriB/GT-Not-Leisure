@@ -1,18 +1,23 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gtPlusPlus.core.block.ModBlocks.blockCasings3Misc;
-import static gtPlusPlus.core.block.ModBlocks.blockCustomMachineCasings;
+import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
+
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -21,43 +26,47 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
+import goodgenerator.loader.Loaders;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import tectech.thing.casing.BlockGTCasingsTT;
+import gtnhlanth.common.register.LanthItemList;
 
-public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePress> {
+public class NanoAssemblerMarkL extends WirelessEnergyMultiMachineBase<NanoAssemblerMarkL> {
 
-    private static final int HORIZONTAL_OFF_SET = 8;
-    private static final int VERTICAL_OFF_SET = 23;
-    private static final int DEPTH_OFF_SET = 1;
+    private int mCasingTier;
+    private static final int HORIZONTAL_OFF_SET = 6;
+    private static final int VERTICAL_OFF_SET = 8;
+    private static final int DEPTH_OFF_SET = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String FFP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/field_forge_press";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(FFP_STRUCTURE_FILE_PATH);
+    private static final String VMC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/nano_assembler_mark_l";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(VMC_STRUCTURE_FILE_PATH);
 
-    public FieldForgePress(String aName) {
+    public NanoAssemblerMarkL(String aName) {
         super(aName);
     }
 
-    public FieldForgePress(int aID, String aName, String aNameRegional) {
+    public NanoAssemblerMarkL(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new FieldForgePress(this.mName);
+        return new NanoAssemblerMarkL(this.mName);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("FieldForgePressRecipeType"))
+        tt.addMachineType(StatCollector.translateToLocal("NanoAssemblerMarkLRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_02"))
@@ -72,19 +81,18 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(15, 25, 27, true)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
-            .addInputHatch(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
-            .addOutputHatch(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_FieldForgePress_Casing"), 1)
+            .beginStructureBlock(13, 10, 31, true)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_NanoAssemblerMarkL_Casing"), 1)
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_NanoAssemblerMarkL_Casing"), 1)
+            .addInputHatch(StatCollector.translateToLocal("Tooltip_NanoAssemblerMarkL_Casing"), 1)
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_NanoAssemblerMarkL_Casing"), 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public int getCasingTextureID() {
-        return BlockGTCasingsTT.textureOffset + 4;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 7);
     }
 
     @Override
@@ -106,32 +114,46 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
     }
 
     @Override
-    public IStructureDefinition<FieldForgePress> getStructureDefinition() {
-        return StructureDefinition.<FieldForgePress>builder()
+    public IStructureDefinition<NanoAssemblerMarkL> getStructureDefinition() {
+        return StructureDefinition.<NanoAssemblerMarkL>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(sBlockCasings4, 12))
-            .addElement('B', ofBlock(sBlockCasings1, 14))
-            .addElement('C', ofBlock(sBlockCasings10, 3))
-            .addElement('D', ofBlock(sBlockCasings1, 13))
-            .addElement('E', ofBlock(sBlockCasings8, 7))
-            .addElement('F', ofBlock(sBlockCasings9, 9))
-            .addElement('G', ofBlock(blockCasings3Misc, 1))
+            .addElement('A', ofBlock(sBlockCasingsTT, 8))
+            .addElement('B', ofBlock(sBlockCasings8, 10))
             .addElement(
-                'H',
-                buildHatchAdder(FieldForgePress.class)
-                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                'C',
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                    IntStream.range(0, 13)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -2,
+                    (t, meta) -> t.mCasingTier = meta,
+                    t -> t.mCasingTier))
+            .addElement('D', ofBlock(sBlockCasings9, 11))
+            .addElement(
+                'E',
+                buildHatchAdder(NanoAssemblerMarkL.class)
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))
-            .addElement('I', ofBlock(blockCustomMachineCasings, 3))
-            .addElement('J', ofBlock(sBlockCasings8, 10))
-            .addElement('K', ofBlock(BlockLoader.metaCasing, 12))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('F', ofBlock(sBlockCasings2, 5))
+            .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('H', ofBlock(sBlockCasingsTT, 4))
+            .addElement('I', ofBlock(sBlockCasings10, 8))
+            .addElement('J', ofFrame(Materials.Duranium))
+            .addElement('K', ofBlock(sBlockGlass1, 0))
+            .addElement('L', ofBlock(BlockLoader.metaCasing, 5))
+            .addElement('M', ofBlock(sBlockCasings1, 9))
             .addElement(
-                'L',
+                'N',
                 ofBlockAnyMeta(
                     Block.getBlockFromItem(
-                        MaterialsAlloy.INCONEL_792.getFrameBox(1)
+                        MaterialsAlloy.TRINIUM_NAQUADAH_CARBON.getFrameBox(1)
                             .getItem())))
+            .addElement('O', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('P', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('Q', ofBlock(sBlockCasings9, 1))
             .build();
     }
 
@@ -163,19 +185,36 @@ public class FieldForgePress extends WirelessEnergyMultiMachineBase<FieldForgePr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
-        return mCountCasing > 1800;
+        setupParameters();
+        return mCountCasing > 250;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && mCasingTier >= 0;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mCasingTier = -2;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * Math.pow(0.9, mCasingTier);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() * Math.pow(0.9, mCasingTier);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.hammerRecipes;
+        return GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
     }
 
 }

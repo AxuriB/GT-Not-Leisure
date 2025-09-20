@@ -168,14 +168,22 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        mCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        boolean valid = this.mMaintenanceHatches.size() == 1
-            && !(this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty())
-            && this.mCountCasing >= 1000;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
+        }
+        setupParameters();
+        return mCountCasing >= 1000;
+    }
 
-        if (valid) this.updateSeedLimits();
-        return valid;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && !(this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty());
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        updateSeedLimits();
     }
 
     @Override

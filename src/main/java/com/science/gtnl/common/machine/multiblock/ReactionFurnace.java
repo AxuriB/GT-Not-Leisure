@@ -44,8 +44,6 @@ import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 
 public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implements ISurvivalConstructable {
 
-    private static final long RECIPE_EUT = 4;
-    private static final int RECIPE_DURATION = 128;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String RF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/reaction_furnace";
     protected final int HORIZONTAL_OFF_SET = 15;
@@ -136,15 +134,10 @@ public class ReactionFurnace extends GTMMultiMachineBase<ReactionFurnace> implem
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
+        setupParameters();
         return mCountCasing >= 115;
     }
 

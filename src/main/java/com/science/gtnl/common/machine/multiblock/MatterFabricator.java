@@ -29,8 +29,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
@@ -41,7 +39,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.objects.ItemData;
@@ -50,7 +47,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -147,16 +143,16 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 115;
+    }
 
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        return mCountCasing >= 115 && this.mEnergyHatches.size() == 1;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && (mEnergyHatches.size() == 1 || mExoticEnergyHatches.size() == 1);
     }
 
     @Override
@@ -240,7 +236,7 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
         this.lEUt = -(int) Math.min(totalOutput * 4L, Integer.MAX_VALUE);
         this.mProgresstime = 0;
         this.mEfficiency = 10000;
-        this.mMaxProgresstime = 200;
+        this.mMaxProgresstime = (int) (128 * mConfigSpeedBoost);
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -272,21 +268,6 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
             }
         }
         return false;
-    }
-
-    @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return GTNL_OverclockCalculator.ofNoOverclock(recipe)
-                    .setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(1)
-                    .setDurationModifier(1);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override

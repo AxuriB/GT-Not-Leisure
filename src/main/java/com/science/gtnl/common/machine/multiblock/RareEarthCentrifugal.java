@@ -16,7 +16,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
 
@@ -24,14 +23,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal> implements ISurvivalConstructable {
 
@@ -145,23 +142,16 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-
-        if (this.mEnergyHatches.size() > 2) return false;
+        setupParameters();
         return mCountCasing >= 75;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && checkEnergyHatch();
     }
 
     @Override

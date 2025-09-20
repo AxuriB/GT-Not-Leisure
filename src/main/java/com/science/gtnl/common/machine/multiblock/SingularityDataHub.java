@@ -280,18 +280,29 @@ public class SingularityDataHub extends MultiMachineBase<SingularityDataHub>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-        if (portHatch.controller == null) portHatch.bind(this);
+        setupParameters();
+        return mCountCasing >= 100;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
-        return mCountCasing >= 100 && portHatch != null;
+        if (portHatch.controller == null) portHatch.bind(this);
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && portHatch != null;
     }
 
     @Override
     public void clearHatches() {
         super.clearHatches();
+        wirelessMode = false;
         if (portHatch != null) {
             portHatch = null;
         }

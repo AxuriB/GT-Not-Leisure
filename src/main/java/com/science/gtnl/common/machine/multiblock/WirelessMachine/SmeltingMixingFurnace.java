@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
@@ -204,24 +204,10 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mCountCasing = 0;
-        wirelessMode = false;
-        hasRequiredItem = false;
-        mParallelTier = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
-
-        ItemStack requiredItem = ItemList.Transdimensional_Alignment_Matrix.get(1);
-        for (ItemStack item : getAllStoredInputs()) {
-            if (item != null && item.isItemEqual(requiredItem)) {
-                hasRequiredItem = true;
-                break;
-            }
         }
-
-        mParallelTier = getParallelTier(aStack);
-        mEnergyHatchTier = checkEnergyHatchTier();
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+        setupParameters();
         return this.mCountCasing > 15;
     }
 
@@ -235,23 +221,6 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(RecipePool.SmeltingMixingFurnaceRecipes, RecipeMaps.plasmaForgeRecipes);
-    }
-
-    @Override
-    public void setProcessingLogicPower(ProcessingLogic logic) {
-        if (wirelessMode) {
-            logic.setAvailableAmperage((long) Math.pow(4, mParallelTier) * 8L - 2L);
-            logic.setAmperageOC(false);
-            logic.enablePerfectOverclock();
-            logic.setAvailableVoltage(
-                machineMode == MACHINEMODE_DTPF ? Integer.MAX_VALUE : V[Math.min(mParallelTier + 1, 14)]);
-        } else {
-            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()
-                && getMaxInputAmps() <= 4;
-            logic.setAvailableVoltage(getMachineVoltageLimit());
-            logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-            logic.setAmperageOC(!useSingleAmp);
-        }
     }
 
     @Nonnull
@@ -287,23 +256,43 @@ public class SmeltingMixingFurnace extends WirelessEnergyMultiMachineBase<Smelti
                 return super.validateRecipe(recipe);
             }
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
-
             @Nonnull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.4 - (mParallelTier / 50.0))
-                    .setDurationModifier(1 * Math.pow(0.75, mParallelTier));
+                    .setPerfectOC(getPerfectOC())
+                    .setAmperageOC(getAmperageOC())
+                    .setAmperage(
+                        wirelessMode ? (long) Math.pow(4, mParallelTier) * 8L - 2L
+                            : getAmperageOC() ? 1 : getMaxInputAmps())
+                    .setEUt(
+                        wirelessMode
+                            ? machineMode == MACHINEMODE_DTPF ? Integer.MAX_VALUE : V[Math.min(mParallelTier + 1, 14)]
+                            : getMachineVoltageLimit())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.4 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 * Math.pow(0.75, mParallelTier);
+    }
+
+    @Override
+    public boolean getPerfectOC() {
+        return true;
+    }
+
+    @Override
+    public boolean getAmperageOC() {
+        return !wirelessMode && mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 4;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
@@ -6,8 +6,8 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -19,6 +19,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -28,36 +29,37 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gtnhlanth.common.register.LanthItemList;
-import tectech.thing.block.BlockQuantumGlass;
-import tectech.thing.casing.BlockGTCasingsTT;
+import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.material.MaterialsAlloy;
+import gtPlusPlus.core.material.MaterialsElements;
 
-public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor> {
+public class NanitesCircuitAssemblyFactory extends WirelessEnergyMultiMachineBase<NanitesCircuitAssemblyFactory> {
 
     private static final int HORIZONTAL_OFF_SET = 14;
-    private static final int VERTICAL_OFF_SET = 7;
-    private static final int DEPTH_OFF_SET = 0;
+    private static final int VERTICAL_OFF_SET = 8;
+    private static final int DEPTH_OFF_SET = 2;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String AP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/aetron_pressor";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(AP_STRUCTURE_FILE_PATH);
+    private static final String NCAF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
+        + "multiblock/nanites_circuit_assembly_factory";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(NCAF_STRUCTURE_FILE_PATH);
 
-    public AetronPressor(String aName) {
+    public NanitesCircuitAssemblyFactory(String aName) {
         super(aName);
     }
 
-    public AetronPressor(int aID, String aName, String aNameRegional) {
+    public NanitesCircuitAssemblyFactory(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new AetronPressor(this.mName);
+        return new NanitesCircuitAssemblyFactory(this.mName);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("AetronPressorRecipeType"))
+        tt.addMachineType(StatCollector.translateToLocal("NanitesCircuitAssemblyFactoryRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_02"))
@@ -72,17 +74,18 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(29, 15, 15, true)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_AetronPressor_Casing"), 1)
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_AetronPressor_Casing"), 1)
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_AetronPressor_Casing"), 1)
+            .beginStructureBlock(29, 10, 13, true)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_NanitesCircuitAssemblyFactory_Casing"), 1)
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_NanitesCircuitAssemblyFactory_Casing"), 1)
+            .addInputHatch(StatCollector.translateToLocal("Tooltip_NanitesCircuitAssemblyFactory_Casing"), 1)
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_NanitesCircuitAssemblyFactory_Casing"), 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public int getCasingTextureID() {
-        return BlockGTCasingsTT.textureOffset + 4;
+        return StructureUtils.getTextureIndex(GregTechAPI.sBlockCasings8, 10);
     }
 
     @Override
@@ -104,26 +107,35 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
     }
 
     @Override
-    public IStructureDefinition<AetronPressor> getStructureDefinition() {
-        return StructureDefinition.<AetronPressor>builder()
+    public IStructureDefinition<NanitesCircuitAssemblyFactory> getStructureDefinition() {
+        return StructureDefinition.<NanitesCircuitAssemblyFactory>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(sBlockCasingsTT, 6))
-            .addElement('B', ofBlock(LanthItemList.ELECTRODE_CASING, 0))
-            .addElement('C', ofBlock(sBlockCasingsTT, 0))
-            .addElement('D', ofBlock(sBlockCasings9, 14))
-            .addElement('E', ofBlock(BlockLoader.metaCasing, 18))
-            .addElement('F', ofBlock(sBlockCasings9, 9))
+            .addElement('A', ofBlock(sBlockCasings1, 13))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 18))
+            .addElement('C', ofBlock(sBlockCasingsSE, 0))
+            .addElement('D', ofBlock(ModBlocks.blockCasings5Misc, 12))
             .addElement(
-                'G',
-                buildHatchAdder(AetronPressor.class).atLeast(Maintenance, InputBus, OutputBus, Energy.or(ExoticEnergy))
+                'E',
+                buildHatchAdder(NanitesCircuitAssemblyFactory.class)
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
                     .casingIndex(getCasingTextureID())
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))
-            .addElement('H', ofBlock(sBlockCasings8, 10))
-            .addElement('I', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-            .addElement('J', ofBlock(sBlockCasings10, 12))
-            .addElement('K', ofFrame(Materials.Tritanium))
-            .addElement('L', ofBlock(BlockLoader.metaBlockGlass, 2))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('F', ofBlock(BlockLoader.metaBlockGlass, 2))
+            .addElement(
+                'G',
+                ofBlockAnyMeta(
+                    Block.getBlockFromItem(
+                        MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1)
+                            .getItem())))
+            .addElement(
+                'H',
+                ofBlockAnyMeta(
+                    Block.getBlockFromItem(
+                        MaterialsAlloy.PIKYONIUM.getFrameBox(1)
+                            .getItem())))
+            .addElement('I', ofFrame(Materials.Quantium))
+            .addElement('J', ofBlock(BlockLoader.metaCasing, 4))
             .build();
     }
 
@@ -155,17 +167,26 @@ public class AetronPressor extends WirelessEnergyMultiMachineBase<AetronPressor>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        wirelessMode = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
-        return mCountCasing > 250;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
+        }
+        setupParameters();
+        return mCountCasing > 500;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.extruderRecipes;
+        return RecipeMaps.circuitAssemblerRecipes;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * Math.pow(0.95, mGlassTier);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() * Math.pow(0.95, mGlassTier);
     }
 
 }

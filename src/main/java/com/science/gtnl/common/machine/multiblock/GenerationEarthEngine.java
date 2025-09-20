@@ -22,7 +22,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -33,11 +32,9 @@ import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import kubatech.loaders.BlockLoader;
@@ -47,12 +44,9 @@ import tectech.thing.casing.TTCasingsContainer;
 public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngine>
     implements ISurvivalConstructable, INEIPreviewModifier {
 
-    protected GTRecipe lastRecipeToBuffer;
-
     protected final int HORIZONTAL_OFF_SET = 321;
     protected final int VERTICAL_OFF_SET = 321;
     protected final int DEPTH_OFF_SET = 17;
-    public int tCountCasing = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String GEE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/generation_earth_engine";
     public static final String[][] shape = StructureUtils.readStructureFromFile(GEE_STRUCTURE_FILE_PATH);
@@ -139,7 +133,7 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
                     .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy.or(ExoticEnergy))
                     .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 5))
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
             .addElement(
                 'M',
                 ofChain(
@@ -195,10 +189,10 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
     }
 
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        return tCountCasing >= 5;
+        setupParameters();
+        return mCountCasing >= 5;
     }
 
     @Override
@@ -207,30 +201,7 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic().setSpeedBonus(1F)
-            .setMaxParallelSupplier(this::getTrueParallel);
-    }
-
-    @Override
     public int getMaxParallelRecipes() {
-        return 0;
+        return 1;
     }
-
-    @Override
-    public String[] getInfoData() {
-        final String running = (this.mMaxProgresstime > 0 ? "Fusion running" : "Fusion stopped");
-        final String maintenance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintenance issues"
-            : "Needs Maintenance");
-        String tSpecialText;
-
-        if (lastRecipeToBuffer != null && lastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {
-            tSpecialText = "Currently processing: " + lastRecipeToBuffer.mOutputs[0].getDisplayName();
-        } else {
-            tSpecialText = "Currently processing: Nothing";
-        }
-
-        return new String[] { "Generation Earth Engine", running, maintenance, tSpecialText };
-    }
-
 }

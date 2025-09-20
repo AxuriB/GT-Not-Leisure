@@ -1,76 +1,65 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.util.GTStructureUtility.*;
-
-import javax.annotation.Nonnull;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gtnhlanth.common.register.LanthItemList.ELECTRODE_CASING;
+import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.casing.BlockGTCasingsTT;
-import tectech.thing.casing.TTCasingsContainer;
 
-public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<NeutroniumWireCutting> {
+public class HighEnergyLaserLathe extends WirelessEnergyMultiMachineBase<HighEnergyLaserLathe> {
 
-    private static final int HORIZONTAL_OFF_SET = 3;
-    private static final int VERTICAL_OFF_SET = 10;
-    private static final int DEPTH_OFF_SET = 0;
+    private static final int HORIZONTAL_OFF_SET = 16;
+    private static final int VERTICAL_OFF_SET = 7;
+    private static final int DEPTH_OFF_SET = 1;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String NWC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/neutronium_wire_cutting";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(NWC_STRUCTURE_FILE_PATH);
+    private static final String HELL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
+        + "multiblock/high_energy_laser_lathe";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(HELL_STRUCTURE_FILE_PATH);
 
-    public NeutroniumWireCutting(String aName) {
+    public HighEnergyLaserLathe(String aName) {
         super(aName);
     }
 
-    public NeutroniumWireCutting(int aID, String aName, String aNameRegional) {
+    public HighEnergyLaserLathe(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new NeutroniumWireCutting(this.mName);
+        return new HighEnergyLaserLathe(this.mName);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("NeutroniumWireCuttingRecipeType"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_NeutroniumWireCutting_00"))
+        tt.addMachineType(StatCollector.translateToLocal("HighEnergyLaserLatheRecipeType"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_HighEnergyLaserLathe_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_02"))
@@ -85,11 +74,11 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(31, 14, 15, true)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_NeutroniumWireCutting_Casing"), 1)
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_NeutroniumWireCutting_Casing"), 1)
-            .addInputHatch(StatCollector.translateToLocal("Tooltip_NeutroniumWireCutting_Casing"), 1)
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_NeutroniumWireCutting_Casing"), 1)
+            .beginStructureBlock(33, 16, 17, true)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_HighEnergyLaserLathe_Casing"), 1)
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_HighEnergyLaserLathe_Casing"), 1)
+            .addInputHatch(StatCollector.translateToLocal("Tooltip_HighEnergyLaserLathe_Casing"), 1)
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_HighEnergyLaserLathe_Casing"), 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -97,7 +86,7 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
 
     @Override
     public int getCasingTextureID() {
-        return BlockGTCasingsTT.textureOffset;
+        return BlockGTCasingsTT.textureOffset + 4;
     }
 
     @Override
@@ -119,33 +108,30 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
     }
 
     @Override
-    public IStructureDefinition<NeutroniumWireCutting> getStructureDefinition() {
-        return StructureDefinition.<NeutroniumWireCutting>builder()
+    public IStructureDefinition<HighEnergyLaserLathe> getStructureDefinition() {
+        return StructureDefinition.<HighEnergyLaserLathe>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-            .addElement('B', ofBlock(BlockLoader.metaCasing, 2))
-            .addElement('C', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('A', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('B', ofBlock(sBlockCasingsTT, 0))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 5))
             .addElement('D', ofBlock(sBlockCasings10, 6))
-            .addElement('E', ofBlock(sBlockCasings10, 7))
-            .addElement('F', ofBlock(sBlockCasings10, 11))
-            .addElement('G', ofBlock(sBlockCasings3, 11))
-            .addElement('H', ofBlock(sBlockCasings4, 10))
-            .addElement('I', ofBlock(sBlockCasings8, 7))
-            .addElement('J', ofBlock(sBlockCasings9, 3))
-            .addElement('K', ofBlock(sBlockCasings9, 6))
+            .addElement('E', ofBlock(sBlockGem2, 11))
             .addElement(
-                'L',
-                buildHatchAdder(NeutroniumWireCutting.class)
+                'F',
+                buildHatchAdder(HighEnergyLaserLathe.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings9, 12))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 7))
                     .dot(1)
-                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings9, 12))))
-            .addElement('M', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
-            .addElement('N', ofBlock(TTCasingsContainer.sBlockCasingsTT, 6))
-            .addElement('O', ofFrame(Materials.Neutronium))
-            .addElement('P', ofBlockAnyMeta(GameRegistry.findBlock("miscutils", "blockFrameGtHastelloyN")))
-            .addElement('Q', ofBlock(BlockLoader.metaCasing, 4))
-            .addElement('R', ofBlock(BlockLoader.metaCasing, 5))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('G', ofBlock(sBlockCasings8, 12))
+            .addElement('H', ofBlock(BlockLoader.metaCasing, 6))
+            .addElement('I', ofBlock(sBlockCasingsTT, 6))
+            .addElement('J', ofBlock(sBlockCasingsTT, 4))
+            .addElement('K', ofBlock(sBlockCasings10, 1))
+            .addElement('L', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('M', ofBlock(sBlockCasings10, 7))
+            .addElement('N', ofBlock(sBlockCasings3, 11))
+            .addElement('O', ofBlock(sBlockGlass1, 1))
             .build();
     }
 
@@ -177,52 +163,26 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        wirelessMode = false;
-        mParallelTier = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
-        return mCountCasing > 900;
+        }
+        setupParameters();
+        return mCountCasing > 1000;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * Math.pow(0.95, mGlassTier);
+    }
 
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4 && wirelessMode) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return super.validateRecipe(recipe);
-            }
-
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
-
-            @Nonnull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier))
-                    .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier));
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() * Math.pow(0.95, mGlassTier);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.cutterRecipes;
+        return RecipeMaps.latheRecipes;
     }
 
     @Override

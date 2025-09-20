@@ -30,7 +30,6 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
@@ -53,11 +52,10 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> implements ISurvivalConstructable {
 
-    public int casingTier;
+    public int mCasingTier;
     private static final String CA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/component_assembler";
     public static final String[][] shape = StructureUtils.readStructureFromFile(CA_STRUCTURE_FILE_PATH);
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -78,8 +76,8 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
                         .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
                         .collect(Collectors.toList()),
                     -2,
-                    (t, meta) -> t.casingTier = meta,
-                    t -> t.casingTier))
+                    (t, meta) -> t.mCasingTier = meta,
+                    t -> t.mCasingTier))
             .addElement(
                 'C',
                 buildHatchAdder(ComponentAssembler.class)
@@ -98,11 +96,6 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
     @Override
     public int getCasingTextureID() {
         return StructureUtils.getTextureIndex(sBlockCasings2, 0);
-    }
-
-    @Override
-    public boolean getPerfectOC() {
-        return false;
     }
 
     @Override
@@ -166,7 +159,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
-            + (casingTier >= 0 ? GTValues.VN[casingTier + 1] : "None!");
+            + (mCasingTier >= 0 ? GTValues.VN[mCasingTier + 1] : "None!");
         return ret;
     }
 
@@ -205,7 +198,7 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mSpecialValue > casingTier + 1) {
+                if (recipe.mSpecialValue > mCasingTier + 1) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -215,10 +208,20 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.8)
-                    .setDurationModifier(1.0 / 2.0);
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / 2.0;
     }
 
     @Override
@@ -248,13 +251,15 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingTier = -2;
-        mCountCasing = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 50;
+    }
 
+    @Override
+    public boolean checkHatch() {
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
@@ -265,18 +270,15 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
                 return false;
             }
         }
+        return super.checkHatch() && checkEnergyHatch()
+            && mEnergyHatches.size() <= 2
+            && mMaintenanceHatches.size() == 1;
+    }
 
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
-        }
-
-        return mCountCasing >= 50 && mEnergyHatches.size() <= 2 && mMaintenanceHatches.size() == 1;
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mCasingTier = -2;
     }
 
     @Override
@@ -308,13 +310,13 @@ public class ComponentAssembler extends MultiMachineBase<ComponentAssembler> imp
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("casingTier", casingTier);
+        aNBT.setInteger("casingTier", mCasingTier);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        casingTier = aNBT.getInteger("casingTier");
+        mCasingTier = aNBT.getInteger("casingTier");
         if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
             inputSeparation = aNBT.getBoolean("mSeparate");
         }

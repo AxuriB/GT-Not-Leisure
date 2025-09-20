@@ -123,7 +123,7 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
                             .dot(1)
                             .buildAndChain(
                                 onElementPass(
-                                    x -> ++x.tCountCasing,
+                                    x -> ++x.mCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamFurnace::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -177,12 +177,12 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
             return false;
-        if (tierPipeCasing == 1 && tierMachineCasing == 1 && tCountCasing >= 14) {
+        if (tierPipeCasing == 1 && tierMachineCasing == 1 && mCountCasing >= 14) {
             updateHatchTexture();
             tierMachine = 1;
             return true;
         }
-        if (tierPipeCasing == 2 && tierMachineCasing == 2 && tCountCasing >= 14) {
+        if (tierPipeCasing == 2 && tierMachineCasing == 2 && mCountCasing >= 14) {
             updateHatchTexture();
             tierMachine = 2;
             return true;

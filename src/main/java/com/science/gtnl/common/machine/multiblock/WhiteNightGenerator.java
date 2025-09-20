@@ -45,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -63,7 +64,6 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
     public String ownerName;
     public UUID ownerUUID;
     public long currentOutputEU = 0;
-    public int tCountCasing = 0;
 
     public WhiteNightGenerator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -151,30 +151,48 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
         wirelessMode = aNBT.getBoolean("wirelessMode");
     }
 
-    public int getMultiTier(ItemStack inventory) {
-        if (inventory == null) return 0;
-        return inventory
-            .isItemEqual(GTModHandler.getModItem(UniversalSingularities.ID, "universal.general.singularity", 1, 31)) ? 2
-                : inventory.isItemEqual(GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1, 0)) ? 1
-                    : 0;
+    public int getMultiTier() {
+        if (GTUtility.areStacksEqual(
+            getControllerSlot(),
+            GTModHandler.getModItem(UniversalSingularities.ID, "universal.general.singularity", 1, 31))) {
+            return 2;
+        }
+        if (GTUtility.areStacksEqual(
+            getControllerSlot(),
+            GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1, 0))) {
+            return 1;
+        }
+        return 0;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        repairMachine();
-        wirelessMode = false;
-        tCountCasing = 0;
-        multiTier = 0;
-        currentOutputEU = 0;
-
-        if (aStack != null) {
-            if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET))
-                this.multiTier = getMultiTier(aStack);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
         }
+        setupParameters();
+        return mCountCasing > 25;
+    }
 
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         wirelessMode = mDynamoHatches.isEmpty();
         currentOutputEU = 300L * multiTier;
-        return multiTier > 0 && tCountCasing > 25;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        wirelessMode = false;
+        multiTier = 0;
+        currentOutputEU = 0;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        this.multiTier = getMultiTier();
+        return super.checkHatch() && multiTier > 0;
     }
 
     @Override
@@ -216,7 +234,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
                 buildHatchAdder(WhiteNightGenerator.class).atLeast(Maintenance, Dynamo)
                     .dot(1)
                     .casingIndex(getCasingTextureID())
-                    .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings10, 13))))
             .addElement('B', ofBlock(GregTechAPI.sBlockCasingsDyson, 1))
             .addElement('C', ofBlock(BlockLoader.defcCasingBlock, 12))
             .addElement('D', ofBlock(TTCasingsContainer.GodforgeCasings, 8))

@@ -9,22 +9,16 @@ import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.GregTechAPI;
@@ -36,12 +30,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveDistillationTower>
@@ -141,24 +133,17 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * 0.75;
+    }
 
-        return new GTNL_ProcessingLogic() {
-
-            @Override
-            @Nonnull
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(0.75 * Math.pow(4, Math.min(4, recipeOcCount)))
-                    .setDurationModifier(0.8 / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0)
-                    .setMaxOverclocks(0);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / 0.8;
     }
 
     public void onCasingFound() {
-        tCountCasing++;
+        mCountCasing++;
     }
 
     public void onTopLayerFound(boolean aIsCasing) {
@@ -253,14 +238,7 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // reset
-        mOutputHatchesByLayer.forEach(List::clear);
-        mHeight = 1;
-        mTopLayerFound = false;
-        tCountCasing = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0)) return false;
-
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || !checkHatches()) return false;
         while (mHeight < 7) {
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) {
                 return false;
@@ -274,7 +252,15 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
         }
         updateHatchTexture();
 
-        return tCountCasing >= 7 * (mHeight + 1) - 5 && mHeight == 6;
+        return mCountCasing >= 7 * (mHeight + 1) - 5 && mHeight == 6;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mOutputHatchesByLayer.forEach(List::clear);
+        mHeight = 1;
+        mTopLayerFound = false;
     }
 
     @Override

@@ -256,12 +256,22 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUtDiscount(0.9)
-                    .setDurationModifier(1 / 1.11 - (3.0 * getMCoilLevel().getTier()) / 100)
+                return super.createOverclockCalculator(recipe).setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
                     .setMaxTierSkips(0);
             }
 
         }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.9;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 / 1.11 - (3.0 * getMCoilLevel().getTier()) / 100;
     }
 
     @Override
@@ -375,23 +385,25 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-        tTier = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset) || !checkHatch()) {
             return false;
         }
-
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
         setTierAndMult();
+        setupParameters();
+        return mCountCasing >= 40;
+    }
 
-        if (GTUtility.getTier(this.getMaxInputVoltage()) > tTier + 4) {
-            return false;
-        }
-        return mCountCasing >= 40 && mMaintenanceHatches.size() == 1
-            && getMCoilLevel() != HeatingCoilLevel.None
-            && this.mMufflerHatches.size() == 1;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None
+            && GTUtility.getTier(this.getMaxInputVoltage()) <= tTier + 4
+            && mMufflerHatches.size() == 1;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        tTier = 0;
     }
 
     @Override

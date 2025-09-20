@@ -82,7 +82,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
     public int tierTimeField = -1;
     public int tierStabilisationField = -1;
     public double outputMultiplier = 1;
-    public short recoveryChance = 0;
+    public int recoveryChance = 0;
     public byte rewardContinuous = 0;
     public long currentOutputEU = 0;
     public final DecimalFormat decimalFormat = new DecimalFormat("#.0");
@@ -148,18 +148,51 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
 
     @Override
     public String[] getInfoData() {
-        // spotless:off
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 6];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = EnumChatFormatting.GOLD+texter("Reward for continuous operation","RealArtificialStar.getInfoData.00")+EnumChatFormatting.RESET+": "+EnumChatFormatting.GREEN+(rewardContinuous+100)+"%";
-        ret[origin.length + 1] = EnumChatFormatting.GOLD+texter("Generating Multiplier","RealArtificialStar.getInfoData.01")+EnumChatFormatting.RESET+": "+EnumChatFormatting.GREEN+outputMultiplier;
-        ret[origin.length + 2] = EnumChatFormatting.GOLD+texter("Dimension Field Tier","RealArtificialStar.getInfoData.02")+EnumChatFormatting.RESET+": "+EnumChatFormatting.YELLOW+tierDimensionField;
-        ret[origin.length + 3] = EnumChatFormatting.GOLD+texter("Time Field Tier","RealArtificialStar.getInfoData.03")+EnumChatFormatting.RESET+": "+EnumChatFormatting.YELLOW+tierTimeField;
-        ret[origin.length + 4] = EnumChatFormatting.GOLD+texter("Stabilisation Field Tier","RealArtificialStar.getInfoData.04")+EnumChatFormatting.RESET+": "+EnumChatFormatting.YELLOW+tierStabilisationField;
-        ret[origin.length + 5] = EnumChatFormatting.GOLD+texter("Recover material chance","RealArtificialStar.getInfoData.05")+EnumChatFormatting.RESET+": "+EnumChatFormatting.AQUA+recoveryChance+EnumChatFormatting.RESET+"/"+EnumChatFormatting.AQUA+"1000";
+        ret[origin.length] = EnumChatFormatting.GOLD
+            + texter("Reward for continuous operation", "RealArtificialStar.getInfoData.00")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.GREEN
+            + (rewardContinuous + 100)
+            + "%";
+        ret[origin.length + 1] = EnumChatFormatting.GOLD
+            + texter("Generating Multiplier", "RealArtificialStar.getInfoData.01")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.GREEN
+            + outputMultiplier;
+        ret[origin.length + 2] = EnumChatFormatting.GOLD
+            + texter("Dimension Field Tier", "RealArtificialStar.getInfoData.02")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.YELLOW
+            + tierDimensionField;
+        ret[origin.length + 3] = EnumChatFormatting.GOLD
+            + texter("Time Field Tier", "RealArtificialStar.getInfoData.03")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.YELLOW
+            + tierTimeField;
+        ret[origin.length + 4] = EnumChatFormatting.GOLD
+            + texter("Stabilisation Field Tier", "RealArtificialStar.getInfoData.04")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.YELLOW
+            + tierStabilisationField;
+        ret[origin.length + 5] = EnumChatFormatting.GOLD
+            + texter("Recover material chance", "RealArtificialStar.getInfoData.05")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.AQUA
+            + recoveryChance
+            + EnumChatFormatting.RESET
+            + "/"
+            + EnumChatFormatting.AQUA
+            + "1000";
         return ret;
-       // spotless:on
     }
 
     @Override
@@ -391,17 +424,28 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        repairMachine();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+            return false;
+        calculateOutputMultiplier();
+        recoveryChance = tierDimensionField * tierTimeField * tierStabilisationField;
+        return true;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && tierDimensionField > 0
+            && tierTimeField > 0
+            && tierStabilisationField > 0
+            && mInputBusses.size() == 1;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
         mInputBusses.clear();
         tierDimensionField = -1;
         tierTimeField = -1;
         tierStabilisationField = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierDimensionField < 0 || tierTimeField < 0 || tierStabilisationField < 0) return false;
-        if (this.mInputBusses.size() != 1) return false;
-        calculateOutputMultiplier();
-        recoveryChance = (short) (tierDimensionField * tierTimeField * tierStabilisationField);
-        return true;
     }
 
     @Override
@@ -654,5 +698,18 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
         this.getBaseMetaTileEntity()
             .getWorld()
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+    }
+
+    @Override
+    public void checkMaintenance() {}
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCheckMaintenance() {
+        return false;
     }
 }

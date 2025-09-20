@@ -10,17 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.HeatingCoilLevel;
@@ -29,18 +24,14 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISurvivalConstructable {
 
-    private int mLevel = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String Desu_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/desulfurizer";
     public static final String[][] shape = StructureUtils.readStructureFromFile(Desu_STRUCTURE_FILE_PATH);
@@ -54,11 +45,6 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
 
     public Desulfurizer(String aName) {
         super(aName);
-    }
-
-    @Override
-    public boolean getPerfectOC() {
-        return true;
     }
 
     @Override
@@ -171,54 +157,47 @@ public class Desulfurizer extends MultiMachineBase<Desulfurizer> implements ISur
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mLevel = 0;
-        this.setMCoilLevel(HeatingCoilLevel.None);
-
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
-            || !checkHatch()) return false;
-        if (getMCoilLevel() == HeatingCoilLevel.None) return false;
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getRealMaxInputAmps() > 64) return false;
+            || !checkHatch()) {
+            return false;
         }
+        setupParameters();
+        return mCountCasing >= 20;
+    }
 
-        return mCountCasing >= 20 && getMCoilLevel() != HeatingCoilLevel.None
-            && (mLevel = getMCoilLevel().getTier() + 1) > 0;
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && checkEnergyHatch() && getMCoilLevel() != HeatingCoilLevel.None;
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (this.mLevel * 8);
+        return getMCoilLevel().getTier() * 8;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public boolean getHeatOC() {
+        return true;
+    }
 
-            @NotNull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setDurationModifier(100.0 / (100 + 10 * mLevel))
-                    .setHeatOC(true)
-                    .setRecipeHeat(0)
-                    .setMachineHeat((int) (getMCoilLevel().getHeat() * 2));
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public int getMachineHeat() {
+        return Math.toIntExact(getMCoilLevel().getHeat() * 2);
+    }
+
+    @Override
+    public boolean getPerfectOC() {
+        return true;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 100.0 / (100 + 10 * getMCoilLevel().getTier());
     }
 
     @Override

@@ -106,7 +106,7 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
                             InputHatch,
                             OutputHatch,
                             Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings2, 0)))))
+                        .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 0)))))
             .build();
     }
 

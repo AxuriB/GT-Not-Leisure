@@ -128,7 +128,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     @Setter
     public HeatingCoilLevel mCoilLevel = HeatingCoilLevel.None;
     public int mHeatingCapacity = 0;
-    public int mCoilTier = 0;
 
     public static final Map<ItemStack, Integer> PARALLEL_TIERS = new HashMap<>() {
 

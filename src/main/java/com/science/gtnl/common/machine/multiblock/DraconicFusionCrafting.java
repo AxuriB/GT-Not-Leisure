@@ -175,40 +175,42 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
             @NotNull
             @Override
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-
-                if (tierCasing >= 4) {
-                    return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                        .setRecipeEUt(recipe.mEUt)
-                        .setAmperage(availableAmperage)
-                        .setEUt(availableVoltage)
-                        .setDuration(recipe.mDuration)
-                        .setAmperageOC(true)
-                        .setDurationDecreasePerOC(4)
-                        .setEUtIncreasePerOC(4)
-                        .setEUtDiscount(0.5 - (mParallelTier / 50.0))
-                        .setDurationModifier(1.0 / 2.0 - (Math.max(0, mParallelTier - 1) / 50.0));
-                } else return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.5 - (mParallelTier / 50.0))
-                    .setDurationModifier(1.0 / 2.0 - (Math.max(0, mParallelTier - 1) / 50.0));
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setPerfectOC(getPerfectOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
         }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        mParallelTier = 0;
-        tierCasing = -1;
+    public double getEUtDiscount() {
+        return 0.5 - (mParallelTier / 50.0);
+    }
 
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / 2.0 - (Math.max(0, mParallelTier - 1) / 50.0);
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        mEnergyHatchTier = checkEnergyHatchTier();
-        if (tierCasing < 0) return false;
-
-        mParallelTier = getParallelTier(aStack);
+        setupParameters();
         return mCountCasing >= 25;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        tierCasing = -1;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && tierCasing >= 0;
     }
 
     @Override

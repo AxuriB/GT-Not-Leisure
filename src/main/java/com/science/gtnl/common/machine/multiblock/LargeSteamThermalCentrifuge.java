@@ -6,14 +6,11 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -21,19 +18,15 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -113,7 +106,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
                                 Maintenance)
                             .buildAndChain(
                                 onElementPass(
-                                    x -> ++x.tCountCasing,
+                                    x -> ++x.mCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamThermalCentrifuge::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -178,18 +171,12 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = -1;
-        tierPipeCasing = -1;
-        tierMachineCasing = -1;
-        tierFrameCasing = -1;
-        tierFireboxCasing = -1;
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
         if (tierPipeCasing == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierFireboxCasing == 1
-            && tCountCasing >= 80
-            && checkHatches()) {
+            && mCountCasing >= 80) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -198,15 +185,12 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
         if (tierPipeCasing == 2 && tierMachineCasing == 2
             && tierFrameCasing == 2
             && tierFireboxCasing == 2
-            && tCountCasing >= 80
-            && checkHatches()) {
+            && mCountCasing >= 80) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        getCasingTextureID();
-        updateHatchTexture();
         return false;
     }
 
@@ -226,20 +210,13 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * 0.8 * tierMachine;
+    }
 
-        return new GTNL_ProcessingLogic() {
-
-            @Override
-            @Nonnull
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
-                    .setEUtDiscount(0.8 * tierMachine * Math.pow(4, Math.min(4, recipeOcCount)))
-                    .setDurationModifier(1.0 / 4.0 / tierMachine / Math.pow(2, Math.min(4, recipeOcCount)))
-                    .setMaxTierSkips(0)
-                    .setMaxOverclocks(0);
-            }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / 4.0 / tierMachine;
     }
 
     @Override

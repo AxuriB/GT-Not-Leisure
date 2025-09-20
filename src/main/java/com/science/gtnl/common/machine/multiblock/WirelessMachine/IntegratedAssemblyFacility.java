@@ -1,78 +1,73 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.WirelessMachine;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
-import static gtnhlanth.common.register.LanthItemList.ELECTRODE_CASING;
-import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
 
-import javax.annotation.Nonnull;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
-import gregtech.api.GregTechAPI;
+import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.LanthItemList;
-import tectech.thing.casing.BlockGTCasingsTT;
 
-public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBase<SuperconductingMagneticPresser> {
+public class IntegratedAssemblyFacility extends WirelessEnergyMultiMachineBase<IntegratedAssemblyFacility> {
 
-    private static final int HORIZONTAL_OFF_SET = 6;
-    private static final int VERTICAL_OFF_SET = 5;
+    private int mCasingTier;
+    private static final int HORIZONTAL_OFF_SET = 8;
+    private static final int VERTICAL_OFF_SET = 10;
     private static final int DEPTH_OFF_SET = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String SMP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/superconducting_magnetic_presser";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(SMP_STRUCTURE_FILE_PATH);
+    private static final String IAF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
+        + "multiblock/integrated_assembly_facility";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(IAF_STRUCTURE_FILE_PATH);
 
-    public SuperconductingMagneticPresser(String aName) {
+    public IntegratedAssemblyFacility(String aName) {
         super(aName);
     }
 
-    public SuperconductingMagneticPresser(int aID, String aName, String aNameRegional) {
+    public IntegratedAssemblyFacility(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new SuperconductingMagneticPresser(this.mName);
+        return new IntegratedAssemblyFacility(this.mName);
     }
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("SuperconductingMagneticPresserRecipeType"))
+        tt.addMachineType(StatCollector.translateToLocal("IntegratedAssemblyFacilityRecipeType"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_00"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_02"))
@@ -87,11 +82,11 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(38, 7, 17, true)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
-            .addInputHatch(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_SuperconductingMagneticPresser_Casing"), 1)
+            .beginStructureBlock(47, 13, 19, true)
+            .addInputBus(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_Casing"), 1)
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_Casing"), 1)
+            .addInputHatch(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_Casing"), 1)
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_IntegratedAssemblyFacility_Casing"), 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -99,7 +94,7 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
 
     @Override
     public int getCasingTextureID() {
-        return StructureUtils.getTextureIndex(GregTechAPI.sBlockCasings8, 7);
+        return StructureUtils.getTextureIndex(sBlockCasings8, 7);
     }
 
     @Override
@@ -121,37 +116,42 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
     }
 
     @Override
-    public IStructureDefinition<SuperconductingMagneticPresser> getStructureDefinition() {
-        return StructureDefinition.<SuperconductingMagneticPresser>builder()
+    public IStructureDefinition<IntegratedAssemblyFacility> getStructureDefinition() {
+        return StructureDefinition.<IntegratedAssemblyFacility>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(sBlockCasings9, 12))
-            .addElement('B', ofBlock(sBlockCasings10, 8))
-            .addElement('C', ofBlock(sBlockCasings10, 7))
-            .addElement('D', ofBlock(sBlockCasings1, 15))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 4))
             .addElement(
-                'E',
-                buildHatchAdder(SuperconductingMagneticPresser.class)
+                'B',
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                    IntStream.range(0, 13)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -2,
+                    (t, meta) -> t.mCasingTier = meta,
+                    t -> t.mCasingTier))
+            .addElement(
+                'C',
+                buildHatchAdder(IntegratedAssemblyFacility.class)
                     .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy))
-                    .casingIndex(getCasingTextureID())
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 7))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
-            .addElement('F', ofBlock(sBlockCasings1, 13))
-            .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-            .addElement('H', ofBlock(sBlockCasingsTT, 6))
-            .addElement('I', ofBlock(sBlockCasingsTT, 4))
-            .addElement('J', ofBlock(sBlockCasings8, 10))
-            .addElement('K', ofBlockAnyMeta(ELECTRODE_CASING))
-            .addElement('L', ofBlock(sBlockCasings3, 11))
-            .addElement('M', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
-            .addElement(
-                'N',
-                ofBlockAnyMeta(
-                    BlockGTCasingsTT.getBlockFromItem(
-                        MaterialsElements.STANDALONE.DRAGON_METAL.getFrameBox(1)
-                            .getItem())))
-            .addElement('O', ofFrame(Materials.Naquadria))
-            .addElement('P', ofBlock(BlockLoader.metaCasing, 2))
-            .addElement('Q', ofBlock(sBlockMetal5, 2))
+            .addElement('D', ofBlock(sBlockCasings2, 6))
+            .addElement('E', ofBlock(sBlockCasings9, 1))
+            .addElement('F', ofBlock(sBlockCasings8, 12))
+            .addElement('G', ofFrame(Materials.Neutronium))
+            .addElement('H', ofBlock(sBlockCasings10, 11))
+            .addElement('I', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('J', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
+            .addElement('K', ofBlock(sBlockCasings2, 5))
+            .addElement('L', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
+            .addElement('M', ofBlock(sBlockCasingsSE, 1))
+            .addElement('N', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('O', ofBlock(BlockLoader.metaBlockGlow, 31))
+            .addElement('P', ofBlock(sBlockCasings6, 9))
+            .addElement('Q', ofBlock(BlockLoader.metaCasing, 5))
+            .addElement('R', ofFrame(Materials.CosmicNeutronium))
             .build();
     }
 
@@ -183,63 +183,75 @@ public class SuperconductingMagneticPresser extends WirelessEnergyMultiMachineBa
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mCountCasing = 0;
-        wirelessMode = false;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        mEnergyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+        setupParameters();
         return mCountCasing > 1200;
     }
 
     @Override
-    public RecipeMap<?> getRecipeMap() {
-        return RecipeMaps.formingPressRecipes;
+    public void clearHatches() {
+        super.clearHatches();
+        mCasingTier = -2;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new GTNL_ProcessingLogic() {
+    public boolean checkHatch() {
+        return super.checkHatch() && mCasingTier >= 0;
+    }
 
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4 && wirelessMode) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return super.validateRecipe(recipe);
-            }
+    @Override
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * Math.pow(0.95, mGlassTier) * Math.pow(0.95, mCasingTier);
+    }
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() * Math.pow(0.95, mGlassTier) * Math.pow(0.95, mCasingTier);
+    }
 
-            @Nonnull
-            @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
-                    .setEUtDiscount(0.4 - (mParallelTier / 50.0) * Math.pow(0.95, mGlassTier))
-                    .setDurationModifier(0.1 * Math.pow(0.75, mParallelTier) * Math.pow(0.95, mGlassTier));
+    public long getMachineVoltageLimit() {
+        if (mCasingTier < 0) return 0;
+        if (wirelessMode) {
+            if (mCasingTier >= 11) {
+                return V[Math.min(mParallelTier + 1, 14)];
+            } else {
+                return V[Math.min(Math.min(mParallelTier + 1, mCasingTier + 3), 14)];
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        } else if (mCasingTier >= 11) {
+            return V[mEnergyHatchTier];
+        } else {
+            return V[Math.min(mCasingTier + 3, mEnergyHatchTier)];
+        }
+    }
+
+    @Override
+    public RecipeMap<?> getRecipeMap() {
+        return RecipeMaps.assemblerRecipes;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("mGlassTier", mGlassTier);
+        aNBT.setInteger("casingTier", mCasingTier);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mGlassTier = aNBT.getInteger("mGlassTier");
+        mCasingTier = aNBT.getInteger("casingTier");
+    }
+
+    @Override
+    public String[] getInfoData() {
+        String[] origin = super.getInfoData();
+        String[] ret = new String[origin.length + 1];
+        System.arraycopy(origin, 0, ret, 0, origin.length);
+        ret[origin.length] = StatCollector.translateToLocal("scanner.info.CASS.tier")
+            + (mCasingTier >= 0 ? VN[mCasingTier + 1] : "None!");
+        return ret;
     }
 
 }

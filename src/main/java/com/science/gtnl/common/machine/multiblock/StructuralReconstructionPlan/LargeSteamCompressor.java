@@ -117,7 +117,7 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
                                 Maintenance)
                             .buildAndChain(
                                 onElementPass(
-                                    x -> ++x.tCountCasing,
+                                    x -> ++x.mCountCasing,
                                     ofBlocksTiered(
                                         LargeSteamCompressor::getTierMachineCasing,
                                         ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
@@ -188,7 +188,7 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
         if (tierMaterialBlock == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierGearCasing == 1
-            && tCountCasing >= 95) {
+            && mCountCasing >= 95) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -197,7 +197,7 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
         if (tierMaterialBlock == 2 && tierMachineCasing == 2
             && tierFrameCasing == 2
             && tierGearCasing == 2
-            && tCountCasing >= 95) {
+            && mCountCasing >= 95) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
