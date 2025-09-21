@@ -105,6 +105,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_07"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_08"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_09"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_10"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Tectech_Hatch"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
@@ -188,7 +189,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
         for (int i = 0; i < mSpeedCount; i++) {
             discount *= 0.95;
         }
-        return (0.4 - (mParallelTier / 50.0)) * discount;
+        return super.getEUtDiscount() * discount;
     }
 
     @Override
@@ -201,7 +202,7 @@ public class HandOfJohnDavisonRockefeller extends WirelessEnergyMultiMachineBase
                 break;
             }
         }
-        return (0.1 * Math.pow(0.75, mParallelTier)) * speedBoost;
+        return super.getDurationModifier() * speedBoost;
     }
 
 }

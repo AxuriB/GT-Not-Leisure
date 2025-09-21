@@ -68,6 +68,7 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_07"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_08"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_09"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_10"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Tectech_Hatch"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
@@ -176,7 +177,7 @@ public class HeavyRolling extends WirelessEnergyMultiMachineBase<HeavyRolling> {
 
     @Override
     public double getEUtDiscount() {
-        return 0.4 - (mParallelTier / 50.0);
+        return super.getEUtDiscount();
     }
 
     @Override

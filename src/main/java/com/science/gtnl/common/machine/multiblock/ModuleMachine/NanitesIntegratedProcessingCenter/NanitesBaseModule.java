@@ -55,6 +55,7 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_07"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_08"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_09"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_10"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Tectech_Hatch"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))

@@ -205,12 +205,12 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
 
     @Override
     public double getEUtDiscount() {
-        return 0.4 - (mParallelTier / 50.0);
+        return (wirelessUpgrade ? 0.4 : 0.6) - (mParallelTier / 50.0);
     }
 
     @Override
     public double getDurationModifier() {
-        return 1.0 / 10.0 * Math.pow(0.75, mParallelTier);
+        return 1.0 / (wirelessUpgrade ? 10.0 : 5.0) * Math.pow(0.75, mParallelTier);
     }
 
     @Nonnull

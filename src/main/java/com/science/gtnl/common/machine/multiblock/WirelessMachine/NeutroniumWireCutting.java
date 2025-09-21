@@ -7,6 +7,7 @@ import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GTStructureUtility.*;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -30,6 +31,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
 
@@ -70,6 +72,7 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_07"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_08"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_09"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_10"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Tectech_Hatch"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
@@ -132,7 +135,12 @@ public class NeutroniumWireCutting extends WirelessEnergyMultiMachineBase<Neutro
             .addElement('M', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
             .addElement('N', ofBlock(TTCasingsContainer.sBlockCasingsTT, 6))
             .addElement('O', ofFrame(Materials.Neutronium))
-            .addElement('P', ofBlockAnyMeta(GameRegistry.findBlock("miscutils", "blockFrameGtHastelloyN")))
+            .addElement(
+                'P',
+                ofBlockAnyMeta(
+                    Block.getBlockFromItem(
+                        MaterialsAlloy.HASTELLOY_N.getFrameBox(1)
+                            .getItem())))
             .addElement('Q', ofBlock(BlockLoader.metaCasing, 4))
             .addElement('R', ofBlock(BlockLoader.metaCasing, 5))
             .build();
