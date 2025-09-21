@@ -446,7 +446,7 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
         builder.widget(
             new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_LOGO)
                 .setSize(18, 18)
-                .setPos(170 + 4 * (mTier - 1) + mTier / 2, 102 + 14 * (mTier - 1)));
+                .setPos(169 + 4 * (mTier - 1) + mTier / 2, 102 + 14 * (mTier - 1)));
     }
 
     @Override
