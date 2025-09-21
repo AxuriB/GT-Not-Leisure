@@ -115,7 +115,7 @@ public class EnergyTransferNode extends MTETieredMachineBlock implements IConnec
 
     @Override
     public long maxEUStore() {
-        return 512L + mVoltage * mAmperes ^ 2;
+        return mVoltage * mAmperes * mAmperes * mAmperes;
     }
 
     @Override
