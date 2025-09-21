@@ -26,6 +26,7 @@ import com.science.gtnl.mixins.early.Gregtech.AccessorMTETieredMachineBlock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -37,7 +38,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.util.GTUtility;
 import lombok.Getter;
 import lombok.Setter;
-import tectech.thing.metaTileEntity.Textures;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
@@ -103,8 +103,9 @@ public class DebugEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets, I
         int colorIndex, boolean aActive, boolean aRedstone) {
         return new ITexture[] { super.getTexture(aBaseMetaTileEntity, side, facing, colorIndex, aActive, aRedstone)[0],
             side != facing
-                ? (aActive ? Textures.OVERLAYS_ENERGY_OUT_POWER_TT[mTier] : Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier])
-                : Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER[mTier] };
+                ? (aActive ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier]
+                    : Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier])
+                : Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier] };
     }
 
     @Override
