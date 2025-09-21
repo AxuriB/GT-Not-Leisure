@@ -38,6 +38,7 @@ public class PrimitiveBrickKilnRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
+                GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 3),
                 new ItemStack(Blocks.brick_block, 2))
             .itemOutputs(ItemList.Hull_Bronze_Bricks.get(1))

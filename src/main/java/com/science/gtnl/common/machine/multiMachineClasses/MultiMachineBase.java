@@ -231,9 +231,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
                 coilLease = GTCoilTracker.activate(this, mCoils);
             }
         } else {
-            if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
-                doActivitySound(getActivitySoundLoop());
-            }
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
