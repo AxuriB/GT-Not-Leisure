@@ -10,14 +10,14 @@ import net.minecraft.world.World;
 import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.api.ITileEntityTickAcceleration;
 
-public class EntityChronarchPoint extends Entity {
+public class EntityChronarchClock extends Entity {
 
     private final int radius;
     private final int speedMultiplier;
     private final int maxTicks;
     private int age = 0;
 
-    public EntityChronarchPoint(World world) {
+    public EntityChronarchClock(World world) {
         super(world);
         this.radius = 0;
         this.speedMultiplier = 0;
@@ -25,7 +25,7 @@ public class EntityChronarchPoint extends Entity {
         initInvisible();
     }
 
-    public EntityChronarchPoint(World world, double x, double y, double z, int radius, int speedMultiplier,
+    public EntityChronarchClock(World world, double x, double y, double z, int radius, int speedMultiplier,
         int durationTicks) {
         super(world);
         this.setPosition(x, y, z);
@@ -37,7 +37,7 @@ public class EntityChronarchPoint extends Entity {
     }
 
     private void initInvisible() {
-        this.setSize(0.0F, 0.0F);
+        this.setSize(1, 1);
         this.ignoreFrustumCheck = true;
     }
 

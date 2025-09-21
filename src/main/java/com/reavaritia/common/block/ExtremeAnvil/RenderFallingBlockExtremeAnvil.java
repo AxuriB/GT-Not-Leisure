@@ -14,13 +14,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderFallingBlockExtremeAnvil extends Render {
 
-    private final ExtremeAnvilModel model = new ExtremeAnvilModel();
+    private static final ExtremeAnvilModel model = new ExtremeAnvilModel();
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(
         RESOURCE_ROOT_ID + ":" + "textures/blocks/ExtremeAnvil.png");
 
     public RenderFallingBlockExtremeAnvil() {
         this.shadowSize = 0.5F;
+    }
+
+    @Override
+    protected ResourceLocation getEntityTexture(Entity entity) {
+        return TEXTURE;
     }
 
     @Override
@@ -43,10 +48,5 @@ public class RenderFallingBlockExtremeAnvil extends Render {
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glPopMatrix();
         }
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return TEXTURE;
     }
 }

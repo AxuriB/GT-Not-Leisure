@@ -9,6 +9,8 @@ import com.reavaritia.common.block.ExtremeAnvil.EntityExtremeAnvil;
 import com.reavaritia.common.block.ExtremeAnvil.RenderExtremeAnvil;
 import com.reavaritia.common.block.ExtremeAnvil.RenderFallingBlockExtremeAnvil;
 import com.reavaritia.common.block.ExtremeAnvil.TileEntityExtremeAnvil;
+import com.reavaritia.common.entity.EntityChronarchClock;
+import com.reavaritia.common.render.RenderChronarchClock;
 
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -31,6 +33,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityExtremeAnvil.class, new RenderExtremeAnvil());
         RenderingRegistry
             .registerEntityRenderingHandler(EntityExtremeAnvil.class, new RenderFallingBlockExtremeAnvil());
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityChronarchClock.class, new RenderChronarchClock());
     }
 
     @Override
