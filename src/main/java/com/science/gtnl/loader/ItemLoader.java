@@ -16,6 +16,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.Utils.text.TextUtils;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.item.ItemDebug;
 import com.science.gtnl.common.item.ItemInfinityCell;
 import com.science.gtnl.common.item.ItemInfinityItem;
 import com.science.gtnl.common.item.ItemRecord;
@@ -212,6 +213,7 @@ public class ItemLoader {
         GameRegistry.registerItem(physicsCape, "PhysicsCape");
         GameRegistry.registerItem(luckyHorseshoe, "LuckyHorseshoe");
         GameRegistry.registerItem(infinityCell, "InfinityCell");
+        GameRegistry.registerItem(ItemDebug.INSTANCE, "debug");
 
         GTNLItemList.RecordSus.set(new ItemStack(RecordLoader.recordSus, 1));
         GTNLItemList.RecordNewHorizons.set(new ItemStack(RecordLoader.recordNewHorizons, 1));
