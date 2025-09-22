@@ -10,7 +10,6 @@ import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.dreammaster.item.NHItemList;
@@ -192,29 +191,6 @@ public class ScriptAvaritia implements IScriptLoader {
             Materials material = Materials.get("Grade" + i + "PurifiedWater");
             purifiedWaterPackets[i - 1] = ItemUtils.createFluidPacket(material.getFluid(1), 114514);
         }
-
-        ItemStack creativeCapacitorBank = GTModHandler.getModItem(EnderIO.ID, "blockCapBank", 1, 0);
-        NBTTagCompound creativeCapacitorBankType = creativeCapacitorBank.getTagCompound();
-        if (creativeCapacitorBankType != null) {
-            creativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            creativeCapacitorBankType.setString("type", "CREATIVE");
-        } else {
-            creativeCapacitorBankType = new NBTTagCompound();
-            creativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            creativeCapacitorBankType.setString("type", "CREATIVE");
-            creativeCapacitorBank.setTagCompound(creativeCapacitorBankType);
-        }
-
-        ItemStack asgardandelion = ItemUtils.createSpecialFlower("asgardandelion");
-
-        ItemStack manaTablet = GTModHandler.getModItem(Botania.ID, "manaTablet", 1, 0, missing);
-        NBTTagCompound manaTabletNBT = manaTablet.getTagCompound();
-        if (manaTabletNBT == null) {
-            manaTabletNBT = new NBTTagCompound();
-        }
-        manaTabletNBT.setInteger("mana", 500000);
-        manaTabletNBT.setByte("creative", (byte) 1);
-        manaTablet.setTagCompound(manaTabletNBT);
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
@@ -1045,7 +1021,13 @@ public class ScriptAvaritia implements IScriptLoader {
                 "ghijklmno",
                 "ppppppppp",
                 'A',
-                creativeCapacitorBank,
+                ItemUtils.createItemStack(
+                    "EnderIO",
+                    "blockCapBank",
+                    1,
+                    0,
+                    "{storedEnergyRF:2500000,type:\"CREATIVE\"}",
+                    null),
                 'B',
                 GTModHandler.getModItem(OpenComputers.ID, "item", 1, 114, missing),
                 'C',
@@ -1073,7 +1055,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'N',
                 GTModHandler.getModItem(SGCraft.ID, "stargateRing", 1, 0, missing),
                 'O',
-                manaTablet,
+                createItemStack("Botania", "manaTablet", 1, 0, "{mana:500000,creative:1}", null),
                 'P',
                 GTModHandler.getModItem(StevesCarts2.ID, "upgrade", 1, 14, missing),
                 'Q',
@@ -1125,7 +1107,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'd',
                 GTNLItemList.StargateTier5.get(1),
                 'e',
-                asgardandelion,
+                ItemUtils.createSpecialFlower("asgardandelion"),
                 'f',
                 GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockSingularityCraftingStorage", 1, 0, missing),
                 'g',

@@ -9,13 +9,13 @@ import static gregtech.api.util.GTRecipeConstants.*;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.dreammaster.block.BlockList;
 import com.reavaritia.ReAvaItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
 
@@ -54,30 +54,6 @@ public class AssemblingLineRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-
-        ItemStack CrystalStuddedCosmicNeutroniumWand = GTModHandler.getModItem(Thaumcraft.ID, "WandCasting", 1, 9000);
-        NBTTagCompound CrystalStuddedCosmicNeutroniumWandType = CrystalStuddedCosmicNeutroniumWand.getTagCompound();
-        if (CrystalStuddedCosmicNeutroniumWandType != null) {
-            CrystalStuddedCosmicNeutroniumWandType.setString("cap", "matrix");
-            CrystalStuddedCosmicNeutroniumWandType.setString("rod", "infinity");
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("aer", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("aqua", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("ignis", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("ordo", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("perditio", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("terra", 999999900);
-        } else {
-            CrystalStuddedCosmicNeutroniumWandType = new NBTTagCompound();
-            CrystalStuddedCosmicNeutroniumWandType.setString("cap", "matrix");
-            CrystalStuddedCosmicNeutroniumWandType.setString("rod", "infinity");
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("aer", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("aqua", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("ignis", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("ordo", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("perditio", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("terra", 999999900);
-            CrystalStuddedCosmicNeutroniumWand.setTagCompound(CrystalStuddedCosmicNeutroniumWandType);
-        }
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Circuit_Chip_Biocell.get(1),
@@ -238,7 +214,13 @@ public class AssemblingLineRecipes implements IRecipePool {
                 GTModHandler.getModItem(ThaumicEnergistics.ID, "thaumicenergistics.block.arcane.assembler", 64),
                 GTModHandler.getModItem(Thaumcraft.ID, "blockStoneDevice", 64, 2),
                 GTModHandler.getModItem(Thaumcraft.ID, "blockStoneDevice", 64, 2),
-                CrystalStuddedCosmicNeutroniumWand,
+                ItemUtils.createItemStack(
+                    Thaumcraft.ID,
+                    "WandCasting",
+                    1,
+                    9000,
+                    "{cap:\"matrix\",rod:\"infinity\",aer:999999900,aqua:999999900,ignis:999999900,ordo:999999900,perditio:999999900,terra:999999900}",
+                    null),
                 GTModHandler.getModItem(Avaritia.ID, "Akashic_Record", 1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 16L },
                 ItemList.Robot_Arm_UEV.get(32),

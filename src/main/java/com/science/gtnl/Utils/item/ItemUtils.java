@@ -97,16 +97,26 @@ public class ItemUtils {
         return Blocks.air;
     }
 
-    public static ItemStack createItemStack(String aModID, String aItem, long aAmount, int aMeta, String aNBTString,
-        ItemStack aReplacement) {
-        ItemStack s = getModItem(aModID, aItem, aAmount, aMeta);
-        if (s == null) return aReplacement;
+    public static ItemStack createItemStack(ItemStack baseStack, String aNBTString, ItemStack aReplacement) {
+        if (baseStack == null) return aReplacement;
         try {
-            s.stackTagCompound = (NBTTagCompound) JsonToNBT.func_150315_a(aNBTString);
+            baseStack.stackTagCompound = (NBTTagCompound) JsonToNBT.func_150315_a(aNBTString);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return s;
+        return baseStack;
+    }
+
+    public static ItemStack createItemStack(String aModID, String aItem, long aAmount, int aMeta, String aNBTString,
+        ItemStack aReplacement) {
+        ItemStack itemStack = getModItem(aModID, aItem, aAmount, aMeta);
+        if (itemStack == null) return aReplacement;
+        try {
+            itemStack.stackTagCompound = (NBTTagCompound) JsonToNBT.func_150315_a(aNBTString);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return itemStack;
     }
 
     public static ItemStack createSpecialFlower(String typeName) {
