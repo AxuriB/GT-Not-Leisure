@@ -176,6 +176,6 @@ public class SpaceAssembler extends GTMMultiMachineBase<SpaceAssembler> implemen
 
     @Override
     public double getDurationModifier() {
-        return 1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0);
+        return super.getDurationModifier();
     }
 }

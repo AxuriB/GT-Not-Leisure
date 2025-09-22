@@ -36,6 +36,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -81,6 +82,20 @@ public class SubscribeEventUtils {
 
     public static final DamageSource CRUSHING_DAMAGE = new DamageSource("damage.gtnl.crushing")
         .setDamageBypassesArmor();
+
+    @SubscribeEvent
+    public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        int fromDim = event.fromDim;
+        int toDim = event.toDim;
+
+        String providerClassName = DimensionManager.getProvider(toDim)
+            .getClass()
+            .getName();
+
+        System.out.println(
+            event.player
+                .getDisplayName() + " 从维度 " + fromDim + " 切换到了维度 " + toDim + "，Provider = " + providerClassName);
+    }
 
     // Player
     @SubscribeEvent

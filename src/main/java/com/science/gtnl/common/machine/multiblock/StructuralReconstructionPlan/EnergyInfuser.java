@@ -328,6 +328,21 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
     }
 
     @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
+
+        NBTTagList storedItemsList = new NBTTagList();
+        for (ItemStack stack : mStoredItems) {
+            if (stack != null) {
+                NBTTagCompound itemTag = new NBTTagCompound();
+                stack.writeToNBT(itemTag);
+                storedItemsList.appendTag(itemTag);
+            }
+        }
+        aNBT.setTag("mStoredItems", storedItemsList);
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 

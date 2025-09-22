@@ -279,7 +279,11 @@ public class RecipeUtil {
             || DimensionManager.getProvider(dimId)
                 .getClass()
                 .getName()
-                .contains("SpaceStation");
+                .contains("SpaceStation")
+            || DimensionManager.getProvider(dimId)
+                .getClass()
+                .getName()
+                .contains("WorldProvider");
     }
 
     public static boolean isValidForMothership(int dimId) {
