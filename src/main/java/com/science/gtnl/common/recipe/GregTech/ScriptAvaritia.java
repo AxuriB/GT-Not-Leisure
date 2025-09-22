@@ -2086,7 +2086,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 "-BBCDCBB-",
                 "ABCCECCBA",
                 "BCCCFCCCB",
-                "BCEFGFECB",
+                "BDEFGFEDB",
                 "BCCCFCCCB",
                 "ABCCECCBA",
                 "-BBCDCBB-",
