@@ -549,12 +549,18 @@ public class DisassemblerHelper {
             ItemStack input = recipe.mOutputs[0];
             if (ShimmerRecipes.isInConversions(input)) continue;
 
-            List<ItemStack> outputs = new ArrayList<>(new ArrayList<>(Arrays.asList(recipe.mInputs)));
+            List<ItemStack> outputs = new ArrayList<>();
+            for (ItemStack stack : recipe.mInputs) {
+                if (stack != null) {
+                    outputs.add(stack);
+                }
+            }
             if (recipe.mFluidInputs != null) {
                 for (FluidStack fluid : recipe.mFluidInputs) {
                     outputs.add(ItemUtils.createFluidPacket(fluid, fluid.amount));
                 }
             }
+            if (outputs.isEmpty()) continue;
 
             GTValues.RA.stdBuilder()
                 .itemInputs(input)
