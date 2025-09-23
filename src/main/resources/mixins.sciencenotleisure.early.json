@@ -12,6 +12,7 @@
     "Minecraft.AccessorGuiChat",
     "Minecraft.AccessorFoodStats",
     "Minecraft.AccessorEntityLivingBase",
+    "Minecraft.AccessorContainerRepair",
     "Minecraft.MixinServerConfigurationManager",
     "Minecraft.MixinEntityPlayer",
     "Minecraft.MixinEntity",

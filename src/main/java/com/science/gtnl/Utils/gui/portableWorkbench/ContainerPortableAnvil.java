@@ -1,7 +1,5 @@
 package com.science.gtnl.Utils.gui.portableWorkbench;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerRepair;
@@ -10,6 +8,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.common.item.items.PortableItem;
+import com.science.gtnl.mixins.early.Minecraft.AccessorContainerRepair;
 
 public class ContainerPortableAnvil extends ContainerRepair {
 
@@ -18,17 +17,10 @@ public class ContainerPortableAnvil extends ContainerRepair {
 
     public ContainerPortableAnvil(InventoryPlayer playerInv, EntityPlayer player) {
         super(playerInv, player.worldObj, 0, 0, 0, player);
-        try {
-            Field fInput = ContainerRepair.class.getDeclaredField("inputSlots");
-            fInput.setAccessible(true);
-            this.inputSlots = (IInventory) fInput.get(this);
 
-            Field fOutput = ContainerRepair.class.getDeclaredField("outputSlot");
-            fOutput.setAccessible(true);
-            this.outputSlot = (IInventory) fOutput.get(this);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        AccessorContainerRepair accessor = (AccessorContainerRepair) this;
+        this.inputSlots = accessor.getInputSlots();
+        this.outputSlot = accessor.getOutputSlots();
 
         this.inventorySlots.set(0, new Slot(inputSlots, 0, 27, 47) {
 
