@@ -18,6 +18,7 @@ import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableFurnace;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableInfinityChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableChest;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
+import com.science.gtnl.common.item.ItemDebug;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.NetWorkHandler;
 import com.science.gtnl.common.recipe.GTNL.ExtremeExtremeEntityCrusherRecipes;
@@ -47,6 +48,7 @@ public class CommonProxy implements IGuiHandler {
             .register(new SubscribeEventUtils());
 
         NetWorkHandler.registerAllMessage();
+        MinecraftForge.EVENT_BUS.register(ItemDebug.INSTANCE);
     }
 
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)

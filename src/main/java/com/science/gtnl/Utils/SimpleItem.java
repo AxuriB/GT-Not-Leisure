@@ -13,7 +13,10 @@ import appeng.api.storage.data.IAEItemStack;
 @Desugar
 public record SimpleItem(Item item, int meta, NBTTagCompound nbt) {
 
+    public static final SimpleItem empty = new SimpleItem(null, 0, null);
+
     public static SimpleItem getInstance(ItemStack stack) {
+        if (stack == null) return empty;
         return new SimpleItem(stack.getItem(), stack.getItemDamage(), stack.getTagCompound());
     }
 

@@ -107,6 +107,16 @@ public class ItemUtils {
         return baseStack;
     }
 
+    public static ItemStack createItemStack(String aModID, String aItem, long aAmount, int aMeta, String aNBTString) {
+        ItemStack s = getModItem(aModID, aItem, aAmount, aMeta);
+        try {
+            s.stackTagCompound = (NBTTagCompound) JsonToNBT.func_150315_a(aNBTString);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return s;
+    }
+
     public static ItemStack createItemStack(String aModID, String aItem, long aAmount, int aMeta, String aNBTString,
         ItemStack aReplacement) {
         ItemStack itemStack = getModItem(aModID, aItem, aAmount, aMeta);
