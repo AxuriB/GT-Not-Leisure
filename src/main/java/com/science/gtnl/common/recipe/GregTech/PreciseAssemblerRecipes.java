@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.config.MainConfig;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
@@ -33,22 +34,24 @@ public class PreciseAssemblerRecipes implements IRecipePool {
     @Override
     public void loadRecipes() {
 
-        GTValues.RA.stdBuilder()
-            .setNEIDesc("Remove Change by GTNotLeisure")
-            .itemInputs(
-                GTNLItemList.NeutroniumWafer.get(4),
-                ItemList.Circuit_Chip_Biocell.get(64),
-                MaterialPool.Actinium.get(OrePrefixes.dust, 1),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Strontium, 1))
-            .itemOutputs(ItemList.Circuit_Wafer_Bioware.get(4))
-            .fluidInputs(
-                Materials.BioMediumSterilized.getFluid(1000),
-                Materials.Lubricant.getFluid(1000),
-                Materials.Nitrogen.getGas(10000))
-            .duration(600)
-            .eut(TierEU.RECIPE_UV)
-            .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
-            .addTo(PAR);
+        if (MainConfig.enableDeleteRecipe) {
+            GTValues.RA.stdBuilder()
+                .setNEIDesc("Remove Change by GTNotLeisure")
+                .itemInputs(
+                    GTNLItemList.NeutroniumWafer.get(4),
+                    ItemList.Circuit_Chip_Biocell.get(64),
+                    MaterialPool.Actinium.get(OrePrefixes.dust, 1),
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Strontium, 1))
+                .itemOutputs(ItemList.Circuit_Wafer_Bioware.get(4))
+                .fluidInputs(
+                    Materials.BioMediumSterilized.getFluid(1000),
+                    Materials.Lubricant.getFluid(1000),
+                    Materials.Nitrogen.getGas(10000))
+                .duration(600)
+                .eut(TierEU.RECIPE_UV)
+                .metadata(PRECISE_ASSEMBLER_CASING_TIER, 3)
+                .addTo(PAR);
+        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(

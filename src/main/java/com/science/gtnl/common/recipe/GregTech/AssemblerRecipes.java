@@ -18,6 +18,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.config.MainConfig;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -2134,34 +2135,36 @@ public class AssemblerRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_LV)
             .addTo(As);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_ZPM.get(1),
-                ItemList.Machine_HV_LightningRod.get(1),
-                GregtechItemList.Transformer_HA_LuV_IV.get(2),
-                GregtechItemList.Hatch_Buffer_Dynamo_IV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 4),
-                ItemList.Energy_LapotronicOrb.get(2))
-            .itemOutputs(ItemList.Machine_EV_LightningRod.get(1))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
-            .duration(300)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(As);
+        if (MainConfig.enableDeleteRecipe) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ZPM.get(1),
+                    ItemList.Machine_HV_LightningRod.get(1),
+                    GregtechItemList.Transformer_HA_LuV_IV.get(2),
+                    GregtechItemList.Hatch_Buffer_Dynamo_IV.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 4),
+                    ItemList.Energy_LapotronicOrb.get(2))
+                .itemOutputs(ItemList.Machine_EV_LightningRod.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
+                .duration(300)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(As);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_ZPM.get(2),
-                ItemList.Machine_EV_LightningRod.get(1),
-                GregtechItemList.Transformer_HA_ZPM_LuV.get(2),
-                GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
-                ItemList.Energy_LapotronicOrb.get(4))
-            .itemOutputs(ItemList.Machine_IV_LightningRod.get(1))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
-            .duration(300)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(As);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ZPM.get(2),
+                    ItemList.Machine_EV_LightningRod.get(1),
+                    GregtechItemList.Transformer_HA_ZPM_LuV.get(2),
+                    GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
+                    ItemList.Energy_LapotronicOrb.get(4))
+                .itemOutputs(ItemList.Machine_IV_LightningRod.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
+                .duration(300)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(As);
+        }
     }
 }
