@@ -9,15 +9,16 @@ import static gregtech.api.util.GTRecipeConstants.*;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.dreammaster.block.BlockList;
 import com.reavaritia.ReAvaItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.config.MainConfig;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
@@ -54,49 +55,46 @@ public class AssemblingLineRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
+        if (MainConfig.enableDeleteRecipe) {
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Circuit_Chip_Biocell.get(1),
+                10000000,
+                2500,
+                (int) TierEU.RECIPE_UV,
+                1,
+                new Object[] { ItemList.Circuit_Board_Bio_Ultra.get(1), GTNLItemList.BiowareSMDCapacitor.get(8),
+                    GTNLItemList.BiowareSMDDiode.get(8), GTNLItemList.BiowareSMDResistor.get(8),
+                    GTNLItemList.BiowareSMDTransistor.get(8), GTNLItemList.BiowareSMDInductor.get(8),
+                    MaterialPool.Polyetheretherketone.get(OrePrefixes.foil, 2), ItemList.Circuit_Chip_Biocell.get(8),
+                    ItemList.Circuit_Parts_Chip_Bioware.get(8),
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.NiobiumTitanium, 4) },
+                new FluidStack[] { Materials.BioMediumSterilized.getFluid(1000), Materials.Plastic.getMolten(1296),
+                    Materials.PolyvinylChloride.getMolten(864), Materials.SolderingAlloy.getMolten(1296) },
+                ItemList.Circuit_Chip_BioCPU.get(8),
+                16 * SECONDS,
+                (int) TierEU.RECIPE_UV);
 
-        ItemStack CrystalStuddedCosmicNeutroniumWand = GTModHandler.getModItem(Thaumcraft.ID, "WandCasting", 1, 9000);
-        NBTTagCompound CrystalStuddedCosmicNeutroniumWandType = CrystalStuddedCosmicNeutroniumWand.getTagCompound();
-        if (CrystalStuddedCosmicNeutroniumWandType != null) {
-            CrystalStuddedCosmicNeutroniumWandType.setString("cap", "matrix");
-            CrystalStuddedCosmicNeutroniumWandType.setString("rod", "infinity");
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("aer", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("aqua", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("ignis", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("ordo", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("perditio", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("terra", 999999900);
-        } else {
-            CrystalStuddedCosmicNeutroniumWandType = new NBTTagCompound();
-            CrystalStuddedCosmicNeutroniumWandType.setString("cap", "matrix");
-            CrystalStuddedCosmicNeutroniumWandType.setString("rod", "infinity");
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("aer", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("aqua", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("ignis", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("ordo", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("perditio", 999999900);
-            CrystalStuddedCosmicNeutroniumWandType.setInteger("terra", 999999900);
-            CrystalStuddedCosmicNeutroniumWand.setTagCompound(CrystalStuddedCosmicNeutroniumWandType);
+            TTRecipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Circuit_Wetwaresupercomputer.get(1L),
+                384000,
+                96,
+                (int) TierEU.RECIPE_UV,
+                1,
+                new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
+                    ItemList.Circuit_Wetwaresupercomputer.get(2L), ItemList.Circuit_Parts_DiodeASMD.get(32),
+                    ItemList.Circuit_Parts_CapacitorASMD.get(32), ItemList.Circuit_Parts_TransistorASMD.get(32),
+                    ItemList.Circuit_Parts_ResistorASMD.get(32), ItemList.Circuit_Parts_InductorASMD.get(32),
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
+                    ItemList.Circuit_Chip_Ram.get(32),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 8), },
+                new FluidStack[] { Materials.SolderingAlloy.getMolten(2880),
+                    Materials.Polybenzimidazole.getMolten(1152) },
+                ItemList.Circuit_Wetwaremainframe.get(1L),
+                2000,
+                300000);
         }
-
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Circuit_Chip_Biocell.get(1),
-            10000000,
-            2500,
-            (int) TierEU.RECIPE_UV,
-            1,
-            new Object[] { ItemList.Circuit_Board_Bio_Ultra.get(1), GTNLItemList.BiowareSMDCapacitor.get(8),
-                GTNLItemList.BiowareSMDDiode.get(8), GTNLItemList.BiowareSMDResistor.get(8),
-                GTNLItemList.BiowareSMDTransistor.get(8), GTNLItemList.BiowareSMDInductor.get(8),
-                MaterialPool.Polyetheretherketone.get(OrePrefixes.foil, 2), ItemList.Circuit_Chip_Biocell.get(8),
-                ItemList.Circuit_Parts_Chip_Bioware.get(8),
-                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.NiobiumTitanium, 4) },
-            new FluidStack[] { Materials.BioMediumSterilized.getFluid(1000), Materials.Plastic.getMolten(1296),
-                Materials.PolyvinylChloride.getMolten(864), Materials.SolderingAlloy.getMolten(1296) },
-            ItemList.Circuit_Chip_BioCPU.get(8),
-            16 * SECONDS,
-            (int) TierEU.RECIPE_UV);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             kubatech.api.enums.ItemList.ExtremeIndustrialGreenhouse.get(1),
@@ -238,7 +236,13 @@ public class AssemblingLineRecipes implements IRecipePool {
                 GTModHandler.getModItem(ThaumicEnergistics.ID, "thaumicenergistics.block.arcane.assembler", 64),
                 GTModHandler.getModItem(Thaumcraft.ID, "blockStoneDevice", 64, 2),
                 GTModHandler.getModItem(Thaumcraft.ID, "blockStoneDevice", 64, 2),
-                CrystalStuddedCosmicNeutroniumWand,
+                ItemUtils.createItemStack(
+                    Thaumcraft.ID,
+                    "WandCasting",
+                    1,
+                    9000,
+                    "{cap:\"matrix\",rod:\"infinity\",aer:999999900,aqua:999999900,ignis:999999900,ordo:999999900,perditio:999999900,terra:999999900}",
+                    null),
                 GTModHandler.getModItem(Avaritia.ID, "Akashic_Record", 1),
                 new Object[] { OrePrefixes.circuit.get(Materials.UIV), 16L },
                 ItemList.Robot_Arm_UEV.get(32),
@@ -756,7 +760,6 @@ public class AssemblingLineRecipes implements IRecipePool {
             .addTo(AL);
 
         GTValues.RA.stdBuilder()
-            .setNEIDesc("Remove Change by GTNotLeisure")
             .metadata(RESEARCH_ITEM, GTNLItemList.Incubator.get(1))
             .metadata(SCANNING, new Scanning(30 * MINUTES, TierEU.RECIPE_ZPM))
             .itemInputs(
@@ -793,25 +796,6 @@ public class AssemblingLineRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_ZPM)
             .duration(40 * SECONDS)
             .addTo(AL);
-
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemList.Circuit_Wetwaresupercomputer.get(1L),
-            384000,
-            96,
-            (int) TierEU.RECIPE_UV,
-            1,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Tritanium, 2),
-                ItemList.Circuit_Wetwaresupercomputer.get(2L), ItemList.Circuit_Parts_DiodeASMD.get(32),
-                ItemList.Circuit_Parts_CapacitorASMD.get(32), ItemList.Circuit_Parts_TransistorASMD.get(32),
-                ItemList.Circuit_Parts_ResistorASMD.get(32), ItemList.Circuit_Parts_InductorASMD.get(32),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64),
-                ItemList.Circuit_Chip_Ram.get(32),
-                GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 16),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Europium, 8), },
-            new FluidStack[] { Materials.SolderingAlloy.getMolten(2880), Materials.Polybenzimidazole.getMolten(1152) },
-            ItemList.Circuit_Wetwaremainframe.get(1L),
-            2000,
-            300000);
 
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.AmplifabricatorZPM.get(1L),

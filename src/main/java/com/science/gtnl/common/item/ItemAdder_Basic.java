@@ -26,7 +26,6 @@ public class ItemAdder_Basic extends Item {
         this.setCreativeTab(aCreativeTabs);
         this.unlocalizedName = MetaName;
         TextUtils.texter(Name, this.unlocalizedName + ".name");
-
     }
 
     public static String generateUnlocalizedName(String MetaName) {

@@ -9,15 +9,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.dreammaster.item.NHItemList;
 import com.reavaritia.ReAvaItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.config.MainConfig;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
@@ -49,39 +50,6 @@ public class AssemblerRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-
-        ItemStack MEoutputBus = ItemList.Hatch_Output_Bus_ME.get(1L);
-        NBTTagCompound MEoutputBusType = MEoutputBus.getTagCompound();
-        if (MEoutputBusType != null) {
-            MEoutputBusType.setLong("baseCapacity", 9223372036854775807L);
-        } else {
-            MEoutputBusType = new NBTTagCompound();
-            MEoutputBusType.setLong("baseCapacity", 9223372036854775807L);
-            MEoutputBus.setTagCompound(MEoutputBusType);
-        }
-
-        ItemStack MEoutputHatch = ItemList.Hatch_Output_ME.get(1L);
-        NBTTagCompound MEoutputHatchType = MEoutputHatch.getTagCompound();
-        if (MEoutputHatchType != null) {
-            MEoutputHatchType.setLong("baseCapacity", 9223372036854775807L);
-        } else {
-            MEoutputHatchType = new NBTTagCompound();
-            MEoutputHatchType.setLong("baseCapacity", 9223372036854775807L);
-            MEoutputHatch.setTagCompound(MEoutputHatchType);
-        }
-
-        ItemStack creativeCapacitorBank = GTModHandler.getModItem(EnderIO.ID, "blockCapBank", 1, 0);
-        NBTTagCompound creativeCapacitorBankType = creativeCapacitorBank.getTagCompound();
-        if (creativeCapacitorBankType != null) {
-            creativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            creativeCapacitorBankType.setString("type", "CREATIVE");
-        } else {
-            creativeCapacitorBankType = new NBTTagCompound();
-            creativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            creativeCapacitorBankType.setString("type", "CREATIVE");
-            creativeCapacitorBank.setTagCompound(creativeCapacitorBankType);
-        }
-
         String[] lampTypes = { "Lamp", "LampBorderless", "LampOff", "LampOffBorderless" };
 
         String[] colors = { "Black", "Pink", "Red", "Orange", "Yellow", "Green", "Lime", "Blue", "LightBlue", "Cyan",
@@ -882,7 +850,9 @@ public class AssemblerRecipes implements IRecipePool {
                 ItemList.Hatch_Output_Bus_EV.get(1L),
                 GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiPart", 1, 440),
                 GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 2, 30))
-            .itemOutputs(MEoutputBus)
+            .itemOutputs(
+                ItemUtils
+                    .createItemStack(ItemList.Hatch_Output_Bus_ME.get(1L), "{baseCapacity:9223372036854775807L}", null))
             .specialValue(0)
             .duration(300)
             .eut(480)
@@ -893,7 +863,9 @@ public class AssemblerRecipes implements IRecipePool {
                 ItemList.Hatch_Output_EV.get(1L),
                 GTModHandler.getModItem(AE2FluidCraft.ID, "part_fluid_interface", 1),
                 GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 2, 30))
-            .itemOutputs(MEoutputHatch)
+            .itemOutputs(
+                ItemUtils
+                    .createItemStack(ItemList.Hatch_Output_ME.get(1L), "{baseCapacity:9223372036854775807L}", null))
             .specialValue(0)
             .duration(300)
             .eut(480)
@@ -1339,7 +1311,15 @@ public class AssemblerRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.copyAmount(0, creativeCapacitorBank),
+                GTUtility.copyAmount(
+                    0,
+                    ItemUtils.createItemStack(
+                        EnderIO.ID,
+                        "blockCapBank",
+                        1,
+                        0,
+                        "{storedEnergyRF:2500000,type:\"CREATIVE\"}",
+                        null)),
                 GTModHandler.getModItem(DraconicEvolution.ID, "draconium", 1, 0, missing))
             .itemOutputs(GTModHandler.getModItem(DraconicEvolution.ID, "draconium", 1, 2, missing))
             .duration(20)
@@ -2155,34 +2135,36 @@ public class AssemblerRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_LV)
             .addTo(As);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_ZPM.get(1),
-                ItemList.Machine_HV_LightningRod.get(1),
-                GregtechItemList.Transformer_HA_LuV_IV.get(2),
-                GregtechItemList.Hatch_Buffer_Dynamo_IV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 4),
-                ItemList.Energy_LapotronicOrb.get(2))
-            .itemOutputs(ItemList.Machine_EV_LightningRod.get(1))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
-            .duration(300)
-            .eut(TierEU.RECIPE_LuV)
-            .addTo(As);
+        if (MainConfig.enableDeleteRecipe) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ZPM.get(1),
+                    ItemList.Machine_HV_LightningRod.get(1),
+                    GregtechItemList.Transformer_HA_LuV_IV.get(2),
+                    GregtechItemList.Hatch_Buffer_Dynamo_IV.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 4),
+                    ItemList.Energy_LapotronicOrb.get(2))
+                .itemOutputs(ItemList.Machine_EV_LightningRod.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
+                .duration(300)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(As);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                ItemList.Hull_ZPM.get(2),
-                ItemList.Machine_EV_LightningRod.get(1),
-                GregtechItemList.Transformer_HA_ZPM_LuV.get(2),
-                GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(2),
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 2),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
-                ItemList.Energy_LapotronicOrb.get(4))
-            .itemOutputs(ItemList.Machine_IV_LightningRod.get(1))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
-            .duration(300)
-            .eut(TierEU.RECIPE_ZPM)
-            .addTo(As);
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ZPM.get(2),
+                    ItemList.Machine_EV_LightningRod.get(1),
+                    GregtechItemList.Transformer_HA_ZPM_LuV.get(2),
+                    GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
+                    ItemList.Energy_LapotronicOrb.get(4))
+                .itemOutputs(ItemList.Machine_IV_LightningRod.get(1))
+                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
+                .duration(300)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(As);
+        }
     }
 }

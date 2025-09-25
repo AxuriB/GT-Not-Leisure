@@ -2,6 +2,8 @@ package com.science.gtnl.common.recipe.GTNL;
 
 import static com.science.gtnl.Utils.Utils.setStackSize;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.recipes.IsaMillTierKey;
@@ -35,6 +37,9 @@ public class IsaMillRecipes implements IRecipePool {
         addIsaMillSet(Materials.Monazite);
         addIsaMillSet(Materials.Redstone);
         addIsaMillSet(Materials.NaquadahEnriched);
+
+        addIsaMillRecipeCustom(Materials.Netherrack, new ItemStack(Blocks.netherrack, 16), 1, 64, 100, 1, 2400);
+        addIsaMillRecipeCustom(Materials.Netherrack, new ItemStack(Blocks.netherrack, 16), 10, 64, 100, 2, 1200);
     }
 
     public void addIsaMillSet(Materials material) {
@@ -52,6 +57,22 @@ public class IsaMillRecipes implements IRecipePool {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(circuitNumber),
                 GTOreDictUnificator.get(prefix, material, prefix == OrePrefixes.rawOre ? 16L : 1L))
+            .itemOutputs(
+                setStackSize(
+                    MaterialUtils.generateMaterialFromGtENUM(material)
+                        .getMilled(1),
+                    outputAmount))
+            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", fluidAmount))
+            .metadata(ISAMILL_TIER, tier)
+            .duration(duration)
+            .eut(1920)
+            .addTo(IsaMR);
+    }
+
+    public void addIsaMillRecipeCustom(Materials material, ItemStack custom, int circuitNumber, int outputAmount,
+        int fluidAmount, int tier, int duration) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(circuitNumber), custom)
             .itemOutputs(
                 setStackSize(
                     MaterialUtils.generateMaterialFromGtENUM(material)

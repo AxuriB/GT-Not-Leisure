@@ -6,10 +6,10 @@ import static gregtech.api.enums.Mods.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.dreammaster.item.NHItemList;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.loader.RecipePool;
 
@@ -29,16 +29,6 @@ public class FishingGroundRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-
-        ItemStack ZeroPointModule = ItemList.ZPM.get(1);
-        NBTTagCompound ZeroPointModuleType = ZeroPointModule.getTagCompound();
-        if (ZeroPointModuleType != null) {
-            ZeroPointModuleType.setLong("GT.ItemCharge", 2000000000000L);
-        } else {
-            ZeroPointModuleType = new NBTTagCompound();
-            ZeroPointModuleType.setLong("GT.ItemCharge", 2000000000000L);
-            ZeroPointModule.setTagCompound(ZeroPointModuleType);
-        }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1), GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)))
@@ -125,7 +115,7 @@ public class FishingGroundRecipes implements IRecipePool {
                 new ItemStack(Items.diamond, 1),
                 new ItemStack(Items.emerald, 1),
                 new ItemStack(Items.golden_apple, 1),
-                ZeroPointModule)
+                ItemUtils.createItemStack(ItemList.ZPM.get(1), "{GT.ItemCharge:2000000000000L}", null))
             .fluidInputs(FluidRegistry.getFluidStack("water", 10000))
             .outputChances(
                 8000,

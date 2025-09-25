@@ -1,9 +1,9 @@
 package com.science.gtnl.Utils.recipes;
 
-import static gregtech.api.util.GTUtility.trans;
-
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
@@ -23,12 +23,12 @@ public class ResourceCollectionModuleTierKey extends RecipeMetadataKey<Integer> 
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
         int tier = cast(value, 1);
         switch (tier) {
-            case 1 -> recipeInfo.drawText(trans("702", "Requires Mining Drone MK-VIII x 16"));
-            case 2 -> recipeInfo.drawText(trans("703", "Requires Mining Drone MK-IX x 16"));
-            case 3 -> recipeInfo.drawText(trans("704", "Requires Mining Drone MK-X x 16"));
-            case 4 -> recipeInfo.drawText(trans("705", "Requires Mining Drone MK-XI x 16"));
-            case 5 -> recipeInfo.drawText(trans("706", "Requires Mining Drone MK-XII x 16"));
-            case 6 -> recipeInfo.drawText(trans("707", "Requires Mining Drone MK-XIII x 16"));
+            case 1 -> recipeInfo.drawText(StatCollector.translateToLocal("ResourceCollectionModuleTierKey.0"));
+            case 2 -> recipeInfo.drawText(StatCollector.translateToLocal("ResourceCollectionModuleTierKey.1"));
+            case 3 -> recipeInfo.drawText(StatCollector.translateToLocal("ResourceCollectionModuleTierKey.2"));
+            case 4 -> recipeInfo.drawText(StatCollector.translateToLocal("ResourceCollectionModuleTierKey.3"));
+            case 5 -> recipeInfo.drawText(StatCollector.translateToLocal("ResourceCollectionModuleTierKey.4"));
+            case 6 -> recipeInfo.drawText(StatCollector.translateToLocal("ResourceCollectionModuleTierKey.5"));
         }
     }
 

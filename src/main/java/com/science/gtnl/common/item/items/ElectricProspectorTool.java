@@ -275,7 +275,7 @@ public class ElectricProspectorTool extends Item {
             }
             network.sendTo(packet, (EntityPlayerMP) aPlayer);
             if (!aPlayer.capabilities.isCreativeMode) {
-                setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + this.mCosts * chunks.size() / 4);
+                setToolDamage(aStack, MetaGeneratedTool.getToolDamage(aStack) + (long) this.mCosts * chunks.size() / 4);
             }
 
             if (VisualProspecting.isModLoaded()) {
@@ -622,8 +622,7 @@ public class ElectricProspectorTool extends Item {
                 .addChatMessage(new ChatComponentText(EnumChatFormatting.GREEN + " Adding to oremap " + oreDistance));
             ores.put(oreDistance, 1);
         } else {
-            int val = ores.get(oreDistance);
-            ores.put(oreDistance, val + 1);
+            ores.compute(oreDistance, (k, val) -> val + 1);
         }
     }
 

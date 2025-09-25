@@ -3,10 +3,10 @@ package com.science.gtnl.common.recipe.GregTech;
 import static gregtech.api.enums.Mods.*;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
 
@@ -31,18 +31,9 @@ public class DistilleryRecipes implements IRecipePool {
     public void loadRecipes() {
 
         if (Forestry.isModLoaded()) {
-            ItemStack PineLeaves = GTModHandler.getModItem(Forestry.ID, "leaves", 1);
-            NBTTagCompound PineLeavesType = PineLeaves.getTagCompound();
-            if (PineLeavesType != null) {
-                PineLeavesType.setString("species", "forestry.treePine");
-            } else {
-                PineLeavesType = new NBTTagCompound();
-                PineLeavesType.setString("species", "forestry.treePine");
-                PineLeaves.setTagCompound(PineLeavesType);
-            }
-
             GTValues.RA.stdBuilder()
-                .itemInputs(PineLeaves)
+                .itemInputs(
+                    ItemUtils.createItemStack(Forestry.ID, "leaves", 1, 0, "{species:\"forestry.treePine\"}", null))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
                 .fluidInputs(FluidRegistry.getFluidStack("steam", 5000))
                 .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 250))
@@ -51,7 +42,8 @@ public class DistilleryRecipes implements IRecipePool {
                 .addTo(DR);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(PineLeaves)
+                .itemInputs(
+                    ItemUtils.createItemStack(Forestry.ID, "leaves", 1, 0, "{species:\"forestry.treePine\"}", null))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L))
                 .fluidInputs(FluidRegistry.getFluidStack("ic2superheatedsteam", 5000))
                 .fluidOutputs(new FluidStack(GTPPFluids.PineOil, 500))

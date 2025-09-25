@@ -27,9 +27,9 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class CraftingTableRecipes implements IRecipePool {
 
-    public long bits = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
-        | GTModHandler.RecipeBits.BUFFERED;
-    public long bitsd = GTModHandler.RecipeBits.DISMANTLEABLE | bits;
+    public static long bitsd = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
+        | GTModHandler.RecipeBits.BUFFERED
+        | GTModHandler.RecipeBits.DISMANTLEABLE;
 
     @Override
     public void loadRecipes() {

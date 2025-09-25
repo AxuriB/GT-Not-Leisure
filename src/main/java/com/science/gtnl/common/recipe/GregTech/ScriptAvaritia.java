@@ -10,7 +10,6 @@ import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.dreammaster.item.NHItemList;
@@ -192,29 +191,6 @@ public class ScriptAvaritia implements IScriptLoader {
             Materials material = Materials.get("Grade" + i + "PurifiedWater");
             purifiedWaterPackets[i - 1] = ItemUtils.createFluidPacket(material.getFluid(1), 114514);
         }
-
-        ItemStack creativeCapacitorBank = GTModHandler.getModItem(EnderIO.ID, "blockCapBank", 1, 0);
-        NBTTagCompound creativeCapacitorBankType = creativeCapacitorBank.getTagCompound();
-        if (creativeCapacitorBankType != null) {
-            creativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            creativeCapacitorBankType.setString("type", "CREATIVE");
-        } else {
-            creativeCapacitorBankType = new NBTTagCompound();
-            creativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            creativeCapacitorBankType.setString("type", "CREATIVE");
-            creativeCapacitorBank.setTagCompound(creativeCapacitorBankType);
-        }
-
-        ItemStack asgardandelion = ItemUtils.createSpecialFlower("asgardandelion");
-
-        ItemStack manaTablet = GTModHandler.getModItem(Botania.ID, "manaTablet", 1, 0, missing);
-        NBTTagCompound manaTabletNBT = manaTablet.getTagCompound();
-        if (manaTabletNBT == null) {
-            manaTabletNBT = new NBTTagCompound();
-        }
-        manaTabletNBT.setInteger("mana", 500000);
-        manaTabletNBT.setByte("creative", (byte) 1);
-        manaTablet.setTagCompound(manaTabletNBT);
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
@@ -1045,7 +1021,13 @@ public class ScriptAvaritia implements IScriptLoader {
                 "ghijklmno",
                 "ppppppppp",
                 'A',
-                creativeCapacitorBank,
+                ItemUtils.createItemStack(
+                    "EnderIO",
+                    "blockCapBank",
+                    1,
+                    0,
+                    "{storedEnergyRF:2500000,type:\"CREATIVE\"}",
+                    null),
                 'B',
                 GTModHandler.getModItem(OpenComputers.ID, "item", 1, 114, missing),
                 'C',
@@ -1073,7 +1055,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'N',
                 GTModHandler.getModItem(SGCraft.ID, "stargateRing", 1, 0, missing),
                 'O',
-                manaTablet,
+                createItemStack("Botania", "manaTablet", 1, 0, "{mana:500000,creative:1}", null),
                 'P',
                 GTModHandler.getModItem(StevesCarts2.ID, "upgrade", 1, 14, missing),
                 'Q',
@@ -1125,7 +1107,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'd',
                 GTNLItemList.StargateTier5.get(1),
                 'e',
-                asgardandelion,
+                ItemUtils.createSpecialFlower("asgardandelion"),
                 'f',
                 GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockSingularityCraftingStorage", 1, 0, missing),
                 'g',
@@ -2061,15 +2043,15 @@ public class ScriptAvaritia implements IScriptLoader {
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
                 ReAvaItemList.ChronarchsClock.get(1),
-                "  AAAAA  ",
-                " AAAAAAA ",
+                "--AAAAA--",
+                "-AAAAAAA-",
                 "AABBBBBAA",
                 "AABCCCBAA",
                 "AABCCCBAA",
                 "ADBCCCBDA",
                 "ADBBBBBDA",
-                " ADDDDDA ",
-                "  AAAAA  ",
+                "-ADDDDDA-",
+                "--AAAAA--",
                 'A',
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.CosmicNeutronium, 1),
                 'B',
@@ -2078,5 +2060,172 @@ public class ScriptAvaritia implements IScriptLoader {
                 new ItemStack(Items.clock, 1),
                 'D',
                 GTModHandler.getModItem(Avaritia.ID, "Crystal_Matrix", 1, 0, missing));
+
+        ExtremeCraftingManager.getInstance()
+            .addExtremeShapedOreRecipe(
+                GTNLItemList.InfinityCobblestoneCell.get(1),
+                "--ABBBA--",
+                "-BBCDCBB-",
+                "ABCCECCBA",
+                "BCCCFCCCB",
+                "BDEFGFEDB",
+                "BCCCFCCCB",
+                "ABCCECCBA",
+                "-BBCDCBB-",
+                "--ABBBA--",
+                'A',
+                GTModHandler.getModItem(TwilightForest.ID, "tile.GiantCobble", 1, 0, missing),
+                'B',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Stone, 1),
+                'C',
+                GregtechItemList.Controller_IndustrialRockBreaker.get(1),
+                'D',
+                ItemList.Field_Generator_EV.get(1),
+                'E',
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1),
+                'F',
+                GTModHandler.getModItem(ExtraUtilities.ID, "cobblestone_compressed", 1, 7, missing),
+                'G',
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 61, missing));
+
+        ExtremeCraftingManager.getInstance()
+            .addExtremeShapedOreRecipe(
+                GTNLItemList.InfinityDyeCell.get(1),
+                "--ABCBA--",
+                "-BBDEDBB-",
+                "ABDDFDDBA",
+                "BDDGHGDDB",
+                "IJKLMNOPQ",
+                "BDDGRGDDB",
+                "ABDDSDDBA",
+                "-BBDTDBB-",
+                "--ABUBA--",
+                'A',
+                new ItemStack(Blocks.sand, 1),
+                'B',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 1),
+                'C',
+                new ItemStack(Items.dye, 1, 12),
+                'D',
+                GTModHandler.getModItem(ThaumicBases.ID, "rainbowCactus", 1, 0, missing),
+                'E',
+                new ItemStack(Items.dye, 1, 8),
+                'F',
+                new ItemStack(Items.dye, 1, 4),
+                'G',
+                ItemList.AcceleratorIV.get(1),
+                'H',
+                new ItemStack(Items.dye, 1, 0),
+                'I',
+                new ItemStack(Items.dye, 1, 15),
+                'J',
+                new ItemStack(Items.dye, 1, 11),
+                'K',
+                new ItemStack(Items.dye, 1, 7),
+                'L',
+                new ItemStack(Items.dye, 1, 3),
+                'M',
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 61, missing),
+                'N',
+                new ItemStack(Items.dye, 1, 1),
+                'O',
+                new ItemStack(Items.dye, 1, 5),
+                'P',
+                new ItemStack(Items.dye, 1, 9),
+                'Q',
+                new ItemStack(Items.dye, 1, 13),
+                'R',
+                new ItemStack(Items.dye, 1, 2),
+                'S',
+                new ItemStack(Items.dye, 1, 6),
+                'T',
+                new ItemStack(Items.dye, 1, 10),
+                'U',
+                new ItemStack(Items.dye, 1, 14));
+
+        ExtremeCraftingManager.getInstance()
+            .addExtremeShapedOreRecipe(
+                GTNLItemList.InfinityDyeFluidCell.get(1),
+                "--ABCBA--",
+                "--DEFGH--",
+                "AIJJKJJLA",
+                "BMJJNJJOB",
+                "PQRSTUVWX",
+                "BYJJZJJ0B",
+                "A1JJ2JJ3A",
+                "--45678--",
+                "--AB9BA--",
+                'A',
+                GTModHandler.getModItem(Botania.ID, "bifrostPerm", 1, 0, missing),
+                'B',
+                ItemList.Field_Generator_EV.get(1),
+                'C',
+                new ItemStack(Items.dye, 1, 12),
+                'D',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.HSSE, 1),
+                'E',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Soularium, 1),
+                'F',
+                new ItemStack(Items.dye, 1, 8),
+                'G',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Cobalt, 1),
+                'H',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.MelodicAlloy, 1),
+                'I',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Rubidium, 1),
+                'J',
+                GregtechItemList.Hatch_Reservoir.get(1),
+                'K',
+                new ItemStack(Items.dye, 1, 4),
+                'L',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.EnderiumBase, 1),
+                'M',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Tungsten, 1),
+                'N',
+                new ItemStack(Items.dye, 1, 0),
+                'O',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Iridium, 1),
+                'P',
+                new ItemStack(Items.dye, 1, 15),
+                'Q',
+                new ItemStack(Items.dye, 1, 11),
+                'R',
+                new ItemStack(Items.dye, 1, 7),
+                'S',
+                new ItemStack(Items.dye, 1, 3),
+                'T',
+                GTModHandler.getModItem(AE2FluidCraft.ID, "fluid_storage_housing", 1, 3, missing),
+                'U',
+                new ItemStack(Items.dye, 1, 1),
+                'V',
+                new ItemStack(Items.dye, 1, 5),
+                'W',
+                new ItemStack(Items.dye, 1, 9),
+                'X',
+                new ItemStack(Items.dye, 1, 13),
+                'Y',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 1),
+                'Z',
+                new ItemStack(Items.dye, 1, 2),
+                '0',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.ElectricalSteel, 1),
+                '1',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.EnergeticAlloy, 1),
+                '2',
+                new ItemStack(Items.dye, 1, 6),
+                '3',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Europium, 1),
+                '4',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CrystallinePinkSlime, 1),
+                '5',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CallistoIce, 1),
+                '6',
+                new ItemStack(Items.dye, 1, 10),
+                '7',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Gold, 1),
+                '8',
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.VibrantAlloy, 1),
+                '9',
+                new ItemStack(Items.dye, 1, 14));
     }
 }

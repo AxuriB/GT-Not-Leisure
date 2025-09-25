@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.machine.PortalToAlfheimExplosion;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -76,18 +77,8 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     private static final int MANA_MODE = 2;
     private static final int RUNE_MODE = 3;
     private boolean enableInfinityMana = false;
-    private static final ItemStack asgardandelion = GTModHandler.getModItem("Botania", "specialFlower", 1);
-
-    static {
-        NBTTagCompound asgardandelionType = asgardandelion.getTagCompound();
-        if (asgardandelionType != null) {
-            asgardandelionType.setString("type", "asgardandelion");
-        } else {
-            asgardandelionType = new NBTTagCompound();
-            asgardandelionType.setString("type", "asgardandelion");
-            asgardandelion.setTagCompound(asgardandelionType);
-        }
-    }
+    private static final ItemStack asgardandelion = ItemUtils
+        .createItemStack(Botania.ID, "specialFlower", 1, 0, "{type:\"asgardandelion\"}", null);
 
     public TeleportationArrayToAlfheim(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

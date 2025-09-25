@@ -45,7 +45,7 @@ public class WirelessSteamCover extends CoverLegacyData {
         return false;
     }
 
-    private static UUID getOwner(Object te) {
+    public static UUID getOwner(Object te) {
         if (te instanceof BaseMetaTileEntity igte) {
             return igte.getOwnerUuid();
         } else {
@@ -65,7 +65,7 @@ public class WirelessSteamCover extends CoverLegacyData {
         }
     }
 
-    private void tryFetchingSteam(IMachineProgress tileEntity) {
+    public void tryFetchingSteam(IMachineProgress tileEntity) {
         if (tileEntity instanceof BaseMetaTileEntity baseTile
             && baseTile.getMetaTileEntity() instanceof CommonMetaTileEntity commonMetaTile) {
             FluidStack fluid = commonMetaTile.getFluid();
