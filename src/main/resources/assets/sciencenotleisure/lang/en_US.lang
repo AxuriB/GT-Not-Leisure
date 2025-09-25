@@ -52,21 +52,13 @@ Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s %% §r(Voltage Tier: §3%
 
 Info_Dimension_Override=Dimension Override: 
 
+CleanroomTierKey.0=Requires Cleanroom Environment
+CleanroomTierKey.1=Requires Sterile Environment
+CleanroomTierKey.2=Requires Absolute Cleaning Environment
+
 HatchCustomFluid_00=Input fluids for multiblock machines
 HatchCustomFluid_01=Capacity: 
 HatchCustomFluid_02=Allowed fluids:
-
-Interaction_DESCRIPTION_Index_700=Requires aluminum grinding balls
-Interaction_DESCRIPTION_Index_701=Requires soapstone grinding balls
-Interaction_DESCRIPTION_Index_702=Requires MK-VIII Mining Drones x 16
-Interaction_DESCRIPTION_Index_703=Requires MK-IX Mining Drones x 16
-Interaction_DESCRIPTION_Index_704=Requires MK-X Mining Drones x 16
-Interaction_DESCRIPTION_Index_705=Requires MK-XI Mining Drones x 16
-Interaction_DESCRIPTION_Index_706=Requires MK-XII Mining Drones x 16
-Interaction_DESCRIPTION_Index_707=Requires MK-XIII Mining Drones x 16
-Interaction_DESCRIPTION_Index_708=Requires Compact Hyper Pressure Reactor
-Interaction_DESCRIPTION_Index_709=Requires Sterile Environment
-Interaction_DESCRIPTION_Index_710=Requires Absolute Cleaning Environment
 
 tc.research_category.GTNL=GTNL: Whimsical Thaumaturgy
 tc.research_name.GTNL_WELCOME=Your New Beginning
@@ -1647,6 +1639,8 @@ Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing=Any fusion machine block
 
 NameIsaMill=Isa Mill
 gtnl.recipe.IsaMillRecipes=Wet Grinding
+IsaMillTierKey.0=Requires aluminum grinding balls
+IsaMillTierKey.1=Requires soapstone grinding balls
 IsaMillRecipeType=Wet Grinding
 Tooltip_IsaMill_00=Industrial-level wet grinding
 Tooltip_IsaMill_01=Glass tier limits the energy hatch tier, UHV glass unlocks all tiers
@@ -1675,6 +1669,12 @@ Tooltip_VacuumDryingFurnace_Casing=Any vacuum machine block
 NameResourceCollectionModule=Space Elevator Resource Collection Module
 gtnl.recipe.SpaceMinerRecipes=Space Mining
 gtnl.recipe.SpaceDrillRecipes=Space Drilling
+ResourceCollectionModuleTierKey.0=Requires MK-VIII Mining Drones x 16
+ResourceCollectionModuleTierKey.1=Requires MK-IX Mining Drones x 16
+ResourceCollectionModuleTierKey.2=Requires MK-X Mining Drones x 16
+ResourceCollectionModuleTierKey.3=Requires MK-XI Mining Drones x 16
+ResourceCollectionModuleTierKey.4=Requires MK-XII Mining Drones x 16
+ResourceCollectionModuleTierKey.5=Requires MK-XIII Mining Drones x 16
 ResourceCollectionModuleRecipeType=Space Mining / Space Drilling
 ResourceCollectionModule_Mode_0=Space Mining
 ResourceCollectionModule_Mode_1=Space Drilling
@@ -2227,6 +2227,7 @@ Tooltip_SteamWoodcutter_01=Author: §d§oSteam§f§oIs§d§oThe§f§oNumber
 
 NameSteamFusionReactor=Hyper Pressure Reactor
 gtnl.recipe.SteamFusion=High Pressure Reactor
+SteamFusionTierKey.0=Requires Compact Hyper Pressure Reactor
 SteamFusionReactorRecipeType=High Pressure Reactor
 GT5U.gui.text.metadata.steamfusion=Need Compact Hyper Pressure Reactor
 Tooltip_SteamFusionReactor_00=Combines Steam with hot fluids in order to reach higher temperatures

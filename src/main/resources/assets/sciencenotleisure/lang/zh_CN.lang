@@ -52,21 +52,13 @@ Info_VoltageChanceBonus_00=电压概率加成：§3%s %% §r(电压等级：§3%
 
 Info_Dimension_Override=维度覆盖为：
 
+CleanroomTierKey.0=需要超净间环境
+CleanroomTierKey.1=需要无菌环境
+CleanroomTierKey.2=需要绝对洁净环境
+
 HatchCustomFluid_00=为多方块机器输入流体
 HatchCustomFluid_01=容量：
 HatchCustomFluid_02=允许的流体：
-
-Interaction_DESCRIPTION_Index_700=需要铝研磨球
-Interaction_DESCRIPTION_Index_701=需要皂石研磨球
-Interaction_DESCRIPTION_Index_702=需要采矿无人机MK-VIII x 16
-Interaction_DESCRIPTION_Index_703=需要采矿无人机MK-IX x 16
-Interaction_DESCRIPTION_Index_704=需要采矿无人机MK-X x 16
-Interaction_DESCRIPTION_Index_705=需要采矿无人机MK-XI x 16
-Interaction_DESCRIPTION_Index_706=需要采矿无人机MK-XII x 16
-Interaction_DESCRIPTION_Index_707=需要采矿无人机MK-XIII x 16
-Interaction_DESCRIPTION_Index_708=需要压缩超高压聚变反应堆
-Interaction_DESCRIPTION_Index_709=需要无菌环境
-Interaction_DESCRIPTION_Index_710=需要绝对洁净环境
 
 tc.research_category.GTNL=GTNL：随想魔法
 tc.research_name.GTNL_WELCOME=你的新起点
@@ -1647,6 +1639,8 @@ Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing=任意聚变机械方块
 
 NameIsaMill=艾萨研磨机
 gtnl.recipe.IsaMillRecipes=湿法碾磨
+IsaMillTierKey.0=需要铝研磨球
+IsaMillTierKey.1=需要皂石研磨球
 IsaMillRecipeType=湿法碾磨
 Tooltip_IsaMill_00=工业级湿法碾磨
 Tooltip_IsaMill_01=玻璃等级限制了能源仓等级，UHV玻璃解锁所有等级
@@ -1675,6 +1669,12 @@ Tooltip_VacuumDryingFurnace_Casing=任意真空机械方块
 NameResourceCollectionModule=太空电梯资源采集模块
 gtnl.recipe.SpaceMinerRecipes=太空采矿
 gtnl.recipe.SpaceDrillRecipes=太空钻井
+ResourceCollectionModuleTierKey.0=需要采矿无人机MK-VIII x 16
+ResourceCollectionModuleTierKey.1=需要采矿无人机MK-IX x 16
+ResourceCollectionModuleTierKey.2=需要采矿无人机MK-X x 16
+ResourceCollectionModuleTierKey.3=需要采矿无人机MK-XI x 16
+ResourceCollectionModuleTierKey.4=需要采矿无人机MK-XII x 16
+ResourceCollectionModuleTierKey.5=需要采矿无人机MK-XIII x 16
 ResourceCollectionModuleRecipeType=太空采矿 / 太空钻井
 ResourceCollectionModule_Mode_0=太空采矿
 ResourceCollectionModule_Mode_1=太空钻井
@@ -2227,6 +2227,7 @@ Tooltip_SteamWoodcutter_01=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
 
 NameSteamFusionReactor=超高压反应堆
 gtnl.recipe.SteamFusion=高压反应堆
+SteamFusionTierKey.0=需要压缩超高压聚变反应堆
 SteamFusionReactorRecipeType=高压反应堆
 GT5U.gui.text.metadata.steamfusion=需要压缩超高压反应堆
 Tooltip_SteamFusionReactor_00=将蒸汽与热流体结合，以达到更高的温度
