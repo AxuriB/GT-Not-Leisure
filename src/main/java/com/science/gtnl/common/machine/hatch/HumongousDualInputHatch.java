@@ -43,9 +43,6 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
         this.mStoredFluid = new FluidStack[aTier];
         this.fluidTanks = new FluidStackTank[aTier];
         this.mCapacityPer = Integer.MAX_VALUE;
-        this.itemSlotAmount = Math.min(1, 2 * aTier) + 1;
-        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_DualInputHatch_01")
-            + GTUtility.formatNumbers(itemSlotAmount - 1);
         mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_DualInputHatch_02_00")
             + GTUtility.formatNumbers(aTier)
             + StatCollector.translateToLocal("Tooltip_DualInputHatch_02_01")
@@ -68,9 +65,6 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
         this.mStoredFluid = new FluidStack[aTier];
         this.fluidTanks = new FluidStackTank[aTier];
         this.mCapacityPer = Integer.MAX_VALUE;
-        this.itemSlotAmount = Math.min(1, 2 * aTier) + 1;
-        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_DualInputHatch_01")
-            + GTUtility.formatNumbers(itemSlotAmount - 1);
         mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_DualInputHatch_02_00")
             + GTUtility.formatNumbers(aTier)
             + StatCollector.translateToLocal("Tooltip_DualInputHatch_02_01")
