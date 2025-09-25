@@ -338,6 +338,7 @@ HumongousDualInputHatchUIV=巨型输入总成 (UIV)
 HumongousDualInputHatchUMV=巨型输入总成 (UMV)
 HumongousDualInputHatchUXV=巨型输入总成 (UXV)
 HumongousDualInputHatchMAX=巨型输入总成 (MAX)
+Button_Tooltip_HumongousDualInputHatch_00=将所有的已存储内容返回到面前容器
 
 DebugDataAccessHatch=Debug数据访问仓
 Tooltip_DebugDataAccessHatch_00=添加所有装配线配方的闪存

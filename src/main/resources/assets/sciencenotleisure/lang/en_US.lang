@@ -338,6 +338,7 @@ HumongousDualInputHatchUIV=Humongous Input Assembly (UIV)
 HumongousDualInputHatchUMV=Humongous Input Assembly (UMV)
 HumongousDualInputHatchUXV=Humongous Input Assembly (UXV)
 HumongousDualInputHatchMAX=Humongous Input Assembly (MAX)
+Button_Tooltip_HumongousDualInputHatch_00=Return all stored contents to the container in front
 
 DebugDataAccessHatch=Debug Data Access Hatch
 Tooltip_DebugDataAccessHatch_00=Adds all Assembly Line Recipes Data Sticks

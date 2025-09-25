@@ -40,8 +40,10 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
 
     public HumongousDualInputHatch(int id, String name, String nameRegional, int aTier) {
         super(id, name, nameRegional, aTier);
+        this.mStoredFluid = new FluidStack[aTier];
+        this.fluidTanks = new FluidStackTank[aTier];
         this.mCapacityPer = Integer.MAX_VALUE;
-        this.itemSlotAmount = aTier * aTier + 1;
+        this.itemSlotAmount = Math.min(1, 2 * aTier) + 1;
         mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_DualInputHatch_01")
             + GTUtility.formatNumbers(itemSlotAmount - 1);
         mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_DualInputHatch_02_00")
@@ -49,6 +51,7 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
             + StatCollector.translateToLocal("Tooltip_DualInputHatch_02_01")
             + GTUtility.formatNumbers(mCapacityPer)
             + "L";
+
         for (int i = 0; i < aTier; i++) {
             final int index = i;
             this.fluidTanks[i] = new FluidStackTank(
@@ -62,7 +65,10 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
 
     public HumongousDualInputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+        this.mStoredFluid = new FluidStack[aTier];
+        this.fluidTanks = new FluidStackTank[aTier];
         this.mCapacityPer = Integer.MAX_VALUE;
+        this.itemSlotAmount = Math.min(1, 2 * aTier) + 1;
         mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_DualInputHatch_01")
             + GTUtility.formatNumbers(itemSlotAmount - 1);
         mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_DualInputHatch_02_00")
@@ -70,6 +76,7 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
             + StatCollector.translateToLocal("Tooltip_DualInputHatch_02_01")
             + GTUtility.formatNumbers(mCapacityPer)
             + "L";
+
         for (int i = 0; i < aTier; i++) {
             final int index = i;
             this.fluidTanks[i] = new FluidStackTank(
@@ -78,6 +85,7 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
                 mCapacityPer);
         }
         this.inventory = new Inventory(mInventory, mStoredFluid);
+        this.disableSort = true;
     }
 
     @Override
@@ -276,8 +284,7 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
         })
             .setPlayClickSound(true)
             .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_EXPORT)
-            .addTooltips(
-                ImmutableList.of(StatCollector.translateToLocal("Button_Tooltip_SuperCraftingInputHatchME_01")))
+            .addTooltips(ImmutableList.of(StatCollector.translateToLocal("Button_Tooltip_HumongousDualInputHatch_00")))
             .setSize(16, 16)
             .setPos(170 + 4 * (mTier - 1) + mTier / 2, 102 + 14 * (mTier - 1)));
 
