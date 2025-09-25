@@ -34,8 +34,9 @@ import com.science.gtnl.common.machine.hatch.DebugDataAccessHatch;
 import com.science.gtnl.common.machine.hatch.DebugEnergyHatch;
 import com.science.gtnl.common.machine.hatch.DualInputHatch;
 import com.science.gtnl.common.machine.hatch.DualOutputHatch;
+import com.science.gtnl.common.machine.hatch.EnergyTransferNode;
 import com.science.gtnl.common.machine.hatch.ExplosionDynamoHatch;
-import com.science.gtnl.common.machine.hatch.HumongousInputBus;
+import com.science.gtnl.common.machine.hatch.HumongousDualInputHatch;
 import com.science.gtnl.common.machine.hatch.HumongousNinefoldInputHatch;
 import com.science.gtnl.common.machine.hatch.HumongousSolidifierHatch;
 import com.science.gtnl.common.machine.hatch.ManaDynamoHatch;
@@ -57,7 +58,6 @@ import com.science.gtnl.common.machine.hatch.TapDynamoHatch;
 import com.science.gtnl.common.machine.hatch.VaultPortHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
-import com.science.gtnl.common.machine.hatch.test.EnergyTransferNode;
 import com.science.gtnl.common.machine.multiblock.AdvancedCircuitAssemblyLine;
 import com.science.gtnl.common.machine.multiblock.AdvancedInfiniteDriller;
 import com.science.gtnl.common.machine.multiblock.AprilFool.HighPressureSteamFusionReactor;
@@ -244,7 +244,7 @@ public class MachineLoader {
     public static ItemStack ResourceCollectionModule;
     public static ItemStack SuperSpaceElevator;
 
-    public static void loadMachines() {
+    public static void registerMachines() {
 
         GTNLItemList.EdenGarden
             .set(new EdenGarden(EDEN_GARDEN.ID, "EdenGarden", StatCollector.translateToLocal("NameEdenGarden")));
@@ -1375,7 +1375,7 @@ public class MachineLoader {
         addItemTooltip(GTNLItemList.NineIndustrialMultiMachine.get(1), AnimatedText.SNL_QYZG);
     }
 
-    public static void loadHatch() {
+    public static void registerHatch() {
         Set<Fluid> acceptedFluids = new HashSet<>();
         acceptedFluids.add(
             MaterialPool.FluidMana.getFluidOrGas(1)
@@ -1972,190 +1972,126 @@ public class MachineLoader {
                 "DebugDataAccessHatch",
                 StatCollector.translateToLocal("DebugDataAccessHatch")));
         addItemTooltip(GTNLItemList.DebugDataAccessHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-    }
 
-    @Deprecated
-    public static void registerTestMachine() {
-        GTNLItemList.QuadrupleOutputHatchEV.set(
-            new DualOutputHatch(
-                21700,
-                4,
-                "QuadrupleOutputHatchEV",
-                StatCollector.translateToLocal("QuadrupleOutputHatchEV"),
-                4));
-        addItemTooltip(GTNLItemList.QuadrupleOutputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.NinefoldOutputHatchEV.set(
-            new DualOutputHatch(
-                21701,
-                9,
-                "NinefoldOutputHatchEV",
-                StatCollector.translateToLocal("NinefoldOutputHatchEV"),
-                4));
-        addItemTooltip(GTNLItemList.NinefoldOutputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.HumongousInputBusULV.set(
-            new HumongousInputBus(
-                21702,
-                "HumongousInputBusULV",
-                StatCollector.translateToLocal("HumongousInputBusULV"),
+        GTNLItemList.HumongousDualInputHatchULV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_ULV.ID,
+                "HumongousDualInputHatchULV",
+                StatCollector.translateToLocal("HumongousDualInputHatchULV"),
                 0));
-        addItemTooltip(GTNLItemList.HumongousInputBusULV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchULV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusLV.set(
-            new HumongousInputBus(
-                21703,
-                "HumongousInputBusLV",
-                StatCollector.translateToLocal("HumongousInputBusLV"),
+        GTNLItemList.HumongousDualInputHatchLV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_LV.ID,
+                "HumongousDualInputHatchLV",
+                StatCollector.translateToLocal("HumongousDualInputHatchLV"),
                 1));
-        addItemTooltip(GTNLItemList.HumongousInputBusLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusMV.set(
-            new HumongousInputBus(
-                21704,
-                "HumongousInputBusMV",
-                StatCollector.translateToLocal("HumongousInputBusMV"),
+        GTNLItemList.HumongousDualInputHatchMV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_MV.ID,
+                "HumongousDualInputHatchMV",
+                StatCollector.translateToLocal("HumongousDualInputHatchMV"),
                 2));
-        addItemTooltip(GTNLItemList.HumongousInputBusMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusHV.set(
-            new HumongousInputBus(
-                21705,
-                "HumongousInputBusHV",
-                StatCollector.translateToLocal("HumongousInputBusHV"),
+        GTNLItemList.HumongousDualInputHatchHV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_HV.ID,
+                "HumongousDualInputHatchHV",
+                StatCollector.translateToLocal("HumongousDualInputHatchHV"),
                 3));
-        addItemTooltip(GTNLItemList.HumongousInputBusHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusEV.set(
-            new HumongousInputBus(
-                21706,
-                "HumongousInputBusEV",
-                StatCollector.translateToLocal("HumongousInputBusEV"),
+        GTNLItemList.HumongousDualInputHatchEV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_EV.ID,
+                "HumongousDualInputHatchEV",
+                StatCollector.translateToLocal("HumongousDualInputHatchEV"),
                 4));
-        addItemTooltip(GTNLItemList.HumongousInputBusEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusIV.set(
-            new HumongousInputBus(
-                21707,
-                "HumongousInputBusIV",
-                StatCollector.translateToLocal("HumongousInputBusIV"),
+        GTNLItemList.HumongousDualInputHatchIV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_IV.ID,
+                "HumongousDualInputHatchIV",
+                StatCollector.translateToLocal("HumongousDualInputHatchIV"),
                 5));
-        addItemTooltip(GTNLItemList.HumongousInputBusIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusLuV.set(
-            new HumongousInputBus(
-                21708,
-                "HumongousInputBusLuV",
-                StatCollector.translateToLocal("HumongousInputBusLuV"),
+        GTNLItemList.HumongousDualInputHatchLuV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_LUV.ID,
+                "HumongousDualInputHatchLuV",
+                StatCollector.translateToLocal("HumongousDualInputHatchLuV"),
                 6));
-        addItemTooltip(GTNLItemList.HumongousInputBusLuV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchLuV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusZPM.set(
-            new HumongousInputBus(
-                21709,
-                "HumongousInputBusZPM",
-                StatCollector.translateToLocal("HumongousInputBusZPM"),
+        GTNLItemList.HumongousDualInputHatchZPM.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_ZPM.ID,
+                "HumongousDualInputHatchZPM",
+                StatCollector.translateToLocal("HumongousDualInputHatchZPM"),
                 7));
-        addItemTooltip(GTNLItemList.HumongousInputBusZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUV.set(
-            new HumongousInputBus(
-                21710,
-                "HumongousInputBusUV",
-                StatCollector.translateToLocal("HumongousInputBusUV"),
+        GTNLItemList.HumongousDualInputHatchUV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UV.ID,
+                "HumongousDualInputHatchUV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUV"),
                 8));
-        addItemTooltip(GTNLItemList.HumongousInputBusUV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUHV.set(
-            new HumongousInputBus(
-                21711,
-                "HumongousInputBusUHV",
-                StatCollector.translateToLocal("HumongousInputBusUHV"),
+        GTNLItemList.HumongousDualInputHatchUHV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UHV.ID,
+                "HumongousDualInputHatchUHV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUHV"),
                 9));
-        addItemTooltip(GTNLItemList.HumongousInputBusUHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUEV.set(
-            new HumongousInputBus(
-                21712,
-                "HumongousInputBusUEV",
-                StatCollector.translateToLocal("HumongousInputBusUEV"),
+        GTNLItemList.HumongousDualInputHatchUEV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UEV.ID,
+                "HumongousDualInputHatchUEV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUEV"),
                 10));
-        addItemTooltip(GTNLItemList.HumongousInputBusUEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUIV.set(
-            new HumongousInputBus(
-                21713,
-                "HumongousInputBusUIV",
-                StatCollector.translateToLocal("HumongousInputBusUIV"),
+        GTNLItemList.HumongousDualInputHatchUIV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UIV.ID,
+                "HumongousDualInputHatchUIV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUIV"),
                 11));
-        addItemTooltip(GTNLItemList.HumongousInputBusUIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUMV.set(
-            new HumongousInputBus(
-                21714,
-                "HumongousInputBusUMV",
-                StatCollector.translateToLocal("HumongousInputBusUMV"),
+        GTNLItemList.HumongousDualInputHatchUMV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UMV.ID,
+                "HumongousDualInputHatchUMV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUMV"),
                 12));
-        addItemTooltip(GTNLItemList.HumongousInputBusUMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUXV.set(
-            new HumongousInputBus(
-                21715,
-                "HumongousInputBusUXV",
-                StatCollector.translateToLocal("HumongousInputBusUXV"),
+        GTNLItemList.HumongousDualInputHatchUXV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UXV.ID,
+                "HumongousDualInputHatchUXV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUXV"),
                 13));
-        addItemTooltip(GTNLItemList.HumongousInputBusUXV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUXV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusMAX.set(
-            new HumongousInputBus(
-                21716,
-                "HumongousInputBusMAX",
-                StatCollector.translateToLocal("HumongousInputBusMAX"),
+        GTNLItemList.HumongousDualInputHatchMAX.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_MAX.ID,
+                "HumongousDualInputHatchMAX",
+                StatCollector.translateToLocal("HumongousDualInputHatchMAX"),
                 14));
-        addItemTooltip(GTNLItemList.HumongousInputBusMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-    }
-
-    public static void registerBasicMachine() {
-        GTNLItemList.SteamTurbineLV.set(
-            new SteamTurbine(
-                STEAM_TURBINE_LV.ID,
-                "SteamTurbineLV",
-                StatCollector.translateToLocal("SteamTurbineLV"),
-                1));
-        addItemTooltip(GTNLItemList.SteamTurbineLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.SteamTurbineMV.set(
-            new SteamTurbine(
-                STEAM_TURBINE_MV.ID,
-                "SteamTurbineMV",
-                StatCollector.translateToLocal("SteamTurbineMV"),
-                2));
-        addItemTooltip(GTNLItemList.SteamTurbineMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.SteamTurbineHV.set(
-            new SteamTurbine(
-                STEAM_TURBINE_HV.ID,
-                "SteamTurbineHV",
-                StatCollector.translateToLocal("SteamTurbineHV"),
-                3));
-        addItemTooltip(GTNLItemList.SteamTurbineHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.SteamAssemblerBronze.set(
-            new SteamAssemblerBronze(
-                STEAM_ASSEMBLER_BRONZE.ID,
-                "SteamAssembler",
-                StatCollector.translateToLocal("SteamAssemblerBronze")));
-        addItemTooltip(GTNLItemList.SteamAssemblerBronze.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.SteamAssemblerSteel.set(
-            new SteamAssemblerSteel(
-                STEAM_ASSEMBLER_STEEL.ID,
-                "HighPressureSteamAssembler",
-                StatCollector.translateToLocal("SteamAssemblerSteel")));
-        addItemTooltip(GTNLItemList.SteamAssemblerSteel.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.ManaTank.set(new ManaTank(MANA_TANK.ID, "ManaTank", StatCollector.translateToLocal("ManaTank")));
-        addItemTooltip(GTNLItemList.ManaTank.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.ManaDynamoHatchLV.set(
             new ManaDynamoHatch(
@@ -2228,6 +2164,70 @@ public class MachineLoader {
                 7,
                 16));
         addItemTooltip(GTNLItemList.ManaEnergyHatchZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+    }
+
+    @Deprecated
+    public static void registerTestMachine() {
+        GTNLItemList.QuadrupleOutputHatchEV.set(
+            new DualOutputHatch(
+                21700,
+                4,
+                "QuadrupleOutputHatchEV",
+                StatCollector.translateToLocal("QuadrupleOutputHatchEV"),
+                4));
+        addItemTooltip(GTNLItemList.QuadrupleOutputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.NinefoldOutputHatchEV.set(
+            new DualOutputHatch(
+                21701,
+                9,
+                "NinefoldOutputHatchEV",
+                StatCollector.translateToLocal("NinefoldOutputHatchEV"),
+                4));
+        addItemTooltip(GTNLItemList.NinefoldOutputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+    }
+
+    public static void registerBasicMachine() {
+        GTNLItemList.SteamTurbineLV.set(
+            new SteamTurbine(
+                STEAM_TURBINE_LV.ID,
+                "SteamTurbineLV",
+                StatCollector.translateToLocal("SteamTurbineLV"),
+                1));
+        addItemTooltip(GTNLItemList.SteamTurbineLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamTurbineMV.set(
+            new SteamTurbine(
+                STEAM_TURBINE_MV.ID,
+                "SteamTurbineMV",
+                StatCollector.translateToLocal("SteamTurbineMV"),
+                2));
+        addItemTooltip(GTNLItemList.SteamTurbineMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamTurbineHV.set(
+            new SteamTurbine(
+                STEAM_TURBINE_HV.ID,
+                "SteamTurbineHV",
+                StatCollector.translateToLocal("SteamTurbineHV"),
+                3));
+        addItemTooltip(GTNLItemList.SteamTurbineHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamAssemblerBronze.set(
+            new SteamAssemblerBronze(
+                STEAM_ASSEMBLER_BRONZE.ID,
+                "SteamAssembler",
+                StatCollector.translateToLocal("SteamAssemblerBronze")));
+        addItemTooltip(GTNLItemList.SteamAssemblerBronze.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamAssemblerSteel.set(
+            new SteamAssemblerSteel(
+                STEAM_ASSEMBLER_STEEL.ID,
+                "HighPressureSteamAssembler",
+                StatCollector.translateToLocal("SteamAssemblerSteel")));
+        addItemTooltip(GTNLItemList.SteamAssemblerSteel.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.ManaTank.set(new ManaTank(MANA_TANK.ID, "ManaTank", StatCollector.translateToLocal("ManaTank")));
+        addItemTooltip(GTNLItemList.ManaTank.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         for (GasCollectorTier tier : GasCollectorTier.values()) {
             IMetaTileEntity mte = new MTEBasicMachineWithRecipe(
@@ -2297,7 +2297,7 @@ public class MachineLoader {
         addItemTooltip(GTNLItemList.EnergyTransferNode.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
-    public static void registerMTEWireAndPipe() {
+    public static void registerWireAndPipe() {
         CrackRecipeAdder.registerWire(STAR_GATE_WIRE.ID, MaterialPool.Stargate, 2147483647, 2147483647, 0, true);
         MaterialUtils.generateGTFluidPipes(Materials.BlueAlloy, BLUE_ALLOY_PIPE.ID, 4000, 3000, true);
         CrackRecipeAdder.registerPipe(COMPRESSED_STEAM_PIPE.ID, MaterialPool.CompressedSteam, 250000, 10000, true);
@@ -2362,9 +2362,9 @@ public class MachineLoader {
 
     public static void registry() {
         Logger.INFO("GTNL Content | Registering MTE Block Machine.");
-        loadHatch();
-        loadMachines();
-        registerMTEWireAndPipe();
+        registerHatch();
+        registerMachines();
+        registerWireAndPipe();
         registerBasicMachine();
         registerCovers();
 

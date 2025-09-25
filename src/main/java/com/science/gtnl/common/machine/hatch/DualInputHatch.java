@@ -14,8 +14,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -38,10 +36,10 @@ import gregtech.common.tileentities.machines.IDualInputInventory;
 
 public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, IDualInputHatch, IAddGregtechLogo {
 
-    private final FluidStack[] mStoredFluid;
-    private final FluidStackTank[] fluidTanks;
-    public final int mCapacityPer;
-    public final int itemSlotAmount;
+    public FluidStack[] mStoredFluid;
+    public FluidStackTank[] fluidTanks;
+    public int mCapacityPer;
+    public int itemSlotAmount;
 
     public static class Inventory implements IDualInputInventory {
 
@@ -118,6 +116,11 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
                 mCapacityPer);
         }
         this.inventory = new Inventory(mInventory, mStoredFluid);
+        this.disableSort = true;
+    }
+
+    public DualInputHatch(int id, String name, String nameRegional, int tier, int slots, String[] description) {
+        super(id, name, nameRegional, tier, slots, description);
     }
 
     public DualInputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -142,6 +145,7 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
                 mCapacityPer);
         }
         this.inventory = new Inventory(mInventory, mStoredFluid);
+        this.disableSort = true;
     }
 
     @Override
@@ -381,6 +385,7 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
     }
 
     public void updateSlots() {
+        super.updateSlots();
         if (mInventory != null) {
             for (int i = 0; i < mInventory.length - 1; i++)
                 if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
@@ -410,7 +415,7 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int itemColumns = Math.max(1, mTier);
         final int itemRows = Math.max(1, mTier);
 
