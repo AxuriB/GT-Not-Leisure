@@ -105,17 +105,13 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
                 ForgeDirection front = base.getFrontFacing();
 
                 for (int x = xCoord - (front.offsetX * 2) + 4; x >= xCoord - 4; x--) {
-                    for (int y = yCoord + 5; y <= yCoord + 55; y++) {
-                        for (int z = zCoord + 4 - (front.offsetZ * 6); z >= zCoord - 4 + (front.offsetZ * 8); z--) {
-                            if (!base.getWorld()
-                                .isAirBlock(x, y, z)) {
-                                notAirBlocks = true;
-                                break;
-                            }
+                    for (int z = zCoord + 4 - (front.offsetZ * 6); z >= zCoord - 4 + (front.offsetZ * 8); z--) {
+                        if (getBaseMetaTileEntity().getWorld()
+                            .getTopSolidOrLiquidBlock(x, z) > yCoord + 5) {
+                            notAirBlocks = true;
+                            break;
                         }
-                        if (notAirBlocks) break;
                     }
-                    if (notAirBlocks) break;
                 }
 
                 int output = getOutputEUt();
