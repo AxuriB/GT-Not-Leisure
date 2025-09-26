@@ -323,7 +323,6 @@ Tooltip_DualInputHatch_01=物品槽位数量：
 Tooltip_DualInputHatch_02_00=流体容量：共
 Tooltip_DualInputHatch_02_01=个流体槽，每个
 
-HumongousDualInputHatchULV=巨型输入总成 (ULV)
 HumongousDualInputHatchLV=巨型输入总成 (LV)
 HumongousDualInputHatchMV=巨型输入总成 (MV)
 HumongousDualInputHatchHV=巨型输入总成 (HV)
@@ -2527,7 +2526,7 @@ NameETGWEyeOfHarmonyModule=永恒格雷工坊 - 鸿蒙之眼模块
 ETGWEyeOfHarmonyModuleRecipeType=鸿蒙之眼
 Tooltip_ETGWEyeOfHarmonyModule_00=比鸿蒙之眼快900%
 Tooltip_ETGWEyeOfHarmonyModule_01=固定基础成功率为60%
-Tooltip_ETGWEyeOfHarmonyModule_02=每次失败成功率额外提高10%
+Tooltip_ETGWEyeOfHarmonyModule_02=每次失败后成功率额外提高10%
 Tooltip_ETGWEyeOfHarmonyModule_03=成功后重置额外成功率
 Tooltip_ETGWEyeOfHarmonyModule_04=使用电路板进行激光超频
 Tooltip_ETGWEyeOfHarmonyModule_05=产出EU固定为配方显示的100倍

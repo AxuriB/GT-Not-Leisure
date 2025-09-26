@@ -323,7 +323,6 @@ Tooltip_DualInputHatch_01=Item slot count:
 Tooltip_DualInputHatch_02_00=Fluid capacity: Total
 Tooltip_DualInputHatch_02_01=fluid slots, each
 
-HumongousDualInputHatchULV=Humongous Input Assembly (ULV)
 HumongousDualInputHatchLV=Humongous Input Assembly (LV)
 HumongousDualInputHatchMV=Humongous Input Assembly (MV)
 HumongousDualInputHatchHV=Humongous Input Assembly (HV)
@@ -2524,8 +2523,21 @@ EGTWFusionModuleRecipeType=Fusion Reactor
 Tooltip_EGTWFusionModule_Casing=Hint 1 dots
 
 NameETGWEyeOfHarmonyModule=EGTW - EOH Module
-Tooltip_ETGWEyeOfHarmonyModule_Casing=Hint 1 dots
 ETGWEyeOfHarmonyModuleRecipeType=Eye Of Harmony
+Tooltip_ETGWEyeOfHarmonyModule_00=900% faster than the Eye of Harmony
+Tooltip_ETGWEyeOfHarmonyModule_01=Fixed base success rate of 60%
+Tooltip_ETGWEyeOfHarmonyModule_02=Success rate increases by an additional 10% after each failure
+Tooltip_ETGWEyeOfHarmonyModule_03=Additional success rate resets after a success
+Tooltip_ETGWEyeOfHarmonyModule_04=Uses circuit boards for laser overclocking
+Tooltip_ETGWEyeOfHarmonyModule_05=EU output is fixed at 100 times the recipe’s displayed value
+Tooltip_ETGWEyeOfHarmonyModule_06=Keeps overflow ratio success rate penalty
+Tooltip_ETGWEyeOfHarmonyModule_07=Fixed parallelism of 50,000
+Tooltip_ETGWEyeOfHarmonyModule_08=By default uses Condensed Raw Stellar Plasma Mixture, switch back to Hydrogen-Helium with screwdriver right-click
+Tooltip_ETGWEyeOfHarmonyModule_09=Hatch check same as Eye of Harmony
+Tooltip_ETGWEyeOfHarmonyModule_10=Allows execution of all recipes
+Tooltip_ETGWEyeOfHarmonyModule_Casing=Hint 1 dots
+
+gtnl.recipe.PlasmaCentrifugeRecipes=Plasma Centrifuge
 
 NameFOGAlloySmelterModule=Solar Blazing Alloy Smelter
 FOGAlloySmelterModuleRecipeType=Alloy Smelter

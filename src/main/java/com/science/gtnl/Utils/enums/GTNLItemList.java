@@ -590,7 +590,6 @@ public enum GTNLItemList implements IItemContainer {
     HumongousNinefoldInputHatch,
     QuadrupleOutputHatchEV,
     NinefoldOutputHatchEV,
-    HumongousDualInputHatchULV,
     HumongousDualInputHatchLV,
     HumongousDualInputHatchMV,
     HumongousDualInputHatchHV,

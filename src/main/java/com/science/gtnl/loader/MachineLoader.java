@@ -1973,14 +1973,6 @@ public class MachineLoader {
                 StatCollector.translateToLocal("DebugDataAccessHatch")));
         addItemTooltip(GTNLItemList.DebugDataAccessHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousDualInputHatchULV.set(
-            new HumongousDualInputHatch(
-                HUMONGOUS_DUAL_INPUT_HATCH_ULV.ID,
-                "HumongousDualInputHatchULV",
-                StatCollector.translateToLocal("HumongousDualInputHatchULV"),
-                0));
-        addItemTooltip(GTNLItemList.HumongousDualInputHatchULV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
         GTNLItemList.HumongousDualInputHatchLV.set(
             new HumongousDualInputHatch(
                 HUMONGOUS_DUAL_INPUT_HATCH_LV.ID,
