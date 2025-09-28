@@ -1,22 +1,27 @@
 package com.science.gtnl.Utils;
 
 import static com.science.gtnl.ScienceNotLeisure.network;
+import static com.science.gtnl.Utils.gui.recipe.ElectrocellGeneratorFrontend.*;
 import static com.science.gtnl.Utils.steam.GlobalSteamWorldSavedData.loadInstance;
 import static com.science.gtnl.common.render.PlayerDollRenderManager.*;
-import static com.science.gtnl.common.render.PlayerDollRenderManager.UUID_CACHE;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -25,18 +30,23 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
+import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.Utils.machine.CircuitMaterialHelper;
+import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.asm.GTNLEarlyCoreMod;
 import com.science.gtnl.common.command.CommandTickrate;
@@ -46,36 +56,53 @@ import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.mixins.early.Minecraft.AccessorFoodStats;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.common.tileentities.machines.basic.MTEMonsterRepellent;
 import ic2.api.event.ExplosionEvent;
 
 public class SubscribeEventUtils {
 
     private static final Set<String> MOD_BLACKLIST = new HashSet<>(
         Arrays.asList(
-            Mods.QzMiner.ID,
-            Mods.Baubles.ID,
-            Mods.ReAvaritia.ID,
-            Mods.ScienceNotLeisure.ID,
-            Mods.Sudoku.ID,
-            Mods.GiveCount.ID));
+            ModList.QzMiner.ID,
+            ModList.Baubles.ID,
+            ModList.ReAvaritia.ID,
+            ModList.ScienceNotLeisure.ID,
+            ModList.Sudoku.ID,
+            ModList.GiveCount.ID));
+
+    private static final Map<UUID, Integer> foodTickTimers = new HashMap<>();
+
+    public static final DamageSource CRUSHING_DAMAGE = new DamageSource("damage.gtnl.crushing")
+        .setDamageBypassesArmor();
+
+    @SubscribeEvent
+    public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        int fromDim = event.fromDim;
+        int toDim = event.toDim;
+
+        String providerClassName = DimensionManager.getProvider(toDim)
+            .getClass()
+            .getName();
+
+        System.out.println(
+            event.player
+                .getDisplayName() + " 从维度 " + fromDim + " 切换到了维度 " + toDim + "，Provider = " + providerClassName);
+    }
 
     // Player
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.player instanceof EntityPlayerMP player) {
             // construct message from current server config
-            ConfigSyncPacket msg = new ConfigSyncPacket(new MainConfig());// or pass static values
+            ConfigSyncPacket msg = new ConfigSyncPacket();// or pass static values
             network.sendTo(msg, player);
 
             TimeStopManager.setTimeStopped(false);
@@ -83,7 +110,7 @@ public class SubscribeEventUtils {
             if (MainConfig.enableShowJoinMessage || MainConfig.enableDebugMode) {
 
                 if (MainConfig.enableShowAddMods) {
-                    for (Mods mod : Mods.values()) {
+                    for (ModList mod : ModList.values()) {
                         if (mod.isModLoaded() && !MOD_BLACKLIST.contains(mod.getModId())) {
                             String translatedPrefix = StatCollector.translateToLocal("Welcome_GTNL_ModInstall");
                             player.addChatMessage(
@@ -112,7 +139,7 @@ public class SubscribeEventUtils {
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
                 }
 
-                if (!Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
+                if (!ModList.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
                     player.addChatMessage(
                         new ChatComponentTranslation("Welcome_GTNL_RecipeOutputChance_00")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
@@ -191,19 +218,23 @@ public class SubscribeEventUtils {
 
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (event.entity instanceof EntityPlayer player) {
-            World world = player.worldObj;
+        if (event.entity instanceof EntityLivingBase entityLiving) {
+            World world = entityLiving.worldObj;
 
-            int x = (int) Math.floor(player.posX);
-            int y = (int) player.posY - 1;
-            int z = (int) Math.floor(player.posZ);
+            int x = (int) Math.floor(entityLiving.posX);
+            int y = (int) entityLiving.posY - 1;
+            int z = (int) Math.floor(entityLiving.posZ);
 
             Block block = world.getBlock(x, y, z);
             int meta = world.getBlockMetadata(x, y, z);
 
             if (block == GTNLItemList.CrushingWheels.getBlock() && meta == 2) {
-                player.attackEntityFrom(DamageSource.generic, 4.0F);
-                player.hurtResistantTime = 0;
+                if (entityLiving instanceof EntityPlayer player) {
+                    player.attackEntityFrom(CRUSHING_DAMAGE, 0.4F);
+                    player.hurtResistantTime = 0;
+                } else {
+                    entityLiving.attackEntityFrom(CRUSHING_DAMAGE, 1F);
+                }
             }
         }
     }
@@ -221,18 +252,79 @@ public class SubscribeEventUtils {
         }
     }
 
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END || event.player.worldObj.isRemote || !MainConfig.enableSaturationHeal)
+            return;
+
+        EntityPlayer player = event.player;
+        FoodStats stats = player.getFoodStats();
+
+        if (stats.getFoodLevel() >= 20) {
+            UUID uuid = player.getUniqueID();
+            int timer = foodTickTimers.getOrDefault(uuid, 0) + 1;
+
+            if (timer >= 10) {
+                timer = 0;
+
+                if (player.getHealth() < player.getMaxHealth()) {
+
+                    if (stats.getSaturationLevel() >= 1.0f) {
+                        player.heal(1);
+                        ((AccessorFoodStats) stats).setFoodSaturationLevel(stats.getSaturationLevel() - 1);
+                    } else {
+                        ((AccessorFoodStats) stats).setFoodlevel(stats.getFoodLevel() - 1);
+                    }
+                }
+            }
+
+            foodTickTimers.put(uuid, timer);
+        } else {
+            foodTickTimers.remove(player.getUniqueID());
+        }
+    }
+
     // Item
+
+    private static final Map<ItemStack, Supplier<String>> tooltipCache = new ItemStackMap<>(false);
+    private static boolean circuitMaterialLoad = false;
 
     // World
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         World world = event.world;
-        offlineMode = false;
-        BLACKLISTED_UUIDS.clear();;
-        BLACKLISTED_NAMES.clear();
-        BLACKLISTED_SKIN_URLS.clear();
-        BLACKLISTED_CAPE_URLS.clear();
-        UUID_CACHE.clear();
+        if (!circuitMaterialLoad) {
+            CircuitMaterialHelper.init();
+            CircuitMaterialHelper.worldSeed = world.getSeed();
+            CircuitMaterialHelper
+                .applyRandomizedParams(CircuitMaterialHelper.materialParameterList, CircuitMaterialHelper.worldSeed);
+
+            for (CircuitMaterialHelper.ItemStackData data : CircuitMaterialHelper.materialParameterList) {
+                Supplier<String> tooltip1 = AnimatedTooltipHandler.translatedText("test00", data.euModifier);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip1);
+                tooltipCache.put(data.stack, tooltip1);
+                Supplier<String> tooltip2 = AnimatedTooltipHandler.translatedText("test01", data.speedBoost);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip2);
+                tooltipCache.put(data.stack, tooltip2);
+                Supplier<String> tooltip3 = AnimatedTooltipHandler.translatedText("test02", data.successChance);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip3);
+                tooltipCache.put(data.stack, tooltip3);
+                Supplier<String> tooltip4 = AnimatedTooltipHandler.translatedText("test03", data.failedChance);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip4);
+                tooltipCache.put(data.stack, tooltip4);
+                Supplier<String> tooltip5 = AnimatedTooltipHandler.translatedText("test04", data.parallelCount);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip5);
+                tooltipCache.put(data.stack, tooltip5);
+                Supplier<String> tooltip6 = AnimatedTooltipHandler.translatedText("test05", data.outputMultiplier);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip6);
+                tooltipCache.put(data.stack, tooltip6);
+                Supplier<String> tooltip7 = AnimatedTooltipHandler.translatedText("test06", data.maxTierSkips);
+                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip7);
+                tooltipCache.put(data.stack, tooltip7);
+            }
+            circuitMaterialLoad = true;
+        }
+
         if (!world.isRemote) {
             GameRules rules = world.getGameRules();
             if (!rules.hasRule("doWeatherCycle")) {
@@ -242,6 +334,23 @@ public class SubscribeEventUtils {
                 loadInstance(event.world);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        for (Map.Entry<ItemStack, Supplier<String>> entry : tooltipCache.entrySet()) {
+            AnimatedTooltipHandler.removeItemTooltipShift(entry.getKey(), entry.getValue());
+        }
+        tooltipCache.clear();
+        CircuitMaterialHelper.materialParameterList.clear();
+        circuitMaterialLoad = false;
+        offlineMode = false;
+        BLACKLISTED_UUIDS.clear();
+        BLACKLISTED_NAMES.clear();
+        BLACKLISTED_SKIN_URLS.clear();
+        BLACKLISTED_CAPE_URLS.clear();
+        UUID_CACHE.clear();
+        initializedRecipes.clear();
     }
 
     @SubscribeEvent
@@ -307,55 +416,6 @@ public class SubscribeEventUtils {
         }
     }
 
-    public static volatile List<int[]> mobReps = new CopyOnWriteArrayList<>();
-
-    public static int getPoweredRepellentRange(int aTier) {
-        return (int) Math.pow(2, 5 + aTier);
-    }
-
-    @SubscribeEvent
-    public void denyMobSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.getResult() == Event.Result.DENY) return;
-
-        if (event.entityLiving instanceof EntitySlime slime && !slime.hasCustomNameTag()
-            && event.getResult() == Event.Result.ALLOW) {
-            event.setResult(Event.Result.DEFAULT);
-        }
-
-        if (event.getResult() == Event.Result.ALLOW) {
-            return;
-        }
-
-        if (event.entityLiving.isCreatureType(EnumCreatureType.monster, false)) {
-            final double maxRangeCheck = Math.pow(getPoweredRepellentRange(GTValues.V.length - 1), 2);
-            for (int[] rep : mobReps) {
-                if (rep[3] == event.entity.worldObj.provider.dimensionId) {
-                    // If the chunk isn't loaded, we ignore this Repellent
-                    if (!event.entity.worldObj.blockExists(rep[0], rep[1], rep[2])) continue;
-                    final double dx = rep[0] + 0.5F - event.entity.posX;
-                    final double dy = rep[1] + 0.5F - event.entity.posY;
-                    final double dz = rep[2] + 0.5F - event.entity.posZ;
-
-                    final double check = (dx * dx + dz * dz + dy * dy);
-                    // Fail early if outside of max range
-                    if (check > maxRangeCheck) continue;
-
-                    final TileEntity tTile = event.entity.worldObj.getTileEntity(rep[0], rep[1], rep[2]);
-                    if (tTile instanceof BaseMetaTileEntity metaTile
-                        && metaTile.getMetaTileEntity() instanceof MTEMonsterRepellent repellent
-                        && check <= Math.pow(repellent.mRange, 2)) {
-                        if (event.entityLiving instanceof EntitySlime slime) {
-                            slime.setCustomNameTag("DoNotSpawnSlimes");
-                        }
-                        event.setResult(Event.Result.DENY);
-                        // We're already DENYing it. No reason to keep checking
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
     // Mobs
     @SubscribeEvent
     public void onLivingHurt(LivingHurtEvent event) {
@@ -370,10 +430,26 @@ public class SubscribeEventUtils {
         }
     }
 
+    @SubscribeEvent
+    public void onZombieDeath(LivingDeathEvent event) {
+        if (!(event.entity instanceof EntityZombie zombie)) return;
+        if (zombie.worldObj.isRemote) return;
+        if (!zombie.isChild()) return;
+        if (!(zombie.ridingEntity instanceof EntityChicken)) return;
+        EntityItem drop = new EntityItem(
+            zombie.worldObj,
+            zombie.posX,
+            zombie.posY,
+            zombie.posZ,
+            GTNLItemList.RecordLavaChicken.get(1));
+        drop.delayBeforeCanPickup = 10;
+        zombie.worldObj.spawnEntityInWorld(drop);
+    }
+
     // Config
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.modID.equals(Mods.ScienceNotLeisure.ID)) {
+        if (event.modID.equals(ModList.ScienceNotLeisure.ID)) {
             MainConfig.reloadConfig();
         }
     }

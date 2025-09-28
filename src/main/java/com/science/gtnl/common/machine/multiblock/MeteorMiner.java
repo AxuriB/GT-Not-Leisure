@@ -1,15 +1,14 @@
 package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.science.gtnl.ScienceNotLeisure.LOG;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableMap;
+import com.gtnewhorizon.gtnhlib.blockpos.BlockPos;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -43,14 +42,18 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
+import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
+import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 
+import bartworks.system.material.BWTileEntityMetaGeneratedOre;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -60,37 +63,36 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.multitileentity.multiblock.casing.Glasses;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.blocks.TileEntityOres;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.render.IMTERenderer;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import lombok.Getter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implements ISurvivalConstructable {
+public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvivalConstructable, IMTERenderer {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String STRUCTURE_PIECE_TIER2 = "tier2";
-    public static IStructureDefinition<MeteorMiner> STRUCTURE_DEFINITION = null;
-    public static final String MMO_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/meteor_miner_one";
-    public static final String MMT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/meteor_miner_two";
-    public static String[][] shape_t1 = StructureUtils.readStructureFromFile(MMO_STRUCTURE_FILE_PATH);
-    public static String[][] shape_t2 = StructureUtils.readStructureFromFile(MMT_STRUCTURE_FILE_PATH);
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_TIER2 = "tier2";
+    private static final String MMO_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/meteor_miner_one";
+    private static final String MMT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/meteor_miner_two";
+    private static final String[][] shape_t1 = StructureUtils.readStructureFromFile(MMO_STRUCTURE_FILE_PATH);
+    private static final String[][] shape_t2 = StructureUtils.readStructureFromFile(MMT_STRUCTURE_FILE_PATH);
 
     public TileEntityLaserBeacon renderer;
     public int xStart, yStart, zStart;
@@ -100,76 +102,21 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
     public boolean isWaiting = false;
     public boolean isResetting = false;
     public boolean stopAllRendering = false;
-    private final Collection<ItemStack> itemDrop = new ArrayList<>();
-    public int multiTier = 0;
+    public final Collection<ItemStack> itemDrop = new ArrayList<>();
+    public byte tierMachine = 0;
     public int tCountCasing;
 
-    private final Deque<BlockPos> scanQueue = new ArrayDeque<>();
-    private final Deque<List<BlockPos>> rowQueue = new ArrayDeque<>();
+    public final Deque<BlockPos> scanQueue = new ArrayDeque<>();
+    public final Deque<List<BlockPos>> rowQueue = new ArrayDeque<>();
 
-    private static final int SCAN_WIDTH = 100;
-    private static final int SCAN_HEIGHT = 150;
-    private static final int SCAN_DEPTH = 100;
-    private static final int MAX_BLOCKS_PER_CYCLE = MainConfig.meteorMinerMaxBlockPerCycle;
-    private static final int MAX_ROWS_PER_CYCLE = MainConfig.meteorMinerMaxRowPerCycle;
+    public static final int SCAN_WIDTH = 100;
+    public static final int SCAN_HEIGHT = 150;
+    public static final int SCAN_DEPTH = 100;
+    public static final int MAX_BLOCKS_PER_CYCLE = MainConfig.meteorMinerMaxBlockPerCycle;
+    public static final int MAX_ROWS_PER_CYCLE = MainConfig.meteorMinerMaxRowPerCycle;
 
+    @Getter
     public float renderAngle = 0f;
-
-    public float getRenderAngle() {
-        return this.renderAngle;
-    }
-
-    @Override
-    public IStructureDefinition<MeteorMiner> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MeteorMiner>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape_t1))
-                .addShape(STRUCTURE_PIECE_TIER2, transpose(shape_t2))
-                .addElement('A', Glasses.chainAllGlasses())
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 15))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 5))
-                .addElement('D', ofFrame(Materials.StainlessSteel))
-                .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
-                .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
-                .addElement('G', ofBlock(BlockLoader.LaserBeacon, 0))
-                .addElement(
-                    'H',
-                    buildHatchAdder(MeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
-                        .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(MeteorMiner::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
-                .addElement(
-                    'I',
-                    buildHatchAdder(MeteorMiner.class)
-                        .atLeast(ImmutableMap.of(InputBus.withAdder(MeteorMiner::addInjector), 1))
-                        .casingIndex(TAE.getIndexFromPage(1, 10))
-                        .dot(2)
-                        .buildAndChain(
-                            onElementPass(MeteorMiner::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 6))))
-                .addElement('c', ofBlock(GregTechAPI.sBlockCasings4, 7))
-                .addElement('d', ofBlock(GregTechAPI.sBlockCasings8, 2))
-                .addElement('e', ofBlock(GregTechAPI.sBlockCasings8, 3))
-                .addElement('f', ofBlock(GregTechAPI.sBlockCasings9, 11))
-                .addElement('g', ofFrame(Materials.Neutronium))
-                .addElement('h', ofFrame(Materials.BlackPlutonium))
-                .addElement(
-                    'j',
-                    buildHatchAdder(MeteorMiner.class).atLeast(OutputBus, Energy, Maintenance)
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(2))
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(MeteorMiner::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 2))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
-            && !f.isVerticallyFliped();
-    }
 
     public MeteorMiner(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -180,17 +127,86 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_LOGO)
-                .setSize(18, 18)
-                .setPos(172, 67));
+    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MeteorMiner(this.mName);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean renderInWorld(ISBRWorldContext ctx) {
+        if (MainConfig.enableAprilFool) {
+            return true;
+        } else {
+            return super.renderInWorld(ctx);
+        }
     }
 
     @Override
-    public void clearHatches() {
-        super.clearHatches();
-        tCountCasing = 0;
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        if (MainConfig.enableAprilFool) {
+            MeteorMinerMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
+        }
+    }
+
+    @Override
+    public int getMaxParallelRecipes() {
+        return 1;
+    }
+
+    @Override
+    public IStructureDefinition<MeteorMiner> getStructureDefinition() {
+        return StructureDefinition.<MeteorMiner>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape_t1))
+            .addShape(STRUCTURE_PIECE_TIER2, transpose(shape_t2))
+            .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 15))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings5, 5))
+            .addElement('D', ofFrame(Materials.StainlessSteel))
+            .addElement('E', ofBlock(ModBlocks.blockSpecialMultiCasings, 6))
+            .addElement('F', ofBlock(ModBlocks.blockSpecialMultiCasings, 8))
+            .addElement('G', ofBlock(BlockLoader.laserBeacon, 0))
+            .addElement(
+                'H',
+                buildHatchAdder(MeteorMiner.class).atLeast(Maintenance, OutputBus, Energy)
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(ofBlock(ModBlocks.blockSpecialMultiCasings, 6)))
+            .addElement(
+                'I',
+                buildHatchAdder(MeteorMiner.class).hatchClass(MTEHatchInputBus.class)
+                    .shouldReject(t -> !t.mInputBusses.isEmpty())
+                    .adder(MeteorMiner::addInjector)
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(ofBlock(ModBlocks.blockSpecialMultiCasings, 6)))
+            .addElement(
+                'J',
+                buildHatchAdder(MeteorMiner.class).atLeast(Maintenance, OutputBus, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings8, 2)))
+            .addElement('K', ofBlock(GregTechAPI.sBlockCasings4, 7))
+            .addElement('L', ofBlock(GregTechAPI.sBlockCasings8, 2))
+            .addElement('M', ofBlock(GregTechAPI.sBlockCasings8, 3))
+            .addElement('N', ofBlock(GregTechAPI.sBlockCasings9, 11))
+            .addElement('O', ofFrame(Materials.Neutronium))
+            .addElement('P', ofFrame(Materials.BlackPlutonium))
+            .build();
+    }
+
+    public boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
+        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (!(aMetaTileEntity instanceof MTEHatchInputBus bus)) return false;
+        if (bus.getTierForStructure() > 0) return false;
+        bus.updateTexture(aBaseCasingIndex);
+        return mInputBusses.add(bus);
+    }
+
+    @Override
+    public IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> (d.flag & (ForgeDirection.UP.flag | ForgeDirection.DOWN.flag)) == 0 && r.isNotRotated()
+            && !f.isVerticallyFliped();
     }
 
     @Override
@@ -205,19 +221,6 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         super.onBlockDestroyed();
     }
 
-    public void onCasingAdded() {
-        tCountCasing++;
-    }
-
-    public boolean addInjector(IGregTechTileEntity aBaseMetaTileEntity, int aBaseCasingIndex) {
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (!(aMetaTileEntity instanceof MTEHatchInputBus bus)) return false;
-        if (bus.getTierForStructure() > 0) return false;
-        bus.updateTexture(aBaseCasingIndex);
-        return mInputBusses.add(bus);
-    }
-
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         if (stackSize.stackSize < 2) {
@@ -229,32 +232,15 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return stackSize.stackSize < 2
-            ? survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 9, 13, 7, elementBudget, env, false, true)
-            : survivialBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, 9, 15, 3, elementBudget, env, false, true);
+            ? survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 9, 13, 7, elementBudget, env, false, true)
+            : survivalBuildPiece(STRUCTURE_PIECE_TIER2, stackSize, 9, 15, 3, elementBudget, env, false, true);
     }
 
     @Override
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MeteorMiner(this.mName);
+    public int getCasingTextureID() {
+        return tierMachine > 1 ? GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 2)
+            : TAE.getIndexFromPage(0, 6);
     }
-
-    public static final String TEXTURE_OVERLAY_FRONT_METEOR_MINER_GLOW = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_FRONT_METEOR_MINER_GLOW";
-    public static final String TEXTURE_OVERLAY_FRONT_METEOR_MINER = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_FRONT_METEOR_MINER";
-    public static final String TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_FRONT_METEOR_MINER_ACTIVE";
-    public static final String TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW";
-
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_METEOR_MINER_GLOW = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_METEOR_MINER_GLOW);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_METEOR_MINER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_METEOR_MINER);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_METEOR_MINER_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_FRONT_METEOR_MINER_ACTIVE_GLOW);
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
@@ -262,7 +248,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(0, 8)),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_METEOR_MINER_ACTIVE)
                         .extFacing()
@@ -273,7 +259,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(0, 8)),
+                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_METEOR_MINER)
                         .extFacing()
@@ -285,9 +271,22 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(0, 8)) };
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
         }
         return rTexture;
+    }
+
+    @Override
+    public void onValueUpdate(byte aValue) {
+        if (tierMachine != aValue) {
+            tierMachine = (byte) (aValue & 0x0F);
+        }
+    }
+
+    @Override
+    public byte getUpdateData() {
+        if (tierMachine <= 0) return 0;
+        return tierMachine;
     }
 
     @Override
@@ -311,6 +310,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
             .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_14"))
             .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_15"))
             .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_16"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_17"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
@@ -325,15 +325,50 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
             .addOutputBus(StatCollector.translateToLocal("Tooltip_MeteorMiner_Casing_02_02"), 3)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_MeteorMiner_Casing_02_02"), 3)
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_MeteorMiner_Casing_02_02"), 3)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        stopAllRendering = !stopAllRendering;
+        if (stopAllRendering) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("MeteorMiner_Render_Off"));
+            if (renderer != null) renderer.setShouldRender(false);
+        } else GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("MeteorMiner_Render_On"));
+    }
+
+    @Override
+    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+        if (checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7) && checkHatch()) {
+            tierMachine = 1;
+        } else if (checkPiece(STRUCTURE_PIECE_TIER2, 9, 15, 3) && checkHatch()) {
+            tierMachine = 2;
+        }
+        if (mInputBusses.isEmpty() && this.tierMachine == 1 || !findLaserRenderer(getBaseMetaTileEntity().getWorld()))
+            return false;
+        setupParameters();
+        return this.tierMachine > 0;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        this.tierMachine = 0;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && !mEnergyHatches.isEmpty();
     }
 
     public boolean findLaserRenderer(World w) {
         this.setStartCoords();
         if (w.getTileEntity(
             xStart,
-            getBaseMetaTileEntity().getYCoord() + (this.multiTier == 1 ? 10 : 15),
+            getBaseMetaTileEntity().getYCoord() + (this.tierMachine == 1 ? 10 : 15),
             zStart) instanceof TileEntityLaserBeacon laser) {
             renderer = laser;
             renderer.setRotationFields(getDirection(), getRotation(), getFlip());
@@ -342,88 +377,10 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         return false;
     }
 
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        stopAllRendering = !stopAllRendering;
-        if (stopAllRendering) {
-            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
-            if (renderer != null) renderer.setShouldRender(false);
-        } else PlayerUtils.messagePlayer(aPlayer, "Rendering on");
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        this.multiTier = 0;
-        if (aStack != null) {
-            if (checkPiece(STRUCTURE_PIECE_MAIN, 9, 13, 7)) {
-                this.multiTier = getMultiTier(aStack);
-            } else if (checkPiece(STRUCTURE_PIECE_TIER2, 9, 15, 3)) {
-                this.multiTier = getMultiTier(aStack);
-            }
-        }
-        if (mEnergyHatches.isEmpty() || (mInputBusses.isEmpty() && this.multiTier == 1)
-            || mMaintenanceHatches.size() != 1
-            || !findLaserRenderer(getBaseMetaTileEntity().getWorld())) return false;
-        return this.multiTier > 0;
-    }
-
-    public int getMultiTier(ItemStack inventory) {
+    public int getTierMachine(ItemStack inventory) {
         if (inventory == null) return 0;
         return inventory.isItemEqual(GTNLItemList.MeteorMinerSchematic2.get(1)) ? 2
             : inventory.isItemEqual(GTNLItemList.MeteorMinerSchematic1.get(1)) ? 1 : 0;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    public void setFortuneTier() {
-        this.fortuneTier = 0;
-
-        if (this.multiTier == 2) {
-            this.fortuneTier = 5;
-            return;
-        }
-
-        if (!mInputBusses.isEmpty()) {
-            Optional<ItemStack> input = Optional.ofNullable(
-                mInputBusses.get(0)
-                    .getInventoryHandler()
-                    .getStackInSlot(0));
-            if (input.isPresent()) {
-                ItemStack stack = input.get();
-                this.fortuneTier = getFortuneTierForItem(stack);
-            }
-        }
-    }
-
-    public int getFortuneTierForItem(ItemStack stack) {
-        if (isSpecificItem(stack, Botania.ID, "terraPick")) {
-            return 4;
-        } else if (isSpecificItem(stack, BloodMagic.ID, "boundPickaxe")) {
-            return 3;
-        } else if (isSpecificItem(stack, Thaumcraft.ID, "ItemPickaxeElemental")) {
-            return 2;
-        } else {
-            return 0;
-        }
     }
 
     public boolean isSpecificItem(ItemStack stack, String modId, String itemName) {
@@ -441,7 +398,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         aNBT.setBoolean("hasFinished", hasFinished);
         aNBT.setBoolean("isWaiting", isWaiting);
         aNBT.setBoolean("stopAllRendering", stopAllRendering);
-        aNBT.setInteger("multiTier", multiTier);
+        aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("fortuneTier", fortuneTier);
         aNBT.setDouble("renderAngle", renderAngle);
     }
@@ -456,14 +413,14 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         hasFinished = aNBT.getBoolean("hasFinished");
         isWaiting = aNBT.getBoolean("isWaiting");
         stopAllRendering = aNBT.getBoolean("stopAllRendering");
-        multiTier = aNBT.getInteger("multiTier");
+        tierMachine = aNBT.getByte("tierMachine");
         fortuneTier = aNBT.getInteger("fortuneTier");
         renderAngle = (float) aNBT.getDouble("renderAngle");
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        renderAngle += 15f;
+        renderAngle += 1f;
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
@@ -486,7 +443,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        if (this.multiTier != this.getMultiTier(mInventory[1])) {
+        if (this.tierMachine != this.getTierMachine(mInventory[1])) {
             stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("missing_schematic");
         }
@@ -502,8 +459,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
 
         setElectricityStats();
         if (!isEnergyEnough()) {
-            stopMachine(ShutDownReasonRegistry.NONE);
-            return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
+            return CheckRecipeResultRegistry.insufficientPower(lEUt);
         }
 
         if (hasFinished) {
@@ -523,7 +479,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
 
         if (!isStartInitialized) {
             setStartCoords();
-            if (multiTier == 1) {
+            if (tierMachine == 1) {
                 prepareScanQueue();
             } else {
                 prepareRowQueue();
@@ -532,7 +488,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
 
         if (!hasFinished) {
             setFortuneTier();
-            if (multiTier == 1) {
+            if (tierMachine == 1) {
                 int done = 0;
                 while (done < MAX_BLOCKS_PER_CYCLE && !scanQueue.isEmpty()) {
                     BlockPos pos = scanQueue.pollFirst();
@@ -553,7 +509,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
             mOutputItems = itemDrop.toArray(new ItemStack[0]);
             itemDrop.clear();
 
-            boolean queueEmpty = (multiTier == 1 ? scanQueue.isEmpty() : rowQueue.isEmpty());
+            boolean queueEmpty = (tierMachine == 1 ? scanQueue.isEmpty() : rowQueue.isEmpty());
             if (queueEmpty) {
                 hasFinished = true;
                 if (renderer != null) renderer.setShouldRender(false);
@@ -567,6 +523,35 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         }
 
         return SimpleCheckRecipeResult.ofSuccess("meteor_mining");
+    }
+
+    public void setFortuneTier() {
+        this.fortuneTier = 0;
+
+        if (this.tierMachine == 2) {
+            this.fortuneTier = 5;
+            return;
+        }
+
+        if (!mInputBusses.isEmpty()) {
+            Optional<ItemStack> input = Optional.ofNullable(
+                mInputBusses.get(0)
+                    .getInventoryHandler()
+                    .getStackInSlot(0));
+            input.ifPresent(stack -> this.fortuneTier = getFortuneTierForItem(stack));
+        }
+    }
+
+    public int getFortuneTierForItem(ItemStack stack) {
+        if (isSpecificItem(stack, Botania.ID, "terraPick")) {
+            return 4;
+        } else if (isSpecificItem(stack, BloodMagic.ID, "boundPickaxe")) {
+            return 3;
+        } else if (isSpecificItem(stack, Thaumcraft.ID, "ItemPickaxeElemental")) {
+            return 2;
+        } else {
+            return 0;
+        }
     }
 
     public void prepareScanQueue() {
@@ -626,7 +611,7 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         if (GTUtility.isOre(target, meta)) {
             try {
                 TileEntity te = w.getTileEntity(x, y, z);
-                if (te instanceof TileEntityOres gtOre && gtOre.mNatural) {
+                if (te instanceof TileEntityOres || te instanceof BWTileEntityMetaGeneratedOre) {
                     itemDrop.addAll(getOutputByDrops(drops));
                 }
             } catch (Exception e) {
@@ -682,29 +667,18 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
             && itemData.mMaterial.mMaterial != Materials.Oilsands;
     }
 
-    public static class BlockPos {
-
-        final int x, y, z;
-
-        BlockPos(int x, int y, int z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-    }
-
     public void setStartCoords() {
         ForgeDirection facing = getBaseMetaTileEntity().getBackFacing();
         if (facing == ForgeDirection.NORTH || facing == ForgeDirection.SOUTH) {
             xStart = getBaseMetaTileEntity().getXCoord();
-            zStart = (this.multiTier == 1 ? 2 : 6) * getExtendedFacing().getRelativeBackInWorld().offsetZ
+            zStart = (this.tierMachine == 1 ? 2 : 6) * getExtendedFacing().getRelativeBackInWorld().offsetZ
                 + getBaseMetaTileEntity().getZCoord();
         } else {
-            xStart = (this.multiTier == 1 ? 2 : 6) * getExtendedFacing().getRelativeBackInWorld().offsetX
+            xStart = (this.tierMachine == 1 ? 2 : 6) * getExtendedFacing().getRelativeBackInWorld().offsetX
                 + getBaseMetaTileEntity().getXCoord();
             zStart = getBaseMetaTileEntity().getZCoord();
         }
-        yStart = (this.multiTier == 1 ? 14 : 16) + getBaseMetaTileEntity().getYCoord();
+        yStart = (this.tierMachine == 1 ? 14 : 16) + getBaseMetaTileEntity().getYCoord();
     }
 
     public void initializeDrillPos() {
@@ -728,14 +702,15 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         this.mEfficiency = 10000;
         this.mEfficiencyIncrease = 10000;
 
-        OverclockCalculator calculator = new OverclockCalculator().setEUt(getAverageInputVoltage())
+        GTNL_OverclockCalculator calculator = new GTNL_OverclockCalculator().setEUt(getAverageInputVoltage())
             .setAmperage(getMaxInputAmps())
             .setRecipeEUt(128)
             .setDuration(12 * 20)
-            .setAmperageOC(mEnergyHatches.size() != 1);
+            .setAmperageOC(mEnergyHatches.size() != 1)
+            .setExtraDurationModifier(mConfigSpeedBoost);
         calculator.calculate();
         this.mMaxProgresstime = (isWaiting) ? 200 : calculator.getDuration();
-        this.mEUt = (int) (calculator.getConsumption() / ((isWaiting) ? 8 : 1));
+        this.lEUt = (int) (calculator.getConsumption() / ((isWaiting) ? 8 : 1));
     }
 
     public boolean isEnergyEnough() {
@@ -750,7 +725,6 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
-
         builder.widget(
             new ButtonWidget().setOnClick((clickData, widget) -> this.startReset())
                 .setPlayClickSound(true)
@@ -764,8 +738,8 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("fortune", this.fortuneTier);
-        tag.setInteger("tier", this.multiTier);
+        tag.setInteger("fortuneTier", this.fortuneTier);
+        tag.setInteger("tierMachine", this.tierMachine);
     }
 
     @Override
@@ -775,11 +749,11 @@ public class MeteorMiner extends MTEEnhancedMultiBlockBase<MeteorMiner> implemen
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
             StatCollector.translateToLocal("Info_MeteorMiner_00") + EnumChatFormatting.WHITE
-                + tag.getInteger("tier")
+                + tag.getInteger("tierMachine")
                 + EnumChatFormatting.RESET);
         currentTip.add(
             StatCollector.translateToLocal("Info_MeteorMiner_01") + EnumChatFormatting.WHITE
-                + tag.getInteger("fortune")
+                + tag.getInteger("fortuneTier")
                 + EnumChatFormatting.RESET);
     }
 }

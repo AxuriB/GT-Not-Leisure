@@ -1,7 +1,5 @@
 package com.science.gtnl.mixins.late.Bartwork;
 
-import static com.science.gtnl.common.item.BasicItems.MetaItem;
-
 import net.minecraft.item.ItemStack;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.science.gtnl.loader.ItemLoader;
 import com.science.gtnl.loader.RecipeLoader;
 
 import bartworks.system.material.CircuitGeneration.BWMetaItems;
@@ -19,9 +18,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(value = CircuitImprintLoader.class, remap = false)
-public abstract class CircuitImprintLoader_Mixin {
+public abstract class MixinCircuitImprintLoader {
 
     @Inject(
         method = "run",
@@ -63,16 +61,17 @@ public abstract class CircuitImprintLoader_Mixin {
                         in[index] = GTOreDictUnificator.get(
                             OrePrefixes.wireFine,
                             GTOreDictUnificator.getAssociation(original.mInputs[index]).mMaterial.mMaterial,
-                            original.mInputs[index].stackSize * 16);
+                            original.mInputs[index].stackSize * 16L);
                     }
                     // other components
                 } else {
                     in[index] = original.mInputs[index].copy();
                     in[index].stackSize *= 16;
 
-                    if (in[index].getItem() != MetaItem && !(in[index].isItemEqual(
-                        BWMetaItems.getCircuitParts()
-                            .getStack(3)))
+                    if (in[index].getItem() != ItemLoader.metaItem
+                        && !(in[index].isItemEqual(
+                            BWMetaItems.getCircuitParts()
+                                .getStack(3)))
                         && (in[index].stackSize > in[index].getItem()
                             .getItemStackLimit() || in[index].stackSize > in[index].getMaxStackSize())) {
                         in[index].stackSize = in[index].getMaxStackSize();
