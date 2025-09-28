@@ -1,5 +1,7 @@
 package com.science.gtnl.common.recipe.GTNL;
 
+import static gregtech.api.util.GTRecipeBuilder.*;
+
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.item.items.MilledOre;
 import com.science.gtnl.loader.RecipePool;
@@ -12,8 +14,6 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-
-import static gregtech.api.util.GTRecipeBuilder.*;
 
 public class CellRegulatorRecipes implements IRecipePool {
 
