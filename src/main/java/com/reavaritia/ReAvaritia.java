@@ -12,10 +12,10 @@ import com.reavaritia.common.SubscribeEventUtils;
 import com.reavaritia.common.block.BlockRegister;
 import com.reavaritia.common.block.ExtremeAnvil.EntityExtremeAnvil;
 import com.reavaritia.common.block.ExtremeAnvil.ExtremeAnvilPacket;
-import com.reavaritia.common.block.GooeyHandler;
+import com.reavaritia.common.block.GuiHandler;
 import com.reavaritia.common.item.BlazeSword;
 import com.reavaritia.common.item.ChronarchsClock;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -34,14 +34,14 @@ import cpw.mods.fml.relauncher.Side;
     acceptedMinecraftVersions = "1.7.10")
 public class ReAvaritia {
 
-    @Mod.Instance(Mods.ModIds.REAVARITIA)
+    @Mod.Instance(ModList.ModIds.REAVARITIA)
     public static ReAvaritia instance;
 
-    public static final String MODID = Mods.ModIds.REAVARITIA;
+    public static final String MODID = ModList.ModIds.REAVARITIA;
     public static final String MODNAME = "ReAvaritia";
     public static final String VERSION = "1.0.0";
     public static final String Arthor = "HFstudio";
-    public static final String RESOURCE_ROOT_ID = Mods.ModIds.REAVARITIA;
+    public static final String RESOURCE_ROOT_ID = ModList.ModIds.REAVARITIA;
     public static final Logger LOG = LogManager.getLogger(MODID);
 
     public static SimpleNetworkWrapper network;
@@ -54,7 +54,7 @@ public class ReAvaritia {
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
         proxy.makeThingsPretty();
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GooeyHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
     }
 
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
