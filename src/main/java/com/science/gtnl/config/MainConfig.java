@@ -279,6 +279,10 @@ public class MainConfig {
             .getBoolean(enableIntegratedOreFactoryChange);
 
         // Recipe
+        enableSomethingRecipe = config
+            .get(CATEGORY_RECIPE, "enableSomethingRecipe", enableSomethingRecipe, "Enable Something Cheap Recipe")
+            .getBoolean(enableSomethingRecipe);
+
         enableDeleteRecipe = config
             .get(CATEGORY_RECIPE, "enableDeleteRecipe", enableDeleteRecipe, "Enable Delete Recipe")
             .getBoolean(enableDeleteRecipe);
