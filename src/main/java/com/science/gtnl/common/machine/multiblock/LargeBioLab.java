@@ -2,7 +2,7 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase.ParallelControllerElement.ParallelCon;
+import static com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase.CustomHatchElement.ParallelCon;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
@@ -22,7 +22,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -32,17 +32,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings9;
 
 public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeBioLab> STRUCTURE_DEFINITION = null;
     private static final String LBL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_bio_lab";
     private final int HORIZONTAL_OFF_SET = 3;
     private final int VERTICAL_OFF_SET = 2;
     private final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(LBL_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LBL_STRUCTURE_FILE_PATH);
 
     public LargeBioLab(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -77,12 +75,12 @@ public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISu
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings9) sBlockCasings9).getTextureIndex(12);
+        return StructureUtils.getTextureIndex(sBlockCasings9, 12);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.LargeBioLabRecipes;
+        return RecipePool.LargeBioLabRecipes;
     }
 
     @Override
@@ -111,44 +109,35 @@ public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISu
 
     @Override
     public IStructureDefinition<LargeBioLab> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeBioLab>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings10, 3))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargeBioLab.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            ParallelCon)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings9, 12))))
-                .addElement('C', ofBlock(sBlockCasingsTT, 0))
-                .addElement('D', ofFrame(Materials.CosmicNeutronium))
-                .addElement('E', ofBlock(blockSpecialMultiCasings2, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeBioLab>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings10, 3))
+            .addElement(
+                'B',
+                buildHatchAdder(LargeBioLab.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(
+                        InputHatch,
+                        OutputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings9, 12))))
+            .addElement('C', ofBlock(sBlockCasingsTT, 0))
+            .addElement('D', ofFrame(Materials.CosmicNeutronium))
+            .addElement('E', ofBlock(blockSpecialMultiCasings2, 2))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-        energyHatchTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        energyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 20;
+        setupParameters();
+        return mCountCasing >= 20;
     }
 
     @Override
@@ -159,7 +148,7 @@ public class LargeBioLab extends GTMMultiMachineBase<LargeBioLab> implements ISu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
