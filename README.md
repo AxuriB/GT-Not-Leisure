@@ -96,5 +96,7 @@ Avaritia-GTNH Code [MIT License](https://mit-license.org/)
 
 Occultism Assets [MIT License](https://mit-license.org/)
 
+Mekanism Assets [MIT License](https://mit-license.org/)
+
 Twist-Space-Technology-Mod Code [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html)
 

@@ -10,7 +10,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.config.MainConfig;
 
@@ -31,12 +31,10 @@ public class CommandReloadConfig extends CommandBase {
         try {
             MainConfig.reloadConfig();
 
-            ConfigSyncPacket msg = new ConfigSyncPacket(new MainConfig());
-            for (Object obj : MinecraftServer.getServer()
+            ConfigSyncPacket msg = new ConfigSyncPacket();
+            for (EntityPlayerMP player : MinecraftServer.getServer()
                 .getConfigurationManager().playerEntityList) {
-                if (obj instanceof EntityPlayerMP) {
-                    ScienceNotLeisure.network.sendTo(msg, (EntityPlayerMP) obj);
-                }
+                ScienceNotLeisure.network.sendTo(msg, player);
             }
 
             if (MainConfig.enableDeleteRecipe) {
@@ -51,7 +49,7 @@ public class CommandReloadConfig extends CommandBase {
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             }
 
-            if (!Mods.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
+            if (!ModList.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
                 sender.addChatMessage(
                     new ChatComponentTranslation("Welcome_GTNL_RecipeOutputChance_00")
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));

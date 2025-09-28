@@ -2,9 +2,11 @@ package com.science.gtnl.common.recipe.GregTech;
 
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
+import net.minecraft.item.ItemStack;
+
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -17,11 +19,10 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BlastFurnaceRecipes implements IRecipePool {
 
-    final RecipeMap<?> BFR = RecipeMaps.blastFurnaceRecipes;
+    public RecipeMap<?> BFR = RecipeMaps.blastFurnaceRecipes;
 
     @Override
     public void loadRecipes() {
@@ -40,6 +41,7 @@ public class BlastFurnaceRecipes implements IRecipePool {
             .addTo(BFR);
 
         GTValues.RA.stdBuilder()
+            .setNEIDesc("Remove Change by GTNotLeisure")
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Europium, 1),
                 GTUtility.getIntegratedCircuit(11))
@@ -56,7 +58,7 @@ public class BlastFurnaceRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumCarbonate, 6))
             .itemOutputs(
                 MaterialPool.UraniumSlag.get(OrePrefixes.dust, 12),
-                ItemUtils.getSimpleStack(ModItems.dustCalciumCarbonate, 5),
+                new ItemStack(ModItems.dustCalciumCarbonate, 1, 5),
                 GTUtility.copyAmountUnsafe(7, WerkstoffLoader.Sodiumsulfate.get(OrePrefixes.dust, 1)))
             .duration(100)
             .eut(TierEU.RECIPE_HV)

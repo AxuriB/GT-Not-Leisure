@@ -9,14 +9,13 @@ import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.brandon3055.draconicevolution.common.ModItems;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobRecipe;
 import com.kuba6000.mobsinfo.api.event.PostMobRegistrationEvent;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.GTValues;
@@ -27,14 +26,9 @@ import kubatech.loaders.MobHandlerLoader;
 
 public class ExtremeExtremeEntityCrusherRecipes {
 
-    private final RecipeMap<?> EEEC = RecipeRegister.ExtremeExtremeEntityCrusherRecipes;
+    public RecipeMap<?> EEEC = RecipePool.ExtremeExtremeEntityCrusherRecipes;
 
-    private static final Set<String> registeredSpawnerTypes = new HashSet<>();
-
-    public static void init() {
-        MinecraftForge.EVENT_BUS.register(new ExtremeExtremeEntityCrusherRecipes());
-        registeredSpawnerTypes.clear();
-    }
+    public static Set<String> registeredSpawnerTypes = new HashSet<>();
 
     @SubscribeEvent
     public void onPostMobRegistration(PostMobRegistrationEvent event) {
@@ -82,7 +76,6 @@ public class ExtremeExtremeEntityCrusherRecipes {
                     .toArray())
             .duration(eecRecipe.mDuration)
             .eut(eecRecipe.mEUt)
-            .noOptimize()
             .addTo(EEEC);
     }
 }

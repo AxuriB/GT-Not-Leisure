@@ -239,7 +239,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
                 if (depleteInput(Materials.Water.getFluid(amount))
                     || depleteInput(GTModHandler.getDistilledWater(amount))) {
-                    addOutput(GTModHandler.getSteam(tGeneratedEU));
+                    addOutput(Materials.Steam.getGas(tGeneratedEU));
                 } else {
                     GTLog.exp.println("Boiler " + this.mName + " had no Water!");
                     explodeMultiblock();
@@ -300,7 +300,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
             .addElement(
                 'f',
                 lazy(
-                    t -> buildHatchAdder(LargeBoiler.class).atLeast(InputHatch, InputBus)
+                    t -> buildHatchAdder(LargeBoiler.class).atLeast(Maintenance, InputHatch, InputBus)
                         .casingIndex(t.getFireboxTextureIndex())
                         .dot(1)
                         .buildAndChain(
@@ -314,7 +314,9 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         tCountCasing = 0;
         mFireboxCasing = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0) && tCountCasing >= 20 && mFireboxCasing >= 3;
+
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0)) return false;
+        return tCountCasing >= 20 && mFireboxCasing >= 3;
     }
 
     @Override
@@ -325,11 +327,6 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     private int adjustEUtForConfig(int rawEUt) {
@@ -364,7 +361,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
 
     public static class LargeBoilerBronze extends LargeBoiler {

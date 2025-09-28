@@ -12,7 +12,7 @@ public class CodecUtils {
     /**
      * 用于整型元素的编码/解码，将值存储在 NBTTagCompound 字段 "v" 中
      */
-    public static final ICodec<Integer, NBTTagCompound> INT_CODEC = new ICodec<Integer, NBTTagCompound>() {
+    public static final ICodec<Integer, NBTTagCompound> INT_CODEC = new ICodec<>() {
 
         @Override
         public NBTTagCompound encode(Integer obj) {
@@ -76,25 +76,5 @@ public class CodecUtils {
         }
         tableTag.setInteger("size", objArr.length);
         return tableTag;
-    }
-
-    /**
-     * 读取写入二维数组时可能抛出的异常类型
-     */
-    public static class NotFoundException extends RuntimeException {
-
-        public NotFoundException() {}
-
-        public NotFoundException(String message) {
-            super(message);
-        }
-
-        public NotFoundException(String message, Throwable cause) {
-            super(message, cause);
-        }
-
-        public NotFoundException(Throwable cause) {
-            super(cause);
-        }
     }
 }

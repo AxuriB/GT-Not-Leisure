@@ -19,7 +19,6 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
@@ -27,25 +26,20 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargePyrolyseOven> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LPO_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_pyrolyse_oven";
-    public static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(1);
-    public final int HORIZONTAL_OFF_SET = 6;
-    public final int VERTICAL_OFF_SET = 4;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(LPO_STRUCTURE_FILE_PATH);
-    public HeatingCoilLevel mHeatingCapacity;
+    protected final int HORIZONTAL_OFF_SET = 6;
+    protected final int VERTICAL_OFF_SET = 4;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LPO_STRUCTURE_FILE_PATH);
 
     public LargePyrolyseOven(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -80,7 +74,7 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 1);
     }
 
     @Override
@@ -105,56 +99,45 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargePyrolyseOven_Casing"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_LargePyrolyseOven_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_LargePyrolyseOven_Casing"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<LargePyrolyseOven> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargePyrolyseOven>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings1, 11))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargePyrolyseOven.class)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 1))))
-                .addElement(
-                    'C',
-                    withChannel("coil", ofCoil(LargePyrolyseOven::setCoilLevel, LargePyrolyseOven::getCoilLevel)))
-                .addElement('D', ofFrame(Materials.StainlessSteel))
-                .addElement('E', ofFrame(Materials.PulsatingIron))
-                .addElement('F', Muffler.newAny(CASING_INDEX, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargePyrolyseOven>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings1, 11))
+            .addElement(
+                'B',
+                buildHatchAdder(LargePyrolyseOven.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 1))))
+            .addElement(
+                'C',
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(LargePyrolyseOven::setMCoilLevel, LargePyrolyseOven::getMCoilLevel))))
+            .addElement('D', ofFrame(Materials.StainlessSteel))
+            .addElement('E', ofFrame(Materials.PulsatingIron))
+            .addElement('F', Muffler.newAny(getCasingTextureID(), 2))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        setCoilLevel(HeatingCoilLevel.None);
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 120;
+    }
 
-        energyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getMaxInputAmps() > 64) return false;
-        }
-
-        return tCountCasing >= 120 && mMaintenanceHatches.size() == 1
-            && getCoilLevel() != HeatingCoilLevel.None
-            && this.mMufflerHatches.size() == 2;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None && mMufflerHatches.size() == 2;
     }
 
     @Override
@@ -165,7 +148,7 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -175,13 +158,5 @@ public class LargePyrolyseOven extends GTMMultiMachineBase<LargePyrolyseOven> im
             env,
             false,
             true);
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return mHeatingCapacity;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        mHeatingCapacity = aCoilLevel;
     }
 }

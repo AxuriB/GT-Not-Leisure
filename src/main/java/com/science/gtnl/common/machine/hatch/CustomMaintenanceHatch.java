@@ -1,6 +1,7 @@
 package com.science.gtnl.common.machine.hatch;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_FULLAUTOMAINTENANCE;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,10 +15,8 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.api.IConfigurationMaintenance;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -26,14 +25,17 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.render.TextureFactory;
+import lombok.Getter;
+import lombok.Setter;
 
-public class CustomMaintenanceHatch extends MTEHatchMaintenance
-    implements ICleanRoomMaintenance, IConfigurationMaintenance, IAddGregtechLogo {
+public class CustomMaintenanceHatch extends MTEHatchMaintenance implements IConfigurationMaintenance, IAddGregtechLogo {
 
-    private static Textures.BlockIcons.CustomIcon face;
     protected int mMinConfigTime;
     protected int mMaxConfigTime;
     protected int mConfigTime = 100;
+
+    @Getter
+    @Setter
     protected int mCleanroomTier;
     protected String[] mDescription;
 
@@ -120,25 +122,18 @@ public class CustomMaintenanceHatch extends MTEHatchMaintenance
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        super.registerIcons(aBlockIconRegister);
-        face = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_FULLAUTOMAINTENANCE");
-    }
-
-    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_FULLAUTOMAINTENANCE) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_FULLAUTOMAINTENANCE) };
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        this.mWrench = this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     @Override
@@ -156,11 +151,6 @@ public class CustomMaintenanceHatch extends MTEHatchMaintenance
     @Override
     public int getConfigTime() {
         return this.mConfigTime;
-    }
-
-    @Override
-    public int getCleanroomTier() {
-        return 0;
     }
 
     @Override

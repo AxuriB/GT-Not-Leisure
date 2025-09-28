@@ -1,21 +1,18 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_DUAL_HATCH;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -26,9 +23,6 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -42,13 +36,10 @@ import gregtech.common.tileentities.machines.IDualInputInventory;
 
 public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, IDualInputHatch, IAddGregtechLogo {
 
-    private final FluidStack[] mStoredFluid;
-    private final FluidStackTank[] fluidTanks;
-    public final int mCapacityPer;
-    public final int itemSlotAmount;
-
-    private static final String TEXTURE_OVERLAY_DUAL_HATCH = RESOURCE_ROOT_ID + ":" + "iconsets/OVERLAY_DUAL_HATCH";
-    private static Textures.BlockIcons.CustomIcon face;
+    public FluidStack[] mStoredFluid;
+    public FluidStackTank[] fluidTanks;
+    public int mCapacityPer;
+    public int itemSlotAmount;
 
     public static class Inventory implements IDualInputInventory {
 
@@ -125,6 +116,11 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
                 mCapacityPer);
         }
         this.inventory = new Inventory(mInventory, mStoredFluid);
+        this.disableSort = true;
+    }
+
+    public DualInputHatch(int id, String name, String nameRegional, int tier, int slots, String[] description) {
+        super(id, name, nameRegional, tier, slots, description);
     }
 
     public DualInputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -149,11 +145,17 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
                 mCapacityPer);
         }
         this.inventory = new Inventory(mInventory, mStoredFluid);
+        this.disableSort = true;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new DualInputHatch(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    public ItemStack[] getSharedItems() {
+        return new ItemStack[] {};
     }
 
     @Override
@@ -180,25 +182,13 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
     }
 
     @Override
-    public boolean displaysStackSize() {
-        return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        super.registerIcons(aBlockIconRegister);
-        face = new Textures.BlockIcons.CustomIcon(TEXTURE_OVERLAY_DUAL_HATCH);
-    }
-
-    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_DUAL_HATCH) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(face) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_DUAL_HATCH) };
     }
 
     @Override
@@ -395,6 +385,7 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
     }
 
     public void updateSlots() {
+        super.updateSlots();
         if (mInventory != null) {
             for (int i = 0; i < mInventory.length - 1; i++)
                 if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
@@ -424,7 +415,7 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.@NotNull Builder builder, UIBuildContext buildContext) {
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int itemColumns = Math.max(1, mTier);
         final int itemRows = Math.max(1, mTier);
 
@@ -460,7 +451,7 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
         builder.widget(
             new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_LOGO)
                 .setSize(18, 18)
-                .setPos(170 + 4 * (mTier - 1) + mTier / 2, 102 + 14 * (mTier - 1)));
+                .setPos(169 + 4 * (mTier - 1) + mTier / 2, 102 + 14 * (mTier - 1)));
     }
 
     @Override

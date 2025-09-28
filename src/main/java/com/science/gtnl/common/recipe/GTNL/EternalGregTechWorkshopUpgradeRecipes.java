@@ -1,16 +1,15 @@
 package com.science.gtnl.common.recipe.GTNL;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
-import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.FOG_UPGRADE_NAME_SHORT;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.Util.EternalGregTechWorkshopUpgrade;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.EternalGregTechWorkshopUpgrade;
+import com.science.gtnl.loader.RecipePool;
 
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
@@ -28,7 +27,7 @@ import tectech.thing.CustomItemList;
 
 public class EternalGregTechWorkshopUpgradeRecipes implements IRecipePool {
 
-    final RecipeMap<?> EGTWUR = RecipeRegister.EternalGregTechWorkshopUpgradeRecipes;
+    public RecipeMap<?> EGTWUR = RecipePool.EternalGregTechWorkshopUpgradeRecipes;
 
     @Override
     public void loadRecipes() {
@@ -54,7 +53,7 @@ public class EternalGregTechWorkshopUpgradeRecipes implements IRecipePool {
             CustomItemList.Godforge_StellarEnergySiphonCasing.get(8),
             GregtechItemList.FusionComputer_UV3.get(8),
             GregtechItemList.Casing_Fusion_Internal2.get(64),
-            getModItem(GalaxySpace.ID, "item.DysonSwarmParts", 64, 3),
+            ItemList.UHTResistantMesh.get(64),
             MaterialsAlloy.QUANTUM.getPlateDense(48),
             MaterialsElements.STANDALONE.RHUGNOR.getGear(32),
             getModItem(EternalSingularity.ID, "eternal_singularity", 16L),

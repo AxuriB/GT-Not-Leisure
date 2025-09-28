@@ -5,12 +5,10 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.validMTEList;
+import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,23 +35,27 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
-import bartworks.API.BorosilicateGlass;
 import bartworks.API.SideReference;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.items.ItemLabParts;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.net.PacketBioVatRenderer;
-import bartworks.common.tileentities.tiered.GT_MetaTileEntity_RadioHatch;
+import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
 import bartworks.util.Coords;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -65,12 +67,12 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
+import gregtech.common.misc.GTStructureChannels;
 
 public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalConstructable {
 
@@ -79,23 +81,21 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     private static final byte TIMERDIVIDER = 20;
 
     private final HashSet<EntityPlayerMP> playerMPHashSet = new HashSet<>();
-    private final ArrayList<GT_MetaTileEntity_RadioHatch> mRadHatches = new ArrayList<>();
+    private final ArrayList<MTERadioHatch> mRadHatches = new ArrayList<>();
     private int height = 1;
     private Fluid mFluid = FluidRegistry.LAVA;
     private BioCulture mCulture;
     private ItemStack mStack;
     private boolean needsVisualUpdate = true;
-    private static final int CASING_INDEX = 210;
     private int mSievert;
     private int mNeededSievert;
     private boolean isVisibleFluid = false;
-    public static IStructureDefinition<Incubator> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String INCUBATOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/incubator";
-    public static String[][] shape = StructureUtils.readStructureFromFile(INCUBATOR_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 2;
-    public final int VERTICAL_OFF_SET = 4;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(INCUBATOR_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 2;
+    protected final int VERTICAL_OFF_SET = 4;
+    protected final int DEPTH_OFF_SET = 0;
 
     public Incubator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -112,17 +112,12 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return 210;
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return false;
-    }
-
-    @Override
-    public float getSpeedBonus() {
-        return 1;
     }
 
     @Override
@@ -146,40 +141,43 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             .addInputHatch(StatCollector.translateToLocal("Tooltip_Incubator_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_Incubator_Casing"), 1)
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_Incubator_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<Incubator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<Incubator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    withChannel(
-                        "glass",
-                        BorosilicateGlass.ofBoroGlass(
-                            (byte) 0,
-                            (byte) 1,
-                            Byte.MAX_VALUE,
-                            (te, t) -> te.mGlassTier = t,
-                            te -> te.mGlassTier)))
-                .addElement('B', ofBlock(sBlockCasings3, 11))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildHatchAdder(Incubator.class).casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                            .buildAndChain(),
-                        ofHatchAdder(Incubator::addRadiationInputToMachineList, CASING_INDEX, 1),
-                        onElementPass(e -> e.tCountCasing++, ofBlock(sBlockReinforced, 2))))
-                .addElement('D', ofBlockAnyMeta(Blocks.sponge))
-                .addElement('E', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<Incubator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement('B', ofBlock(sBlockCasings3, 11))
+            .addElement(
+                'C',
+                ofChain(
+                    buildHatchAdder(Incubator.class).casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .atLeast(
+                            InputHatch,
+                            OutputHatch,
+                            InputBus,
+                            OutputBus,
+                            Maintenance,
+                            Energy.or(ExoticEnergy),
+                            RadioHatchElement.RadioHatch)
+                        .buildAndChain(),
+                    onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
+            .addElement(
+                'D',
+                ofChain(
+                    Mods.EtFuturumRequiem.isModLoaded()
+                        ? ofBlockAnyMeta(
+                            ItemUtils
+                                .getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sponge", 1)),
+                            0)
+                        : ofBlockAnyMeta(Blocks.sponge, 0)))
+            .addElement('E', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
+            .build();
     }
 
     public static int[] specialValueUnpack(int aSpecialValue) {
@@ -215,8 +213,8 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -243,17 +241,28 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUtDiscount(0.8)
-                    .setSpeedBoost(1 / 1.67);
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
 
             @NotNull
             @Override
-            protected ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
+            protected GTNL_ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 / 1.67;
     }
 
     @Override
@@ -293,7 +302,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         }
 
         multiplier = (int) fluidAmount / (recipe.mFluidInputs[0].amount * 1001);
-        multiplier = Math.max(Math.min(multiplier, getMaxParallelRecipes()), 1);
+        multiplier = Math.max(Math.min(multiplier, getTrueParallel()), 1);
 
         tRecipe.mFluidInputs[0].amount *= multiplier * 1001;
         tRecipe.mFluidOutputs[0].amount *= multiplier * 1001;
@@ -312,42 +321,46 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             return false;
         }
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (!(aMetaTileEntity instanceof GT_MetaTileEntity_RadioHatch)) {
+        if (!(aMetaTileEntity instanceof MTERadioHatch radioHatch)) {
             return false;
         } else {
-            ((GT_MetaTileEntity_RadioHatch) aMetaTileEntity).updateTexture(CasingIndex);
-            return this.mRadHatches.add((GT_MetaTileEntity_RadioHatch) aMetaTileEntity);
+            radioHatch.updateTexture(CasingIndex);
+            return this.mRadHatches.add(radioHatch);
         }
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
+            || !checkHatch()) return false;
+        setupParameters();
+        return this.mCountCasing >= 19;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
         this.mRadHatches.clear();
-        this.mGlassTier = 0;
-        this.tCountCasing = 0;
+    }
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-
+    @Override
+    public boolean checkHatch() {
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
             if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
             }
         }
-
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
+        for (MTEHatch mExoticEnergyHatch : this.mExoticEnergyHatches) {
+            if (mGlassTier < VoltageIndex.UHV && mExoticEnergyHatch.mTier > mGlassTier) {
+                return false;
             }
-            if (getMaxInputAmps() > 64) return false;
         }
-
-        return this.tCountCasing >= 19 && this.mRadHatches.size() <= 1
+        return super.checkHatch() && checkEnergyHatch()
+            && this.mRadHatches.size() <= 1
             && this.mOutputHatches.size() == 1
             && this.mMaintenanceHatches.size() == 1
             && !this.mInputHatches.isEmpty()
-            && !this.mEnergyHatches.isEmpty();
+            && (!this.mEnergyHatches.isEmpty() || !this.mExoticEnergyHatches.isEmpty());
     }
 
     private int reCalculateFluidAmmount() {
@@ -418,7 +431,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()
@@ -428,17 +441,18 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
@@ -449,7 +463,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -463,7 +477,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -824,24 +838,34 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         }
     }
 
-    @Override
-    public long getMaxInputAmps() {
-        return getMaxInputAmpsHatch(getExoticAndNormalEnergyHatchList());
-    }
+    private enum RadioHatchElement implements IHatchElement<Incubator> {
 
-    public static long getMaxInputAmpsHatch(Collection<? extends MTEHatch> hatches) {
-        List<Long> ampsList = new ArrayList<>();
-        for (MTEHatch tHatch : validMTEList(hatches)) {
-            long currentAmp = tHatch.getBaseMetaTileEntity()
-                .getInputAmperage();
-            ampsList.add(currentAmp);
+        RadioHatch(Incubator::addRadiationInputToMachineList, MTERadioHatch.class) {
+
+            @Override
+            public long count(Incubator bioVat) {
+                return bioVat.mRadHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<Incubator> adder;
+
+        @SafeVarargs
+        RadioHatchElement(IGTHatchAdder<Incubator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
         }
 
-        if (ampsList.isEmpty()) {
-            return 0L;
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
         }
 
-        return Collections.max(ampsList);
+        @Override
+        public IGTHatchAdder<? super Incubator> adder() {
+            return adder;
+        }
     }
 
 }

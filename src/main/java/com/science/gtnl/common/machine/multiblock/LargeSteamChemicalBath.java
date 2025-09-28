@@ -6,16 +6,13 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -26,22 +23,15 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChemicalBath>
     implements ISurvivalConstructable {
@@ -57,10 +47,9 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeSteamChemicalBath> STRUCTURE_DEFINITION = null;
     private static final String LSCB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/large_steam_chemical_bath"; // 文件路径
-    private static final String[][] shape = StructureUtils.readStructureFromFile(LSCB_STRUCTURE_FILE_PATH);
+        + "multiblock/large_steam_chemical_bath";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LSCB_STRUCTURE_FILE_PATH);
 
     public LargeSteamChemicalBath(String aName) {
         super(aName);
@@ -70,15 +59,15 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
         super(aID, aName, aNameRegional);
     }
 
-    public static final int HORIZONTAL_OFF_SET = 4;
-    public static final int VERTICAL_OFF_SET = 2;
-    public static final int DEPTH_OFF_SET = 0;
+    protected final int HORIZONTAL_OFF_SET = 4;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        int id = tierMachine == 2 ? ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0)
-            : ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+        int id = tierMachine == 2 ? StructureUtils.getTextureIndex(sBlockCasings2, 0)
+            : StructureUtils.getTextureIndex(sBlockCasings1, 10);
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id), TextureFactory.builder()
                 .addIcon(Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
@@ -94,12 +83,12 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
 
     @Override
     public IStructureDefinition<LargeSteamChemicalBath> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeSteamChemicalBath>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(GameRegistry.findBlock(GTPlusPlus.ID, "blockBlockPotin"), 0))
-                .addElement(
-                    'B',
+        return StructureDefinition.<LargeSteamChemicalBath>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(GameRegistry.findBlock(GTPlusPlus.ID, "blockBlockPotin"), 0))
+            .addElement(
+                'B',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofChain(
                         buildSteamWirelessInput(LargeSteamChemicalBath.class).casingIndex(getCasingTextureID())
                             .dot(1)
@@ -118,31 +107,28 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
                                 InputBus,
                                 OutputBus,
                                 InputHatch,
-                                OutputHatch)
+                                OutputHatch,
+                                Maintenance)
                             .buildAndChain(
                                 onElementPass(
-                                    x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
-                                        ofBlocksTiered(
-                                            LargeSteamChemicalBath::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing))))))
-                .addElement(
-                    'C',
+                                    x -> ++x.mCountCasing,
+                                    ofBlocksTiered(
+                                        LargeSteamChemicalBath::getTierMachineCasing,
+                                        ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                        -1,
+                                        (t, m) -> t.tierMachineCasing = m,
+                                        t -> t.tierMachineCasing))))))
+            .addElement(
+                'C',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamChemicalBath::getTierFrameCasing,
                         ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
                         -1,
                         (t, m) -> t.tierFrameCasing = m,
-                        t -> t.tierFrameCasing))
-                .addElement('D', ofBlock(Blocks.glass, 0))
-                .build();
-
-        }
-        return STRUCTURE_DEFINITION;
+                        t -> t.tierFrameCasing)))
+            .addElement('D', chainAllGlasses())
+            .build();
     }
 
     @Override
@@ -159,7 +145,7 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -173,26 +159,20 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = 0;
-        tierMachineCasing = -1;
-        tierFrameCasing = -1;
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMachineCasing < 0 && tierFrameCasing < 0) return false;
-        if (tierMachineCasing == 1 && tierFrameCasing == 1 && tCountCasing >= 230 && checkHatches()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
+        if (tierMachineCasing == 1 && tierFrameCasing == 1 && mCountCasing >= 230) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        if (tierMachineCasing == 2 && tierFrameCasing == 2 && tCountCasing >= 230 && checkHatches()) {
+        if (tierMachineCasing == 2 && tierFrameCasing == 2 && mCountCasing >= 230) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        getCasingTextureID();
-        updateHatchTexture();
         return false;
     }
 
@@ -212,26 +192,13 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * 0.8 * tierMachine;
+    }
 
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                } else return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-
-            @Override
-            @Nonnull
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).limitOverclockCount(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(0.8 * tierMachine)
-                    .setSpeedBoost(1 / 1.25 / tierMachine);
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / 1.25 / tierMachine;
     }
 
     @Override
@@ -255,6 +222,8 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamChemicalBath_Casing"), 1)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamChemicalBath_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamChemicalBath_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

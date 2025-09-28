@@ -1,9 +1,8 @@
 package com.science.gtnl.common.machine.hatch;
 
 import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.addSteamToGlobalSteamMap;
-import static gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation.number_of_energy_additions;
+import static gregtech.common.misc.WirelessNetworkManager.number_of_energy_additions;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
@@ -11,27 +10,28 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.science.gtnl.Utils.enums.SteamTypes;
 import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
-import com.science.gtnl.common.materials.MaterialPool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.mixins.late.Gregtech.AccessorMTEHatch;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
@@ -46,11 +46,10 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
     public WirelessSteamDynamoHatch(final int aID, final String aName, final String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
         this.mLockedFluids = ImmutableSet.of(
-            FluidUtils.getSteam(1)
-                .getFluid(),
+            Materials.Steam.mGas,
             FluidUtils.getSuperHeatedSteam(1)
                 .getFluid(),
-            FluidRegistry.getFluid("supercriticalsteam"),
+            Materials.DenseSupercriticalSteam.mGas,
             MaterialPool.CompressedSteam.getMolten(1)
                 .getFluid());
     }
@@ -58,11 +57,10 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
     public WirelessSteamDynamoHatch(final String aName, int aTier, final ITexture[][][] aTextures, Set<Fluid> aFluid) {
         super(aName, aTier, 3, new String[] { "" }, aTextures);
         this.mLockedFluids = ImmutableSet.of(
-            FluidUtils.getSteam(1)
-                .getFluid(),
+            Materials.Steam.mGas,
             FluidUtils.getSuperHeatedSteam(1)
                 .getFluid(),
-            FluidRegistry.getFluid("supercriticalsteam"),
+            Materials.DenseSupercriticalSteam.mGas,
             MaterialPool.CompressedSteam.getMolten(1)
                 .getFluid());
     }
@@ -99,7 +97,8 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
     public void setLockedFluidName(String lockedFluidName) {}
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {}
 
     @Override
     public boolean isLiquidInput(ForgeDirection side) {
@@ -150,56 +149,45 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[0] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[0] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[0] };
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
 
-        int texturePointer = getUpdateData();
-        int mTexturePage;
+        int mTexturePage = ((AccessorMTEHatch) this).getTexturePage();
+        if (mTexturePage < 0 || mTexturePage >= Textures.BlockIcons.casingTexturePages.length) {
+            return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[0][0] };
+        }
 
-        try {
-            Class<?> hatchClass = MTEHatch.class;
-            Field texturePageField = hatchClass.getDeclaredField("mTexturePage");
-            texturePageField.setAccessible(true);
-            mTexturePage = (byte) texturePageField.get(this);
-            if (mTexturePage < 0 || mTexturePage >= Textures.BlockIcons.casingTexturePages.length) {
-                return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[0][0] };
+        int textureIndex = ((AccessorMTEHatch) this).getTextureIndex();
+
+        if (side != aFacing) {
+            if (textureIndex > 0 && textureIndex < Textures.BlockIcons.casingTexturePages[mTexturePage].length) {
+                return new ITexture[] { Textures.BlockIcons.casingTexturePages[mTexturePage][textureIndex] };
+            } else {
+                return new ITexture[] { getBaseTexture(colorIndex) };
             }
-
-            int textureIndex = texturePointer | (mTexturePage << 7);
-
-            if (side != aFacing) {
-                if (textureIndex > 0 && texturePointer < Textures.BlockIcons.casingTexturePages[mTexturePage].length) {
-                    return new ITexture[] { Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer] };
+        } else {
+            if (textureIndex > 0 && textureIndex < Textures.BlockIcons.casingTexturePages[mTexturePage].length) {
+                if (aActive) {
+                    return getTexturesActive(Textures.BlockIcons.casingTexturePages[mTexturePage][textureIndex]);
                 } else {
-                    return new ITexture[] { getBaseTexture(colorIndex) };
+                    return getTexturesInactive(Textures.BlockIcons.casingTexturePages[mTexturePage][textureIndex]);
                 }
             } else {
-                if (textureIndex > 0 && texturePointer < Textures.BlockIcons.casingTexturePages[mTexturePage].length) {
-                    if (aActive) {
-                        return getTexturesActive(Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
-                    } else {
-                        return getTexturesInactive(
-                            Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
-                    }
+                if (aActive) {
+                    return getTexturesActive(getBaseTexture(colorIndex));
                 } else {
-                    if (aActive) {
-                        return getTexturesActive(getBaseTexture(colorIndex));
-                    } else {
-                        return getTexturesInactive(getBaseTexture(colorIndex));
-                    }
+                    return getTexturesInactive(getBaseTexture(colorIndex));
                 }
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[0][0] };
         }
     }
 
@@ -253,8 +241,8 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
             int rawAmount = currentSteamStack.amount;
             Fluid fluidType = currentSteamStack.getFluid();
 
-            SteamMultiMachineBase.SteamTypes matchedSteamType = null;
-            for (SteamMultiMachineBase.SteamTypes steamType : SteamMultiMachineBase.SteamTypes.VALUES) {
+            SteamTypes matchedSteamType = null;
+            for (SteamTypes steamType : SteamTypes.VALUES) {
                 if (steamType.fluid != null && steamType.fluid.equals(fluidType)) {
                     matchedSteamType = steamType;
                     break;

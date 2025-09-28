@@ -34,8 +34,13 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
@@ -43,6 +48,7 @@ import WayofTime.alchemicalWizardry.common.entity.projectile.EntityMeteor;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -59,25 +65,21 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
-import gregtech.common.blocks.BlockCasings8;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacrificialArray> {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String BSSA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
-        + "multiblock/blood_soul_sacrificial_array"; // 文件路径
-    public final int HORIZONTAL_OFF_SET = 16;
-    public final int VERTICAL_OFF_SET = 10;
-    public final int DEPTH_OFF_SET = 9;
+        + "multiblock/blood_soul_sacrificial_array";
+    protected final int HORIZONTAL_OFF_SET = 16;
+    protected final int VERTICAL_OFF_SET = 10;
+    protected final int DEPTH_OFF_SET = 9;
     public static boolean isCreativeOrb = false;
     public static boolean enableRender = true;
     public static int currentEssence = 0;
-    public static IStructureDefinition<BloodSoulSacrificialArray> STRUCTURE_DEFINITION = null;
-    public static String[][] shape = StructureUtils.readStructureFromFile(BSSA_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(BSSA_STRUCTURE_FILE_PATH);
     private static final int MACHINEMODE_BLOOD_DEMON = 0;
     private static final int MACHINEMODE_FALLING_TOWER = 1;
     private static final int MACHINEMODE_ALCHEMIC = 2;
@@ -92,10 +94,17 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public int getMaxParallelRecipes() {
+        mParallelTier = getParallelTier(getControllerSlot());
+        if (mParallelControllerHatches.size() == 1) {
+            for (ParallelControllerHatch module : mParallelControllerHatches) {
+                mParallelTier = module.mTier;
+                return module.getParallel();
+            }
+        }
         if (mParallelTier <= 1) {
             return 8;
         } else {
-            if (this.getRecipeMap() == RecipeRegister.FallingTowerRecipes) {
+            if (this.getRecipeMap() == RecipePool.FallingTowerRecipes) {
                 return (int) Math.pow(4, mParallelTier - 2) / 16;
             } else {
                 return (int) Math.pow(4, mParallelTier - 2) * 4;
@@ -106,9 +115,9 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     @Override
     public RecipeMap<?> getRecipeMap() {
         return switch (machineMode) {
-            case MACHINEMODE_FALLING_TOWER -> RecipeRegister.FallingTowerRecipes;
-            case MACHINEMODE_ALCHEMIC -> RecipeRegister.AlchemicChemistrySetRecipes;
-            default -> RecipeRegister.BloodDemonInjectionRecipes;
+            case MACHINEMODE_FALLING_TOWER -> RecipePool.FallingTowerRecipes;
+            case MACHINEMODE_ALCHEMIC -> RecipePool.AlchemicChemistrySetRecipes;
+            default -> RecipePool.BloodDemonInjectionRecipes;
         };
     }
 
@@ -116,9 +125,9 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(
-            RecipeRegister.FallingTowerRecipes,
-            RecipeRegister.AlchemicChemistrySetRecipes,
-            RecipeRegister.BloodDemonInjectionRecipes);
+            RecipePool.FallingTowerRecipes,
+            RecipePool.AlchemicChemistrySetRecipes,
+            RecipePool.BloodDemonInjectionRecipes);
     }
 
     @Override
@@ -130,7 +139,6 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_PACKAGER);
@@ -144,7 +152,8 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         this.machineMode = (byte) ((this.machineMode + 1) % 3);
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -177,19 +186,10 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        repairMachine();
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        if (!checkHatch()) {
-            return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
-
+        setupParameters();
         return true;
     }
 
@@ -207,7 +207,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -221,47 +221,49 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public IStructureDefinition<BloodSoulSacrificialArray> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<BloodSoulSacrificialArray>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(Loaders.FRF_Casings, 0))
-                .addElement('B', ofBlock(sBlockCasings8, 10))
-                .addElement('C', ofBlock(gtPlusPlus.core.block.ModBlocks.blockSpecialMultiCasings, 13))
-                .addElement('D', ofBlock(gtPlusPlus.core.block.ModBlocks.blockCasingsMisc, 9))
-                .addElement('E', ofBlockAnyMeta(BlockList.BloodyIchorium.getBlock()))
-                .addElement('F', ofBlockAnyMeta(BlockList.BloodyThaumium.getBlock()))
-                .addElement('G', ofBlockAnyMeta(BlockList.BloodyVoid.getBlock()))
-                .addElement('H', ofBlock(Blocks.diamond_block, 0))
-                .addElement('I', ofBlock(ModBlocks.bloodRune, 0))
-                .addElement('J', ofBlock(ModBlocks.bloodRune, 3))
-                .addElement('K', ofBlock(ModBlocks.bloodRune, 4))
-                .addElement('L', ofBlock(ModBlocks.bloodRune, 5))
-                .addElement('M', ofBlock(ModBlocks.bloodRune, 6))
-                .addElement('N', ofBlockAnyMeta(com.arc.bloodarsenal.common.block.ModBlocks.blood_lamp))
-                .addElement('O', ofBlockAnyMeta(ModBlocks.blockCrystal))
-                .addElement('P', ofBlockAnyMeta(ModBlocks.bloodStoneBrick))
-                .addElement('Q', ofBlockAnyMeta(Blocks.glowstone))
-                .addElement('R', ofBlockAnyMeta(ModBlocks.ritualStone))
-                .addElement('S', ofBlockAnyMeta(ModBlocks.runeOfSacrifice))
-                .addElement('T', ofBlockAnyMeta(ModBlocks.runeOfSelfSacrifice))
-                .addElement('U', ofBlockAnyMeta(ModBlocks.speedRune))
-                .addElement('V', ofBlockAnyMeta(Blocks.beacon))
-                .addElement('W', ofBlockAnyMeta(com.arc.bloodarsenal.common.block.ModBlocks.lp_materializer))
-                .addElement('X', ofFrame(Materials.NaquadahAlloy))
-                .addElement('Y', ofBlockAnyMeta(ModBlocks.ritualStone))
-                .addElement(
-                    'Z',
-                    buildHatchAdder(BloodSoulSacrificialArray.class).atLeast(InputBus, OutputBus)
-                        .adder(BloodSoulSacrificialArray::addToMachineList)
-                        .dot(1)
-                        .casingIndex(getCasingTextureID())
-                        .buildAndChain(GregTechAPI.sBlockCasings8, 3))
-                .addElement('0', ofBlockAnyMeta(ModBlocks.blockAltar))
-                .addElement('1', ofBlockAnyMeta(Blocks.hopper))
-                .addElement('2', ofFrame(Materials.Plutonium))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<BloodSoulSacrificialArray>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(Loaders.FRF_Casings, 0))
+            .addElement('B', ofBlock(sBlockCasings8, 10))
+            .addElement('C', ofBlock(gtPlusPlus.core.block.ModBlocks.blockSpecialMultiCasings, 13))
+            .addElement('D', ofBlock(gtPlusPlus.core.block.ModBlocks.blockCasingsMisc, 9))
+            .addElement('E', ofBlockAnyMeta(BlockList.BloodyIchorium.getBlock()))
+            .addElement('F', ofBlockAnyMeta(BlockList.BloodyThaumium.getBlock()))
+            .addElement('G', ofBlockAnyMeta(BlockList.BloodyVoid.getBlock()))
+            .addElement('H', ofBlock(Blocks.diamond_block, 0))
+            .addElement('I', ofBlock(ModBlocks.bloodRune, 0))
+            .addElement('J', ofBlock(ModBlocks.bloodRune, 3))
+            .addElement('K', ofBlock(ModBlocks.bloodRune, 4))
+            .addElement('L', ofBlock(ModBlocks.bloodRune, 5))
+            .addElement('M', ofBlock(ModBlocks.bloodRune, 6))
+            .addElement('N', ofBlockAnyMeta(com.arc.bloodarsenal.common.block.ModBlocks.blood_lamp))
+            .addElement('O', ofBlockAnyMeta(ModBlocks.blockCrystal))
+            .addElement('P', ofBlockAnyMeta(ModBlocks.bloodStoneBrick))
+            .addElement('Q', ofBlockAnyMeta(Blocks.glowstone))
+            .addElement('R', ofBlockAnyMeta(ModBlocks.ritualStone))
+            .addElement('S', ofBlockAnyMeta(ModBlocks.runeOfSacrifice))
+            .addElement('T', ofBlockAnyMeta(ModBlocks.runeOfSelfSacrifice))
+            .addElement('U', ofBlockAnyMeta(ModBlocks.speedRune))
+            .addElement(
+                'V',
+                ofChain(
+                    Mods.EtFuturumRequiem.isModLoaded() ? ofBlockAnyMeta(
+                        ItemUtils.getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "beacon", 1)))
+                        : ofBlockAnyMeta(Blocks.beacon)))
+            .addElement('W', ofBlockAnyMeta(com.arc.bloodarsenal.common.block.ModBlocks.lp_materializer))
+            .addElement('X', ofFrame(Materials.NaquadahAlloy))
+            .addElement('Y', ofBlockAnyMeta(ModBlocks.ritualStone))
+            .addElement(
+                'Z',
+                buildHatchAdder(BloodSoulSacrificialArray.class).atLeast(Maintenance, InputBus, OutputBus)
+                    .adder(BloodSoulSacrificialArray::addToMachineList)
+                    .dot(1)
+                    .casingIndex(getCasingTextureID())
+                    .buildAndChain(GregTechAPI.sBlockCasings8, 3))
+            .addElement('0', ofBlockAnyMeta(ModBlocks.blockAltar))
+            .addElement('1', ofBlockAnyMeta(Blocks.hopper))
+            .addElement('2', ofFrame(Materials.Plutonium))
+            .build();
     }
 
     @Override
@@ -280,19 +282,15 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public boolean onRunningTick(ItemStack stack) {
-        boolean spawnMeteor = false;
 
         if ((this.mProgresstime + 1) % 20 == 0 && this.mProgresstime > 0
-            && this.getRecipeMap() == RecipeRegister.FallingTowerRecipes) {
-            if (mProgresstime < 20 && enableRender) {
-                spawnMeteor = true;
-            }
+            && this.getRecipeMap() == RecipePool.FallingTowerRecipes
+            && enableRender) {
 
-            if (this.mMaxProgresstime - this.mProgresstime < 250 && spawnMeteor) {
+            if (this.mMaxProgresstime - this.mProgresstime < 250) {
                 IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
                 World world = aBaseMetaTileEntity.getWorld();
                 int baseX = aBaseMetaTileEntity.getXCoord();
-                int baseY = aBaseMetaTileEntity.getYCoord();
                 int baseZ = aBaseMetaTileEntity.getZCoord();
 
                 ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
@@ -308,14 +306,8 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
                 if (!world.isRemote) {
                     EntityMeteor meteor = new EntityMeteor(world, spawnX + 0.5, spawnY, spawnZ + 0.5, 114514);
                     meteor.motionY = -1.0f;
-                    meteor.hasTerrae = true;
-                    meteor.hasOrbisTerrae = true;
-                    meteor.hasCrystallos = true;
-                    meteor.hasIncendium = true;
-                    meteor.hasTennebrae = true;
 
                     world.spawnEntityInWorld(meteor);
-                    spawnMeteor = false;
                 }
             }
         }
@@ -365,12 +357,12 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @Nonnull
             @Override
             public CheckRecipeResult process() {
-                RecipeMap<?> recipeMap = preProcess();
+                RecipeMap<?> recipeMap = getCurrentRecipeMap();
 
                 if (inputItems == null) {
                     inputItems = new ItemStack[0];
@@ -430,8 +422,8 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
                     return CalculationResult.ofFailure(result);
                 }
 
-                ParallelHelper helper = createParallelHelper(recipe);
-                OverclockCalculator calculator = createOverclockCalculator(recipe);
+                GTNL_ParallelHelper helper = createParallelHelper(recipe);
+                GTNL_OverclockCalculator calculator = createOverclockCalculator(recipe);
                 helper.setCalculator(calculator);
                 helper.build();
 
@@ -445,12 +437,12 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
             @Nonnull
             @Override
-            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+            protected GTNL_ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
 
                 currentEssence = SoulNetworkHandler.getCurrentEssence(getOwner());
                 int needEssence = (int) (recipe.mSpecialValue * (1 - mParallelTier / 50.0));
 
-                return new ParallelHelper().setRecipe(recipe)
+                return new GTNL_ParallelHelper().setRecipe(recipe)
                     .setItemInputs(inputItems)
                     .setFluidInputs(inputFluids)
                     .setAvailableEUt(availableVoltage * availableAmperage)
@@ -482,15 +474,17 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(1)
-                    .setSpeedBoost(1 - (mParallelTier / 50.0));
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return GTNL_OverclockCalculator.ofNoOverclock(recipe)
+                    .setExtraDurationModifier(mConfigSpeedBoost)
+                    .setDurationModifier(getDurationModifier());
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 - (mParallelTier / 50.0);
     }
 
     public String getOwner() {
@@ -505,7 +499,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override
@@ -546,5 +540,18 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             + EnumChatFormatting.RESET
             + " LP";
         return info;
+    }
+
+    @Override
+    public void checkMaintenance() {}
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCheckMaintenance() {
+        return false;
     }
 }

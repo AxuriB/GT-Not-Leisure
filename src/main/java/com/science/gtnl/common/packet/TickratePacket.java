@@ -9,7 +9,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 
+@Getter
 public class TickratePacket implements IMessage {
 
     private float tickrate;
@@ -18,10 +20,6 @@ public class TickratePacket implements IMessage {
 
     public TickratePacket(float tickrate) {
         this.tickrate = tickrate;
-    }
-
-    public float getTickrate() {
-        return tickrate;
     }
 
     @Override

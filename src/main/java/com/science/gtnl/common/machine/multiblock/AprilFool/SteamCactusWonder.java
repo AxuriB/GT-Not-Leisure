@@ -2,27 +2,22 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.multitileentity.multiblock.casing.Glasses.chainAllGlasses;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_CACTUS_WONDER;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_CACTUS_WONDER_ACTIVE;
+import static gregtech.api.GregTechAPI.*;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
-import static gtPlusPlus.core.block.ModBlocks.blockCactusCharcoal;
-import static gtPlusPlus.core.block.ModBlocks.blockCactusCoke;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -35,13 +30,14 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -50,27 +46,16 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
-import gtPlusPlus.core.item.ModItems;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_CACTUS_WONDER = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_CACTUS_WONDER";
-    public static final String TEXTURE_OVERLAY_CACTUS_WONDER_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_CACTUS_WONDER_ACTIVE";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_CACTUS_WONDER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_CACTUS_WONDER);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_CACTUS_WONDER_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_CACTUS_WONDER_ACTIVE);
-    private static IStructureDefinition<SteamCactusWonder> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "nei";
     private static final String SCW_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_cactus_wonder";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SCW_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SCW_STRUCTURE_FILE_PATH);
     private static final int HORIZONTAL_OFF_SET = 4;
     private static final int VERTICAL_OFF_SET = 8;
     private static final int DEPTH_OFF_SET = 2;
@@ -96,58 +81,49 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
     private int currentSteam;
     private ItemStack currentOffer;
     private long fueledAmount = 0;
-    private static final ItemStack[] possibleInputs = { new ItemStack(ModItems.itemCactusCharcoal, 1),
-        new ItemStack(blockCactusCharcoal, 1), new ItemStack(blockCactusCharcoal, 1, 1),
-        new ItemStack(blockCactusCharcoal, 1, 2), new ItemStack(blockCactusCharcoal, 1, 3),
-        new ItemStack(blockCactusCharcoal, 1, 4), new ItemStack(blockCactusCharcoal, 1, 5),
-        new ItemStack(ModItems.itemCactusCoke, 1), new ItemStack(blockCactusCoke, 1),
-        new ItemStack(blockCactusCoke, 1, 1), new ItemStack(blockCactusCoke, 1, 2),
-        new ItemStack(blockCactusCoke, 1, 3), new ItemStack(blockCactusCoke, 1, 4),
-        new ItemStack(blockCactusCoke, 1, 5) };
+    private static final ItemStack[] possibleInputs = { GregtechItemList.CactusCharcoal.get(1),
+        GregtechItemList.BlockCactusCharcoal.get(1), GregtechItemList.CompressedCactusCharcoal.get(1),
+        GregtechItemList.DoubleCompressedCactusCharcoal.get(1), GregtechItemList.TripleCompressedCactusCharcoal.get(1),
+        GregtechItemList.QuadrupleCompressedCactusCharcoal.get(1),
+        GregtechItemList.QuintupleCompressedCactusCharcoal.get(1), GregtechItemList.CactusCoke.get(1),
+        GregtechItemList.BlockCactusCoke.get(1), GregtechItemList.CompressedCactusCoke.get(1),
+        GregtechItemList.DoubleCompressedCactusCoke.get(1), GregtechItemList.TripleCompressedCactusCoke.get(1),
+        GregtechItemList.QuadrupleCompressedCactusCoke.get(1), GregtechItemList.QuintupleCompressedCactusCoke.get(1) };
     private static final long[] totalValue = { 8_000L, 90_000L, 1_012_500L, 11_390_625L, 128_144_531L, 1_441_625_977L,
         16_218_292_236L, 16_000L, 180_000L, 2_025_000L, 22_781_250L, 256_289_063L, 2_883_251_953L, 32_436_584_473L };
     private static final int[] steamType = { 1, 1, 1, 2, 2, 3, 3, 1, 1, 1, 2, 2, 3, 3 };
 
     public IStructureDefinition<SteamCactusWonder> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamCactusWonder>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addShape(
-                    STRUCTURE_PIECE_MAIN_SURVIVAL,
-                    Arrays.stream(transpose(shape))
-                        .map(
-                            sa -> Arrays.stream(sa)
-                                .map(s -> s.replaceAll("E", " "))
-                                .toArray(String[]::new))
-                        .toArray(String[][]::new))
-                .addElement('A', chainAllGlasses())
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 12))
-                .addElement(
-                    'C',
-                    ofChain(
-                        buildSteamWirelessInput(SteamCactusWonder.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamCactusWonder.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildHatchAdder(SteamCactusWonder.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings3, 13)))
-                .addElement('D', ofFrame(Materials.Steel))
-                .addElement('E', ofBlock(Blocks.cactus, 0))
-                .addElement('F', ofBlock(Blocks.sand, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamCactusWonder>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addShape(
+                STRUCTURE_PIECE_MAIN_SURVIVAL,
+                Arrays.stream(transpose(shape))
+                    .map(
+                        sa -> Arrays.stream(sa)
+                            .map(s -> s.replaceAll("E", " "))
+                            .toArray(String[]::new))
+                    .toArray(String[][]::new))
+            .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 12))
+            .addElement(
+                'C',
+                ofChain(
+                    buildHatchAdder(SteamCactusWonder.class)
+                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, OutputHatch)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings3, 13)))
+            .addElement('D', ofFrame(Materials.Steel))
+            .addElement('E', ofBlock(Blocks.cactus, 0))
+            .addElement('F', ofBlock(Blocks.sand, 0))
+            .build();
     }
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings1, 10);
     }
 
     @Override
@@ -155,36 +131,20 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
         int aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
         if (side == facing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_CACTUS_WONDER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_CACTUS_WONDER_ACTIVE)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_CACTUS_WONDER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_CACTUS_WONDER_ACTIVE)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
+            rTexture = new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings1, 10)),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_CACTUS_WONDER)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_CACTUS_WONDER_ACTIVE)
+                    .extFacing()
+                    .glow()
+                    .build() };
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)) };
+            rTexture = new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings1, 10)) };
         }
         return rTexture;
     }
@@ -196,7 +156,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN_SURVIVAL,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -210,9 +170,11 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        return true;
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatches();
     }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -250,13 +212,13 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
     private void outputSteam() {
         if (fueledAmount > 0) {
             if (currentSteam == 1) {
-                addOutput(FluidUtils.getSteam((int) Math.min(3200, fueledAmount)));
+                addOutput(Materials.Steam.getGas((int) Math.min(3200, fueledAmount)));
                 fueledAmount -= (int) Math.min(3200, fueledAmount);
             } else if (currentSteam == 2) {
                 addOutput(FluidUtils.getSuperHeatedSteam((int) Math.min(6400, fueledAmount)));
                 fueledAmount -= (int) Math.min(6400, fueledAmount);
             } else if (currentSteam == 3) {
-                addOutput(FluidRegistry.getFluidStack("supercriticalsteam", (int) Math.min(25600, fueledAmount)));
+                addOutput(Materials.DenseSupercriticalSteam.getGas((int) Math.min(25600, fueledAmount)));
                 fueledAmount -= (int) Math.min(25600, fueledAmount);
             }
 
@@ -284,17 +246,12 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.CactusWonderFakeRecipes;
+        return RecipePool.CactusWonderFakeRecipes;
     }
 
     @Override
     public int getTierRecipes() {
         return 14;
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
     }
 
     @Override
@@ -311,21 +268,9 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
             .beginStructureBlock(9, 11, 9, true)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
     }
 
     @Override

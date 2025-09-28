@@ -9,10 +9,6 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
@@ -26,7 +22,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -42,27 +37,23 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings2;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings2) sBlockCasings2).getTextureIndex(1);
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String CIF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/cold_ice_freeze";
-    public static String[][] shape = StructureUtils.readStructureFromFile(CIF_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 2;
-    public final int VERTICAL_OFF_SET = 2;
-    public final int DEPTH_OFF_SET = 0;
-    private static IStructureDefinition<ColdIceFreezer> STRUCTURE_DEFINITION = null;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(CIF_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 2;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
 
     public ColdIceFreezer(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -104,32 +95,29 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public IStructureDefinition<ColdIceFreezer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ColdIceFreezer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildHatchAdder(ColdIceFreezer.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
-                            .dot(1)
-                            .casingIndex(CASING_INDEX)
-                            .build(),
-                        onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 1)),
-                        buildHatchAdder(ColdIceFreezer.class).adder(ColdIceFreezer::addFluidIceInputHatch)
-                            .hatchId(21502)
-                            .shouldReject(x -> !x.FluidIceInputHatch.isEmpty())
-                            .casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .build()))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 15))
-                .addElement('D', ofFrame(Materials.Aluminium))
-                .addElement('E', ofBlock(ModBlocks.blockCasings3Misc, 10))
-                .addElement('F', Muffler.newAny(TAE.getIndexFromPage(2, 10), 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ColdIceFreezer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement(
+                'B',
+                ofChain(
+                    buildHatchAdder(ColdIceFreezer.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
+                        .dot(1)
+                        .casingIndex(getCasingTextureID())
+                        .build(),
+                    onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings2, 1)),
+                    buildHatchAdder(ColdIceFreezer.class).adder(ColdIceFreezer::addFluidIceInputHatch)
+                        .hatchId(21502)
+                        .shouldReject(x -> !x.mFluidIceInputHatch.isEmpty())
+                        .casingIndex(getCasingTextureID())
+                        .dot(1)
+                        .build()))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 15))
+            .addElement('D', ofFrame(Materials.Aluminium))
+            .addElement('E', ofBlock(ModBlocks.blockCasings3Misc, 10))
+            .addElement('F', Muffler.newAny(TAE.getIndexFromPage(2, 10), 1))
+            .build();
     }
 
     @Override
@@ -140,7 +128,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -154,46 +142,41 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        FluidIceInputHatch.clear();
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-
-        energyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getMaxInputAmps() > 64) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
         }
+        setupParameters();
+        return mCountCasing >= 50;
+    }
 
-        return tCountCasing >= 50 && checkHatch() && this.mMufflerHatches.size() == 1;
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mFluidIceInputHatch.clear();
     }
 
     @Override
     public boolean checkHatch() {
-        return super.checkHatch() && !FluidIceInputHatch.isEmpty();
+        return super.checkHatch() && !mFluidIceInputHatch.isEmpty()
+            && mMufflerHatches.size() == 1
+            && checkEnergyHatch();
+    }
+
+    @Override
+    public void updateHatchTexture() {
+        super.updateHatchTexture();
+        for (MTEHatch h : mMufflerHatches) h.updateTexture(TAE.getIndexFromPage(2, 10));
     }
 
     @Override
     public void updateSlots() {
-        for (CustomFluidHatch tHatch : validMTEList(FluidIceInputHatch)) tHatch.updateSlots();
+        for (CustomFluidHatch tHatch : validMTEList(mFluidIceInputHatch)) tHatch.updateSlots();
         super.updateSlots();
-    }
-
-    protected float getSpeedBonus() {
-        return 1F;
-    }
-
-    protected boolean isEnablePerfectOverclock() {
-        return false;
     }
 
     @Override
     public int getCasingTextureID() {
-        return TAE.getIndexFromPage(2, 10);
+        return StructureUtils.getTextureIndex(sBlockCasings2, 1);
     }
 
     @Override
@@ -216,14 +199,17 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.advancedFreezerRecipes;
+        return RecipeMaps.vacuumFreezerRecipes;
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1.0 / 2.5)
-            .setEuModifier(0.8)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+    public double getDurationModifier() {
+        return 1.0 / 2.5;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8;
     }
 
     @Override
@@ -242,7 +228,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
                     if (!this.depleteInputFromRestrictedHatches(
-                        this.FluidIceInputHatch,
+                        this.mFluidIceInputHatch,
                         (int) (10 * getInputVoltageTier() * getInputVoltageTier()))) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
@@ -267,31 +253,11 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 2;
+        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 4;
         logic.setAvailableVoltage(getMachineVoltageLimit());
         logic.setAvailableAmperage(
             useSingleAmp ? 1
                 : ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList()));
         logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
-    }
-
-    @Override
-    public long getMaxInputAmps() {
-        return getMaxInputAmpsHatch(getExoticAndNormalEnergyHatchList());
-    }
-
-    public static long getMaxInputAmpsHatch(Collection<? extends MTEHatch> hatches) {
-        List<Long> ampsList = new ArrayList<>();
-        for (MTEHatch tHatch : validMTEList(hatches)) {
-            long currentAmp = tHatch.getBaseMetaTileEntity()
-                .getInputAmperage();
-            ampsList.add(currentAmp);
-        }
-
-        if (ampsList.isEmpty()) {
-            return 0L;
-        }
-
-        return Collections.max(ampsList);
     }
 }

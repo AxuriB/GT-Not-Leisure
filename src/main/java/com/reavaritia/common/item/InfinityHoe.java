@@ -88,12 +88,11 @@ public class InfinityHoe extends ItemHoe {
                 for (int dz = -radius; dz <= radius; dz++) {
                     int targetX = baseX + dx;
                     int targetZ = baseZ + dz;
-                    int targetY = baseY;
 
-                    Block block = world.getBlock(targetX, targetY, targetZ);
+                    Block block = world.getBlock(targetX, baseY, targetZ);
                     if (block == Blocks.grass || block == Blocks.dirt) {
-                        world.setBlock(targetX, targetY, targetZ, Blocks.farmland, 0, 3);
-                        world.playAuxSFX(2001, targetX, targetY, targetZ, Block.getIdFromBlock(Blocks.farmland));
+                        world.setBlock(targetX, baseY, targetZ, Blocks.farmland, 0, 3);
+                        world.playAuxSFX(2001, targetX, baseY, targetZ, Block.getIdFromBlock(Blocks.farmland));
                     }
                 }
             }
@@ -122,7 +121,7 @@ public class InfinityHoe extends ItemHoe {
 
                     // 收割逻辑
                     if (isHarvestable(block, meta)) {
-                        List<ItemStack> drops = harvestAndGetDrops(world, x, y, z, player);
+                        List<ItemStack> drops = harvestAndGetDrops(world, x, y, z);
                         resetBlock(world, x, y, z, block);
 
                         // 合并同类物品
@@ -141,7 +140,7 @@ public class InfinityHoe extends ItemHoe {
         }
     }
 
-    private static class ItemStackWrapper {
+    public static class ItemStackWrapper {
 
         final Item item;
         final int damage;
@@ -179,7 +178,6 @@ public class InfinityHoe extends ItemHoe {
 
         // 构建items数组
         NBTTagList itemsList = new NBTTagList();
-        int index = 0;
         for (Map.Entry<ItemStackWrapper, Integer> entry : itemCounts.entrySet()) {
             NBTTagCompound itemTag = new NBTTagCompound();
             itemTag.setShort("id", (short) Item.getIdFromItem(entry.getKey().item));
@@ -191,7 +189,6 @@ public class InfinityHoe extends ItemHoe {
             entryTag.setInteger("count", entry.getValue());
 
             itemsList.appendTag(entryTag);
-            index++;
         }
         clusterItems.setTag("items", itemsList);
         clusterTag.setTag("clusteritems", clusterItems);
@@ -204,7 +201,7 @@ public class InfinityHoe extends ItemHoe {
         world.spawnEntityInWorld(entityItem);
     }
 
-    private List<ItemStack> harvestAndGetDrops(World world, int x, int y, int z, EntityPlayer player) {
+    private List<ItemStack> harvestAndGetDrops(World world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
         List<ItemStack> drops = new ArrayList<>();
 

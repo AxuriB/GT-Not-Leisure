@@ -81,7 +81,12 @@ public class WrenchSpecialRender {
                 GL11.glDisable(GL11.GL_CULL_FACE);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 GL11.glTranslatef(centerX, centerY, 20f);
-                GL11.glRotatef((GTMod.gregtechproxy.getAnimationTicks() * 3.5f) % 360, 0.3f, 0.5f, 0.2f);
+                GL11.glRotatef(
+                    (GTMod.clientProxy()
+                        .getAnimationTicks() * 3.5f) % 360,
+                    0.3f,
+                    0.5f,
+                    0.2f);
                 GL11.glRotatef(180, 0.5f, 0.0f, 0.0f);
                 GL11.glTranslatef(0.0f, 0.0f, 0.03125F);
                 GL11.glTranslatef(-centerX, -centerY, 10f);
@@ -240,13 +245,13 @@ public class WrenchSpecialRender {
                     float haloWidth = width + 2 * noiseSpread;
                     float haloHeight = height + 2 * noiseSpread;
 
-                    Tessellator t5 = Tessellator.instance;
-                    t5.startDrawingQuads();
-                    t5.addVertexWithUV(haloDrawX, haloDrawY + haloHeight, 0, minU, maxV);
-                    t5.addVertexWithUV(haloDrawX + haloWidth, haloDrawY + haloHeight, 0, maxU, maxV);
-                    t5.addVertexWithUV(haloDrawX + haloWidth, haloDrawY, 0, maxU, minV);
-                    t5.addVertexWithUV(haloDrawX, haloDrawY, 0, minU, minV);
-                    t5.draw();
+                    Tessellator tessellator = Tessellator.instance;
+                    tessellator.startDrawingQuads();
+                    tessellator.addVertexWithUV(haloDrawX, haloDrawY + haloHeight, 0, minU, maxV);
+                    tessellator.addVertexWithUV(haloDrawX + haloWidth, haloDrawY + haloHeight, 0, maxU, maxV);
+                    tessellator.addVertexWithUV(haloDrawX + haloWidth, haloDrawY, 0, maxU, minV);
+                    tessellator.addVertexWithUV(haloDrawX, haloDrawY, 0, minU, minV);
+                    tessellator.draw();
                 }
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -282,30 +287,30 @@ public class WrenchSpecialRender {
 
     private void applyGlitchEffect(int baseX, int baseY, double offset, int[] color, int texX, int texY, int width,
         int height, int texWidth, int texHeight) {
-        Tessellator t = Tessellator.instance;
+        Tessellator tessellator = Tessellator.instance;
 
-        t.startDrawingQuads();
-        t.setColorRGBA_F(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F, color[3] / 255.0F);
-        t.addVertexWithUV(baseX + offset, baseY + offset, 0, (float) texX / 16f, (float) texY / 16f);
-        t.addVertexWithUV(
+        tessellator.startDrawingQuads();
+        tessellator.setColorRGBA_F(color[0] / 255.0F, color[1] / 255.0F, color[2] / 255.0F, color[3] / 255.0F);
+        tessellator.addVertexWithUV(baseX + offset, baseY + offset, 0, (float) texX / 16f, (float) texY / 16f);
+        tessellator.addVertexWithUV(
             baseX + offset,
             baseY + height + offset,
             0,
             (float) texX / 16f,
             (float) (texY + texHeight) / 16f);
-        t.addVertexWithUV(
+        tessellator.addVertexWithUV(
             baseX + width + offset,
             baseY + height + offset,
             0,
             (float) (texX + texWidth) / 16f,
             (float) (texY + texHeight) / 16f);
-        t.addVertexWithUV(
+        tessellator.addVertexWithUV(
             baseX + width + offset,
             baseY + offset,
             0,
             (float) (texX + texWidth) / 16f,
             (float) texY / 16f);
-        t.draw();
+        tessellator.draw();
     }
 
     /**
@@ -326,7 +331,7 @@ public class WrenchSpecialRender {
         int spread = 10;
         int haloAlpha = 0xFF000000;
 
-        Tessellator t = Tessellator.instance;
+        Tessellator tessellator = Tessellator.instance;
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -341,12 +346,12 @@ public class WrenchSpecialRender {
         float haloWidth = width + 2 * spread;
         float haloHeight = height + 2 * spread;
 
-        t.startDrawingQuads();
-        t.addVertexWithUV(haloDrawX, haloDrawY, 0, 0.0, 0.0);
-        t.addVertexWithUV(haloDrawX, haloDrawY + haloHeight, 0, 0.0, 1.0);
-        t.addVertexWithUV(haloDrawX + haloWidth, haloDrawY + haloHeight, 0, 1.0, 1.0);
-        t.addVertexWithUV(haloDrawX + haloWidth, haloDrawY, 0, 1.0, 0.0);
-        t.draw();
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(haloDrawX, haloDrawY, 0, 0.0, 0.0);
+        tessellator.addVertexWithUV(haloDrawX, haloDrawY + haloHeight, 0, 0.0, 1.0);
+        tessellator.addVertexWithUV(haloDrawX + haloWidth, haloDrawY + haloHeight, 0, 1.0, 1.0);
+        tessellator.addVertexWithUV(haloDrawX + haloWidth, haloDrawY, 0, 1.0, 0.0);
+        tessellator.draw();
         GL11.glPopMatrix();
     }
 
@@ -365,7 +370,7 @@ public class WrenchSpecialRender {
      */
     private void renderPulse(int drawX, int drawY, int width, int height, int x, int y, int textureWidth,
         int textureHeight) {
-        Tessellator t = Tessellator.instance;
+        Tessellator tessellator = Tessellator.instance;
         double random = rand.nextGaussian();
         double scale = (random * 0.15) + 0.95;
 
@@ -376,19 +381,19 @@ public class WrenchSpecialRender {
         GL11.glScaled(scale, scale, 1.0);
         GL11.glTranslated(-(drawX + width / 2.0), -(drawY + height / 2.0), 0);
 
-        t.startDrawingQuads();
-        t.setColorRGBA_F(1.0f, 0.3333f, 0.3333f, 0.6f);
+        tessellator.startDrawingQuads();
+        tessellator.setColorRGBA_F(1.0f, 0.3333f, 0.3333f, 0.6f);
 
         float u = (float) x / textureWidth;
         float v = (float) y / textureHeight;
         float uWidth = (float) width / textureWidth;
         float vHeight = (float) height / textureHeight;
 
-        t.addVertexWithUV(drawX, drawY, 0, u, v);
-        t.addVertexWithUV(drawX, drawY + height, 0, u, v + vHeight);
-        t.addVertexWithUV(drawX + width, drawY + height, 0, u + uWidth, v + vHeight);
-        t.addVertexWithUV(drawX + width, drawY, 0, u + uWidth, v);
-        t.draw();
+        tessellator.addVertexWithUV(drawX, drawY, 0, u, v);
+        tessellator.addVertexWithUV(drawX, drawY + height, 0, u, v + vHeight);
+        tessellator.addVertexWithUV(drawX + width, drawY + height, 0, u + uWidth, v + vHeight);
+        tessellator.addVertexWithUV(drawX + width, drawY, 0, u + uWidth, v);
+        tessellator.draw();
 
         GL11.glPopMatrix();
     }

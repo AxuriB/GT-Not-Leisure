@@ -19,30 +19,25 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeAutoclave extends GTMMultiMachineBase<LargeAutoclave> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeAutoclave> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_autoclave";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(11);
-    public final int HORIZONTAL_OFF_SET = 1;
-    public final int VERTICAL_OFF_SET = 1;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(LA_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 1;
+    protected final int VERTICAL_OFF_SET = 1;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LA_STRUCTURE_FILE_PATH);
 
     public LargeAutoclave(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -77,7 +72,7 @@ public class LargeAutoclave extends GTMMultiMachineBase<LargeAutoclave> implemen
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(11);
     }
 
     @Override
@@ -110,42 +105,25 @@ public class LargeAutoclave extends GTMMultiMachineBase<LargeAutoclave> implemen
 
     @Override
     public IStructureDefinition<LargeAutoclave> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeAutoclave>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 13))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargeAutoclave.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 4))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeAutoclave>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 13))
+            .addElement(
+                'B',
+                buildHatchAdder(LargeAutoclave.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings2Misc, 4))))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        energyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getMaxInputAmps() > 64) return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 25;
+        setupParameters();
+        return mCountCasing >= 25;
     }
 
     @Override
@@ -156,7 +134,7 @@ public class LargeAutoclave extends GTMMultiMachineBase<LargeAutoclave> implemen
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

@@ -7,13 +7,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import com.lootgames.sudoku.Utils.CodecUtils;
 import com.lootgames.sudoku.Utils.RandHelper;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
 
 public class SudokuBoard {
 
+    @Getter
+    @Setter
     private long lastClickTime = -1;
     public static long currentTime = 0;
     public static final int SIZE = 9;
+    @Getter
+    @Setter
     private Integer[][] solution = new Integer[SIZE][SIZE]; // 完整解
     private Integer[][] puzzle = new Integer[SIZE][SIZE]; // 挖空后的谜题
     private Integer[][] player = new Integer[SIZE][SIZE]; // 玩家填写
@@ -125,6 +131,15 @@ public class SudokuBoard {
         return getPlayerValue(pos.getX(), pos.getY());
     }
 
+    public int getSolutionValue(int x, int y) {
+        Integer v = solution[x][y];
+        return v != null ? v : 0;
+    }
+
+    public int getSolutionValue(Pos2i pos) {
+        return getSolutionValue(pos.getX(), pos.getY());
+    }
+
     public int getPuzzleValue(int x, int y) {
         Integer v = puzzle[x][y];
         return v != null ? v : 0;
@@ -146,21 +161,9 @@ public class SudokuBoard {
         player[r][c] = (player[r][c] + 1) % 10;
     }
 
-    public void setLastClickTime(long time) {
-        lastClickTime = time;
-    }
-
-    public long getLastClickTime() {
-        return lastClickTime;
-    }
-
-    public void updateCurrentTime(long time) {
-        this.currentTime = time;
-    }
-
     public boolean checkWin() {
         for (int i = 0; i < SIZE; i++) for (int j = 0; j < SIZE; j++) {
-            if (player[i][j] == 0 || player[i][j] != solution[i][j]) return false;
+            if (player[i][j] == 0 || player[i][j].equals(solution[i][j])) return false;
         }
         return true;
     }

@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.Utils.item.TextHandler;
+import com.science.gtnl.Utils.text.TextUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,8 +25,7 @@ public class ItemAdder_Basic extends Item {
         this.setMaxDamage(0);
         this.setCreativeTab(aCreativeTabs);
         this.unlocalizedName = MetaName;
-        TextHandler.texter(Name, this.unlocalizedName + ".name");
-
+        TextUtils.texter(Name, this.unlocalizedName + ".name");
     }
 
     public static String generateUnlocalizedName(String MetaName) {
@@ -44,8 +43,6 @@ public class ItemAdder_Basic extends Item {
         return this;
     }
 
-    //
-    //
     @Override
     public String getUnlocalizedName(ItemStack aItemStack) {
         return this.unlocalizedName + "." + aItemStack.getItemDamage();
@@ -58,15 +55,14 @@ public class ItemAdder_Basic extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> aList) {
         aList.add(new ItemStack(aItem, 1, 0));
     }
 
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack aItemStack, EntityPlayer aEntityPlayer, List aTooltipsList,
+    public void addInformation(ItemStack aItemStack, EntityPlayer aEntityPlayer, List<String> aTooltipsList,
         boolean p_77624_4_) {
-        if (tooltips.size() > 0) {
+        if (!tooltips.isEmpty()) {
             aTooltipsList.addAll(tooltips);
         }
     }

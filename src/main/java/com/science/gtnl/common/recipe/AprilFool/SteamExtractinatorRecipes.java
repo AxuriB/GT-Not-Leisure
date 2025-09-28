@@ -3,9 +3,9 @@ package com.science.gtnl.common.recipe.AprilFool;
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -15,7 +15,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class SteamExtractinatorRecipes implements IRecipePool {
 
-    final RecipeMap<?> SER = RecipeRegister.SteamExtractinatorRecipes;
+    public RecipeMap<?> SER = RecipePool.SteamExtractinatorRecipes;
 
     @Override
     public void loadRecipes() {

@@ -1,7 +1,6 @@
 package com.science.gtnl.Utils.enums;
 
 import static gregtech.api.enums.GTValues.NI;
-import static gregtech.api.enums.GTValues.W;
 
 import java.util.Locale;
 
@@ -19,6 +18,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("unused")
@@ -37,15 +37,21 @@ public enum GTNLItemList implements IItemContainer {
     StargateTier9,
     Stargate_Coil_Compressed,
     LaserBeacon,
+    PlayerLeash,
     ArtificialStarRender,
     NanoPhagocytosisPlantRender,
     EternalGregTechWorkshopRender,
     PlayerDoll,
+    HoneyFluidBlock,
+    ShimmerFluidBlock,
+    CardboardBox,
 
     BronzeBrickCasing,
     SteelBrickCasing,
     CrushingWheels,
     SolarBoilingCell,
+    BronzeMachineFrame,
+    SteelMachineFrame,
 
     TestMetaBlock01_0,
     NewHorizonsCoil,
@@ -116,6 +122,8 @@ public enum GTNLItemList implements IItemContainer {
     BreelPlatedCasing,
     SteamCompactPipeCasing,
     VibrationSafeCasing,
+    IndustrialSteamCasing,
+    AdvancedIndustrialSteamCasing,
 
     TrollFace,
     DepletedExcitedNaquadahFuelRod,
@@ -220,22 +228,73 @@ public enum GTNLItemList implements IItemContainer {
     SadBapyCatToken,
     CompressedSteamTurbine,
     SteelTurbine,
+    PipelessSteamCover,
+    IronTurbine,
+    BronzeTurbine,
+
+    ManaElectricProspectorTool,
 
     TestItem,
     KFCFamily,
+    RecordSus,
+    RecordNewHorizons,
+    RecordLavaChicken,
+    FakeItemSiren,
+    TimeStopPocketWatch,
+    InfinityTorch,
+    InfinityWaterBucket,
+    InfinityLavaBucket,
+    InfinityHoneyBucket,
+    InfinityShimmerBucket,
+    SuperstrongSponge,
+    SteamRocket,
+    HoneyBucket,
+    ShimmerBucket,
+    SlimeSaddle,
+    InfinityCell,
+    InfinityDyeCell,
+    InfinityDyeFluidCell,
+    InfinityCobblestoneCell,
+    NullPointerException,
+    NetherTeleporter,
+    SuspiciousStew,
+    VeinMiningPickaxe,
+    PortableBasicWorkBench,
+    PortableAdvancedWorkBench,
+    PortableFurnace,
+    PortableAnvil,
+    PortableEnderChest,
+    PortableEnchantingTable,
+    PortableCompressedChest,
+    PortableInfinityChest,
+    PortableCopperChest,
+    PortableIronChest,
+    PortableSilverChest,
+    PortableSteelChest,
+    PortableGoldenChest,
+    PortableDiamondChest,
+    PortableCrystalChest,
+    PortableObsidianChest,
+    PortableNetheriteChest,
+    PortableDarkSteelChest,
+    Stick,
+    WirelessUpgradeChip,
+
     SatietyRing,
     SuperReachRing,
     RejectionRing,
-    RecordSus,
-    RecordNewHorizons,
-    FakeItemSiren,
+    RoyalGel,
     PhysicsCape,
-    TimeStopPocketWatch,
+    LuckyHorseshoe,
+
+    CircuitIntegratedPlus,
 
     InfinityFuelRod,
     InfinityFuelRodDepleted,
 
     SaplingBrickuoia,
+
+    MilledNaquadahEnriched,
 
     TwilightSword,
 
@@ -243,6 +302,9 @@ public enum GTNLItemList implements IItemContainer {
     TerraGlass,
     FusionGlass,
     ConcentratingSieveMesh,
+
+    ShirabonReinforcedBoronSilicateGlass,
+    QuarkGluonPlasmaReinforcedBoronSilicateGlass,
 
     FortifyGlowstone,
     BlackLamp,
@@ -350,7 +412,11 @@ public enum GTNLItemList implements IItemContainer {
     SteamMonsterRepellentModuleIII,
     SteamFlightModule,
     SteamWeatherModule,
+    SteamOreProcessorModule,
 
+    CompoundExtremeCoolingUnit,
+    EyeOfHarmonyInjector,
+    HighPerformanceComputationArray,
     NanoAssemblerMarkL,
     AetronPressor,
     NanitesCircuitAssemblyFactory,
@@ -441,7 +507,33 @@ public enum GTNLItemList implements IItemContainer {
     WhiteNightGenerator,
     LargeSteamCircuitAssembler,
     GenerationEarthEngine,
+    LargeSteamLathe,
+    LargeSteamCutting,
+    SteamItemVault,
+    PrimitiveBrickKiln,
+    SingularityDataHub,
+    ElectrocellGenerator,
+    FOGAlloySmelterModule,
+    FOGAlloyBlastSmelterModule,
+    FOGExtractorModule,
 
+    EnergyTransferNode,
+    DieselGeneratorLV,
+    DieselGeneratorMV,
+    DieselGeneratorHV,
+    GasTurbineLV,
+    GasTurbineMV,
+    GasTurbineHV,
+    DebugDataAccessHatch,
+    SuperVoidHatch,
+    SuperVoidBus,
+    OriginalInputHatch,
+    OriginalOutputHatch,
+    VaultPortHatch,
+    NanitesInputBus,
+    Enchanting,
+    OredictInputBusHatchME,
+    Replicator,
     SuperInputHatchME,
     AdvancedSuperInputHatchME,
     SuperInputBusME,
@@ -498,21 +590,20 @@ public enum GTNLItemList implements IItemContainer {
     HumongousNinefoldInputHatch,
     QuadrupleOutputHatchEV,
     NinefoldOutputHatchEV,
-    HumongousInputBusULV,
-    HumongousInputBusLV,
-    HumongousInputBusMV,
-    HumongousInputBusHV,
-    HumongousInputBusEV,
-    HumongousInputBusIV,
-    HumongousInputBusLuV,
-    HumongousInputBusZPM,
-    HumongousInputBusUV,
-    HumongousInputBusUHV,
-    HumongousInputBusUEV,
-    HumongousInputBusUIV,
-    HumongousInputBusUMV,
-    HumongousInputBusUXV,
-    HumongousInputBusMAX,
+    HumongousDualInputHatchLV,
+    HumongousDualInputHatchMV,
+    HumongousDualInputHatchHV,
+    HumongousDualInputHatchEV,
+    HumongousDualInputHatchIV,
+    HumongousDualInputHatchLuV,
+    HumongousDualInputHatchZPM,
+    HumongousDualInputHatchUV,
+    HumongousDualInputHatchUHV,
+    HumongousDualInputHatchUEV,
+    HumongousDualInputHatchUIV,
+    HumongousDualInputHatchUMV,
+    HumongousDualInputHatchUXV,
+    HumongousDualInputHatchMAX,
     DualInputHatchLV,
     DualInputHatchMV,
     DualInputHatchHV,
@@ -641,34 +732,6 @@ public enum GTNLItemList implements IItemContainer {
         }
     }
 
-    @SuppressWarnings("SizeReplaceableByIsEmpty")
-    public ItemStack getWithName(int aAmount, String aDisplayName, Object... aReplacements) {
-        ItemStack rStack = get(1, aReplacements);
-        if (GTUtility.isStackInvalid(rStack)) return NI;
-
-        // CamelCase alphanumeric words from aDisplayName
-        StringBuilder tCamelCasedDisplayNameBuilder = new StringBuilder();
-        final String[] tDisplayNameWords = aDisplayName.split("\\W");
-        for (String tWord : tDisplayNameWords) {
-            if (!tWord.isEmpty()) tCamelCasedDisplayNameBuilder.append(
-                tWord.substring(0, 1)
-                    .toUpperCase(Locale.US));
-            if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(
-                tWord.substring(1)
-                    .toLowerCase(Locale.US));
-        }
-        if (tCamelCasedDisplayNameBuilder.length() == 0) {
-            // CamelCased DisplayName is empty, so use hash of aDisplayName
-            tCamelCasedDisplayNameBuilder.append(((Long) (long) aDisplayName.hashCode()));
-        }
-
-        // Construct a translation key from UnlocalizedName and CamelCased DisplayName
-        final String tKey = rStack.getUnlocalizedName() + ".with." + tCamelCasedDisplayNameBuilder + ".name";
-
-        rStack.setStackDisplayName(GTLanguageManager.addStringLocalization(tKey, aDisplayName));
-        return GTUtility.copyAmount(aAmount, rStack);
-    }
-
     @Override
     public boolean isStackEqual(Object aStack) {
         return isStackEqual(aStack, false, false);
@@ -689,7 +752,7 @@ public enum GTNLItemList implements IItemContainer {
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, GTRecipeBuilder.WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override

@@ -16,8 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -31,26 +29,21 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
 public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MegaMixer> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_mixer";
-    public static final int CASING_INDEX = StructureUtils.getTextureIndex(sBlockCasings8, 7);
-    public final int HORIZONTAL_OFF_SET = 5;
-    public final int VERTICAL_OFF_SET = 7;
-    public final int DEPTH_OFF_SET = 0;
+    protected final int HORIZONTAL_OFF_SET = 5;
+    protected final int VERTICAL_OFF_SET = 7;
+    protected final int DEPTH_OFF_SET = 0;
     public double runningSpeedBoost;
     public int runningTickCounter = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(MM_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(MM_STRUCTURE_FILE_PATH);
 
     public MegaMixer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -85,7 +78,7 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 7);
     }
 
     @Override
@@ -120,39 +113,31 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
 
     @Override
     public IStructureDefinition<MegaMixer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MegaMixer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasingsTT, 0))
-                .addElement(
-                    'B',
-                    buildHatchAdder(MegaMixer.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 7))))
-                .addElement('C', ofBlock(sBlockCasingsTT, 4))
-                .addElement('D', ofBlock(blockCasingsMisc, 11))
-                .addElement('E', ofBlock(sBlockCasings8, 10))
-                .addElement('F', ofFrame(Materials.Neutronium))
-                .addElement('G', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('H', ofBlock(BlockLoader.MetaCasing, 5))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MegaMixer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasingsTT, 0))
+            .addElement(
+                'B',
+                buildHatchAdder(MegaMixer.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 7))))
+            .addElement('C', ofBlock(sBlockCasingsTT, 4))
+            .addElement('D', ofBlock(blockCasingsMisc, 11))
+            .addElement('E', ofBlock(sBlockCasings8, 10))
+            .addElement('F', ofFrame(Materials.Neutronium))
+            .addElement('G', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('H', ofBlock(BlockLoader.metaCasing, 5))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        energyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 50;
+        setupParameters();
+        return mCountCasing >= 40;
     }
 
     @Override
@@ -182,22 +167,23 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public boolean getHeatOC() {
+        return true;
+    }
 
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setAmperageOC(true)
-                    .setHeatOC(true)
-                    .setMachineHeat(mLockedToSingleRecipe ? 3600 : 0)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(mLockedToSingleRecipe ? 1 : 0.6 - (mParallelTier / 50.0))
-                    .setSpeedBoost(Math.min(0.01, 1.0 / (5 + runningSpeedBoost) - (mParallelTier / 200.0)));
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public int getMachineHeat() {
+        return mLockedToSingleRecipe ? 3600 : 0;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return mLockedToSingleRecipe ? 1 : 0.6 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return Math.min(0.005, 1.0 / (5 + runningSpeedBoost) - (Math.max(0, mParallelTier - 1) / 50.0));
     }
 
     @Override
@@ -208,7 +194,7 @@ public class MegaMixer extends GTMMultiMachineBase<MegaMixer> implements ISurviv
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

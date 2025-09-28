@@ -5,6 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import javax.annotation.Nonnull;
 
@@ -22,9 +23,10 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -34,15 +36,30 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompressor>
     implements ISurvivalConstructable {
+
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String LSC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_compressor";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LSC_STRUCTURE_FILE_PATH);
+
+    private static final int HORIZONTAL_OFF_SET = 3;
+    private static final int VERTICAL_OFF_SET = 5;
+    private static final int DEPTH_OFF_SET = 0;
+
+    public LargeSteamCompressor(String aName) {
+        super(aName);
+    }
+
+    public LargeSteamCompressor(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional);
+    }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -54,28 +71,11 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
         return StatCollector.translateToLocal("LargeSteamCompressorRecipeType");
     }
 
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeSteamCompressor> STRUCTURE_DEFINITION = null;
-    private static final String LSC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_compressor";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(LSC_STRUCTURE_FILE_PATH);
-
-    public LargeSteamCompressor(String aName) {
-        super(aName);
-    }
-
-    public LargeSteamCompressor(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-    }
-
-    private static final int HORIZONTAL_OFF_SET = 3;
-    private static final int VERTICAL_OFF_SET = 5;
-    private static final int DEPTH_OFF_SET = 0;
-
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        int id = tierMachine == 2 ? ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0)
-            : ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+        int id = tierMachine == 2 ? StructureUtils.getTextureIndex(sBlockCasings2, 0)
+            : StructureUtils.getTextureIndex(sBlockCasings1, 10);
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id), TextureFactory.builder()
                 .addIcon(Textures.BlockIcons.OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
@@ -91,11 +91,11 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
 
     @Override
     public IStructureDefinition<LargeSteamCompressor> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeSteamCompressor>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
+        return StructureDefinition.<LargeSteamCompressor>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofChain(
                         buildSteamWirelessInput(LargeSteamCompressor.class).casingIndex(getCasingTextureID())
                             .dot(1)
@@ -113,47 +113,46 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
                                 SteamHatchElement.OutputBus_Steam,
                                 InputBus,
                                 OutputBus,
-                                InputHatch)
+                                InputHatch,
+                                Maintenance)
                             .buildAndChain(
                                 onElementPass(
-                                    x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
-                                        ofBlocksTiered(
-                                            LargeSteamCompressor::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing))))))
-                .addElement(
-                    'B',
+                                    x -> ++x.mCountCasing,
+                                    ofBlocksTiered(
+                                        LargeSteamCompressor::getTierMachineCasing,
+                                        ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                        -1,
+                                        (t, m) -> t.tierMachineCasing = m,
+                                        t -> t.tierMachineCasing))))))
+            .addElement(
+                'B',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamCompressor::getTierGearCasing,
                         ImmutableList.of(Pair.of(sBlockCasings2, 2), Pair.of(sBlockCasings2, 3)),
                         -1,
                         (t, m) -> t.tierGearCasing = m,
-                        t -> t.tierGearCasing))
-                .addElement(
-                    'C',
+                        t -> t.tierGearCasing)))
+            .addElement(
+                'C',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamCompressor::getTierFrameCasing,
                         ImmutableList.of(Pair.of(sBlockFrames, 300), Pair.of(sBlockFrames, 305)),
                         -1,
                         (t, m) -> t.tierFrameCasing = m,
-                        t -> t.tierFrameCasing))
-                .addElement(
-                    'D',
+                        t -> t.tierFrameCasing)))
+            .addElement(
+                'D',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         LargeSteamCompressor::getTierMaterialBlockCasing,
                         ImmutableList.of(Pair.of(Blocks.iron_block, 0), Pair.of(sBlockMetal6, 13)),
                         -1,
                         (t, m) -> t.tierMaterialBlock = m,
-                        t -> t.tierMaterialBlock))
-                .addElement('E', ofBlockAnyMeta(Blocks.glass))
-                .build();
-
-        }
-        return STRUCTURE_DEFINITION;
+                        t -> t.tierMaterialBlock)))
+            .addElement('E', chainAllGlasses())
+            .build();
     }
 
     @Override
@@ -170,7 +169,7 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -184,19 +183,12 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = 0;
-        tierMaterialBlock = -1;
-        tierMachineCasing = -1;
-        tierFrameCasing = -1;
-        tierGearCasing = -1;
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierMaterialBlock < 0 && tierMachineCasing < 0 && tierFrameCasing < 0 && tierGearCasing < 0) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
         if (tierMaterialBlock == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierGearCasing == 1
-            && tCountCasing >= 95
-            && checkHatches()) {
+            && mCountCasing >= 95) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -205,15 +197,12 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
         if (tierMaterialBlock == 2 && tierMachineCasing == 2
             && tierFrameCasing == 2
             && tierGearCasing == 2
-            && tCountCasing >= 95
-            && checkHatches()) {
+            && mCountCasing >= 95) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        getCasingTextureID();
-        updateHatchTexture();
         return false;
     }
 
@@ -233,26 +222,38 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                } else return CheckRecipeResultRegistry.SUCCESSFUL;
+            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) != 0) {
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+                return super.validateRecipe(recipe);
             }
 
             @Override
             @Nonnull
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).limitOverclockCount(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(0.8 * tierMachine)
-                    .setSpeedBoost(1.0 / 2.0 / tierMachine);
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
+                    .setMaxTierSkips(getMaxTierSkip())
+                    .setMaxOverclocks(getMaxOverclocks());
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * 0.8 * tierMachine;
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / 2.0 / tierMachine;
     }
 
     @Override
@@ -276,6 +277,8 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
             .addOutputBus(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_Casing"), 1)
             .addInputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_Casing"), 1)
             .addOutputHatch(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

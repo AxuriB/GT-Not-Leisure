@@ -2,8 +2,8 @@ package com.science.gtnl.common.recipe.GregTech;
 
 import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -14,7 +14,7 @@ import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
 public class DissolutionTankRecipes implements IRecipePool {
 
-    final RecipeMap<?> DTR = LanthanidesRecipeMaps.dissolutionTankRecipes;
+    public RecipeMap<?> DTR = LanthanidesRecipeMaps.dissolutionTankRecipes;
 
     @Override
     public void loadRecipes() {
@@ -26,7 +26,6 @@ public class DissolutionTankRecipes implements IRecipePool {
             .fluidOutputs(MaterialPool.RareEarthHydroxides.getFluidOrGas(10000))
             .metadata(DISSOLUTION_TANK_RATIO, 9)
             .specialValue(0)
-            .noOptimize()
             .duration(50)
             .eut(480)
             .addTo(DTR);

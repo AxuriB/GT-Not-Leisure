@@ -4,7 +4,6 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Timer;
@@ -12,14 +11,14 @@ import net.minecraft.util.Timer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.gtnewhorizon.gtnhmixins.IEarlyMixinLoader;
 import com.science.gtnl.api.TickrateAPI;
-import com.science.gtnl.mixins.EarlyMixinPlugin;
+import com.science.gtnl.mixins.EarlyMixinLoader;
 
 import cpw.mods.fml.relauncher.IFMLCallHook;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.github.tox1cozz.mixinbooterlegacy.IEarlyMixinLoader;
 
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 @IFMLLoadingPlugin.TransformerExclusions({ "com.science.gtnl.asm" })
@@ -38,6 +37,20 @@ public class GTNLEarlyCoreMod implements IFMLLoadingPlugin, IEarlyMixinLoader, I
 
     public GTNLEarlyCoreMod() {
         INSTANCE = this;
+    }
+
+    static {
+        try {
+            if (System.getProperty("java.version")
+                .startsWith("1.8")) {
+                LOGGER.info("Patching ObfuscationRun.theConstructor for Java 8 compatibility...");
+                ObfuscationRunPatcher.patchConstructor();
+            } else {
+                LOGGER.warn("Skipping ObfuscationRun patch, not running Java 8.");
+            }
+        } catch (Throwable t) {
+            LOGGER.error("Failed to patch ObfuscationRun", t);
+        }
     }
 
     @Override
@@ -73,10 +86,10 @@ public class GTNLEarlyCoreMod implements IFMLLoadingPlugin, IEarlyMixinLoader, I
     @SideOnly(Side.CLIENT)
     public void updateClientTickrate(float tickrate, boolean log) {
         if (!TickrateAPI.isValidTickrate(tickrate)) {
-            GTNLEarlyCoreMod.LOGGER.info("Ignoring invalid tickrate: " + tickrate);
+            GTNLEarlyCoreMod.LOGGER.info("Ignoring invalid tickrate: {}", tickrate);
             return;
         }
-        if (log) LOGGER.info("Updating client tickrate to " + tickrate);
+        if (log) LOGGER.info("Updating client tickrate to {}", tickrate);
         TICKS_PER_SECOND = tickrate;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null) return; // Oops!
@@ -100,20 +113,20 @@ public class GTNLEarlyCoreMod implements IFMLLoadingPlugin, IEarlyMixinLoader, I
 
     public void updateServerTickrate(float tickrate, boolean log) {
         if (!TickrateAPI.isValidTickrate(tickrate)) {
-            GTNLEarlyCoreMod.LOGGER.info("Ignoring invalid tickrate: " + tickrate);
+            GTNLEarlyCoreMod.LOGGER.info("Ignoring invalid tickrate: {}", tickrate);
             return;
         }
-        if (log) LOGGER.info("Updating server tickrate to " + tickrate);
+        if (log) LOGGER.info("Updating server tickrate to {}", tickrate);
         MILISECONDS_PER_TICK = (long) (1000L / tickrate);
     }
 
     @Override
-    public String getMixinConfig() {
-        return "mixins.sciencenotleisure.early.json";
+    public List<String> getMixinConfigs() {
+        return EarlyMixinLoader.getMixinConfigs();
     }
 
     @Override
-    public List<String> getMixins(Set<String> loadedCoreMods) {
-        return EarlyMixinPlugin.getEarlyMixins(loadedCoreMods);
+    public boolean shouldMixinConfigQueue(final String mixinConfig) {
+        return EarlyMixinLoader.shouldMixinConfigQueue(mixinConfig);
     }
 }

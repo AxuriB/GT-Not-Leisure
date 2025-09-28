@@ -45,7 +45,7 @@ public class ItemBlockBase extends ItemBlock {
     // region MetaBlock Generators
 
     public static ItemStack initMetaBlock(String i18nName, int Meta) {
-        return initMetaItemStack(i18nName, Meta, BlockLoader.MetaBlock, MetaBlockSet);
+        return initMetaItemStack(i18nName, Meta, BlockLoader.metaBlock, MetaBlockSet);
     }
 
     public static ItemStack initMetaBlock(String i18nName, int Meta, String[] tooltips) {
@@ -55,24 +55,9 @@ public class ItemBlockBase extends ItemBlock {
         return initMetaBlock(i18nName, Meta);
     }
 
-    // endregion
-    // -----------------------
-    // region Member Variables
-
-    // endregion
-    // -----------------------
-    // region Overrides
-
-    /**
-     * Handle the tooltips.
-     *
-     * @param aItemStack
-     * @param theTooltipsList
-     */
     @SideOnly(Side.CLIENT)
     @Override
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List theTooltipsList,
+    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List<String> theTooltipsList,
         boolean p_77624_4_) {
         int meta = aItemStack.getItemDamage();
         if (null != MetaBlockTooltipsMap.get(meta)) {

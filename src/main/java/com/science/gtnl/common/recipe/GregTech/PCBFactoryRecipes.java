@@ -1,6 +1,6 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
@@ -17,7 +17,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class PCBFactoryRecipes implements IRecipePool {
 
-    final RecipeMap<?> PCBFR = RecipeMaps.pcbFactoryRecipes;
+    public RecipeMap<?> PCBFR = RecipeMaps.pcbFactoryRecipes;
     private static final PCBFactoryTierKey TIER = PCBFactoryTierKey.INSTANCE;
 
     @Override
@@ -34,7 +34,6 @@ public class PCBFactoryRecipes implements IRecipePool {
                 Materials.Iron.getPlasma(100),
                 Materials.IronIIIChloride.getFluid(4000))
             .duration(300)
-            .noOptimize()
             .metadata(TIER, 1)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(PCBFR);

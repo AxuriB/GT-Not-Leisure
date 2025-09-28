@@ -3,17 +3,15 @@ package com.science.gtnl.common.block.blocks.tile;
 import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.common.tileentities.render.TileEntityLaser;
+import lombok.Getter;
 
+@Getter
 public class TileEntityLaserBeacon extends TileEntityLaser {
 
     private double range;
 
     public TileEntityLaserBeacon() {
         super();
-    }
-
-    public double getRange() {
-        return this.range;
     }
 
     public void setRange(double r) {

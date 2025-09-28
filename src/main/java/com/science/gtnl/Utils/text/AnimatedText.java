@@ -1,8 +1,7 @@
 package com.science.gtnl.Utils.text;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
+import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -11,34 +10,6 @@ import net.minecraft.util.StatCollector;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class AnimatedText {
-
-    /**
-     * 构建文本链并生成彩色动画文本。
-     * 只有最后一个文本会应用动画效果，前面的文本会作为普通文本拼接。
-     *
-     * @param texts 可变参数，传入多个文本（最后一个为彩色文本）
-     * @return 动画文本的 Supplier
-     */
-    @SafeVarargs
-    public static Supplier<String> buildTextWithAnimatedEnd(Supplier<String>... texts) {
-        if (texts == null || texts.length == 0) {
-            throw new IllegalArgumentException("至少需要传入一个文本");
-        }
-        Supplier<String> prefixText = chain(Arrays.copyOf(texts, texts.length - 1));
-        Supplier<String> lastText = texts[texts.length - 1];
-        Supplier<String> animatedText = animatedText(
-            lastText.get(),
-            1,
-            80,
-            RED,
-            GOLD,
-            YELLOW,
-            GREEN,
-            AQUA,
-            BLUE,
-            LIGHT_PURPLE);
-        return chain(prefixText, animatedText);
-    }
 
     public static final Supplier<String> SNL_EDEN_GARDEN = () -> AnimatedText.SCIENCE_NOT_LEISURE.get()
         + AnimatedText.EDEN_GARDEN.get()
@@ -70,14 +41,19 @@ public class AnimatedText {
         + ": "
         + AnimatedText.PBTR.get()
         + RESET;
-
     public static final Supplier<String> SNL_SCCR = () -> AnimatedText.SCIENCE_NOT_LEISURE.get() + RESET
         + ": "
         + AnimatedText.SCCR.get()
         + RESET;
+    public static final Supplier<String> SNL_SKYINR = () -> AnimatedText.SCIENCE_NOT_LEISURE
+        .get() + RESET + ": " + AQUA + "Created By: Skyinr" + RESET;
 
     public static final Supplier<String> SCIENCE_NOT_LEISURE = chain(
         text(StatCollector.translateToLocal("Adder")),
+        animatedText("Science Not Leisure", 1, 80, RED, GOLD, YELLOW, GREEN, AQUA, BLUE, LIGHT_PURPLE));
+
+    public static final Supplier<String> SCIENCE_NOT_LEISURE_CHANGE = chain(
+        text(StatCollector.translateToLocal("ChangeAdder")),
         animatedText("Science Not Leisure", 1, 80, RED, GOLD, YELLOW, GREEN, AQUA, BLUE, LIGHT_PURPLE));
 
     public static final Supplier<String> STRUCTURAL_RECONSTRUCTION_PLAN = chain(
@@ -428,8 +404,7 @@ public class AnimatedText {
             GOLD + BOLD + UNDERLINE,
             GOLD + BOLD + UNDERLINE));
 
-    public static final String AuthorHighPressureRaven = "" + EnumChatFormatting.WHITE
-        + "High"
+    public static final String AuthorHighPressureRaven = EnumChatFormatting.WHITE + "High"
         + EnumChatFormatting.GRAY
         + "Pres"
         + EnumChatFormatting.DARK_GRAY

@@ -2,8 +2,10 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static gregtech.api.GregTechAPI.sBlockCasingsSE;
 import static net.minecraft.item.ItemStack.areItemStacksEqual;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -19,11 +21,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
-import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
-import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -34,9 +31,12 @@ import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.Utils.recipes.ResourceCollectionModuleTierKey;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -51,7 +51,8 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
+import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
@@ -68,37 +69,18 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
         .translate("gt.blockmachines.multimachine.project.ig.assembler.cfgi.0");
     private static final IStatusFunction<ResourceCollectionModule> PARALLEL_STATUS = (base, p) -> LedStatus
         .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallelRecipes());
-    private int ParallelTier;
+    private int mParallelTier;
     private static final int MACHINEMODE_MINER = 0;
     private static final int MACHINEMODE_DRILL = 1;
-    private static IStructureDefinition<ResourceCollectionModule> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/space_module";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SM_STRUCTURE_FILE_PATH);
-    public final ItemStack MiningDroneMkVIII = new ItemStack(
-        IGItems.MiningDrones,
-        16,
-        ItemMiningDrones.DroneTiers.UV.ordinal());
-    public final ItemStack MiningDroneMkIX = new ItemStack(
-        IGItems.MiningDrones,
-        16,
-        ItemMiningDrones.DroneTiers.UHV.ordinal());
-    public final ItemStack MiningDroneMkX = new ItemStack(
-        IGItems.MiningDrones,
-        16,
-        ItemMiningDrones.DroneTiers.UEV.ordinal());
-    public final ItemStack MiningDroneMkXI = new ItemStack(
-        IGItems.MiningDrones,
-        16,
-        ItemMiningDrones.DroneTiers.UIV.ordinal());
-    public final ItemStack MiningDroneMkXII = new ItemStack(
-        IGItems.MiningDrones,
-        16,
-        ItemMiningDrones.DroneTiers.UMV.ordinal());
-    public final ItemStack MiningDroneMkXIII = new ItemStack(
-        IGItems.MiningDrones,
-        16,
-        ItemMiningDrones.DroneTiers.UXV.ordinal());
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SM_STRUCTURE_FILE_PATH);
+    public final ItemStack MiningDroneMkVIII = ItemList.MiningDroneUV.get(16);
+    public final ItemStack MiningDroneMkIX = ItemList.MiningDroneUHV.get(16);
+    public final ItemStack MiningDroneMkX = ItemList.MiningDroneUEV.get(16);
+    public final ItemStack MiningDroneMkXI = ItemList.MiningDroneUIV.get(16);
+    public final ItemStack MiningDroneMkXII = ItemList.MiningDroneUMV.get(16);
+    public final ItemStack MiningDroneMkXIII = ItemList.MiningDroneUXV.get(16);
 
     public ResourceCollectionModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 14, 5, 1);
@@ -118,18 +100,17 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return (machineMode == MACHINEMODE_MINER) ? RecipeRegister.SpaceMinerRecipes : RecipeRegister.SpaceDrillRecipes;
+        return (machineMode == MACHINEMODE_MINER) ? RecipePool.SpaceMinerRecipes : RecipePool.SpaceDrillRecipes;
     }
 
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeRegister.SpaceMinerRecipes, RecipeRegister.SpaceDrillRecipes);
+        return Arrays.asList(RecipePool.SpaceMinerRecipes, RecipePool.SpaceDrillRecipes);
     }
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
@@ -149,12 +130,14 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
+        machineModeIcons = new ArrayList<>(4);
         setMachineModeIcons();
         builder.widget(
             new DynamicTextWidget(
                 () -> new Text(
-                    StatCollector.translateToLocal("Interaction_DESCRIPTION_Index_400")
-                        + StatCollector.translateToLocal("ResourceCollectionModule_Mode_" + this.machineMode))
+                    StatCollector.translateToLocalFormatted(
+                        "gt.interact.desc.mb.mode",
+                        StatCollector.translateToLocal("ResourceCollectionModule_Mode_" + this.machineMode)))
                             .color(Color.WHITE.normal)).setPos(10, 77));
 
         builder.widget(createModeSwitchButton(builder));
@@ -167,20 +150,17 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
     @Override
     public IStructureDefinition<? extends TTMultiblockBase> getStructure_EM() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ResourceCollectionModule>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'H',
-                    GTStructureUtility.ofHatchAdderOptional(
-                        ResourceCollectionModule::addClassicToMachineList,
-                        4096,
-                        1,
-                        IGBlocks.SpaceElevatorCasing,
-                        0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ResourceCollectionModule>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'H',
+                GTStructureUtility.ofHatchAdderOptional(
+                    ResourceCollectionModule::addClassicToMachineList,
+                    4096,
+                    1,
+                    sBlockCasingsSE,
+                    0))
+            .build();
     }
 
     @Override
@@ -191,17 +171,18 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     @Override
     public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         fixAllIssues();
-        ParallelTier = 0;
+        mParallelTier = 0;
 
         if (!structureCheck_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0)) return false;
 
-        ParallelTier = getParallelTier(aStack);
+        mParallelTier = getParallelTier(aStack);
 
         return true;
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         this.machineMode = (byte) ((this.machineMode + 1) % 2);
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -234,16 +215,17 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     }
 
     public int getMaxParallelRecipes() {
-        if (ParallelTier <= 1) {
+        mParallelTier = getParallelTier(getControllerSlot());
+        if (mParallelTier <= 1) {
             return 8;
         } else {
-            return (int) Math.pow(4, ParallelTier - 2);
+            return (int) Math.pow(4, mParallelTier - 2);
         }
     }
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -272,27 +254,15 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
                 }
 
                 if (recipeReq >= 1 && recipeReq <= 6) {
-                    ItemStack requiredDrone = null;
-                    switch (recipeReq) {
-                        case 1:
-                            requiredDrone = MiningDroneMkVIII;
-                            break;
-                        case 2:
-                            requiredDrone = MiningDroneMkIX;
-                            break;
-                        case 3:
-                            requiredDrone = MiningDroneMkX;
-                            break;
-                        case 4:
-                            requiredDrone = MiningDroneMkXI;
-                            break;
-                        case 5:
-                            requiredDrone = MiningDroneMkXII;
-                            break;
-                        case 6:
-                            requiredDrone = MiningDroneMkXIII;
-                            break;
-                    }
+                    ItemStack requiredDrone = switch (recipeReq) {
+                        case 1 -> MiningDroneMkVIII;
+                        case 2 -> MiningDroneMkIX;
+                        case 3 -> MiningDroneMkX;
+                        case 4 -> MiningDroneMkXI;
+                        case 5 -> MiningDroneMkXII;
+                        case 6 -> MiningDroneMkXIII;
+                        default -> null;
+                    };
 
                     if (areItemStacksEqual(requiredDrone, miningDrone)) {
                         lastRecipe = recipe;
@@ -310,13 +280,13 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setAmperageOC(false)
                     .setDurationDecreasePerOC(2)
                     .setEUtIncreasePerOC(4)
                     .setAmperage(availableAmperage)
-                    .setEUtDiscount(1 - (ParallelTier / 50.0))
-                    .setSpeedBoost(1 - (ParallelTier / 200.0));
+                    .setEUtDiscount(1 - (mParallelTier / 50.0))
+                    .setDurationModifier(1 - (Math.max(0, mParallelTier - 1) / 50.0));
             }
         }.setMaxParallelSupplier(() -> Math.min((int) parallelSetting.get(), getMaxParallelRecipes()));
     }
@@ -430,7 +400,7 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     @Override
     public CheckRecipeResult checkProcessing_EM() {
         ItemStack controllerItem = getControllerSlot();
-        this.ParallelTier = getParallelTier(controllerItem);
+        this.mParallelTier = getParallelTier(controllerItem);
         return super.checkProcessing_EM();
     }
 }

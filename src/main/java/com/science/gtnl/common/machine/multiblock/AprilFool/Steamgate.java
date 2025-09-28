@@ -3,6 +3,7 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_STEAM_GATE;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -31,17 +32,9 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_STEAMGATE_CONTROLLER = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_STEAMGATE_CONTROLLER";
-    public static final String TEXTURE_STEAMGATE_CASING = RESOURCE_ROOT_ID + ":" + "MetaCasing/22";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_STEAMGATE_CONTROLLER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_STEAMGATE_CONTROLLER);
-    public static Textures.BlockIcons.CustomIcon STEAMGATE_CASING = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_STEAMGATE_CASING);
-    private static IStructureDefinition<Steamgate> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steamgate";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SG_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SG_STRUCTURE_FILE_PATH);
 
     private static final int HORIZONTAL_OFF_SET = 4;
     private static final int VERTICAL_OFF_SET = 8;
@@ -65,20 +58,14 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
         int colorIndex, boolean active, boolean redstoneLevel) {
         ITexture[] rTexture;
         if (side == facing) {
-            rTexture = new ITexture[] { TextureFactory.builder()
-                .addIcon(STEAMGATE_CASING)
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(14870), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_STEAM_GATE)
                 .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_STEAMGATE_CONTROLLER)
-                    .extFacing()
-                    .glow()
-                    .build() };
+                .glow()
+                .build() };
 
         } else {
-            rTexture = new ITexture[] { TextureFactory.builder()
-                .addIcon(STEAMGATE_CASING)
-                .build() };
+            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(14870) };
         }
         return rTexture;
     }
@@ -91,7 +78,7 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -105,14 +92,11 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
 
     @Override
     public IStructureDefinition<Steamgate> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<Steamgate>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 21))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 22))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<Steamgate>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 21))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 22))
+            .build();
     }
 
     @Override
@@ -153,11 +137,6 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
     @Override
     public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     // YOINKED all this code n im NOT giving it back

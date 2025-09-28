@@ -10,10 +10,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 
+import lombok.Getter;
+
 public class TileEntityEternalGregTechWorkshop extends TileEntity {
 
+    @Getter
     private float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0, offsetX = 0, offsetY = 1, offsetZ = 0;
     private AxisAlignedBB renderBoundingBox;
+    @Getter
     private int renderCount = 1, rot = 0;
 
     private static final String NBT_TAG = "EGTWRender:";
@@ -51,41 +55,9 @@ public class TileEntityEternalGregTechWorkshop extends TileEntity {
         return Double.MAX_VALUE;
     }
 
-    public int getRenderCount() {
-        return renderCount;
-    }
-
     public void setRenderCount(int count) {
         if (renderCount < 1) return;
         renderCount = count;
-    }
-
-    public float getRotAngle() {
-        return rotAngle;
-    }
-
-    public float getRotAxisX() {
-        return rotAxisX;
-    }
-
-    public float getRotAxisY() {
-        return rotAxisY;
-    }
-
-    public float getRotAxisZ() {
-        return rotAxisZ;
-    }
-
-    public float getOffsetX() {
-        return offsetX;
-    }
-
-    public float getOffsetY() {
-        return offsetY;
-    }
-
-    public float getOffsetZ() {
-        return offsetZ;
     }
 
     public int getRotation() {

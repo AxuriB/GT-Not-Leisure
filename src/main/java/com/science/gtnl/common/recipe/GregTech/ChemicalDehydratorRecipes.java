@@ -1,8 +1,8 @@
 package com.science.gtnl.common.recipe.GregTech;
 
 import com.science.gtnl.Utils.recipes.RecipeBuilder;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.OrePrefixes;
@@ -12,8 +12,8 @@ import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 public class ChemicalDehydratorRecipes implements IRecipePool {
 
-    final RecipeMap<?> CDR = GTPPRecipeMaps.chemicalDehydratorRecipes;
-    final RecipeMap<?> CDNCR = GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
+    public RecipeMap<?> CDR = GTPPRecipeMaps.chemicalDehydratorRecipes;
+    public RecipeMap<?> CDNCR = GTPPRecipeMaps.chemicalDehydratorNonCellRecipes;
 
     @Override
     public void loadRecipes() {
@@ -26,7 +26,6 @@ public class ChemicalDehydratorRecipes implements IRecipePool {
                 WerkstoffMaterialPool.NeodymiumOxide.get(OrePrefixes.dust, 5))
             .outputChances(5000, 5000, 5000, 5000)
             .specialValue(0)
-            .noOptimize()
             .duration(220)
             .eut(480)
             .addTo(CDNCR)
@@ -41,7 +40,6 @@ public class ChemicalDehydratorRecipes implements IRecipePool {
                 MaterialPool.GadoliniumOxide.get(OrePrefixes.dust, 5))
             .outputChances(5000, 5000, 5000, 5000)
             .specialValue(0)
-            .noOptimize()
             .duration(220)
             .eut(480)
             .addTo(CDNCR)
@@ -56,7 +54,6 @@ public class ChemicalDehydratorRecipes implements IRecipePool {
                 MaterialPool.HolmiumOxide.get(OrePrefixes.dust, 5))
             .outputChances(5000, 5000, 5000, 5000)
             .specialValue(0)
-            .noOptimize()
             .duration(220)
             .eut(480)
             .addTo(CDNCR)
@@ -71,7 +68,6 @@ public class ChemicalDehydratorRecipes implements IRecipePool {
                 MaterialPool.LutetiumOxide.get(OrePrefixes.dust, 5))
             .outputChances(5000, 5000, 5000, 5000)
             .specialValue(0)
-            .noOptimize()
             .duration(220)
             .eut(480)
             .addTo(CDNCR)

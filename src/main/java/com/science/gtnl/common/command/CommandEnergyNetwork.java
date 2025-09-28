@@ -1,6 +1,6 @@
 package com.science.gtnl.common.command;
 
-import static com.science.gtnl.Utils.Utils.checkSenderPermission;
+import static com.science.gtnl.Utils.Utils.hasPermission;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static gregtech.common.misc.WirelessNetworkManager.setUserEU;
@@ -16,6 +16,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 
 import gregtech.api.util.GTUtility;
@@ -34,8 +35,18 @@ public class CommandEnergyNetwork extends CommandBase {
     }
 
     @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
+
+    @Override
     public int getRequiredPermissionLevel() {
         return 0;
+    }
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        return true;
     }
 
     @Override
@@ -49,15 +60,9 @@ public class CommandEnergyNetwork extends CommandBase {
 
         switch (subCommand) {
             case "add": {
-                int requiredLevelAdd = 2;
-                if (checkSenderPermission(sender, requiredLevelAdd)) {
-                    sendChatMessage(
-                        sender,
-                        EnumChatFormatting.RED + String.format(
-                            "You do not have the required permission level (%d) to use the '%s' subcommand.",
-                            requiredLevelAdd,
-                            subCommand));
-                    return;
+                if (!hasPermission(sender, 2)) {
+                    sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                    break;
                 }
 
                 if (args.length != 3) {
@@ -66,6 +71,7 @@ public class CommandEnergyNetwork extends CommandBase {
 
                 String username = args[1];
                 String EU_String = args[2];
+                if (username == null) username = sender.getCommandSenderName();
                 UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
 
                 if (uuid == null) {
@@ -115,15 +121,9 @@ public class CommandEnergyNetwork extends CommandBase {
             }
 
             case "set": {
-                int requiredLevelSet = 2;
-                if (checkSenderPermission(sender, requiredLevelSet)) {
-                    sendChatMessage(
-                        sender,
-                        EnumChatFormatting.RED + String.format(
-                            "You do not have the required permission level (%d) to use the '%s' subcommand.",
-                            requiredLevelSet,
-                            subCommand));
-                    return;
+                if (!hasPermission(sender, 2)) {
+                    sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                    break;
                 }
 
                 if (args.length != 3) {
@@ -132,6 +132,7 @@ public class CommandEnergyNetwork extends CommandBase {
 
                 String username = args[1];
                 String EU_String = args[2];
+                if (username == null) username = sender.getCommandSenderName();
                 UUID uuid = SpaceProjectManager.getPlayerUUIDFromName(username);
 
                 if (uuid == null) {
@@ -178,6 +179,15 @@ public class CommandEnergyNetwork extends CommandBase {
                 String usernameSubject = args[1];
                 String usernameTeam = args[2];
 
+                if (usernameSubject != null && usernameTeam != null) {
+                    if (!hasPermission(sender, 2)) {
+                        sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                        break;
+                    }
+                } else if (usernameTeam == null) {
+                    usernameTeam = args[1];
+                    usernameSubject = sender.getCommandSenderName();
+                }
                 UUID uuidSubject = SpaceProjectManager.getPlayerUUIDFromName(usernameSubject);
                 UUID uuidTeam = SpaceProjectManager.getPlayerUUIDFromName(usernameTeam);
 
@@ -232,6 +242,7 @@ public class CommandEnergyNetwork extends CommandBase {
                 }
 
                 String username = args[1];
+                if (username == null) username = sender.getCommandSenderName();
                 UUID userUUID = SpaceProjectManager.getPlayerUUIDFromName(username);
 
                 if (userUUID == null) {

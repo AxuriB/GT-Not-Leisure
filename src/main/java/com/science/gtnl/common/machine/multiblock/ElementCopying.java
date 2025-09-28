@@ -11,8 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -20,29 +18,24 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 
 public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implements ISurvivalConstructable {
 
-    public static IStructureDefinition<ElementCopying> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/element_copying";
-    public static String[][] shape = StructureUtils.readStructureFromFile(EC_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 7;
-    public final int VERTICAL_OFF_SET = 0;
-    public final int DEPTH_OFF_SET = 12;
-    protected static final int CASING_INDEX = 1028;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(EC_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 7;
+    protected final int VERTICAL_OFF_SET = 0;
+    protected final int DEPTH_OFF_SET = 12;
 
     public ElementCopying(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -77,12 +70,12 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return 1028;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.ElementCopyingRecipes;
+        return RecipePool.ElementCopyingRecipes;
     }
 
     @Override
@@ -108,23 +101,20 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
 
     @Override
     public IStructureDefinition<ElementCopying> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ElementCopying>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 18))
-                .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement(
-                    'C',
-                    buildHatchAdder(ElementCopying.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 4))))
-                .addElement('D', ofBlock(sBlockCasingsTT, 6))
-                .addElement('E', ofBlock(sBlockCasingsTT, 7))
-                .addElement('F', ofBlock(sBlockCasingsTT, 8))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ElementCopying>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 18))
+            .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement(
+                'C',
+                buildHatchAdder(ElementCopying.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, InputBus, OutputBus, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 4))))
+            .addElement('D', ofBlock(sBlockCasingsTT, 6))
+            .addElement('E', ofBlock(sBlockCasingsTT, 7))
+            .addElement('F', ofBlock(sBlockCasingsTT, 8))
+            .build();
     }
 
     @Override
@@ -135,7 +125,7 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -149,34 +139,30 @@ public class ElementCopying extends GTMMultiMachineBase<ElementCopying> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        energyHatchTier = checkEnergyHatchTier();
-        if (this.mEnergyHatches.size() >= 2) return false;
-        return tCountCasing >= 200;
+        setupParameters();
+        return mCountCasing >= 200;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public boolean checkHatch() {
+        return super.checkHatch() && mEnergyHatches.size() <= 2;
+    }
 
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setEUtDiscount(1 - (mParallelTier / 50.0))
-                    .setSpeedBoost(1 - (mParallelTier / 200.0));
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public boolean getPerfectOC() {
+        return true;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 1 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 }

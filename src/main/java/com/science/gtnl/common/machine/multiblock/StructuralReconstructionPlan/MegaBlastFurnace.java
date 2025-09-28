@@ -3,7 +3,7 @@ package com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase.ParallelControllerElement.ParallelCon;
+import static com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase.CustomHatchElement.ParallelCon;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
@@ -25,6 +25,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import bartworks.util.BWUtil;
@@ -48,21 +51,17 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings8;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.block.ModBlocks;
 
 public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mCoilLevel;
-    private int mHeatingCapacity = 0;
-    private static IStructureDefinition<MegaBlastFurnace> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_blast_furnace";
-    public static String[][] shape = StructureUtils.readStructureFromFile(MBF_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 11;
-    public final int VERTICAL_OFF_SET = 41;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(MBF_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 11;
+    protected final int VERTICAL_OFF_SET = 41;
+    protected final int DEPTH_OFF_SET = 0;
 
     public MegaBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -79,46 +78,44 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
 
     @Override
     public IStructureDefinition<MegaBlastFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MegaBlastFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(MegaBlastFurnace.class)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            ParallelCon)
-                        .casingIndex(TAE.GTPP_INDEX(15))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
-                .addElement('B', ofBlock(sBlockCasings2, 0))
-                .addElement('S', Muffler.newAny(((BlockCasings8) sBlockCasings8).getTextureIndex(10), 2))
-                .addElement('C', ofBlock(sBlockCasings2, 12))
-                .addElement('D', ofBlock(sBlockCasings2, 13))
-                .addElement('E', ofBlock(sBlockCasings2, 14))
-                .addElement('F', ofBlock(sBlockCasings2, 15))
-                .addElement('G', ofBlock(sBlockCasings3, 13))
-                .addElement('H', ofBlock(sBlockCasings3, 14))
-                .addElement('I', ofBlock(sBlockCasings3, 15))
-                .addElement('J', ofBlock(sBlockCasings4, 3))
-                .addElement('K', ofBlock(sBlockCasings4, 13))
-                .addElement(
-                    'L',
-                    withChannel("coil", ofCoil(MegaBlastFurnace::setCoilLevel, MegaBlastFurnace::getCoilLevel)))
-                .addElement('M', ofBlock(sBlockCasings8, 1))
-                .addElement('N', ofBlock(sBlockCasings8, 2))
-                .addElement('O', ofBlock(Loaders.FRF_Casings, 0))
-                .addElement('P', ofBlock(sBlockCasings8, 4))
-                .addElement('Q', ofBlock(sBlockCasings8, 10))
-                .addElement('R', ofFrame(Materials.Naquadah))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MegaBlastFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(MegaBlastFurnace.class)
+                    .atLeast(
+                        InputHatch,
+                        OutputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
+                    .casingIndex(TAE.GTPP_INDEX(15))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(ModBlocks.blockCasingsMisc, 15))))
+            .addElement('B', ofBlock(sBlockCasings2, 0))
+            .addElement('S', Muffler.newAny(StructureUtils.getTextureIndex(sBlockCasings8, 10), 2))
+            .addElement('C', ofBlock(sBlockCasings2, 12))
+            .addElement('D', ofBlock(sBlockCasings2, 13))
+            .addElement('E', ofBlock(sBlockCasings2, 14))
+            .addElement('F', ofBlock(sBlockCasings2, 15))
+            .addElement('G', ofBlock(sBlockCasings3, 13))
+            .addElement('H', ofBlock(sBlockCasings3, 14))
+            .addElement('I', ofBlock(sBlockCasings3, 15))
+            .addElement('J', ofBlock(sBlockCasings4, 3))
+            .addElement('K', ofBlock(sBlockCasings4, 13))
+            .addElement(
+                'L',
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(MegaBlastFurnace::setMCoilLevel, MegaBlastFurnace::getMCoilLevel))))
+            .addElement('M', ofBlock(sBlockCasings8, 1))
+            .addElement('N', ofBlock(sBlockCasings8, 2))
+            .addElement('O', ofBlock(Loaders.FRF_Casings, 0))
+            .addElement('P', ofBlock(sBlockCasings8, 4))
+            .addElement('Q', ofBlock(sBlockCasings8, 10))
+            .addElement('R', ofFrame(Materials.Naquadah))
+            .build();
     }
 
     @Override
@@ -145,16 +142,9 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_MegaBlastFurnace_Casing_00"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_MegaBlastFurnace_Casing_00"))
             .addMufflerHatch(StatCollector.translateToLocal("Tooltip_MegaBlastFurnace_Casing_01"))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
     }
 
     @Override
@@ -169,13 +159,13 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
-        return mParallelTier >= 9;
+    public boolean getPerfectOC() {
+        return mParallelTier >= 10;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
             this.inputSeparation = !this.inputSeparation;
             GTUtility.sendChatToPlayer(
@@ -232,30 +222,63 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @Nonnull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(MegaBlastFurnace.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(true)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setSpeedBoost(Math.max(0.005, 1.0 / 5.0 - (mParallelTier / 200.0)));
+            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat(getMachineHeat())
+                    .setHeatOC(getHeatOC())
+                    .setHeatDiscount(getHeatDiscount())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
+                    .setPerfectOC(getPerfectOC());
             }
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= MegaBlastFurnace.this.mHeatingCapacity
-                    ? CheckRecipeResultRegistry.SUCCESSFUL
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public int getMachineHeat() {
+        return mHeatingCapacity;
+    }
+
+    @Override
+    public boolean getHeatOC() {
+        return true;
+    }
+
+    @Override
+    public boolean getHeatDiscount() {
+        return true;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return Math.max(0.005, 1.0 / 5.0 - (Math.max(0, mParallelTier - 1) / 50.0));
     }
 
     @Override
     public int getMaxParallelRecipes() {
+        mParallelTier = getParallelTier(getControllerSlot());
+        if (mParallelControllerHatches.size() == 1) {
+            for (ParallelControllerHatch module : mParallelControllerHatches) {
+                mParallelTier = module.mTier;
+                return module.getParallel();
+            }
+        }
         if (mParallelTier <= 1) {
             return 8;
         } else {
@@ -277,8 +300,8 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        this.setCoilLevel(HeatingCoilLevel.None);
-        return survivialBuildPiece(
+        this.setMCoilLevel(HeatingCoilLevel.None);
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -292,25 +315,23 @@ public class MegaBlastFurnace extends GTMMultiMachineBase<MegaBlastFurnace> impl
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
-        this.mHeatingCapacity = 0;
-        tCountCasing = 0;
-        mParallelTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 3500;
+    }
 
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        if (mMaintenanceHatches.size() != 1 && mMufflerHatches.size() != 1) return false;
-
-        this.mHeatingCapacity = (int) this.getCoilLevel()
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat() + 100 * (BWUtil.getTier(this.getMaxInputEu()) - 2);
+    }
 
-        energyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 3500;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None;
     }
 
     @Override

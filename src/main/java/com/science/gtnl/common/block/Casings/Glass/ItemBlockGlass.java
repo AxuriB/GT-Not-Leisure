@@ -45,7 +45,7 @@ public class ItemBlockGlass extends ItemBlock {
     // region MetaBlock Generators
 
     public static ItemStack initMetaBlockGlass(String i18nName, int Meta) {
-        return initMetaItemStack(i18nName, Meta, BlockLoader.MetaBlockGlass, MetaBlockSet);
+        return initMetaItemStack(i18nName, Meta, BlockLoader.metaBlockGlass, MetaBlockSet);
     }
 
     public static ItemStack initMetaBlockGlass(String i18nName, int Meta, String[] tooltips) {
@@ -55,16 +55,9 @@ public class ItemBlockGlass extends ItemBlock {
         return initMetaBlockGlass(i18nName, Meta);
     }
 
-    /**
-     * Handle the tooltips.
-     *
-     * @param aItemStack
-     * @param theTooltipsList
-     */
     @SideOnly(Side.CLIENT)
     @Override
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List theTooltipsList,
+    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List<String> theTooltipsList,
         boolean p_77624_4_) {
         int meta = aItemStack.getItemDamage();
         if (null != MetaBlockTooltipsMap.get(meta)) {

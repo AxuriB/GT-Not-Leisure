@@ -2,11 +2,14 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_MEGA_SOLAR_BOILER;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.multitileentity.multiblock.casing.Glasses.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,6 +40,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -45,20 +49,15 @@ import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_SOLAR_CELL_TOP = RESOURCE_ROOT_ID + ":" + "iconsets/SOLAR_CELL_TOP";
-    public static Textures.BlockIcons.CustomIcon SOLAR_CELL_TOP = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_SOLAR_CELL_TOP);
-    private static IStructureDefinition<MegaSolarBoiler> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String MSB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_solar_boiler";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(MSB_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(MSB_STRUCTURE_FILE_PATH);
     private static final int HORIZONTAL_OFF_SET = 10;
     private static final int VERTICAL_OFF_SET = 4;
     private static final int DEPTH_OFF_SET = 1;
@@ -83,32 +82,29 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
 
     @Override
     public IStructureDefinition<MegaSolarBoiler> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MegaSolarBoiler>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', chainAllGlasses())
-                .addElement('B', ofBlock(GregTechAPI.sBlockCasings1, 10))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
-                .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 12))
-                .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 13))
-                .addElement('F', ofBlock(BlockLoader.MetaBlockColumn, 3))
-                .addElement(
-                    'G',
-                    ofChain(
-                        buildHatchAdder(MegaSolarBoiler.class)
-                            .atLeast(SteamHatchElement.InputBus_Steam, InputBus, InputHatch, OutputHatch)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MegaSolarBoiler>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', chainAllGlasses())
+            .addElement('B', ofBlock(sBlockCasings1, 10))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 12))
+            .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 13))
+            .addElement('F', ofBlock(BlockLoader.metaBlockColumn, 3))
+            .addElement(
+                'G',
+                ofChain(
+                    buildHatchAdder(MegaSolarBoiler.class)
+                        .atLeast(SteamHatchElement.InputBus_Steam, InputBus, InputHatch, OutputHatch)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(sBlockCasings1, 10)))
+            .build();
     }
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings1, 10);
     }
 
     @Override
@@ -118,34 +114,32 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
         if (side == facing) {
             if (aActive) {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
+                    Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(SOLAR_CELL_TOP)
+                        .addIcon(OVERLAY_FRONT_MEGA_SOLAR_BOILER)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(SOLAR_CELL_TOP)
+                        .addIcon(OVERLAY_FRONT_MEGA_SOLAR_BOILER)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
                 rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
+                    Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(SOLAR_CELL_TOP)
+                        .addIcon(OVERLAY_FRONT_MEGA_SOLAR_BOILER)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(SOLAR_CELL_TOP)
+                        .addIcon(OVERLAY_FRONT_MEGA_SOLAR_BOILER)
                         .extFacing()
                         .glow()
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)) };
+            rTexture = new ITexture[] {
+                Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(sBlockCasings1, 10)) };
         }
         return rTexture;
     }
@@ -157,7 +151,7 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -171,9 +165,11 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        return true;
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
     }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     private String state;
 
@@ -184,7 +180,7 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             if (aBaseMetaTileEntity.getWorld()
                 .isDaytime() || !depleteInputReal(Materials.Water.getFluid(30), true)) {
-                addOutput(FluidUtils.getSteam(4800));
+                addOutput(Materials.Steam.getGas(4800));
                 depleteInputReal(Materials.Water.getFluid(30));
                 state = "Boiling! :D";
             } else {
@@ -205,8 +201,8 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
             .widget(new FakeSyncWidget.StringSyncer(() -> state, val -> state = val));
     }
 
-    public boolean depleteInputReal(FluidStack aLiquid) {
-        return depleteInputReal(aLiquid, false);
+    public void depleteInputReal(FluidStack aLiquid) {
+        depleteInputReal(aLiquid, false);
     }
 
     public boolean depleteInputReal(FluidStack aLiquid, boolean simulate) {
@@ -231,11 +227,6 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
@@ -246,6 +237,7 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
             .beginStructureBlock(21, 5, 7, true)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }

@@ -72,6 +72,17 @@ public class SuperCraftingInputProxy extends MTEHatchInputBus implements IDualIn
     }
 
     @Override
+    public ItemStack[] getSharedItems() {
+        if (getMasterSuper() != null) {
+            return getMasterSuper().getSharedItems();
+        } else if (getCraftingMaster() != null) {
+            return getCraftingMaster().getSharedItems();
+        } else {
+            return new ItemStack[0];
+        }
+    }
+
+    @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return getTexturesInactive(aBaseTexture);
     }

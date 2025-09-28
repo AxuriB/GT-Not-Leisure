@@ -62,8 +62,7 @@ public class BlockSoulFarmland extends BlockFarmland {
             int currentY = y + i;
             Block aboveBlock = world.getBlock(x, currentY, z);
 
-            if (aboveBlock instanceof IGrowable && aboveBlock != Blocks.cactus && aboveBlock != Blocks.reeds) {
-                IGrowable growable = (IGrowable) aboveBlock;
+            if (aboveBlock instanceof IGrowable growable && aboveBlock != Blocks.cactus && aboveBlock != Blocks.reeds) {
                 if (growable.func_149851_a(world, x, currentY, z, world.isRemote)) {
                     growable.func_149853_b(world, rand, x, currentY, z);
                 }
@@ -82,7 +81,7 @@ public class BlockSoulFarmland extends BlockFarmland {
         if (Block == Blocks.cactus || Block == Blocks.reeds) {
             growTallCrop(world, x, y + 1, z, Block);
         } else if (Block == Blocks.nether_wart) {
-            growNetherWart(world, x, y + 1, z, rand);
+            growNetherWart(world, x, y + 1, z);
         }
     }
 
@@ -113,7 +112,7 @@ public class BlockSoulFarmland extends BlockFarmland {
         }
     }
 
-    private void growNetherWart(World world, int x, int y, int z, Random rand) {
+    private void growNetherWart(World world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
         if (meta < 3) {
             world.setBlockMetadataWithNotify(x, y, z, meta + 1, 2);

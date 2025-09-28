@@ -19,8 +19,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -29,7 +27,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.enums.TAE;
@@ -38,30 +35,22 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeArcSmelter> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LAS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_arc_smelter";
     private static final int MACHINEMODE_ARC = 0;
     private static final int MACHINEMODE_PLSAMA = 1;
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(15);
-
-    public final int HORIZONTAL_OFF_SET = 2;
-    public final int VERTICAL_OFF_SET = 2;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(LAS_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 2;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LAS_STRUCTURE_FILE_PATH);
 
     public LargeArcSmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -69,11 +58,6 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
 
     public LargeArcSmelter(String aName) {
         super(aName);
-    }
-
-    @Override
-    public boolean isEnablePerfectOverclock() {
-        return true;
     }
 
     @Override
@@ -101,7 +85,7 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(15);
     }
 
     @Override
@@ -140,67 +124,50 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
 
     @Override
     public IStructureDefinition<LargeArcSmelter> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeArcSmelter>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 8))
-                .addElement(
-                    'B',
-                    buildHatchAdder(LargeArcSmelter.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 15))))
-                .addElement('C', Muffler.newAny(CASING_INDEX, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeArcSmelter>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 8))
+            .addElement(
+                'B',
+                buildHatchAdder(LargeArcSmelter.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasingsMisc, 15))))
+            .addElement('C', Muffler.newAny(getCasingTextureID(), 1))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        energyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getMaxInputAmps() > 64) return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 45 && this.mMufflerHatches.size() == 1;
+        setupParameters();
+        return mCountCasing >= 45;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public boolean checkHatch() {
+        return super.checkHatch() && mMufflerHatches.size() == 1;
+    }
 
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setSpeedBoost(Math.max(0.05, 1.0 / 4.0 - (mParallelTier / 200.0)));
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public boolean getPerfectOC() {
+        return true;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return Math.max(0.05, 1.0 / 4.0 - (Math.max(0, mParallelTier - 1) / 50.0));
     }
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
@@ -225,7 +192,8 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         this.machineMode = (byte) ((this.machineMode + 1) % 2);
         GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("LargeArcSmelter_Mode_" + this.machineMode));
     }
@@ -235,7 +203,6 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
         return StatCollector.translateToLocal("LargeArcSmelter_Mode_" + machineMode);
     }
 
-    // 启用机器模式切换
     @Override
     public boolean supportsMachineModeSwitch() {
         return true;
@@ -249,7 +216,7 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

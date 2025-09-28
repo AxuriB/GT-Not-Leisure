@@ -26,8 +26,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemLoader {
 
-    private ItemLoader() {}
-
     public static Item CrystalSword = new CrystalSword();
     public static Item CrystalAxe = new CrystalAxe();
     public static Item CrystalPickaxe = new CrystalPickaxe();

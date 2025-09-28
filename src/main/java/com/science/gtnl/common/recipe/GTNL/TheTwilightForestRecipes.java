@@ -7,12 +7,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import com.dreammaster.item.ItemList;
+import com.dreammaster.item.NHItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -23,41 +23,39 @@ import gregtech.api.util.GTUtility;
 
 public class TheTwilightForestRecipes implements IRecipePool {
 
-    final RecipeMap<?> TTFR = RecipeRegister.TheTwilightForestRecipes;
+    public RecipeMap<?> TTFR = RecipePool.TheTwilightForestRecipes;
 
     @Override
     public void loadRecipes() {
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.NagaBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 1),
                 GTModHandler.getModItem(TwilightForest.ID, "item.nagaScale", 32),
-                ItemList.NagaScaleFragment.getIS(32),
-                ItemList.NagaScaleChip.getIS(64))
+                NHItemList.NagaScaleFragment.getIS(32),
+                NHItemList.NagaScaleChip.getIS(64))
             .outputChances(1000, 10000, 5000, 2500)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.LichBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 2),
-                ItemList.LichBone.getIS(32),
-                ItemList.LichBoneFragment.getIS(32),
-                ItemList.LichBoneChip.getIS(64),
+                NHItemList.LichBone.getIS(32),
+                NHItemList.LichBoneFragment.getIS(32),
+                NHItemList.LichBoneChip.getIS(64),
                 GTModHandler.getModItem(Minecraft.ID, "ender_pearl", 32),
                 GTModHandler.getModItem(Minecraft.ID, "book", 32),
                 GTModHandler.getModItem(Minecraft.ID, "paper", 32))
             .outputChances(1000, 10000, 5000, 2500, 5000, 7500, 7500)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.MinotaurBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 5),
@@ -67,12 +65,11 @@ public class TheTwilightForestRecipes implements IRecipePool {
                 GTModHandler.getModItem(Minecraft.ID, "emerald_block", 1),
                 GTModHandler.getModItem(Minecraft.ID, "iron_ingot", 32))
             .outputChances(1000, 10000, 10000, 2500, 1000, 7500)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.HydraBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 0),
@@ -84,39 +81,36 @@ public class TheTwilightForestRecipes implements IRecipePool {
                 GTModHandler.getModItem(Minecraft.ID, "emerald_block", 2),
                 GTModHandler.getModItem(Minecraft.ID, "diamond_block", 2))
             .outputChances(1000, 9500, 7500, 7500, 5000, 5000, 2500, 2500)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.KnightPhantomBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 6),
                 GTModHandler.getModItem(TwilightForest.ID, "item.knightMetal", 24))
             .outputChances(1000, 7500)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.UrGhastBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 3),
                 GTModHandler.getModItem(TwilightForest.ID, "item.fieryTears", 12),
                 GTModHandler.getModItem(TwilightForest.ID, "item.carminite", 16),
-                ItemList.CarminiteFragment.getIS(32),
-                ItemList.CarminiteChip.getIS(64),
+                NHItemList.CarminiteFragment.getIS(32),
+                NHItemList.CarminiteChip.getIS(64),
                 GTModHandler.getModItem(TwilightForest.ID, "item.steeleafIngot", 16),
                 GTModHandler.getModItem(Minecraft.ID, "redstone_block", 4))
             .outputChances(1000, 10000, 10000, 5000, 2500, 5000, 7500)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.AlphaYetiBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 7),
@@ -124,17 +118,16 @@ public class TheTwilightForestRecipes implements IRecipePool {
                 GTModHandler.getModItem(TwilightForest.ID, "item.iceBomb", 16),
                 GTModHandler.getModItem(TwilightForest.ID, "item.arcticFur", 32))
             .outputChances(1000, 8000, 8000, 7500)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.SnowQueenBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "item.trophy", 1, 4),
-                ItemList.SnowQueenBlood.getIS(16),
-                ItemList.SnowQueenBloodDrop.getIS(32),
+                NHItemList.SnowQueenBlood.getIS(16),
+                NHItemList.SnowQueenBloodDrop.getIS(32),
                 GTModHandler.getModItem(Minecraft.ID, "packed_ice", 32),
                 GTModHandler.getModItem(Minecraft.ID, "snowball", 64),
                 GTModHandler.getModItem(TwilightForest.ID, "tile.TFAuroraBrick", 64),
@@ -143,12 +136,11 @@ public class TheTwilightForestRecipes implements IRecipePool {
                 GTModHandler.getModItem(TwilightForest.ID, "item.knightMetal", 32),
                 GTModHandler.getModItem(TwilightForest.ID, "item.arcticFur", 32))
             .outputChances(1000, 7500, 5000, 8000, 10000, 7500, 7500, 5000, 5000, 8000)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.GiantBook.get(1)))
             .itemOutputs(
                 GTModHandler.getModItem(TwilightForest.ID, "tile.GiantCobble", 8),
@@ -160,12 +152,11 @@ public class TheTwilightForestRecipes implements IRecipePool {
                 GTModHandler.getModItem(TwilightForest.ID, "tile.HugeGloomBlock", 8),
                 GTModHandler.getModItem(ExtraUtilities.ID, "cobblestone_compressed", 4, 7))
             .outputChances(7500, 7500, 7500, 7500, 7500, 7500, 7500, 2500)
-            .noOptimize()
             .duration(600)
             .eut(1966080)
             .addTo(TTFR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, GTNLItemList.TwilightForestBook.get(1)))
             .itemOutputs(
                 setStackSize(new ItemStack(Items.book, 1), 262144),
@@ -182,7 +173,6 @@ public class TheTwilightForestRecipes implements IRecipePool {
                 setStackSize(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steeleaf, 1L), 262144),
                 setStackSize(GTModHandler.getModItem(TwilightForest.ID, "item.fieryBlood", 1), 65536),
                 setStackSize(GTModHandler.getModItem(TwilightForest.ID, "item.nagaScale", 1), 65536))
-            .noOptimize()
             .duration(200)
             .eut(TierEU.RECIPE_UHV)
             .addTo(TTFR);

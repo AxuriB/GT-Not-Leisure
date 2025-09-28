@@ -2,12 +2,11 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase.ParallelControllerElement.ParallelCon;
+import static com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase.CustomHatchElement.ParallelCon;
 import static goodgenerator.loader.Loaders.gravityStabilizationCasing;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.*;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.common.register.LanthItemList.SHIELDED_ACCELERATOR_CASING;
 
@@ -18,21 +17,22 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.dreammaster.gthandler.CustomItemList;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,16 +41,15 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implements ISurvivalConstructable {
+public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
-    public int multiTier = 0;
-    private static IStructureDefinition<LibraryOfRuina> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/library_of_ruina";
-    public static String[][] shape = StructureUtils.readStructureFromFile(LOR_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 34;
-    public final int VERTICAL_OFF_SET = 34;
-    public final int DEPTH_OFF_SET = 20;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LOR_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 34;
+    protected final int VERTICAL_OFF_SET = 34;
+    protected final int DEPTH_OFF_SET = 20;
 
     public LibraryOfRuina(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -61,7 +60,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return true;
     }
 
@@ -72,38 +71,40 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
 
     @Override
     public int getCasingTextureID() {
-        return GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings5, 14);
+        return 1662;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[1][14], TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[1][14] };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.TheTwilightForestRecipes;
+        return RecipePool.TheTwilightForestRecipes;
     }
 
     @Override
@@ -145,41 +146,44 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
 
     @Override
     public IStructureDefinition<LibraryOfRuina> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LibraryOfRuina>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(gravityStabilizationCasing))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 13))
-                .addElement('C', ofBlock(IGBlocks.SpaceElevatorCasing, 1))
-                .addElement(
-                    'D',
-                    buildHatchAdder(LibraryOfRuina.class)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            ParallelCon)
-                        .casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(x -> ++x.tCountCasing, ofBlockAnyMeta(SHIELDED_ACCELERATOR_CASING))))
-                .addElement('E', ofBlock(sBlockCasings10, 4))
-                .addElement('F', ofBlock(sBlockCasings10, 11))
-                .addElement('G', ofBlock(sBlockCasings9, 11))
-                .addElement('H', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement(
-                    'I',
-                    ofChain(
-                        ofBlock(Blocks.water, 0),
-                        ofBlockAnyMeta(
-                            TwilightForest.isModLoaded() ? GameRegistry.findBlock(TwilightForest.ID, "tile.TFPortal")
-                                : Blocks.end_portal)))
-                .build();
+        return StructureDefinition.<LibraryOfRuina>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(gravityStabilizationCasing))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 13))
+            .addElement('C', ofBlock(sBlockCasingsSE, 1))
+            .addElement(
+                'D',
+                buildHatchAdder(LibraryOfRuina.class)
+                    .atLeast(
+                        InputHatch,
+                        OutputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlockAnyMeta(SHIELDED_ACCELERATOR_CASING))))
+            .addElement('E', ofBlock(sBlockCasings10, 4))
+            .addElement('F', ofBlock(sBlockCasings10, 11))
+            .addElement('G', ofBlock(sBlockCasings9, 11))
+            .addElement('H', ofBlock(BlockLoader.metaBlockGlass, 2))
+            .addElement(
+                'I',
+                ofChain(
+                    ofBlock(Blocks.water, 0),
+                    ofBlockAnyMeta(
+                        TwilightForest.isModLoaded() ? GameRegistry.findBlock(TwilightForest.ID, "tile.TFPortal")
+                            : Blocks.end_portal)))
+            .build();
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        if (trigger.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_MAIN, trigger, false, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
         }
-        return STRUCTURE_DEFINITION;
     }
 
     @Override
@@ -193,7 +197,7 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
         int realBudget = elementBudget >= 500 ? elementBudget : Math.min(500, elementBudget * 5);
 
         if (stackSize.stackSize > 1) {
-            return this.survivialBuildPiece(
+            return this.survivalBuildPiece(
                 STRUCTURE_PIECE_MAIN,
                 stackSize,
                 HORIZONTAL_OFF_SET,
@@ -215,26 +219,19 @@ public class LibraryOfRuina extends GTMMultiMachineBase<LibraryOfRuina> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mParallelTier = 0;
-        tCountCasing = 0;
-        this.multiTier = getMultiTier(aStack);
-
-        if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && tCountCasing >= 920
-            && multiTier == 1) {
-            replaceWaterWithPortal();
-            energyHatchTier = checkEnergyHatchTier();
-            mParallelTier = getParallelTier(aStack);
-            return true;
-        } else {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             replacePortalWithWater();
             return false;
         }
+        replaceWaterWithPortal();
+        setupParameters();
+        return mCountCasing >= 920;
     }
 
-    public int getMultiTier(ItemStack inventory) {
-        if (inventory == null) return 0;
-        return inventory.isItemEqual(CustomItemList.TwilightCrystal.get(1)) ? 1 : 0;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch()
+            && GTUtility.areStacksEqual(getControllerSlot(), CustomItemList.TwilightCrystal.get(1));
     }
 
     public void replaceWaterWithPortal() {

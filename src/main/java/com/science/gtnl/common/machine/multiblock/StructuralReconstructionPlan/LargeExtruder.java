@@ -13,15 +13,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.TAE;
@@ -29,26 +26,19 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeExtruder extends GTMMultiMachineBase<LargeExtruder> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeExtruder> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_extruder";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(33);
-    public final int HORIZONTAL_OFF_SET = 1;
-    public final int VERTICAL_OFF_SET = 1;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(LE_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 1;
+    protected final int VERTICAL_OFF_SET = 1;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LE_STRUCTURE_FILE_PATH);
 
     public LargeExtruder(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -83,7 +73,7 @@ public class LargeExtruder extends GTMMultiMachineBase<LargeExtruder> implements
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(33);
     }
 
     @Override
@@ -113,62 +103,37 @@ public class LargeExtruder extends GTMMultiMachineBase<LargeExtruder> implements
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0);
+    }
 
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setAmperageOC(true)
-                    .setDurationDecreasePerOC(2)
-                    .setEUtIncreasePerOC(4)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setSpeedBoost(Math.max(0.05, 1.0 / 3.75 - (mParallelTier / 200.0)));
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / 3.75 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 
     @Override
     public IStructureDefinition<LargeExtruder> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeExtruder>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement('B', ofBlock(sBlockCasings2, 14))
-                .addElement(
-                    'C',
-                    buildHatchAdder(LargeExtruder.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings3Misc, 1))))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeExtruder>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('B', ofBlock(sBlockCasings2, 14))
+            .addElement(
+                'C',
+                buildHatchAdder(LargeExtruder.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings3Misc, 1))))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        energyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getMaxInputAmps() > 64) return false;
-        }
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 45;
+        setupParameters();
+        return mCountCasing >= 30;
     }
 
     @Override
@@ -179,7 +144,7 @@ public class LargeExtruder extends GTMMultiMachineBase<LargeExtruder> implements
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

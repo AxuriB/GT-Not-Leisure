@@ -1,5 +1,7 @@
 package com.science.gtnl.common.item;
 
+import java.util.Objects;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -9,6 +11,7 @@ import net.minecraft.world.World;
 import baubles.api.IBauble;
 import baubles.common.container.InventoryBaubles;
 import baubles.common.lib.PlayerHandler;
+import vazkii.botania.common.achievement.ModAchievements;
 import vazkii.botania.common.entity.EntityDoppleganger;
 
 public abstract class BaubleItem extends Item implements IBauble {
@@ -22,8 +25,8 @@ public abstract class BaubleItem extends Item implements IBauble {
             for (int i = 0; i < baubles.getSizeInventory(); i++) {
                 if (baubles.isItemValidForSlot(i, par1ItemStack)) {
                     ItemStack stackInSlot = baubles.getStackInSlot(i);
-                    if (stackInSlot == null
-                        || ((IBauble) stackInSlot.getItem()).canUnequip(stackInSlot, par3EntityPlayer)) {
+                    if (stackInSlot == null || ((IBauble) Objects.requireNonNull(stackInSlot.getItem()))
+                        .canUnequip(stackInSlot, par3EntityPlayer)) {
                         if (!par2World.isRemote) {
                             baubles.setInventorySlotContents(i, par1ItemStack.copy());
                             if (!par3EntityPlayer.capabilities.isCreativeMode) par3EntityPlayer.inventory
@@ -47,7 +50,19 @@ public abstract class BaubleItem extends Item implements IBauble {
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {}
 
     @Override
-    public void onEquipped(ItemStack itemstack, EntityLivingBase player) {}
+    public void onEquipped(ItemStack stack, EntityLivingBase player) {
+        if (player != null) {
+            if (!player.worldObj.isRemote) player.worldObj.playSoundAtEntity(player, "botania:equipBauble", 0.1F, 1.3F);
+
+            if (player instanceof EntityPlayer) ((EntityPlayer) player).addStat(ModAchievements.baubleWear, 1);
+
+            onEquippedOrLoadedIntoWorld(stack, player);
+        }
+    }
+
+    public void onEquippedOrLoadedIntoWorld(ItemStack stack, EntityLivingBase player) {
+        // NO-OP
+    }
 
     @Override
     public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {}

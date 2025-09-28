@@ -1,26 +1,25 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 
 public class VacuumFreezerRecipes implements IRecipePool {
 
-    final RecipeMap<?> CNCR = RecipeMaps.vacuumFreezerRecipes;
+    public RecipeMap<?> CNCR = RecipeMaps.vacuumFreezerRecipes;
 
     @Override
     public void loadRecipes() {
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialPool.EnderAir.getFluidOrGas(4000))
             .fluidOutputs(MaterialPool.FluidEnderAir.getFluidOrGas(4000))
             .specialValue(0)
-            .noOptimize()
             .duration(80)
-            .eut(TierEU.RECIPE_IV)
+            .eut(TierEU.RECIPE_HV)
             .addTo(CNCR);
 
     }

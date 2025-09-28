@@ -43,66 +43,137 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
             }
         }
 
+        drawGridLines(size, 0.02f);
+
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
         Map<Integer, Integer> numberCounts = new HashMap<>();
+
         for (int cx = 0; cx < size; cx++) {
             for (int cz = 0; cz < size; cz++) {
                 int puzzleVal = board.getPuzzleValue(cx, cz);
                 int playerVal = board.getPlayerValue(new Pos2i(cx, cz));
-                if (puzzleVal != 0) {
-                    numberCounts.put(puzzleVal, numberCounts.getOrDefault(puzzleVal, 0) + 1);
-                } else if (playerVal != 0) {
-                    numberCounts.put(playerVal, numberCounts.getOrDefault(playerVal, 0) + 1);
-                }
+                int val = puzzleVal != 0 ? puzzleVal : playerVal;
+                if (val != 0) numberCounts.put(val, numberCounts.getOrDefault(val, 0) + 1);
             }
         }
 
         Set<Pos2i> duplicatePositions = new HashSet<>();
+        Set<Pos2i> correctCompletedPositions = new HashSet<>();
+
+        // 行
         for (int row = 0; row < size; row++) {
-            Map<Integer, Set<Pos2i>> rowMap = new HashMap<>();
+            Set<Pos2i> section = new HashSet<>();
+            Map<Integer, Integer> counts = new HashMap<>();
+            boolean valid = true;
+
             for (int col = 0; col < size; col++) {
-                int puzzleVal = board.getPuzzleValue(row, col);
-                int playerVal = board.getPlayerValue(new Pos2i(row, col));
-                int actualVal = puzzleVal != 0 ? puzzleVal : playerVal;
-                if (actualVal != 0) {
-                    rowMap.computeIfAbsent(actualVal, k -> new HashSet<>())
-                        .add(new Pos2i(row, col));
+                Pos2i pos = new Pos2i(row, col);
+                int val = board.getPuzzleValue(pos);
+                if (val == 0) val = board.getPlayerValue(pos);
+                section.add(pos);
+
+                if (val < 1 || val > 9) valid = false;
+                if (val != 0) {
+                    counts.put(val, counts.getOrDefault(val, 0) + 1);
                 }
             }
-            for (Set<Pos2i> positions : rowMap.values()) {
-                if (positions.size() > 1) {
-                    duplicatePositions.addAll(positions);
+
+            for (Map.Entry<Integer, Integer> e : counts.entrySet()) {
+                if (e.getValue() > 1) {
+                    valid = false;
+                    for (int col = 0; col < size; col++) {
+                        Pos2i pos = new Pos2i(row, col);
+                        int val = board.getPuzzleValue(pos);
+                        if (val == 0) val = board.getPlayerValue(pos);
+                        if (val == e.getKey()) duplicatePositions.add(pos);
+                    }
                 }
             }
+
+            if (valid && counts.size() == 9) correctCompletedPositions.addAll(section);
         }
+
+        // 列
         for (int col = 0; col < size; col++) {
-            Map<Integer, Set<Pos2i>> colMap = new HashMap<>();
+            Set<Pos2i> section = new HashSet<>();
+            Map<Integer, Integer> counts = new HashMap<>();
+            boolean valid = true;
+
             for (int row = 0; row < size; row++) {
-                int puzzleVal = board.getPuzzleValue(row, col);
-                int playerVal = board.getPlayerValue(new Pos2i(row, col));
-                int actualVal = puzzleVal != 0 ? puzzleVal : playerVal;
-                if (actualVal != 0) {
-                    colMap.computeIfAbsent(actualVal, k -> new HashSet<>())
-                        .add(new Pos2i(row, col));
+                Pos2i pos = new Pos2i(row, col);
+                int val = board.getPuzzleValue(pos);
+                if (val == 0) val = board.getPlayerValue(pos);
+                section.add(pos);
+
+                if (val < 1 || val > 9) valid = false;
+                if (val != 0) {
+                    counts.put(val, counts.getOrDefault(val, 0) + 1);
                 }
             }
-            for (Set<Pos2i> positions : colMap.values()) {
-                if (positions.size() > 1) {
-                    duplicatePositions.addAll(positions);
+
+            for (Map.Entry<Integer, Integer> e : counts.entrySet()) {
+                if (e.getValue() > 1) {
+                    valid = false;
+                    for (int row = 0; row < size; row++) {
+                        Pos2i pos = new Pos2i(row, col);
+                        int val = board.getPuzzleValue(pos);
+                        if (val == 0) val = board.getPlayerValue(pos);
+                        if (val == e.getKey()) duplicatePositions.add(pos);
+                    }
                 }
+            }
+
+            if (valid && counts.size() == 9) correctCompletedPositions.addAll(section);
+        }
+
+        // 宫格
+        for (int boxRow = 0; boxRow < 3; boxRow++) {
+            for (int boxCol = 0; boxCol < 3; boxCol++) {
+                Set<Pos2i> section = new HashSet<>();
+                Map<Integer, Integer> counts = new HashMap<>();
+                boolean valid = true;
+
+                for (int dy = 0; dy < 3; dy++) {
+                    for (int dx = 0; dx < 3; dx++) {
+                        int row = boxRow * 3 + dy;
+                        int col = boxCol * 3 + dx;
+                        Pos2i pos = new Pos2i(row, col);
+                        int val = board.getPuzzleValue(pos);
+                        if (val == 0) val = board.getPlayerValue(pos);
+                        section.add(pos);
+
+                        if (val < 1 || val > 9) valid = false;
+                        if (val != 0) {
+                            counts.put(val, counts.getOrDefault(val, 0) + 1);
+                        }
+                    }
+                }
+
+                for (Map.Entry<Integer, Integer> e : counts.entrySet()) {
+                    if (e.getValue() > 1) {
+                        valid = false;
+                        for (Pos2i pos : section) {
+                            int val = board.getPuzzleValue(pos);
+                            if (val == 0) val = board.getPlayerValue(pos);
+                            if (val == e.getKey()) duplicatePositions.add(pos);
+                        }
+                    }
+                }
+
+                if (valid && counts.size() == 9) correctCompletedPositions.addAll(section);
             }
         }
 
+        // 绘制数字
         for (int cx = 0; cx < size; cx++) {
             for (int cz = 0; cz < size; cz++) {
                 Pos2i pos = new Pos2i(cx, cz);
                 int puzzleVal = board.getPuzzleValue(cx, cz);
                 int playerVal = board.getPlayerValue(pos);
-
                 int actualVal = puzzleVal != 0 ? puzzleVal : playerVal;
+
                 if (actualVal != 0) {
-                    String text = Integer.toString(actualVal);
                     int count = numberCounts.getOrDefault(actualVal, 0);
                     int color;
 
@@ -110,6 +181,8 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
                         color = 0xFFAAAA;
                     } else if (duplicatePositions.contains(pos)) {
                         color = 0xFFFF00;
+                    } else if (correctCompletedPositions.contains(pos)) {
+                        color = 0x00FFFF;
                     } else if (count == 9) {
                         color = 0x00FF00;
                     } else {
@@ -120,7 +193,7 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
                     GL11.glEnable(GL11.GL_DEPTH_TEST);
                     GL11.glScalef(0.1f, 0.1f, 0.1f);
                     GL11.glTranslatef((cx + 0.33f) * 10f, (cz) * 10f, -0.2f);
-                    DrawHelper.drawString(text, 0, 0, 0, color, true);
+                    DrawHelper.drawString(Integer.toString(actualVal), 0, 0, 0, color, true);
                     GL11.glDisable(GL11.GL_DEPTH_TEST);
                     GL11.glPopMatrix();
                 }
@@ -133,4 +206,41 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
 
         SudokuOverlayHandler.addSupportedMaster(te.getBlockPos(), game);
     }
+
+    public static void drawGridLines(int size, float thickness) {
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(1f, 1f, 1f, 1f);
+
+        float z = -0.01f;
+        float half = thickness / 2.0f;
+
+        GL11.glBegin(GL11.GL_QUADS);
+
+        for (int i = 0; i <= size; i++) {
+            if (i % 3 == 0) {
+                GL11.glVertex3f(i - half, 0, z);
+                GL11.glVertex3f(i + half, 0, z);
+                GL11.glVertex3f(i + half, size, z);
+                GL11.glVertex3f(i - half, size, z);
+            }
+        }
+
+        for (int i = 0; i <= size; i++) {
+            if (i % 3 == 0) {
+                GL11.glVertex3f(0, i - half, z);
+                GL11.glVertex3f(size, i - half, z);
+                GL11.glVertex3f(size, i + half, z);
+                GL11.glVertex3f(0, i + half, z);
+            }
+        }
+
+        GL11.glEnd();
+
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+    }
+
 }

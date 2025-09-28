@@ -22,8 +22,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -33,7 +31,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -44,27 +41,21 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.tileentities.machines.MTEHatchOutputME;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implements ISurvivalConstructable {
 
     private static final int MACHINEMODE_TOWER = 0;
     private static final int MACHINEMODE_DISTILLERY = 1;
-    protected static final int CASING_INDEX = TAE.GTPP_INDEX(11);
-    public final int HORIZONTAL_OFF_SET = 2;
-    public final int VERTICAL_OFF_SET = 0;
-    public final int DEPTH_OFF_SET = 0;
+    protected final int HORIZONTAL_OFF_SET = 2;
+    protected final int VERTICAL_OFF_SET = 0;
+    protected final int DEPTH_OFF_SET = 0;
     protected static final String STRUCTURE_PIECE_BASE = "base";
     protected static final String STRUCTURE_PIECE_LAYER = "layer";
     protected static final String STRUCTURE_PIECE_LAYER_HINT = "layerHint";
@@ -77,11 +68,11 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     public static final String LDTH_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/large_distillery/top_hint";
     public static final String LDT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_distillery/top";
-    public static String[][] shape_base = StructureUtils.readStructureFromFile(LDB_STRUCTURE_FILE_PATH);
-    public static String[][] shape_layer = StructureUtils.readStructureFromFile(LDL_STRUCTURE_FILE_PATH);
-    public static String[][] shape_layer_hint = StructureUtils.readStructureFromFile(LDLH_STRUCTURE_FILE_PATH);
-    public static String[][] shape_top_hint = StructureUtils.readStructureFromFile(LDTH_STRUCTURE_FILE_PATH);
-    public static String[][] shape_top = StructureUtils.readStructureFromFile(LDT_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_base = StructureUtils.readStructureFromFile(LDB_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_layer = StructureUtils.readStructureFromFile(LDL_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_layer_hint = StructureUtils.readStructureFromFile(LDLH_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_top_hint = StructureUtils.readStructureFromFile(LDTH_STRUCTURE_FILE_PATH);
+    public static final String[][] shape_top = StructureUtils.readStructureFromFile(LDT_STRUCTURE_FILE_PATH);
 
     protected final List<List<MTEHatchOutput>> mOutputHatchesByLayer = new ArrayList<>();
     protected int mHeight;
@@ -101,7 +92,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(11);
     }
 
     @Override
@@ -131,16 +122,17 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureID()),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+            return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureID()), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
                 .extFacing()
                 .build(),
@@ -150,7 +142,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
                     .glow()
                     .build() };
         }
-        return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX) };
+        return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
@@ -166,7 +158,6 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
     }
@@ -191,7 +182,8 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         this.machineMode = (byte) ((this.machineMode + 1) % 2);
         GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("LargeDistillery_Mode_" + this.machineMode));
     }
@@ -207,7 +199,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     }
 
     protected void onCasingFound() {
-        tCountCasing++;
+        mCountCasing++;
     }
 
     protected int getCurrentLayerOutputHatchCount() {
@@ -255,8 +247,8 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
                 'A',
                 ofChain(
                     buildHatchAdder(LargeDistillery.class)
-                        .atLeast(Energy.or(ExoticEnergy), OutputBus, InputHatch, InputBus, Maintenance)
-                        .casingIndex(CASING_INDEX)
+                        .atLeast(Maintenance, Energy.or(ExoticEnergy), OutputBus, InputHatch, InputBus, Maintenance)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .build(),
                     onElementPass(LargeDistillery::onCasingFound, ofBlock(blockCasingsMisc, 11))))
@@ -264,40 +256,36 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
                 'B',
                 ofChain(
                     buildHatchAdder(LargeDistillery.class).atLeast(layeredOutputHatch)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .build(),
-                    ofHatchAdder(LargeDistillery::addEnergyInputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(LargeDistillery::addLayerOutputHatch, CASING_INDEX, 1),
-                    ofHatchAdder(LargeDistillery::addMaintenanceToMachineList, CASING_INDEX, 1),
+                    ofHatchAdder(LargeDistillery::addEnergyInputToMachineList, getCasingTextureID(), 1),
+                    ofHatchAdder(LargeDistillery::addLayerOutputHatch, getCasingTextureID(), 1),
+                    ofHatchAdder(LargeDistillery::addMaintenanceToMachineList, getCasingTextureID(), 1),
                     onElementPass(LargeDistillery::onCasingFound, ofBlock(blockCasingsMisc, 11))))
             .addElement('C', ofBlock(sBlockCasings2, 13))
             .addElement(
                 'D',
                 ofChain(
-                    ofHatchAdder(LargeDistillery::addOutputToMachineList, CASING_INDEX, 1),
-                    ofHatchAdder(LargeDistillery::addMaintenanceToMachineList, CASING_INDEX, 1),
+                    ofHatchAdder(LargeDistillery::addOutputToMachineList, getCasingTextureID(), 1),
+                    ofHatchAdder(LargeDistillery::addMaintenanceToMachineList, getCasingTextureID(), 1),
                     ofBlock(blockCasingsMisc, 11),
                     isAir()))
             .addElement(
                 'E',
                 buildHatchAdder(LargeDistillery.class).atLeast(layeredOutputHatch)
-                    .casingIndex(CASING_INDEX)
+                    .casingIndex(getCasingTextureID())
                     .dot(1)
                     .disallowOnly(ForgeDirection.UP)
                     .buildAndChain(blockCasingsMisc, 11))
             .addElement('F', ofBlock(blockCasingsMisc, 11))
-            .addElement('G', Muffler.newAny(CASING_INDEX, 1))
+            .addElement('G', Muffler.newAny(getCasingTextureID(), 1))
             .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mOutputHatchesByLayer.forEach(List::clear);
-        mHeight = 1;
-        tCountCasing = 0;
-
         if (!checkPiece(STRUCTURE_PIECE_BASE, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
 
         while (mHeight <= 12) {
@@ -314,19 +302,20 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
 
         if (!checkPiece(STRUCTURE_PIECE_TOP_HINT, HORIZONTAL_OFF_SET, mHeight, DEPTH_OFF_SET)) return false;
 
-        energyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getMaxInputAmps() > 64) return false;
-        }
+        setupParameters();
+        return checkHatch() && mCountCasing >= 5 * (mHeight + 1) - 5;
+    }
 
-        return tCountCasing >= 5 * (mHeight + 1) - 5 && mHeight + 1 >= 3
-            && mMaintenanceHatches.size() == 1
-            && mMufflerHatches.size() == 1;
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mOutputHatchesByLayer.forEach(List::clear);
+        mHeight = 1;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && mHeight + 1 >= 3 && mMufflerHatches.size() == 1;
     }
 
     @Override
@@ -363,7 +352,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         mHeight = 0;
-        int built = survivialBuildPiece(
+        int built = survivalBuildPiece(
             STRUCTURE_PIECE_BASE,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -377,7 +366,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
         int tTotalHeight = Math.min(13, stackSize.stackSize + 2);
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
-            built = survivialBuildPiece(
+            built = survivalBuildPiece(
                 STRUCTURE_PIECE_LAYER_HINT,
                 stackSize,
                 HORIZONTAL_OFF_SET,
@@ -390,7 +379,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
             if (built >= 0) return built;
         }
         mHeight = tTotalHeight - 1;
-        built = survivialBuildPiece(
+        built = survivalBuildPiece(
             STRUCTURE_PIECE_TOP_HINT,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -402,7 +391,7 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
             true);
         if (built >= 0) return built;
         mHeight = tTotalHeight;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_TOP,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -415,22 +404,13 @@ public class LargeDistillery extends GTMMultiMachineBase<LargeDistillery> implem
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public double getEUtDiscount() {
+        return 0.5 - (mParallelTier / 50.0);
+    }
 
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setAmperageOC(true)
-                    .setDurationDecreasePerOC(2)
-                    .setEUtIncreasePerOC(4)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(0.5 - (mParallelTier / 50.0))
-                    .setSpeedBoost(Math.max(0.05, 1.0 / 4.0 - (mParallelTier / 200.0)));
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public double getDurationModifier() {
+        return Math.max(0.05, 1.0 / 4.0 - (Math.max(0, mParallelTier - 1) / 50.0));
     }
 
     @Override

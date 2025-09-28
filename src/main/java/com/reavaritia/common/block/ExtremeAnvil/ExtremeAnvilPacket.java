@@ -1,6 +1,6 @@
 package com.reavaritia.common.block.ExtremeAnvil;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import net.minecraft.util.ChatAllowedCharacters;
 
@@ -9,7 +9,9 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 
+@Getter
 public class ExtremeAnvilPacket implements IMessage {
 
     private String payloadIdentifier;
@@ -39,14 +41,6 @@ public class ExtremeAnvilPacket implements IMessage {
         buf.writeBytes(this.payloadData);
     }
 
-    public String getPayloadIdentifier() {
-        return this.payloadIdentifier;
-    }
-
-    public byte[] getPayloadData() {
-        return this.payloadData;
-    }
-
     public static class Handler implements IMessageHandler<ExtremeAnvilPacket, IMessage> {
 
         @Override
@@ -58,7 +52,7 @@ public class ExtremeAnvilPacket implements IMessage {
                     byte[] data = message.getPayloadData();
                     if (data != null && data.length >= 1) {
                         String itemName = ChatAllowedCharacters
-                            .filerAllowedCharacters(new String(data, Charset.forName("UTF-8")));
+                            .filerAllowedCharacters(new String(data, StandardCharsets.UTF_8));
 
                         if (itemName.length() <= 30) {
                             ContainerExtremeAnvil.updateItemName(itemName);

@@ -49,7 +49,7 @@ public class StargateMetaBlockBase extends Block {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < TextureName.length - 1; i++) {
             list.add(new ItemStack(itemIn, 1, i));
         }

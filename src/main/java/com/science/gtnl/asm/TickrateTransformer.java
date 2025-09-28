@@ -1,7 +1,5 @@
 package com.science.gtnl.asm;
 
-import java.util.Iterator;
-
 import net.minecraft.launchwrapper.IClassTransformer;
 
 import org.objectweb.asm.ClassReader;
@@ -39,15 +37,12 @@ public class TickrateTransformer implements IClassTransformer {
         ClassReader classReader = new ClassReader(bytes);
         classReader.accept(classNode, 0);
 
-        Iterator<MethodNode> methods = classNode.methods.iterator();
-        while (methods.hasNext()) {
-            MethodNode method = methods.next();
+        for (MethodNode method : classNode.methods) {
             if ((method.name.equals("run")) && (method.desc.equals("()V"))) {
                 InsnList list = new InsnList();
                 intrucLoop: for (AbstractInsnNode node : method.instructions.toArray()) {
 
-                    if (node instanceof LdcInsnNode) {
-                        LdcInsnNode ldcNode = (LdcInsnNode) node;
+                    if (node instanceof LdcInsnNode ldcNode) {
                         if ((ldcNode.cst instanceof Long) && ((Long) ldcNode.cst == 50L)) {
                             list.add(
                                 new FieldInsnNode(
@@ -55,7 +50,7 @@ public class TickrateTransformer implements IClassTransformer {
                                     "com/science/gtnl/asm/GTNLEarlyCoreMod",
                                     "MILISECONDS_PER_TICK",
                                     "J"));
-                            continue intrucLoop;
+                            continue;
                         }
                     }
 

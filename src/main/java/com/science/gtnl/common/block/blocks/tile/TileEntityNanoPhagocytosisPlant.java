@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.math.Color;
 
+import lombok.Getter;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorSetting;
 
@@ -19,14 +20,16 @@ public class TileEntityNanoPhagocytosisPlant extends TileEntity {
 
     private float radius = 1;
     private float rotationSpeed = 10;
-    private float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0;
+    @Getter
+    public float rotAngle = 0, rotAxisX = 1, rotAxisY = 0, rotAxisZ = 0;
     private AxisAlignedBB renderBoundingBox;
 
     private ForgeOfGodsStarColor starColor = ForgeOfGodsStarColor.DEFAULT;
 
     // current color data
     private int currentColor = Color.rgb(DEFAULT_RED, DEFAULT_GREEN, DEFAULT_BLUE);
-    private float gamma = DEFAULT_GAMMA;
+    @Getter
+    public float gamma = DEFAULT_GAMMA;
 
     // interpolation color data
     private int cycleStep;
@@ -94,10 +97,6 @@ public class TileEntityNanoPhagocytosisPlant extends TileEntity {
         return Color.getBlueF(currentColor);
     }
 
-    public float getGamma() {
-        return gamma;
-    }
-
     public void setColor(ForgeOfGodsStarColor color) {
         this.starColor = color;
         if (this.starColor == null) {
@@ -116,22 +115,6 @@ public class TileEntityNanoPhagocytosisPlant extends TileEntity {
             interpB = Color.rgb(colorSetting.getColorR(), colorSetting.getColorG(), colorSetting.getColorB());
             interpGammaB = colorSetting.getGamma();
         }
-    }
-
-    public float getRotAngle() {
-        return rotAngle;
-    }
-
-    public float getRotAxisX() {
-        return rotAxisX;
-    }
-
-    public float getRotAxisY() {
-        return rotAxisY;
-    }
-
-    public float getRotAxisZ() {
-        return rotAxisZ;
     }
 
     public void setRenderRotation(ForgeDirection direction) {

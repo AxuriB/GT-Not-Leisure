@@ -17,24 +17,21 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.NanitesBaseModule;
 import com.science.gtnl.loader.BlockLoader;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.blocks.BlockCasings8;
 
 public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModule> {
 
-    public static final int CASING_INDEX = ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(0);
-    private static IStructureDefinition<PolymerTwistingModule> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String PTM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/polymer_twisting_module";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(PTM_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(PTM_STRUCTURE_FILE_PATH);
 
     public PolymerTwistingModule(String aName) {
         super(aName);
@@ -51,7 +48,7 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 0);
     }
 
     @Override
@@ -74,27 +71,24 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
 
     @Override
     public IStructureDefinition<PolymerTwistingModule> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<PolymerTwistingModule>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(PolymerTwistingModule.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('C', ofFrame(Materials.CosmicNeutronium))
-                .addElement('D', ofBlock(sBlockCasings6, 10))
-                .addElement('E', ofBlock(sBlockCasings2, 5))
-                .addElement('F', ofBlock(sBlockCasings4, 12))
-                .addElement('G', ofBlock(sBlockCasingsTT, 0))
-                .addElement('H', ofBlock(sBlockCasings8, 1))
-                .addElement('I', ofBlock(sBlockGlass1, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<PolymerTwistingModule>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(PolymerTwistingModule.class)
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 0))))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('C', ofFrame(Materials.CosmicNeutronium))
+            .addElement('D', ofBlock(sBlockCasings6, 10))
+            .addElement('E', ofBlock(sBlockCasings2, 5))
+            .addElement('F', ofBlock(sBlockCasings4, 12))
+            .addElement('G', ofBlock(sBlockCasingsTT, 0))
+            .addElement('H', ofBlock(sBlockCasings8, 1))
+            .addElement('I', ofBlock(sBlockGlass1, 0))
+            .build();
     }
 
     @Override
@@ -111,7 +105,7 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -125,14 +119,15 @@ public class PolymerTwistingModule extends NanitesBaseModule<PolymerTwistingModu
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
+        mCountCasing = 0;
         isPolModule = false;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+            return false;
 
         isPolModule = true;
-        energyHatchTier = checkEnergyHatchTier();
-        wirelessMode = mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty();
+        mEnergyHatchTier = checkEnergyHatchTier();
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
 
         return true;
     }

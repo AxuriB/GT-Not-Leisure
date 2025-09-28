@@ -2,8 +2,8 @@ package com.science.gtnl.common.recipe.GregTech;
 
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
+import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.item.items.MilledOre;
-import com.science.gtnl.loader.IRecipePool;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
@@ -14,12 +14,12 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class VacuumFurnaceRecipes implements IRecipePool {
 
-    final RecipeMap<?> VFR = GTPPRecipeMaps.vacuumFurnaceRecipes;
+    public RecipeMap<?> VFR = GTPPRecipeMaps.vacuumFurnaceRecipes;
 
     @Override
     public void loadRecipes() {
@@ -35,8 +35,7 @@ public class VacuumFurnaceRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Trinium, 32),
                 GGMaterial.extremelyUnstableNaquadah.get(OrePrefixes.dust, 2))
             .fluidInputs(FluidUtils.getFluidStack(MilledOre.NaquadahEnrichedFlotationFroth, 4000))
-            .fluidOutputs(FluidUtils.getFluidStack(AgriculturalChem.RedMud, 200), FluidUtils.getWater(2000))
-            .noOptimize()
+            .fluidOutputs(FluidUtils.getFluidStack(GTPPFluids.RedMud, 200), Materials.Water.getFluid(2000))
             .eut(TierEU.RECIPE_ZPM)
             .metadata(COIL_HEAT, 5500)
             .duration(2400)

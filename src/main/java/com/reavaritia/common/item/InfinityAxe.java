@@ -242,7 +242,7 @@ public class InfinityAxe extends ItemAxe {
         return true;
     }
 
-    private static class ItemStackWrapper {
+    public static class ItemStackWrapper {
 
         final Item item;
         final int damage;
@@ -265,7 +265,7 @@ public class InfinityAxe extends ItemAxe {
         }
     }
 
-    private static class BlockPos {
+    public static class BlockPos {
 
         final int x, y, z;
 

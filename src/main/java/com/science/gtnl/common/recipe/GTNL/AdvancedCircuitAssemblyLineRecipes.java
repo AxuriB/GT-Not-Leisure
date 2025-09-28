@@ -3,8 +3,8 @@ package com.science.gtnl.common.recipe.GTNL;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -13,7 +13,7 @@ import gregtech.api.recipe.RecipeMap;
 
 public class AdvancedCircuitAssemblyLineRecipes implements IRecipePool {
 
-    final RecipeMap<?> ACALR = RecipeRegister.AdvancedCircuitAssemblyLineRecipes;
+    public RecipeMap<?> ACALR = RecipePool.AdvancedCircuitAssemblyLineRecipes;
 
     @Override
     public void loadRecipes() {

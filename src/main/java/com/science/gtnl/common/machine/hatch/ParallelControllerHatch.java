@@ -1,6 +1,6 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_PARALLEL_CONTROLLER;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,8 +17,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
 
-import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -26,13 +24,11 @@ import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import lombok.Getter;
 
+@Getter
 public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLogo {
 
-    public static final String TEXTURE_OVERLAY_PARALLEL_CONTROLLER = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_PARALLEL_CONTROLLER";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_PARALLEL_CONTROLLER = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_PARALLEL_CONTROLLER);
     protected int maxParallel;
     protected int parallel = 1;
 
@@ -47,7 +43,7 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
             aTextures);
         this.maxParallel = setMaxParallel(mTier);
         this.parallel = maxParallel;
-        int speedBoost = setSpeedBoost(mTier);
+        int speedBoost = setDurationModifier(mTier);
         int euDiscount = setEUtDiscount(mTier);
         mDescriptionArray[1] = String
             .format(StatCollector.translateToLocal("Tooltip_ParallelControllerHatch_01"), maxParallel);
@@ -62,7 +58,7 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         this.maxParallel = setMaxParallel(mTier);
         this.parallel = maxParallel;
-        int speedBoost = setSpeedBoost(mTier);
+        int speedBoost = setDurationModifier(mTier);
         int euDiscount = setEUtDiscount(mTier);
         mDescriptionArray[1] = String
             .format(StatCollector.translateToLocal("Tooltip_ParallelControllerHatch_01"), maxParallel);
@@ -96,11 +92,6 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }
@@ -117,12 +108,12 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PARALLEL_CONTROLLER) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_PARALLEL_CONTROLLER) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PARALLEL_CONTROLLER) };
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_FRONT_PARALLEL_CONTROLLER) };
     }
 
     @Override
@@ -145,7 +136,7 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
         }
     }
 
-    public int setSpeedBoost(int mTier) {
+    public int setDurationModifier(int mTier) {
         if (mTier <= 1) {
             return 1;
         } else {
@@ -157,21 +148,13 @@ public class ParallelControllerHatch extends MTEHatch implements IAddGregtechLog
         return 2 * mTier;
     }
 
-    public int getMaxParallel() {
-        return maxParallel;
-    }
-
-    public int getParallel() {
-        return parallel;
-    }
-
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
 
-        GTUIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
+        openGui(aPlayer);
         return true;
     }
 

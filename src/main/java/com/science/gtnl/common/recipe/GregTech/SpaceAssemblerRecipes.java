@@ -5,10 +5,8 @@ import static gregtech.api.enums.MetaTileEntityIDs.SpaceElevatorModuleAssemblerT
 
 import net.minecraft.item.ItemStack;
 
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IGRecipeMaps;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -22,11 +20,12 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtnhintergalactic.recipe.IGRecipeMaps;
 import tectech.thing.CustomItemList;
 
 public class SpaceAssemblerRecipes implements IRecipePool {
 
-    final RecipeMap<?> SAR = IGRecipeMaps.spaceAssemblerRecipes;
+    public RecipeMap<?> SAR = IGRecipeMaps.spaceAssemblerRecipes;
 
     @Override
     public void loadRecipes() {
@@ -73,7 +72,7 @@ public class SpaceAssemblerRecipes implements IRecipePool {
                 new ItemStack(GregTechAPI.sBlockMachines, 1, SpaceElevatorModuleAssemblerT2.ID),
                 new ItemStack(GregTechAPI.sBlockMachines, 1, SpaceElevatorModuleAssemblerT2.ID),
                 new ItemStack(GregTechAPI.sBlockMachines, 1, SpaceElevatorModuleAssemblerT2.ID),
-                new ItemStack(IGBlocks.SpaceElevatorCasing, 16, 0),
+                ItemList.SpaceElevatorBaseCasing.get(16),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 16),
                 MaterialsElements.STANDALONE.HYPOGEN.getScrew(32),
                 MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(16),

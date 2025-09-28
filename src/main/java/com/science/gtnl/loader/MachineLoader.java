@@ -1,9 +1,8 @@
 package com.science.gtnl.loader;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 import static com.science.gtnl.Utils.enums.GTNLMachineID.*;
+import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_VALVE;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,43 +11,55 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import com.google.common.collect.ImmutableSet;
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.enums.Mods;
+import com.science.gtnl.Utils.enums.GTNLMachineID;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.text.AnimatedText;
 import com.science.gtnl.common.machine.basicMachine.DebugResearchStation;
+import com.science.gtnl.common.machine.basicMachine.DieselGenerator;
+import com.science.gtnl.common.machine.basicMachine.Enchanting;
+import com.science.gtnl.common.machine.basicMachine.GasTurbine;
 import com.science.gtnl.common.machine.basicMachine.ManaTank;
+import com.science.gtnl.common.machine.basicMachine.Replicator;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerSteel;
 import com.science.gtnl.common.machine.basicMachine.SteamTurbine;
+import com.science.gtnl.common.machine.cover.WirelessSteamCover;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
+import com.science.gtnl.common.machine.hatch.DebugDataAccessHatch;
 import com.science.gtnl.common.machine.hatch.DebugEnergyHatch;
 import com.science.gtnl.common.machine.hatch.DualInputHatch;
 import com.science.gtnl.common.machine.hatch.DualOutputHatch;
+import com.science.gtnl.common.machine.hatch.EnergyTransferNode;
 import com.science.gtnl.common.machine.hatch.ExplosionDynamoHatch;
-import com.science.gtnl.common.machine.hatch.HumongousInputBus;
+import com.science.gtnl.common.machine.hatch.HumongousDualInputHatch;
 import com.science.gtnl.common.machine.hatch.HumongousNinefoldInputHatch;
 import com.science.gtnl.common.machine.hatch.HumongousSolidifierHatch;
 import com.science.gtnl.common.machine.hatch.ManaDynamoHatch;
 import com.science.gtnl.common.machine.hatch.ManaEnergyHatch;
+import com.science.gtnl.common.machine.hatch.NanitesInputBus;
 import com.science.gtnl.common.machine.hatch.NinefoldInputHatch;
+import com.science.gtnl.common.machine.hatch.OredictInputBusHatchME;
+import com.science.gtnl.common.machine.hatch.OriginalInputHatch;
+import com.science.gtnl.common.machine.hatch.OriginalOutputHatch;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputProxy;
 import com.science.gtnl.common.machine.hatch.SuperDataAccessHatch;
 import com.science.gtnl.common.machine.hatch.SuperInputBusME;
 import com.science.gtnl.common.machine.hatch.SuperInputHatchME;
+import com.science.gtnl.common.machine.hatch.SuperVoidBus;
+import com.science.gtnl.common.machine.hatch.SuperVoidHatch;
 import com.science.gtnl.common.machine.hatch.TapDynamoHatch;
+import com.science.gtnl.common.machine.hatch.VaultPortHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.common.machine.multiblock.AdvancedCircuitAssemblyLine;
 import com.science.gtnl.common.machine.multiblock.AdvancedInfiniteDriller;
-import com.science.gtnl.common.machine.multiblock.AdvancedPhotovoltaicPowerStation;
-import com.science.gtnl.common.machine.multiblock.AetronPressor;
 import com.science.gtnl.common.machine.multiblock.AprilFool.HighPressureSteamFusionReactor;
 import com.science.gtnl.common.machine.multiblock.AprilFool.MegaSolarBoiler;
 import com.science.gtnl.common.machine.multiblock.AprilFool.MegaSteamCompressor;
@@ -63,28 +74,24 @@ import com.science.gtnl.common.machine.multiblock.AprilFool.SteamManufacturer;
 import com.science.gtnl.common.machine.multiblock.AprilFool.SteamRockBreaker;
 import com.science.gtnl.common.machine.multiblock.AprilFool.SteamWoodcutter;
 import com.science.gtnl.common.machine.multiblock.AprilFool.Steamgate;
-import com.science.gtnl.common.machine.multiblock.BioengineeringModule;
 import com.science.gtnl.common.machine.multiblock.BloodSoulSacrificialArray;
 import com.science.gtnl.common.machine.multiblock.BrickedBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.CheatOreProcessingFactory;
 import com.science.gtnl.common.machine.multiblock.ComponentAssembler;
-import com.science.gtnl.common.machine.multiblock.CrackerHub;
 import com.science.gtnl.common.machine.multiblock.DecayHastener;
 import com.science.gtnl.common.machine.multiblock.Desulfurizer;
 import com.science.gtnl.common.machine.multiblock.DraconicFusionCrafting;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.common.machine.multiblock.ElectrocellGenerator;
 import com.science.gtnl.common.machine.multiblock.ElementCopying;
-import com.science.gtnl.common.machine.multiblock.EnergeticPhotovoltaicPowerStation;
-import com.science.gtnl.common.machine.multiblock.EngravingLaserPlant;
-import com.science.gtnl.common.machine.multiblock.FieldForgePress;
+import com.science.gtnl.common.machine.multiblock.EyeOfHarmonyInjector;
+import com.science.gtnl.common.machine.multiblock.FOGAlloyBlastSmelterModule;
+import com.science.gtnl.common.machine.multiblock.FOGAlloySmelterModule;
+import com.science.gtnl.common.machine.multiblock.FOGExtractorModule;
 import com.science.gtnl.common.machine.multiblock.FuelRefiningComplex;
 import com.science.gtnl.common.machine.multiblock.GenerationEarthEngine;
 import com.science.gtnl.common.machine.multiblock.GrandAssemblyLine;
-import com.science.gtnl.common.machine.multiblock.HandOfJohnDavisonRockefeller;
-import com.science.gtnl.common.machine.multiblock.HeavyRolling;
-import com.science.gtnl.common.machine.multiblock.HighEnergyLaserLathe;
 import com.science.gtnl.common.machine.multiblock.IndustrialArcaneAssembler;
-import com.science.gtnl.common.machine.multiblock.IntegratedAssemblyFacility;
 import com.science.gtnl.common.machine.multiblock.LapotronChip;
 import com.science.gtnl.common.machine.multiblock.LargeBioLab;
 import com.science.gtnl.common.machine.multiblock.LargeBrewer;
@@ -96,30 +103,35 @@ import com.science.gtnl.common.machine.multiblock.LargeSteamAlloySmelter;
 import com.science.gtnl.common.machine.multiblock.LargeSteamChemicalBath;
 import com.science.gtnl.common.machine.multiblock.LargeSteamCircuitAssembler;
 import com.science.gtnl.common.machine.multiblock.LargeSteamCrusher;
+import com.science.gtnl.common.machine.multiblock.LargeSteamCutting;
 import com.science.gtnl.common.machine.multiblock.LargeSteamExtractor;
 import com.science.gtnl.common.machine.multiblock.LargeSteamExtruder;
 import com.science.gtnl.common.machine.multiblock.LargeSteamFormingPress;
 import com.science.gtnl.common.machine.multiblock.LargeSteamFurnace;
+import com.science.gtnl.common.machine.multiblock.LargeSteamLathe;
 import com.science.gtnl.common.machine.multiblock.LargeSteamSifter;
 import com.science.gtnl.common.machine.multiblock.LargeSteamThermalCentrifuge;
 import com.science.gtnl.common.machine.multiblock.LibraryOfRuina;
-import com.science.gtnl.common.machine.multiblock.MagneticEnergyReactionFurnace;
 import com.science.gtnl.common.machine.multiblock.MatterFabricator;
 import com.science.gtnl.common.machine.multiblock.MegaMixer;
 import com.science.gtnl.common.machine.multiblock.MeteorMiner;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.EGTWFusionModule;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.ETGWEyeOfHarmonyModule;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EGTW.EternalGregTechWorkshop;
-import com.science.gtnl.common.machine.multiblock.NanitesCircuitAssemblyFactory;
-import com.science.gtnl.common.machine.multiblock.NanitesIntegratedProcessingCenter;
-import com.science.gtnl.common.machine.multiblock.NanoAssemblerMarkL;
-import com.science.gtnl.common.machine.multiblock.NanoPhagocytosisPlant;
-import com.science.gtnl.common.machine.multiblock.NeutroniumWireCutting;
-import com.science.gtnl.common.machine.multiblock.NineIndustrialMultiMachine;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.EGTWFusionModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.ETGWEyeOfHarmonyModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.EternalGregTechWorkshop;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.BioengineeringModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.NanitesIntegratedProcessingCenter;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamBeaconModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamElevator;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamFlightModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamMonsterRepellentModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamOreProcessorModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamWeatherModule;
 import com.science.gtnl.common.machine.multiblock.OreExtractionModule;
 import com.science.gtnl.common.machine.multiblock.PetrochemicalPlant;
+import com.science.gtnl.common.machine.multiblock.PhotovoltaicPowerStation;
 import com.science.gtnl.common.machine.multiblock.PlatinumBasedTreatment;
 import com.science.gtnl.common.machine.multiblock.PolymerTwistingModule;
+import com.science.gtnl.common.machine.multiblock.PrimitiveBrickKiln;
 import com.science.gtnl.common.machine.multiblock.PrimitiveDistillationTower;
 import com.science.gtnl.common.machine.multiblock.ProcessingArray;
 import com.science.gtnl.common.machine.multiblock.RareEarthCentrifugal;
@@ -127,14 +139,10 @@ import com.science.gtnl.common.machine.multiblock.ReactionFurnace;
 import com.science.gtnl.common.machine.multiblock.RealArtificialStar;
 import com.science.gtnl.common.machine.multiblock.ResourceCollectionModule;
 import com.science.gtnl.common.machine.multiblock.ShallowChemicalCoupling;
-import com.science.gtnl.common.machine.multiblock.SmeltingMixingFurnace;
+import com.science.gtnl.common.machine.multiblock.SingularityDataHub;
 import com.science.gtnl.common.machine.multiblock.SpaceAssembler;
 import com.science.gtnl.common.machine.multiblock.SteamCracking;
-import com.science.gtnl.common.machine.multiblock.SteamElevator.SteamBeaconModule;
-import com.science.gtnl.common.machine.multiblock.SteamElevator.SteamElevator;
-import com.science.gtnl.common.machine.multiblock.SteamElevator.SteamFlightModule;
-import com.science.gtnl.common.machine.multiblock.SteamElevator.SteamMonsterRepellentModule;
-import com.science.gtnl.common.machine.multiblock.SteamElevator.SteamWeatherModule;
+import com.science.gtnl.common.machine.multiblock.SteamItemVault;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.AlloyBlastSmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.BlazeBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.ChemicalPlant;
@@ -145,8 +153,10 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.E
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.EnergyInfuser;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.FishingGround;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.FlotationCellRegulator;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.Incubator;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.IsaMill;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.KuangBiaoOneGiantNuclearFusionReactor;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeAlloySmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeArcSmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeAssembler;
@@ -179,37 +189,50 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.L
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeSteamMixer;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeSteamOreWasher;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LargeWiremill;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.LuvKuangBiaoOneGiantNuclearFusionReactor;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MegaAlloyBlastSmelter;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MegaBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MolecularTransformer;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.PrecisionAssembler;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.UevKuangBiaoFiveGiantNuclearFusionReactor;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.UhvKuangBiaoFourGiantNuclearFusionReactor;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.UvKuangBiaoThreeGiantNuclearFusionReactor;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumDryingFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumFreezer;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.ZpmKuangBiaoTwoGiantNuclearFusionReactor;
 import com.science.gtnl.common.machine.multiblock.SuperSpaceElevator;
-import com.science.gtnl.common.machine.multiblock.SuperconductingElectromagnetism;
-import com.science.gtnl.common.machine.multiblock.SuperconductingMagneticPresser;
 import com.science.gtnl.common.machine.multiblock.TeleportationArrayToAlfheim;
-import com.science.gtnl.common.machine.multiblock.VibrantPhotovoltaicPowerStation;
-import com.science.gtnl.common.machine.multiblock.VortexMatterCentrifuge;
 import com.science.gtnl.common.machine.multiblock.WhiteNightGenerator;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.AetronPressor;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.CompoundExtremeCoolingUnit;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.CrackerHub;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.EngravingLaserPlant;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.FieldForgePress;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.HandOfJohnDavisonRockefeller;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.HeavyRolling;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.HighEnergyLaserLathe;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.IntegratedAssemblyFacility;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.MagneticEnergyReactionFurnace;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.NanitesCircuitAssemblyFactory;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.NanoAssemblerMarkL;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.NanoPhagocytosisPlant;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.NeutroniumWireCutting;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.NineIndustrialMultiMachine;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.SmeltingMixingFurnace;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.SuperconductingElectromagnetism;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.SuperconductingMagneticPresser;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.VortexMatterCentrifuge;
 import com.science.gtnl.common.machine.multiblock.WoodDistillation;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.common.materials.MaterialUtils;
+import com.science.gtnl.common.material.MaterialPool;
+import com.science.gtnl.common.material.MaterialUtils;
+import com.science.gtnl.config.MainConfig;
 
-import bartworks.API.BorosilicateGlass;
+import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.CrackRecipeAdder;
-import gregtech.api.GregTechAPI;
+import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GlassTier;
 import gregtech.common.covers.CoverConveyor;
-import gregtech.common.covers.CoverFluidRegulator;
 import gregtech.common.covers.CoverPump;
 import gregtech.common.covers.CoverSteamRegulator;
 import gregtech.common.covers.CoverSteamValve;
@@ -221,7 +244,7 @@ public class MachineLoader {
     public static ItemStack ResourceCollectionModule;
     public static ItemStack SuperSpaceElevator;
 
-    public static void loadMachines() {
+    public static void registerMachines() {
 
         GTNLItemList.EdenGarden
             .set(new EdenGarden(EDEN_GARDEN.ID, "EdenGarden", StatCollector.translateToLocal("NameEdenGarden")));
@@ -420,21 +443,21 @@ public class MachineLoader {
         addItemTooltip(GTNLItemList.IndustrialArcaneAssembler.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.EnergeticPhotovoltaicPowerStation.set(
-            new EnergeticPhotovoltaicPowerStation(
+            new PhotovoltaicPowerStation.EnergeticPhotovoltaicPowerStation(
                 ENERGETIC_PHOTOVOLTAIC_POWER_STATION.ID,
                 "EnergeticPhotovoltaicPowerStation",
                 StatCollector.translateToLocal("NameEnergeticPhotovoltaicPowerStation")));
         addItemTooltip(GTNLItemList.EnergeticPhotovoltaicPowerStation.get(1), AnimatedText.SNL_QYZG);
 
         GTNLItemList.AdvancedPhotovoltaicPowerStation.set(
-            new AdvancedPhotovoltaicPowerStation(
+            new PhotovoltaicPowerStation.AdvancedPhotovoltaicPowerStation(
                 ADVANCED_PHOTOVOLTAIC_POWER_STATION.ID,
                 "AdvancedPhotovoltaicPowerStation",
                 StatCollector.translateToLocal("NameAdvancedPhotovoltaicPowerStation")));
         addItemTooltip(GTNLItemList.AdvancedPhotovoltaicPowerStation.get(1), AnimatedText.SNL_QYZG);
 
         GTNLItemList.VibrantPhotovoltaicPowerStation.set(
-            new VibrantPhotovoltaicPowerStation(
+            new PhotovoltaicPowerStation.VibrantPhotovoltaicPowerStation(
                 VIBRANT_PHOTOVOLTAIC_POWER_STATION.ID,
                 "VibrantPhotovoltaicPowerStation",
                 StatCollector.translateToLocal("NameVibrantPhotovoltaicPowerStation")));
@@ -777,35 +800,35 @@ public class MachineLoader {
         addItemTooltip(GTNLItemList.ResourceCollectionModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.LuvKuangBiaoOneGiantNuclearFusionReactor.set(
-            new LuvKuangBiaoOneGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.LuVTier(
                 LUV_KUANG_BIAO_ONE_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoOneGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameLuvKuangBiaoOneGiantNuclearFusionReactor")));
         addItemTooltip(GTNLItemList.LuvKuangBiaoOneGiantNuclearFusionReactor.get(1), AnimatedText.SNL_QYZG_SRP);
 
         GTNLItemList.ZpmKuangBiaoTwoGiantNuclearFusionReactor.set(
-            new ZpmKuangBiaoTwoGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.ZPMTier(
                 ZPM_KUANG_BIAO_TWO_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoTwoGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameZpmKuangBiaoTwoGiantNuclearFusionReactor")));
         addItemTooltip(GTNLItemList.ZpmKuangBiaoTwoGiantNuclearFusionReactor.get(1), AnimatedText.SNL_QYZG_SRP);
 
         GTNLItemList.UvKuangBiaoThreeGiantNuclearFusionReactor.set(
-            new UvKuangBiaoThreeGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.UVTier(
                 UV_KUANG_BIAO_THREE_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoThreeGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameUvKuangBiaoThreeGiantNuclearFusionReactor")));
         addItemTooltip(GTNLItemList.UvKuangBiaoThreeGiantNuclearFusionReactor.get(1), AnimatedText.SNL_QYZG_SRP);
 
         GTNLItemList.UhvKuangBiaoFourGiantNuclearFusionReactor.set(
-            new UhvKuangBiaoFourGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.UHVTier(
                 UHV_KUANG_BIAO_FOUR_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoFourGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameUhvKuangBiaoFourGiantNuclearFusionReactor")));
         addItemTooltip(GTNLItemList.UhvKuangBiaoFourGiantNuclearFusionReactor.get(1), AnimatedText.SNL_QYZG_SRP);
 
         GTNLItemList.UevKuangBiaoFiveGiantNuclearFusionReactor.set(
-            new UevKuangBiaoFiveGiantNuclearFusionReactor(
+            new KuangBiaoOneGiantNuclearFusionReactor.UEVTier(
                 UEV_KUANG_BIAO_FIVE_GIANT_NUCLEAR_FUSION_REACTOR.ID,
                 "KuangBiaoFiveGiantNuclearFusionReactor",
                 StatCollector.translateToLocal("NameUevKuangBiaoFiveGiantNuclearFusionReactor")));
@@ -1245,6 +1268,97 @@ public class MachineLoader {
                 StatCollector.translateToLocal("NameNanoAssemblerMarkL")));
         addItemTooltip(GTNLItemList.NanoAssemblerMarkL.get(1), AnimatedText.SNL_QYZG);
 
+        GTNLItemList.HighPerformanceComputationArray.set(
+            new HighPerformanceComputationArray(
+                HIGH_PERFORMANCE_COMPUTATION_ARRAY.ID,
+                "HighPerformanceComputationArray",
+                StatCollector.translateToLocal("NameHighPerformanceComputationArray")));
+        addItemTooltip(GTNLItemList.HighPerformanceComputationArray.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EyeOfHarmonyInjector.set(
+            new EyeOfHarmonyInjector(
+                EYE_OF_HARMONY_INJECTOR.ID,
+                "EyeOfHarmonyInjector",
+                StatCollector.translateToLocal("NameEyeOfHarmonyInjector")));
+        addItemTooltip(GTNLItemList.EyeOfHarmonyInjector.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.CompoundExtremeCoolingUnit.set(
+            new CompoundExtremeCoolingUnit(
+                COMPOUND_EXTREME_COOLING_UNIT.ID,
+                "CompoundExtremeCoolingUnit",
+                StatCollector.translateToLocal("NameCompoundExtremeCoolingUnit")));
+        addItemTooltip(GTNLItemList.CompoundExtremeCoolingUnit.get(1), AnimatedText.SNL_QYZG);
+
+        GTNLItemList.SteamOreProcessorModule.set(
+            new SteamOreProcessorModule(
+                STEAM_ORE_PROCESSOR_MODULE.ID,
+                "SteamOreProcessorModule",
+                StatCollector.translateToLocal("NameSteamOreProcessorModule")));
+        addItemTooltip(GTNLItemList.SteamOreProcessorModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LargeSteamLathe.set(
+            new LargeSteamLathe(
+                LARGE_STEAM_LATHE.ID,
+                "LargeSteamLathe",
+                StatCollector.translateToLocal("NameLargeSteamLathe")));
+        addItemTooltip(GTNLItemList.LargeSteamLathe.get(1), AnimatedText.SNL_QYZG);
+
+        GTNLItemList.LargeSteamCutting.set(
+            new LargeSteamCutting(
+                LARGE_STEAM_CUTTING.ID,
+                "LargeSteamCutting",
+                StatCollector.translateToLocal("NameLargeSteamCutting")));
+        addItemTooltip(GTNLItemList.LargeSteamCutting.get(1), AnimatedText.SNL_QYZG);
+
+        GTNLItemList.SteamItemVault.set(
+            new SteamItemVault(
+                STEAM_ITEM_VAULT.ID,
+                "SteamItemVault",
+                StatCollector.translateToLocal("NameSteamItemVault")));
+        addItemTooltip(GTNLItemList.SteamItemVault.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.PrimitiveBrickKiln.set(
+            new PrimitiveBrickKiln(
+                PRIMITIVE_BRICK_KILN.ID,
+                "PrimitiveBrickKiln",
+                StatCollector.translateToLocal("NamePrimitiveBrickKiln")));
+        addItemTooltip(GTNLItemList.PrimitiveBrickKiln.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SingularityDataHub.set(
+            new SingularityDataHub(
+                SINGULARITY_DATA_HUB.ID,
+                "SingularityDataHub",
+                StatCollector.translateToLocal("NameSingularityDataHub")));
+        addItemTooltip(GTNLItemList.SingularityDataHub.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.ElectrocellGenerator.set(
+            new ElectrocellGenerator(
+                ELECTROCELL_GENERATOR.ID,
+                "ElectrocellGenerator",
+                StatCollector.translateToLocal("NameElectrocellGenerator")));
+        addItemTooltip(GTNLItemList.ElectrocellGenerator.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.FOGAlloySmelterModule.set(
+            new FOGAlloySmelterModule(
+                FOG_ALLOY_SMELTER_MODULE.ID,
+                "NameFOGAlloySmelterModule",
+                StatCollector.translateToLocal("NameFOGAlloySmelterModule")));
+        addItemTooltip(GTNLItemList.FOGAlloySmelterModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.FOGAlloyBlastSmelterModule.set(
+            new FOGAlloyBlastSmelterModule(
+                FOG_ALLOY_BLAST_SMELTER_MODULE.ID,
+                "NameFOGAlloyBlastSmelterModule",
+                StatCollector.translateToLocal("NameFOGAlloyBlastSmelterModule")));
+        addItemTooltip(GTNLItemList.FOGAlloyBlastSmelterModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.FOGExtractorModule.set(
+            new FOGExtractorModule(
+                FOG_EXTRACTOR_MODULE.ID,
+                "NameFOGExtractorModule",
+                StatCollector.translateToLocal("NameFOGExtractorModule")));
+        addItemTooltip(GTNLItemList.FOGExtractorModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(
             new CheatOreProcessingFactory(
@@ -1261,13 +1375,13 @@ public class MachineLoader {
         addItemTooltip(GTNLItemList.NineIndustrialMultiMachine.get(1), AnimatedText.SNL_QYZG);
     }
 
-    public static void registerMTEHatch() {
+    public static void registerHatch() {
         Set<Fluid> acceptedFluids = new HashSet<>();
         acceptedFluids.add(
-            FluidUtils.getFluidStack("fluidmana", 1)
+            MaterialPool.FluidMana.getFluidOrGas(1)
                 .getFluid());
 
-        if (Mods.TwistSpaceTechnology.isModLoaded()) {
+        if (ModList.TwistSpaceTechnology.isModLoaded()) {
             acceptedFluids.add(
                 FluidUtils.getFluidStack("liquid mana", 1)
                     .getFluid());
@@ -1335,8 +1449,7 @@ public class MachineLoader {
             new DebugEnergyHatch(
                 DEBUG_ENERGY_HATCH.ID,
                 "DebugEnergyHatch",
-                StatCollector.translateToLocal("DebugEnergyHatch"),
-                14));
+                StatCollector.translateToLocal("DebugEnergyHatch")));
         addItemTooltip(GTNLItemList.DebugEnergyHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.NinefoldInputHatchEV.set(
@@ -1576,11 +1689,10 @@ public class MachineLoader {
         GTNLItemList.BigSteamInputHatch.set(
             new CustomFluidHatch(
                 ImmutableSet.of(
-                    FluidUtils.getSteam(1)
-                        .getFluid(),
+                    Materials.Steam.mGas,
                     FluidUtils.getSuperHeatedSteam(1)
                         .getFluid(),
-                    FluidRegistry.getFluid("supercriticalsteam"),
+                    Materials.DenseSupercriticalSteam.mGas,
                     MaterialPool.CompressedSteam.getMolten(1)
                         .getFluid()),
                 4096000,
@@ -1800,190 +1912,178 @@ public class MachineLoader {
                 "AdvancedSuperInputHatchME",
                 StatCollector.translateToLocal("AdvancedSuperInputHatchME")));
         addItemTooltip(GTNLItemList.AdvancedSuperInputHatchME.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-    }
 
-    @Deprecated
-    public static void registerTestMachine() {
-        GTNLItemList.QuadrupleOutputHatchEV.set(
-            new DualOutputHatch(
-                21700,
-                4,
-                "QuadrupleOutputHatchEV",
-                StatCollector.translateToLocal("QuadrupleOutputHatchEV"),
-                4));
-        addItemTooltip(GTNLItemList.QuadrupleOutputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        GTNLItemList.Replicator
+            .set(new Replicator(REPLICATOR.ID, "Replicator", StatCollector.translateToLocal("Replicator"), 7));
 
-        GTNLItemList.NinefoldOutputHatchEV.set(
-            new DualOutputHatch(
-                21701,
-                9,
-                "NinefoldOutputHatchEV",
-                StatCollector.translateToLocal("NinefoldOutputHatchEV"),
-                4));
-        addItemTooltip(GTNLItemList.NinefoldOutputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        GTNLItemList.Enchanting
+            .set(new Enchanting(ENCHANTING.ID, "Enchanting", StatCollector.translateToLocal("Enchanting"), 7));
+        addItemTooltip(GTNLItemList.Enchanting.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusULV.set(
-            new HumongousInputBus(
-                21702,
-                "HumongousInputBusULV",
-                StatCollector.translateToLocal("HumongousInputBusULV"),
-                0));
-        addItemTooltip(GTNLItemList.HumongousInputBusULV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        GTNLItemList.OredictInputBusHatchME.set(
+            new OredictInputBusHatchME(
+                OREDICT_INPUT_BUS_HATCH_ME.ID,
+                "OredictInputBusHatchME",
+                StatCollector.translateToLocal("OredictInputBusHatchME")));
+        addItemTooltip(GTNLItemList.OredictInputBusHatchME.get(1), AnimatedText.SNL_SKYINR);
 
-        GTNLItemList.HumongousInputBusLV.set(
-            new HumongousInputBus(
-                21703,
-                "HumongousInputBusLV",
-                StatCollector.translateToLocal("HumongousInputBusLV"),
+        GTNLItemList.NanitesInputBus.set(
+            new NanitesInputBus(
+                NANITES_INPUT_BUS.ID,
+                "NanitesInputBus",
+                StatCollector.translateToLocal("NanitesInputBus")));
+        addItemTooltip(GTNLItemList.NanitesInputBus.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.VaultPortHatch.set(
+            new VaultPortHatch(
+                VAULT_PORT_HATCH.ID,
+                "VaultPortHatch",
+                StatCollector.translateToLocal("VaultPortHatch")));
+        addItemTooltip(GTNLItemList.VaultPortHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.OriginalInputHatch.set(
+            new OriginalInputHatch(
+                ORIGINAL_INPUT_HATCH.ID,
+                "OriginalInputHatch",
+                StatCollector.translateToLocal("OriginalInputHatch")));
+        addItemTooltip(GTNLItemList.OriginalInputHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.OriginalOutputHatch.set(
+            new OriginalOutputHatch(
+                ORIGINAL_OUTPUT_HATCH.ID,
+                "OriginalOutputHatch",
+                StatCollector.translateToLocal("OriginalOutputHatch")));
+        addItemTooltip(GTNLItemList.OriginalOutputHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SuperVoidBus
+            .set(new SuperVoidBus(SUPER_VOID_BUS.ID, "SuperVoidBus", StatCollector.translateToLocal("SuperVoidBus")));
+        addItemTooltip(GTNLItemList.SuperVoidBus.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SuperVoidHatch.set(
+            new SuperVoidHatch(
+                SUPER_VOID_HATCH.ID,
+                "SuperVoidHatch",
+                StatCollector.translateToLocal("SuperVoidHatch")));
+        addItemTooltip(GTNLItemList.SuperVoidHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.DebugDataAccessHatch.set(
+            new DebugDataAccessHatch(
+                DEBUG_DATA_ACCESS_HATCH.ID,
+                "DebugDataAccessHatch",
+                StatCollector.translateToLocal("DebugDataAccessHatch")));
+        addItemTooltip(GTNLItemList.DebugDataAccessHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousDualInputHatchLV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_LV.ID,
+                "HumongousDualInputHatchLV",
+                StatCollector.translateToLocal("HumongousDualInputHatchLV"),
                 1));
-        addItemTooltip(GTNLItemList.HumongousInputBusLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusMV.set(
-            new HumongousInputBus(
-                21704,
-                "HumongousInputBusMV",
-                StatCollector.translateToLocal("HumongousInputBusMV"),
+        GTNLItemList.HumongousDualInputHatchMV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_MV.ID,
+                "HumongousDualInputHatchMV",
+                StatCollector.translateToLocal("HumongousDualInputHatchMV"),
                 2));
-        addItemTooltip(GTNLItemList.HumongousInputBusMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusHV.set(
-            new HumongousInputBus(
-                21705,
-                "HumongousInputBusHV",
-                StatCollector.translateToLocal("HumongousInputBusHV"),
+        GTNLItemList.HumongousDualInputHatchHV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_HV.ID,
+                "HumongousDualInputHatchHV",
+                StatCollector.translateToLocal("HumongousDualInputHatchHV"),
                 3));
-        addItemTooltip(GTNLItemList.HumongousInputBusHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusEV.set(
-            new HumongousInputBus(
-                21706,
-                "HumongousInputBusEV",
-                StatCollector.translateToLocal("HumongousInputBusEV"),
+        GTNLItemList.HumongousDualInputHatchEV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_EV.ID,
+                "HumongousDualInputHatchEV",
+                StatCollector.translateToLocal("HumongousDualInputHatchEV"),
                 4));
-        addItemTooltip(GTNLItemList.HumongousInputBusEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusIV.set(
-            new HumongousInputBus(
-                21707,
-                "HumongousInputBusIV",
-                StatCollector.translateToLocal("HumongousInputBusIV"),
+        GTNLItemList.HumongousDualInputHatchIV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_IV.ID,
+                "HumongousDualInputHatchIV",
+                StatCollector.translateToLocal("HumongousDualInputHatchIV"),
                 5));
-        addItemTooltip(GTNLItemList.HumongousInputBusIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusLuV.set(
-            new HumongousInputBus(
-                21708,
-                "HumongousInputBusLuV",
-                StatCollector.translateToLocal("HumongousInputBusLuV"),
+        GTNLItemList.HumongousDualInputHatchLuV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_LUV.ID,
+                "HumongousDualInputHatchLuV",
+                StatCollector.translateToLocal("HumongousDualInputHatchLuV"),
                 6));
-        addItemTooltip(GTNLItemList.HumongousInputBusLuV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchLuV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusZPM.set(
-            new HumongousInputBus(
-                21709,
-                "HumongousInputBusZPM",
-                StatCollector.translateToLocal("HumongousInputBusZPM"),
+        GTNLItemList.HumongousDualInputHatchZPM.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_ZPM.ID,
+                "HumongousDualInputHatchZPM",
+                StatCollector.translateToLocal("HumongousDualInputHatchZPM"),
                 7));
-        addItemTooltip(GTNLItemList.HumongousInputBusZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUV.set(
-            new HumongousInputBus(
-                21710,
-                "HumongousInputBusUV",
-                StatCollector.translateToLocal("HumongousInputBusUV"),
+        GTNLItemList.HumongousDualInputHatchUV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UV.ID,
+                "HumongousDualInputHatchUV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUV"),
                 8));
-        addItemTooltip(GTNLItemList.HumongousInputBusUV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUHV.set(
-            new HumongousInputBus(
-                21711,
-                "HumongousInputBusUHV",
-                StatCollector.translateToLocal("HumongousInputBusUHV"),
+        GTNLItemList.HumongousDualInputHatchUHV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UHV.ID,
+                "HumongousDualInputHatchUHV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUHV"),
                 9));
-        addItemTooltip(GTNLItemList.HumongousInputBusUHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUEV.set(
-            new HumongousInputBus(
-                21712,
-                "HumongousInputBusUEV",
-                StatCollector.translateToLocal("HumongousInputBusUEV"),
+        GTNLItemList.HumongousDualInputHatchUEV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UEV.ID,
+                "HumongousDualInputHatchUEV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUEV"),
                 10));
-        addItemTooltip(GTNLItemList.HumongousInputBusUEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUIV.set(
-            new HumongousInputBus(
-                21713,
-                "HumongousInputBusUIV",
-                StatCollector.translateToLocal("HumongousInputBusUIV"),
+        GTNLItemList.HumongousDualInputHatchUIV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UIV.ID,
+                "HumongousDualInputHatchUIV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUIV"),
                 11));
-        addItemTooltip(GTNLItemList.HumongousInputBusUIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUMV.set(
-            new HumongousInputBus(
-                21714,
-                "HumongousInputBusUMV",
-                StatCollector.translateToLocal("HumongousInputBusUMV"),
+        GTNLItemList.HumongousDualInputHatchUMV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UMV.ID,
+                "HumongousDualInputHatchUMV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUMV"),
                 12));
-        addItemTooltip(GTNLItemList.HumongousInputBusUMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusUXV.set(
-            new HumongousInputBus(
-                21715,
-                "HumongousInputBusUXV",
-                StatCollector.translateToLocal("HumongousInputBusUXV"),
+        GTNLItemList.HumongousDualInputHatchUXV.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_UXV.ID,
+                "HumongousDualInputHatchUXV",
+                StatCollector.translateToLocal("HumongousDualInputHatchUXV"),
                 13));
-        addItemTooltip(GTNLItemList.HumongousInputBusUXV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchUXV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.HumongousInputBusMAX.set(
-            new HumongousInputBus(
-                21716,
-                "HumongousInputBusMAX",
-                StatCollector.translateToLocal("HumongousInputBusMAX"),
+        GTNLItemList.HumongousDualInputHatchMAX.set(
+            new HumongousDualInputHatch(
+                HUMONGOUS_DUAL_INPUT_HATCH_MAX.ID,
+                "HumongousDualInputHatchMAX",
+                StatCollector.translateToLocal("HumongousDualInputHatchMAX"),
                 14));
-        addItemTooltip(GTNLItemList.HumongousInputBusMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-    }
-
-    public static void registerBasicMachine() {
-        GTNLItemList.SteamTurbineLV.set(
-            new SteamTurbine(
-                STEAM_TURBINE_LV.ID,
-                "BasicSteamTurbine",
-                StatCollector.translateToLocal("SteamTurbineLV"),
-                1));
-        addItemTooltip(GTNLItemList.SteamTurbineLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.SteamTurbineMV.set(
-            new SteamTurbine(
-                STEAM_TURBINE_MV.ID,
-                "AdvancedSteamTurbine",
-                StatCollector.translateToLocal("SteamTurbineMV"),
-                2));
-        addItemTooltip(GTNLItemList.SteamTurbineMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.SteamTurbineHV.set(
-            new SteamTurbine(
-                STEAM_TURBINE_HV.ID,
-                "AdvancedSteamTurbineII",
-                StatCollector.translateToLocal("SteamTurbineHV"),
-                3));
-        addItemTooltip(GTNLItemList.SteamTurbineHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.SteamAssemblerBronze.set(
-            new SteamAssemblerBronze(
-                STEAM_ASSEMBLER_BRONZE.ID,
-                "SteamAssembler",
-                StatCollector.translateToLocal("SteamAssemblerBronze")));
-        addItemTooltip(GTNLItemList.SteamAssemblerBronze.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.SteamAssemblerSteel.set(
-            new SteamAssemblerSteel(
-                STEAM_ASSEMBLER_STEEL.ID,
-                "HighPressureSteamAssembler",
-                StatCollector.translateToLocal("SteamAssemblerSteel")));
-        addItemTooltip(GTNLItemList.SteamAssemblerSteel.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.ManaTank.set(new ManaTank(MANA_TANK.ID, "ManaTank", StatCollector.translateToLocal("ManaTank")));
-        addItemTooltip(GTNLItemList.ManaTank.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        addItemTooltip(GTNLItemList.HumongousDualInputHatchMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.ManaDynamoHatchLV.set(
             new ManaDynamoHatch(
@@ -2056,282 +2156,140 @@ public class MachineLoader {
                 7,
                 16));
         addItemTooltip(GTNLItemList.ManaEnergyHatchZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorLV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_LV.ID,
-                "GasCollectorLV",
-                StatCollector.translateToLocal("GasCollectorLV"),
-                1,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_00"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorMV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_MV.ID,
-                "GasCollectorMV",
-                StatCollector.translateToLocal("GasCollectorMV"),
-                2,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_00"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorHV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_HV.ID,
-                "GasCollectorHV",
-                StatCollector.translateToLocal("GasCollectorHV"),
-                3,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_00"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorEV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_EV.ID,
-                "GasCollectorEV",
-                StatCollector.translateToLocal("GasCollectorEV"),
-                4,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_00"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorIV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_IV.ID,
-                "GasCollectorIV",
-                StatCollector.translateToLocal("GasCollectorIV"),
-                5,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_01"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorLuV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_LUV.ID,
-                "GasCollectorLuV",
-                StatCollector.translateToLocal("GasCollectorLuV"),
-                6,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_01"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorLuV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorZPM.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_ZPM.ID,
-                "GasCollectorZPM",
-                StatCollector.translateToLocal("GasCollectorZPM"),
-                7,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_01"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UV.ID,
-                "GasCollectorUV",
-                StatCollector.translateToLocal("GasCollectorUV"),
-                8,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUHV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UHV.ID,
-                "GasCollectorUHV",
-                StatCollector.translateToLocal("GasCollectorUHV"),
-                9,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUEV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UEV.ID,
-                "GasCollectorUEV",
-                StatCollector.translateToLocal("GasCollectorUEV"),
-                10,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUIV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UIV.ID,
-                "GasCollectorUIV",
-                StatCollector.translateToLocal("GasCollectorUIV"),
-                11,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUMV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UMV.ID,
-                "GasCollectorUMV",
-                StatCollector.translateToLocal("GasCollectorUMV"),
-                12,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_02"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.GasCollectorUXV.set(
-            new MTEBasicMachineWithRecipe(
-                GAS_COLLECTOR_UXV.ID,
-                "GasCollectorUXV",
-                StatCollector.translateToLocal("GasCollectorUXV"),
-                13,
-                new String[] { StatCollector.translateToLocal("Tooltip_GasCollector_03"),
-                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + StatCollector.translateToLocal("GasCollectorRecipeType")
-                        + EnumChatFormatting.RESET },
-                RecipeRegister.GasCollectorRecipes,
-                3,
-                3,
-                true,
-                SoundResource.NONE,
-                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
-                "GAS_COLLECTOR",
-                null).getStackForm(1L));
-        addItemTooltip(GTNLItemList.GasCollectorUXV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
-    public static void registerMTEWireAndPipe() {
+    @Deprecated
+    public static void registerTestMachine() {
+        GTNLItemList.QuadrupleOutputHatchEV.set(
+            new DualOutputHatch(
+                21700,
+                4,
+                "QuadrupleOutputHatchEV",
+                StatCollector.translateToLocal("QuadrupleOutputHatchEV"),
+                4));
+        addItemTooltip(GTNLItemList.QuadrupleOutputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.NinefoldOutputHatchEV.set(
+            new DualOutputHatch(
+                21701,
+                9,
+                "NinefoldOutputHatchEV",
+                StatCollector.translateToLocal("NinefoldOutputHatchEV"),
+                4));
+        addItemTooltip(GTNLItemList.NinefoldOutputHatchEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+    }
+
+    public static void registerBasicMachine() {
+        GTNLItemList.SteamTurbineLV.set(
+            new SteamTurbine(
+                STEAM_TURBINE_LV.ID,
+                "SteamTurbineLV",
+                StatCollector.translateToLocal("SteamTurbineLV"),
+                1));
+        addItemTooltip(GTNLItemList.SteamTurbineLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamTurbineMV.set(
+            new SteamTurbine(
+                STEAM_TURBINE_MV.ID,
+                "SteamTurbineMV",
+                StatCollector.translateToLocal("SteamTurbineMV"),
+                2));
+        addItemTooltip(GTNLItemList.SteamTurbineMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamTurbineHV.set(
+            new SteamTurbine(
+                STEAM_TURBINE_HV.ID,
+                "SteamTurbineHV",
+                StatCollector.translateToLocal("SteamTurbineHV"),
+                3));
+        addItemTooltip(GTNLItemList.SteamTurbineHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamAssemblerBronze.set(
+            new SteamAssemblerBronze(
+                STEAM_ASSEMBLER_BRONZE.ID,
+                "SteamAssembler",
+                StatCollector.translateToLocal("SteamAssemblerBronze")));
+        addItemTooltip(GTNLItemList.SteamAssemblerBronze.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamAssemblerSteel.set(
+            new SteamAssemblerSteel(
+                STEAM_ASSEMBLER_STEEL.ID,
+                "HighPressureSteamAssembler",
+                StatCollector.translateToLocal("SteamAssemblerSteel")));
+        addItemTooltip(GTNLItemList.SteamAssemblerSteel.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.ManaTank.set(new ManaTank(MANA_TANK.ID, "ManaTank", StatCollector.translateToLocal("ManaTank")));
+        addItemTooltip(GTNLItemList.ManaTank.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        for (GasCollectorTier tier : GasCollectorTier.values()) {
+            IMetaTileEntity mte = new MTEBasicMachineWithRecipe(
+                tier.id.ID,
+                tier.unlocalizedName,
+                StatCollector.translateToLocal(tier.unlocalizedName),
+                tier.tier,
+                new String[] { StatCollector.translateToLocal(tier.tooltipKey),
+                    StatCollector.translateToLocal("GT5U.MBTT.MachineType") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + StatCollector.translateToLocal("GasCollectorRecipeType")
+                        + EnumChatFormatting.RESET },
+                RecipePool.GasCollectorRecipes,
+                3,
+                3,
+                true,
+                SoundResource.NONE,
+                MTEBasicMachineWithRecipe.SpecialEffects.NONE,
+                "GAS_COLLECTOR");
+
+            tier.itemEnum.set(mte);
+
+            addItemTooltip(tier.itemEnum.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        }
+
+        GTNLItemList.GasTurbineLV
+            .set(new GasTurbine(GAS_TURBINE_LV.ID, "GasTurbineLV", StatCollector.translateToLocal("GasTurbineLV"), 1));
+        addItemTooltip(GTNLItemList.GasTurbineLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.GasTurbineMV
+            .set(new GasTurbine(GAS_TURBINE_MV.ID, "GasTurbineMV", StatCollector.translateToLocal("GasTurbineMV"), 2));
+        addItemTooltip(GTNLItemList.GasTurbineMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.GasTurbineHV
+            .set(new GasTurbine(GAS_TURBINE_HV.ID, "GasTurbineHV", StatCollector.translateToLocal("GasTurbineHV"), 3));
+        addItemTooltip(GTNLItemList.GasTurbineHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.DieselGeneratorLV.set(
+            new DieselGenerator(
+                DIESEL_GENERATOR_LV.ID,
+                "DieselGeneratorLV",
+                StatCollector.translateToLocal("DieselGeneratorLV"),
+                1));
+        addItemTooltip(GTNLItemList.DieselGeneratorLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.DieselGeneratorMV.set(
+            new DieselGenerator(
+                DIESEL_GENERATOR_MV.ID,
+                "DieselGeneratorMV",
+                StatCollector.translateToLocal("DieselGeneratorMV"),
+                2));
+        addItemTooltip(GTNLItemList.DieselGeneratorMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.DieselGeneratorHV.set(
+            new DieselGenerator(
+                DIESEL_GENERATOR_HV.ID,
+                "DieselGeneratorHV",
+                StatCollector.translateToLocal("DieselGeneratorHV"),
+                3));
+        addItemTooltip(GTNLItemList.DieselGeneratorHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyTransferNode.set(
+            new EnergyTransferNode(
+                ENERGY_TRANSFER_NODE.ID,
+                "EnergyTransferNode",
+                StatCollector.translateToLocal("EnergyTransferNode")));
+        addItemTooltip(GTNLItemList.EnergyTransferNode.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+    }
+
+    public static void registerWireAndPipe() {
         CrackRecipeAdder.registerWire(STAR_GATE_WIRE.ID, MaterialPool.Stargate, 2147483647, 2147483647, 0, true);
         MaterialUtils.generateGTFluidPipes(Materials.BlueAlloy, BLUE_ALLOY_PIPE.ID, 4000, 3000, true);
         CrackRecipeAdder.registerPipe(COMPRESSED_STEAM_PIPE.ID, MaterialPool.CompressedSteam, 250000, 10000, true);
@@ -2343,54 +2301,98 @@ public class MachineLoader {
     }
 
     private static void registerCovers() {
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GTNLItemList.HydraulicPump.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverPump(1048576, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverPump(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
 
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GTNLItemList.HydraulicConveyor.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_CONVEYOR)),
-            new CoverConveyor(1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
+            context -> new CoverConveyor(context, 1, 16, TextureFactory.of(OVERLAY_CONVEYOR)));
 
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GTNLItemList.HydraulicRegulator.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_PUMP)),
-            new CoverFluidRegulator(1048576, TextureFactory.of(OVERLAY_PUMP)));
+            context -> new CoverSteamRegulator(context, 1048576, TextureFactory.of(OVERLAY_PUMP)));
 
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GTNLItemList.HydraulicSteamValve.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamValve(16777216, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamValve(context, 16777216, TextureFactory.of(OVERLAY_VALVE)));
 
-        GregTechAPI.registerCover(
+        CoverRegistry.registerCover(
             GTNLItemList.HydraulicSteamRegulator.get(1L),
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
-            new CoverSteamRegulator(16777216, TextureFactory.of(OVERLAY_VALVE)));
+            context -> new CoverSteamRegulator(context, 16777216, TextureFactory.of(OVERLAY_VALVE)));
 
+        CoverRegistry.registerCover(
+            GTNLItemList.PipelessSteamCover.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAYS_ENERGY_ON_WIRELESS[0])),
+            WirelessSteamCover::new,
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
     public static void registerGlasses() {
-        BorosilicateGlass.registerGlass(BlockLoader.PlayerDoll, 0, (byte) 13);
-        BorosilicateGlass.registerGlass(BlockLoader.MetaBlockGlass, 0, (byte) 10);
-        BorosilicateGlass.registerGlass(BlockLoader.MetaBlockGlass, 1, (byte) 8);
-        BorosilicateGlass.registerGlass(BlockLoader.MetaBlockGlass, 2, (byte) 7);
+        GlassTier.addCustomGlass(ItemRegistry.bw_realglas2, 1, 13, 1);
+        if (MainConfig.enableRegisterPlayerDollGlass) {
+            GlassTier.addCustomGlass(BlockLoader.playerDoll, 0, 14, 1);
+        }
+        GlassTier.addCustomGlass(ItemRegistry.bw_realglas2, 2, 14, 2);
+        GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 0, 10, 2);
+        GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 1, 8, 2);
+        GlassTier.addCustomGlass(BlockLoader.metaBlockGlass, 2, 7, 1);
 
-        for (int LampMeta = 1; LampMeta <= 32; LampMeta++) {
-            BorosilicateGlass.registerGlass(BlockLoader.MetaBlockGlow, LampMeta, (byte) 3);
+        for (int lampMeta = 1; lampMeta <= 32; lampMeta++) {
+            GlassTier.addCustomGlass(BlockLoader.metaBlockGlow, lampMeta, 3, 1);
         }
 
-        for (int LampOffMeta = 3; LampOffMeta <= 34; LampOffMeta++) {
-            BorosilicateGlass.registerGlass(BlockLoader.MetaBlock, LampOffMeta, (byte) 3);
+        for (int lampOffMeta = 3; lampOffMeta <= 34; lampOffMeta++) {
+            GlassTier.addCustomGlass(BlockLoader.metaBlock, lampOffMeta, 3, 1);
         }
     }
 
-    public static void run() {
+    public static void registry() {
         Logger.INFO("GTNL Content | Registering MTE Block Machine.");
-        registerMTEHatch();
-        loadMachines();
-        registerMTEWireAndPipe();
+        registerHatch();
+        registerMachines();
+        registerWireAndPipe();
         registerBasicMachine();
         registerCovers();
+
+        if (MainConfig.enableIntegratedOreFactoryChange) {
+            addItemTooltip(ItemList.Ore_Processor.get(1), AnimatedText.SCIENCE_NOT_LEISURE_CHANGE);
+        }
+    }
+
+    public enum GasCollectorTier {
+
+        LV(GTNLItemList.GasCollectorLV, GAS_COLLECTOR_LV, "GasCollectorLV", 1, "Tooltip_GasCollector_00"),
+        MV(GTNLItemList.GasCollectorMV, GAS_COLLECTOR_MV, "GasCollectorMV", 2, "Tooltip_GasCollector_00"),
+        HV(GTNLItemList.GasCollectorHV, GAS_COLLECTOR_HV, "GasCollectorHV", 3, "Tooltip_GasCollector_00"),
+        EV(GTNLItemList.GasCollectorEV, GAS_COLLECTOR_EV, "GasCollectorEV", 4, "Tooltip_GasCollector_00"),
+        IV(GTNLItemList.GasCollectorIV, GAS_COLLECTOR_IV, "GasCollectorIV", 5, "Tooltip_GasCollector_01"),
+        LuV(GTNLItemList.GasCollectorLuV, GAS_COLLECTOR_LUV, "GasCollectorLuV", 6, "Tooltip_GasCollector_01"),
+        ZPM(GTNLItemList.GasCollectorZPM, GAS_COLLECTOR_ZPM, "GasCollectorZPM", 7, "Tooltip_GasCollector_01"),
+        UV(GTNLItemList.GasCollectorUV, GAS_COLLECTOR_UV, "GasCollectorUV", 8, "Tooltip_GasCollector_02"),
+        UHV(GTNLItemList.GasCollectorUHV, GAS_COLLECTOR_UHV, "GasCollectorUHV", 9, "Tooltip_GasCollector_02"),
+        UEV(GTNLItemList.GasCollectorUEV, GAS_COLLECTOR_UEV, "GasCollectorUEV", 10, "Tooltip_GasCollector_02"),
+        UIV(GTNLItemList.GasCollectorUIV, GAS_COLLECTOR_UIV, "GasCollectorUIV", 11, "Tooltip_GasCollector_02"),
+        UMV(GTNLItemList.GasCollectorUMV, GAS_COLLECTOR_UMV, "GasCollectorUMV", 12, "Tooltip_GasCollector_02"),
+        UXV(GTNLItemList.GasCollectorUXV, GAS_COLLECTOR_UXV, "GasCollectorUXV", 13, "Tooltip_GasCollector_03");
+
+        public final GTNLItemList itemEnum;
+        public final GTNLMachineID id;
+        public final String unlocalizedName;
+        public final int tier;
+        public final String tooltipKey;
+
+        GasCollectorTier(GTNLItemList itemEnum, GTNLMachineID id, String name, int tier, String tooltipKey) {
+            this.itemEnum = itemEnum;
+            this.id = id;
+            this.unlocalizedName = name;
+            this.tier = tier;
+            this.tooltipKey = tooltipKey;
+        }
     }
 }

@@ -27,8 +27,8 @@ import net.minecraftforge.common.util.EnumHelper;
 import com.reavaritia.ReAvaCreativeTabs;
 import com.reavaritia.ReAvaItemList;
 import com.reavaritia.common.SubtitleDisplay;
-import com.reavaritia.common.entity.EntityChronarchPoint;
-import com.science.gtnl.Utils.enums.Mods;
+import com.reavaritia.common.entity.EntityChronarchClock;
+import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.config.MainConfig;
 
@@ -96,10 +96,10 @@ public class ChronarchsClock extends Item implements SubtitleDisplay {
         }
 
         if (!world.isRemote) {
-            EntityChronarchPoint point = new EntityChronarchPoint(
+            EntityChronarchClock point = new EntityChronarchClock(
                 world,
                 player.posX,
-                player.posY,
+                player.posY + 0.5,
                 player.posZ,
                 MainConfig.chronarchsClockRadius,
                 MainConfig.chronarchsClockSpeedMultiplier,
@@ -136,7 +136,7 @@ public class ChronarchsClock extends Item implements SubtitleDisplay {
             float delta = (MainConfig.maxTickrate - originalTickrate) / BOOST_DURATION_TICKS;
             currentTickrate = Math.min(currentTickrate + delta, MainConfig.maxTickrate);
 
-            TickrateAPI.changeTickrate(currentTickrate);
+            TickrateAPI.changeServerTickrate(currentTickrate);
             nbt.setBoolean("ClockActive", true);
         }
     }
@@ -159,10 +159,10 @@ public class ChronarchsClock extends Item implements SubtitleDisplay {
         float delta = (MainConfig.maxTickrate - originalTickrate) / RESTORE_DURATION_TICKS;
         currentTickrate = Math.max(currentTickrate - delta, originalTickrate);
 
-        TickrateAPI.changeTickrate(currentTickrate);
+        TickrateAPI.changeServerTickrate(currentTickrate);
 
         if (currentTickrate <= originalTickrate + 0.5f) {
-            TickrateAPI.changeTickrate(originalTickrate);
+            TickrateAPI.changeServerTickrate(originalTickrate);
             currentTickrate = -1f;
             originalTickrate = -1f;
             restoring = false;
@@ -213,7 +213,7 @@ public class ChronarchsClock extends Item implements SubtitleDisplay {
 
     public static void registerEntity() {
         EntityRegistry
-            .registerModEntity(EntityChronarchPoint.class, "ChronarchPoint", 1, Mods.ReAvaritia.ID, 64, 20, true);
+            .registerModEntity(EntityChronarchClock.class, "ChronarchClock", 1, ModList.ReAvaritia.ID, 64, 20, true);
 
     }
 }

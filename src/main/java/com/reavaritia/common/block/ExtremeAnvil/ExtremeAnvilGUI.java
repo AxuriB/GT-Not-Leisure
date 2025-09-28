@@ -141,7 +141,7 @@ public class ExtremeAnvilGUI extends GuiContainer implements ICrafting {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         this.itemNameTextField.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if (!this.isPointInRegion(62, 24, 103, 12, mouseX, mouseY)) {
+        if (!this.isPointInRegion(mouseX, mouseY)) {
             this.itemNameTextField.setFocused(false);
         }
     }
@@ -154,12 +154,12 @@ public class ExtremeAnvilGUI extends GuiContainer implements ICrafting {
         this.containerAnvil.removeCraftingFromCrafters(this);
     }
 
-    private boolean isPointInRegion(int x, int y, int width, int height, int mouseX, int mouseY) {
+    private boolean isPointInRegion(int mouseX, int mouseY) {
         int guiLeft = (this.width - this.xSize) / 2;
         int guiTop = (this.height - this.ySize) / 2;
         mouseX -= guiLeft;
         mouseY -= guiTop;
-        return mouseX >= x - 1 && mouseX < x + width + 1 && mouseY >= y - 1 && mouseY < y + height + 1;
+        return mouseX >= 62 - 1 && mouseX < 62 + 103 + 1 && mouseY >= 24 - 1 && mouseY < 24 + 12 + 1;
     }
 
     private String getLocalizedName() {

@@ -4,8 +4,8 @@ import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -14,7 +14,7 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class SteamCarpenterRecipe implements IRecipePool {
 
-    final RecipeMap<?> SCR = RecipeRegister.SteamCarpenterRecipes;
+    public RecipeMap<?> SCR = RecipePool.SteamCarpenterRecipes;
 
     @Override
     public void loadRecipes() {

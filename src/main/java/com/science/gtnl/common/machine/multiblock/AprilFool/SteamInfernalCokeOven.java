@@ -2,23 +2,18 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
+import static com.science.gtnl.Utils.enums.BlockIcons.*;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.List;
+import java.util.Collection;
 
-import javax.annotation.Nonnull;
-
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -26,48 +21,28 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.StructureError;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gtPlusPlus.core.block.ModBlocks;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCokeOven>
     implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_STEAM_COKE_OVEN = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_STEAM_COKE_OVEN";
-    public static final String TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_STEAM_COKE_OVEN_ACTIVE";
-    public static final String TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_STEAM_COKE_OVEN = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_STEAM_COKE_OVEN);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_STEAM_COKE_OVEN_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW);
-    private static IStructureDefinition<SteamInfernalCokeOven> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SICO = RESOURCE_ROOT_ID + ":" + "multiblock/steam_infernal_coke_oven";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SICO);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SICO);
     private static final int HORIZONTAL_OFF_SET = 2;
     private static final int VERTICAL_OFF_SET = 3;
     private static final int DEPTH_OFF_SET = 0;
@@ -94,33 +69,31 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
 
     @Override
     public IStructureDefinition<SteamInfernalCokeOven> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamInfernalCokeOven>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    ofChain(
-                        buildHatchAdder(SteamInfernalCokeOven.class)
-                            .atLeast(
-                                SteamHatchElement.InputBus_Steam,
-                                InputBus,
-                                SteamHatchElement.OutputBus_Steam,
-                                OutputBus,
-                                OutputHatch)
-                            .casingIndex(((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10))
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .addElement('B', ofBlock(ModBlocks.blockCasingsMisc, 2))
-                .addElement('C', ofBlock(Blocks.nether_brick, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamInfernalCokeOven>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                ofChain(
+                    buildHatchAdder(SteamInfernalCokeOven.class)
+                        .atLeast(
+                            SteamHatchElement.InputBus_Steam,
+                            InputBus,
+                            SteamHatchElement.OutputBus_Steam,
+                            OutputBus,
+                            OutputHatch,
+                            Maintenance)
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings1, 10))
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 13))
+            .addElement('C', ofBlock(Blocks.nether_brick, 0))
+            .build();
     }
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings1, 10);
     }
 
     @Override
@@ -133,11 +106,11 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_STEAM_COKE_OVEN_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_STEAM_INFERNAL_COKE_OVEN_ACTIVE)
                         .extFacing()
                         .build(),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_STEAM_COKE_OVEN_ACTIVE_GLOW)
+                        .addIcon(OVERLAY_FRONT_STEAM_INFERNAL_COKE_OVEN_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
@@ -146,7 +119,7 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_STEAM_COKE_OVEN)
+                        .addIcon(OVERLAY_FRONT_STEAM_INFERNAL_COKE_OVEN)
                         .extFacing()
                         .build() };
             }
@@ -164,7 +137,7 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -178,8 +151,15 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        return true;
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+    }
+
+    @Override
+    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
+
+    @Override
+    public int clampRecipeOcCount(int value) {
+        return 1;
     }
 
     @Override
@@ -193,24 +173,8 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                setSpeedBonus(1F / speedup);
-                return super.validateRecipe(recipe);
-            }
-
-            @Override
-            @Nonnull
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).limitOverclockCount(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(1)
-                    .setSpeedBoost(1);
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    public double getDurationModifier() {
+        return super.getDurationModifier() / speedup;
     }
 
     @Override
@@ -226,7 +190,7 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.InfernalCockRecipes;
+        return RecipePool.InfernalCockRecipes;
     }
 
     @Override
@@ -242,19 +206,6 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
             .beginStructureBlock(5, 5, 5, true)
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
     }
 
     @Override

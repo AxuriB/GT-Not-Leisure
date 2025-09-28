@@ -1,18 +1,19 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import static com.science.gtnl.loader.IScriptLoader.missing;
+import static com.dreammaster.scripts.IScriptLoader.missing;
 import static gregtech.api.enums.Mods.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.dreammaster.item.NHItemList;
+import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -20,26 +21,16 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.chemistry.AgriculturalChem;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class FishingGroundRecipes implements IRecipePool {
 
-    final RecipeMap<?> FGR = RecipeRegister.FishingGroundRecipes;
+    public RecipeMap<?> FGR = RecipePool.FishingGroundRecipes;
 
     @Override
     public void loadRecipes() {
 
-        ItemStack ZeroPointModule = ItemList.ZPM.get(1);
-        NBTTagCompound ZeroPointModuleType = ZeroPointModule.getTagCompound();
-        if (ZeroPointModuleType != null) {
-            ZeroPointModuleType.setLong("GT.ItemCharge", 2000000000000L);
-        } else {
-            ZeroPointModuleType = new NBTTagCompound();
-            ZeroPointModuleType.setLong("GT.ItemCharge", 2000000000000L);
-            ZeroPointModule.setTagCompound(ZeroPointModuleType);
-        }
-
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(1), GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)))
             .itemOutputs(
                 new ItemStack(Items.fish, 16, 0),
@@ -49,12 +40,12 @@ public class FishingGroundRecipes implements IRecipePool {
             .fluidInputs(FluidRegistry.getFluidStack("water", 10000))
             .outputChances(2500, 2500, 2500, 1000)
             .specialValue(0)
-            .noOptimize()
+
             .duration(1000)
             .eut(512)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)),
@@ -67,12 +58,12 @@ public class FishingGroundRecipes implements IRecipePool {
             .fluidInputs(FluidRegistry.getFluidStack("water", 10000))
             .outputChances(7500, 7500, 7500, 5000)
             .specialValue(0)
-            .noOptimize()
+
             .duration(1000)
             .eut(512)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(3),
                 GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)),
@@ -85,12 +76,12 @@ public class FishingGroundRecipes implements IRecipePool {
             .fluidInputs(FluidRegistry.getFluidStack("water", 10000))
             .outputChances(9000, 9000, 9000, 9000)
             .specialValue(0)
-            .noOptimize()
+
             .duration(2000)
             .eut(512)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.getIntegratedCircuit(7), ItemList.ActivatedCarbonFilterMesh.get(1))
             .itemOutputs(
                 new ItemStack(Items.rotten_flesh, 16),
@@ -124,7 +115,7 @@ public class FishingGroundRecipes implements IRecipePool {
                 new ItemStack(Items.diamond, 1),
                 new ItemStack(Items.emerald, 1),
                 new ItemStack(Items.golden_apple, 1),
-                ZeroPointModule)
+                ItemUtils.createItemStack(ItemList.ZPM.get(1), "{GT.ItemCharge:2000000000000L}", null))
             .fluidInputs(FluidRegistry.getFluidStack("water", 10000))
             .outputChances(
                 8000,
@@ -160,12 +151,12 @@ public class FishingGroundRecipes implements IRecipePool {
                 100,
                 5)
             .specialValue(0)
-            .noOptimize()
+
             .duration(3000)
             .eut(2048)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(8),
                 GTUtility.copyAmount(0, ItemList.ActivatedCarbonFilterMesh.get(1)))
@@ -187,27 +178,27 @@ public class FishingGroundRecipes implements IRecipePool {
             .fluidInputs(FluidRegistry.getFluidStack("water", 10000))
             .outputChances(6000, 6000, 3000, 4000, 4000, 4000, 2500, 2500, 2500, 2500, 7500, 5000, 5000, 5000)
             .specialValue(0)
-            .noOptimize()
+
             .duration(1500)
             .eut(2048)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(9), com.dreammaster.item.ItemList.MaceratedPlantmass.getIS(16))
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(9), NHItemList.MaceratedPlantmass.getIS(16))
             .itemOutputs(
-                new ItemStack(AgriculturalChem.mAgrichemItem1, 64, 0),
-                new ItemStack(AgriculturalChem.mAgrichemItem1, 64, 1),
-                new ItemStack(AgriculturalChem.mAgrichemItem1, 64, 2),
-                new ItemStack(AgriculturalChem.mAgrichemItem1, 64, 3),
-                new ItemStack(AgriculturalChem.mAgrichemItem1, 64, 4))
+                GregtechItemList.AlgaeBiomass.get(64),
+                GregtechItemList.GreenAlgaeBiomass.get(64),
+                GregtechItemList.BrownAlgaeBiomass.get(64),
+                GregtechItemList.GoldenBrownAlgaeBiomass.get(64),
+                GregtechItemList.RedAlgaeBiomass.get(64))
             .fluidInputs(FluidRegistry.getFluidStack("water", 10000))
             .specialValue(0)
-            .noOptimize()
+
             .duration(200)
             .eut(2048)
             .addTo(FGR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemInputs(
                 GTUtility.getIntegratedCircuit(10),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Mytryl, 32L),
@@ -219,14 +210,14 @@ public class FishingGroundRecipes implements IRecipePool {
                 GTModHandler.getModItem(GalaxySpace.ID, "tcetiedandelions", 64, 5, missing))
             .fluidInputs(FluidRegistry.getFluidStack("unknownnutrientagar", 4000))
             .specialValue(0)
-            .noOptimize()
+
             .duration(1000)
             .eut(122880)
             .addTo(FGR);
 
         if (PamsHarvestCraft.isModLoaded()) {
 
-            RecipeBuilder.builder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(4),
                     GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)))
@@ -288,12 +279,12 @@ public class FishingGroundRecipes implements IRecipePool {
                     2500,
                     2500)
                 .specialValue(0)
-                .noOptimize()
+
                 .duration(1000)
                 .eut(512)
                 .addTo(FGR);
 
-            RecipeBuilder.builder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(5),
                     GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)),
@@ -356,12 +347,12 @@ public class FishingGroundRecipes implements IRecipePool {
                     7500,
                     7500)
                 .specialValue(0)
-                .noOptimize()
+
                 .duration(1000)
                 .eut(512)
                 .addTo(FGR);
 
-            RecipeBuilder.builder()
+            GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTUtility.getIntegratedCircuit(6),
                     GTUtility.copyAmount(0, new ItemStack(Items.fishing_rod, 1)),
@@ -424,7 +415,7 @@ public class FishingGroundRecipes implements IRecipePool {
                     9000,
                     9000)
                 .specialValue(0)
-                .noOptimize()
+
                 .duration(1000)
                 .eut(512)
                 .addTo(FGR);

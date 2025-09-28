@@ -1,7 +1,6 @@
 package com.reavaritia.common.item;
 
 import static com.reavaritia.ReAvaritia.RESOURCE_ROOT_ID;
-import static com.science.gtnl.common.item.items.TwilightSword.rayTrace;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -43,6 +41,8 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import com.reavaritia.ReAvaCreativeTabs;
 import com.reavaritia.ReAvaItemList;
 import com.reavaritia.common.SubtitleDisplay;
+import com.science.gtnl.Utils.Utils;
+import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -83,7 +83,6 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
         super(INFINITY);
         setUnlocalizedName("InfinitySword");
         setTextureName(RESOURCE_ROOT_ID + ":" + "InfinitySword");
-        setCreativeTab(CreativeTabs.tabCombat);
         setCreativeTab(ReAvaCreativeTabs.ReAvaritia);
         this.setMaxDamage(9999);
         MinecraftForge.EVENT_BUS.register(this);
@@ -154,7 +153,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
     }
 
     private void applyInfinityDamage(EntityLivingBase target, EntityLivingBase attacker) {
-
+        if (target instanceof EntitySaddleSlime) return;
         if (target instanceof EntityDragon) {
             target.attackEntityFrom(INFINITY_DAMAGE, Float.POSITIVE_INFINITY);
             target.setDead();
@@ -276,6 +275,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
 
         for (Entity target : targets) {
             if (target == player) continue;
+            if (target instanceof EntitySaddleSlime) continue;
 
             if (target instanceof EntityDoppleganger livingTarget) {
                 try {
@@ -340,6 +340,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
     }
 
     private void applyDoubleSweepDamage(EntityLivingBase target, EntityPlayer attacker) {
+        if (target instanceof EntitySaddleSlime) return;
         if (!attacker.isSneaking() && target instanceof EntityPlayer) {
             return;
         }
@@ -496,7 +497,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
         super.onUpdate(stack, world, entity, slot, isSelected);
         if (entity instanceof EntityPlayer player) {
             if (player.getCurrentEquippedItem() == stack && player.swingProgress == 0.5F && !world.isRemote) {
-                MovingObjectPosition rayTraceResult = rayTrace(player, false, true);
+                MovingObjectPosition rayTraceResult = Utils.rayTrace(player, false, true, false, 100);
                 cancelDragonArmor = false;
 
                 if (rayTraceResult != null && rayTraceResult.entityHit != null) {

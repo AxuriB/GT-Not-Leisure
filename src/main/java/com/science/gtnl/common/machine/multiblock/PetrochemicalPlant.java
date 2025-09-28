@@ -24,7 +24,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.HeatingCoilLevel;
@@ -39,22 +39,17 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
 public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mHeatingCapacity;
-    private int mLevel = 0;
-
-    private static IStructureDefinition<PetrochemicalPlant> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String PP_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/petrochemical_plant";
-    public static String[][] shape = StructureUtils.readStructureFromFile(PP_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 22;
-    public final int VERTICAL_OFF_SET = 56;
-    public final int DEPTH_OFF_SET = 0;
-    protected static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(3);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(PP_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 22;
+    protected final int VERTICAL_OFF_SET = 56;
+    protected final int DEPTH_OFF_SET = 0;
 
     public PetrochemicalPlant(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -65,13 +60,8 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
     }
 
     @Override
-    protected boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return true;
-    }
-
-    @Override
-    protected float getSpeedBonus() {
-        return 1;
     }
 
     @Override
@@ -109,12 +99,12 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings10, 3);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.PetrochemicalPlantRecipes;
+        return RecipePool.PetrochemicalPlantRecipes;
     }
 
     @Override
@@ -137,53 +127,52 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_PetrochemicalPlant_Casing"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_PetrochemicalPlant_Casing"))
             .addMufflerHatch(StatCollector.translateToLocal("Tooltip_PetrochemicalPlant_Muffler"), 8)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public IStructureDefinition<PetrochemicalPlant> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<PetrochemicalPlant>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(Blocks.yszUnit))
-                .addElement('B', Muffler.newAny(CASING_INDEX, 8))
-                .addElement('C', ofBlock(sBlockCasings2, 0))
-                .addElement('D', ofBlock(sBlockCasings2, 12))
-                .addElement('E', ofBlock(sBlockCasings2, 13))
-                .addElement('F', ofBlock(sBlockCasings2, 14))
-                .addElement('G', ofBlock(sBlockCasings4, 2))
-                .addElement('H', ofBlock(sBlockCasings4, 1))
-                .addElement('I', ofBlock(sBlockCasings4, 9))
-                .addElement('J', ofBlock(sBlockCasings4, 10))
-                .addElement('K', ofBlock(blockCasings3Misc, 2))
-                .addElement(
-                    'L',
-                    withChannel("coil", ofCoil(PetrochemicalPlant::setCoilLevel, PetrochemicalPlant::getCoilLevel)))
-                .addElement('M', ofBlock(sBlockCasings8, 1))
-                .addElement('N', ofBlock(blockCasingsTieredGTPP, 4))
-                .addElement(
-                    'O',
-                    buildHatchAdder(PetrochemicalPlant.class)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 3))))
-                .addElement('P', ofBlock(sBlockCasings10, 4))
-                .addElement('Q', ofBlock(blockCasingsMisc, 14))
-                .addElement('R', ofBlock(sBlockCasings9, 0))
-                .addElement('S', ofFrame(Materials.NiobiumTitanium))
-                .addElement('T', ofFrame(Materials.StainlessSteel))
-                .addElement('U', ofFrame(Materials.Steel))
-                .addElement('V', ofFrame(Materials.RedstoneAlloy))
-                .addElement('W', ofFrame(Materials.Vanadium))
-                .addElement('X', ofBlock(blockCasings2Misc, 4))
-                .addElement('Y', ofBlock(blockCasingsMisc, 11))
-                .addElement('Z', ofBlock(blockCustomMachineCasings, 1))
-                .addElement('0', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<PetrochemicalPlant>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(Blocks.yszUnit))
+            .addElement('B', Muffler.newAny(getCasingTextureID(), 8))
+            .addElement('C', ofBlock(sBlockCasings2, 0))
+            .addElement('D', ofBlock(sBlockCasings2, 12))
+            .addElement('E', ofBlock(sBlockCasings2, 13))
+            .addElement('F', ofBlock(sBlockCasings2, 14))
+            .addElement('G', ofBlock(sBlockCasings4, 2))
+            .addElement('H', ofBlock(sBlockCasings4, 1))
+            .addElement('I', ofBlock(sBlockCasings4, 9))
+            .addElement('J', ofBlock(sBlockCasings4, 10))
+            .addElement('K', ofBlock(blockCasings3Misc, 2))
+            .addElement(
+                'L',
+                GTStructureChannels.HEATING_COIL
+                    .use(activeCoils(ofCoil(PetrochemicalPlant::setMCoilLevel, PetrochemicalPlant::getMCoilLevel))))
+            .addElement('M', ofBlock(sBlockCasings8, 1))
+            .addElement('N', ofBlock(blockCasingsTieredGTPP, 4))
+            .addElement(
+                'O',
+                buildHatchAdder(PetrochemicalPlant.class)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 3))))
+            .addElement('P', ofBlock(sBlockCasings10, 4))
+            .addElement('Q', ofBlock(blockCasingsMisc, 14))
+            .addElement('R', ofBlock(sBlockCasings9, 0))
+            .addElement('S', ofFrame(Materials.NiobiumTitanium))
+            .addElement('T', ofFrame(Materials.StainlessSteel))
+            .addElement('U', ofFrame(Materials.Steel))
+            .addElement('V', ofFrame(Materials.RedstoneAlloy))
+            .addElement('W', ofFrame(Materials.Vanadium))
+            .addElement('X', ofBlock(blockCasings2Misc, 4))
+            .addElement('Y', ofBlock(blockCasingsMisc, 11))
+            .addElement('Z', ofBlock(blockCustomMachineCasings, 1))
+            .addElement('0', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .build();
     }
 
     @Override
@@ -194,7 +183,7 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -208,32 +197,21 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mLevel = 0;
-        setCoilLevel(HeatingCoilLevel.None);
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 5;
+    }
 
-        IMetaTileEntity aMetaTileEntity = aBaseMetaTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        return tCountCasing >= 5 && getCoilLevel() != HeatingCoilLevel.None
-            && this.mMufflerHatches.size() == 8
-            && (mLevel = getCoilLevel().getTier() + 1) > 0;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None && mMufflerHatches.size() == 8;
     }
 
     @Override
     public int getMaxParallelRecipes() {
-        return (this.mLevel * 16);
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return mHeatingCapacity;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        mHeatingCapacity = aCoilLevel;
+        return getMCoilLevel().getTier() * 16;
     }
 
     @Nonnull
@@ -256,30 +234,27 @@ public class PetrochemicalPlant extends MultiMachineBase<PetrochemicalPlant> imp
         mMaxProgresstime = processingLogic.getDuration();
         setEnergyUsage(processingLogic);
 
-        // 获取输出物品并进行 null 检查
         ItemStack[] outputItems = processingLogic.getOutputItems();
         if (outputItems != null) {
             for (ItemStack itemStack : outputItems) {
                 if (itemStack != null) {
-                    itemStack.stackSize *= this.mLevel * GTUtility.getTier(this.getMaxInputVoltage()) * 10;
+                    itemStack.stackSize *= getMCoilLevel().getTier() * GTUtility.getTier(this.getMaxInputVoltage())
+                        * 10;
                 }
             }
         }
         mOutputItems = outputItems;
 
-        // 获取输出流体并进行 null 检查
         FluidStack[] outputFluids = processingLogic.getOutputFluids();
         List<FluidStack> expandedFluids = new ArrayList<>();
 
         if (outputFluids != null) {
             for (FluidStack fluidStack : outputFluids) {
                 if (fluidStack != null) {
-                    // 计算放大后的总量
-                    long totalAmount = (long) fluidStack.amount * this.mLevel
+                    long totalAmount = (long) fluidStack.amount * getMCoilLevel().getTier()
                         * GTUtility.getTier(this.getMaxInputVoltage())
                         * 10;
 
-                    // 拆分为多个 FluidStack，避免 amount 超过 int 上限
                     while (totalAmount > 0) {
                         int stackSize = (int) Math.min(totalAmount, Integer.MAX_VALUE);
                         expandedFluids.add(new FluidStack(fluidStack.getFluid(), stackSize));

@@ -17,10 +17,6 @@ import org.lwjgl.opengl.GL11;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
 import com.science.gtnl.config.MainConfig;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-@SideOnly(Side.CLIENT)
 public class PlayerDollRenderer extends TileEntitySpecialRenderer {
 
     @Override

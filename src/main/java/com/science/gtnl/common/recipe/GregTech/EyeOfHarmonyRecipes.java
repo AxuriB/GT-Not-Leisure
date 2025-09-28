@@ -1,81 +1,72 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import static com.science.gtnl.Utils.enums.Mods.ScienceNotLeisure;
-import static gregtech.api.util.GTModHandler.getModItem;
-import static tectech.recipe.TecTechRecipeMaps.eyeOfHarmonyRecipes;
+import static gregtech.api.enums.Materials.getAll;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import gregtech.api.enums.GTValues;
+import com.google.common.collect.Lists;
+import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.recipes.EyeOfHarmonyRecipeFactory;
+
+import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
-import gregtech.api.util.GTUtility;
-import gtneioreplugin.plugin.block.BlockDimensionDisplay;
-import gtneioreplugin.plugin.block.ModBlocks;
-import tectech.recipe.EyeOfHarmonyRecipe;
+import gregtech.api.enums.OrePrefixes;
+import gtPlusPlus.core.material.Material;
 
 public class EyeOfHarmonyRecipes {
 
-    private ArrayList<Pair<Materials, Long>> processSG(final ArrayList<Materials> validMaterialList) {
-        ArrayList<Pair<Materials, Long>> outputList = new ArrayList<>();
-        return outputList;
+    public static List<Pair<ItemStack, Long>> getAllDustsAsPairsFromGregtech() {
+        List<Pair<ItemStack, Long>> result = new ArrayList<>();
+
+        for (Materials material : getAll()) {
+            if (material == null) continue;
+            ItemStack dust = material.getDust(1);
+            if (dust != null) {
+                result.add(Pair.of(dust, (long) Integer.MAX_VALUE));
+            }
+        }
+
+        for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            if (werkstoff == null) continue;
+            ItemStack dust = werkstoff.get(OrePrefixes.dust, 1);
+            if (dust != null) {
+                result.add(Pair.of(dust, (long) Integer.MAX_VALUE));
+            }
+        }
+
+        for (Material material : Material.mMaterialMap) {
+            if (material == null) continue;
+            ItemStack dust = material.getDust(1);
+            if (dust != null) {
+                result.add(Pair.of(dust.copy(), (long) Integer.MAX_VALUE));
+            }
+        }
+        return result;
     }
 
-    private void specialStarGateRecipe(final HashMap<String, EyeOfHarmonyRecipe> hashMap,
-        final BlockDimensionDisplay blockDimensionDisplay) {
-        HashSet<Materials> validMaterialSet = new HashSet<>();
-        ArrayList<Materials> validMaterialList = new ArrayList<>(validMaterialSet);
+    public static void loadRecipes() {
+        ArrayList<Pair<ItemStack, Long>> baseList = Lists.newArrayList();
+        baseList.addAll(getAllDustsAsPairsFromGregtech());
 
-        hashMap.put(
-            "SG",
-            new EyeOfHarmonyRecipe(
-                processSG(validMaterialList),
-                blockDimensionDisplay,
-                50000,
-                1000,
-                1000,
-                60L,
-                9,
-                1.0));
-    }
-
-    private final HashMap<String, EyeOfHarmonyRecipe> recipeHashMap = new HashMap<>() {
-
-        private static final long serialVersionUID = -3501819612517400500L;
-        {
-            BlockDimensionDisplay blockDimensionDisplay = (BlockDimensionDisplay) ModBlocks.blocks.get("DD");
-            specialStarGateRecipe(this, blockDimensionDisplay);
-        }
-    };
-
-    public EyeOfHarmonyRecipes() {
-
-        for (EyeOfHarmonyRecipe recipe : recipeHashMap.values()) {
-            ItemStack planetItem = recipe.getRecipeTriggerItem()
-                .copy();
-            planetItem.stackSize = 0;
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(planetItem)
-                .itemOutputs(
-                    GTUtility.copyAmountUnsafe(1919810, getModItem(ScienceNotLeisure.ID, "StargateTier9", 1, 0)))
-                .fluidInputs(
-                    Materials.Hydrogen.getGas(0),
-                    Materials.Helium.getGas(0),
-                    MaterialsUEVplus.RawStarMatter.getFluid(0))
-                .fluidOutputs(FluidRegistry.getFluidStack("rawstarmatter", 2147483647))
-                .duration(recipe.getRecipeTimeInTicks())
-                .eut(0)
-                .special(recipe)
-                .noOptimize()
-                .addTo(eyeOfHarmonyRecipes);
-        }
+        EyeOfHarmonyRecipeFactory.addCustomRecipeEntry(
+            GTNLItemList.StargateSingularity.get(1),
+            baseList,
+            Lists.newArrayList(
+                Pair.of(MaterialsUEVplus.SpaceTime.getMolten(Integer.MAX_VALUE), (long) Integer.MAX_VALUE),
+                Pair.of(MaterialsUEVplus.SpaceTime.getMolten(Integer.MAX_VALUE), (long) Integer.MAX_VALUE),
+                Pair.of(MaterialsUEVplus.SpaceTime.getMolten(Integer.MAX_VALUE), (long) Integer.MAX_VALUE)),
+            9,
+            1145141919810L,
+            19198101919810L,
+            1145141919810L,
+            1145141919810L,
+            114514,
+            100);
     }
 }

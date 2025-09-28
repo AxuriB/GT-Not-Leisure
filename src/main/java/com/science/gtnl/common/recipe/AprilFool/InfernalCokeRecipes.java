@@ -10,8 +10,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -19,26 +19,26 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class InfernalCokeRecipes implements IRecipePool {
 
-    final RecipeMap<?> ICR = RecipeRegister.InfernalCockRecipes;
+    public RecipeMap<?> ICR = RecipePool.InfernalCockRecipes;
 
     @Override
     public void loadRecipes() {
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.cactus, 1))
-            .itemOutputs(new ItemStack(ModItems.itemCactusCharcoal, 1))
+            .itemOutputs(GregtechItemList.CactusCharcoal.get(1))
             .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)
             .addTo(ICR);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemCactusCharcoal, 1))
-            .itemOutputs(new ItemStack(ModItems.itemCactusCoke, 1))
+            .itemInputs(GregtechItemList.CactusCharcoal.get(1))
+            .itemOutputs(GregtechItemList.CactusCoke.get(1))
             .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)
@@ -46,15 +46,15 @@ public class InfernalCokeRecipes implements IRecipePool {
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.reeds, 1))
-            .itemOutputs(new ItemStack(ModItems.itemSugarCharcoal, 1))
+            .itemOutputs(GregtechItemList.SugarCharcoal.get(1))
             .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)
             .addTo(ICR);
 
         RA.stdBuilder()
-            .itemInputs(new ItemStack(ModItems.itemSugarCharcoal, 1))
-            .itemOutputs(new ItemStack(ModItems.itemSugarCoke, 1))
+            .itemInputs(GregtechItemList.SugarCharcoal.get(1))
+            .itemOutputs(GregtechItemList.SugarCoke.get(1))
             .fluidOutputs(Materials.Creosote.getFluid(60))
             .duration(20 * SECONDS)
             .eut(0)

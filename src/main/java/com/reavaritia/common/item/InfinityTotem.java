@@ -1,7 +1,7 @@
 package com.reavaritia.common.item;
 
 import static com.reavaritia.ReAvaritia.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.enums.Mods.Baubles;
+import static com.science.gtnl.Utils.enums.ModList.Baubles;
 import static com.science.gtnl.Utils.item.ItemUtils.removeItemFromPlayer;
 
 import java.util.List;
@@ -118,26 +118,22 @@ public class InfinityTotem extends Item implements IBauble, SubtitleDisplay, pla
 
     private void handleTotem(ItemStack stack, EntityPlayer player) {
         if (stack != null && stack.getItem() instanceof InfinityTotem) {
-            // 如果耐久度为 0，移除该物品
-            if (stack.getItemDamage() >= stack.getMaxDamage()) {
-                stack = null;
-            } else {
-                // 确保 stack 的 TagCompound 不为 null
-                if (stack.getTagCompound() == null) {
-                    stack.setTagCompound(new NBTTagCompound());
-                }
 
-                // 获取或设置 ownerUUID
-                if (!stack.getTagCompound()
-                    .hasKey("ownerUUID")) {
-                    stack.getTagCompound()
-                        .setString(
-                            "ownerUUID",
-                            player.getUniqueID()
-                                .toString());
-                }
+            if (stack.getTagCompound() == null) {
+                stack.setTagCompound(new NBTTagCompound());
+            }
+
+            // 获取或设置 ownerUUID
+            if (!stack.getTagCompound()
+                .hasKey("ownerUUID")) {
+                stack.getTagCompound()
+                    .setString(
+                        "ownerUUID",
+                        player.getUniqueID()
+                            .toString());
             }
         }
+
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -210,7 +206,6 @@ public class InfinityTotem extends Item implements IBauble, SubtitleDisplay, pla
 
         ItemStack stack = entityItem.getEntityItem()
             .copy();
-        if (stack == null) return;
 
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt != null && nbt.hasKey("ownerUUID")) {

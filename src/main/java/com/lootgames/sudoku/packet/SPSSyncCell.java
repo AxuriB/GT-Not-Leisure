@@ -1,7 +1,5 @@
 package com.lootgames.sudoku.packet;
 
-import java.io.IOException;
-
 import net.minecraft.network.PacketBuffer;
 
 import com.lootgames.sudoku.sudoku.GameSudoku;
@@ -29,7 +27,7 @@ public class SPSSyncCell implements IServerGamePacket {
     }
 
     @Override
-    public void encode(PacketBuffer buf) throws IOException {
+    public void encode(PacketBuffer buf) {
         buf.writeInt(pos.getX());
         buf.writeInt(pos.getY());
         buf.writeInt(value);
@@ -37,7 +35,7 @@ public class SPSSyncCell implements IServerGamePacket {
     }
 
     @Override
-    public void decode(PacketBuffer buf) throws IOException {
+    public void decode(PacketBuffer buf) {
         this.pos = new Pos2i(buf.readInt(), buf.readInt());
         this.value = buf.readInt();
         this.lastTime = buf.readLong();

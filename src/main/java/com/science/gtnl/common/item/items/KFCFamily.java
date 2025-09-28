@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.loader.EffectLoader;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,7 +33,7 @@ public class KFCFamily extends ItemFood {
     protected void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
         super.onFoodEaten(stack, world, player);
         if (!world.isRemote) {
-            player.addPotionEffect(new PotionEffect(187, 86400 * 20, 1));
+            player.addPotionEffect(new PotionEffect(EffectLoader.perfect_physique.getId(), 86400 * 20, 1));
         }
     }
 

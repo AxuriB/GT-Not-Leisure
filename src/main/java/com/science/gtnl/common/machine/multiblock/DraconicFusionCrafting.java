@@ -23,6 +23,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import gregtech.api.enums.Textures;
@@ -36,8 +38,6 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings10;
 import kubatech.loaders.BlockLoader;
 import kubatech.loaders.DEFCRecipes;
 import tectech.thing.casing.TTCasingsContainer;
@@ -45,14 +45,12 @@ import tectech.thing.casing.TTCasingsContainer;
 public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCrafting>
     implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<DraconicFusionCrafting> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String DFC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/draconic_fusion_crafting";
-    public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(12);
-    public final int HORIZONTAL_OFF_SET = 14;
-    public final int VERTICAL_OFF_SET = 33;
-    public final int DEPTH_OFF_SET = 5;
-    public static String[][] shape = StructureUtils.readStructureFromFile(DFC_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 14;
+    protected final int VERTICAL_OFF_SET = 33;
+    protected final int DEPTH_OFF_SET = 5;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(DFC_STRUCTURE_FILE_PATH);
     public int tierCasing = -1;
 
     public DraconicFusionCrafting(int aID, String aName, String aNameRegional) {
@@ -88,7 +86,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings10, 12);
     }
 
     @Override
@@ -120,37 +118,34 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
     @Override
     public IStructureDefinition<DraconicFusionCrafting> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<DraconicFusionCrafting>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings9, 11))
-                .addElement('B', ofBlock(com.science.gtnl.loader.BlockLoader.MetaCasing, 14))
-                .addElement(
-                    'C',
-                    buildHatchAdder(DraconicFusionCrafting.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 12))))
-                .addElement(
-                    'D',
-                    withChannel(
-                        "tiercasing",
-                        ofBlocksTiered(
-                            DraconicFusionCrafting::getTierCasingFromBlock,
-                            ImmutableList.of(
-                                Pair.of(BlockLoader.defcCasingBlock, 8),
-                                Pair.of(BlockLoader.defcCasingBlock, 9),
-                                Pair.of(BlockLoader.defcCasingBlock, 10),
-                                Pair.of(BlockLoader.defcCasingBlock, 11),
-                                Pair.of(BlockLoader.defcCasingBlock, 12),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2)),
-                            -1,
-                            (t, m) -> t.tierCasing = m,
-                            t -> t.tierCasing)))
-                .addElement('E', ofBlock(sBlockGlass1, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<DraconicFusionCrafting>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings9, 11))
+            .addElement('B', ofBlock(com.science.gtnl.loader.BlockLoader.metaCasing, 14))
+            .addElement(
+                'C',
+                buildHatchAdder(DraconicFusionCrafting.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 12))))
+            .addElement(
+                'D',
+                withChannel(
+                    "tiercasing",
+                    ofBlocksTiered(
+                        DraconicFusionCrafting::getTierCasingFromBlock,
+                        ImmutableList.of(
+                            Pair.of(BlockLoader.defcCasingBlock, 8),
+                            Pair.of(BlockLoader.defcCasingBlock, 9),
+                            Pair.of(BlockLoader.defcCasingBlock, 10),
+                            Pair.of(BlockLoader.defcCasingBlock, 11),
+                            Pair.of(BlockLoader.defcCasingBlock, 12),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2)),
+                        -1,
+                        (t, m) -> t.tierCasing = m,
+                        t -> t.tierCasing)))
+            .addElement('E', ofBlock(sBlockGlass1, 1))
+            .build();
     }
 
     @Nullable
@@ -162,13 +157,13 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return tierCasing >= 4;
     }
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
@@ -179,39 +174,43 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-
-                if (tierCasing >= 4) {
-                    return super.createOverclockCalculator(recipe).setRecipeEUt(recipe.mEUt)
-                        .setAmperage(availableAmperage)
-                        .setEUt(availableVoltage)
-                        .setDuration(recipe.mDuration)
-                        .setAmperageOC(true)
-                        .setDurationDecreasePerOC(4)
-                        .setEUtIncreasePerOC(4)
-                        .setEUtDiscount(0.5 - (mParallelTier / 50.0))
-                        .setSpeedBoost(1.0 / 2.0 - (mParallelTier / 200.0));
-                } else return super.createOverclockCalculator(recipe).setEUtDiscount(0.5 - (mParallelTier / 50.0))
-                    .setSpeedBoost(1.0 / 2.0 - (mParallelTier / 200.0));
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setPerfectOC(getPerfectOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return 0.5 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / 2.0 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-        tierCasing = -1;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 25;
+    }
 
-        energyHatchTier = checkEnergyHatchTier();
-        if (tierCasing < 0) return false;
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        tierCasing = -1;
+    }
 
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 25;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && tierCasing >= 0;
     }
 
     @Override
@@ -222,7 +221,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

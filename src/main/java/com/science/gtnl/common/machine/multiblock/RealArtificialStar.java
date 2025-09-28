@@ -4,12 +4,11 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.Utils.copyAmount;
 import static com.science.gtnl.Utils.enums.GTNLItemList.StellarConstructionFrameMaterial;
-import static com.science.gtnl.Utils.enums.Mods.TwistSpaceTechnology;
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.enums.ModList.TwistSpaceTechnology;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
@@ -46,14 +45,12 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
-import galaxyspace.core.register.GSBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -68,13 +65,11 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
-public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
-    implements IWirelessEnergyHatchInformation {
+public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<RealArtificialStar> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String RAS_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/real_artificial_star";
-    public static String[][] shape = StructureUtils.readStructureFromFile(RAS_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(RAS_STRUCTURE_FILE_PATH);
     protected static long MaxOfDepletedExcitedNaquadahFuelRod = MainConfig.euEveryDepletedExcitedNaquadahFuelRod;
     protected static long MaxOfEnhancementCore = MainConfig.euEveryEnhancementCore;
     protected static long MaxOfAntimatter = 3;
@@ -87,16 +82,16 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
     public int tierTimeField = -1;
     public int tierStabilisationField = -1;
     public double outputMultiplier = 1;
-    public short recoveryChance = 0;
+    public int recoveryChance = 0;
     public byte rewardContinuous = 0;
     public long currentOutputEU = 0;
     public final DecimalFormat decimalFormat = new DecimalFormat("#.0");
     public boolean isRendering = false;
     public static boolean configEnableDefaultRender = MainConfig.enableRenderDefaultArtificialStar;
     public boolean enableRender = configEnableDefaultRender;
-    public final int HORIZONTAL_OFF_SET = 62;
-    public final int VERTICAL_OFF_SET = 88;
-    public final int DEPTH_OFF_SET = 15;
+    protected final int HORIZONTAL_OFF_SET = 62;
+    protected final int VERTICAL_OFF_SET = 88;
+    protected final int DEPTH_OFF_SET = 15;
 
     public RealArtificialStar(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -123,7 +118,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("isActive")) {
             currentTip.add(
-                EnumChatFormatting.AQUA + texter("Current Generating : ", "Waila.RealArtificialStar.1")
+                EnumChatFormatting.AQUA + texter("Current Generating : ", "Info_RealArtificialStar_00")
                     + EnumChatFormatting.GOLD
                     + tag.getLong("currentOutputEU")
                     + EnumChatFormatting.RED
@@ -153,22 +148,53 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
 
     @Override
     public String[] getInfoData() {
-        // spotless:off
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 6];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = EnumChatFormatting.GOLD+texter("Reward for continuous operation","RealArtificialStar.getInfoData.00")+EnumChatFormatting.RESET+": "+EnumChatFormatting.GREEN+(rewardContinuous+100)+"%";
-        ret[origin.length + 1] = EnumChatFormatting.GOLD+texter("Generating Multiplier","RealArtificialStar.getInfoData.01")+EnumChatFormatting.RESET+": "+EnumChatFormatting.GREEN+outputMultiplier;
-        ret[origin.length + 2] = EnumChatFormatting.GOLD+texter("Dimension Field Tier","RealArtificialStar.getInfoData.02")+EnumChatFormatting.RESET+": "+EnumChatFormatting.YELLOW+tierDimensionField;
-        ret[origin.length + 3] = EnumChatFormatting.GOLD+texter("Time Field Tier","RealArtificialStar.getInfoData.03")+EnumChatFormatting.RESET+": "+EnumChatFormatting.YELLOW+tierTimeField;
-        ret[origin.length + 4] = EnumChatFormatting.GOLD+texter("Stabilisation Field Tier","RealArtificialStar.getInfoData.04")+EnumChatFormatting.RESET+": "+EnumChatFormatting.YELLOW+tierStabilisationField;
-        ret[origin.length + 5] = EnumChatFormatting.GOLD+texter("Recover material chance","RealArtificialStar.getInfoData.05")+EnumChatFormatting.RESET+": "+EnumChatFormatting.AQUA+recoveryChance+EnumChatFormatting.RESET+"/"+EnumChatFormatting.AQUA+"1000";
+        ret[origin.length] = EnumChatFormatting.GOLD
+            + texter("Reward for continuous operation", "Info_RealArtificialStar_01")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.GREEN
+            + (rewardContinuous + 100)
+            + "%";
+        ret[origin.length + 1] = EnumChatFormatting.GOLD + texter("Generating Multiplier", "Info_RealArtificialStar_02")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.GREEN
+            + outputMultiplier;
+        ret[origin.length + 2] = EnumChatFormatting.GOLD + texter("Dimension Field Tier", "Info_RealArtificialStar_03")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.YELLOW
+            + tierDimensionField;
+        ret[origin.length + 3] = EnumChatFormatting.GOLD + texter("Time Field Tier", "Info_RealArtificialStar_04")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.YELLOW
+            + tierTimeField;
+        ret[origin.length + 4] = EnumChatFormatting.GOLD
+            + texter("Stabilisation Field Tier", "Info_RealArtificialStar_05")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.YELLOW
+            + tierStabilisationField;
+        ret[origin.length + 5] = EnumChatFormatting.GOLD
+            + texter("Recover material chance", "Info_RealArtificialStar_06")
+            + EnumChatFormatting.RESET
+            + ": "
+            + EnumChatFormatting.AQUA
+            + recoveryChance
+            + EnumChatFormatting.RESET
+            + "/"
+            + EnumChatFormatting.AQUA
+            + "1000";
         return ret;
-       // spotless:on
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             if (enableRender && isRendering) {
                 destroyRenderBlock();
@@ -183,7 +209,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.RealArtificialStarRecipes;
+        return RecipePool.RealArtificialStarRecipes;
     }
 
     @NotNull
@@ -337,9 +363,24 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
     }
 
     @Override
+    public void onDisableWorking() {
+        if (isRendering) {
+            destroyRenderBlock();
+        }
+        super.onDisableWorking();
+    }
+
+    @Override
+    public void onRemoval() {
+        if (isRendering) {
+            destroyRenderBlock();
+        }
+        super.onRemoval();
+    }
+
+    @Override
     public void onBlockDestroyed() {
         if (isRendering) {
-            isRendering = false;
             destroyRenderBlock();
         }
         super.onBlockDestroyed();
@@ -380,17 +421,28 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        repairMachine();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
+            return false;
+        calculateOutputMultiplier();
+        recoveryChance = tierDimensionField * tierTimeField * tierStabilisationField;
+        return true;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && tierDimensionField > 0
+            && tierTimeField > 0
+            && tierStabilisationField > 0
+            && mInputBusses.size() == 1;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
         mInputBusses.clear();
         tierDimensionField = -1;
         tierTimeField = -1;
         tierStabilisationField = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierDimensionField < 0 || tierTimeField < 0 || tierStabilisationField < 0) return false;
-        if (this.mInputBusses.size() != 1) return false;
-        calculateOutputMultiplier();
-        recoveryChance = (short) (tierDimensionField * tierTimeField * tierStabilisationField);
-        return true;
     }
 
     @Override
@@ -401,7 +453,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -415,87 +467,84 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
 
     @Override
     public IStructureDefinition<RealArtificialStar> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<RealArtificialStar>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    withChannel(
-                        "tiertimefield",
-                        ofBlocksTiered(
-                            RealArtificialStar::getTierTimeFieldBlockFromBlock,
-                            ImmutableList.of(
-                                Pair.of(sBlockCasingsTT, 14),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 0),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 1),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 2),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 3),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 4),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 5),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 6),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 7),
-                                Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)),
-                            -1,
-                            (t, m) -> t.tierTimeField = m,
-                            t -> t.tierTimeField)))
-                .addElement('B', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('C', ofBlock(compactFusionCoil, 4))
-                .addElement(
-                    'D',
-                    buildHatchAdder(RealArtificialStar.class).atLeast(InputBus, OutputBus)
-                        .adder(RealArtificialStar::addInputBusOrOutputBusToMachineList)
-                        .dot(1)
-                        .casingIndex(13)
-                        .buildAndChain(sBlockCasings1, 13))
-                .addElement(
-                    'E',
-                    withChannel(
-                        "tierdimensionfield",
-                        ofBlocksTiered(
-                            RealArtificialStar::getTierDimensionFieldBlockFromBlock,
-                            ImmutableList.of(
-                                Pair.of(GregTechAPI.sBlockCasings1, 14),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 0),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 1),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 3),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 4),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 5),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 6),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 7),
-                                Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 8)),
-                            -1,
-                            (t, m) -> t.tierDimensionField = m,
-                            t -> t.tierDimensionField)))
-                .addElement('F', ofBlock(sBlockCasings10, 11))
-                .addElement('G', ofBlock(sBlockCasings8, 10))
-                .addElement(
-                    'H',
-                    withChannel(
-                        "tierstabilisationfield",
-                        ofBlocksTiered(
-                            RealArtificialStar::getTierStabilisationFieldBlockFromBlock,
-                            ImmutableList.of(
-                                Pair.of(sBlockCasingsTT, 9),
-                                Pair.of(StabilisationFieldGenerators, 0),
-                                Pair.of(StabilisationFieldGenerators, 1),
-                                Pair.of(StabilisationFieldGenerators, 2),
-                                Pair.of(StabilisationFieldGenerators, 3),
-                                Pair.of(StabilisationFieldGenerators, 4),
-                                Pair.of(StabilisationFieldGenerators, 5),
-                                Pair.of(StabilisationFieldGenerators, 6),
-                                Pair.of(StabilisationFieldGenerators, 7),
-                                Pair.of(StabilisationFieldGenerators, 8)),
-                            -1,
-                            (t, m) -> t.tierStabilisationField = m,
-                            t -> t.tierStabilisationField)))
-                .addElement('I', ofBlock(GSBlocks.DysonSwarmBlocks, 0))
-                .addElement('J', ofBlock(GSBlocks.DysonSwarmBlocks, 5))
-                .addElement('K', ofBlock(GSBlocks.DysonSwarmBlocks, 8))
-                .addElement('L', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<RealArtificialStar>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                withChannel(
+                    "tiertimefield",
+                    ofBlocksTiered(
+                        RealArtificialStar::getTierTimeFieldBlockFromBlock,
+                        ImmutableList.of(
+                            Pair.of(sBlockCasingsTT, 14),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 0),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 1),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 2),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 3),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 4),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 5),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 6),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 7),
+                            Pair.of(TTCasingsContainer.TimeAccelerationFieldGenerator, 8)),
+                        -1,
+                        (t, m) -> t.tierTimeField = m,
+                        t -> t.tierTimeField)))
+            .addElement('B', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('C', ofBlock(compactFusionCoil, 4))
+            .addElement(
+                'D',
+                buildHatchAdder(RealArtificialStar.class).atLeast(Maintenance, InputBus, OutputBus)
+                    .adder(RealArtificialStar::addInputBusOrOutputBusToMachineList)
+                    .dot(1)
+                    .casingIndex(13)
+                    .buildAndChain(sBlockCasings1, 13))
+            .addElement(
+                'E',
+                withChannel(
+                    "tierdimensionfield",
+                    ofBlocksTiered(
+                        RealArtificialStar::getTierDimensionFieldBlockFromBlock,
+                        ImmutableList.of(
+                            Pair.of(GregTechAPI.sBlockCasings1, 14),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 0),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 1),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 2),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 3),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 4),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 5),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 6),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 7),
+                            Pair.of(TTCasingsContainer.SpacetimeCompressionFieldGenerators, 8)),
+                        -1,
+                        (t, m) -> t.tierDimensionField = m,
+                        t -> t.tierDimensionField)))
+            .addElement('F', ofBlock(sBlockCasings10, 11))
+            .addElement('G', ofBlock(sBlockCasings8, 10))
+            .addElement(
+                'H',
+                withChannel(
+                    "tierstabilisationfield",
+                    ofBlocksTiered(
+                        RealArtificialStar::getTierStabilisationFieldBlockFromBlock,
+                        ImmutableList.of(
+                            Pair.of(sBlockCasingsTT, 9),
+                            Pair.of(StabilisationFieldGenerators, 0),
+                            Pair.of(StabilisationFieldGenerators, 1),
+                            Pair.of(StabilisationFieldGenerators, 2),
+                            Pair.of(StabilisationFieldGenerators, 3),
+                            Pair.of(StabilisationFieldGenerators, 4),
+                            Pair.of(StabilisationFieldGenerators, 5),
+                            Pair.of(StabilisationFieldGenerators, 6),
+                            Pair.of(StabilisationFieldGenerators, 7),
+                            Pair.of(StabilisationFieldGenerators, 8)),
+                        -1,
+                        (t, m) -> t.tierStabilisationField = m,
+                        t -> t.tierStabilisationField)))
+            .addElement('I', ofBlock(sBlockCasingsDyson, 0))
+            .addElement('J', ofBlock(sBlockCasingsDyson, 5))
+            .addElement('K', ofBlock(sBlockCasingsDyson, 8))
+            .addElement('L', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .build();
     }
 
     @Nullable
@@ -526,7 +575,6 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("Tooltip_RealArtificialStar_MachineType"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_RealArtificialStar_Controller"))
             .addInfo(StatCollector.translateToLocal("Tooltip_RealArtificialStar_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_RealArtificialStar_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_RealArtificialStar_02"))
@@ -566,17 +614,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
     }
 
     @Override
-    protected boolean isEnablePerfectOverclock() {
-        return false;
-    }
-
-    @Override
-    protected float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
-    protected int getMaxParallelRecipes() {
+    public int getMaxParallelRecipes() {
         return 1;
     }
 
@@ -639,7 +677,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
                 (int) (x + xOffset),
                 (int) (y + yOffset),
                 (int) (z + zOffset),
-                BlockLoader.BlockArtificialStarRender);
+                BlockLoader.blockArtificialStarRender);
     }
 
     public void destroyRenderBlock() {
@@ -657,5 +695,18 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar>
         this.getBaseMetaTileEntity()
             .getWorld()
             .setBlock((int) (x + xOffset), (int) (y + yOffset), (int) (z + zOffset), Blocks.air);
+    }
+
+    @Override
+    public void checkMaintenance() {}
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCheckMaintenance() {
+        return false;
     }
 }

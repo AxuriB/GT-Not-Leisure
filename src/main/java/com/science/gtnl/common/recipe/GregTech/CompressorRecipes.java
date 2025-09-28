@@ -1,30 +1,33 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import static com.science.gtnl.Utils.enums.Mods.ScienceNotLeisure;
+import static com.science.gtnl.Utils.enums.ModList.ScienceNotLeisure;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.CompressionTierKey;
+import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public class CompressorRecipes implements IRecipePool {
 
     final CompressionTierKey COMPRESSION_TIER = CompressionTierKey.INSTANCE;
-    final RecipeMap<?> NCR = RecipeMaps.neutroniumCompressorRecipes;
-    final RecipeMap<?> CR = RecipeMaps.compressorRecipes;
+    public RecipeMap<?> NCR = RecipeMaps.neutroniumCompressorRecipes;
+    public RecipeMap<?> CR = RecipeMaps.compressorRecipes;
 
     @Override
     public void loadRecipes() {
@@ -39,8 +42,7 @@ public class CompressorRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, ItemList.Shape_Mold_Ingot.get(1)))
             .itemOutputs(MaterialPool.CompressedSteam.get(OrePrefixes.ingot, 1))
-            .fluidInputs(FluidUtils.getSteam(100000))
-            .noOptimize()
+            .fluidInputs(Materials.Steam.getGas(100000))
             .duration(80)
             .metadata(COMPRESSION_TIER, 2)
             .eut(512)
@@ -49,8 +51,7 @@ public class CompressorRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(0, ItemList.Shape_Mold_Ingot.get(1)))
             .itemOutputs(MaterialPool.CompressedSteam.get(OrePrefixes.ingot, 1))
-            .fluidInputs(FluidRegistry.getFluidStack("supercriticalsteam", 2000))
-            .noOptimize()
+            .fluidInputs(Materials.DenseSupercriticalSteam.getGas(2000))
             .duration(80)
             .metadata(COMPRESSION_TIER, 2)
             .eut(512)
@@ -59,9 +60,15 @@ public class CompressorRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(GTNLItemList.BlazeCube.get(9))
             .itemOutputs(GTNLItemList.BlazeCubeBlock.get(1))
-            .noOptimize()
             .duration(300)
             .eut(TierEU.RECIPE_LV)
+            .addTo(CR);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.cobblestone, 64))
+            .itemOutputs(GTModHandler.getModItem(TwilightForest.ID, "tile.GiantCobble", 1))
+            .duration(300)
+            .eut(TierEU.RECIPE_HV)
             .addTo(CR);
     }
 }

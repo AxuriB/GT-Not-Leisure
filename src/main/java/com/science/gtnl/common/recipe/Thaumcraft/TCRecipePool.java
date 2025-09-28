@@ -5,10 +5,10 @@ import static com.reavaritia.common.ItemLoader.ChronarchsClock;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
-import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.api.IRecipePool;
 
 import fox.spiteful.avaritia.items.LudicrousItems;
 import gregtech.api.enums.ItemList;
@@ -17,40 +17,19 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.item.chemistry.GenericChem;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.thing.CustomItemList;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 
-public class TCRecipePool {
+public class TCRecipePool implements IRecipePool {
 
     public static InfusionRecipe infusionRecipeTimeStopPocketWatch;
 
-    public static void loadRecipes() {
-
-        ItemStack CreativeCapacitorBank = GTModHandler.getModItem(Mods.EnderIO.ID, "blockCapBank", 1, 0);
-        NBTTagCompound CreativeCapacitorBankType = CreativeCapacitorBank.getTagCompound();
-        if (CreativeCapacitorBankType != null) {
-            CreativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            CreativeCapacitorBankType.setString("type", "CREATIVE");
-        } else {
-            CreativeCapacitorBankType = new NBTTagCompound();
-            CreativeCapacitorBankType.setInteger("storedEnergyRF", 2500000);
-            CreativeCapacitorBankType.setString("type", "CREATIVE");
-            CreativeCapacitorBank.setTagCompound(CreativeCapacitorBankType);
-        }
-
-        ItemStack MegaUltimateBattery = ItemList.ZPM6.get(1);
-        NBTTagCompound MegaUltimateBatteryType = MegaUltimateBattery.getTagCompound();
-        if (MegaUltimateBatteryType != null) {
-            MegaUltimateBatteryType.setLong("GT.ItemCharge", 9223372036854775807L);
-        } else {
-            MegaUltimateBatteryType = new NBTTagCompound();
-            MegaUltimateBatteryType.setLong("GT.ItemCharge", 9223372036854775807L);
-            MegaUltimateBattery.setTagCompound(MegaUltimateBatteryType);
-        }
+    @Override
+    public void loadRecipes() {
 
         infusionRecipeTimeStopPocketWatch = ThaumcraftApi.addInfusionCraftingRecipe(
             "GTNL_TIME_STOP_POCKET_WATCH",
@@ -71,13 +50,21 @@ public class TCRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.gem, MaterialsUEVplus.GravitonShard, 1),
                 GTOreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.MagMatter, 1), ItemList.Timepiece.get(1),
                 ItemList.Transdimensional_Alignment_Matrix.get(1), ItemList.EnergisedTesseract.get(1),
-                ItemList.Field_Generator_UXV.get(1), ItemList.GigaChad.get(1), MegaUltimateBattery,
+                ItemList.Field_Generator_UXV.get(1), ItemList.GigaChad.get(1),
+                ItemUtils.createItemStack(ItemList.ZPM6.get(1), "{GT.ItemCharge:" + Long.MAX_VALUE + "}", null),
                 CustomItemList.astralArrayFabricator.get(1), CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
-                CustomItemList.Machine_Multi_ForgeOfGods.get(1), IGItems.SpaceElevatorModuleAssemblerT3,
-                IGItems.SpaceElevatorModulePumpT3, new ItemStack(LudicrousItems.bigPearl, 1), CreativeCapacitorBank,
+                CustomItemList.Machine_Multi_ForgeOfGods.get(1), ItemList.SpaceElevatorModuleAssemblerT3.get(1),
+                ItemList.SpaceElevatorModulePumpT3.get(1), new ItemStack(LudicrousItems.bigPearl, 1),
+                ItemUtils.createItemStack(
+                    Mods.EnderIO.ID,
+                    "blockCapBank",
+                    1,
+                    0,
+                    "{storedEnergyRF:2500000,type:\"CREATIVE\"}",
+                    null),
                 Mods.TaintedMagic.isModLoaded() ? GTModHandler.getModItem(Mods.TaintedMagic.ID, "ItemFocusTime", 1)
                     : GTModHandler.getModItem(Mods.Thaumcraft.ID, "FocusPrimal", 1),
-                GenericChem.mSynchrotronCapableCatalyst, GTNLItemList.UMVParallelControllerCore.get(1),
+                GregtechItemList.SynchrotronCapableCatalyst.get(1), GTNLItemList.UMVParallelControllerCore.get(1),
                 GTModHandler.getModItem(Mods.AE2FluidCraft.ID, "fluid_storage.Universe", 1),
                 GTModHandler.getModItem(Mods.AppliedEnergistics2.ID, "item.ItemExtremeStorageCell.Universe", 1),
                 Mods.SGCraft.isModLoaded() ? GTModHandler.getModItem(Mods.SGCraft.ID, "ic2Capacitor", 1)

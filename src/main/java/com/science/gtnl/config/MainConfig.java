@@ -26,9 +26,11 @@ public class MainConfig {
         + "player_doll";
     public static final String CATEGORY_NOT_ENOUGH_ITEMS = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER
         + "not_enough_items";
+    public static final String CATEGORY_STICK = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "stick";
     public static final String CATEGORY_SUPER_CREEPER = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER
         + "super_creeper";
     public static final String CATEGORY_MESSAGE = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "message";
+    public static final String CATEGORY_OTHER = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "other";
     public static final String CATEGORY_DEBUG = CATEGORY_GTNL_CONFIG + Configuration.CATEGORY_SPLITTER + "debug";
 
     // --- Deeper Nested Categories (paths constructed using CATEGORY_SPLITTER) ---
@@ -45,8 +47,7 @@ public class MainConfig {
         + "infinity_sword";
     public static final String SUB_CATEGORY_CHRONARCHS_CLOCK = CATEGORY_RE_AVARITIA + Configuration.CATEGORY_SPLITTER
         + "chronarch_clock";
-    public static final String SUB_CATEGORY_METEOR_PARADIGM = CATEGORY_BLOOD_MAGIC + Configuration.CATEGORY_SPLITTER
-        + "meteor_paradigm";
+    public static final String SUB_CATEGORY_METEOR = CATEGORY_BLOOD_MAGIC + Configuration.CATEGORY_SPLITTER + "meteor";
 
     // Machine
     public static boolean enableRecipeOutputChance = true;
@@ -62,12 +63,12 @@ public class MainConfig {
     public static boolean enableRenderDefaultArtificialStar = true;
 
     public static boolean enablePortalToAlfheimBigBoom = true;
-
     public static boolean enableEternalGregTechWorkshopSpiralRender = false;
+    public static boolean enableVoidMinerTweak = true;
+    public static boolean enableIntegratedOreFactoryChange = true;
 
     // Recipe
     public static boolean enableDeleteRecipe = true;
-    public static boolean enableAprilFoolRecipe = false;
     public static boolean enableShowDelRecipeTitle = true;
     public static boolean enableSomethingRecipe = true;
 
@@ -79,6 +80,10 @@ public class MainConfig {
 
     // Player Doll
     public static boolean enableCustomPlayerDoll = true;
+    public static boolean enableRegisterPlayerDollGlass = true;
+
+    // Extreme Anvil
+    public static String unbreakOre = "neutronUnbreak";
 
     // Infinity Sword
     public static boolean enableInfinitySwordBypassMechanism = true;
@@ -87,13 +92,12 @@ public class MainConfig {
 
     // Chronarch's Clock
     public static int chronarchsClockRadius = 6;
-    public static int chronarchsClockSpeedMultiplier = 100;
-    public static int chronarchsClockDurationTicks = 200;
-    public static int chronarchsClockCooldown = 200;
+    public static int chronarchsClockSpeedMultiplier = 1024;
+    public static int chronarchsClockDurationTicks = 600;
+    public static int chronarchsClockCooldown = 300;
 
-    // BloodMagic
-    public static int meteorParadigmChunkSize = 1024;
-    public static int meteorParadigmBatchUpdateInterval = 2048;
+    // Stick
+    public static boolean enableStickItem = true;
 
     // NotEnoughItems
     public static boolean enableSpecialCheatIcon = false;
@@ -124,8 +128,13 @@ public class MainConfig {
     public static int spiderTargetInterval = 20;
 
     // Effect
-    public static int aweEffectID = 186;
-    public static int perfectPhysiqueEffect = 187;
+    public static int aweEffectID = 110;
+    public static int perfectPhysiqueEffect = 111;
+    public static int shimmerEffect = 112;
+
+    // Other
+    public static boolean enableSaturationHeal = true;
+    public static boolean enableDeathIncompleteMessage = true;
 
     // Message
     public static boolean enableShowJoinMessage = true;
@@ -133,6 +142,8 @@ public class MainConfig {
 
     // Debug
     public static boolean enableDebugMode = false;
+
+    public static boolean enableAprilFool = false;
 
     public static Configuration config;
 
@@ -151,7 +162,7 @@ public class MainConfig {
 
         LocalDate today = LocalDate.now();
         if (today.getMonthValue() == 4 && today.getDayOfMonth() == 1) {
-            enableAprilFoolRecipe = true;
+            enableAprilFool = true;
         }
 
     }
@@ -251,6 +262,22 @@ public class MainConfig {
                 "Setting this to false will reduce the Portal To Alfheim explosion to little more then a tnt blast")
             .getBoolean(enablePortalToAlfheimBigBoom);
 
+        enableVoidMinerTweak = config
+            .get(
+                CATEGORY_MACHINE,
+                "enableVoidMinerTweak",
+                enableVoidMinerTweak,
+                "Enable Void Miner Tweak, allows you to override target dimension that Void Miner mines")
+            .getBoolean(enableVoidMinerTweak);
+
+        enableIntegratedOreFactoryChange = config
+            .get(
+                CATEGORY_MACHINE,
+                "enableIntegratedOreFactoryChange",
+                enableIntegratedOreFactoryChange,
+                "Enable Integrated Ore Factory Change, change parallel to 65536 and can use Laser Energy Hatch")
+            .getBoolean(enableIntegratedOreFactoryChange);
+
         // Recipe
         enableSomethingRecipe = config
             .get(CATEGORY_RECIPE, "enableSomethingRecipe", enableSomethingRecipe, "Enable Something Cheap Recipe")
@@ -260,9 +287,9 @@ public class MainConfig {
             .get(CATEGORY_RECIPE, "enableDeleteRecipe", enableDeleteRecipe, "Enable Delete Recipe")
             .getBoolean(enableDeleteRecipe);
 
-        enableAprilFoolRecipe = config
-            .get(CATEGORY_RECIPE, "enableAprilFoolRecipe", enableAprilFoolRecipe, "Force enable April Fool's recipe")
-            .getBoolean(enableAprilFoolRecipe);
+        enableSomethingRecipe = config
+            .get(CATEGORY_RECIPE, "enableSomethingRecipe", enableSomethingRecipe, "Enable Something Cheap Recipe")
+            .getBoolean(enableSomethingRecipe);
 
         enableShowDelRecipeTitle = config
             .get(
@@ -307,8 +334,20 @@ public class MainConfig {
 
         // Player Doll
         enableCustomPlayerDoll = config
-            .get(CATEGORY_PLAYER_DOLL, "enable", enableCustomPlayerDoll, "Enable Custom Player Skin for Player Doll")
+            .get(
+                CATEGORY_PLAYER_DOLL,
+                "enableCustomSkin",
+                enableCustomPlayerDoll,
+                "Enable Custom Player Skin for Player Doll")
             .getBoolean(enableCustomPlayerDoll);
+
+        enableRegisterPlayerDollGlass = config
+            .get(
+                CATEGORY_PLAYER_DOLL,
+                "enableRegisterMAXGlass",
+                enableRegisterPlayerDollGlass,
+                "Make Play Doll to MAX Tier Glass")
+            .getBoolean(enableRegisterPlayerDollGlass);
 
         // Infinity Sword
         enableInfinitySwordBypassMechanism = config
@@ -360,22 +399,10 @@ public class MainConfig {
             .get(SUB_CATEGORY_CHRONARCHS_CLOCK, "Cooldown", chronarchsClockCooldown, "Change Chronarchs Clock Cooldown")
             .getInt(chronarchsClockCooldown);
 
-        // Blood Magic
-        meteorParadigmChunkSize = config
-            .get(
-                SUB_CATEGORY_METEOR_PARADIGM,
-                "chunkSize",
-                meteorParadigmChunkSize,
-                "Set the chunk size for meteor paradigm operations (default: 1024)")
-            .getInt(meteorParadigmChunkSize);
-
-        meteorParadigmBatchUpdateInterval = config
-            .get(
-                SUB_CATEGORY_METEOR_PARADIGM,
-                "batchUpdateInterval",
-                meteorParadigmBatchUpdateInterval,
-                "Set the batch update interval for meteor paradigm operations (default: 2048)")
-            .getInt(meteorParadigmBatchUpdateInterval);
+        // Stick
+        enableStickItem = config
+            .get(CATEGORY_STICK, "enableStickItem", enableStickItem, "Enable stick fake item and block")
+            .getBoolean(enableStickItem);
 
         // Not Enough Items
         enableSpecialCheatIcon = config
@@ -542,6 +569,22 @@ public class MainConfig {
                 burningExplosionTimer,
                 "Ticks before Creeper explodes due to burning.")
             .getInt(burningExplosionTimer);
+
+        // Other
+        enableSaturationHeal = config.get(
+            CATEGORY_OTHER,
+            "enableSaturationHeal",
+            enableSaturationHeal,
+            "Enable Saturation Heal Tweak. When hunger is 20, player regenerates health based on saturation / 6, up to 1 HP per 0.5s")
+            .getBoolean(enableSaturationHeal);
+
+        enableDeathIncompleteMessage = config
+            .get(
+                CATEGORY_OTHER,
+                "enableDeathIncompleteMessage",
+                enableDeathIncompleteMessage,
+                "Enable sending the unfinished chat message when player dies")
+            .getBoolean(enableDeathIncompleteMessage);
 
         // Message
         enableShowJoinMessage = config

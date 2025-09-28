@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.material.Material;
@@ -49,7 +49,7 @@ public class OP_GTPP_OreHandler {
                 .itemOutputs(ore.getDust(Integer.MAX_VALUE))
                 .eut(OreProcessRecipeEUt)
                 .duration(OreProcessRecipeDuration)
-                .addTo(RecipeRegister.CheatOreProcessingRecipes);
+                .addTo(RecipePool.CheatOreProcessingRecipes);
         }
     }
 
@@ -60,7 +60,7 @@ public class OP_GTPP_OreHandler {
                 .itemOutputs(ore.getDust(Integer.MAX_VALUE))
                 .eut(OreProcessRecipeEUt)
                 .duration(OreProcessRecipeDuration)
-                .addTo(RecipeRegister.CheatOreProcessingRecipes);
+                .addTo(RecipePool.CheatOreProcessingRecipes);
         }
     }
 }

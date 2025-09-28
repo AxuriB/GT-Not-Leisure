@@ -34,6 +34,7 @@ import com.science.gtnl.loader.BlockLoader;
 
 import cofh.api.energy.IEnergyContainerItem;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,7 +46,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import tectech.TecTech;
 import tectech.thing.casing.TTCasingsContainer;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -58,46 +58,40 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
     private static final long usedEuPerDurability = 1000;
     private static final int usedUumPerDurability = 1;
     private int tCountCasing;
-    private static IStructureDefinition<EnergyInfuser> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EI_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/energy_infuser";
-    public static String[][] shape = StructureUtils.readStructureFromFile(EI_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 2;
-    public final int VERTICAL_OFF_SET = 7;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(EI_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 2;
+    protected final int VERTICAL_OFF_SET = 7;
+    protected final int DEPTH_OFF_SET = 0;
 
     @Override
     public IStructureDefinition<EnergyInfuser> getStructure_EM() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<EnergyInfuser>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 2))
-                .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
-                .addElement(
-                    'C',
-                    buildHatchAdder(EnergyInfuser.class)
-                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .casingIndex(1028)
-                        .dot(1)
-                        .buildAndChain(
-                            onElementPass(x -> ++x.tCountCasing, ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))))
-                .addElement('D', ofBlock(TTCasingsContainer.sBlockCasingsTT, 7))
-                .addElement('E', ofFrame(Materials.Osmiridium))
-                .addElement('F', ofBlock(lscLapotronicEnergyUnit, 6))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<EnergyInfuser>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.metaBlockGlass, 2))
+            .addElement('B', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
+            .addElement(
+                'C',
+                buildHatchAdder(EnergyInfuser.class)
+                    .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .casingIndex(1028)
+                    .dot(1)
+                    .buildAndChain(
+                        onElementPass(x -> ++x.tCountCasing, ofBlock(TTCasingsContainer.sBlockCasingsTT, 4))))
+            .addElement('D', ofBlock(TTCasingsContainer.sBlockCasingsTT, 7))
+            .addElement('E', ofFrame(Materials.Osmiridium))
+            .addElement('F', ofBlock(lscLapotronicEnergyUnit, 6))
+            .build();
     }
 
     public EnergyInfuser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        minRepairStatus = (byte) getIdealStatus();
         eDismantleBoom = true;
     }
 
     public EnergyInfuser(String aName) {
         super(aName);
-        minRepairStatus = (byte) getIdealStatus();
         eDismantleBoom = true;
     }
 
@@ -208,13 +202,15 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
                         true,
                         false);
                     euRemaining -= charged;
-                } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+                } else if (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem) {
                     long rf = Math.min(
                         ((IEnergyContainerItem) item).getMaxEnergyStored(individualStack)
                             - ((IEnergyContainerItem) item).getEnergyStored(individualStack),
                         euRemaining * mEUtoRF / 10L);
-                    rf = ((IEnergyContainerItem) item)
-                        .receiveEnergy(individualStack, rf > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) rf, false);
+                    rf = ((IEnergyContainerItem) item).receiveEnergy(
+                        individualStack,
+                        rf > Integer.MAX_VALUE - 1 ? Integer.MAX_VALUE : (int) rf,
+                        false);
                     euRemaining -= rf * 10L / mEUtoRF;
                 }
 
@@ -248,7 +244,7 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
                 if (ElectricItem.manager.getCharge(stack) < ((IElectricItem) item).getMaxCharge(stack)) {
                     return false;
                 }
-            } else if (TecTech.hasCOFH && item instanceof IEnergyContainerItem) {
+            } else if (Mods.COFHCore.isModLoaded() && item instanceof IEnergyContainerItem) {
                 if (((IEnergyContainerItem) item).getEnergyStored(stack)
                     < ((IEnergyContainerItem) item).getMaxEnergyStored(stack)) {
                     return false;
@@ -325,9 +321,25 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         outputAllItems = true;
         GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EnergyInfuser_00" + this.machineMode));
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
+
+        NBTTagList storedItemsList = new NBTTagList();
+        for (ItemStack stack : mStoredItems) {
+            if (stack != null) {
+                NBTTagCompound itemTag = new NBTTagCompound();
+                stack.writeToNBT(itemTag);
+                storedItemsList.appendTag(itemTag);
+            }
+        }
+        aNBT.setTag("mStoredItems", storedItemsList);
     }
 
     @Override
@@ -410,4 +422,17 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
 
     @Override
     protected void chargeController_EM(IGregTechTileEntity aBaseMetaTileEntity) {}
+
+    @Override
+    public void checkMaintenance() {}
+
+    @Override
+    public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean shouldCheckMaintenance() {
+        return false;
+    }
 }

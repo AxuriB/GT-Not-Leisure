@@ -2,7 +2,6 @@ package com.reavaritia;
 
 import static com.science.gtnl.Utils.enums.GTNLItemList.TestMetaBlock01_0;
 import static gregtech.api.enums.GTValues.NI;
-import static gregtech.api.enums.GTValues.W;
 
 import java.util.Locale;
 
@@ -20,6 +19,7 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings("unused")
@@ -87,8 +87,8 @@ public enum ReAvaItemList implements IItemContainer {
         sanityCheck();
         // if invalid, return a replacements
         if (Utils.isStackInvalid(mStack)) {
-            GTLog.out.println("Object in the ReAvaItemList is null at:");
-            new NullPointerException().printStackTrace(GTLog.out);
+            System.out.println("Object in the ReAvaItemList is null at:");
+            new NullPointerException().printStackTrace(System.out);
             return Utils.copyAmount(Math.toIntExact(aAmount), TestMetaBlock01_0.get(1));
         }
         return Utils.copyAmount(Math.toIntExact(aAmount), mStack);
@@ -192,7 +192,7 @@ public enum ReAvaItemList implements IItemContainer {
     public ItemStack getWildcard(long aAmount, Object... aReplacements) {
         sanityCheck();
         if (GTUtility.isStackInvalid(mStack)) return GTUtility.copyAmount(aAmount, aReplacements);
-        return GTUtility.copyAmountAndMetaData(aAmount, W, GTOreDictUnificator.get(mStack));
+        return GTUtility.copyAmountAndMetaData(aAmount, GTRecipeBuilder.WILDCARD, GTOreDictUnificator.get(mStack));
     }
 
     @Override

@@ -9,8 +9,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
@@ -22,11 +22,10 @@ import gregtech.api.util.GTRecipe;
 
 public class CircuitAssemblyLineRecipes implements IRecipePool {
 
-    public static final ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
-
-    private static final HashSet<GTRecipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
-    private static final HashSet<GTRecipe> MODIFIED_CAL_RECIPES = new HashSet<>();
-    private static final HashSet<GTRecipe> CONVERTED_CAL_RECIPES = new HashSet<>();
+    public static ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
+    public static HashSet<GTRecipe> ORIGINAL_CAL_RECIPES = new HashSet<>();
+    public static HashSet<GTRecipe> MODIFIED_CAL_RECIPES = new HashSet<>();
+    public static HashSet<GTRecipe> CONVERTED_CAL_RECIPES = new HashSet<>();
 
     @Override
     public void loadRecipes() {
@@ -46,7 +45,7 @@ public class CircuitAssemblyLineRecipes implements IRecipePool {
 
     private static void rebuildCircuitAssemblerMap(HashSet<GTRecipe> toRem, HashSet<GTRecipe> toAdd) {
         reAddOriginalRecipes();
-        RecipeRegister.ConvertToCircuitAssembler.getAllRecipes()
+        RecipePool.ConvertToCircuitAssembler.getAllRecipes()
             .forEach(e -> handleCircuitRecipeRebuilding(e, toRem, toAdd));
     }
 

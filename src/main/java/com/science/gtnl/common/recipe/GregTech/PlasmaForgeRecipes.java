@@ -3,8 +3,8 @@ package com.science.gtnl.common.recipe.GregTech;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMap;
@@ -13,7 +13,7 @@ import gregtech.api.util.GTModHandler;
 
 public class PlasmaForgeRecipes implements IRecipePool {
 
-    final RecipeMap<?> PFR = RecipeMaps.plasmaForgeRecipes;
+    public RecipeMap<?> PFR = RecipeMaps.plasmaForgeRecipes;
 
     @Override
     public void loadRecipes() {
@@ -27,7 +27,6 @@ public class PlasmaForgeRecipes implements IRecipePool {
                 GTModHandler.getModItem("GoodGenerator", "fluidCore", 2, 7))
             .fluidInputs(MaterialPool.ExcitedNaquadahFuel.getFluidOrGas(1000))
             .itemOutputs(GTNLItemList.DepletedExcitedNaquadahFuelRod.get(1))
-            .noOptimize()
             .duration(20)
             .metadata(COIL_HEAT, 13501)
             .eut(31457280)

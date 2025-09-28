@@ -69,7 +69,7 @@ public class EntityArrowCustom extends EntityArrow {
     }
 
     private boolean isValidTarget(Entity entity, EntityPlayer player) {
-        if (entity == player) return false;
+        if (entity == player || entity instanceof EntitySaddleSlime) return false;
 
         if (player.isSneaking()) {
             return entity instanceof EntityLivingBase;

@@ -19,11 +19,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
-import bartworks.API.BorosilicateGlass;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -41,22 +42,18 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 
 public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemicalCoupling>
     implements ISurvivalConstructable {
 
-    private HeatingCoilLevel mCoilLevel;
-    private int mHeatingCapacity = 0;
-    private static IStructureDefinition<ShallowChemicalCoupling> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SCC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/shallow_chemical_coupling";
-    private static final int CASING_INDEX = GTUtility.getTextureId((byte) 116, (byte) 19);
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SCC_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 3;
-    public final int VERTICAL_OFF_SET = 9;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SCC_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 3;
+    protected final int VERTICAL_OFF_SET = 9;
+    protected final int DEPTH_OFF_SET = 0;
 
     public ShallowChemicalCoupling(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -73,35 +70,23 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
 
     @Override
     public IStructureDefinition<ShallowChemicalCoupling> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<ShallowChemicalCoupling>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(ShallowChemicalCoupling.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(BlockLoader.MetaCasing, 19))))
-                .addElement(
-                    'B',
-                    withChannel(
-                        "glass",
-                        BorosilicateGlass.ofBoroGlass(
-                            (byte) 0,
-                            (byte) 1,
-                            Byte.MAX_VALUE,
-                            (te, t) -> te.mGlassTier = t,
-                            te -> te.mGlassTier)))
-                .addElement(
-                    'C',
-                    withChannel(
-                        "coil",
-                        ofCoil(ShallowChemicalCoupling::setCoilLevel, ShallowChemicalCoupling::getCoilLevel)))
-                .addElement('D', ofBlock(sBlockCasings8, 1))
-                .addElement('E', ofFrame(Materials.NaquadahAlloy))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<ShallowChemicalCoupling>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(ShallowChemicalCoupling.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(BlockLoader.metaCasing, 19))))
+            .addElement('B', chainAllGlasses(-1, (te, t) -> te.mGlassTier = t, te -> te.mGlassTier))
+            .addElement(
+                'C',
+                GTStructureChannels.HEATING_COIL.use(
+                    activeCoils(
+                        ofCoil(ShallowChemicalCoupling::setMCoilLevel, ShallowChemicalCoupling::getMCoilLevel))))
+            .addElement('D', ofBlock(sBlockCasings8, 1))
+            .addElement('E', ofFrame(Materials.NaquadahAlloy))
+            .build();
     }
 
     @Override
@@ -126,21 +111,15 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
             .addOutputBus(StatCollector.translateToLocal("Tooltip_ShallowChemicalCoupling_Casing_00"))
             .addEnergyHatch(StatCollector.translateToLocal("Tooltip_ShallowChemicalCoupling_Casing_00"))
             .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_ShallowChemicalCoupling_Casing_00"))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return true;
-    }
-
-    public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
-        this.mCoilLevel = aCoilLevel;
-    }
-
-    public HeatingCoilLevel getCoilLevel() {
-        return this.mCoilLevel;
     }
 
     @Override
@@ -178,7 +157,7 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return GTUtility.getTextureId((byte) 116, (byte) 19);
     }
 
     @Override
@@ -188,26 +167,46 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Nonnull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setRecipeHeat(recipe.mSpecialValue)
-                    .setMachineHeat(ShallowChemicalCoupling.this.mHeatingCapacity)
-                    .setHeatOC(true)
-                    .setHeatDiscount(false)
-                    .setEUtDiscount(Math.pow(0.85, getCoilLevel().getTier()))
-                    .setSpeedBoost(Math.pow(0.85, getCoilLevel().getTier()));
-            }
+        return new GTNL_ProcessingLogic() {
 
             @Override
             protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                return recipe.mSpecialValue <= ShallowChemicalCoupling.this.mHeatingCapacity
-                    ? CheckRecipeResultRegistry.SUCCESSFUL
+                return recipe.mSpecialValue <= mHeatingCapacity ? CheckRecipeResultRegistry.SUCCESSFUL
                     : CheckRecipeResultRegistry.insufficientHeat(recipe.mSpecialValue);
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+
+            @Nonnull
+            @Override
+            protected GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setRecipeHeat(recipe.mSpecialValue)
+                    .setMachineHeat(getMachineHeat())
+                    .setHeatOC(getHeatOC())
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
+            }
+
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public boolean getHeatOC() {
+        return true;
+    }
+
+    @Override
+    public int getMachineHeat() {
+        return mHeatingCapacity;
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * Math.pow(0.85, getMCoilLevel().getTier());
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() * Math.pow(0.85, getMCoilLevel().getTier());
     }
 
     @Override
@@ -224,8 +223,8 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        this.setCoilLevel(HeatingCoilLevel.None);
-        return survivialBuildPiece(
+        this.setMCoilLevel(HeatingCoilLevel.None);
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -239,42 +238,38 @@ public class ShallowChemicalCoupling extends GTMMultiMachineBase<ShallowChemical
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
-        this.mHeatingCapacity = 0;
-        mParallelTier = 0;
-        tCountCasing = 0;
-        energyHatchTier = 0;
-        this.setCoilLevel(HeatingCoilLevel.None);
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 30;
+    }
 
-        this.mHeatingCapacity = (int) this.getCoilLevel()
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        this.mHeatingCapacity = (int) this.getMCoilLevel()
             .getHeat();
-        energyHatchTier = checkEnergyHatchTier();
+    }
 
+    @Override
+    public boolean checkHatch() {
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (mGlassTier < VoltageIndex.UEV & mEnergyHatch.mTier > mGlassTier) {
+            if (mGlassTier < VoltageIndex.UHV & mEnergyHatch.mTier > mGlassTier) {
                 return false;
             }
         }
-
-        for (MTEHatch mExoEnergyHatch : this.mExoticEnergyHatches) {
-            if (mGlassTier < VoltageIndex.UEV & mExoEnergyHatch.mTier > mGlassTier) {
+        for (MTEHatch mExoticEnergyHatch : this.mExoticEnergyHatches) {
+            if (mGlassTier < VoltageIndex.UHV && mExoticEnergyHatch.mTier > mGlassTier) {
                 return false;
             }
         }
-
-        if (getCoilLevel() == HeatingCoilLevel.None) return false;
-
-        mParallelTier = getParallelTier(aStack);
-
-        return tCountCasing >= 30;
+        return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.ShallowChemicalCouplingRecipes;
+        return RecipePool.ShallowChemicalCouplingRecipes;
     }
 
 }

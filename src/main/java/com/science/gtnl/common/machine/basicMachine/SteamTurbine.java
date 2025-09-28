@@ -30,17 +30,15 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
             aTier,
             new String[] { StatCollector.translateToLocal("Tooltip_SteamTurbine_00"),
                 StatCollector.translateToLocal("Tooltip_SteamTurbine_01"), "", "" });
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + getEfficiency() + "%";
+        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + (800 / getEfficiency())
+            + "%";
         mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_SteamTurbine_03") + getCapacity() + "L";
-    }
-
-    public SteamTurbine(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
     }
 
     public SteamTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + getEfficiency() + "%";
+        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_SteamTurbine_02") + (800 / getEfficiency())
+            + "%";
         mDescriptionArray[3] = StatCollector.translateToLocal("Tooltip_SteamTurbine_03") + getCapacity() + "L";
     }
 
@@ -79,12 +77,12 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
 
     @Override
     public int getEfficiency() {
-        return switch (this.mTier) {
-            case 1 -> 100; // 600 / 6 = 100
-            case 2 -> 80; // 600 / 9.23 ≈ 65
-            case 3 -> 60; // 600 / 20 = 30
-            default -> 100; // 默认值
-        };
+        return 7 + this.mTier;
+    }
+
+    @Override
+    public int consumedFluidPerOperation(FluidStack aLiquid) {
+        return getEfficiency();
     }
 
     @Override
@@ -95,12 +93,7 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     @Override
     public int getFuelValue(FluidStack aLiquid) {
         if (aLiquid == null) return 0;
-        return GTModHandler.isAnySteam(aLiquid) ? 3 : 0;
-    }
-
-    @Override
-    public int consumedFluidPerOperation(FluidStack aLiquid) {
-        return getEfficiency();
+        return GTModHandler.isAnySteam(aLiquid) ? 4 : 0;
     }
 
     @Override
@@ -221,17 +214,8 @@ public class SteamTurbine extends MTEBasicGenerator implements IAddGregtechLogo 
     }
 
     @Override
-    public boolean isFluidInputAllowed(FluidStack aFluid) {
-        if (GTModHandler.isSuperHeatedSteam(aFluid)) {
-            aFluid.amount = 0;
-            return false;
-        }
-        return super.isFluidInputAllowed(aFluid);
-    }
-
-    @Override
     public long maxAmperesOut() {
-        return 16;
+        return 8;
     }
 
     @Override

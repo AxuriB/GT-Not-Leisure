@@ -10,7 +10,6 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
@@ -34,13 +33,16 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.common.machine.Special.PortalToAlfheimExplosion;
+import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.machine.PortalToAlfheimExplosion;
+import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.common.materials.MaterialPool;
+import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
@@ -57,39 +59,26 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings8;
 import gtnhlanth.common.register.LanthItemList;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationArrayToAlfheim> {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String TATA_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/teleportation_array_to_alfheim";
-    public final int HORIZONTAL_OFF_SET = 11;
-    public final int VERTICAL_OFF_SET = 15;
-    public final int DEPTH_OFF_SET = 2;
-    public static IStructureDefinition<TeleportationArrayToAlfheim> STRUCTURE_DEFINITION = null;
-    public static String[][] shape = StructureUtils.readStructureFromFile(TATA_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 11;
+    protected final int VERTICAL_OFF_SET = 15;
+    protected final int DEPTH_OFF_SET = 2;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(TATA_STRUCTURE_FILE_PATH);
     private static final int PORTAL_MODE = 0;
     private static final int NATURE_MODE = 1;
     private static final int MANA_MODE = 2;
     private static final int RUNE_MODE = 3;
     private boolean enableInfinityMana = false;
-    private static final ItemStack asgardandelion = GTModHandler.getModItem("Botania", "specialFlower", 1);
-
-    static {
-        NBTTagCompound asgardandelionType = asgardandelion.getTagCompound();
-        if (asgardandelionType != null) {
-            asgardandelionType.setString("type", "asgardandelion");
-        } else {
-            asgardandelionType = new NBTTagCompound();
-            asgardandelionType.setString("type", "asgardandelion");
-            asgardandelion.setTagCompound(asgardandelionType);
-        }
-    }
+    private static final ItemStack asgardandelion = ItemUtils
+        .createItemStack(Botania.ID, "specialFlower", 1, 0, "{type:\"asgardandelion\"}", null);
 
     public TeleportationArrayToAlfheim(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -100,27 +89,22 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     }
 
     @Override
-    protected float getSpeedBonus() {
-        return 1F;
-    }
-
-    @Override
-    protected int getMaxParallelRecipes() {
+    public int getMaxParallelRecipes() {
         return Integer.MAX_VALUE;
     }
 
     @Override
-    protected boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return true;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
         return switch (machineMode) {
-            case NATURE_MODE -> RecipeRegister.NatureSpiritArrayRecipes;
-            case MANA_MODE -> RecipeRegister.ManaInfusionRecipes;
-            case RUNE_MODE -> RecipeRegister.RuneAltarRecipes;
-            default -> RecipeRegister.PortalToAlfheimRecipes;
+            case NATURE_MODE -> RecipePool.NatureSpiritArrayRecipes;
+            case MANA_MODE -> RecipePool.ManaInfusionRecipes;
+            case RUNE_MODE -> RecipePool.RuneAltarRecipes;
+            default -> RecipePool.PortalToAlfheimRecipes;
         };
     }
 
@@ -128,10 +112,10 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
         return Arrays.asList(
-            RecipeRegister.NatureSpiritArrayRecipes,
-            RecipeRegister.ManaInfusionRecipes,
-            RecipeRegister.RuneAltarRecipes,
-            RecipeRegister.PortalToAlfheimRecipes);
+            RecipePool.NatureSpiritArrayRecipes,
+            RecipePool.ManaInfusionRecipes,
+            RecipePool.RuneAltarRecipes,
+            RecipePool.PortalToAlfheimRecipes);
     }
 
     @Override
@@ -148,7 +132,6 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
@@ -171,7 +154,8 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         this.machineMode = (byte) ((this.machineMode + 1) % 4);
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -243,7 +227,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -257,35 +241,32 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public IStructureDefinition<TeleportationArrayToAlfheim> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<TeleportationArrayToAlfheim>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('B', ofBlock(sBlockCasings10, 3))
-                .addElement('C', ofBlock(sBlockCasings4, 7))
-                .addElement('D', ofBlock(sBlockCasings8, 7))
-                .addElement(
-                    'E',
-                    ofChain(
-                        buildHatchAdder(TeleportationArrayToAlfheim.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
-                            .dot(1)
-                            .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                            .build(),
-                        onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings8, 10)),
-                        buildHatchAdder(TeleportationArrayToAlfheim.class)
-                            .adder(TeleportationArrayToAlfheim::addFluidManaInputHatch)
-                            .hatchId(21501)
-                            .shouldReject(x -> !x.FluidManaInputHatch.isEmpty())
-                            .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                            .dot(1)
-                            .build()))
-                .addElement('F', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
-                .addElement('G', ofBlock(BlockLoader.MetaBlockGlass, 0))
-                .addElement('H', ofBlock(BlockLoader.MetaBlockGlass, 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<TeleportationArrayToAlfheim>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement('B', ofBlock(sBlockCasings10, 3))
+            .addElement('C', ofBlock(sBlockCasings4, 7))
+            .addElement('D', ofBlock(sBlockCasings8, 7))
+            .addElement(
+                'E',
+                ofChain(
+                    buildHatchAdder(TeleportationArrayToAlfheim.class)
+                        .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy), Maintenance)
+                        .dot(1)
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 10))
+                        .build(),
+                    onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings8, 10)),
+                    buildHatchAdder(TeleportationArrayToAlfheim.class)
+                        .adder(TeleportationArrayToAlfheim::addFluidManaInputHatch)
+                        .hatchId(21501)
+                        .shouldReject(x -> !x.mFluidManaInputHatch.isEmpty())
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 10))
+                        .dot(1)
+                        .build()))
+            .addElement('F', ofBlock(TTCasingsContainer.sBlockCasingsTT, 0))
+            .addElement('G', ofBlock(BlockLoader.metaBlockGlass, 0))
+            .addElement('H', ofBlock(BlockLoader.metaBlockGlass, 1))
+            .build();
     }
 
     @Override
@@ -323,7 +304,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10);
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override
@@ -346,34 +327,36 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        FluidManaInputHatch.clear();
-        enableInfinityMana = false;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch())
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch())
             return false;
-        ItemStack item = getControllerSlot();
-        if (areStacksEqualExtended(item, GTModHandler.getModItem(Botania.ID, "pool", 1, 1))
-            || areStacksEqualExtended(item, asgardandelion)) {
-            enableInfinityMana = true;
-        }
-
-        return tCountCasing >= 350;
+        setupParameters();
+        return mCountCasing >= 350;
     }
 
-    private static boolean areStacksEqualExtended(ItemStack lhs, ItemStack rhs) {
-        if (lhs == null) return rhs == null;
-        if (rhs == null) return false;
-        return lhs.getItem() == rhs.getItem() && (Objects.equals(lhs.stackTagCompound, rhs.stackTagCompound));
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        if (GTUtility.areStacksEqual(getControllerSlot(), GTModHandler.getModItem(Botania.ID, "pool", 1, 1))
+            || GTUtility.areStacksEqual(getControllerSlot(), asgardandelion)) {
+            enableInfinityMana = true;
+        }
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mFluidManaInputHatch.clear();
+        enableInfinityMana = false;
     }
 
     @Override
     public boolean checkHatch() {
-        return super.checkHatch() && !FluidManaInputHatch.isEmpty();
+        return super.checkHatch() && !mFluidManaInputHatch.isEmpty();
     }
 
     @Override
     public void updateSlots() {
-        for (CustomFluidHatch tHatch : validMTEList(FluidManaInputHatch)) tHatch.updateSlots();
+        for (CustomFluidHatch tHatch : validMTEList(mFluidManaInputHatch)) tHatch.updateSlots();
         super.updateSlots();
     }
 
@@ -385,7 +368,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
                 .hasWorkJustBeenEnabled()) {
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled() && !enableInfinityMana) {
-                    if (!this.depleteInputFromRestrictedHatches(this.FluidManaInputHatch, 100)) {
+                    if (!this.depleteInputFromRestrictedHatches(this.mFluidManaInputHatch, 100)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(ShutDownReasonRegistry.outOfFluid(MaterialPool.FluidMana.getFluidOrGas(100)));
                     }
@@ -395,12 +378,12 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @Nonnull
             @Override
-            protected ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
+            protected GTNL_ParallelHelper createParallelHelper(@Nonnull GTRecipe recipe) {
                 if (enableInfinityMana) inputFluids[0] = MaterialPool.FluidMana.getFluidOrGas(Integer.MAX_VALUE);
                 return super.createParallelHelper(recipe).setFluidInputs(inputFluids);
             }

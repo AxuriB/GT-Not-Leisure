@@ -1,11 +1,11 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import bartworks.system.material.WerkstoffLoader;
 import goodgenerator.items.GGMaterial;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
@@ -15,11 +15,11 @@ import gregtech.api.util.GTOreDictUnificator;
 
 public class DistillationTowerRecipes implements IRecipePool {
 
-    final RecipeMap<?> DTR = RecipeMaps.distillationTowerRecipes;
+    public RecipeMap<?> DTR = RecipeMaps.distillationTowerRecipes;
 
     @Override
     public void loadRecipes() {
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialPool.FluorineCrackedNaquadah.getFluidOrGas(1000))
             .fluidOutputs(
                 GGMaterial.naquadahBasedFuelMkI.getFluidOrGas(800),
@@ -28,12 +28,11 @@ public class DistillationTowerRecipes implements IRecipePool {
                 Materials.Ammonia.getGas(200),
                 Materials.Fluorine.getGas(200))
             .specialValue(0)
-            .noOptimize()
             .duration(600)
             .eut(TierEU.RECIPE_ZPM)
             .addTo(DTR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Barium, 1))
             .fluidInputs(MaterialPool.EnrichedNaquadahWaste.getFluidOrGas(2000))
             .fluidOutputs(
@@ -42,12 +41,11 @@ public class DistillationTowerRecipes implements IRecipePool {
                 GGMaterial.naquadriaRichSolution.getFluidOrGas(100))
             .outputChances(5000)
             .specialValue(0)
-            .noOptimize()
             .duration(300)
             .eut(TierEU.RECIPE_HV)
             .addTo(DTR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .fluidInputs(MaterialPool.RadonCrackedEnrichedNaquadah.getFluidOrGas(1000))
             .fluidOutputs(
                 GGMaterial.naquadahBasedFuelMkII.getFluidOrGas(800),
@@ -55,12 +53,11 @@ public class DistillationTowerRecipes implements IRecipePool {
                 Materials.Radon.getGas(200),
                 Materials.Fluorine.getGas(200))
             .specialValue(0)
-            .noOptimize()
             .duration(300)
             .eut(TierEU.RECIPE_LuV)
             .addTo(DTR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemOutputs(GGMaterial.triniumSulphate.get(OrePrefixes.dust, 1))
             .fluidInputs(MaterialPool.NaquadriaWaste.getFluidOrGas(2000))
             .fluidOutputs(
@@ -68,12 +65,11 @@ public class DistillationTowerRecipes implements IRecipePool {
                 GGMaterial.enrichedNaquadahRichSolution.getFluidOrGas(100))
             .outputChances(5000)
             .specialValue(0)
-            .noOptimize()
             .duration(400)
             .eut(TierEU.RECIPE_EV)
             .addTo(DTR);
 
-        RecipeBuilder.builder()
+        GTValues.RA.stdBuilder()
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1))
             .fluidInputs(MaterialPool.FluidEnderAir.getFluidOrGas(200000))
             .fluidOutputs(
@@ -87,7 +83,6 @@ public class DistillationTowerRecipes implements IRecipePool {
                 Materials.Radon.getGas(1000))
             .outputChances(1000)
             .specialValue(0)
-            .noOptimize()
             .duration(2000)
             .eut(TierEU.RECIPE_IV)
             .addTo(DTR);

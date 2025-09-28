@@ -34,18 +34,15 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings4;
 
 public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> implements ISurvivalConstructable {
 
-    private static IStructureDefinition<BrickedBlastFurnace> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String BBF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/bricked_blast_furnace";
-    public static String[][] shape = StructureUtils.readStructureFromFile(BBF_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 7;
-    public final int VERTICAL_OFF_SET = 12;
-    public final int DEPTH_OFF_SET = 0;
-    protected static final int CASING_INDEX = ((BlockCasings4) sBlockCasings4).getTextureIndex(15);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(BBF_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 7;
+    protected final int VERTICAL_OFF_SET = 12;
+    protected final int DEPTH_OFF_SET = 0;
 
     public BrickedBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -56,13 +53,8 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return false;
-    }
-
-    @Override
-    public float getSpeedBonus() {
-        return 1;
     }
 
     @Override
@@ -117,27 +109,24 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
     @Override
     public IStructureDefinition<BrickedBlastFurnace> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<BrickedBlastFurnace>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings3, 13))
-                .addElement(
-                    'B',
-                    buildHatchAdder(BrickedBlastFurnace.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings4, 15))))
-                .addElement('C', ofFrame(Materials.Bronze))
-                .addElement('D', ofBlock(sBlockCasings1, 10))
-                .addElement('E', ofBlockAnyMeta(Blocks.stonebrick))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<BrickedBlastFurnace>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings3, 13))
+            .addElement(
+                'B',
+                buildHatchAdder(BrickedBlastFurnace.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(Maintenance, InputBus, OutputBus)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings4, 15))))
+            .addElement('C', ofFrame(Materials.Bronze))
+            .addElement('D', ofBlock(sBlockCasings1, 10))
+            .addElement('E', ofBlockAnyMeta(Blocks.stonebrick))
+            .build();
     }
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings4, 15);
     }
 
     @Override
@@ -148,7 +137,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -162,10 +151,10 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
-            && tCountCasing >= 350
-            && checkHatch();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
+        }
+        return mCountCasing >= 350;
     }
 
     @Override
@@ -195,7 +184,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
-        mMaxProgresstime = 20;
+        mMaxProgresstime = 128;
         setEnergyUsage(processingLogic);
 
         mOutputItems = processingLogic.getOutputItems();

@@ -2,6 +2,7 @@ package com.reavaritia.common.block.ExtremeAnvil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
@@ -169,7 +170,7 @@ public class ContainerExtremeAnvil extends Container {
                 } else if (material.getItem() instanceof ItemEnchantedBook) {
                     resultStack = input.copy();
                     resultStack = this.applyMergedEnchantments(resultStack, input, material);
-                } else if (input.getItem()
+                } else if (Objects.requireNonNull(input.getItem())
                     .getIsRepairable(input, material)) {
                         resultStack = input.copy();
                         resultStack.setItemDamage(0);

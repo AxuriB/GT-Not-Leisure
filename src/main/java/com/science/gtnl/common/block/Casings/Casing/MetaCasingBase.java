@@ -19,8 +19,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.science.gtnl.api.IMetaBlock;
 import com.science.gtnl.client.GTNLCreativeTabs;
-import com.science.gtnl.common.block.Casings.IMetaBlock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -123,8 +123,7 @@ public abstract class MetaCasingBase extends Block implements IMetaBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "unchecked" })
-    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTabs, List list) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> list) {
         Set<Integer> usedMetaSet;
         if ((usedMetaSet = getUsedMetaSet()) == null) {
             throw new NullPointerException("Null in " + this.getUnlocalizedName());

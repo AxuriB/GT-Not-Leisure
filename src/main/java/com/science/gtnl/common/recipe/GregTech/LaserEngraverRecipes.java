@@ -3,7 +3,7 @@ package com.science.gtnl.common.recipe.GregTech;
 import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -17,10 +17,11 @@ import gregtech.api.util.GTUtility;
 
 public class LaserEngraverRecipes implements IRecipePool {
 
-    final RecipeMap<?> lER = RecipeMaps.laserEngraverRecipes;
+    public RecipeMap<?> lER = RecipeMaps.laserEngraverRecipes;
 
     public void recipeWithPurifiedWater(ItemStack[] inputs, ItemStack[] outputs, Materials lowTierWater,
         Materials highTierWater, int duration, int boostedDuration, long eut) {
+
         GTValues.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
@@ -28,6 +29,7 @@ public class LaserEngraverRecipes implements IRecipePool {
             .duration(duration)
             .eut(eut)
             .addTo(lER);
+
         GTValues.RA.stdBuilder()
             .itemInputs(inputs)
             .itemOutputs(outputs)
@@ -44,7 +46,6 @@ public class LaserEngraverRecipes implements IRecipePool {
             .itemInputs(GTNLItemList.NinefoldInputHatchUHV.get(1), ItemList.Quantum_Tank_IV.get(1))
             .itemOutputs(GTNLItemList.HumongousNinefoldInputHatch.get(1))
             .specialValue(0)
-            .noOptimize()
             .duration(200)
             .eut(7864320)
             .addTo(lER);
@@ -56,7 +57,6 @@ public class LaserEngraverRecipes implements IRecipePool {
             .itemOutputs(GTUtility.copyAmountUnsafe(64, ItemList.Circuit_Wafer_NAND.get(1)))
             .fluidInputs(Materials.Grade5PurifiedWater.getFluid(100))
             .specialValue(0)
-            .noOptimize()
             .duration(200)
             .eut(TierEU.RECIPE_IV)
             .addTo(lER);

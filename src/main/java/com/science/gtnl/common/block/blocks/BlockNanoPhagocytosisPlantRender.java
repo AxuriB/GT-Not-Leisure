@@ -2,8 +2,6 @@ package com.science.gtnl.common.block.blocks;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,6 +13,7 @@ import net.minecraft.world.World;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.common.block.blocks.Item.ItemBlockNanoPhagocytosisPlantRender;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -66,9 +65,10 @@ public class BlockNanoPhagocytosisPlantRender extends Block {
     }
 
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
-        return new ArrayList<>();
-    }
+    public void dropBlockAsItemWithChance(World worldIn, int x, int y, int z, int meta, float chance, int fortune) {}
+
+    @Override
+    public void dropBlockAsItem(World world, int x, int y, int z, ItemStack itemStack) {}
 
     @Override
     public boolean isCollidable() {

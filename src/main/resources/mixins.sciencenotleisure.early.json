@@ -5,8 +5,31 @@
   "refmap": "mixins.sciencenotleisure.refmap.json",
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [],
-  "client": [],
+  "mixins": [
+    "Forge.MixinFMLProxyPacket",
+    "Forge.MixinForgeHook",
+    "Gregtech.AccessorMTETieredMachineBlock",
+    "Minecraft.AccessorGuiChat",
+    "Minecraft.AccessorFoodStats",
+    "Minecraft.AccessorEntityLivingBase",
+    "Minecraft.AccessorContainerRepair",
+    "Minecraft.MixinServerConfigurationManager",
+    "Minecraft.MixinEntityPlayer",
+    "Minecraft.MixinEntity",
+    "Minecraft.MixinEntityLiving",
+    "Minecraft.MixinEntityItem",
+    "Minecraft.MixinEntityPlayerMP",
+    "Minecraft.MixinExplosion",
+    "Minecraft.MixinItemStack",
+    "Minecraft.MixinItem",
+    "Minecraft.MixinWorld",
+    "Minecraft.MixinWorldServer"
+  ],
+  "client": [
+    "Minecraft.AccessorEntityRenderer",
+    "Minecraft.MixinMinecraft",
+    "Minecraft.MixinWorldClient"
+  ],
   "server": []
 }
 

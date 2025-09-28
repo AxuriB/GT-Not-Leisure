@@ -3,7 +3,8 @@ package com.science.gtnl.common.machine.multiblock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.Utils.NEGATIVE_ONE;
-import static gregtech.GTMod.GT_FML_LOGGER;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
@@ -32,7 +33,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -48,6 +48,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.github.bsideup.jabel.Desugar;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -63,15 +64,15 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
-import com.science.gtnl.Utils.Pair;
+import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.config.MainConfig;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -95,35 +96,29 @@ import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.casing.BlockGTCasingsTT;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> implements ISurvivalConstructable {
 
-    private static final Map<String, Pair<GTRecipe.RecipeAssemblyLine, AssemblyLineUtils.LookupResult>> recipeCache = new HashMap<>();
-    private final String ZERO_STRING = "0";
-    private String costingEUText = ZERO_STRING;
-    private UUID ownerUUID;
-    private boolean wirelessMode = false;
-    private static IStructureDefinition<GrandAssemblyLine> STRUCTURE_DEFINITION = null;
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String GAL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/grand_assembly_line";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(GAL_STRUCTURE_FILE_PATH);
-    private final int HORIZONTAL_OFF_SET = 46;
-    private final int VERTICAL_OFF_SET = 2;
-    private final int DEPTH_OFF_SET = 0;
-    private final ArrayList<MTEHatchDataAccess> mDataAccessHatches = new ArrayList<>();
-    private static final int CASING_INDEX = BlockGTCasingsTT.textureOffset + 3;
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
-    private boolean isDualInputHatch = false;
-    private boolean useSingleAmp = true;
-    private int minRecipeTime = 20;
+    public static final Map<Integer, List<GTRecipe.RecipeAssemblyLine>> recipeCache = new HashMap<>();
+    public final String ZERO_STRING = "0";
+    public String costingEUText = ZERO_STRING;
+    public UUID ownerUUID;
+    public boolean wirelessMode = false;
+    public static final String STRUCTURE_PIECE_MAIN = "main";
+    public static final String GAL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/grand_assembly_line";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(GAL_STRUCTURE_FILE_PATH);
+    public final int HORIZONTAL_OFF_SET = 46;
+    public final int VERTICAL_OFF_SET = 2;
+    public final int DEPTH_OFF_SET = 0;
+    public final ArrayList<MTEHatchDataAccess> mDataAccessHatches = new ArrayList<>();
+    public boolean isDualInputHatch = false;
+    public boolean useSingleAmp = true;
+    public int minRecipeTime = 20;
 
     public GrandAssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -176,24 +171,16 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         if (sideDirection == facingDirection) {
             if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(ScreenON)
+                    .addIcon(OVERLAY_FRONT_TECTECH_MULTIBLOCK_ACTIVE)
                     .extFacing()
                     .build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
-                    .addIcon(ScreenOFF)
+                    .addIcon(OVERLAY_FRONT_TECTECH_MULTIBLOCK)
                     .extFacing()
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister aBlockIconRegister) {
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
-        super.registerIcons(aBlockIconRegister);
     }
 
     @Override
@@ -204,7 +191,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
     @Nonnull
     @Override
     public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.assemblylineVisualRecipes, RecipeRegister.GrandAssemblyLineRecipes);
+        return Arrays.asList(RecipeMaps.assemblylineVisualRecipes, RecipePool.GrandAssemblyLineRecipes);
     }
 
     @Override
@@ -214,8 +201,8 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         ItemStack controllerItem = getControllerSlot();
         this.mParallelTier = getParallelTier(controllerItem);
         long energyEU = wirelessMode ? Integer.MAX_VALUE
-            : GTValues.VP[energyHatchTier] * (useSingleAmp ? 1 : getMaxInputAmps() / 4); // 能源仓最大输入功率
-        int maxParallel = getMaxParallelRecipes(); // 最大并行数
+            : GTValues.VP[mEnergyHatchTier] * (useSingleAmp ? 1 : getMaxInputAmps() / 4); // 能源仓最大输入功率
+        int maxParallel = getTrueParallel(); // 最大并行数
 
         if (energyEU <= 0) return CheckRecipeResultRegistry.POWER_OVERFLOW;
 
@@ -241,32 +228,156 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         return processRecipeLogic(inputInventories, energyEU, maxParallel, minRecipeTime);
     }
 
-    private String generateCacheKeyFromRecipeHash(ItemStack tDataStick) {
-        // 获取物品的 tagCompound 和固定的 Recipe Hash
-        if (tDataStick.hasTagCompound()) {
-            String recipeHash = tDataStick.getTagCompound()
-                .getString("Data.Recipe.Hash");
-            return "RecipeHash_" + recipeHash;
-        }
-        return "RecipeHash_NoHash";
-    }
-
-    private CheckRecipeResult processRecipeLogic(ArrayList<IDualInputInventory> inputInventories, long energyEU,
+    public CheckRecipeResult processRecipeLogic(ArrayList<IDualInputInventory> inputInventories, long energyEU,
         int maxParallel, int limit) {
         long totalNeedEUt = 0; // 累加的总功率
         int totalMaxProgressTime = 0; // 累加的最大时间
         int powerParallel = 0;
-        int CircuitOC = -1; // 电路板限制超频次数
-        int isPerfectOC = (mParallelTier >= 11) ? 4 : 2;
+        int circuitOC = -1; // 电路板限制超频次数
+        int perfectOCTime = (mParallelTier >= 11) ? 4 : 2;
         costingEUText = ZERO_STRING;
         BigInteger costingEU = BigInteger.ZERO;
         ArrayList<ItemStack> totalOutputs = new ArrayList<>(); // 累加的输出物品
 
         for (ItemStack item : getAllStoredInputs()) {
             if (item.getItem() == ItemList.Circuit_Integrated.getItem()) {
-                CircuitOC = item.getItemDamage();
+                circuitOC = item.getItemDamage();
                 break;
             }
+        }
+
+        if (inputInventories.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        List<GTRecipe.RecipeAssemblyLine> validRecipes = new ArrayList<>();
+        findRecipe(validRecipes, energyEU);
+        if (validRecipes.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
+        validRecipes.sort(Comparator.comparingInt(recipe -> recipe.mEUt));
+
+        List<GTRecipe> overclockedRecipes = new ArrayList<>();
+
+        double maxBatchFactor = 1.0;
+        for (GTRecipe.RecipeAssemblyLine recipe : validRecipes) {
+            ItemStack[] inputItems;
+            FluidStack[] inputFluids;
+            ItemStack outputItem;
+
+            try {
+                inputItems = Arrays
+                    .stream(
+                        Objects.requireNonNull(recipe.mInputs, "Inputs is null: " + Arrays.toString(recipe.mInputs)))
+                    .map(Objects::requireNonNull)
+                    .map(ItemStack::copy)
+                    .toArray(ItemStack[]::new);
+
+                inputFluids = Arrays
+                    .stream(
+                        Objects.requireNonNull(
+                            recipe.mFluidInputs,
+                            "FluidInputs is null: " + Arrays.toString(recipe.mFluidInputs)))
+                    .map(Objects::requireNonNull)
+                    .map(FluidStack::copy)
+                    .toArray(FluidStack[]::new);
+
+                outputItem = Objects.requireNonNull(recipe.mOutput, "Output is null: " + recipe.mOutput)
+                    .copy();
+            } catch (Throwable t) {
+                System.err.println("[GTNL] Failed to copy recipe: " + recipe);
+                t.printStackTrace();
+                continue;
+            }
+
+            int overclockCount = 0;
+            long energyRatio = energyEU / Math.max(1, recipe.mEUt);
+            long threshold = 1;
+            int adjustedTime;
+            int adjustedPower;
+            BigInteger adjustedPowerBigInt;
+
+            if (wirelessMode) {
+                adjustedTime = minRecipeTime;
+                adjustedPowerBigInt = BigInteger.valueOf(recipe.mEUt)
+                    .multiply(BigInteger.valueOf(recipe.mDuration))
+                    .divide(BigInteger.valueOf(adjustedTime));
+                while (adjustedPowerBigInt.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+                    adjustedPowerBigInt = adjustedPowerBigInt.divide(BigInteger.valueOf(4));
+                    adjustedTime *= 4;
+                }
+                adjustedPower = adjustedPowerBigInt.min(BigInteger.valueOf(Integer.MAX_VALUE))
+                    .intValue();
+            } else {
+                while (energyRatio >= threshold * 4) {
+                    overclockCount++;
+                    threshold *= 4;
+                }
+                if (circuitOC >= 0) {
+                    overclockCount = Math.min(overclockCount, circuitOC);
+                }
+                adjustedPower = recipe.mEUt;
+                adjustedTime = recipe.mDuration;
+                while ((adjustedPower * 4L > Integer.MAX_VALUE || adjustedTime / perfectOCTime > 0)
+                    && overclockCount > 0) {
+                    overclockCount--;
+                    adjustedPower *= 4;
+                    adjustedTime /= perfectOCTime;
+                }
+            }
+
+            adjustedTime = Math.max(1, adjustedTime);
+            adjustedPower = Math.max(1, adjustedPower);
+
+            long totalEnergy = (long) adjustedPower * adjustedTime;
+            double d = (double) totalEnergy / energyEU;
+
+            if (d >= limit) {
+                if (energyEU > Integer.MAX_VALUE) {
+                    adjustedPower = Integer.MAX_VALUE;
+                    d = (double) totalEnergy / Integer.MAX_VALUE;
+                } else {
+                    adjustedPower = (int) energyEU;
+                }
+                adjustedTime = (int) Math.max(limit, d);
+            } else {
+                adjustedPower = (int) ((energyEU * d) / limit);
+                adjustedTime = limit;
+            }
+
+            adjustedTime = Math.max(1, adjustedTime);
+            adjustedPower = Math.max(1, adjustedPower);
+
+            double batchFactor = 1.0;
+            if (adjustedTime < 128 && batchMode) {
+                double timeFactor = 128.0 / adjustedTime;
+                double energyFactor = (double) energyEU / adjustedPower;
+                double newPower = adjustedPower * timeFactor;
+                if (newPower > energyEU) {
+                    batchFactor = energyFactor;
+                    adjustedPower = (int) Math.min(Integer.MAX_VALUE, adjustedPower * batchFactor);
+                    adjustedTime = (int) Math.max(1, adjustedTime * batchFactor);
+                } else {
+                    batchFactor = timeFactor;
+                    adjustedPower = (int) Math.min(Integer.MAX_VALUE, newPower);
+                    adjustedTime = 128;
+                }
+            }
+
+            maxBatchFactor = Math.max(maxBatchFactor, batchFactor);
+
+            GTRecipe overclockedRecipe = new GTRecipe(
+                true,
+                inputItems,
+                new ItemStack[] { outputItem },
+                null,
+                Arrays.stream(new int[inputItems.length])
+                    .map(i -> 10000)
+                    .toArray(),
+                inputFluids,
+                null,
+                adjustedTime,
+                adjustedPower,
+                0);
+
+            overclockedRecipes.add(overclockedRecipe);
+            powerParallel = (int) energyEU / recipe.mEUt;
         }
 
         // 遍历每个输入仓
@@ -276,7 +387,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             FluidStack[] fluidInputs = inventory.getFluidInputs();
 
             // 如果当前输入仓没有物品或流体，跳过
-            if (itemInputs == null || fluidInputs == null || itemInputs.length == 0 || fluidInputs.length == 0) {
+            if (itemInputs == null || itemInputs.length == 0) {
                 continue;
             }
 
@@ -284,244 +395,10 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             ArrayList<ItemStack> allInputs = new ArrayList<>(Arrays.asList(itemInputs));
             ArrayList<FluidStack> allFluids = new ArrayList<>(Arrays.asList(fluidInputs));
 
-            List<GTRecipe.RecipeAssemblyLine> validRecipes = new ArrayList<>();
-            for (ItemStack tDataStick : getDataItems(2)) {
-                if (tDataStick == null) continue;
-                AssemblyLineUtils.LookupResult tLookupResult = AssemblyLineUtils
-                    .findAssemblyLineRecipeFromDataStick(tDataStick, false);
-
-                String cacheKey = generateCacheKeyFromRecipeHash(tDataStick);
-                if (recipeCache.containsKey(cacheKey)) {
-                    // 使用缓存的结果
-                    Pair<GTRecipe.RecipeAssemblyLine, AssemblyLineUtils.LookupResult> cachedResult = recipeCache
-                        .get(cacheKey);
-                    validRecipes.add(cachedResult.getKey());
-                    continue;
-                }
-
-                if (tLookupResult.getType() == AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_HASH
-                    || tLookupResult.getType() == AssemblyLineUtils.LookupResultType.VALID_STACK_AND_VALID_RECIPE) {
-
-                    GTRecipe.RecipeAssemblyLine tRecipe = tLookupResult.getRecipe();
-                    if (tRecipe != null) {
-                        ItemStack[] tInputs = tRecipe.mInputs;
-                        ItemStack[][] tOreDictAlt = tRecipe.mOreDictAlt;
-
-                        validRecipes.add(tRecipe); // 原始配方
-                        recipeCache.put(cacheKey, new Pair<>(tRecipe, tLookupResult));
-
-                        boolean hasValidAlt = false;
-                        if (tOreDictAlt != null) {
-                            for (ItemStack[] altArray : tOreDictAlt) {
-                                if (altArray != null && altArray.length > 1) {
-                                    hasValidAlt = true;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (hasValidAlt) {
-                            // 对替代内容做分组（完全一致才分到一组）
-                            Map<String, Set<Integer>> groupedSlots = new HashMap<>();
-                            for (int i = 0; i < tOreDictAlt.length; i++) {
-                                ItemStack[] alts = tOreDictAlt[i];
-                                if (alts == null || alts.length <= 1) continue;
-
-                                // 使用所有替代品的哈希组合作为唯一标识
-                                String key = Arrays.stream(alts)
-                                    .filter(Objects::nonNull)
-                                    .map(stack -> stack.getUnlocalizedName() + "@" + stack.getItemDamage())
-                                    .sorted()
-                                    .collect(Collectors.joining("|"));
-
-                                groupedSlots.computeIfAbsent(key, k -> new HashSet<>())
-                                    .add(i);
-                            }
-
-                            // 构造笛卡尔积组合
-                            List<ItemStack[]> combinations = new ArrayList<>();
-                            combinations.add(Arrays.copyOf(tInputs, tInputs.length));
-
-                            for (Map.Entry<String, Set<Integer>> entry : groupedSlots.entrySet()) {
-                                Set<Integer> slotGroup = entry.getValue();
-                                int referenceSlot = slotGroup.iterator()
-                                    .next();
-                                ItemStack[] alternatives = tOreDictAlt[referenceSlot];
-
-                                if (alternatives == null || alternatives.length == 0) continue;
-
-                                List<ItemStack[]> newCombinations = new ArrayList<>();
-                                for (ItemStack altItem : alternatives) {
-                                    for (ItemStack[] prevCombo : combinations) {
-                                        ItemStack[] newCombo = Arrays.copyOf(prevCombo, prevCombo.length);
-                                        for (int slot : slotGroup) {
-                                            newCombo[slot] = altItem.copy();
-                                        }
-                                        newCombinations.add(newCombo);
-                                    }
-                                }
-                                combinations = newCombinations;
-                            }
-
-                            // 注册所有生成组合
-                            for (ItemStack[] inputs : combinations) {
-                                GTRecipe.RecipeAssemblyLine tAltRecipe = new GTRecipe.RecipeAssemblyLine(
-                                    tRecipe.mResearchItem,
-                                    tRecipe.mResearchTime,
-                                    inputs,
-                                    tRecipe.mFluidInputs,
-                                    tRecipe.mOutput,
-                                    tRecipe.mDuration,
-                                    tRecipe.mEUt,
-                                    tOreDictAlt);
-                                validRecipes.add(tAltRecipe);
-                                String altCacheKey = cacheKey + "_alt_" + Arrays.hashCode(inputs);
-                                recipeCache.put(altCacheKey, new Pair<>(tAltRecipe, tLookupResult));
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (validRecipes.isEmpty()) {
-                continue; // 当前输入仓没有有效配方，跳到下一个输入仓
-            }
-
-            // 第二步：提取输入输出物品和流体，计算超频次数，调整 mEUt 和 mDuration
-            List<GTRecipe.RecipeAssemblyLine> overclockedRecipes = new ArrayList<>();
-
-            // 按照 recipe.mEUt 从小到大排序
-            validRecipes.sort(Comparator.comparingInt(recipe -> recipe.mEUt));
-
-            for (GTRecipe.RecipeAssemblyLine recipe : validRecipes) {
-                ItemStack[] inputItems;
-                FluidStack[] inputFluids;
-                ItemStack outputItem;
-
-                // 提取输入输出物品和流体
-                try {
-                    inputItems = Arrays.stream(
-                        Objects.requireNonNull(recipe.mInputs, "Inputs is null: " + Arrays.toString(recipe.mInputs)))
-                        .map(Objects::requireNonNull)
-                        .map(ItemStack::copy)
-                        .toArray(ItemStack[]::new);
-
-                    inputFluids = Arrays
-                        .stream(
-                            Objects.requireNonNull(
-                                recipe.mFluidInputs,
-                                "FluidInputs is null: " + Arrays.toString(recipe.mFluidInputs)))
-                        .map(Objects::requireNonNull)
-                        .map(FluidStack::copy)
-                        .toArray(FluidStack[]::new);
-
-                    outputItem = Objects.requireNonNull(recipe.mOutput, "Output is null: " + recipe.mOutput)
-                        .copy();
-
-                } catch (Throwable t) {
-                    System.err.println("[GTNL] Failed to copy recipe: " + recipe);
-                    t.printStackTrace();
-                    continue; // 跳过这个配方
-                }
-
-                // 计算超频次数
-                int overclockCount = 0;
-                long energyRatio = energyEU / Math.max(1, recipe.mEUt); // EnergyEU 与 recipe.mEUt 的比值，避免除以0
-                long threshold = 1; // 初始阈值是 4^0 = 1
-                int adjustedTime;
-                int adjustedPower;
-                BigInteger adjustedPowerBigInt;
-
-                if (wirelessMode) {
-                    adjustedTime = minRecipeTime;
-                    adjustedPowerBigInt = BigInteger.valueOf(recipe.mEUt)
-                        .multiply(BigInteger.valueOf(recipe.mDuration))
-                        .divide(BigInteger.valueOf(adjustedTime));
-
-                    while (adjustedPowerBigInt.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
-                        adjustedPowerBigInt = adjustedPowerBigInt.divide(BigInteger.valueOf(4));
-                        adjustedTime *= 4;
-                    }
-
-                    adjustedPower = adjustedPowerBigInt.min(BigInteger.valueOf(Integer.MAX_VALUE))
-                        .intValue();
-
-                } else {
-
-                    // 计算最大可能的超频次数
-                    while (energyRatio >= threshold * 4) { // 判断是否可以进行下一次超频
-                        overclockCount++;
-                        threshold *= 4;
-                    }
-
-                    if (CircuitOC >= 0) {
-                        overclockCount = Math.min(overclockCount, CircuitOC);
-                    }
-
-                    // 同时计算 adjustedPower 和 adjustedTime，并确保满足所有约束条件
-                    adjustedPower = recipe.mEUt;
-                    adjustedTime = recipe.mDuration;
-
-                    // 检查功耗是否超过 int 的最大值或时间是否小于 1
-                    while (((long) adjustedPower * 4 > Integer.MAX_VALUE || adjustedTime / isPerfectOC > 0)
-                        && overclockCount > 0) {
-                        overclockCount--;
-                        adjustedPower *= 4;
-                        adjustedTime /= isPerfectOC;
-                    }
-                }
-
-                adjustedTime = Math.max(1, adjustedTime);
-                adjustedPower = Math.max(1, adjustedPower);
-
-                // 构建超频后的临时配方
-                GTRecipe.RecipeAssemblyLine overclockedRecipe = new GTRecipe.RecipeAssemblyLine(
-                    recipe.mResearchItem, // 研究物品
-                    recipe.mResearchTime, // 研究时间
-                    inputItems, // 输入物品
-                    inputFluids, // 输入流体
-                    outputItem, // 输出物品
-                    adjustedTime, // 调整后的时间
-                    adjustedPower, // 调整后的功率
-                    recipe.mOreDictAlt // 替代物品
-                );
-
-                overclockedRecipes.add(overclockedRecipe);
-            }
-
-            // 第三步：计算总耗电和时间
-            for (GTRecipe.RecipeAssemblyLine recipe : overclockedRecipes) {
-                // 计算总耗电
-                long totalEnergy = (long) recipe.mEUt * recipe.mDuration;
-
-                // 计算 d 变量时间
-                double d = (double) totalEnergy / energyEU;
-
-                // 根据 d 和 limit 调整功率和时间
-                int adjustedPower;
-                int adjustedTime;
-
-                if (d >= limit) {
-                    if (energyEU > Integer.MAX_VALUE) {
-                        adjustedPower = Integer.MAX_VALUE;
-                        d = (double) totalEnergy / Integer.MAX_VALUE;
-                    } else {
-                        adjustedPower = (int) energyEU;
-                    }
-                    adjustedTime = (int) Math.max(limit, d);
-                } else {
-                    adjustedPower = (int) ((energyEU * d) / limit); // 按比例调整功率
-                    adjustedTime = limit; // 取 limit
-                }
-
-                // 更新配方的功率和时间
-                recipe.mEUt = adjustedPower;
-                recipe.mDuration = adjustedTime;
-                powerParallel = (int) Math.floor((double) energyEU / recipe.mEUt);
-            }
+            maxParallel = (int) (maxParallel * maxBatchFactor);
 
             // 第四步：处理配方并行逻辑
-            Map<GTRecipe.RecipeAssemblyLine, Integer> recipeParallelMap = new HashMap<>();
+            Map<GTRecipe, Integer> recipeParallelMap = new HashMap<>();
             int remainingMaxParallel = maxParallel; // 剩余的最大并行数
             boolean hasValidRecipe = false;
 
@@ -529,7 +406,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             Map<GTUtility.ItemId, Integer> itemAllocated = new HashMap<>();
             Map<Fluid, Integer> fluidAllocated = new HashMap<>();
 
-            for (GTRecipe.RecipeAssemblyLine recipe : overclockedRecipes) {
+            for (GTRecipe recipe : overclockedRecipes) {
                 // 提取所需的物品和流体
                 ItemStack[] requiredItems = recipe.mInputs;
                 FluidStack[] requiredFluids = recipe.mFluidInputs;
@@ -544,7 +421,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
                     // 如果没有矿辞，直接检查原始物品
                     GTUtility.ItemId itemId = GTUtility.ItemId.createNoCopy(input);
-                    long availableOriginal = getAvailableItemCount(input, allInputs);
+                    long availableOriginal = depleteInputLong(input, 1, allInputs, true);
                     long allocated = itemAllocated.getOrDefault(itemId, 0);
                     available = Math.max(0, availableOriginal - allocated);
 
@@ -562,7 +439,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 long fluidParallel = Long.MAX_VALUE;
                 for (FluidStack fluid : requiredFluids) {
                     Fluid fluidType = fluid.getFluid();
-                    long availableOriginal = getAvailableFluidAmount(fluid, allFluids);
+                    long availableOriginal = depleteInputLong(fluid, 1, allFluids, true);
                     long allocated = fluidAllocated.getOrDefault(fluidType, 0);
                     long available = Math.max(0, availableOriginal - allocated);
                     int required = fluid.amount;
@@ -634,20 +511,25 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             long needEU = 0;
             int needTime = 0;
 
-            for (Map.Entry<GTRecipe.RecipeAssemblyLine, Integer> entry : recipeParallelMap.entrySet()) {
-                GTRecipe.RecipeAssemblyLine recipe = entry.getKey();
+            for (Map.Entry<GTRecipe, Integer> entry : recipeParallelMap.entrySet()) {
+                GTRecipe recipe = entry.getKey();
                 long parallel = entry.getValue();
                 if (wirelessMode) {
                     costingEU = BigInteger.valueOf(recipe.mEUt)
                         .multiply(BigInteger.valueOf(recipe.mDuration))
                         .multiply(BigInteger.valueOf(parallel));
+
                 } else {
                     needEU += (long) recipe.mEUt * recipe.mDuration * parallel;
                 }
                 needTime += recipe.mDuration;
             }
 
-            if (!wirelessMode) {
+            if (wirelessMode && !addEUToGlobalEnergyMap(ownerUUID, costingEU.multiply(NEGATIVE_ONE))) {
+                return CheckRecipeResultRegistry.insufficientPower(costingEU.longValue());
+            }
+
+            if (!wirelessMode && !batchMode) {
                 long needEUt = needEU / needTime;
 
                 while (needEU / needTime > energyEU) {
@@ -658,21 +540,21 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     needTime *= 2;
                 }
 
-                while (needTime / isPerfectOC > 0 && needEUt < Long.MAX_VALUE / 4
+                while (needTime / perfectOCTime > 0 && needEUt < Long.MAX_VALUE / 4
                     && (needEU / needTime) * 8 < energyEU) {
                     needEUt *= 4;
-                    needTime /= isPerfectOC;
+                    needTime /= perfectOCTime;
                 }
 
                 totalNeedEUt = needEUt;
                 totalMaxProgressTime = needTime;
             }
 
-            for (Map.Entry<GTRecipe.RecipeAssemblyLine, Integer> entry : recipeParallelMap.entrySet()) {
-                GTRecipe.RecipeAssemblyLine recipe = entry.getKey();
+            for (Map.Entry<GTRecipe, Integer> entry : recipeParallelMap.entrySet()) {
+                GTRecipe recipe = entry.getKey();
                 int parallel = entry.getValue();
 
-                ItemStack output = recipe.mOutput.copy();
+                ItemStack output = recipe.mOutputs[0].copy();
                 output.stackSize *= parallel;
 
                 if (output.stackSize > 0) {
@@ -680,26 +562,26 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 }
             }
 
-            if (!totalOutputs.isEmpty() && !canOutputAll(totalOutputs.toArray(new ItemStack[0]))) {
+            if (totalOutputs.isEmpty()) {
+                return CheckRecipeResultRegistry.NO_RECIPE;
+            }
+
+            if (!canOutputAll(totalOutputs.toArray(new ItemStack[0]))) {
                 return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
             }
 
-            for (Map.Entry<GTRecipe.RecipeAssemblyLine, Integer> entry : recipeParallelMap.entrySet()) {
-                GTRecipe.RecipeAssemblyLine recipe = entry.getKey();
+            for (Map.Entry<GTRecipe, Integer> entry : recipeParallelMap.entrySet()) {
+                GTRecipe recipe = entry.getKey();
                 int parallel = entry.getValue();
 
                 for (ItemStack input : recipe.mInputs) {
-                    consumeItems(input, (long) input.stackSize * parallel, allInputs);
+                    depleteInputLong(input, (long) input.stackSize * parallel, allInputs, false);
                 }
 
                 for (FluidStack fluid : recipe.mFluidInputs) {
-                    consumeFluids(fluid, (long) fluid.amount * parallel, allFluids);
+                    depleteInputLong(fluid, (long) fluid.amount * parallel, allFluids, false);
                 }
             }
-        }
-
-        if (totalOutputs.isEmpty()) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         mOutputItems = totalOutputs.toArray(new ItemStack[0]);
@@ -708,11 +590,8 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
         if (wirelessMode) {
             costingEUText = GTUtility.formatNumbers(costingEU);
-            if (!addEUToGlobalEnergyMap(ownerUUID, costingEU.multiply(NEGATIVE_ONE))) {
-                return CheckRecipeResultRegistry.insufficientPower(costingEU.longValue());
-            }
             this.lEUt = 0;
-            this.mMaxProgresstime = minRecipeTime;
+            this.mMaxProgresstime = batchMode ? 128 : minRecipeTime;
         } else {
             this.lEUt = -totalNeedEUt;
             this.mMaxProgresstime = totalMaxProgressTime;
@@ -721,21 +600,117 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         this.mEfficiency = 10000;
         this.mEfficiencyIncrease = 10000;
 
-        if (GTValues.D1) {
-            GT_FML_LOGGER.info("Recipe successful");
+        if (MainConfig.enableDebugMode) {
+            ScienceNotLeisure.LOG.info("Recipe successful");
         }
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
+    public void findRecipe(List<GTRecipe.RecipeAssemblyLine> validRecipes, long energyEU) {
+        ArrayList<GTRecipe.RecipeAssemblyLine> availableRecipes = new ArrayList<>();
+        if (AssemblyLineUtils.isItemDataStick(mInventory[1])) {
+            availableRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(mInventory[1]));
+        }
+        for (MTEHatchDataAccess dataAccess : validMTEList(mDataAccessHatches)) {
+            availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
+        }
+
+        for (GTRecipe.RecipeAssemblyLine recipe : availableRecipes) {
+            if (recipe == null || recipe.mInputs == null || recipe.mEUt > energyEU) continue;
+
+            int cacheKey = recipe.getPersistentHash();
+
+            if (recipeCache.containsKey(cacheKey)) {
+                validRecipes.addAll(recipeCache.get(cacheKey));
+                continue;
+            }
+
+            List<GTRecipe.RecipeAssemblyLine> recipeList = new ArrayList<>();
+            recipeList.add(recipe);
+            validRecipes.add(recipe);
+
+            recipeCache.put(cacheKey, recipeList);
+
+            ItemStack[] tInputs = recipe.mInputs;
+            ItemStack[][] tOreDictAlt = recipe.mOreDictAlt;
+
+            boolean hasValidAlt = false;
+            if (tOreDictAlt != null) {
+                for (ItemStack[] altArray : tOreDictAlt) {
+                    if (altArray != null && altArray.length > 1) {
+                        hasValidAlt = true;
+                        break;
+                    }
+                }
+            }
+
+            if (hasValidAlt) {
+                Map<String, Set<Integer>> groupedSlots = new HashMap<>();
+                for (int i = 0; i < tOreDictAlt.length; i++) {
+                    ItemStack[] alts = tOreDictAlt[i];
+                    if (alts == null || alts.length <= 1) continue;
+
+                    String key = Arrays.stream(alts)
+                        .filter(Objects::nonNull)
+                        .map(stack -> stack.getUnlocalizedName() + "@" + stack.getItemDamage())
+                        .sorted()
+                        .collect(Collectors.joining("|"));
+
+                    groupedSlots.computeIfAbsent(key, k -> new HashSet<>())
+                        .add(i);
+                }
+
+                List<ItemStack[]> combinations = new ArrayList<>();
+                combinations.add(Arrays.copyOf(tInputs, tInputs.length));
+
+                for (Map.Entry<String, Set<Integer>> entry : groupedSlots.entrySet()) {
+                    Set<Integer> slotGroup = entry.getValue();
+                    int referenceSlot = slotGroup.iterator()
+                        .next();
+                    ItemStack[] alternatives = tOreDictAlt[referenceSlot];
+
+                    if (alternatives == null || alternatives.length == 0) continue;
+
+                    List<ItemStack[]> newCombinations = new ArrayList<>();
+                    for (ItemStack altItem : alternatives) {
+                        for (ItemStack[] prevCombo : combinations) {
+                            ItemStack[] newCombo = Arrays.copyOf(prevCombo, prevCombo.length);
+                            for (int slot : slotGroup) {
+                                newCombo[slot] = altItem.copy();
+                            }
+                            newCombinations.add(newCombo);
+                        }
+                    }
+                    combinations = newCombinations;
+                }
+
+                for (ItemStack[] inputs : combinations) {
+                    GTRecipe.RecipeAssemblyLine altRecipe = new GTRecipe.RecipeAssemblyLine(
+                        recipe.mResearchItem,
+                        recipe.mResearchTime,
+                        recipe.mResearchVoltage,
+                        inputs,
+                        recipe.mFluidInputs,
+                        recipe.mOutput,
+                        recipe.mDuration,
+                        recipe.mEUt,
+                        tOreDictAlt);
+                    validRecipes.add(altRecipe);
+                    recipeCache.computeIfAbsent(cacheKey, k -> new ArrayList<>())
+                        .add(altRecipe);
+                }
+            }
+        }
+    }
+
     // 包装常规输入仓/总线的实现
-    private static class WrappedInventory implements IDualInputInventory {
+    @Desugar
+    public record WrappedInventory(ArrayList<ItemStack> itemInputs, ArrayList<FluidStack> fluidInputs)
+        implements IDualInputInventory {
 
-        private final ArrayList<ItemStack> itemInputs;
-        private final ArrayList<FluidStack> fluidInputs;
-
-        public WrappedInventory(ArrayList<ItemStack> itemInputs, ArrayList<FluidStack> fluidInputs) {
-            this.itemInputs = itemInputs;
-            this.fluidInputs = fluidInputs;
+        @Override
+        public boolean isEmpty() {
+            return itemInputs == null || fluidInputs == null;
         }
 
         @Override
@@ -750,7 +725,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
     }
 
     // 自定义方法：获取可用物品数量
-    private long getAvailableItemCount(ItemStack required, ArrayList<ItemStack> allInputs) {
+    public long getAvailableItemCount(ItemStack required, ArrayList<ItemStack> allInputs) {
         long count = 0;
 
         // 优先检查完全匹配的物品
@@ -767,21 +742,19 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         if (count == 0) {
             // 获取矿辞名称
             int[] oreIDs = OreDictionary.getOreIDs(required);
-            if (oreIDs.length > 0) {
-                // 遍历所有矿辞匹配的物品
-                for (int oreID : oreIDs) {
-                    String oreName = OreDictionary.getOreName(oreID);
-                    List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
+            // 遍历所有矿辞匹配的物品
+            for (int oreID : oreIDs) {
+                String oreName = OreDictionary.getOreName(oreID);
+                List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
 
-                    // 遍历输入槽位中的所有物品
-                    for (ItemStack input : allInputs) {
-                        if (input != null) {
-                            // 检查输入物品是否与矿辞匹配
-                            for (ItemStack oreDictItem : oreDictItems) {
-                                if (OreDictionary.itemMatches(oreDictItem, input, false)) {
-                                    count += input.stackSize;
-                                    break;
-                                }
+                // 遍历输入槽位中的所有物品
+                for (ItemStack input : allInputs) {
+                    if (input != null) {
+                        // 检查输入物品是否与矿辞匹配
+                        for (ItemStack oreDictItem : oreDictItems) {
+                            if (OreDictionary.itemMatches(oreDictItem, input, false)) {
+                                count += input.stackSize;
+                                break;
                             }
                         }
                     }
@@ -792,106 +765,82 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         return count;
     }
 
-    private long getAvailableFluidAmount(FluidStack required, ArrayList<FluidStack> allFluids) {
-        long amount = 0;
+    public long depleteInputLong(ItemStack required, long amount, ArrayList<ItemStack> allInputs, boolean simulate) {
+        if (required == null || amount <= 0 || allInputs == null) return 0;
 
-        for (FluidStack fluid : allFluids) {
-            if (fluid != null && fluid.isFluidEqual(required)) {
-                amount += fluid.amount;
+        long matchedCount = 0;
 
-            }
-        }
-
-        return amount;
-    }
-
-    // 自定义方法：消耗物品
-    private void consumeItems(ItemStack required, long amount, ArrayList<ItemStack> allInputs) {
-        long remaining = amount;
-
-        // 优先消耗完全匹配的物品
         for (ItemStack input : allInputs) {
             if (input != null) {
-                if ((required.getItemDamage() == GTRecipeBuilder.WILDCARD && input.getItem() == required.getItem())
-                    || (input.isItemEqual(required) && ItemStack.areItemStackTagsEqual(input, required))) {
-                    int available = input.stackSize;
+                boolean match = (required.getItemDamage() == GTRecipeBuilder.WILDCARD
+                    && input.getItem() == required.getItem())
+                    || (input.isItemEqual(required) && ItemStack.areItemStackTagsEqual(input, required));
 
-                    int toConsumeNow = (int) Math.min(available, Math.min(remaining, Integer.MAX_VALUE));
+                if (match) {
+                    matchedCount += input.stackSize;
 
-                    input.stackSize -= toConsumeNow;
-                    remaining -= toConsumeNow;
-
-                    if (input.stackSize <= 0) {
-                        input.stackSize = 0;
-                    }
-
-                    if (remaining <= 0) {
-                        return; // 消耗完毕，直接返回
+                    if (!simulate) {
+                        int toConsume = (int) Math.min(input.stackSize, Math.min(amount, Integer.MAX_VALUE));
+                        input.stackSize -= toConsume;
+                        if (input.stackSize < 0) input.stackSize = 0;
+                        amount -= toConsume;
+                        if (amount <= 0) return matchedCount;
                     }
                 }
             }
         }
 
-        // 如果没有完全匹配的物品，尝试消耗矿辞匹配的物品
-        if (remaining > 0) {
-            // 获取矿辞名称
-            int[] oreIDs = OreDictionary.getOreIDs(required);
-            if (oreIDs.length > 0) {
-                // 遍历所有矿辞匹配的物品
-                for (int oreID : oreIDs) {
-                    String oreName = OreDictionary.getOreName(oreID);
-                    List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
+        int[] oreIDs = OreDictionary.getOreIDs(required);
+        if (oreIDs.length > 0) {
+            outer: for (int oreID : oreIDs) {
+                String oreName = OreDictionary.getOreName(oreID);
+                List<ItemStack> oreDictItems = OreDictionary.getOres(oreName);
 
-                    // 遍历所有相同矿辞的物品
-                    for (ItemStack oreDictItem : oreDictItems) {
-                        // 在输入槽位中查找匹配的物品
-                        for (ItemStack input : allInputs) {
-                            if (input != null && OreDictionary.itemMatches(oreDictItem, input, false)) {
+                for (ItemStack oreDictItem : oreDictItems) {
+                    for (ItemStack input : allInputs) {
+                        if (input != null && OreDictionary.itemMatches(oreDictItem, input, false)) {
+                            matchedCount += input.stackSize;
 
-                                int available = input.stackSize;
-
-                                int toConsumeNow = (int) Math.min(available, Math.min(remaining, Integer.MAX_VALUE));
-
-                                input.stackSize -= toConsumeNow;
-                                remaining -= toConsumeNow;
-
-                                if (input.stackSize <= 0) {
-                                    input.stackSize = 0;
-                                }
-
-                                if (remaining <= 0) {
-                                    return; // 消耗完毕，直接返回
-                                }
-                                break; // 消耗完当前物品后，跳出内层循环，继续查找下一个矿辞匹配的物品
+                            if (!simulate) {
+                                int toConsume = (int) Math.min(input.stackSize, Math.min(amount, Integer.MAX_VALUE));
+                                input.stackSize -= toConsume;
+                                if (input.stackSize < 0) input.stackSize = 0;
+                                amount -= toConsume;
+                                if (amount <= 0) break outer;
                             }
                         }
                     }
                 }
             }
         }
+
+        return matchedCount;
     }
 
-    // 自定义方法：消耗流体
-    private void consumeFluids(FluidStack required, long amount, ArrayList<FluidStack> allFluids) {
-        long remaining = amount;
+    public long depleteInputLong(FluidStack required, long amount, ArrayList<FluidStack> allFluids, boolean simulate) {
+        long fluidAmount = 0;
         for (FluidStack fluid : allFluids) {
             if (fluid != null && fluid.isFluidEqual(required)) {
-                int available = fluid.amount;
+                fluidAmount += fluid.amount;
+                if (!simulate) {
+                    int available = fluid.amount;
 
-                int toConsumeNow = (int) Math.min(available, Math.min(remaining, Integer.MAX_VALUE));
+                    int toConsumeNow = (int) Math.min(available, Math.min(amount, Integer.MAX_VALUE));
 
-                fluid.amount -= toConsumeNow;
-                remaining -= toConsumeNow;
+                    fluid.amount -= toConsumeNow;
+                    amount -= toConsumeNow;
 
-                if (fluid.amount <= 0) {
-                    fluid.amount = 0;
-                }
+                    if (fluid.amount <= 0) {
+                        fluid.amount = 0;
+                    }
 
-                if (remaining <= 0) {
-                    return;
+                    if (amount <= 0) {
+                        return fluidAmount;
+                    }
                 }
             }
         }
+        return fluidAmount;
     }
 
     @Override
@@ -926,132 +875,86 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
     @Override
     public IStructureDefinition<GrandAssemblyLine> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<GrandAssemblyLine>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 5))
-                .addElement(
-                    'B',
-                    buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .addElement('C', ofBlock(sBlockCasingsTT, 2))
-                .addElement(
-                    'D',
-                    buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(OutputBus)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .addElement(
-                    'E',
-                    buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(
-                            InputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            DataHatchElement.DataAccess)
-                        .buildAndChain(
-                            onElementPass(
-                                x -> ++x.tCountCasing,
-                                ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))))
-                .addElement(
-                    'F',
-                    buildHatchAdder(GrandAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(
-                            InputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(ExoticEnergy),
-                            DataHatchElement.DataAccess)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .addElement('G', ofBlock(sBlockCasings2, 9))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<GrandAssemblyLine>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 5))
+            .addElement(
+                'B',
+                buildHatchAdder(GrandAssemblyLine.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputBus)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .addElement('C', ofBlock(sBlockCasingsTT, 2))
+            .addElement(
+                'D',
+                buildHatchAdder(GrandAssemblyLine.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(OutputBus)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .addElement(
+                'E',
+                buildHatchAdder(GrandAssemblyLine.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, InputBus, OutputBus, Energy.or(ExoticEnergy), DataHatchElement.DataAccess)
+                    .buildAndChain(
+                        onElementPass(
+                            x -> ++x.mCountCasing,
+                            ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))))
+            .addElement(
+                'F',
+                buildHatchAdder(GrandAssemblyLine.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(
+                        InputHatch,
+                        InputBus,
+                        OutputBus,
+                        Maintenance,
+                        Energy.or(ExoticEnergy),
+                        DataHatchElement.DataAccess)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .addElement('G', ofBlock(sBlockCasings2, 9))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-        mDataAccessHatches.clear();
-        isDualInputHatch = false;
-        useSingleAmp = true;
-        wirelessMode = false;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)
+            || !checkHatch()) return false;
+        return mCountCasing >= 590;
+    }
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
-        energyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-
-        if (mParallelTier < 10 && MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (mEnergyHatches.size() + mExoticEnergyHatches.size() > 1 || getMaxInputAmps() > 64) return false;
-        }
-
+    @Override
+    public boolean checkHatch() {
+        setupParameters();
+        if (mParallelTier < 9 && !checkEnergyHatch()) return false;
         if (mParallelTier >= 12 && mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
             wirelessMode = true;
             useSingleAmp = false;
-            energyHatchTier = 14;
+            mEnergyHatchTier = 14;
         } else if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) return false;
 
         if (!mDualInputHatches.isEmpty()) {
             isDualInputHatch = true;
             if (!mInputBusses.isEmpty() || !mInputHatches.isEmpty()) return false;
         }
-
-        return mDataAccessHatches.size() <= 1 && mMaintenanceHatches.size() <= 1 && tCountCasing >= 590;
+        return super.checkHatch() && !(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty())
+            && mDataAccessHatches.size() <= 1
+            && mMaintenanceHatches.size() <= 1;
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(wirelessMode ? Long.MAX_VALUE : getMachineVoltageLimit());
-        logic.setAvailableAmperage(wirelessMode ? Long.MAX_VALUE : useSingleAmp ? 1 : getMaxInputAmps() / 4);
-        logic.setAmperageOC(false);
+    public void clearHatches() {
+        super.clearHatches();
+        mDataAccessHatches.clear();
+        isDualInputHatch = false;
+        useSingleAmp = true;
+        wirelessMode = false;
     }
 
-    /**
-     * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
-     */
-    private static boolean isCorrectDataItem(ItemStack aStack, int state) {
-        if ((state & 1) != 0 && ItemList.Circuit_Integrated.isStackEqual(aStack, true, true)) return true;
-        if ((state & 2) != 0 && ItemList.Tool_DataStick.isStackEqual(aStack, false, true)) return true;
-        return (state & 4) != 0 && ItemList.Tool_DataOrb.isStackEqual(aStack, false, true);
-    }
-
-    /**
-     * @param state using bitmask, 1 for IntegratedCircuit, 2 for DataStick, 4 for DataOrb
-     */
-    public ArrayList<ItemStack> getDataItems(int state) {
-        ArrayList<ItemStack> rList = new ArrayList<>();
-        if (GTUtility.isStackValid(mInventory[1]) && isCorrectDataItem(mInventory[1], state)) {
-            rList.add(mInventory[1]);
-        }
-        for (MTEHatchDataAccess tHatch : validMTEList(mDataAccessHatches)) {
-            rList.addAll(tHatch.getInventoryItems(stack -> isCorrectDataItem(stack, state)));
-        }
-        return rList;
-    }
-
-    public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof MTEHatchDataAccess) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
-        }
-        return false;
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 4;
     }
 
     @Override
@@ -1062,7 +965,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -1076,7 +979,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return BlockGTCasingsTT.textureOffset + 3;
     }
 
     @Override
@@ -1084,41 +987,34 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         return VoidingMode.ITEM_ONLY_MODES;
     }
 
-    private enum DataHatchElement implements IHatchElement<GrandAssemblyLine> {
-
-        DataAccess;
-
-        @Override
-        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return Collections.singletonList(MTEHatchDataAccess.class);
-        }
-
-        @Override
-        public IGTHatchAdder<GrandAssemblyLine> adder() {
-            return GrandAssemblyLine::addDataAccessToMachineList;
-        }
-
-        @Override
-        public long count(GrandAssemblyLine t) {
-            return t.mDataAccessHatches.size();
-        }
-    }
-
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(0.8 - (mParallelTier / 50.0) * ((mParallelTier >= 12) ? 0.2 : 1))
-                    .setSpeedBoost((1 / 1.67 - (mParallelTier / 200.0)) * ((mParallelTier >= 12) ? 1.0 / 20.0 : 1));
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return GTNL_OverclockCalculator.ofNoOverclock(recipe)
+                    .setExtraDurationModifier(mConfigSpeedBoost)
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier())
+                    .setAmperage(wirelessMode ? Long.MAX_VALUE : useSingleAmp ? 1 : getMaxInputAmps() / 4)
+                    .setEUt(wirelessMode ? Long.MAX_VALUE : getMachineVoltageLimit());
             }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
-    private static final int PARALLEL_WINDOW_ID = 10;
+    @Override
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0) * ((mParallelTier >= 12) ? 0.2 : 1);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return (1 / 1.67 - (Math.max(0, mParallelTier - 1) / 50.0)) * ((mParallelTier >= 12) ? 1.0 / 20.0 : 1);
+    }
+
+    public static final int PARALLEL_WINDOW_ID = 10;
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -1204,6 +1100,37 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     + tag.getString("costingEUText")
                     + EnumChatFormatting.RESET
                     + " EU");
+        }
+    }
+
+    public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchDataAccess) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    public enum DataHatchElement implements IHatchElement<GrandAssemblyLine> {
+
+        DataAccess;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return Collections.singletonList(MTEHatchDataAccess.class);
+        }
+
+        @Override
+        public IGTHatchAdder<GrandAssemblyLine> adder() {
+            return GrandAssemblyLine::addDataAccessToMachineList;
+        }
+
+        @Override
+        public long count(GrandAssemblyLine t) {
+            return t.mDataAccessHatches.size();
         }
     }
 

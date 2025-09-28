@@ -2,7 +2,8 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.UniversalSingularities;
@@ -28,12 +29,10 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
-import galaxyspace.core.register.GSBlocks;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.MaterialsKevlar;
@@ -42,14 +41,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
-import gregtech.common.blocks.BlockCasings9;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import kubatech.loaders.BlockLoader;
@@ -57,20 +54,16 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.casing.TTCasingsContainer;
 
-public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator>
-    implements IWirelessEnergyHatchInformation {
+public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
 
     protected boolean wirelessMode = false;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static IStructureDefinition<WhiteNightGenerator> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String WNG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/white_night_generator";
-    public static String[][] shape = StructureUtils.readStructureFromFile(WNG_STRUCTURE_FILE_PATH);
-    public static final int CASING_INDEX = ((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(13);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(WNG_STRUCTURE_FILE_PATH);
     public int multiTier = 0;
     public String ownerName;
     public UUID ownerUUID;
     public long currentOutputEU = 0;
-    public int tCountCasing = 0;
 
     public WhiteNightGenerator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -92,7 +85,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator>
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("isActive")) {
             currentTip.add(
-                EnumChatFormatting.AQUA + texter("Current Generating : ", "Waila.RealArtificialStar.1")
+                EnumChatFormatting.AQUA + texter("Current Generating : ", "Info_RealArtificialStar_00")
                     + EnumChatFormatting.GOLD
                     + tag.getLong("currentOutputEU")
                     + EnumChatFormatting.RED
@@ -133,7 +126,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator>
     public CheckRecipeResult checkProcessing() {
         mMaxProgresstime = 6000;
         if (wirelessMode) {
-            BigInteger eu = BigInteger.valueOf((long) this.currentOutputEU)
+            BigInteger eu = BigInteger.valueOf(this.currentOutputEU)
                 .multiply(Utils.INTEGER_MAX_VALUE);
             if (!addEUToGlobalEnergyMap(ownerUUID, eu)) {
                 return CheckRecipeResultRegistry.INTERNAL_ERROR;
@@ -158,30 +151,48 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator>
         wirelessMode = aNBT.getBoolean("wirelessMode");
     }
 
-    public int getMultiTier(ItemStack inventory) {
-        if (inventory == null) return 0;
-        return inventory
-            .isItemEqual(GTModHandler.getModItem(UniversalSingularities.ID, "universal.general.singularity", 1, 31)) ? 2
-                : inventory.isItemEqual(GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1, 0)) ? 1
-                    : 0;
+    public int getMultiTier() {
+        if (GTUtility.areStacksEqual(
+            getControllerSlot(),
+            GTModHandler.getModItem(UniversalSingularities.ID, "universal.general.singularity", 1, 31))) {
+            return 2;
+        }
+        if (GTUtility.areStacksEqual(
+            getControllerSlot(),
+            GTModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1, 0))) {
+            return 1;
+        }
+        return 0;
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        repairMachine();
-        wirelessMode = false;
-        tCountCasing = 0;
-        multiTier = 0;
-        currentOutputEU = 0;
-
-        if (aStack != null) {
-            if (checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET))
-                this.multiTier = getMultiTier(aStack);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
         }
+        setupParameters();
+        return mCountCasing > 25;
+    }
 
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         wirelessMode = mDynamoHatches.isEmpty();
         currentOutputEU = 300L * multiTier;
-        return multiTier > 0 && tCountCasing > 25;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        wirelessMode = false;
+        multiTier = 0;
+        currentOutputEU = 0;
+    }
+
+    @Override
+    public boolean checkHatch() {
+        this.multiTier = getMultiTier();
+        return super.checkHatch() && multiTier > 0;
     }
 
     @Override
@@ -198,7 +209,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -210,40 +221,37 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator>
             true);
     }
 
-    public final int HORIZONTAL_OFF_SET = 49;
-    public final int VERTICAL_OFF_SET = 55;
-    public final int DEPTH_OFF_SET = 26;
+    protected final int HORIZONTAL_OFF_SET = 49;
+    protected final int VERTICAL_OFF_SET = 55;
+    protected final int DEPTH_OFF_SET = 26;
 
     @Override
     public IStructureDefinition<WhiteNightGenerator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<WhiteNightGenerator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
-                    buildHatchAdder(WhiteNightGenerator.class).atLeast(Dynamo)
-                        .dot(1)
-                        .casingIndex(CASING_INDEX)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(GregTechAPI.sBlockCasings10, 13))))
-                .addElement('B', ofBlock(GSBlocks.DysonSwarmBlocks, 1))
-                .addElement('C', ofBlock(BlockLoader.defcCasingBlock, 12))
-                .addElement('D', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
-                .addElement('E', ofBlock(GregTechAPI.sBlockCasings10, 11))
-                .addElement('F', ofBlock(IGBlocks.SpaceElevatorCasing, 1))
-                .addElement('G', ofFrame(MaterialsUEVplus.SixPhasedCopper))
-                .addElement('H', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
-                .addElement('I', ofBlock(ModBlocks.blockCasings3Misc, 11))
-                .addElement('J', ofBlock(GregTechAPI.sBlockCasings9, 5))
-                .addElement('K', ofBlock(Loaders.gravityStabilizationCasing, 0))
-                .addElement('L', ofBlock(GSBlocks.DysonSwarmBlocks, 8))
-                .addElement('M', ofBlock(GregTechAPI.sBlockCasings9, 5))
-                .addElement('N', ofBlock(GregTechAPI.sBlockCasings10, 14))
-                .addElement('O', ofBlock(GregTechAPI.sBlockCasings10, 14))
-                .addElement('P', ofBlock(GregTechAPI.sBlockCasings9, 5))
-                .addElement('Q', ofFrame(MaterialsKevlar.Kevlar))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<WhiteNightGenerator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                buildHatchAdder(WhiteNightGenerator.class).atLeast(Maintenance, Dynamo)
+                    .dot(1)
+                    .casingIndex(getCasingTextureID())
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(GregTechAPI.sBlockCasings10, 13))))
+            .addElement('B', ofBlock(GregTechAPI.sBlockCasingsDyson, 1))
+            .addElement('C', ofBlock(BlockLoader.defcCasingBlock, 12))
+            .addElement('D', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
+            .addElement('E', ofBlock(GregTechAPI.sBlockCasings10, 11))
+            .addElement('F', ofBlock(GregTechAPI.sBlockCasingsSE, 1))
+            .addElement('G', ofFrame(MaterialsUEVplus.SixPhasedCopper))
+            .addElement('H', ofBlock(TTCasingsContainer.GodforgeCasings, 8))
+            .addElement('I', ofBlock(ModBlocks.blockCasings3Misc, 11))
+            .addElement('J', ofBlock(sBlockCasings9, 5))
+            .addElement('K', ofBlock(Loaders.gravityStabilizationCasing, 0))
+            .addElement('L', ofBlock(GregTechAPI.sBlockCasingsDyson, 8))
+            .addElement('M', ofBlock(sBlockCasings9, 5))
+            .addElement('N', ofBlock(GregTechAPI.sBlockCasings10, 14))
+            .addElement('O', ofBlock(GregTechAPI.sBlockCasings10, 14))
+            .addElement('P', ofBlock(sBlockCasings9, 5))
+            .addElement('Q', ofFrame(MaterialsKevlar.Kevlar))
+            .build();
     }
 
     @Override
@@ -322,17 +330,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator>
     }
 
     @Override
-    protected boolean isEnablePerfectOverclock() {
-        return false;
-    }
-
-    @Override
-    protected float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
-    protected int getMaxParallelRecipes() {
+    public int getMaxParallelRecipes() {
         return 1;
     }
 
@@ -378,6 +376,6 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator>
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings9) GregTechAPI.sBlockCasings9).getTextureIndex(5);
+        return StructureUtils.getTextureIndex(sBlockCasings9, 5);
     }
 }

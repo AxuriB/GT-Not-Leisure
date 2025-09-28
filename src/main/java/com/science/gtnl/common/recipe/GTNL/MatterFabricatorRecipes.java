@@ -1,11 +1,11 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.util.GTModHandler.getModItem;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 
 public class MatterFabricatorRecipes implements IRecipePool {
 
-    final RecipeMap<?> MFR = RecipeRegister.MatterFabricatorRecipes;
+    public RecipeMap<?> MFR = RecipePool.MatterFabricatorRecipes;
 
     @Override
     public void loadRecipes() {

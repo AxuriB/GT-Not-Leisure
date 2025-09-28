@@ -2,8 +2,8 @@ package com.science.gtnl.common.recipe.GTNL;
 
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import WayofTime.alchemicalWizardry.ModItems;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipe;
@@ -16,7 +16,7 @@ import gregtech.api.util.GTUtility;
 
 public class BloodDemonInjectionRecipes implements IRecipePool {
 
-    final RecipeMap<?> BIR = RecipeRegister.BloodDemonInjectionRecipes;
+    public RecipeMap<?> BIR = RecipePool.BloodDemonInjectionRecipes;
 
     @Override
     public void loadRecipes() {

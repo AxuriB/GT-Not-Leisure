@@ -1,135 +1,59 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.Utils.recipes.RecipeBuilder;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTUtility;
 
 public class SteamCrackerRecipes implements IRecipePool {
 
-    final RecipeMap<?> SCR = RecipeRegister.SteamCrackerRecipes;
+    public RecipeMap<?> SCR = RecipePool.SteamCrackerRecipes;
 
     @Override
     public void loadRecipes() {
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(FluidRegistry.getFluidStack("gas_sulfuricgas", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("lightlysteamcracked.gas", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
+        Materials[][] matPairs = { { Materials.SulfuricNaphtha, Materials.Naphtha },
+            { Materials.SulfuricLightFuel, Materials.LightFuel },
+            { Materials.SulfuricHeavyFuel, Materials.HeavyFuel }, };
 
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(FluidRegistry.getFluidStack("gas_sulfuricgas", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("moderatelysteamcracked.gas", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
+        for (Materials[] pair : matPairs) {
+            Materials inputMat = pair[0];
+            Materials outputMat = pair[1];
 
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(3))
-            .fluidInputs(FluidRegistry.getFluidStack("gas_sulfuricgas", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("severelysteamcracked.gas", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sulfuricnaphtha", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("lightlysteamcracked.naphtha", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
+            for (int circuit = 1; circuit <= 3; circuit++) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.getIntegratedCircuit(circuit))
+                    .fluidInputs(inputMat.getFluid(1000))
+                    .fluidOutputs(getSteamCrackedFluid(outputMat, circuit, 400))
+                    .specialValue(0)
+                    .duration(200)
+                    .eut(30)
+                    .addTo(SCR);
+            }
+        }
 
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sulfuricnaphtha", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("moderatelysteamcracked.naphtha", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
+        for (int circuit = 1; circuit <= 3; circuit++) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.getIntegratedCircuit(circuit))
+                .fluidInputs(Materials.SulfuricGas.getGas(1000))
+                .fluidOutputs(getSteamCrackedFluid(Materials.Gas, circuit, 400))
+                .specialValue(0)
+                .duration(200)
+                .eut(30)
+                .addTo(SCR);
+        }
+    }
 
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(3))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sulfuricnaphtha", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("severelysteamcracked.naphtha", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sufluriclight_fuel", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("lightlysteamcracked.lightfuel", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
-
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sufluriclight_fuel", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("moderatelysteamcracked.lightfuel", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
-
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(3))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sufluriclight_fuel", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("severelysteamcracked.lightfuel", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(1))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sulfuricheavy_fuel", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("lightlysteamcracked.heavyfuel", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
-
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(2))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sulfuricheavy_fuel", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("moderatelysteamcracked.heavyfuel", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
-
-        RecipeBuilder.builder()
-            .itemInputs(GTUtility.getIntegratedCircuit(3))
-            .fluidInputs(FluidRegistry.getFluidStack("liquid_sulfuricheavy_fuel", 1000))
-            .fluidOutputs(FluidRegistry.getFluidStack("severelysteamcracked.heavyfuel", 400))
-            .specialValue(0)
-            .noOptimize()
-            .duration(200)
-            .eut(30)
-            .addTo(SCR);
+    private static FluidStack getSteamCrackedFluid(Materials base, int circuit, int amount) {
+        return switch (circuit) {
+            case 1 -> base.getLightlySteamCracked(amount);
+            case 2 -> base.getModeratelySteamCracked(amount);
+            case 3 -> base.getSeverelySteamCracked(amount);
+            default -> throw new IllegalArgumentException("Unsupported circuit: " + circuit);
+        };
     }
 }

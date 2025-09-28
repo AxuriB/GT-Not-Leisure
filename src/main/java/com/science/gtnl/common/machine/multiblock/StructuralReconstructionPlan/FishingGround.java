@@ -14,8 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -23,8 +21,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TAE;
@@ -32,25 +29,18 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class FishingGround extends GTMMultiMachineBase<FishingGround> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<FishingGround> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String FG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/fishing_ground";
-    public static final int CASING_INDEX = TAE.GTPP_INDEX(18);
-    public final int HORIZONTAL_OFF_SET = 6;
-    public final int VERTICAL_OFF_SET = 2;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(FG_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 6;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(FG_STRUCTURE_FILE_PATH);
 
     public FishingGround(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -85,12 +75,12 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return TAE.GTPP_INDEX(18);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.FishingGroundRecipes;
+        return RecipePool.FishingGroundRecipes;
     }
 
     @Override
@@ -116,42 +106,24 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
 
     @Override
     public IStructureDefinition<FishingGround> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<FishingGround>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(sBlockCasings2, 13))
-                .addElement('B', ofFrame(Materials.StainlessSteel))
-                .addElement(
-                    'C',
-                    buildHatchAdder(FishingGround.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasings2Misc, 2))))
-                .addElement('D', ofChain(ofBlockAnyMeta(Blocks.water), ofBlockAnyMeta(Blocks.flowing_water), isAir()))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<FishingGround>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(sBlockCasings2, 13))
+            .addElement('B', ofFrame(Materials.StainlessSteel))
+            .addElement(
+                'C',
+                buildHatchAdder(FishingGround.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasings2Misc, 2))))
+            .addElement('D', ofChain(ofBlockAnyMeta(Blocks.water), ofBlockAnyMeta(Blocks.flowing_water), isAir()))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
-        }
-
-        if (tCountCasing < 25) return false;
-
-        energyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getMaxInputAmps() > 64) return false;
         }
         boolean isFlipped = this.getFlip()
             .isHorizontallyFlipped();
@@ -164,9 +136,8 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
             isFlipped,
             "D",
             Blocks.water);
-
-        mParallelTier = getParallelTier(aStack);
-        return true;
+        setupParameters();
+        return mCountCasing >= 25;
     }
 
     @Override
@@ -175,28 +146,18 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return true;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public double getEUtDiscount() {
+        return 1 - (mParallelTier / 50.0);
+    }
 
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setRecipeEUt(recipe.mEUt)
-                    .setAmperage(availableAmperage)
-                    .setEUt(availableVoltage)
-                    .setDuration(recipe.mDuration)
-                    .setAmperageOC(true)
-                    .setDurationDecreasePerOC(4)
-                    .setEUtIncreasePerOC(4)
-                    .setEUtDiscount(1 - (mParallelTier / 50.0))
-                    .setSpeedBoost(1 - (mParallelTier / 200.0));
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public double getDurationModifier() {
+        return 1 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 
     @Override
@@ -207,7 +168,7 @@ public class FishingGround extends GTMMultiMachineBase<FishingGround> implements
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

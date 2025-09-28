@@ -20,7 +20,7 @@ public final class GTNLCreativeTabs {
 
         @Override
         public Item getTabIconItem() {
-            return ItemLoader.TestItem;
+            return ItemLoader.testItem;
         }
     };
 

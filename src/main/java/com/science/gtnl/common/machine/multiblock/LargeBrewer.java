@@ -18,8 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -28,7 +26,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.enums.TAE;
@@ -37,30 +34,24 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
 
 public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<LargeBrewer> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String LB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_brewer";
     private static final int MACHINEMODE_FREWERY = 0;
     private static final int MACHINEMODE_FERMENTER = 1;
     private static final int MACHINEMODE_FLUID_HEATER = 2;
-    public final int HORIZONTAL_OFF_SET = 2;
-    public final int VERTICAL_OFF_SET = 3;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(LB_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 2;
+    protected final int VERTICAL_OFF_SET = 3;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LB_STRUCTURE_FILE_PATH);
 
     public LargeBrewer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -100,14 +91,11 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        switch (machineMode) {
-            case MACHINEMODE_FREWERY:
-                return RecipeMaps.fermentingRecipes;
-            case MACHINEMODE_FERMENTER:
-                return RecipeMaps.fluidHeaterRecipes;
-            default:
-                return RecipeMaps.brewingRecipes;
-        }
+        return switch (machineMode) {
+            case MACHINEMODE_FREWERY -> RecipeMaps.fermentingRecipes;
+            case MACHINEMODE_FERMENTER -> RecipeMaps.fluidHeaterRecipes;
+            default -> RecipeMaps.brewingRecipes;
+        };
     }
 
     @Nonnull
@@ -141,26 +129,22 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
 
     @Override
     public IStructureDefinition<LargeBrewer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LargeBrewer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 8))
-                .addElement('B', ofBlock(sBlockCasings2, 13))
-                .addElement(
-                    'C',
-                    buildHatchAdder(LargeBrewer.class).casingIndex(getCasingTextureID())
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(blockCasingsMisc, 1))))
-                .addElement('D', Muffler.newAny(TAE.GTPP_INDEX(1), 1))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LargeBrewer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 8))
+            .addElement('B', ofBlock(sBlockCasings2, 13))
+            .addElement(
+                'C',
+                buildHatchAdder(LargeBrewer.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(blockCasingsMisc, 1))))
+            .addElement('D', Muffler.newAny(TAE.GTPP_INDEX(1), 1))
+            .build();
     }
 
     @Override
     public void setMachineModeIcons() {
-        machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_DEFAULT);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
@@ -186,7 +170,8 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         this.machineMode = (byte) ((this.machineMode + 1) % 3);
         GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("LargeBrewer_Mode_" + this.machineMode));
     }
@@ -198,25 +183,16 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 45;
+    }
 
-        energyHatchTier = checkEnergyHatchTier();
-        if (MainConfig.enableMachineAmpLimit) {
-            for (MTEHatch hatch : getExoticEnergyHatches()) {
-                if (hatch instanceof MTEHatchEnergyTunnel) {
-                    return false;
-                }
-            }
-            if (getMaxInputAmps() > 64) return false;
-        }
-
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 45 && this.mMufflerHatches.size() == 1;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && mMufflerHatches.size() == 1;
     }
 
     @Override
@@ -240,7 +216,7 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -253,15 +229,12 @@ public class LargeBrewer extends GTMMultiMachineBase<LargeBrewer> implements ISu
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 50.0);
+    }
 
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUtDiscount(0.8 - (mParallelTier / 50.0))
-                    .setSpeedBoost(1.0 / 2.25 - (mParallelTier / 200.0));
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / 2.25 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 }

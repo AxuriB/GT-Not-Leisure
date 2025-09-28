@@ -4,8 +4,8 @@ import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -22,7 +22,7 @@ import kubatech.loaders.DEFCRecipes;
 
 public class DragonEvolutionFusionCraftingRecipes implements IRecipePool {
 
-    final RecipeMap<?> DEFCR = DEFCRecipes.fusionCraftingRecipes;
+    public RecipeMap<?> DEFCR = DEFCRecipes.fusionCraftingRecipes;
 
     @Override
 

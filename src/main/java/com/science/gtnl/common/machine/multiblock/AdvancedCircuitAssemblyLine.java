@@ -13,8 +13,6 @@ import static tectech.thing.casing.TTCasingsContainer.sBlockCasingsTT;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -28,37 +26,30 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.ExoticEnergyInputHelper;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.casing.BlockGTCasingsTT;
 
 public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCircuitAssemblyLine>
     implements ISurvivalConstructable {
 
-    private static IStructureDefinition<AdvancedCircuitAssemblyLine> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String ACAL_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/advanced_circuit_assembly_line";
-    private static final int CASING_INDEX = BlockGTCasingsTT.textureOffset + 3;
-    private static final String[][] shape = StructureUtils.readStructureFromFile(ACAL_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 0;
-    public final int VERTICAL_OFF_SET = 2;
-    public final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(ACAL_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 0;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
     private float speedup = 1;
     public int casingTier;
     private int runningTickCounter = 0;
@@ -78,37 +69,34 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
 
     @Override
     public IStructureDefinition<AdvancedCircuitAssemblyLine> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<AdvancedCircuitAssemblyLine>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(FRF_Coil_1, 0))
-                .addElement(
-                    'B',
-                    ofBlocksTiered(
-                        (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
-                        IntStream.range(0, 14)
-                            .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
-                            .collect(Collectors.toList()),
-                        -2,
-                        (t, meta) -> t.casingTier = meta,
-                        t -> t.casingTier))
-                .addElement('C', ofBlock(sBlockCasings2, 5))
-                .addElement('D', ofBlock(sBlockCasingsTT, 0))
-                .addElement('E', ofBlock(sBlockCasingsTT, 1))
-                .addElement('F', ofBlock(sBlockCasingsTT, 2))
-                .addElement(
-                    'G',
-                    buildHatchAdder(AdvancedCircuitAssemblyLine.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 3))))
-                .addElement('H', ofBlock(sBlockCasingsTT, 7))
-                .addElement('I', ofBlock(sBlockCasingsTT, 8))
-                .addElement('J', ofBlock(blockCasings3Misc, 15))
-                .addElement('K', ofBlock(BlockQuantumGlass.INSTANCE, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<AdvancedCircuitAssemblyLine>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(FRF_Coil_1, 0))
+            .addElement(
+                'B',
+                ofBlocksTiered(
+                    (block, meta) -> block == Loaders.componentAssemblylineCasing ? meta : -1,
+                    IntStream.range(0, 14)
+                        .mapToObj(i -> Pair.of(Loaders.componentAssemblylineCasing, i))
+                        .collect(Collectors.toList()),
+                    -2,
+                    (t, meta) -> t.casingTier = meta,
+                    t -> t.casingTier))
+            .addElement('C', ofBlock(sBlockCasings2, 5))
+            .addElement('D', ofBlock(sBlockCasingsTT, 0))
+            .addElement('E', ofBlock(sBlockCasingsTT, 1))
+            .addElement('F', ofBlock(sBlockCasingsTT, 2))
+            .addElement(
+                'G',
+                buildHatchAdder(AdvancedCircuitAssemblyLine.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
+            .addElement('H', ofBlock(sBlockCasingsTT, 7))
+            .addElement('I', ofBlock(sBlockCasingsTT, 8))
+            .addElement('J', ofBlock(blockCasings3Misc, 15))
+            .addElement('K', ofBlock(BlockQuantumGlass.INSTANCE, 0))
+            .build();
     }
 
     @Override
@@ -137,7 +125,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return true;
     }
 
@@ -176,7 +164,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return BlockGTCasingsTT.textureOffset + 3;
     }
 
     @Override
@@ -185,30 +173,13 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public double getDurationModifier() {
+        return 1F / speedup;
+    }
 
-            @Nonnull
-            @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setAmperageOC(true)
-                    .setDurationDecreasePerOC(2)
-                    .setEUtIncreasePerOC(4)
-                    .setAmperage(availableAmperage)
-                    .setRecipeEUt(recipe.mEUt)
-                    .setEUt(availableVoltage)
-                    .setEUtDiscount(0.8 - (mParallelTier / 36.0));
-                // .setSpeedBoost(Math.max(0.05, 1.0 / 3.75 - (ParallelTier / 200.0)));
-            }
-
-            @Override
-            protected @Nonnull CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                setSpeedBonus(1F / speedup);
-                return super.validateRecipe(recipe);
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes)
-            .setEuModifier(0.8F);
-
+    @Override
+    public double getEUtDiscount() {
+        return 0.8 - (mParallelTier / 36.0);
     }
 
     @Override
@@ -251,7 +222,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -266,31 +237,22 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack aStack) {
         mParallelTier = 0;
-        tCountCasing = 0;
-        energyHatchTier = 0;
+        mCountCasing = 0;
+        mEnergyHatchTier = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
 
         mParallelTier = getParallelTier(aStack);
+        mEnergyHatchTier = checkEnergyHatchTier();
 
-        return tCountCasing >= 30;
+        return mCountCasing >= 30;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.AdvancedCircuitAssemblyLineRecipes;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty() && getMaxInputAmps() <= 2;
-        logic.setAvailableVoltage(getMachineVoltageLimit());
-        logic.setAvailableAmperage(
-            useSingleAmp ? 1
-                : ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList()));
-        logic.setAmperageOC(false);
+        return RecipePool.AdvancedCircuitAssemblyLineRecipes;
     }
 
 }

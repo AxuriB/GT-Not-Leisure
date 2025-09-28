@@ -2,7 +2,7 @@ package com.science.gtnl.common.recipe.GregTech;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
@@ -12,7 +12,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 
 public class FluidExtractorRecipes implements IRecipePool {
 
-    final RecipeMap<?> FER = RecipeMaps.fluidExtractionRecipes;
+    public RecipeMap<?> FER = RecipeMaps.fluidExtractionRecipes;
 
     @Override
     public void loadRecipes() {

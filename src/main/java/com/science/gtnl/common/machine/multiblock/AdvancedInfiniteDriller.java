@@ -42,6 +42,8 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -66,9 +68,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
-import gregtech.common.blocks.BlockCasings8;
 import gtneioreplugin.plugin.block.ModBlocks;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -76,19 +76,17 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDriller>
     implements ISurvivalConstructable {
 
-    private static int excessFuel = 0;
-    private static int drillTier = 0;
-    private static int needEu = 0;
+    private int excessFuel = 0;
+    private int drillTier = 0;
+    private int needEu = 0;
 
-    private static IStructureDefinition<AdvancedInfiniteDriller> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String AID_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":"
         + "multiblock/advanced_infinite_driller";
-    public static String[][] shape = StructureUtils.readStructureFromFile(AID_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 12;
-    public final int VERTICAL_OFF_SET = 39;
-    public final int DEPTH_OFF_SET = 0;
-    private static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(10);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(AID_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 12;
+    protected final int VERTICAL_OFF_SET = 39;
+    protected final int DEPTH_OFF_SET = 0;
 
     public AdvancedInfiniteDriller(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -99,18 +97,13 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return false;
     }
 
     @Override
     public int getMaxParallelRecipes() {
         return 1;
-    }
-
-    @Override
-    public float getSpeedBonus() {
-        return 1F;
     }
 
     @Override
@@ -145,29 +138,26 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     public IStructureDefinition<AdvancedInfiniteDriller> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<AdvancedInfiniteDriller>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(Loaders.MAR_Casing, 0))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 5))
-                .addElement('C', ofBlock(BlockLoader.MetaCasing, 16))
-                .addElement('D', ofBlock(BlockLoader.MetaCasing, 18))
-                .addElement('E', ofBlock(sBlockCasings1, 14))
-                .addElement('F', ofBlock(sSolenoidCoilCasings, 5))
-                .addElement('G', ofBlock(sBlockCasings3, 11))
-                .addElement('H', ofBlock(sBlockCasings8, 1))
-                .addElement('I', ofBlock(sBlockCasings8, 7))
-                .addElement(
-                    'J',
-                    buildHatchAdder(AdvancedInfiniteDriller.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('K', ofFrame(Materials.Neutronium))
-                .addElement('L', ofBlock(sBlockMetal8, 0))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<AdvancedInfiniteDriller>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(Loaders.MAR_Casing, 0))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 5))
+            .addElement('C', ofBlock(BlockLoader.metaCasing, 16))
+            .addElement('D', ofBlock(BlockLoader.metaCasing, 18))
+            .addElement('E', ofBlock(sBlockCasings1, 14))
+            .addElement('F', ofBlock(sSolenoidCoilCasings, 5))
+            .addElement('G', ofBlock(sBlockCasings3, 11))
+            .addElement('H', ofBlock(sBlockCasings8, 1))
+            .addElement('I', ofBlock(sBlockCasings8, 7))
+            .addElement(
+                'J',
+                buildHatchAdder(AdvancedInfiniteDriller.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(Maintenance, InputBus, InputHatch, OutputHatch, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('K', ofFrame(Materials.Neutronium))
+            .addElement('L', ofBlock(sBlockMetal8, 0))
+            .build();
     }
 
     @Override
@@ -190,7 +180,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 10);
     }
 
     @Override
@@ -368,7 +358,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
             }
 
             if (mOutputFluids != null) {
-                this.mMaxProgresstime = (5750000 / excessFuel) - 475;
+                this.mMaxProgresstime = (int) (((5750000 / excessFuel) - 475) * mConfigSpeedBoost);
                 this.lEUt = -needEu;
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
@@ -384,7 +374,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
         if (Math.random() < probability) {
             Fluid fluidType = fluidStack.getFluid();
             long baseOutput = (long) ((1000 * oilFieldReserve * (oilFieldReserve + 1))
-                * (0.5 + 0.25 * (GTValues.V[energyHatchTier - 7]))
+                * (0.5 + 0.25 * (GTValues.V[mEnergyHatchTier - 7]))
                 * (excessFuel / 1000.0)
                 * drillTier);
 
@@ -408,12 +398,13 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe);
+            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return GTNL_OverclockCalculator.ofNoOverclock(recipe)
+                    .setExtraDurationModifier(mConfigSpeedBoost);
             }
         };
     }
@@ -502,18 +493,24 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        drillTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()
-            && !mOutputHatches.isEmpty()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()
+            || !mOutputHatches.isEmpty()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 570;
+    }
 
-        energyHatchTier = checkEnergyHatchTier();
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        drillTier = 0;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
         drillTier = checkDrillTier();
-
-        return tCountCasing >= 570;
     }
 
     public int checkDrillTier() {
@@ -667,7 +664,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

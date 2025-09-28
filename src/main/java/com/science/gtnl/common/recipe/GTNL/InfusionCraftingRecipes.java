@@ -10,9 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.science.gtnl.Utils.Utils;
+import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.recipe.Thaumcraft.TCRecipeTools;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
@@ -63,7 +63,7 @@ public class InfusionCraftingRecipes implements IRecipePool {
     public void loadRecipes() {
         TCRecipeTools.getInfusionCraftingRecipe();
 
-        final IRecipeMap IIC = RecipeRegister.IndustrialInfusionCraftingRecipes;
+        IRecipeMap IIC = RecipePool.IndustrialInfusionCraftingRecipes;
         for (TCRecipeTools.InfusionCraftingRecipe Recipe : TCRecipeTools.ICR) {
             if (shouldSkip(
                 Recipe.getOutput()
@@ -77,7 +77,6 @@ public class InfusionCraftingRecipes implements IRecipePool {
                 .itemOutputs((Recipe.getOutput()))
                 .fluidInputs()
                 .fluidOutputs()
-                .noOptimize()
                 .duration(20)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(IIC);

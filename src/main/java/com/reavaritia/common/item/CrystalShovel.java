@@ -53,8 +53,7 @@ public class CrystalShovel extends ItemSpade {
 
     @SubscribeEvent
     public void onLivingUpdate(LivingUpdateEvent event) {
-        if (event.entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.entity;
+        if (event.entity instanceof EntityPlayer player) {
             ItemStack heldItem = player.getHeldItem();
             if (heldItem != null && heldItem.getItem() instanceof CrystalShovel) {
                 clearDebuffs(player);

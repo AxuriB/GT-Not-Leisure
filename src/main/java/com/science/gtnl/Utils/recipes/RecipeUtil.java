@@ -9,26 +9,37 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeUtil {
+
+    private static final ArrayList<ItemStack> mEmptyItems = new ArrayList<>();
+
+    static {
+        mEmptyItems.add(ItemList.Cell_Empty.get(1));
+        mEmptyItems.add(new ItemStack(Items.bowl));
+        mEmptyItems.add(new ItemStack(Items.bucket));
+        mEmptyItems.add(new ItemStack(Items.glass_bottle));
+    }
 
     public static synchronized void copyAllRecipes(RecipeMap<?> fromMap, RecipeMap<?> toMap) {
         for (GTRecipe recipe : fromMap.getAllRecipes()) {
             if (recipe != null) {
                 GTRecipe copiedRecipe = recipe.copy();
                 if (copiedRecipe != null) {
+                    copiedRecipe.setNeiDesc(recipe.getNeiDesc());
                     toMap.add(copiedRecipe);
                 }
             }
@@ -49,13 +60,13 @@ public class RecipeUtil {
         }
     }
 
-    private static boolean recipesAreEquivalent(GTRecipe r1, GTRecipe r2) {
+    public static boolean recipesAreEquivalent(GTRecipe r1, GTRecipe r2) {
         return itemsMatch(r1.mInputs, r2.mInputs) && itemsMatch(r1.mOutputs, r2.mOutputs)
             && fluidsMatch(r1.mFluidInputs, r2.mFluidInputs)
             && fluidsMatch(r1.mFluidOutputs, r2.mFluidOutputs);
     }
 
-    private static boolean itemsMatch(ItemStack[] a, ItemStack[] b) {
+    public static boolean itemsMatch(ItemStack[] a, ItemStack[] b) {
         if (a == null || b == null) return a == b;
         if (a.length != b.length) return false;
         for (int i = 0; i < a.length; i++) {
@@ -64,7 +75,7 @@ public class RecipeUtil {
         return true;
     }
 
-    private static boolean fluidsMatch(FluidStack[] a, FluidStack[] b) {
+    public static boolean fluidsMatch(FluidStack[] a, FluidStack[] b) {
         if (a == null || b == null) return a == b;
         if (a.length != b.length) return false;
         for (int i = 0; i < a.length; i++) {
@@ -73,13 +84,13 @@ public class RecipeUtil {
         return true;
     }
 
-    private static boolean mRecipeInit = false;
-    private static ItemStack mEmptyCell;
-    private static final ArrayList<ItemStack> mItemsToIgnore = new ArrayList<>();
-
-    public static synchronized int generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs,
+    public static synchronized void generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs,
         boolean specialItem) {
-        generateRecipesInit();
+        generateRecipesNotUsingCells(aInputs, aOutputs, specialItem, 0);
+    }
+
+    public static synchronized void generateRecipesNotUsingCells(RecipeMap<?> aInputs, RecipeMap<?> aOutputs,
+        boolean specialItem, double chanceMultiplier) {
         int aRecipesHandled = 0;
         int aInvalidRecipesToConvert = 0;
         int aOriginalCount = aInputs.getAllRecipes()
@@ -141,9 +152,18 @@ public class RecipeUtil {
             FluidStack[] newFluidsIn = aInputFluidsMap.toArray(new FluidStack[0]);
             FluidStack[] newFluidsOut = aOutputFluidsMap.toArray(new FluidStack[0]);
 
-            if (!ItemUtils.checkForInvalidItems(newItemsIn, newItemsOut)) {
+            if (!(ItemUtils.checkForInvalidItems(newItemsIn) && ItemUtils.checkForInvalidItems(newItemsOut))) {
                 aInvalidRecipesToConvert++;
-                continue;
+                continue; // Skip this recipe entirely if we find an item we don't like
+            }
+
+            int[] newChances = x.mChances;
+            if (chanceMultiplier > 0 && x.mChances != null) {
+                newChances = new int[x.mChances.length];
+                for (int i = 0; i < x.mChances.length; i++) {
+                    int scaledChance = (int) (chanceMultiplier * x.mChances[i]);
+                    newChances[i] = Math.min(scaledChance, 10000);
+                }
             }
 
             GTRecipe newRecipe = new GTRecipe(
@@ -151,13 +171,15 @@ public class RecipeUtil {
                 newItemsIn,
                 newItemsOut,
                 specialItem ? null : x.mSpecialItems,
-                x.mChances,
+                newChances,
                 newFluidsIn,
                 newFluidsOut,
                 x.mDuration,
                 x.mEUt,
                 x.mSpecialValue);
-            newRecipe.owners = new ArrayList<>(x.owners);
+            if (x.owners != null) {
+                newRecipe.owners = new ArrayList<>(x.owners);
+            }
 
             // 构建包含 NBT 的唯一键
             StringBuilder key = new StringBuilder();
@@ -222,42 +244,18 @@ public class RecipeUtil {
         Logger.INFO("Original Map contains " + aOriginalCount + " recipes.");
         Logger.INFO("Output Map contains " + aRecipesHandled + " recipes.");
         Logger.INFO("There were " + aInvalidRecipesToConvert + " invalid recipes.");
-        return aRecipesHandled;
-    }
-
-    private static void generateRecipesInit() {
-        if (!mRecipeInit) {
-            mRecipeInit = true;
-            mItemsToIgnore.add(
-                ItemUtils.simpleMetaStack(
-                    CI.emptyCells(1)
-                        .getItem(),
-                    8,
-                    1));
-        }
-    }
-
-    private static boolean doesItemMatchIgnoringStackSize(ItemStack a, ItemStack b) {
-        if (a == null || b == null) {
-            return false;
-        }
-        if (a.getItem() == b.getItem()) {
-            return a.getItemDamage() == b.getItemDamage();
-        }
-        return false;
     }
 
     private static boolean isEmptyCell(ItemStack aCell) {
         if (aCell == null) {
             return false;
         }
-        if (mEmptyCell == null) {
-            mEmptyCell = CI.emptyCells(1);
-        }
-        if (mEmptyCell != null) {
-            ItemStack aTempStack = mEmptyCell.copy();
-            aTempStack.stackSize = aCell.stackSize;
-            return GTUtility.areStacksEqual(aTempStack, aCell);
+        for (ItemStack emptyItem : mEmptyItems) {
+            emptyItem.stackSize = aCell.stackSize;
+            if (GTUtility.areStacksEqual(emptyItem, aCell)) {
+                return true;
+            }
+
         }
         return false;
     }
@@ -281,7 +279,11 @@ public class RecipeUtil {
             || DimensionManager.getProvider(dimId)
                 .getClass()
                 .getName()
-                .contains("SpaceStation");
+                .contains("SpaceStation")
+            || DimensionManager.getProvider(dimId)
+                .getClass()
+                .getName()
+                .contains("WorldProvider");
     }
 
     public static boolean isValidForMothership(int dimId) {

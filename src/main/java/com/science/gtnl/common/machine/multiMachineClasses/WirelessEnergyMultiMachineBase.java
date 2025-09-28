@@ -21,8 +21,9 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.api.mixinHelper.IOverclockCalculatorExtension;
+import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.api.IWirelessEnergy;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,14 +32,16 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.OverclockCalculator;
+import lombok.Getter;
+import lombok.Setter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMultiMachineBase<T>>
-    extends MultiMachineBase<T> {
+    extends MultiMachineBase<T> implements IWirelessEnergy {
 
-    protected int totalOverclockedDuration = 0;
+    public int totalOverclockedDuration = 0;
+    public int maxParallelStored = -1;
 
     public WirelessEnergyMultiMachineBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -50,17 +53,37 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
 
     public static final String ZERO_STRING = "0";
 
-    protected UUID ownerUUID;
-    protected boolean isRecipeProcessing = false;
-    protected boolean wirelessMode = getDefaultWirelessMode();
-    protected BigInteger costingEU = BigInteger.ZERO;
-    protected String costingEUText = ZERO_STRING;
-    protected int cycleNum = 100_000;
-    protected int cycleNow = 0;
+    public UUID ownerUUID;
+    public boolean isRecipeProcessing = false;
+    @Getter
+    public boolean wirelessMode = getDefaultWirelessMode();
+    @Getter
+    @Setter
+    public boolean wirelessUpgrade = false;
+    public BigInteger costingEU = BigInteger.ZERO;
+    public String costingEUText = ZERO_STRING;
+    public int cycleNum = 100_000;
+    public int cycleNow = 0;
+
+    @Override
+    public void setWirelessMode(boolean mode) {
+        if (wirelessUpgrade) {
+            wirelessMode = mode;
+        } else {
+            wirelessMode = false;
+        }
+    }
+
+    @Override
+    public void setItemNBT(NBTTagCompound aNBT) {
+        super.setItemNBT(aNBT);
+        aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
         aNBT.setBoolean("wirelessMode", wirelessMode);
         aNBT.setInteger("parallelTier", mParallelTier);
     }
@@ -68,6 +91,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        wirelessUpgrade = aNBT.getBoolean("wirelessUpgrade");
         wirelessMode = aNBT.getBoolean("wirelessMode");
         mParallelTier = aNBT.getInteger("parallelTier");
     }
@@ -83,11 +107,10 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mParallelControllerHatches.size() == 1 && aTick % 20 == 0) {
                 for (ParallelControllerHatch module : mParallelControllerHatches) {
+                    module.setMaxParallel(module.getParallel() * 16);
                     setMaxParallel(module.getParallel());
                     mParallelTier = module.mTier;
                 }
-            } else {
-                setMaxParallel(8);
             }
             if (mEfficiency < 0) mEfficiency = 0;
         }
@@ -95,10 +118,26 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        wirelessMode = false;
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        mParallelTier = getParallelTier(getControllerSlot());
+        setWirelessMode(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty());
+    }
+
+    @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
+        if (tag.getBoolean("wirelessUpgrade")) {
+            currentTip.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("Waila_WirelessUpgrade"));
+        }
         if (tag.getBoolean("wirelessMode")) {
             currentTip.add(EnumChatFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("Waila_WirelessMode"));
             currentTip.add(
@@ -113,78 +152,71 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1;
-    }
-
-    @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
+            tag.setBoolean("wirelessUpgrade", wirelessUpgrade);
             tag.setBoolean("wirelessMode", wirelessMode);
             if (wirelessMode) tag.setString("costingEUText", costingEUText);
         }
     }
 
     @Override
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         isRecipeProcessing = true;
         super.startRecipeProcessing();
     }
 
     @Override
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         super.endRecipeProcessing();
         isRecipeProcessing = false;
     }
 
     @Override
-    protected boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return true;
     }
 
     @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
+        return new GTNL_ProcessingLogic() {
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+            public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (recipe.mEUt > V[Math.min(mParallelTier + 1, 14)] * 4) {
                     return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
                 return super.validateRecipe(recipe);
             }
 
-            @NotNull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(getEuModifier());
-                setSpeedBonus(getSpeedBonus());
-                enablePerfectOverclock();
-                return super.process();
-            }
-
             @Nonnull
             @Override
-            protected OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
-
-                OverclockCalculator calc = super.createOverclockCalculator(recipe)
-                    .setEUtDiscount(0.4 - (mParallelTier / 50.0))
-                    .setSpeedBoost(1.0 / 10.0 * Math.pow(0.75, mParallelTier));
-
-                ((IOverclockCalculatorExtension) calc).setMoreSpeedBoost(configSpeedBoost);
-
-                return calc;
+            public GTNL_OverclockCalculator createOverclockCalculator(@Nonnull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
+                    .setEUtDiscount(getEUtDiscount())
+                    .setDurationModifier(getDurationModifier());
             }
-        }.setMaxParallelSupplier(this::getLimitedMaxParallel);
+        }.setMaxParallelSupplier(this::getTrueParallel);
+    }
+
+    @Override
+    public double getEUtDiscount() {
+        return (wirelessUpgrade ? 0.4 : 0.6) - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1.0 / (wirelessUpgrade ? 10.0 : 5.0) * Math.pow(0.75, mParallelTier);
     }
 
     @Nonnull
     @Override
     public CheckRecipeResult checkProcessing() {
+        maxParallelStored = -1;
         mParallelTier = 0;
         ItemStack controllerItem = getControllerSlot();
         int parallelTierItem = getParallelTier(controllerItem);
@@ -193,6 +225,7 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         costingEUText = ZERO_STRING;
         totalOverclockedDuration = 0;
         cycleNow = 0;
+        maxParallelStored = getTrueParallel();
         if (!wirelessMode) return super.checkProcessing();
 
         boolean succeeded = false;
@@ -205,6 +238,10 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
                 break;
             }
             succeeded = true;
+            if (maxParallelStored <= 0) {
+                finalResult = r;
+                break;
+            }
         }
 
         if (!succeeded) return finalResult;
@@ -245,28 +282,33 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         mOutputItems = mergeArray(mOutputItems, processingLogic.getOutputItems());
         mOutputFluids = mergeArray(mOutputFluids, processingLogic.getOutputFluids());
         totalOverclockedDuration += processingLogic.getDuration();
+        maxParallelStored = maxParallelStored - processingLogic.getCurrentParallels();
 
         endRecipeProcessing();
         return result;
     }
 
     @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
+    public void setProcessingLogicPower(ProcessingLogic logic) {
         if (wirelessMode) {
             logic.setAvailableVoltage(V[Math.min(mParallelTier + 1, 14)]);
             logic.setAvailableAmperage((long) Math.pow(4, mParallelTier) * 8L - 2L);
             logic.setAmperageOC(false);
             logic.enablePerfectOverclock();
         } else {
-            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty();
+            boolean useSingleAmp = mEnergyHatches.size() == 1 && mExoticEnergyHatches.isEmpty()
+                && getMaxInputAmps() <= 4;
             logic.setAvailableVoltage(getMachineVoltageLimit());
             logic.setAvailableAmperage(useSingleAmp ? 1 : getMaxInputAmps());
-            logic.setAmperageOC(!mExoticEnergyHatches.isEmpty() || mEnergyHatches.size() != 1);
+            logic.setAmperageOC(!useSingleAmp);
         }
     }
 
     @Override
     public int getMaxParallelRecipes() {
+        if (maxParallelStored >= 0) {
+            return maxParallelStored;
+        }
         if (mParallelControllerHatches.size() == 1) {
             for (ParallelControllerHatch module : mParallelControllerHatches) {
                 mParallelTier = module.mTier;
@@ -275,43 +317,9 @@ public abstract class WirelessEnergyMultiMachineBase<T extends WirelessEnergyMul
         } else if (mParallelTier <= 1) {
             return 8;
         } else {
-            return (int) Math.pow(4, mParallelTier - 2);
+            return (int) Math.pow(4, mParallelTier - 2) * 16;
         }
         return 8;
-    }
-
-    public int getParallelTier(ItemStack inventory) {
-        if (inventory == null) return 0;
-        if (inventory.isItemEqual(GTNLItemList.LVParallelControllerCore.getInternalStack_unsafe())) {
-            return 1;
-        } else if (inventory.isItemEqual(GTNLItemList.MVParallelControllerCore.getInternalStack_unsafe())) {
-            return 2;
-        } else if (inventory.isItemEqual(GTNLItemList.HVParallelControllerCore.getInternalStack_unsafe())) {
-            return 3;
-        } else if (inventory.isItemEqual(GTNLItemList.EVParallelControllerCore.getInternalStack_unsafe())) {
-            return 4;
-        } else if (inventory.isItemEqual(GTNLItemList.IVParallelControllerCore.getInternalStack_unsafe())) {
-            return 5;
-        } else if (inventory.isItemEqual(GTNLItemList.LuVParallelControllerCore.getInternalStack_unsafe())) {
-            return 6;
-        } else if (inventory.isItemEqual(GTNLItemList.ZPMParallelControllerCore.getInternalStack_unsafe())) {
-            return 7;
-        } else if (inventory.isItemEqual(GTNLItemList.UVParallelControllerCore.getInternalStack_unsafe())) {
-            return 8;
-        } else if (inventory.isItemEqual(GTNLItemList.UHVParallelControllerCore.getInternalStack_unsafe())) {
-            return 9;
-        } else if (inventory.isItemEqual(GTNLItemList.UEVParallelControllerCore.getInternalStack_unsafe())) {
-            return 10;
-        } else if (inventory.isItemEqual(GTNLItemList.UIVParallelControllerCore.getInternalStack_unsafe())) {
-            return 11;
-        } else if (inventory.isItemEqual(GTNLItemList.UMVParallelControllerCore.getInternalStack_unsafe())) {
-            return 12;
-        } else if (inventory.isItemEqual(GTNLItemList.UXVParallelControllerCore.getInternalStack_unsafe())) {
-            return 13;
-        } else if (inventory.isItemEqual(GTNLItemList.MAXParallelControllerCore.getInternalStack_unsafe())) {
-            return 14;
-        }
-        return 0;
     }
 
     public boolean getDefaultWirelessMode() {

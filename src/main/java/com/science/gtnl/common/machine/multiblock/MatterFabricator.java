@@ -31,16 +31,14 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.objects.ItemData;
@@ -49,23 +47,19 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.thing.casing.BlockGTCasingsTT;
 
 public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MatterFabricator> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MF_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/matter_fabricator";
-    public static final int CASING_INDEX = BlockGTCasingsTT.textureOffset;
-    public final int HORIZONTAL_OFF_SET = 4;
-    public final int VERTICAL_OFF_SET = 2;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(MF_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 4;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(MF_STRUCTURE_FILE_PATH);
 
     public MatterFabricator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -100,12 +94,12 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return BlockGTCasingsTT.textureOffset;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.MatterFabricatorRecipes;
+        return RecipePool.MatterFabricatorRecipes;
     }
 
     @Override
@@ -129,39 +123,36 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
     @Override
     public IStructureDefinition<MatterFabricator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MatterFabricator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 4))
-                .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
-                .addElement('C', ofBlock(sBlockCasings1, 7))
-                .addElement('D', ofBlock(sBlockCasings1, 15))
-                .addElement('E', ofBlock(sBlockCasings3, 11))
-                .addElement('F', ofBlock(sBlockCasings8, 10))
-                .addElement(
-                    'G',
-                    buildHatchAdder(MatterFabricator.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasingsTT, 0))))
-                .addElement('H', ofFrame(Materials.Naquadria))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MatterFabricator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 4))
+            .addElement('B', ofBlockAnyMeta(ELECTRODE_CASING))
+            .addElement('C', ofBlock(sBlockCasings1, 7))
+            .addElement('D', ofBlock(sBlockCasings1, 15))
+            .addElement('E', ofBlock(sBlockCasings3, 11))
+            .addElement('F', ofBlock(sBlockCasings8, 10))
+            .addElement(
+                'G',
+                buildHatchAdder(MatterFabricator.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(Maintenance, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 0))))
+            .addElement('H', ofFrame(Materials.Naquadria))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
+        setupParameters();
+        return mCountCasing >= 115;
+    }
 
-        energyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 115 && this.mEnergyHatches.size() == 1;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && (mEnergyHatches.size() == 1 || mExoticEnergyHatches.size() == 1);
     }
 
     @Override
@@ -174,90 +165,78 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
     public CheckRecipeResult checkProcessing() {
         ItemStack controllerItem = getControllerSlot();
         this.mParallelTier = getParallelTier(controllerItem);
-        boolean foundValidInput = false;
-        long outputAmount = 0;
-        final Item MatterBall = GameRegistry.findItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial");
-        ItemStack outputItem = new ItemStack(MatterBall, 1, 6);
-        List<FluidStack> outputFluids = new ArrayList<>();
+
+        final Item matterBall = GameRegistry.findItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial");
+        final ItemStack outputItem = new ItemStack(matterBall, 1, 6);
+        final int maxParallel = getTrueParallel();
 
         boolean hasCircuit1 = false;
         boolean hasCircuit2 = false;
-        int maxParallelRecipes = getMaxParallelRecipes();
 
         for (ItemStack item : getAllStoredInputs()) {
-            if (item != null) {
-                if (item.getItem() == getIntegratedCircuit(1).getItem()
-                    && item.getItemDamage() == getIntegratedCircuit(1).getItemDamage()) {
-                    if (hasCircuit2) return CheckRecipeResultRegistry.NO_RECIPE;
-                    hasCircuit1 = true;
-                }
-                if (item.getItem() == getIntegratedCircuit(2).getItem()
-                    && item.getItemDamage() == getIntegratedCircuit(2).getItemDamage()) {
-                    if (hasCircuit1) return CheckRecipeResultRegistry.NO_RECIPE;
-                    hasCircuit2 = true;
-                }
-            }
+            if (item == null) continue;
+            if (GTUtility.areStacksEqual(item, getIntegratedCircuit(1))) hasCircuit1 = true;
+            if (GTUtility.areStacksEqual(item, getIntegratedCircuit(2))) hasCircuit2 = true;
         }
 
-        if (!hasCircuit1 && !hasCircuit2) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        if (hasCircuit1 == hasCircuit2) return CheckRecipeResultRegistry.NO_RECIPE;
+
+        boolean foundValidInput = false;
+        long totalOutput = 0;
 
         for (ItemStack item : getAllStoredInputs()) {
             if (GTUtility.isStackInvalid(item)) continue;
 
-            ItemData itemData = GTOreDictUnificator.getItemData(item);
-            if (itemData == null) continue;
+            ItemData data = GTOreDictUnificator.getItemData(item);
+            if (data == null) continue;
 
-            if (itemData.mPrefix == OrePrefixes.gem || itemData.mPrefix == OrePrefixes.ingot) {
-                long itemCount = Math.min(item.stackSize, maxParallelRecipes);
-                outputAmount += itemCount;
-                item.stackSize -= itemCount;
-                foundValidInput = true;
-            } else if (itemData.mPrefix == OrePrefixes.block) {
-                long itemCount = Math.min(item.stackSize * 9L, maxParallelRecipes * 9L);
-                outputAmount += itemCount;
-                item.stackSize -= (itemCount / 9L);
-                foundValidInput = true;
+            long count;
+            switch (data.mPrefix) {
+                case gem, ingot -> {
+                    count = Math.min(item.stackSize, maxParallel - totalOutput);
+                    item.stackSize -= (int) count;
+                    totalOutput += count;
+                    foundValidInput = true;
+                }
+                case block -> {
+                    count = Math.min(item.stackSize * 9L, (maxParallel - totalOutput) * 9L);
+                    long blocksUsed = count / 9L;
+                    item.stackSize -= (int) blocksUsed;
+                    totalOutput += count;
+                    foundValidInput = true;
+                }
             }
 
-            if (outputAmount >= maxParallelRecipes) break;
+            if (totalOutput >= maxParallel) break;
         }
 
         updateSlots();
-
-        if (!foundValidInput) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+        if (!foundValidInput || totalOutput == 0) return CheckRecipeResultRegistry.NO_RECIPE;
 
         if (hasCircuit1) {
             List<ItemStack> outputItems = new ArrayList<>();
-            while (outputAmount > 0) {
-                int stackSize = (int) (640 * Math.min(outputAmount, Integer.MAX_VALUE));
+            long remaining = totalOutput;
+            while (remaining > 0) {
+                int stackSize = (int) Math.min(remaining, Integer.MAX_VALUE);
                 outputItems.add(new ItemStack(outputItem.getItem(), stackSize, outputItem.getItemDamage()));
-                outputAmount -= stackSize;
+                remaining -= stackSize;
             }
             mOutputItems = outputItems.toArray(new ItemStack[0]);
-        } else if (hasCircuit2) {
-            long fluidAmount = outputAmount * 100000;
+        } else {
+            List<FluidStack> outputFluids = new ArrayList<>();
+            long fluidAmount = totalOutput * 100000L;
             while (fluidAmount > 0) {
-                int stackSize = (int) Math.min(fluidAmount, Integer.MAX_VALUE);
-                outputFluids.add(new FluidStack(Materials.UUAmplifier.getFluid(1000), stackSize));
-                fluidAmount -= stackSize;
+                int amount = (int) Math.min(fluidAmount, Integer.MAX_VALUE);
+                outputFluids.add(new FluidStack(Materials.UUAmplifier.getFluid(1), amount));
+                fluidAmount -= amount;
             }
             mOutputFluids = outputFluids.toArray(new FluidStack[0]);
         }
 
-        // 计算每tick消耗的EU
-        int euConsumption = (int) Math.min(outputAmount * 4, Integer.MAX_VALUE);
-
-        // 存储每tick消耗的EU，供onPostTick使用
-        this.mEUt = -euConsumption;
-
-        // 设置进度时间
-        this.mEfficiency = 10000;
+        this.lEUt = -(int) Math.min(totalOutput * 4L, Integer.MAX_VALUE);
         this.mProgresstime = 0;
-        this.mMaxProgresstime = 200;
+        this.mEfficiency = 10000;
+        this.mMaxProgresstime = (int) (128 * mConfigSpeedBoost);
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
@@ -268,14 +247,14 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
 
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mProgresstime > 0) {
-                if (!consumeEnergy(-this.mEUt)) {
+                if (!consumeEnergy(-this.lEUt)) {
                     stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 }
             }
         }
     }
 
-    private boolean consumeEnergy(int amount) {
+    public boolean consumeEnergy(long amount) {
         for (MTEHatchEnergy energyHatch : mEnergyHatches) {
             if (energyHatch.getEUVar() >= amount) {
                 energyHatch.setEUVar(energyHatch.getEUVar() - amount);
@@ -292,23 +271,9 @@ public class MatterFabricator extends GTMMultiMachineBase<MatterFabricator> impl
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe)
-                    .setEUtDiscount(1)
-                    .setSpeedBoost(1);
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
-    }
-
-    @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

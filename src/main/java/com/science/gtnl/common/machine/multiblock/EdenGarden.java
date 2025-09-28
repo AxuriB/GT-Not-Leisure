@@ -62,12 +62,12 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGBucket;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGDropTable;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGDynamicInventory;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGMode;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.EIGModes;
-import com.science.gtnl.common.machine.multiMachineClasses.EdenGardenManager.buckets.EIGIC2Bucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDropTable;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDynamicInventory;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGMode;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGModes;
+import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGIC2Bucket;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -86,7 +86,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
-import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
 import gtPlusPlus.core.block.ModBlocks;
 import gtnhlanth.common.register.LanthItemList;
@@ -116,26 +115,20 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     public EIGMode mode = EIGModes.Normal;
     public boolean useNoHumidity = false;
 
-    public boolean isInNoHumidityMode() {
-        return this.useNoHumidity;
-    }
-
-    public static final int CASING_INDEX = ((BlockCasings10) sBlockCasings10).getTextureIndex(5);
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String EG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/eden_garden";
-    public static String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 6;
-    public final int VERTICAL_OFF_SET = 43;
-    public final int DEPTH_OFF_SET = 10;
-    public static IStructureDefinition<EdenGarden> STRUCTURE_DEFINITION = null;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 6;
+    protected final int VERTICAL_OFF_SET = 43;
+    protected final int DEPTH_OFF_SET = 10;
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings10, 5);
     }
 
     @Override
-    public boolean isEnablePerfectOverclock() {
+    public boolean getPerfectOC() {
         return true;
     }
 
@@ -145,52 +138,52 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     }
 
     @Override
-    public float getSpeedBonus() {
-        return 1F;
-    }
-
-    @Override
     public IStructureDefinition<EdenGarden> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<EdenGarden>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement(
-                    'B',
-                    ofChain(
-                        buildHatchAdder(EdenGarden.class)
-                            .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
-                            .dot(1)
-                            .casingIndex(((BlockCasings10) sBlockCasings10).getTextureIndex(4))
-                            .build(),
-                        onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings10, 4))))
-                .addElement('C', ofBlock(sBlockCasings10, 5))
-                .addElement('D', ofBlock(sBlockCasings8, 10))
-                .addElement('E', ofBlock(sBlockCasings9, 11))
-                .addElement('F', ofBlock(ModBlocks.blockCasings2Misc, 3))
-                .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
-                .addElement('H', ofBlock(BlockLoader.MetaBlockGlow, 0))
-                .addElement('I', ofBlock(Blocks.farmland, 0))
-                .addElement(
-                    'J',
-                    ofChain(
-                        ofBlockAnyMeta(Blocks.water),
-                        ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<EdenGarden>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+            .addElement(
+                'B',
+                ofChain(
+                    buildHatchAdder(EdenGarden.class)
+                        .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
+                        .dot(1)
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings10, 4))
+                        .build(),
+                    onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 4))))
+            .addElement('C', ofBlock(sBlockCasings10, 5))
+            .addElement('D', ofBlock(sBlockCasings8, 10))
+            .addElement('E', ofBlock(sBlockCasings9, 11))
+            .addElement('F', ofBlock(ModBlocks.blockCasings2Misc, 3))
+            .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
+            .addElement('H', ofBlock(BlockLoader.metaBlockGlow, 0))
+            .addElement('I', ofBlock(Blocks.farmland, 0))
+            .addElement(
+                'J',
+                ofChain(
+                    ofBlockAnyMeta(Blocks.water),
+                    ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        boolean valid = this.mMaintenanceHatches.size() == 1
-            && !(this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty())
-            && this.tCountCasing >= 1000;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
+        }
+        setupParameters();
+        return mCountCasing >= 1000;
+    }
 
-        if (valid) this.updateSeedLimits();
-        return valid;
+    @Override
+    public boolean checkHatch() {
+        return super.checkHatch() && !(this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty());
+    }
+
+    @Override
+    public void setupParameters() {
+        super.setupParameters();
+        updateSeedLimits();
     }
 
     @Override
@@ -207,7 +200,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -410,8 +403,10 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
         public EIGMigrationHolder(NBTTagCompound nbt) {
             this.seed = readItemStackFromNBT(nbt.getCompoundTag("input"));
-            this.count = this.seed.stackSize;
-            this.seed.stackSize = 1;
+            if (this.seed != null) {
+                this.count = this.seed.stackSize;
+                this.seed.stackSize = 1;
+            }
             this.supportBlock = nbt.hasKey("undercrop", 10) ? readItemStackFromNBT(nbt.getCompoundTag("undercrop"))
                 : null;
             this.useNoHumidity = nbt.getBoolean("noHumidity");
@@ -492,7 +487,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
         for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
             if (!(tHatch instanceof MTEHatchOutputBusME)) continue;
             for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
-                ((MTEHatchOutputBusME) tHatch).store(stack);
+                tHatch.storePartial(stack);
             }
             return true;
         }
@@ -505,7 +500,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
         if (helper.getMaxParallel() > 0) {
             for (ItemStack toOutput : bucket.tryRemoveSeed(helper.getMaxParallel(), false)) {
                 for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
-                    if (tHatch.storeAll(toOutput)) break;
+                    if (tHatch.storePartial(toOutput)) break;
                 }
             }
         }
@@ -575,13 +570,13 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
         double multiplier = EIG_BALANCE_MAX_FERTILIZER_BOOST;
         this.guiDropTracker = new EIGDropTable();
         if (this.mode == EIGModes.IC2) {
-            this.mMaxProgresstime = Math.max(20, 100 / (energyHatchTier - 5));
+            this.mMaxProgresstime = Math.max(20, 100 / (mEnergyHatchTier - 5));
             double timeElapsed = ((double) this.mMaxProgresstime * (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER));
             for (EIGBucket bucket : this.buckets) {
                 bucket.addProgress(timeElapsed * multiplier, this.guiDropTracker);
             }
         } else if (this.mode == EIGModes.Normal) {
-            this.mMaxProgresstime = Math.max(20, 100 / (energyHatchTier - 3)); // Min 1 s
+            this.mMaxProgresstime = Math.max(20, 100 / (mEnergyHatchTier - 3)); // Min 1 s
             for (EIGBucket bucket : this.buckets) {
                 bucket.addProgress(multiplier, this.guiDropTracker);
             }
@@ -590,7 +585,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
         this.guiDropTracker.addTo(this.dropTracker, multiplier);
         this.mOutputItems = this.dropTracker.getDrops();
 
-        this.lEUt = -(long) ((double) GTValues.V[energyHatchTier] * 0.99d);
+        this.lEUt = -(long) ((double) GTValues.V[mEnergyHatchTier] * 0.99d);
         this.mEfficiency = 10000;
         this.mEfficiencyIncrease = 10000;
         this.updateSlots();
@@ -702,7 +697,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                 int maxRemove = bucket.getSeedStack()
                     .getMaxStackSize();
                 ItemStack[] outputs = bucket.tryRemoveSeed(maxRemove, false);
-                if (outputs == null || outputs.length <= 0) return null;
+                if (outputs == null || outputs.length == 0) return null;
                 ItemStack ret = outputs[0];
                 for (int i = 1; i < outputs.length; i++) {
                     ItemStack suppertItem = outputs[i];
@@ -855,7 +850,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     }
 
     @Override
-    protected String generateCurrentRecipeInfoString() {
+    public String generateCurrentRecipeInfoString() {
         StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
             .append(String.format("%,.2f", (double) this.mProgresstime / 20))
             .append("s / ")
@@ -971,7 +966,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
                     .extFacing()

@@ -17,8 +17,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -26,34 +24,28 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
 
 public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings1) sBlockCasings1).getTextureIndex(11);
-    public static IStructureDefinition<WoodDistillation> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String WD_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/wood_distillation";
-    public static String[][] shape = StructureUtils.readStructureFromFile(WD_STRUCTURE_FILE_PATH);
-    public final int HORIZONTAL_OFF_SET = 11;
-    public final int VERTICAL_OFF_SET = 18;
-    public final int DEPTH_OFF_SET = 2;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(WD_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 11;
+    protected final int VERTICAL_OFF_SET = 18;
+    protected final int DEPTH_OFF_SET = 2;
 
     public WoodDistillation(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -98,12 +90,12 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings1, 11);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.WoodDistillationRecipes;
+        return RecipePool.WoodDistillationRecipes;
     }
 
     @Override
@@ -129,28 +121,25 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
 
     @Override
     public IStructureDefinition<WoodDistillation> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<WoodDistillation>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaCasing, 2))
-                .addElement(
-                    'B',
-                    buildHatchAdder(WoodDistillation.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings1, 11))))
-                .addElement('C', ofBlock(sBlockCasings2, 1))
-                .addElement('D', ofBlock(sBlockCasings2, 13))
-                .addElement('E', ofBlock(sBlockCasings3, 11))
-                .addElement('F', ofBlock(sBlockCasings3, 14))
-                .addElement('G', ofBlock(sBlockCasings4, 1))
-                .addElement('H', ofBlock(sBlockCasings4, 10))
-                .addElement('I', ofBlock(sBlockCasings6, 3))
-                .addElement('J', ofFrame(Materials.StainlessSteel))
-                .addElement('K', Muffler.newAny(CASING_INDEX, 2))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<WoodDistillation>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.metaCasing, 2))
+            .addElement(
+                'B',
+                buildHatchAdder(WoodDistillation.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings1, 11))))
+            .addElement('C', ofBlock(sBlockCasings2, 1))
+            .addElement('D', ofBlock(sBlockCasings2, 13))
+            .addElement('E', ofBlock(sBlockCasings3, 11))
+            .addElement('F', ofBlock(sBlockCasings3, 14))
+            .addElement('G', ofBlock(sBlockCasings4, 1))
+            .addElement('H', ofBlock(sBlockCasings4, 10))
+            .addElement('I', ofBlock(sBlockCasings6, 3))
+            .addElement('J', ofFrame(Materials.StainlessSteel))
+            .addElement('K', Muffler.newAny(getCasingTextureID(), 2))
+            .build();
     }
 
     @Override
@@ -161,7 +150,7 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -175,27 +164,26 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        energyHatchTier = checkEnergyHatchTier();
-        return tCountCasing >= 220 && this.mMufflerHatches.size() == 2;
+        setupParameters();
+        return mCountCasing >= 220;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
+    public boolean checkHatch() {
+        return super.checkHatch() && mMufflerHatches.size() == 2;
+    }
 
-            @NotNull
-            @Override
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).setEUtDiscount(1 - (mParallelTier / 50.0))
-                    .setSpeedBoost(1 - (mParallelTier / 200.0));
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public double getEUtDiscount() {
+        return 1 - (mParallelTier / 50.0);
+    }
+
+    @Override
+    public double getDurationModifier() {
+        return 1 - (Math.max(0, mParallelTier - 1) / 50.0);
     }
 
     @Nonnull

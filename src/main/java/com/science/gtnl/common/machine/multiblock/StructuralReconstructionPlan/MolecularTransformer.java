@@ -20,7 +20,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
@@ -31,18 +31,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings8;
 
 public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransformer> implements ISurvivalConstructable {
 
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<MolecularTransformer> STRUCTURE_DEFINITION = null;
+    private static final String STRUCTURE_PIECE_MAIN = "main";
     public static final String MT_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/molecular_transformer";
-    public static final int CASING_INDEX = ((BlockCasings8) sBlockCasings8).getTextureIndex(0);
-    public final int HORIZONTAL_OFF_SET = 4;
-    public final int VERTICAL_OFF_SET = 9;
-    public final int DEPTH_OFF_SET = 0;
-    public static String[][] shape = StructureUtils.readStructureFromFile(MT_STRUCTURE_FILE_PATH);
+    protected final int HORIZONTAL_OFF_SET = 4;
+    protected final int VERTICAL_OFF_SET = 9;
+    protected final int DEPTH_OFF_SET = 0;
+    public static final String[][] shape = StructureUtils.readStructureFromFile(MT_STRUCTURE_FILE_PATH);
 
     public MolecularTransformer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -77,12 +74,12 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
 
     @Override
     public int getCasingTextureID() {
-        return CASING_INDEX;
+        return StructureUtils.getTextureIndex(sBlockCasings8, 0);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.MolecularTransformerRecipes;
+        return RecipePool.MolecularTransformerRecipes;
     }
 
     @Override
@@ -106,38 +103,30 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
 
     @Override
     public IStructureDefinition<MolecularTransformer> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MolecularTransformer>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing, 8))
-                .addElement('C', ofBlock(sBlockCasings2, 0))
-                .addElement('D', ofBlock(sBlockCasings2, 14))
-                .addElement('E', ofBlock(sBlockCasings4, 0))
-                .addElement(
-                    'F',
-                    buildHatchAdder(MolecularTransformer.class).casingIndex(CASING_INDEX)
-                        .dot(1)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 0))))
-                .addElement('G', ofFrame(Materials.StainlessSteel))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<MolecularTransformer>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(GameRegistry.findBlock(IndustrialCraft2.ID, "blockAlloyGlass")))
+            .addElement('B', ofBlock(BlockLoader.metaCasing, 8))
+            .addElement('C', ofBlock(sBlockCasings2, 0))
+            .addElement('D', ofBlock(sBlockCasings2, 14))
+            .addElement('E', ofBlock(sBlockCasings4, 0))
+            .addElement(
+                'F',
+                buildHatchAdder(MolecularTransformer.class).casingIndex(getCasingTextureID())
+                    .dot(1)
+                    .atLeast(Maintenance, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 0))))
+            .addElement('G', ofFrame(Materials.StainlessSteel))
+            .build();
     }
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        mParallelTier = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatch()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
             return false;
         }
-
-        energyHatchTier = checkEnergyHatchTier();
-        mParallelTier = getParallelTier(aStack);
-        return tCountCasing >= 25;
+        setupParameters();
+        return mCountCasing >= 25;
     }
 
     @Override
@@ -148,7 +137,7 @@ public class MolecularTransformer extends GTMMultiMachineBase<MolecularTransform
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,

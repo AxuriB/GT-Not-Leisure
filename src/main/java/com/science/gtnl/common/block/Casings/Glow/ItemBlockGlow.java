@@ -45,7 +45,7 @@ public class ItemBlockGlow extends ItemBlock {
     // region MetaBlock Generators
 
     public static ItemStack initMetaBlockGlow(String i18nName, int Meta) {
-        return initMetaItemStack(i18nName, Meta, BlockLoader.MetaBlockGlow, MetaBlockSet);
+        return initMetaItemStack(i18nName, Meta, BlockLoader.metaBlockGlow, MetaBlockSet);
     }
 
     public static ItemStack initMetaBlockGlow(String i18nName, int Meta, String[] tooltips) {
@@ -55,20 +55,9 @@ public class ItemBlockGlow extends ItemBlock {
         return initMetaBlockGlow(i18nName, Meta);
     }
 
-    // endregion
-    // -----------------------
-    // region Member Variables
-
-    /**
-     * Handle the tooltips.
-     *
-     * @param aItemStack
-     * @param theTooltipsList
-     */
     @SideOnly(Side.CLIENT)
     @Override
-    @SuppressWarnings({ "unchecked" })
-    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List theTooltipsList,
+    public void addInformation(ItemStack aItemStack, EntityPlayer p_77624_2_, List<String> theTooltipsList,
         boolean p_77624_4_) {
         int meta = aItemStack.getItemDamage();
         if (null != MetaBlockTooltipsMap.get(meta)) {

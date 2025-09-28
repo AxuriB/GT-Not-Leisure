@@ -3,6 +3,7 @@ package com.lootgames.sudoku.config;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 
+import lombok.Getter;
 import ru.timeconqueror.lootgames.common.config.LGConfigs;
 import ru.timeconqueror.timecore.api.common.config.Config;
 
@@ -15,10 +16,10 @@ public class ConfigSudoku extends Config {
 
     public ConfigSudoku() {
         super("sudoku");
-        level1 = new StageConfig(getKey(), "stage_1", "简单级别空格数", 35);
-        level2 = new StageConfig(getKey(), "stage_2", "中级别空格数", 45);
-        level3 = new StageConfig(getKey(), "stage_3", "高级别空格数", 55);
-        level4 = new StageConfig(getKey(), "stage_4", "专家级别空格数", 64);
+        level1 = new StageConfig(getKey(), "stage_1", "Easy", 35);
+        level2 = new StageConfig(getKey(), "stage_2", "Normal", 45);
+        level3 = new StageConfig(getKey(), "stage_3", "Hard", 55);
+        level4 = new StageConfig(getKey(), "stage_4", "Expert", 64);
     }
 
     @Override
@@ -68,6 +69,7 @@ public class ConfigSudoku extends Config {
     /**
      * 运行时快照：仅包含挖空数量
      */
+    @Getter
     public static class ConfigSudokuSnapshot {
 
         private final LevelSnapshot stage1;
@@ -80,22 +82,6 @@ public class ConfigSudoku extends Config {
             this.stage2 = s2;
             this.stage3 = s3;
             this.stage4 = s4;
-        }
-
-        public LevelSnapshot getStage1() {
-            return stage1;
-        }
-
-        public LevelSnapshot getStage2() {
-            return stage2;
-        }
-
-        public LevelSnapshot getStage3() {
-            return stage3;
-        }
-
-        public LevelSnapshot getStage4() {
-            return stage4;
         }
 
         public static NBTTagCompound serialize(ConfigSudokuSnapshot snap) {
@@ -127,34 +113,26 @@ public class ConfigSudoku extends Config {
          * 根据难度索引（1-4）获取对应快照
          */
         public LevelSnapshot getStageByIndex(int idx) {
-            switch (idx) {
-                case 1:
-                    return stage1;
-                case 2:
-                    return stage2;
-                case 3:
-                    return stage3;
-                case 4:
-                    return stage4;
-                default:
-                    throw new IllegalArgumentException("Unknown stage index: " + idx);
-            }
+            return switch (idx) {
+                case 1 -> stage1;
+                case 2 -> stage2;
+                case 3 -> stage3;
+                case 4 -> stage4;
+                default -> throw new IllegalArgumentException("Unknown stage index: " + idx);
+            };
         }
     }
 
     /**
      * Stage快照数据，存储挖空数量
      */
+    @Getter
     public static class LevelSnapshot {
 
         private final int blanksCount;
 
         private LevelSnapshot(int blanksCount) {
             this.blanksCount = blanksCount;
-        }
-
-        public int getBlanksCount() {
-            return blanksCount;
         }
 
         private static NBTTagCompound serialize(LevelSnapshot s) {

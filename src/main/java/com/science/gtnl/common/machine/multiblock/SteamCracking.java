@@ -7,14 +7,11 @@ import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtPlusPlus.core.block.ModBlocks.blockCustomMachineCasings;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -23,23 +20,16 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 
 public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implements ISurvivalConstructable {
 
@@ -54,9 +44,8 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
     }
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static IStructureDefinition<SteamCracking> STRUCTURE_DEFINITION = null;
-    private static final String LSCr_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_cracking"; // 文件路径
-    private static final String[][] shape = StructureUtils.readStructureFromFile(LSCr_STRUCTURE_FILE_PATH);
+    private static final String LSCr_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_steam_cracking";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LSCr_STRUCTURE_FILE_PATH);
 
     public SteamCracking(String aName) {
         super(aName);
@@ -66,15 +55,15 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
         super(aID, aName, aNameRegional);
     }
 
-    public static final int HORIZONTAL_OFF_SET = 3;
-    public static final int VERTICAL_OFF_SET = 2;
-    public static final int DEPTH_OFF_SET = 0;
+    protected final int HORIZONTAL_OFF_SET = 3;
+    protected final int VERTICAL_OFF_SET = 2;
+    protected final int DEPTH_OFF_SET = 0;
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        int id = tierMachine == 2 ? ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0)
-            : ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(10);
+        int id = tierMachine == 2 ? StructureUtils.getTextureIndex(sBlockCasings2, 0)
+            : StructureUtils.getTextureIndex(sBlockCasings1, 10);
         if (side == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id), TextureFactory.builder()
                 .addIcon(Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
@@ -90,11 +79,11 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
 
     @Override
     public IStructureDefinition<SteamCracking> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamCracking>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement(
-                    'A',
+        return StructureDefinition.<SteamCracking>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement(
+                'A',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofChain(
                         buildSteamWirelessInput(SteamCracking.class).casingIndex(getCasingTextureID())
                             .dot(1)
@@ -113,37 +102,36 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
                                 InputBus,
                                 OutputBus,
                                 InputHatch,
-                                OutputHatch)
+                                OutputHatch,
+                                Maintenance)
                             .buildAndChain(
                                 onElementPass(
-                                    x -> ++x.tCountCasing,
-                                    withChannel(
-                                        "tier",
-                                        ofBlocksTiered(
-                                            SteamCracking::getTierMachineCasing,
-                                            ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
-                                            -1,
-                                            (t, m) -> t.tierMachineCasing = m,
-                                            t -> t.tierMachineCasing))))))
-                .addElement(
-                    'B',
+                                    x -> ++x.mCountCasing,
+                                    ofBlocksTiered(
+                                        SteamCracking::getTierMachineCasing,
+                                        ImmutableList.of(Pair.of(sBlockCasings1, 10), Pair.of(sBlockCasings2, 0)),
+                                        -1,
+                                        (t, m) -> t.tierMachineCasing = m,
+                                        t -> t.tierMachineCasing))))))
+            .addElement(
+                'B',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         SteamCracking::getTierFireboxCasing,
                         ImmutableList.of(Pair.of(sBlockCasings3, 13), Pair.of(sBlockCasings3, 14)),
                         -1,
                         (t, m) -> t.tierFireboxCasing = m,
-                        t -> t.tierFireboxCasing))
-                .addElement(
-                    'C',
+                        t -> t.tierFireboxCasing)))
+            .addElement(
+                'C',
+                GTStructureChannels.TIER_MACHINE_CASING.use(
                     ofBlocksTiered(
                         SteamCracking::getTierPlatedCasing,
                         ImmutableList.of(Pair.of(blockCustomMachineCasings, 0), Pair.of(sBlockCasings2, 0)),
                         -1,
                         (t, m) -> t.tierPlatedCasing = m,
-                        t -> t.tierPlatedCasing))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+                        t -> t.tierPlatedCasing)))
+            .build();
     }
 
     @Override
@@ -160,7 +148,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(
+        return this.survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -174,26 +162,15 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tierMachine = 0;
-        tierFireboxCasing = -1;
-        tierMachineCasing = -1;
-        tierPlatedCasing = -1;
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierFireboxCasing < 0 && tierMachineCasing < 0 && tierPlatedCasing < 0) return false;
-        if (tierFireboxCasing == 1 && tierMachineCasing == 1
-            && tierPlatedCasing == 1
-            && tCountCasing >= 10
-            && checkHatches()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
+            return false;
+        if (tierFireboxCasing == 1 && tierMachineCasing == 1 && tierPlatedCasing == 1 && mCountCasing >= 10) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        if (tierFireboxCasing == 2 && tierMachineCasing == 2
-            && tierPlatedCasing == 2
-            && tCountCasing >= 10
-            && checkHatches()) {
+        if (tierFireboxCasing == 2 && tierMachineCasing == 2 && tierPlatedCasing == 2 && mCountCasing >= 10) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
@@ -216,30 +193,17 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.SteamCrackerRecipes;
+        return RecipePool.SteamCrackerRecipes;
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * tierMachine;
+    }
 
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                } else return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-
-            @Override
-            @Nonnull
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).limitOverclockCount(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(tierMachine)
-                    .setSpeedBoost(1.0 / tierMachine);
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / tierMachine;
     }
 
     @Override
@@ -260,6 +224,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
             .beginStructureBlock(7, 4, 4, false)
             .addInputBus(StatCollector.translateToLocal("Tooltip_SteamCracking_Casing"), 1)
             .addOutputBus(StatCollector.translateToLocal("Tooltip_SteamCracking_Casing"), 1)
+            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }

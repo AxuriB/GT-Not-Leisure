@@ -2,18 +2,15 @@ package com.science.gtnl.common.machine.multiblock.AprilFool;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.OutputBus;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTINATOR;
+import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTINATOR_ACTIVE;
+import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-
-import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -22,7 +19,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,30 +30,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
 
 public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator> implements ISurvivalConstructable {
 
-    public static final String TEXTURE_OVERLAY_EXTRACTINATOR = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_EXTRACTINATOR";
-    public static final String TEXTURE_OVERLAY_EXTRACTINATOR_ACTIVE = RESOURCE_ROOT_ID + ":"
-        + "iconsets/OVERLAY_EXTRACTINATOR_ACTIVE";
-    public static Textures.BlockIcons.CustomIcon OVERLAY_EXTRACTINATOR = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_EXTRACTINATOR);
-    public static Textures.BlockIcons.CustomIcon OVERLAY_EXTRACTINATOR_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        TEXTURE_OVERLAY_EXTRACTINATOR_ACTIVE);
-    private static IStructureDefinition<SteamExtractinator> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_extractinator";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
+    public static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
     private static final int HORIZONTAL_OFF_SET = 1;
     private static final int VERTICAL_OFF_SET = 8;
     private static final int DEPTH_OFF_SET = 10;
@@ -89,7 +72,7 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_EXTRACTINATOR_ACTIVE)
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTINATOR_ACTIVE)
                         .extFacing()
                         .build() };
             } else {
@@ -97,7 +80,7 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
                     Textures.BlockIcons
                         .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings1, 10)),
                     TextureFactory.builder()
-                        .addIcon(OVERLAY_EXTRACTINATOR)
+                        .addIcon(OVERLAY_FRONT_STEAM_EXTRACTINATOR)
                         .extFacing()
                         .build() };
             }
@@ -110,50 +93,48 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
 
     @Override
     public IStructureDefinition<SteamExtractinator> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<SteamExtractinator>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlock(BlockLoader.MetaBlockGlass, 3))
-                .addElement('B', ofBlock(BlockLoader.MetaCasing02, 0))
-                .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
-                .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
-                .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))
-                .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 13))
-                .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 13))
-                .addElement('H', ofFrame(Materials.Steel))
-                .addElement('I', ofBlock(BlockLoader.MetaBlockColumn, 1))
-                .addElement(
-                    'J',
-                    ofChain(
-                        buildHatchAdder(SteamExtractinator.class).atLeast(SteamHatchElement.OutputBus_Steam, OutputBus)
-                            .casingIndex(10)
-                            .dot(2)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .addElement(
-                    'K',
-                    ofChain(
-                        buildHatchAdder(SteamExtractinator.class).atLeast(InputHatch)
-                            .casingIndex(10)
-                            .dot(1)
-                            .buildAndChain(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .addElement(
-                    'L',
-                    ofChain(
-                        buildSteamWirelessInput(SteamExtractinator.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamBigInput(SteamExtractinator.class).casingIndex(10)
-                            .dot(1)
-                            .build(),
-                        buildSteamInput(SteamExtractinator.class).casingIndex(10)
-                            .dot(3)
-                            .build(),
-                        ofBlock(GregTechAPI.sBlockCasings1, 10)))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<SteamExtractinator>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlock(BlockLoader.metaBlockGlass, 3))
+            .addElement('B', ofBlock(BlockLoader.metaCasing02, 0))
+            .addElement('C', ofBlock(GregTechAPI.sBlockCasings2, 0))
+            .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 3))
+            .addElement('E', ofBlock(GregTechAPI.sBlockCasings2, 12))
+            .addElement('F', ofBlock(GregTechAPI.sBlockCasings2, 13))
+            .addElement('G', ofBlock(GregTechAPI.sBlockCasings3, 13))
+            .addElement('H', ofFrame(Materials.Steel))
+            .addElement('I', ofBlock(BlockLoader.metaBlockColumn, 1))
+            .addElement(
+                'J',
+                ofChain(
+                    buildHatchAdder(SteamExtractinator.class)
+                        .atLeast(Maintenance, SteamHatchElement.OutputBus_Steam, OutputBus)
+                        .casingIndex(10)
+                        .dot(2)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .addElement(
+                'K',
+                ofChain(
+                    buildHatchAdder(SteamExtractinator.class).atLeast(InputHatch)
+                        .casingIndex(10)
+                        .dot(1)
+                        .buildAndChain(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .addElement(
+                'L',
+                ofChain(
+                    buildSteamWirelessInput(SteamExtractinator.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamBigInput(SteamExtractinator.class).casingIndex(10)
+                        .dot(1)
+                        .build(),
+                    buildSteamInput(SteamExtractinator.class).casingIndex(10)
+                        .dot(3)
+                        .build(),
+                    ofBlock(GregTechAPI.sBlockCasings1, 10)))
+            .build();
     }
 
     @Override
@@ -163,7 +144,7 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             HORIZONTAL_OFF_SET,
@@ -177,11 +158,7 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (checkHatches()) {
-            return true;
-        }
-        return false;
+        return checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) && checkHatches();
     }
 
     @Override
@@ -196,30 +173,7 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.SteamExtractinatorRecipes;
-    }
-
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Nonnull
-            @Override
-            protected CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                }
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-
-            // note that a basic steam machine has .setEUtDiscount(2F).setSpeedBoost(2F). So these here are bonuses.
-            @Override
-            @Nonnull
-            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).limitOverclockCount(Math.min(4, recipeOcCount))
-                    .setSpeedBoost(1f);
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return RecipePool.SteamExtractinatorRecipes;
     }
 
     @Override

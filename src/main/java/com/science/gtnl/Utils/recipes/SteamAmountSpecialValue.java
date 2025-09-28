@@ -1,6 +1,6 @@
 package com.science.gtnl.Utils.recipes;
 
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static kubatech.api.Variables.numberFormat;
 
 import javax.annotation.Nullable;
@@ -25,7 +25,7 @@ public class SteamAmountSpecialValue extends RecipeMetadataKey<Long> {
 
     @Override
     public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
-        long offer = cast(value, 0l);
+        long offer = cast(value, 0L);
         recipeInfo
             .drawText(texter("Offer Value: ", "NEI.CactusWonderFakeRecipes.specialValue") + numberFormat.format(offer));
     }

@@ -7,24 +7,23 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import fox.spiteful.avaritia.items.LudicrousItems;
 import fox.spiteful.avaritia.tile.TileLudicrous;
+import lombok.Getter;
 
 public class TileEntityNeutronCollector extends TileLudicrous implements IInventory {
 
     private ItemStack neutrons;
+    @Getter
     private int facing = 2;
     private int progress;
     public int time;
     public int meta;
-    private String machineType;
+    @Getter
+    private final String machineType;
 
     public TileEntityNeutronCollector(int time, int meta, String machineType) {
         this.time = time;
         this.meta = meta;
         this.machineType = machineType;
-    }
-
-    public String getMachineType() {
-        return this.machineType;
     }
 
     @Override
@@ -54,10 +53,6 @@ public class TileEntityNeutronCollector extends TileLudicrous implements IInvent
 
     private int getMaxStackSize() {
         return 64;
-    }
-
-    public int getFacing() {
-        return facing;
     }
 
     public void setFacing(int facing) {
@@ -117,17 +112,16 @@ public class TileEntityNeutronCollector extends TileLudicrous implements IInvent
     public ItemStack decrStackSize(int slot, int decrement) {
         if (neutrons == null) return null;
         else {
+            ItemStack take;
             if (decrement < neutrons.stackSize) {
-                ItemStack take = neutrons.splitStack(decrement);
+                take = neutrons.splitStack(decrement);
                 if (neutrons.stackSize <= 0) neutrons = null;
-                markDirty();
-                return take;
             } else {
-                ItemStack take = neutrons;
+                take = neutrons;
                 neutrons = null;
-                markDirty();
-                return take;
             }
+            markDirty();
+            return take;
         }
     }
 

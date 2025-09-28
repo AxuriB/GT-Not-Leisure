@@ -1,6 +1,7 @@
 package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
@@ -8,19 +9,16 @@ import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.GregTechAPI;
@@ -32,23 +30,15 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.common.blocks.BlockCasings2;
-import gregtech.common.blocks.BlockCasings3;
 
 public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveDistillationTower>
     implements ISurvivalConstructable {
 
-    public static final int CASING_INDEX = ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
     public static final String STRUCTURE_PIECE_BASE = "base";
     public static final String STRUCTURE_PIECE_LAYER = "layer";
     public static final String STRUCTURE_PIECE_LAYER_HINT = "layerHint";
@@ -68,7 +58,7 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0);
+        return StructureUtils.getTextureIndex(sBlockCasings2, 0);
     }
 
     @Override
@@ -143,30 +133,17 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
     }
 
     @Override
-    public ProcessingLogic createProcessingLogic() {
+    public double getEUtDiscount() {
+        return super.getEUtDiscount() * 0.75;
+    }
 
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            public CheckRecipeResult validateRecipe(@Nonnull GTRecipe recipe) {
-                if (availableVoltage < recipe.mEUt) {
-                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-                } else return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
-
-            @Override
-            @Nonnull
-            public OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return super.createOverclockCalculator(recipe).limitOverclockCount(Math.min(4, recipeOcCount))
-                    .setEUtDiscount(0.75)
-                    .setSpeedBoost(0.8);
-            }
-        }.setMaxParallelSupplier(this::getMaxParallelRecipes);
+    @Override
+    public double getDurationModifier() {
+        return super.getDurationModifier() / 0.8;
     }
 
     public void onCasingFound() {
-        tCountCasing++;
+        mCountCasing++;
     }
 
     public void onTopLayerFound(boolean aIsCasing) {
@@ -208,15 +185,15 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
                 'A',
                 ofChain(
                     buildSteamWirelessInput(PrimitiveDistillationTower.class)
-                        .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings3, 14))
                         .dot(1)
                         .build(),
                     buildSteamBigInput(PrimitiveDistillationTower.class)
-                        .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings3, 14))
                         .dot(1)
                         .build(),
                     buildSteamInput(PrimitiveDistillationTower.class)
-                        .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings3, 14))
                         .dot(1)
                         .build(),
                     buildHatchAdder(PrimitiveDistillationTower.class)
@@ -225,33 +202,34 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
                             SteamHatchElement.OutputBus_Steam,
                             OutputBus,
                             InputHatch,
-                            InputBus)
-                        .casingIndex(((BlockCasings3) GregTechAPI.sBlockCasings3).getTextureIndex(14))
+                            InputBus,
+                            Maintenance)
+                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings3, 14))
                         .dot(1)
                         .build(),
-                    onElementPass(PrimitiveDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings3, 14))))
+                    onElementPass(PrimitiveDistillationTower::onCasingFound, ofBlock(sBlockCasings3, 14))))
             .addElement(
                 'B',
                 ofChain(
                     onElementPass(PrimitiveDistillationTower::onCasingFound, ofBlock(GregTechAPI.sBlockCasings2, 0)),
                     buildHatchAdder(PrimitiveDistillationTower.class).atLeast(layeredOutputHatch)
-                        .casingIndex(CASING_INDEX)
+                        .casingIndex(getCasingTextureID())
                         .dot(1)
                         .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
                         .build(),
-                    ofHatchAdder(PrimitiveDistillationTower::addLayerOutputHatch, CASING_INDEX, 1)))
+                    ofHatchAdder(PrimitiveDistillationTower::addLayerOutputHatch, getCasingTextureID(), 1)))
             .addElement(
                 'C',
                 ofChain(
                     onElementPass(
                         t -> t.onTopLayerFound(false),
-                        ofHatchAdder(PrimitiveDistillationTower::addOutputToMachineList, CASING_INDEX, 1)),
+                        ofHatchAdder(PrimitiveDistillationTower::addOutputToMachineList, getCasingTextureID(), 1)),
                     onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTechAPI.sBlockCasings2, 0)),
                     isAir()))
             .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 0))
             .addElement(
                 'D',
-                buildHatchAdder(PrimitiveDistillationTower.class).casingIndex(CASING_INDEX)
+                buildHatchAdder(PrimitiveDistillationTower.class).casingIndex(getCasingTextureID())
                     .atLeast(OutputHatch)
                     .dot(1)
                     .buildAndChain(GregTechAPI.sBlockCasings2, 0))
@@ -260,14 +238,7 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // reset
-        mOutputHatchesByLayer.forEach(List::clear);
-        mHeight = 1;
-        mTopLayerFound = false;
-        tCountCasing = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0)) return false;
-
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || !checkHatches()) return false;
         while (mHeight < 7) {
             if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) {
                 return false;
@@ -281,7 +252,15 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
         }
         updateHatchTexture();
 
-        return tCountCasing >= 7 * (mHeight + 1) - 5 && mHeight == 6;
+        return mCountCasing >= 7 * (mHeight + 1) - 5 && mHeight == 6;
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        mOutputHatchesByLayer.forEach(List::clear);
+        mHeight = 1;
+        mTopLayerFound = false;
     }
 
     @Override
@@ -309,25 +288,16 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         mHeight = 0;
-        int built = survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int tTotalHeight = 7;
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
-            built = survivialBuildPiece(
-                STRUCTURE_PIECE_LAYER_HINT,
-                stackSize,
-                1,
-                i,
-                0,
-                elementBudget,
-                env,
-                false,
-                true);
+            built = survivalBuildPiece(STRUCTURE_PIECE_LAYER_HINT, stackSize, 1, i, 0, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
         mHeight = tTotalHeight - 1;
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_TOP_HINT,
             stackSize,
             1,

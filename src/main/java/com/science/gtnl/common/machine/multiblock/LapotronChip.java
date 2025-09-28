@@ -14,6 +14,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -23,36 +25,31 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.loader.RecipePool;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings1;
-import gregtech.common.blocks.BlockCasings8;
 
-public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISurvivalConstructable {
+public class LapotronChip extends MultiMachineBase<LapotronChip>
+    implements ISurvivalConstructable, INEIPreviewModifier {
 
     public int tierLapisCaelestis = -1;
     public int tierGlass1 = -1;
     public int tierGlass2 = -1;
 
-    public static final int HORIZONTAL_OFF_SET = 88;
-    public static final int VERTICAL_OFF_SET = 97;
-    public static final int DEPTH_OFF_SET = 11;
+    protected final int HORIZONTAL_OFF_SET = 88;
+    protected final int VERTICAL_OFF_SET = 97;
+    protected final int DEPTH_OFF_SET = 11;
 
-    public int tCountCasing = 0;
-
-    private static IStructureDefinition<LapotronChip> STRUCTURE_DEFINITION = null;
-    public static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String LC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/lapotron_chip"; // 文件路径
-    public static String[][] shape = StructureUtils.readStructureFromFile(LC_STRUCTURE_FILE_PATH);
+    private static final String STRUCTURE_PIECE_MAIN = "main";
+    public static final String LC_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/lapotron_chip";
+    public static final String[][] shape = StructureUtils.readStructureFromFile(LC_STRUCTURE_FILE_PATH);
 
     public LapotronChip(String aName) {
         super(aName);
@@ -60,16 +57,6 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
 
     public LapotronChip(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-    }
-
-    @Override
-    protected boolean isEnablePerfectOverclock() {
-        return false;
-    }
-
-    @Override
-    protected float getSpeedBonus() {
-        return 1;
     }
 
     @Override
@@ -99,7 +86,7 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
 
     @Override
     public int getCasingTextureID() {
-        return ((BlockCasings1) GregTechAPI.sBlockCasings1).getTextureIndex(11);
+        return StructureUtils.getTextureIndex(sBlockCasings1, 11);
     }
 
     @Override
@@ -122,120 +109,102 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
 
     @Override
     public IStructureDefinition<LapotronChip> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<LapotronChip>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-                .addElement('A', ofBlockAnyMeta(Blocks.iron_block))
-                .addElement(
-                    'B',
-                    ExtraUtilities.isModLoaded()
-                        ? withChannel(
-                            "tierLapisCaelestis",
-                            ofBlocksTiered(
-                                LapotronChip::tierLapisCaelestis,
-                                ImmutableList.of(
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 0),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 1),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 2),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 3),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 4),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 5),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 6),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 7),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 8),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 9),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 10),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 11),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 12),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 13),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 14),
-                                    Pair.of(Block.getBlockFromName("ExtraUtilities:greenscreen"), 15)),
-                                -1,
-                                (t, m) -> t.tierLapisCaelestis = m,
-                                t -> t.tierLapisCaelestis))
-                        : isAir())
-                .addElement('C', ofBlock(sBlockCasings9, 7))
-                .addElement('D', ofBlock(sBlockCasings1, 11))
-                .addElement(
-                    'E',
-                    buildHatchAdder(LapotronChip.class)
-                        .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Energy.or(ExoticEnergy))
-                        .casingIndex(((BlockCasings8) GregTechAPI.sBlockCasings8).getTextureIndex(10))
-                        .dot(1)
-                        .buildAndChain(onElementPass(x -> ++x.tCountCasing, ofBlock(sBlockCasings8, 10))))
-                .addElement('F', ofBlock(BlockLoader.MetaBlockGlow, 0))
-                .addElement(
-                    'G',
-                    withChannel(
-                        "tierGlass1",
-                        ofBlocksTiered(
-                            LapotronChip::tierGlass1,
-                            ImmutableList.of(
-                                Pair.of(Blocks.stained_glass, 0),
-                                Pair.of(Blocks.stained_glass, 1),
-                                Pair.of(Blocks.stained_glass, 2),
-                                Pair.of(Blocks.stained_glass, 3),
-                                Pair.of(Blocks.stained_glass, 4),
-                                Pair.of(Blocks.stained_glass, 5),
-                                Pair.of(Blocks.stained_glass, 6),
-                                Pair.of(Blocks.stained_glass, 7),
-                                Pair.of(Blocks.stained_glass, 8),
-                                Pair.of(Blocks.stained_glass, 9),
-                                Pair.of(Blocks.stained_glass, 10),
-                                Pair.of(Blocks.stained_glass, 11),
-                                Pair.of(Blocks.stained_glass, 12),
-                                Pair.of(Blocks.stained_glass, 13),
-                                Pair.of(Blocks.stained_glass, 14),
-                                Pair.of(Blocks.stained_glass, 15)),
-                            -1,
-                            (t, m) -> t.tierGlass1 = m,
-                            t -> t.tierGlass1)))
-                .addElement(
-                    'H',
-                    withChannel(
-                        "tierGlass2",
-                        ofBlocksTiered(
-                            LapotronChip::tierGlass2,
-                            ImmutableList.of(
-                                Pair.of(Blocks.stained_glass, 0),
-                                Pair.of(Blocks.stained_glass, 1),
-                                Pair.of(Blocks.stained_glass, 2),
-                                Pair.of(Blocks.stained_glass, 3),
-                                Pair.of(Blocks.stained_glass, 4),
-                                Pair.of(Blocks.stained_glass, 5),
-                                Pair.of(Blocks.stained_glass, 6),
-                                Pair.of(Blocks.stained_glass, 7),
-                                Pair.of(Blocks.stained_glass, 8),
-                                Pair.of(Blocks.stained_glass, 9),
-                                Pair.of(Blocks.stained_glass, 10),
-                                Pair.of(Blocks.stained_glass, 11),
-                                Pair.of(Blocks.stained_glass, 12),
-                                Pair.of(Blocks.stained_glass, 13),
-                                Pair.of(Blocks.stained_glass, 14),
-                                Pair.of(Blocks.stained_glass, 15)),
-                            -1,
-                            (t, m) -> t.tierGlass2 = m,
-                            t -> t.tierGlass2)))
-                .addElement('I', ofBlock(sBlockCasings1, 15))
-                .addElement('K', ofBlockAnyMeta(Blocks.beacon))
-                .build();
-        }
-        return STRUCTURE_DEFINITION;
+        return StructureDefinition.<LapotronChip>builder()
+            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
+            .addElement('A', ofBlockAnyMeta(Blocks.iron_block))
+            .addElement(
+                'B',
+                withChannel(
+                    "tierLapisCaelestis",
+                    ofBlocksTiered(
+                        LapotronChip::getLapisCaelestisTier,
+                        ExtraUtilities.isModLoaded() ? getGreenScreenVariants() : getGlass(),
+                        -1,
+                        (t, m) -> t.tierLapisCaelestis = m,
+                        t -> t.tierLapisCaelestis)))
+            .addElement('C', ofBlock(sBlockCasings9, 7))
+            .addElement('D', ofBlock(sBlockCasings1, 11))
+            .addElement(
+                'E',
+                buildHatchAdder(LapotronChip.class)
+                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Maintenance, Energy, Energy.or(ExoticEnergy))
+                    .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 10))
+                    .dot(1)
+                    .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings8, 10))))
+            .addElement('F', ofBlock(BlockLoader.metaBlockGlow, 0))
+            .addElement(
+                'G',
+                withChannel(
+                    "tierGlass1",
+                    ofBlocksTiered(
+                        LapotronChip::getTierGlass1,
+                        getGlass(),
+                        -1,
+                        (t, m) -> t.tierGlass1 = m,
+                        t -> t.tierGlass1)))
+            .addElement(
+                'H',
+                withChannel(
+                    "tierGlass2",
+                    ofBlocksTiered(
+                        LapotronChip::getTierGlass2,
+                        getGlass(),
+                        -1,
+                        (t, m) -> t.tierGlass2 = m,
+                        t -> t.tierGlass2)))
+            .addElement('I', ofBlock(sBlockCasings1, 15))
+            .addElement('K', ofBlockAnyMeta(Blocks.beacon))
+            .build();
     }
 
-    public static int tierLapisCaelestis(Block block, int meta) {
+    public static ImmutableList<Pair<Block, Integer>> getGreenScreenVariants() {
+        ImmutableList.Builder<Pair<Block, Integer>> builder = ImmutableList.builder();
+        Block greenScreen = Block.getBlockFromName("ExtraUtilities:greenscreen");
+
+        for (int i = 0; i < 16; i++) {
+            builder.add(Pair.of(greenScreen, i));
+        }
+
+        return builder.build();
+    }
+
+    public static ImmutableList<Pair<Block, Integer>> getGlass() {
+        ImmutableList.Builder<Pair<Block, Integer>> builder = ImmutableList.builder();
+        Block greenScreen = Blocks.stained_glass;
+
+        for (int i = 0; i < 16; i++) {
+            builder.add(Pair.of(greenScreen, i));
+        }
+
+        return builder.build();
+    }
+
+    @Nullable
+    public static Integer getLapisCaelestisTier(Block block, int meta) {
+        if (block == null) return null;
         if (block == Block.getBlockFromName("ExtraUtilities:greenscreen")) return meta + 1;
         return -1;
     }
 
-    public static int tierGlass1(Block block, int meta) {
+    @Nullable
+    public static Integer getTierGlass1(Block block, int meta) {
+        if (block == null) return null;
         if (block == Blocks.stained_glass) return meta + 1;
         return -1;
     }
 
-    public static int tierGlass2(Block block, int meta) {
+    @Nullable
+    public static Integer getTierGlass2(Block block, int meta) {
+        if (block == null) return null;
         if (block == Blocks.stained_glass) return meta + 1;
         return -1;
+    }
+
+    @Override
+    public void onPreviewConstruct(@NotNull ItemStack trigger) {
+        if (trigger.stackSize > 1) {
+            buildPiece(STRUCTURE_PIECE_MAIN, trigger, false, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET);
+        }
     }
 
     @Override
@@ -254,21 +223,18 @@ public class LapotronChip extends MultiMachineBase<LapotronChip> implements ISur
         return -1;
     }
 
+    @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        return tCountCasing >= 10000;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
+            return false;
+        }
+        setupParameters();
+        return mCountCasing >= 10000;
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipeRegister.LapotronChipRecipes;
-    }
-
-    @Override
-    protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F)
-            .setMaxParallelSupplier(this::getMaxParallelRecipes);
+        return RecipePool.LapotronChipRecipes;
     }
 
     @Override

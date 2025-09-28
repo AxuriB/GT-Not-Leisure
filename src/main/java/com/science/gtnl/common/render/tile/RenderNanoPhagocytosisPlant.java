@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL20;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
-import com.science.gtnl.common.machine.multiblock.NanoPhagocytosisPlant;
+import com.science.gtnl.common.machine.multiblock.WirelessMachine.NanoPhagocytosisPlant;
 
 import goodgenerator.loader.Loaders;
 import tectech.Reference;

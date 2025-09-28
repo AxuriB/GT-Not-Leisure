@@ -1,7 +1,6 @@
 package com.lootgames.sudoku.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -9,17 +8,6 @@ import java.util.Random;
 public class RandHelper {
 
     public static final Random RAND = new Random();
-
-    /**
-     * 返回 a 或 b，50% 概率
-     */
-    public static <T> T flipCoin(T a, T b) {
-        return flipCoin(RAND, a, b);
-    }
-
-    public static <T> T flipCoin(Random random, T a, T b) {
-        return random.nextBoolean() ? a : b;
-    }
 
     /**
      * chance% 概率返回 a，否则返回 b
@@ -41,31 +29,6 @@ public class RandHelper {
             throw new IllegalArgumentException("Chance must be between 0 and 100: " + chance);
         }
         return random.nextInt(100) < chance;
-    }
-
-    @SafeVarargs
-    public static <T> T chooseEqually(Random r, T... items) {
-        if (items.length == 0) throw new IllegalArgumentException("Items should not be empty");
-        return items[r.nextInt(items.length)];
-    }
-
-    @SafeVarargs
-    public static <T> T chooseEqually(T... items) {
-        return chooseEqually(RAND, items);
-    }
-
-    public static <T> T chooseEqually(Random r, Collection<T> items) {
-        if (items.isEmpty()) throw new IllegalArgumentException("Items should not be empty");
-        int idx = r.nextInt(items.size());
-        int i = 0;
-        for (T t : items) {
-            if (i++ == idx) return t;
-        }
-        throw new IllegalStateException("Failed to pick random element");
-    }
-
-    public static <T> T chooseEqually(Collection<T> items) {
-        return chooseEqually(RAND, items);
     }
 
     /**

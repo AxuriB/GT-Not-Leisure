@@ -2,8 +2,8 @@ package com.science.gtnl.common.recipe.GregTech;
 
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 
-import com.science.gtnl.common.materials.MaterialPool;
-import com.science.gtnl.loader.IRecipePool;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.common.material.MaterialPool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -14,7 +14,7 @@ import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 
 public class DigesterRecipes implements IRecipePool {
 
-    final RecipeMap<?> dR = LanthanidesRecipeMaps.digesterRecipes;
+    public RecipeMap<?> dR = LanthanidesRecipeMaps.digesterRecipes;
 
     @Override
     public void loadRecipes() {
@@ -24,7 +24,6 @@ public class DigesterRecipes implements IRecipePool {
             .itemOutputs(MaterialPool.RareEarthMetal.get(OrePrefixes.dust, 1))
             .fluidOutputs(Materials.Water.getFluid(500))
             .specialValue(0)
-            .noOptimize()
             .metadata(COIL_HEAT, 800)
             .duration(400)
             .eut(7680)
@@ -36,7 +35,6 @@ public class DigesterRecipes implements IRecipePool {
             .itemOutputs(MaterialPool.RareEarthOxide.get(OrePrefixes.dust, 1))
             .fluidOutputs(Materials.SaltWater.getFluid(1000))
             .specialValue(0)
-            .noOptimize()
             .metadata(COIL_HEAT, 2580)
             .duration(800)
             .eut(1920)

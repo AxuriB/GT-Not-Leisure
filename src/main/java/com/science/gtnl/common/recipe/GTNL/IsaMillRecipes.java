@@ -2,13 +2,13 @@ package com.science.gtnl.common.recipe.GTNL;
 
 import static com.science.gtnl.Utils.Utils.setStackSize;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import com.science.gtnl.Utils.recipes.IsaMillTierKey;
-import com.science.gtnl.common.item.items.MilledOre;
-import com.science.gtnl.loader.IRecipePool;
-import com.science.gtnl.loader.RecipeRegister;
+import com.science.gtnl.api.IRecipePool;
+import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -16,589 +16,81 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.item.chemistry.MilledOreProcessing;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class IsaMillRecipes implements IRecipePool {
 
-    final IsaMillTierKey ISAMILL_TIER = IsaMillTierKey.INSTANCE;
-    final RecipeMap<?> IsaMR = RecipeRegister.IsaMillRecipes;
+    public IsaMillTierKey ISAMILL_TIER = IsaMillTierKey.INSTANCE;
+    public RecipeMap<?> IsaMR = RecipePool.IsaMillRecipes;
 
     @Override
     public void loadRecipes() {
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Nickel, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledNickel, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
+        addIsaMillSet(Materials.Nickel);
+        addIsaMillSet(Materials.Platinum);
+        addIsaMillSet(Materials.Almandine);
+        addIsaMillSet(Materials.Chalcopyrite);
+        addIsaMillSet(Materials.Grossular);
+        addIsaMillSet(Materials.Pyrope);
+        addIsaMillSet(Materials.Spessartine);
+        addIsaMillSet(Materials.Sphalerite);
+        addIsaMillSet(Materials.Pentlandite);
+        addIsaMillSet(Materials.Monazite);
+        addIsaMillSet(Materials.Redstone);
+        addIsaMillSet(Materials.NaquadahEnriched);
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Nickel, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledNickel, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
+        addIsaMillRecipeCustom(Materials.Netherrack, new ItemStack(Blocks.netherrack, 16), 1, 96, 100, 1, 2400);
+        addIsaMillRecipeCustom(Materials.Netherrack, new ItemStack(Blocks.netherrack, 16), 10, 64, 100, 2, 1200);
+    }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Nickel, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledNickel, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
+    public void addIsaMillSet(Materials material) {
+        Object[][] combos = { { OrePrefixes.ore, 1, 96, 100, 2, 4800 }, { OrePrefixes.ore, 10, 72, 100, 1, 2400 },
+            { OrePrefixes.ore, 1, 96, 100, 2, 4800 }, { OrePrefixes.ore, 10, 72, 100, 1, 2400 },
+            { OrePrefixes.oreNetherrack, 1, 96, 100, 2, 4800 }, { OrePrefixes.oreNetherrack, 10, 72, 100, 1, 2400 },
+            { OrePrefixes.oreEndstone, 1, 96, 100, 2, 4800 }, { OrePrefixes.oreEndstone, 10, 72, 100, 1, 2400 },
+            { OrePrefixes.oreBlackgranite, 1, 96, 100, 2, 4800 }, { OrePrefixes.oreBlackgranite, 10, 72, 100, 1, 2400 },
+            { OrePrefixes.oreRedgranite, 1, 96, 100, 2, 4800 }, { OrePrefixes.oreRedgranite, 10, 72, 100, 1, 2400 },
+            { OrePrefixes.oreMarble, 1, 96, 100, 2, 4800 }, { OrePrefixes.oreMarble, 10, 72, 100, 1, 2400 },
+            { OrePrefixes.oreBasalt, 1, 96, 100, 2, 4800 }, { OrePrefixes.oreBasalt, 10, 72, 100, 1, 2400 },
+            { OrePrefixes.rawOre, 1, 48, 50, 2, 2400 }, { OrePrefixes.rawOre, 10, 36, 50, 1, 1200 },
+            { OrePrefixes.crushed, 1, 48, 50, 2, 2400 }, { OrePrefixes.crushed, 10, 36, 50, 1, 1200 } };
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Nickel, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledNickel, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
+        for (Object[] c : combos) {
+            addIsaMillRecipe(material, (OrePrefixes) c[0], (int) c[1], (int) c[2], (int) c[3], (int) c[4], (int) c[5]);
+        }
+    }
 
+    public void addIsaMillRecipe(Materials material, OrePrefixes prefix, int circuitNumber, int outputAmount,
+        int fluidAmount, int tier, int duration) {
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Platinum, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPlatinum, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Platinum, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPlatinum, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Platinum, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPlatinum, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Platinum, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPlatinum, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Almandine, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledAlmandine, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Almandine, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledAlmandine, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Almandine, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledAlmandine, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Almandine, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledAlmandine, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Chalcopyrite, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledChalcopyrite, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Chalcopyrite, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledChalcopyrite, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Chalcopyrite, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledChalcopyrite, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Chalcopyrite, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledChalcopyrite, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Grossular, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledGrossular, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Grossular, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledGrossular, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Grossular, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledGrossular, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Grossular, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledGrossular, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Pyrope, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPyrope, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Pyrope, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPyrope, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Pyrope, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPyrope, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Pyrope, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPyrope, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Spessartine, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledSpessartine, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Spessartine, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledSpessartine, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Spessartine, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledSpessartine, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Spessartine, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledSpessartine, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Sphalerite, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledSphalerite, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Sphalerite, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledSphalerite, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Sphalerite, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledSphalerite, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Sphalerite, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledSphalerite, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Pentlandite, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPentlandite, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Pentlandite, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPentlandite, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Pentlandite, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPentlandite, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Pentlandite, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledPentlandite, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Monazite, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledMonazite, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Monazite, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledMonazite, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Monazite, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledMonazite, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Monazite, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledMonazite, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Redstone, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledRedstone, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.Redstone, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledRedstone, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Redstone, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledRedstone, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.Redstone, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOreProcessing.milledRedstone, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOre.milledNaquadahEnriched, 1), 96))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(4800)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.ore, Materials.NaquadahEnriched, 1L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOre.milledNaquadahEnriched, 1), 72))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 100))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(1),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.NaquadahEnriched, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOre.milledNaquadahEnriched, 1), 48))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 2)
-            .noOptimize()
-            .duration(2400)
-            .eut(1920)
-            .addTo(IsaMR);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                GTUtility.getIntegratedCircuit(10),
-                GTOreDictUnificator.get(OrePrefixes.rawOre, Materials.NaquadahEnriched, 16L))
-            .itemOutputs(setStackSize(new ItemStack(MilledOre.milledNaquadahEnriched, 1), 36))
-            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", 50))
-            .metadata(ISAMILL_TIER, 1)
-            .noOptimize()
-            .duration(1200)
+                GTUtility.getIntegratedCircuit(circuitNumber),
+                GTOreDictUnificator.get(prefix, material, prefix == OrePrefixes.rawOre ? 16L : 1L))
+            .itemOutputs(
+                setStackSize(
+                    MaterialUtils.generateMaterialFromGtENUM(material)
+                        .getMilled(1),
+                    outputAmount))
+            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", fluidAmount))
+            .metadata(ISAMILL_TIER, tier)
+            .duration(duration)
             .eut(1920)
             .addTo(IsaMR);
     }
+
+    public void addIsaMillRecipeCustom(Materials material, ItemStack custom, int circuitNumber, int outputAmount,
+        int fluidAmount, int tier, int duration) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(circuitNumber), custom)
+            .itemOutputs(
+                setStackSize(
+                    MaterialUtils.generateMaterialFromGtENUM(material)
+                        .getMilled(1),
+                    outputAmount))
+            .fluidInputs(FluidRegistry.getFluidStack("ic2distilledwater", fluidAmount))
+            .metadata(ISAMILL_TIER, tier)
+            .duration(duration)
+            .eut(1920)
+            .addTo(IsaMR);
+    }
+
 }

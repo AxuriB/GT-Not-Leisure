@@ -1,7 +1,7 @@
 package com.science.gtnl.common.block.Casings.Column;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.item.TextHandler.texter;
+import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static com.science.gtnl.common.block.Casings.Column.ItemBlockColumn.MetaBlockSet;
 
 import java.util.HashMap;
@@ -71,7 +71,7 @@ public class MetaBlockColumn extends Block {
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int meta : MetaBlockSet) {
             list.add(new ItemStack(item, 1, meta));
         }
