@@ -85,7 +85,7 @@ public class CraftingTableRecipes implements IRecipePool {
             new Object[] { "ABA", "CDC", "EBE", 'A', GTOreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 1),
                 'B', GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Brass, 1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.Bronze, 1), 'D',
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 1), 'E',
+                GTOreDictUnificator.get(OrePrefixes.springSmall, Materials.Steel, 1), 'E',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Brass, 1) });
 
         GTModHandler.addCraftingRecipe(
