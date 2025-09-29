@@ -155,7 +155,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
 
         RA.stdBuilder()
             .itemInputs(
-                GTNLItemList.IronTurbine.get(2),
+                GTNLItemList.SteelTurbine.get(2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 4),
                 GTNLItemList.HydraulicPump.get(1))
