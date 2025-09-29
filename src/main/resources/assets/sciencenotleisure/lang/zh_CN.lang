@@ -2151,7 +2151,7 @@ Tooltip_BrickBlastFurnace_Casing_03=24x 青铜燃烧室
 Tooltip_BrickBlastFurnace_Casing_04=16x 镀铜砖块
 
 NameSteamGateAssembler=蒸汽至臻先驱者
-gtnl.recipe.SteamgateAssembler=液压动力精密制造
+gtnl.recipe.SteamGateAssemblerRecipes=液压动力精密制造
 SteamGateAssemblerRecipeType=无界造物核心
 Tooltip_SteamGateAssembler_00=§b§o管道与齿轮的亵渎混合体，暴躁地吞噬着浩瀚蒸汽。
 Tooltip_SteamGateAssembler_01=§b§o无数压力在每个精密调校的仓室内涌动，维持着机械的至高平衡。
@@ -2166,7 +2166,7 @@ Tooltip_MegaSteamCompressor_02=§b§o可制造超致密金属板……
 Tooltip_MegaSteamCompressor_03=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
 
 NameSteamExtractinator=蒸汽精萃机
-gtnl.recipe.SteamExtractinator=萃取
+gtnl.recipe.SteamExtractinatorRecipes=萃取
 SteamExtractinatorRecipeType=资源萃取
 Tooltip_SteamExtractinator_00=蒸发不同泥浆中的杂质，以生成可用材料
 Tooltip_SteamExtractinator_01=一次可处理多达4个物品
@@ -2182,7 +2182,7 @@ Tooltip_MegaSolarBoiler_01=产生 96,000 升/秒的蒸汽
 Tooltip_MegaSolarBoiler_02=§b§o每秒产生的蒸汽比你的Steam游戏库里未游玩的游戏还要多
 
 NameSteamCactusWonder=仙人掌奇迹
-gtnl.recipe.CactusWonder=献给仙人掌神的供奉
+gtnl.recipe.CactusWonderFakeRecipes=献给仙人掌神的供奉
 SteamCactusWonderRecipeType=仙人掌祝福之庙
 Tooltip_SteamCactusWonder_00=燃烧仙人掌焦炭和仙人掌炭，以产生越来越高效的蒸汽
 Tooltip_SteamCactusWonder_01=仙人掌奇迹每秒都会消耗所有储存的供奉
@@ -2194,7 +2194,7 @@ Tooltip_SteamCactusWonder_06=提供价值：
 NEI.CactusWonderFakeRecipes.specialValue=提供价值：
 
 NameSteamCarpenter=蒸汽木匠
-gtnl.recipe.SteamCarpenter=蒸汽工艺
+gtnl.recipe.SteamCarpenterRecipes=蒸汽工艺
 SteamCarpenterRecipeType=木匠
 Tooltip_SteamCarpenter_00=§b§o高效地将木材切割成多种形态
 Tooltip_SteamCarpenter_01=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
@@ -2208,7 +2208,7 @@ Tooltip_SteamLavaMaker_02=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
 Tooltip_SteamLavaMaker_Casing=任意镀铜砖块或脱氧钢机械方块
 
 NameSteamManufacturer=蒸汽制造商
-gtnl.recipe.SteamManufacturer=液压制造
+gtnl.recipe.SteamManufacturerRecipes=液压制造
 SteamManufacturerRecipeType=组装机
 Tooltip_SteamManufacturer_00=拥有4并行
 Tooltip_SteamManufacturer_01=以组装的方式组装组件
@@ -2225,13 +2225,13 @@ Tooltip_SteamRockBreaker_04=§b§o注意结构共用：>
 Tooltip_SteamRockBreaker_Casing=任意镀铜砖块或脱氧钢机械方块
 
 NameSteamWoodcutter=蒸汽树场
-gtnl.recipe.SteamWoodcutter=蒸汽园艺
+gtnl.recipe.SteamWoodcutterRecipes=蒸汽园艺
 SteamWoodcutterRecipeType=树场
 Tooltip_SteamWoodcutter_00=§b§o从树苗缓慢生长成树木
 Tooltip_SteamWoodcutter_01=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
 
 NameSteamFusionReactor=超高压反应堆
-gtnl.recipe.SteamFusion=高压反应堆
+gtnl.recipe.SteamFusionReactorRecipes=高压反应堆
 SteamFusionTierKey.0=需要压缩超高压聚变反应堆
 SteamFusionReactorRecipeType=高压反应堆
 GT5U.gui.text.metadata.steamfusion=需要压缩超高压反应堆
@@ -2249,7 +2249,7 @@ Tooltip_HighPressureSteamFusionReactor_03=§b§o天啊，你到底做了什么
 Tooltip_HighPressureSteamFusionReactor_Casing=1-8，玻璃相邻的方块
 
 NameSteamInfernalCokeOven=炼狱焦炉
-gtnl.recipe.InfernalCock=焦炉但是超模
+gtnl.recipe.InfernalCockRecipes=焦炉但是超模
 SteamInfernalCokeOvenRecipeType=焦炉
 Tooltip_SteamInfernalCokeOven_00=比粘土高炉更高效运作
 Tooltip_SteamInfernalCokeOven_01=每连续工作5秒，速度提升1%，最高可达600%

@@ -180,5 +180,13 @@ public class MixerRecipes implements IRecipePool {
             .eut(300)
             .addTo(MNCR);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Blocks.sand, 1))
+            .itemOutputs(new ItemStack(Blocks.soul_sand, 1))
+            .fluidInputs(Materials.NefariousGas.getFluid(500))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(MNCR);
+
     }
 }
