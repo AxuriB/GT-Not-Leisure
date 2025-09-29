@@ -23,28 +23,22 @@ public class TCResearches {
 
     public static void loadResearchTab() {
         ResearchCategories.registerCategory(
-            "GTNL",
+            "gtnl",
             new ResourceLocation(RESOURCE_ROOT_ID, "textures/items/TestItem.png"),
             new ResourceLocation("thaumicinsurgence", "textures/gui/eldritch_bg.png"));
     }
 
     public static void loadResearches() {
-        new ResearchItem(
-            "GTNL_WELCOME",
-            "GTNL",
-            (new AspectList()),
-            0,
-            0,
-            0,
-            new ResourceLocation(RESOURCE_ROOT_ID, "textures/items/Record.newhorizons.png")).setAutoUnlock()
-                .registerResearchItem()
-                .setPages(new ResearchPage("tc.research_text.GTNL_WELCOME.1"))
-                .setSpecial();
+        new ResearchItem("gtnl.welcome", "gtnl", new AspectList(), 0, 0, 0, GTNLItemList.TestItem.get(1))
+            .setAutoUnlock()
+            .registerResearchItem()
+            .setPages(new ResearchPage("tc.research_text.gtnl.welcome.1"))
+            .setSpecial();
 
         new ResearchItem(
-            "GTNL_TIME_STOP_POCKET_WATCH",
-            "GTNL",
-            (new AspectList()).merge(Mods.MagicBees.isModLoaded() ? Aspect.getAspect("tempus") : Aspect.MAGIC, 2)
+            "gtnl.timeStopPocketWatch",
+            "gtnl",
+            new AspectList().merge(Mods.MagicBees.isModLoaded() ? Aspect.getAspect("tempus") : Aspect.MAGIC, 2)
                 .merge(Aspect.ORDER, 1)
                 .merge(Aspect.MAGIC, 1)
                 .merge(Aspect.TRAVEL, 1)
@@ -55,9 +49,9 @@ public class TCResearches {
             5,
             GTNLItemList.TimeStopPocketWatch.get(1))
                 .setPages(
-                    new ResearchPage("tc.research_text.GTNL_TIME_STOP_POCKET_WATCH.1"),
+                    new ResearchPage("tc.research_text.gtnl.timeStopPocketWatch.1"),
                     new ResearchPage(infusionRecipeTimeStopPocketWatch))
-                .setParents("GTNL_WELCOME")
+                .setParents("gtnl.welcome")
                 .registerResearchItem();
     }
 }

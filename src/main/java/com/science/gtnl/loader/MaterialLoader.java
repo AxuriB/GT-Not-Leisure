@@ -74,6 +74,7 @@ public class MaterialLoader {
         MilledOre.registry();
         EIGBucket.LoadEIGBuckets();
         MachineLoader.registry();
+        AchievementsLoader.registry();
 
         RocketFuels.addFuel(EntitySteamRocket.class, MaterialPool.CompressedSteam.getMolten(1));
     }

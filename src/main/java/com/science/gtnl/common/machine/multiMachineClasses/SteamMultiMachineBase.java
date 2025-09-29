@@ -266,6 +266,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mSteamBigInputFluids) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mSteamWirelessInputFluids) h.updateTexture(getCasingTextureID());
+        for (MTEHatch h : mMaintenanceHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mInputBusses) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mOutputBusses) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mInputHatches) h.updateTexture(getCasingTextureID());

@@ -60,14 +60,19 @@ HatchCustomFluid_00=Input fluids for multiblock machines
 HatchCustomFluid_01=Capacity: 
 HatchCustomFluid_02=Allowed fluids:
 
-tc.research_category.GTNL=GTNL: Whimsical Thaumaturgy
-tc.research_name.GTNL_WELCOME=Your New Beginning
-tc.research_text.GTNL_WELCOME=No friendly
-tc.research_text.GTNL_WELCOME.1=Welcome to a world of curious thoughts and wonders!
+achievement.gtnl.welcome=GT Not Leisure
+achievement.gtnl.welcome.desc=This is where it begins
+achievement.gtnl.installAllCommunityMod=Community Mod Master
+achievement.gtnl.installAllCommunityMod.desc=You are the master of playing all the community mods
 
-tc.research_name.GTNL_TIME_STOP_POCKET_WATCH=Time Stop Pocket Watch
-tc.research_text.GTNL_TIME_STOP_POCKET_WATCH=Mastering the Secret of Time
-tc.research_text.GTNL_TIME_STOP_POCKET_WATCH.1=In the ancient manuscripts of the Chronomantic school, records of the “Time Stop Pocket Watch” are scarce. It is said to have been first crafted by an alchemist weary of war and noise, longing to capture eternity within the flow of time. The construction of the watch itself is not complex—the true challenge lies in imbuing it with the essence of stillness. Rumors tell that the infusion must take place on the darkest night of the lunar cycle, surrounded by silent temporal crystals and hushed metals. Every thought of the practitioner must be held in perfect focus, lest the ritual turn awry and time itself lash back. If the ritual succeeds, one may briefly freeze the world’s flow at this very moment—but beware: time is never truly mastered. It merely waits for the moment to retaliate.
+tc.research_category.gtnl=GTNL: Whimsical Thaumaturgy
+tc.research_name.gtnl.welcome=Your New Beginning
+tc.research_text.gtnl.welcome=No friendly
+tc.research_text.gtnl.welcome.1=Welcome to a world of curious thoughts and wonders!
+
+tc.research_name.gtnl.timeStopPocketWatch=Time Stop Pocket Watch
+tc.research_text.gtnl.timeStopPocketWatch=Mastering the Secret of Time
+tc.research_text.gtnl.timeStopPocketWatch.1=In the ancient manuscripts of the Chronomantic school, records of the “Time Stop Pocket Watch” are scarce. It is said to have been first crafted by an alchemist weary of war and noise, longing to capture eternity within the flow of time. The construction of the watch itself is not complex—the true challenge lies in imbuing it with the essence of stillness. Rumors tell that the infusion must take place on the darkest night of the lunar cycle, surrounded by silent temporal crystals and hushed metals. Every thought of the practitioner must be held in perfect focus, lest the ritual turn awry and time itself lash back. If the ritual succeeds, one may briefly freeze the world’s flow at this very moment—but beware: time is never truly mastered. It merely waits for the moment to retaliate.
 
 EnergyTransferNode=Universal Flux Transfer Node
 Tooltip_EnergyTransferNode_00=§9A great helper for Active Transformers!
