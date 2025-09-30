@@ -384,7 +384,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 0);
 
             overclockedRecipes.add(overclockedRecipe);
-            powerParallel = (int) energyEU / recipe.mEUt;
+            powerParallel = (int) Math.min(Integer.MAX_VALUE, energyEU / recipe.mEUt);
         }
 
         // 遍历每个输入仓
@@ -589,6 +589,10 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     depleteInputLong(fluid, (long) fluid.amount * parallel, allFluids, false);
                 }
             }
+        }
+
+        if (totalOutputs.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         mOutputItems = totalOutputs.toArray(new ItemStack[0]);
