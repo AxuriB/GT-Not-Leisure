@@ -942,6 +942,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             wirelessMode = true;
             useSingleAmp = false;
             mEnergyHatchTier = 14;
+            return mDataAccessHatches.size() <= 1 && mMaintenanceHatches.size() <= 1;
         } else if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) return false;
 
         if (!mDualInputHatches.isEmpty()) {
