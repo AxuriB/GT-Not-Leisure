@@ -249,7 +249,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
         List<IDualInputInventory> validInventories = inputInventories.stream()
             .filter(Objects::nonNull)
             .filter(inv -> inv.getItemInputs() != null && inv.getItemInputs().length > 0)
-            .toList();
+            .collect(Collectors.toList());
 
         if (validInventories.isEmpty()) {
             return CheckRecipeResultRegistry.NO_RECIPE;
