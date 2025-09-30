@@ -23,7 +23,7 @@ public class EIGNormalMode extends EIGMode {
     }
 
     @Override
-    public byte getMinVoltageTier() {
+    public int getMinVoltageTier() {
         return EdenGarden.EIG_BALANCE_REGULAR_MODE_MIN_TIER;
     }
 
@@ -64,7 +64,7 @@ public class EIGNormalMode extends EIGMode {
 
     @Override
     public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
-        String minVoltageTier = GTUtility.getColoredTierNameFromTier(this.getMinVoltageTier());
+        String minVoltageTier = GTUtility.getColoredTierNameFromTier((byte) this.getMinVoltageTier());
         String minVoltageTierMinus1 = GTUtility.getColoredTierNameFromTier((byte) (this.getMinVoltageTier() - 1));
 
         double fertilizerBonusMultiplier = this.getFertilizerBoost() * 100;

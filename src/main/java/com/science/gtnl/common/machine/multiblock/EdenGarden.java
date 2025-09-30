@@ -94,17 +94,17 @@ import ic2.core.init.InternalName;
 
 public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
-    public static final int EIG_BALANCE_IC2_ACCELERATOR_TIER = VoltageIndex.EV;
-    public static final int EIG_BALANCE_REGULAR_MODE_MIN_TIER = VoltageIndex.EV;
-    public static final double EIG_BALANCE_MAX_FERTILIZER_BOOST = 10.0d;
+    public static int EIG_BALANCE_IC2_ACCELERATOR_TIER = VoltageIndex.EV;
+    public static int EIG_BALANCE_REGULAR_MODE_MIN_TIER = VoltageIndex.EV;
+    public static double EIG_BALANCE_MAX_FERTILIZER_BOOST = 10.0d;
 
-    public static final boolean debug = false;
+    public static boolean debug = false;
 
-    public static final int NBT_REVISION = 1;
-    public static final int CONFIGURATION_WINDOW_ID = 999;
+    public static int NBT_REVISION = 1;
+    public static int CONFIGURATION_WINDOW_ID = 999;
 
-    public final List<EIGBucket> buckets = new LinkedList<>();
-    public final EIGDropTable dropTracker = new EIGDropTable();
+    public List<EIGBucket> buckets = new LinkedList<>();
+    public EIGDropTable dropTracker = new EIGDropTable();
     public Collection<EIGMigrationHolder> toMigrate;
     public EIGDropTable guiDropTracker = new EIGDropTable();
     public HashMap<ItemStack, Double> synchedGUIDropTracker = new HashMap<>();
@@ -227,6 +227,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
             .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_04"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_05"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_06"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Tectech_Hatch"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
@@ -656,7 +657,9 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
             EdenGarden mte = parent.get();
             if (mte == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
             if (mte.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
+                GTUtility.sendChatToPlayer(
+                    aPlayer,
+                    EnumChatFormatting.RED + StatCollector.translateToLocal("Info_EdenGarden_00"));
                 return super.transferStackInSlot(aPlayer, aSlotIndex);
             }
 
@@ -679,7 +682,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                         .openSyncedWindow(CONFIGURATION_WINDOW_ID);
                 })
                 .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .addTooltip("Configuration")
+                .addTooltip(StatCollector.translateToLocal("Info_EdenGarden_Configuration"))
                 .setSize(16, 16));
     }
 
@@ -730,7 +733,9 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
         builder.widget(
             new CycleButtonWidget().setToggle(() -> isInInventory, i -> isInInventory = i)
-                .setTextureGetter(i -> i == 0 ? new Text("Inventory") : new Text("Status"))
+                .setTextureGetter(
+                    i -> i == 0 ? new Text(StatCollector.translateToLocal("Info_EdenGarden_Inventory"))
+                        : new Text(StatCollector.translateToLocal("Info_EdenGarden_Status")))
                 .setBackground(GTUITextures.BUTTON_STANDARD)
                 .setPos(140, 91)
                 .setSize(55, 16));
@@ -767,7 +772,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
             new DrawableWidget().setDrawable(GTUITextures.OVERLAY_BUTTON_CYCLIC)
                 .setPos(5, 5)
                 .setSize(16, 16))
-            .widget(new TextWidget("Configuration").setPos(25, 9))
+            .widget(new TextWidget(StatCollector.translateToLocal("Info_EdenGarden_Configuration")).setPos(25, 9))
             .widget(
                 ButtonWidget.closeWindowButton(true)
                     .setPos(185, 3))
@@ -779,21 +784,35 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                             if (!(player instanceof EntityPlayerMP)) return;
                             tryChangeSetupPhase(player);
                         })
-                        .addTooltip(0, new Text("Operating").color(Color.GREEN.dark(3)))
-                        .addTooltip(1, new Text("Input").color(Color.YELLOW.dark(3)))
-                        .addTooltip(2, new Text("Output").color(Color.YELLOW.dark(3)))
+                        .addTooltip(
+                            0,
+                            new Text(StatCollector.translateToLocal("Info_EdenGarden_Operating"))
+                                .color(Color.GREEN.dark(3)))
+                        .addTooltip(
+                            1,
+                            new Text(StatCollector.translateToLocal("Info_EdenGarden_Input"))
+                                .color(Color.YELLOW.dark(3)))
+                        .addTooltip(
+                            2,
+                            new Text(StatCollector.translateToLocal("Info_EdenGarden_Output"))
+                                .color(Color.YELLOW.dark(3)))
                         .setTextureGetter(
-                            i -> i == 0 ? new Text("Operating").color(Color.GREEN.dark(3))
-                                .withFixedSize(70 - 18, 18, 15, 0)
-                                : i == 1 ? new Text("Input").color(Color.YELLOW.dark(3))
+                            i -> i == 0
+                                ? new Text(StatCollector.translateToLocal("Info_EdenGarden_Operating"))
+                                    .color(Color.GREEN.dark(3))
                                     .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text("Output").color(Color.YELLOW.dark(3))
+                                : i == 1
+                                    ? new Text(StatCollector.translateToLocal("Info_EdenGarden_Input"))
+                                        .color(Color.YELLOW.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text(StatCollector.translateToLocal("Info_EdenGarden_Output"))
+                                        .color(Color.YELLOW.dark(3))
                                         .withFixedSize(70 - 18, 18, 15, 0))
                         .setBackground(
                             ModularUITextures.VANILLA_BACKGROUND,
                             GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                         .setSize(70, 18)
-                        .addTooltip("Setup mode"))
+                        .addTooltip(StatCollector.translateToLocal("Info_EdenGarden_SetupMode")))
                     .widget(
                         new CycleButtonWidget().setLength(2)
                             .setGetter(() -> this.mode.getUIIndex())
@@ -801,18 +820,27 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                                 if (!(player instanceof EntityPlayerMP)) return;
                                 tryChangeMode(player);
                             })
-                            .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
-                            .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                            .addTooltip(
+                                0,
+                                new Text(StatCollector.translateToLocal("Info_EdenGarden_Disabled"))
+                                    .color(Color.RED.dark(3)))
+                            .addTooltip(
+                                1,
+                                new Text(StatCollector.translateToLocal("Info_EdenGarden_Enabled"))
+                                    .color(Color.GREEN.dark(3)))
                             .setTextureGetter(
-                                i -> i == 0 ? new Text("Disabled").color(Color.RED.dark(3))
-                                    .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text("Enabled").color(Color.GREEN.dark(3))
+                                i -> i == 0
+                                    ? new Text(StatCollector.translateToLocal("Info_EdenGarden_Disabled"))
+                                        .color(Color.RED.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text(StatCollector.translateToLocal("Info_EdenGarden_Enabled"))
+                                        .color(Color.GREEN.dark(3))
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
                                 GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
-                            .addTooltip("IC2 mode"))
+                            .addTooltip(StatCollector.translateToLocal("Info_EdenGarden_IC2Mode")))
                     .widget(
                         new CycleButtonWidget().setLength(2)
                             .setGetter(() -> useNoHumidity ? 1 : 0)
@@ -820,24 +848,37 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                                 if (!(player instanceof EntityPlayerMP)) return;
                                 this.tryChangeHumidityMode(player);
                             })
-                            .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
-                            .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                            .addTooltip(
+                                0,
+                                new Text(StatCollector.translateToLocal("Info_EdenGarden_Disabled"))
+                                    .color(Color.RED.dark(3)))
+                            .addTooltip(
+                                1,
+                                new Text(StatCollector.translateToLocal("Info_EdenGarden_Enabled"))
+                                    .color(Color.GREEN.dark(3)))
                             .setTextureGetter(
-                                i -> i == 0 ? new Text("Disabled").color(Color.RED.dark(3))
-                                    .withFixedSize(70 - 18, 18, 15, 0)
-                                    : new Text("Enabled").color(Color.GREEN.dark(3))
+                                i -> i == 0
+                                    ? new Text(StatCollector.translateToLocal("Info_EdenGarden_Disabled"))
+                                        .color(Color.RED.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text(StatCollector.translateToLocal("Info_EdenGarden_Enabled"))
+                                        .color(Color.GREEN.dark(3))
                                         .withFixedSize(70 - 18, 18, 15, 0))
                             .setBackground(
                                 ModularUITextures.VANILLA_BACKGROUND,
                                 GTUITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
-                            .addTooltip("No Humidity mode"))
+                            .addTooltip(StatCollector.translateToLocal("Info_EdenGarden_NoHumidityMode")))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(10, 30))
             .widget(
-                new Column().widget(new TextWidget("Setup mode").setSize(100, 18))
-                    .widget(new TextWidget("IC2 mode").setSize(100, 18))
-                    .widget(new TextWidget("No Humidity mode").setSize(100, 18))
+                new Column()
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("Info_EdenGarden_SetupMode")).setSize(100, 18))
+                    .widget(new TextWidget(StatCollector.translateToLocal("Info_EdenGarden_IC2Mode")).setSize(100, 18))
+                    .widget(
+                        new TextWidget(StatCollector.translateToLocal("Info_EdenGarden_NoHumidityMode"))
+                            .setSize(100, 18))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())
                     .setPos(80, 30))
             .widget(
@@ -851,13 +892,14 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     @Override
     public String generateCurrentRecipeInfoString() {
-        StringBuilder ret = new StringBuilder(EnumChatFormatting.WHITE + "Progress: ")
-            .append(String.format("%,.2f", (double) this.mProgresstime / 20))
-            .append("s / ")
-            .append(String.format("%,.2f", (double) this.mMaxProgresstime / 20))
-            .append("s (")
-            .append(String.format("%,.1f", (double) this.mProgresstime / this.mMaxProgresstime * 100))
-            .append("%)\n");
+        StringBuilder ret = new StringBuilder(
+            EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.gui.text.progress"))
+                .append(String.format("%,.2f", (double) this.mProgresstime / 20))
+                .append("s / ")
+                .append(String.format("%,.2f", (double) this.mMaxProgresstime / 20))
+                .append("s (")
+                .append(String.format("%,.1f", (double) this.mProgresstime / this.mMaxProgresstime * 100))
+                .append("%)\n");
 
         for (Map.Entry<ItemStack, Double> drop : this.synchedGUIDropTracker.entrySet()
             .stream()
@@ -884,7 +926,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                 ret.append(EnumChatFormatting.GOLD)
                     .append(
                         String.format(
-                            "x%d %s(+%.2f/sec)\n",
+                            "x%d %s(+%.2f/s)\n",
                             outputSize,
                             EnumChatFormatting.WHITE,
                             (double) outputSize / (mMaxProgresstime / 20)));
@@ -935,29 +977,45 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     @Override
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
-            Arrays.asList(
-                "Running in mode: " + EnumChatFormatting.GREEN
-                    + (this.setupPhase == 0 ? this.mode.getName()
-                        : ("Setup mode " + (this.setupPhase == 1 ? "(input)" : "(output)")))
-                    + EnumChatFormatting.RESET,
-                "Uses " + waterUsage + "L/operation of water",
-                "Max slots: " + EnumChatFormatting.GREEN + this.maxSeedTypes + EnumChatFormatting.RESET,
-                "Used slots: "
-                    + ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
-                    + this.buckets.size()
-                    + EnumChatFormatting.RESET));
+            Arrays
+                .asList(
+                    StatCollector.translateToLocalFormatted(
+                        "Info_EdenGarden_01",
+                        EnumChatFormatting.GREEN
+                            + (this.setupPhase == 0 ? this.mode.getName()
+                                : StatCollector.translateToLocal(
+                                    this.setupPhase == 1 ? "Info_EdenGarden_02" : "Info_EdenGarden_03"))
+                            + EnumChatFormatting.RESET),
+
+                    StatCollector.translateToLocalFormatted("Info_EdenGarden_04", waterUsage),
+
+                    StatCollector.translateToLocalFormatted(
+                        "Info_EdenGarden_05",
+                        EnumChatFormatting.GREEN,
+                        this.maxSeedTypes,
+                        EnumChatFormatting.RESET),
+
+                    StatCollector.translateToLocalFormatted(
+                        "Info_EdenGarden_06",
+                        ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN),
+                        this.buckets.size())));
+
         for (EIGBucket bucket : buckets) {
             info.add(bucket.getInfoData());
         }
+
         if (this.buckets.size() > this.maxSeedTypes) {
             info.add(
-                EnumChatFormatting.DARK_RED + "There are too many seed types inside to run!"
+                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("Info_EdenGarden_07")
                     + EnumChatFormatting.RESET);
         }
+
         if (this.getTotalSeedCount() > this.maxSeedCount) {
             info.add(
-                EnumChatFormatting.DARK_RED + "There are too many seeds inside to run!" + EnumChatFormatting.RESET);
+                EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("Info_EdenGarden_08")
+                    + EnumChatFormatting.RESET);
         }
+
         info.addAll(Arrays.asList(super.getInfoData()));
         return info.toArray(new String[0]);
     }

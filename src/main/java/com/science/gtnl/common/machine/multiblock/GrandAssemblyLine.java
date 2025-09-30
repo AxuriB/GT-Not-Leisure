@@ -246,7 +246,14 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             }
         }
 
-        if (inputInventories.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
+        List<IDualInputInventory> validInventories = inputInventories.stream()
+            .filter(Objects::nonNull)
+            .filter(inv -> inv.getItemInputs() != null && inv.getItemInputs().length > 0)
+            .toList();
+
+        if (validInventories.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
 
         List<GTRecipe.RecipeAssemblyLine> validRecipes = new ArrayList<>();
         findRecipe(validRecipes, energyEU);
@@ -937,8 +944,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             isDualInputHatch = true;
             if (!mInputBusses.isEmpty() || !mInputHatches.isEmpty()) return false;
         }
-        return super.checkHatch() && !(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty())
-            && mDataAccessHatches.size() <= 1
+        return !(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) && mDataAccessHatches.size() <= 1
             && mMaintenanceHatches.size() <= 1;
     }
 

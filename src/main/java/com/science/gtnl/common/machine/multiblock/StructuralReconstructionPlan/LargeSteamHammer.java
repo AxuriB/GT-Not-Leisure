@@ -198,11 +198,11 @@ public class LargeSteamHammer extends SteamMultiMachineBase<LargeSteamHammer> im
     @Override
     public int getMaxParallelRecipes() {
         if (tierMachine == 1) {
-            return 16;
-        } else if (tierMachine == 2) {
             return 32;
+        } else if (tierMachine == 2) {
+            return 48;
         }
-        return 16;
+        return 32;
     }
 
     @Override

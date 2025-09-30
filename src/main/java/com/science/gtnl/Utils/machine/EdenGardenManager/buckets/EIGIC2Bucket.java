@@ -457,10 +457,9 @@ public class EIGIC2Bucket extends EIGBucket {
 
             CropCard cc = Crops.instance.getCropCard(bucket.seed);
             this.setCrop(cc);
-            NBTTagCompound nbt = bucket.seed.getTagCompound();
-            this.setGrowth(nbt.getByte("growth"));
-            this.setGain(nbt.getByte("gain"));
-            this.setResistance(nbt.getByte("resistance"));
+            this.setGrowth((byte) 31);
+            this.setGain((byte) 31);
+            this.setResistance((byte) 0);
             this.setWorldObj(
                 greenhouse.getBaseMetaTileEntity()
                     .getWorld());

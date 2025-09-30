@@ -20,7 +20,7 @@ public abstract class EIGMode {
 
     public abstract String getName();
 
-    public abstract byte getMinVoltageTier();
+    public abstract int getMinVoltageTier();
 
     public abstract int getMinGlassTier();
 

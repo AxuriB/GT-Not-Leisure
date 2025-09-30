@@ -25,7 +25,7 @@ public class EIGIC2Mode extends EIGMode {
     }
 
     @Override
-    public byte getMinVoltageTier() {
+    public int getMinVoltageTier() {
         return EdenGarden.EIG_BALANCE_IC2_ACCELERATOR_TIER;
     }
 
@@ -66,7 +66,7 @@ public class EIGIC2Mode extends EIGMode {
 
     @Override
     public MultiblockTooltipBuilder addTooltipInfo(MultiblockTooltipBuilder builder) {
-        String minVoltageTier = GTUtility.getColoredTierNameFromTier(this.getMinVoltageTier());
+        String minVoltageTier = GTUtility.getColoredTierNameFromTier((byte) this.getMinVoltageTier());
 
         int acceleration = (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER);
 
