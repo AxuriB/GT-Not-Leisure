@@ -19,7 +19,7 @@ import tectech.thing.casing.TTCasingsContainer;
 import tectech.util.StructureVBO;
 import tectech.util.TextureUpdateRequester;
 
-public class RenderEternalGregTechWorkshop extends TileEntitySpecialRenderer {
+public class EternalGregTechWorkshopRenderer extends TileEntitySpecialRenderer {
 
     private static boolean initialized = false;
     private static boolean failedInit = false;

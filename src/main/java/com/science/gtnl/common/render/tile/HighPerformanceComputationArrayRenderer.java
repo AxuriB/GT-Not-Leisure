@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class HighPerformanceComputationArrayMachineRender {
+public class HighPerformanceComputationArrayRenderer {
 
     public static void renderTileEntity(HighPerformanceComputationArray machine, double x, double y, double z,
         float partialTicks) {

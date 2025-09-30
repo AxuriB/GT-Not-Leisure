@@ -37,7 +37,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.science.gtnl.Utils.enums.HPCAModifier;
 import com.science.gtnl.common.packet.SyncHPCAVariablesPacket;
-import com.science.gtnl.common.render.tile.HighPerformanceComputationArrayMachineRender;
+import com.science.gtnl.common.render.tile.HighPerformanceComputationArrayRenderer;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.enums.Materials;
@@ -566,7 +566,7 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
-        HighPerformanceComputationArrayMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
+        HighPerformanceComputationArrayRenderer.renderTileEntity(this, x, y, z, timeSinceLastTick);
     }
 
     @Getter

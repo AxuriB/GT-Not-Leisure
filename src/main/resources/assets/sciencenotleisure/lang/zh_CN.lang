@@ -555,7 +555,7 @@ Tooltip_CardBoardBox_03=方块实体：
 tile.LaserBeacon.name=激光诱导信标
 Tooltip_LaserBeacon=利用强大的电流产生高精度激光
 
-tile.RealArtificialStarRender.name=真·湮灭发电机渲染器
+tile.RealArtificialStarRenderer.name=真·湮灭发电机渲染器
 tile.NanoPhagocytosisPlantRenderer.name=纳米吞噬厂渲染器
 tile.EternalGregTechWorkshopRenderer.name=永恒格雷工坊渲染器
 tile.BlockSoulFarmland.name=灵魂耕地

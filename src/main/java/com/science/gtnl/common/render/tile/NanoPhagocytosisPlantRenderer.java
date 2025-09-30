@@ -25,12 +25,15 @@ import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.machine.multiblock.WirelessMachine.NanoPhagocytosisPlant;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.loader.Loaders;
 import tectech.Reference;
 import tectech.util.StructureVBO;
 import tectech.util.TextureUpdateRequester;
 
-public class RenderNanoPhagocytosisPlant extends TileEntitySpecialRenderer {
+@SideOnly(Side.CLIENT)
+public class NanoPhagocytosisPlantRenderer extends TileEntitySpecialRenderer {
 
     private static ShaderProgram starProgram;
     private static IModelCustom starModel;

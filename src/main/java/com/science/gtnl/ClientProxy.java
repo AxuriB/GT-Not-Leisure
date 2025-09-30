@@ -43,11 +43,11 @@ import com.science.gtnl.common.render.item.ItemNullPointerExceptionRender;
 import com.science.gtnl.common.render.item.ItemPlayerDollRenderer;
 import com.science.gtnl.common.render.item.ItemSteamRocketRenderer;
 import com.science.gtnl.common.render.item.ItemTwilightSwordRender;
+import com.science.gtnl.common.render.tile.EternalGregTechWorkshopRenderer;
 import com.science.gtnl.common.render.tile.LaserBeconRenderer;
+import com.science.gtnl.common.render.tile.NanoPhagocytosisPlantRenderer;
 import com.science.gtnl.common.render.tile.PlayerDollRenderer;
-import com.science.gtnl.common.render.tile.RealArtificialStarRender;
-import com.science.gtnl.common.render.tile.RenderEternalGregTechWorkshop;
-import com.science.gtnl.common.render.tile.RenderNanoPhagocytosisPlant;
+import com.science.gtnl.common.render.tile.RealArtificialStarRenderer;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.ItemLoader;
@@ -81,7 +81,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(BlockLoader.playerDoll), new ItemPlayerDollRenderer());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArtificialStar.class, new RealArtificialStarRender());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArtificialStar.class, new RealArtificialStarRenderer());
         MinecraftForgeClient.registerItemRenderer(
             Item.getItemFromBlock(BlockLoader.blockArtificialStarRender),
             new ItemBlockArtificialStarRender());
@@ -92,14 +92,14 @@ public class ClientProxy extends CommonProxy {
             Item.getItemFromBlock(BlockLoader.blockNanoPhagocytosisPlantRender),
             new ItemBlockNanoPhagocytosisPlantRender(BlockLoader.blockNanoPhagocytosisPlantRender));
         ClientRegistry
-            .bindTileEntitySpecialRenderer(TileEntityNanoPhagocytosisPlant.class, new RenderNanoPhagocytosisPlant());
+            .bindTileEntitySpecialRenderer(TileEntityNanoPhagocytosisPlant.class, new NanoPhagocytosisPlantRenderer());
 
         MinecraftForgeClient.registerItemRenderer(
             Item.getItemFromBlock(BlockLoader.blockEternalGregTechWorkshopRender),
             new ItemBlockEternalGregTechWorkshopRender(BlockLoader.blockEternalGregTechWorkshopRender));
         ClientRegistry.bindTileEntitySpecialRenderer(
             TileEntityEternalGregTechWorkshop.class,
-            new RenderEternalGregTechWorkshop());
+            new EternalGregTechWorkshopRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ItemLoader.testItem, new FancyHaloRenderer());
         MinecraftForgeClient.registerItemRenderer(ItemLoader.metaItem, new FancyHaloRenderer());

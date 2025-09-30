@@ -555,7 +555,7 @@ Tooltip_CardBoardBox_03=TileEntity:
 tile.LaserBeacon.name=Laser Beacon
 Tooltip_LaserBeacon=Generates high-precision laser using powerful electric current
 
-tile.RealArtificialStarRender.name=True Annihilation Generator Renderer
+tile.RealArtificialStarRenderer.name=True Annihilation Generator Renderer
 tile.NanoPhagocytosisPlantRenderer.name=Nano Phagocytosis Plant Renderer
 tile.EternalGregTechWorkshopRenderer.name=Eternal GregTech Workshop Renderer
 tile.BlockSoulFarmland.name=Soul Farmland

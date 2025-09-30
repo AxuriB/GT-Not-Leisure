@@ -47,7 +47,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
+import com.science.gtnl.common.render.tile.MeteorMinerRenderer;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -104,7 +104,6 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     public boolean stopAllRendering = false;
     public final Collection<ItemStack> itemDrop = new ArrayList<>();
     public byte tierMachine = 0;
-    public int tCountCasing;
 
     public final Deque<BlockPos> scanQueue = new ArrayDeque<>();
     public final Deque<List<BlockPos>> rowQueue = new ArrayDeque<>();
@@ -144,7 +143,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         if (MainConfig.enableAprilFool) {
-            MeteorMinerMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
+            MeteorMinerRenderer.renderTileEntity(this, x, y, z, timeSinceLastTick);
         }
     }
 

@@ -15,7 +15,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
 
-public class RealArtificialStarRender extends TileEntitySpecialRenderer {
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public class RealArtificialStarRenderer extends TileEntitySpecialRenderer {
 
     public static final ResourceLocation STAR_TEXTURE = new ResourceLocation(
         RESOURCE_ROOT_ID + ":" + "model/ArtificialStarRender.png");

@@ -203,7 +203,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Iron, 2))
             .itemOutputs(GTNLItemList.IronTurbine.get(1))
-            .duration(2 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(16)
             .addTo(SMFR);
 
@@ -213,7 +213,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Bronze, 2))
             .itemOutputs(GTNLItemList.BronzeTurbine.get(1))
-            .duration(2 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(16)
             .addTo(SMFR);
 
@@ -222,7 +222,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.turbineBlade, Materials.Steel, 4),
                 MaterialPool.Stronze.get(OrePrefixes.stickLong, 1))
             .itemOutputs(GTNLItemList.SteelTurbine.get(1))
-            .duration(23 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(512)
             .addTo(SMFR);
 
@@ -231,7 +231,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 MaterialPool.CompressedSteam.get(OrePrefixes.turbineBlade, 4),
                 MaterialPool.Breel.get(OrePrefixes.stickLong, 1))
             .itemOutputs(GTNLItemList.CompressedSteamTurbine.get(1))
-            .duration(23 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(512)
             .addTo(SMFR);
 

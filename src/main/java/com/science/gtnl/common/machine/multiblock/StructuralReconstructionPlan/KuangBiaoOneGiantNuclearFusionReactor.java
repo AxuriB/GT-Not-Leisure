@@ -44,6 +44,7 @@ import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.api.IWirelessEnergy;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
+import com.science.gtnl.common.render.tile.KuangBiaoOneGiantNuclearFusionReactorRenderer;
 import com.science.gtnl.loader.BlockLoader;
 
 import cpw.mods.fml.relauncher.Side;
@@ -71,13 +72,14 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.render.IMTERenderer;
 import lombok.Getter;
 import lombok.Setter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class KuangBiaoOneGiantNuclearFusionReactor
-    extends GTMMultiMachineBase<KuangBiaoOneGiantNuclearFusionReactor> implements ISurvivalConstructable {
+    extends GTMMultiMachineBase<KuangBiaoOneGiantNuclearFusionReactor> implements ISurvivalConstructable, IMTERenderer {
 
     public GTRecipe mLastRecipe;
     public long mEUStore;
@@ -88,6 +90,10 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     protected final int VERTICAL_OFF_SET = 14;
     protected final int DEPTH_OFF_SET = 0;
     public static final String[][] shape = StructureUtils.readStructureFromFile(KBFR_STRUCTURE_FILE_PATH);
+
+    public float rotation = 0;
+    public float prevRotation = 0;
+    public static float ROTATION_SPEED = 1.2f;
 
     public KuangBiaoOneGiantNuclearFusionReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -104,6 +110,11 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
         setupParameters();
         return mCountCasing >= 1500;
+    }
+
+    @Override
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        KuangBiaoOneGiantNuclearFusionReactorRenderer.renderTileEntityAt(this, x, y, z, timeSinceLastTick);
     }
 
     @Override
@@ -189,6 +200,13 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     @Override
     public int getRecipeCatalystPriority() {
         return -2;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        prevRotation = rotation;
+        rotation = (rotation + ROTATION_SPEED) % 360f;
+        return super.onRunningTick(aStack);
     }
 
     @Override

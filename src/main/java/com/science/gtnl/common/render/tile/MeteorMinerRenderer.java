@@ -35,7 +35,7 @@ import gtneioreplugin.plugin.block.ModBlocks;
 import lombok.Getter;
 
 @SideOnly(Side.CLIENT)
-public class MeteorMinerMachineRender {
+public class MeteorMinerRenderer {
 
     public static float GRAVITY = -0.001f;
     public static float BOUNCE_DAMPING = 0.9f;
