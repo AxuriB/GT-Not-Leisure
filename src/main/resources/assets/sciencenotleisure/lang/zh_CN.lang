@@ -150,6 +150,13 @@ Tooltip_AdvancedSuperInputHatchME_03=警告：快速配方检查可能会很卡.
 ExplosionDynamoHatch=爆炸动力仓
 Tooltip_ExplosionDynamoHatch_00=概念神！
 
+VoidCover=虚空覆盖板
+Tooltip_VoidCover_00=如同虚空总成一样！
+Tooltip_VoidCover_01=立刻抹除所有匹配的内容物
+Tooltip_VoidCover_02=必须配置才能工作
+Tooltip_VoidCover_03=可通过按钮切换销毁输入输出槽
+Info_VoidCover_00=按下销毁输入槽，松开销毁输出槽
+
 PipelessSteamCover=无管蒸汽覆盖板
 Tooltip_WirelessSteamCover_00=§b§o你忆起梦中那片无形的蒸汽之海……
 Tooltip_WirelessSteamCover_01=§b§o无需管道，蒸汽仿佛顺着空气本身流淌.
@@ -812,6 +819,7 @@ MetaItem.104.name=铁涡轮
 Tooltip_IronTurbine_00=结实耐用
 MetaItem.105.name=青铜涡轮
 Tooltip_BronzeTurbine_00=古朴厚重
+MetaItem.106.name=虚空覆盖板
 
 item.SuspiciousStew.name=迷之炖菜
 

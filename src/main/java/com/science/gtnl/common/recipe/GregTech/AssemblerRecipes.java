@@ -2168,11 +2168,11 @@ public class AssemblerRecipes implements IRecipePool {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(1),
-                    new ItemStack(Blocks.brick_block,24),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt,Materials.Steel,24),
-                    GTNLItemList.HydraulicSteamJetSpewer.get(4),
-                    GTNLItemList.PrecisionSteamMechanism.get(12))
+                    GTNLItemList.SteamCompactPipeCasing.get(4),
+                    new ItemStack(Blocks.brick_block, 64),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 48),
+                    GTNLItemList.HydraulicSteamJetSpewer.get(8),
+                    GTNLItemList.PrecisionSteamMechanism.get(16))
                 .itemOutputs(GTNLItemList.SteamElevator.get(1))
                 .fluidInputs(Materials.DenseSuperheatedSteam.getFluid(1000))
                 .duration(600)
@@ -2181,12 +2181,12 @@ public class AssemblerRecipes implements IRecipePool {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(1),
-                    ItemList.Component_Grinder_Diamond.get(8),
-                    GTNLItemList.HydraulicMotor.get(4),
-                    GTNLItemList.HydraulicPiston.get(4),
-                    GTNLItemList.HydraulicPump.get(4),
-                    GTNLItemList.HydraulicConveyor.get(4))
+                    GTNLItemList.SteamCompactPipeCasing.get(4),
+                    ItemList.Component_Grinder_Diamond.get(16),
+                    GTNLItemList.HydraulicMotor.get(32),
+                    GTNLItemList.HydraulicPiston.get(32),
+                    GTNLItemList.HydraulicPump.get(32),
+                    GTNLItemList.HydraulicConveyor.get(32))
                 .itemOutputs(GTNLItemList.SteamOreProcessorModule.get(1))
                 .fluidInputs(Materials.Mercury.getFluid(1000))
                 .duration(600)
@@ -2197,7 +2197,7 @@ public class AssemblerRecipes implements IRecipePool {
                 .itemInputs(
                     GTNLItemList.SteamCompactPipeCasing.get(1),
                     GTNLItemList.HydraulicSteamJetSpewer.get(4),
-                    GTNLItemList.CompressedSteamTurbine.get(1),
+                    GTNLItemList.CompressedSteamTurbine.get(4),
                     GTNLItemList.HydraulicSteamReceiver.get(2),
                     GTNLItemList.PrecisionSteamMechanism.get(2),
                     GTModHandler.getModItem(Thaumcraft.ID, "ItemBaubleBlanks", 1, 1))
@@ -2209,11 +2209,11 @@ public class AssemblerRecipes implements IRecipePool {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTNLItemList.SteamCompactPipeCasing.get(1),
-                    new ItemStack(Items.brewing_stand,1),
-                    GTNLItemList.HydraulicPump.get(2),
-                    GTNLItemList.HydraulicSteamJetSpewer.get(2),
-                    GTNLItemList.IronTurbine.get(2),
-                    new ItemStack(Items.gunpowder,8))
+                    new ItemStack(Items.brewing_stand, 1),
+                    GTNLItemList.HydraulicPump.get(4),
+                    GTNLItemList.HydraulicSteamJetSpewer.get(8),
+                    GTNLItemList.IronTurbine.get(8),
+                    new ItemStack(Items.gunpowder, 64))
                 .itemOutputs(GTNLItemList.SteamBeaconModuleI.get(1))
                 .duration(400)
                 .eut(16)
@@ -2222,11 +2222,11 @@ public class AssemblerRecipes implements IRecipePool {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTNLItemList.SteamBeaconModuleI.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit,Materials.ULV,2),
-                    GTNLItemList.HydraulicSteamReceiver.get(2),
-                    GTNLItemList.HydraulicRegulator.get(2),
-                    new ItemStack(Items.ender_pearl,4),
-                    GTNLItemList.SteelTurbine.get(2))
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2),
+                    GTNLItemList.HydraulicSteamReceiver.get(4),
+                    GTNLItemList.HydraulicRegulator.get(8),
+                    new ItemStack(Items.ender_pearl, 16),
+                    GTNLItemList.SteelTurbine.get(8))
                 .fluidInputs(Materials.Rubber.getMolten(1000))
                 .itemOutputs(GTNLItemList.SteamBeaconModuleII.get(1))
                 .duration(300)
@@ -2236,14 +2236,21 @@ public class AssemblerRecipes implements IRecipePool {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTNLItemList.SteamBeaconModuleII.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit,Materials.LV,2),
-                    GTNLItemList.HydraulicVaporGenerator.get(1),
-                    GTNLItemList.HydraulicRegulator.get(2),
-                    GTNLItemList.CompressedSteamTurbine.get(1))
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
+                    GTNLItemList.HydraulicVaporGenerator.get(4),
+                    GTNLItemList.HydraulicRegulator.get(8),
+                    GTNLItemList.CompressedSteamTurbine.get(8))
                 .fluidInputs(Materials.Plastic.getMolten(1000))
                 .itemOutputs(GTNLItemList.SteamBeaconModuleIII.get(1))
                 .duration(200)
                 .eut(100)
+                .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(ItemList.Hatch_Void_Bus.get(1), ItemList.Hatch_Void.get(1))
+                .itemOutputs(GTNLItemList.VoidCover.get(1))
+                .duration(100)
+                .eut(TierEU.LV)
                 .addTo(As);
         }
     }

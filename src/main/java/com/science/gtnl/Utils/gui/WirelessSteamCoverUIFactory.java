@@ -17,14 +17,14 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 import gregtech.common.gui.mui1.cover.CoverLegacyDataUIFactory;
 
-public class SteamUIFactory extends CoverLegacyDataUIFactory {
+public class WirelessSteamCoverUIFactory extends CoverLegacyDataUIFactory {
 
     private static final int startX = 10;
     private static final int startY = 25;
     private static final int spaceX = 18;
     private static final int spaceY = 18;
 
-    public SteamUIFactory(CoverUIBuildContext buildContext) {
+    public WirelessSteamCoverUIFactory(CoverUIBuildContext buildContext) {
         super(buildContext);
     }
 

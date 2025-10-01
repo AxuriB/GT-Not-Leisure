@@ -150,6 +150,13 @@ Tooltip_AdvancedSuperInputHatchME_03=WARNING: Fast recipe checks can be laggy. U
 ExplosionDynamoHatch=Explosion Dynamo Hatch
 Tooltip_ExplosionDynamoHatch_00=Concept God!
 
+VoidCover=Void Cover
+Tooltip_VoidCover_00=Just like the Void Assembly!
+Tooltip_VoidCover_01=Immediately erases all matching contents
+Tooltip_VoidCover_02=Must be configured to work
+Tooltip_VoidCover_03=Can toggle between destroying input/output slots via button
+Info_VoidCover_00=Press to destroy input slot, release to destroy output slot
+
 PipelessSteamCover=Pipeless Steam Cover
 Tooltip_WirelessSteamCover_00=§b§oYou recall a dream of an endless, unseen sea of steam...
 Tooltip_WirelessSteamCover_01=§b§oNo pipes are needed; steam seems to flow through the very air itself.
@@ -812,6 +819,7 @@ MetaItem.104.name=Iron Turbine
 Tooltip_IronTurbine_00=Sturdy and Durable
 MetaItem.105.name=Bronze Turbine
 Tooltip_BronzeTurbine_00=Antique and Solid
+MetaItem.106.name=Void Cover
 
 item.SuspiciousStew.name=Suspicious Stew
 

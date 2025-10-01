@@ -1,12 +1,12 @@
 package com.science.gtnl.common.recipe.GregTech;
 
 import static bartworks.common.loaders.ItemRegistry.bw_realglas;
+import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_LuV;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.*;
-import static goodgenerator.loader.Loaders.huiCircuit;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1244,8 +1244,9 @@ public class AssemblingLineRecipes implements IRecipePool {
             (int) TierEU.RECIPE_UV,
             1,
             new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Americium, 4),
-                ItemList.Electric_Pump_UV.get(8), GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NetherStar, 8),
-                ItemList.Emitter_ZPM.get(2), GTOreDictUnificator.get(OrePrefixes.plate, Materials.Vinteum, 32),
+                ItemList.Electric_Pump_UV.get(8),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NetherStar, 8), ItemList.Emitter_ZPM.get(2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Vinteum, 32),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Ledox, 32),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.CallistoIce, 32),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.EnrichedHolmium, 32),

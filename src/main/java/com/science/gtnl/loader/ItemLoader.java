@@ -667,6 +667,16 @@ public class ItemLoader {
                 "Bronze Turbine",
                 105,
                 new String[] { TextUtils.texter("Antique and Solid", "Tooltip_BronzeTurbine_00") }));
+        GTNLItemList.VoidCover.set(
+            MetaItemAdder.initItem(
+                "Void Cover",
+                106,
+                new String[] { TextUtils.texter("Just like the Void Assembly!", "Tooltip_VoidCover_00"),
+                    TextUtils.texter("Immediately erases all matching contents", "Tooltip_VoidCover_01"),
+                    TextUtils.texter("Must be configured to work", "Tooltip_VoidCover_02"),
+                    TextUtils.texter(
+                        "Can toggle between destroying input/output slots via button",
+                        "Tooltip_VoidCover_03") }));
 
         GTNLItemList.ManaElectricProspectorTool
             .set(ElectricProspectorTool.initItem("Mana Electric Prospector Tool", 0, 5, 9999));
