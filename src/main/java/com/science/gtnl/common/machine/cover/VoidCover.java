@@ -136,7 +136,7 @@ public class VoidCover extends CoverLegacyData implements IFluidsLockable {
         for (String locked : lockedFluidNames) {
             if (locked == null) continue;
 
-            if (!isInputMode) {
+            if (isInputMode) {
                 if (basicMachine.getFillableStack() != null && basicMachine.getFillableStack()
                     .getFluid()
                     .getName()
@@ -158,15 +158,15 @@ public class VoidCover extends CoverLegacyData implements IFluidsLockable {
 
     public int[] getSlotPositions(MTEBasicMachine basicMachine) {
         int[] slots;
-        if (!isInputMode) {
-            slots = new int[basicMachine.mOutputItems.length];
-            for (int i = 0; i < basicMachine.mOutputItems.length; i++) {
-                slots[i] = MTEBasicMachine.OTHER_SLOT_COUNT + basicMachine.mInputSlotCount + i;
-            }
-        } else {
+        if (isInputMode) {
             slots = new int[basicMachine.mInputSlotCount];
             for (int i = 0; i < basicMachine.mInputSlotCount; i++) {
                 slots[i] = MTEBasicMachine.OTHER_SLOT_COUNT + i;
+            }
+        } else {
+            slots = new int[basicMachine.mOutputItems.length];
+            for (int i = 0; i < basicMachine.mOutputItems.length; i++) {
+                slots[i] = MTEBasicMachine.OTHER_SLOT_COUNT + basicMachine.mInputSlotCount + i;
             }
         }
         return slots;

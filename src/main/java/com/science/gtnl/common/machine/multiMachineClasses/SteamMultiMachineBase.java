@@ -1409,8 +1409,8 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             .widget(
                 new NumericWidget().setSetter(val -> recipeOcCount = clampRecipeOcCount((int) val))
                     .setGetter(() -> clampRecipeOcCount(recipeOcCount))
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setDefaultValue(1)
+                    .setBounds(0, Integer.MAX_VALUE)
+                    .setDefaultValue(0)
                     .setScrollValues(1, 4, 64)
                     .setTextAlignment(Alignment.Center)
                     .setTextColor(Color.WHITE.normal)
