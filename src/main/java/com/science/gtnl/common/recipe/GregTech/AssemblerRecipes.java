@@ -2108,8 +2108,6 @@ public class AssemblerRecipes implements IRecipePool {
                 new ItemStack(Blocks.torch, 64),
                 new ItemStack(Blocks.torch, 64),
                 new ItemStack(Blocks.torch, 64),
-                new ItemStack(Blocks.torch, 64),
-                new ItemStack(Blocks.torch, 64),
                 new ItemStack(Blocks.torch, 64))
             .itemOutputs(GTNLItemList.InfinityTorch.get(1))
             .duration(200)
@@ -2174,7 +2172,7 @@ public class AssemblerRecipes implements IRecipePool {
                     GTNLItemList.HydraulicSteamJetSpewer.get(8),
                     GTNLItemList.PrecisionSteamMechanism.get(16))
                 .itemOutputs(GTNLItemList.SteamElevator.get(1))
-                .fluidInputs(Materials.DenseSuperheatedSteam.getFluid(1000))
+                .fluidInputs(MaterialPool.Stronze.getMolten(1296))
                 .duration(600)
                 .eut(30)
                 .addTo(As);
@@ -2188,7 +2186,7 @@ public class AssemblerRecipes implements IRecipePool {
                     GTNLItemList.HydraulicPump.get(32),
                     GTNLItemList.HydraulicConveyor.get(32))
                 .itemOutputs(GTNLItemList.SteamOreProcessorModule.get(1))
-                .fluidInputs(Materials.Mercury.getFluid(1000))
+                .fluidInputs(MaterialPool.Breel.getMolten(1296))
                 .duration(600)
                 .eut(30)
                 .addTo(As);
@@ -2227,7 +2225,7 @@ public class AssemblerRecipes implements IRecipePool {
                     GTNLItemList.HydraulicRegulator.get(8),
                     new ItemStack(Items.ender_pearl, 16),
                     GTNLItemList.SteelTurbine.get(8))
-                .fluidInputs(Materials.Rubber.getMolten(1000))
+                .fluidInputs(Materials.Tin.getMolten(1296))
                 .itemOutputs(GTNLItemList.SteamBeaconModuleII.get(1))
                 .duration(300)
                 .eut(28)
@@ -2240,7 +2238,7 @@ public class AssemblerRecipes implements IRecipePool {
                     GTNLItemList.HydraulicVaporGenerator.get(4),
                     GTNLItemList.HydraulicRegulator.get(8),
                     GTNLItemList.CompressedSteamTurbine.get(8))
-                .fluidInputs(Materials.Plastic.getMolten(1000))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(1296))
                 .itemOutputs(GTNLItemList.SteamBeaconModuleIII.get(1))
                 .duration(200)
                 .eut(100)
