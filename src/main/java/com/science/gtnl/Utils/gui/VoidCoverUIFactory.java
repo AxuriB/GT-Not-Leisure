@@ -87,6 +87,6 @@ public class VoidCoverUIFactory extends CoverLegacyDataUIFactory {
 
     @Override
     protected int getGUIHeight() {
-        return 107;
+        return 125;
     }
 }

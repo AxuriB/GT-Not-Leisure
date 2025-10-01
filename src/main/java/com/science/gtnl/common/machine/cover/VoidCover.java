@@ -56,13 +56,8 @@ public class VoidCover extends CoverLegacyData implements IFluidsLockable {
     }
 
     @Override
-    public boolean allowsTickRateAddition() {
-        return false;
-    }
-
-    @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
-        if (aTimer % 10 == 0) {
+        if (aTimer % getTickRateAddition() == 0) {
             ICoverable coverable = coveredTile.get();
             if (coverable instanceof IMachineProgress machineProgress) {
                 if (machineProgress.isAllowedToWork() && machineProgress instanceof BaseMetaTileEntity baseTile) {
@@ -268,7 +263,7 @@ public class VoidCover extends CoverLegacyData implements IFluidsLockable {
 
     @Override
     public int getMinimumTickRate() {
-        return 20;
+        return 1;
     }
 
     @Override
