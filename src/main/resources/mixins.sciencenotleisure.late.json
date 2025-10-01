@@ -25,6 +25,7 @@
     "Gregtech.MixinGTShapedRecipe",
     "Gregtech.MixinGodForgeMath",
     "Gregtech.MixinGTShapelessRecipe",
+    "Gregtech.MixinMTEHatchSteamBusOutput",
     "Gregtech.MixinMTEBetterJukebox",
     "Gregtech.MixinMTEDigitalTankBase",
     "Gregtech.MixinMTETreeFarm",
