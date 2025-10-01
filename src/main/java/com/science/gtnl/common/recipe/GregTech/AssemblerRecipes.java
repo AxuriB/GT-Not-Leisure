@@ -2247,6 +2247,7 @@ public class AssemblerRecipes implements IRecipePool {
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Hatch_Void_Bus.get(1), ItemList.Hatch_Void.get(1))
                 .itemOutputs(GTNLItemList.VoidCover.get(1))
+                .fluidInputs(Materials.Tin.getMolten(144))
                 .duration(100)
                 .eut(TierEU.LV)
                 .addTo(As);
