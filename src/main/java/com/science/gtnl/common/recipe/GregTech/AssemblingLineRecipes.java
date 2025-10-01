@@ -6,6 +6,7 @@ import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.*;
+import static goodgenerator.loader.Loaders.huiCircuit;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -1214,5 +1215,47 @@ public class AssemblingLineRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_UMV)
             .duration(300 * SECONDS)
             .addTo(GTRecipeConstants.AssemblyLine);
+
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            GTNLItemList.Laser_Cooling_Casing.get(1),
+            2000000,
+            48000,
+            (int) TierEU.RECIPE_UHV,
+            1,
+            new Object[] { GTNLItemList.EnhancementCore.get(1), GTNLItemList.Laser_Cooling_Casing.get(2),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16), new ItemStack(huiCircuit, 4, 4),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Polybenzimidazole, 32),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Naquadria, 12),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Naquadria, 12),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Naquadria, 12),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Ledox, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.RadoxPolymer, 1),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 4) },
+            new FluidStack[] { Materials.Infinity.getMolten(288), Materials.SuperCoolant.getFluid(4000),
+                Materials.UUMatter.getFluid(32000), MaterialPool.Polyetheretherketone.getMolten(2304) },
+            GTNLItemList.HyperCore.get(1),
+            120,
+            (int) TierEU.RECIPE_UHV);
+
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Coolant_Duct_Casing.get(1),
+            800000,
+            10000,
+            (int) TierEU.RECIPE_UV,
+            1,
+            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Americium, 4),
+                ItemList.Electric_Pump_UV.get(8), GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NetherStar, 8),
+                ItemList.Emitter_ZPM.get(2), GTOreDictUnificator.get(OrePrefixes.plate, Materials.Vinteum, 32),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Ledox, 32),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CallistoIce, 32),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.EnrichedHolmium, 32),
+                ItemList.Reactor_Coolant_Sp_6.get(1), ItemList.Reactor_Coolant_Sp_6.get(1),
+                ItemList.Reactor_Coolant_Sp_6.get(1), ItemList.Reactor_Coolant_Sp_6.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Thulium, 2), },
+            new FluidStack[] { Materials.SuperCoolant.getFluid(8000), Materials.UUMatter.getFluid(32000),
+                MaterialPool.Polyetheretherketone.getMolten(2304) },
+            GTNLItemList.Laser_Cooling_Casing.get(4),
+            100,
+            (int) TierEU.RECIPE_UV);
     }
 }

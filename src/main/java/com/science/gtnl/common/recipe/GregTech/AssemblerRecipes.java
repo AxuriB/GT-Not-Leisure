@@ -2165,6 +2165,86 @@ public class AssemblerRecipes implements IRecipePool {
                 .duration(300)
                 .eut(TierEU.RECIPE_ZPM)
                 .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTNLItemList.SteamCompactPipeCasing.get(1),
+                    new ItemStack(Blocks.brick_block,24),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt,Materials.Steel,24),
+                    GTNLItemList.HydraulicSteamJetSpewer.get(4),
+                    GTNLItemList.PrecisionSteamMechanism.get(12))
+                .itemOutputs(GTNLItemList.SteamElevator.get(1))
+                .fluidInputs(Materials.DenseSuperheatedSteam.getFluid(1000))
+                .duration(600)
+                .eut(30)
+                .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTNLItemList.SteamCompactPipeCasing.get(1),
+                    ItemList.Component_Grinder_Diamond.get(8),
+                    GTNLItemList.HydraulicMotor.get(4),
+                    GTNLItemList.HydraulicPiston.get(4),
+                    GTNLItemList.HydraulicPump.get(4),
+                    GTNLItemList.HydraulicConveyor.get(4))
+                .itemOutputs(GTNLItemList.SteamOreProcessorModule.get(1))
+                .fluidInputs(Materials.Mercury.getFluid(1000))
+                .duration(600)
+                .eut(30)
+                .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTNLItemList.SteamCompactPipeCasing.get(1),
+                    GTNLItemList.HydraulicSteamJetSpewer.get(4),
+                    GTNLItemList.CompressedSteamTurbine.get(1),
+                    GTNLItemList.HydraulicSteamReceiver.get(2),
+                    GTNLItemList.PrecisionSteamMechanism.get(2),
+                    GTModHandler.getModItem(Thaumcraft.ID, "ItemBaubleBlanks", 1, 1))
+                .itemOutputs(GTNLItemList.SteamFlightModule.get(1))
+                .duration(400)
+                .eut(100)
+                .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTNLItemList.SteamCompactPipeCasing.get(1),
+                    new ItemStack(Items.brewing_stand,1),
+                    GTNLItemList.HydraulicPump.get(2),
+                    GTNLItemList.HydraulicSteamJetSpewer.get(2),
+                    GTNLItemList.IronTurbine.get(2),
+                    new ItemStack(Items.gunpowder,8))
+                .itemOutputs(GTNLItemList.SteamBeaconModuleI.get(1))
+                .duration(400)
+                .eut(16)
+                .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTNLItemList.SteamBeaconModuleI.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.circuit,Materials.ULV,2),
+                    GTNLItemList.HydraulicSteamReceiver.get(2),
+                    GTNLItemList.HydraulicRegulator.get(2),
+                    new ItemStack(Items.ender_pearl,4),
+                    GTNLItemList.SteelTurbine.get(2))
+                .fluidInputs(Materials.Rubber.getMolten(1000))
+                .itemOutputs(GTNLItemList.SteamBeaconModuleII.get(1))
+                .duration(300)
+                .eut(28)
+                .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTNLItemList.SteamBeaconModuleII.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.circuit,Materials.LV,2),
+                    GTNLItemList.HydraulicVaporGenerator.get(1),
+                    GTNLItemList.HydraulicRegulator.get(2),
+                    GTNLItemList.CompressedSteamTurbine.get(1))
+                .fluidInputs(Materials.Plastic.getMolten(1000))
+                .itemOutputs(GTNLItemList.SteamBeaconModuleIII.get(1))
+                .duration(200)
+                .eut(100)
+                .addTo(As);
         }
     }
 }
