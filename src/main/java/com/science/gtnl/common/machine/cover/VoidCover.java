@@ -57,7 +57,7 @@ public class VoidCover extends CoverLegacyData implements IFluidsLockable {
 
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
-        if (aTimer % getTickRateAddition() == 0) {
+        if (aTimer % getTickRate() == 0) {
             ICoverable coverable = coveredTile.get();
             if (coverable instanceof IMachineProgress machineProgress) {
                 if (machineProgress.isAllowedToWork() && machineProgress instanceof BaseMetaTileEntity baseTile) {
