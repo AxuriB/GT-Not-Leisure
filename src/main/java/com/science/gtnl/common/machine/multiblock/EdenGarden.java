@@ -96,8 +96,8 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     public static int EIG_BALANCE_IC2_ACCELERATOR_TIER = VoltageIndex.EV;
     public static int EIG_BALANCE_REGULAR_MODE_MIN_TIER = VoltageIndex.EV;
-    public static double EIG_BALANCE_MAX_FERTILIZER_BOOST = 5.0d;
-    public static int NUMBER_OF_DROPS_TO_SIMULATE = 100;
+    public static double EIG_BALANCE_MAX_FERTILIZER_BOOST = 1.0d;
+    public static int NUMBER_OF_DROPS_TO_SIMULATE = 5;
 
     public static boolean debug = false;
 
@@ -117,8 +117,8 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     public boolean useNoHumidity = false;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String EG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/eden_garden";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
+    private static final String EG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/eden_garden";
+    private static final String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
     protected final int HORIZONTAL_OFF_SET = 6;
     protected final int VERTICAL_OFF_SET = 43;
     protected final int DEPTH_OFF_SET = 10;
