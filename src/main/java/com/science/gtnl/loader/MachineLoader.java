@@ -123,6 +123,7 @@ import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegrate
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.NanitesIntegratedProcessingCenter;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamBeaconModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamElevator;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamEntityCrusherModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamFlightModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamMonsterRepellentModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamOreProcessorModule;
@@ -1359,6 +1360,13 @@ public class MachineLoader {
                 "NameFOGExtractorModule",
                 StatCollector.translateToLocal("NameFOGExtractorModule")));
         addItemTooltip(GTNLItemList.FOGExtractorModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamEntityCrusherModule.set(
+            new SteamEntityCrusherModule(
+                STEAM_ENTITY_CRUSHER_MODULE.ID,
+                "NameSteamEntityCrusherModule",
+                StatCollector.translateToLocal("NameSteamEntityCrusherModule")));
+        addItemTooltip(GTNLItemList.SteamEntityCrusherModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

@@ -19,6 +19,7 @@
     "Bartwork.MixinWerkstoffLoader",
     "DraconicEvolution.MixinMinecraftForgeEventHandler",
     "DraconicEvolution.MixinReactorExplosion",
+    "Gregtech.AccessorProcessingLogic",
     "Gregtech.AccessorMTEHatch",
     "Gregtech.MixinMTEVoidMinerBase",
     "Gregtech.MixinBaseMetaTileEntity",

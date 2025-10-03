@@ -1766,6 +1766,15 @@ Tooltip_SteamElevator_03=The system automatically activates wireless mode when n
 Tooltip_SteamElevator_04=Disabling this controller also pauses all modules
 Tooltip_SteamElevator_Casing=Any Brick Steel Shell
 
+NameSteamEntityCrusherModule=Steam Entity Crusher Module
+SteamEntityCrusherModuleRecipeType=Pneumatic Spawner Cage
+Tooltip_SteamEntityCrusherModule_00=§a§lSmelt mobs using high-temperature steam.
+Tooltip_SteamEntityCrusherModule_01=Each operation has a 2% chance to double output.
+Tooltip_SteamEntityCrusherModule_02=Each additional identical spawner increases the chance by 0.5%.
+Tooltip_SteamEntityCrusherModule_03=Maximum chance increase is 34%.
+Tooltip_SteamEntityCrusherModule_04=As a trade-off, default time is doubled, power is halved.
+Tooltip_SteamEntityCrusherModule_05=Can be overclocked at most 2 times.
+
 NameSteamOreProcessorModule=Steam Ore Processing Module
 SteamOreProcessorModuleRecipeType=Miniature Ore Processing Factory
 Tooltip_SteamOreProcessorModule_00=§a§lHave you ever wondered about the meaning of its existence?

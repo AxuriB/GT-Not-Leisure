@@ -468,7 +468,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
-    private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+    protected CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
             return CalculationResult.ofFailure(result);

@@ -1766,6 +1766,15 @@ Tooltip_SteamElevator_03=当主结构未安装蒸汽输入仓时自动进入无�
 Tooltip_SteamElevator_04=关闭控制器即可暂停所有模块
 Tooltip_SteamElevator_Casing=任意砖砌钢外壳
 
+NameSteamEntityCrusherModule=蒸汽屠宰场模块
+SteamEntityCrusherModuleRecipeType=气动刷怪笼
+Tooltip_SteamEntityCrusherModule_00=§a§l使用高温蒸汽熔炼怪物.
+Tooltip_SteamEntityCrusherModule_01=每次运行有2%的概率双倍产出
+Tooltip_SteamEntityCrusherModule_02=每多一个同一种刷怪笼，概率+0.5%
+Tooltip_SteamEntityCrusherModule_03=最大增加34%的概率
+Tooltip_SteamEntityCrusherModule_04=作为代价，默认时间加倍，功率减半
+Tooltip_SteamEntityCrusherModule_05=最多只能超频2次
+
 NameSteamOreProcessorModule=蒸汽矿石处理模块
 SteamOreProcessorModuleRecipeType=微缩矿石处理厂
 Tooltip_SteamOreProcessorModule_00=§a§l你有想过它存在的意义吗？
@@ -1802,7 +1811,7 @@ Tooltip_SteamFlightModule_04=生效范围：64 * 超频次数
 NameSteamWeatherModule=蒸汽天气更替模块
 gtnl.recipe.SteamWeatherModuleFakeRecipes=天气更替
 SteamWeatherModuleRecipeType=天气更替
-Tooltip_SteamWeatherModule_00=§a§l恩里克·普奇...这就是我的替身...「Weather Report！ 」
+Tooltip_SteamWeatherModule_00=§a§l恩里克·普奇...这就是我的替身...「Weather Report！」
 Tooltip_SteamWeatherModule_01=将天气更替功能添加到蒸汽楼梯
 Tooltip_SteamWeatherModule_02=输入特定材料切换天气，持续1小时
 

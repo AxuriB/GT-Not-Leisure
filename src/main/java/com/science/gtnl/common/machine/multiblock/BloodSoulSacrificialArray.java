@@ -416,7 +416,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             }
 
             @Nonnull
-            private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+            protected CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
                 CheckRecipeResult result = validateRecipe(recipe);
                 if (!result.wasSuccessful()) {
                     return CalculationResult.ofFailure(result);
