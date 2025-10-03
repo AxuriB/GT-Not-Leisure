@@ -121,7 +121,9 @@ import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechW
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.EternalGregTechWorkshop;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.BioengineeringModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.NanitesIntegratedProcessingCenter;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamApiaryModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamBeaconModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamBeeBreedingModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamElevator;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamEntityCrusherModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamFlightModule;
@@ -1367,6 +1369,20 @@ public class MachineLoader {
                 "NameSteamEntityCrusherModule",
                 StatCollector.translateToLocal("NameSteamEntityCrusherModule")));
         addItemTooltip(GTNLItemList.SteamEntityCrusherModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamApiaryModule.set(
+            new SteamApiaryModule(
+                STEAM_APIARY_MODULE.ID,
+                "NameSteamApiaryModule",
+                StatCollector.translateToLocal("NameSteamApiaryModule")));
+        addItemTooltip(GTNLItemList.SteamApiaryModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamBeeBreedingModule.set(
+            new SteamBeeBreedingModule(
+                STEAM_BEE_BREEDING_MODULE.ID,
+                "NameSteamBeeBreedingModule",
+                StatCollector.translateToLocal("NameSteamBeeBreedingModule")));
+        addItemTooltip(GTNLItemList.SteamBeeBreedingModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

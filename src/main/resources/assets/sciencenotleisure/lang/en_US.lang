@@ -1766,6 +1766,21 @@ Tooltip_SteamElevator_03=The system automatically activates wireless mode when n
 Tooltip_SteamElevator_04=Disabling this controller also pauses all modules
 Tooltip_SteamElevator_Casing=Any Brick Steel Shell
 
+NameSteamApiaryModule=Steam-Powered Apiary Module
+SteamApiaryModuleRecipeType=Pneumatic Beehive
+Tooltip_SteamApiaryModule_00=§a§lHigh pressure makes the bees work §0§mharder§a§l and more efficiently.
+Tooltip_SteamApiaryModule_01=The bees' (ideal?) home
+Tooltip_SteamApiaryModule_02=Fixed operating time: 15 seconds
+Tooltip_SteamApiaryModule_03=Each overclock doubles the capacity, power ×4
+Tooltip_SteamApiaryModule_04=Base amount: 8
+
+NameSteamBeeBreedingModule=Steam Bee Breeding Module
+SteamBeeBreedingModuleRecipeType=§a§lLet the bees feel the scorching♂love.
+Tooltip_SteamBeeBreedingModule_00=Place a queen bee inside the controller
+Tooltip_SteamBeeBreedingModule_01=It will slowly produce ignoble princesses
+Tooltip_SteamBeeBreedingModule_02=Consumes 128 royal jelly per operation
+Tooltip_SteamBeeBreedingModule_03=Base processing time: 10 minutes
+
 NameSteamEntityCrusherModule=Steam Entity Crusher Module
 SteamEntityCrusherModuleRecipeType=Pneumatic Spawner Cage
 Tooltip_SteamEntityCrusherModule_00=§a§lSmelt mobs using high-temperature steam.

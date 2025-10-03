@@ -2,7 +2,11 @@ package com.science.gtnl.Utils.machine.EdenGardenManager.buckets;
 
 import static com.science.gtnl.common.machine.multiblock.EdenGarden.*;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
@@ -11,7 +15,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemSeedFood;
+import net.minecraft.item.ItemSeeds;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,7 +26,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.*;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
+import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDropTable;
+import com.science.gtnl.Utils.machine.EdenGardenManager.IEIGBucketFactory;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
 
 import cpw.mods.fml.common.registry.GameRegistry;

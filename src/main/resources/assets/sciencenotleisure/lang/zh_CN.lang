@@ -1766,6 +1766,21 @@ Tooltip_SteamElevator_03=当主结构未安装蒸汽输入仓时自动进入无�
 Tooltip_SteamElevator_04=关闭控制器即可暂停所有模块
 Tooltip_SteamElevator_Casing=任意砖砌钢外壳
 
+NameSteamApiaryModule=蒸汽蜜蜂养殖模块
+SteamApiaryModuleRecipeType=气动蜂箱
+Tooltip_SteamApiaryModule_00=§a§l高压力让蜜蜂工作§0§m内卷§a§l更卖力.
+Tooltip_SteamApiaryModule_01=蜜蜂的理想(?)家园
+Tooltip_SteamApiaryModule_02=固定运行时间为15秒
+Tooltip_SteamApiaryModule_03=每次超频，可放入数翻倍，功率*4
+Tooltip_SteamApiaryModule_04=基础数量为8
+
+NameSteamBeeBreedingModule=蒸汽蜜蜂繁殖模块
+SteamBeeBreedingModuleRecipeType=§a§l让蜜蜂感受灼♂热的爱吧.
+Tooltip_SteamBeeBreedingModule_00=在控制器内放入蜂后
+Tooltip_SteamBeeBreedingModule_01=它会缓慢生产卑贱种公主蜂
+Tooltip_SteamBeeBreedingModule_02=每次运行消耗128蜂王浆
+Tooltip_SteamBeeBreedingModule_03=基础运行时间：10分钟
+
 NameSteamEntityCrusherModule=蒸汽屠宰场模块
 SteamEntityCrusherModuleRecipeType=气动刷怪笼
 Tooltip_SteamEntityCrusherModule_00=§a§l使用高温蒸汽熔炼怪物.
