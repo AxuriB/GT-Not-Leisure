@@ -1,7 +1,10 @@
 package com.science.gtnl.Utils.machine.EdenGardenManager.buckets;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockFlower;
+import net.minecraft.block.BlockMushroom;
+import net.minecraft.block.BlockVine;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -15,9 +18,9 @@ import com.science.gtnl.common.machine.multiblock.EdenGarden;
 
 public class EIGFlowerBucket extends EIGBucket {
 
-    public final static IEIGBucketFactory factory = new Factory();
-    private static final String NBT_IDENTIFIER = "FLOWER";
-    private static final int REVISION_NUMBER = 0;
+    public static final IEIGBucketFactory factory = new Factory();
+    public static final String NBT_IDENTIFIER = "FLOWER";
+    public static final int REVISION_NUMBER = 1;
 
     public static class Factory implements IEIGBucketFactory {
 
@@ -28,10 +31,17 @@ public class EIGFlowerBucket extends EIGBucket {
 
         @Override
         public EIGBucket tryCreateBucket(EdenGarden greenhouse, ItemStack input) {
-            // Check if input is a flower, reed or cacti. They all drop their source item multiplied by their seed count
             Item item = input.getItem();
             Block block = Block.getBlockFromItem(item);
-            if (item != Items.reeds && block != Blocks.cactus && !(block instanceof BlockFlower)) return null;
+
+            boolean isValidPlant = item == Items.reeds || block == Blocks.cactus
+                || block instanceof BlockFlower
+                || block instanceof BlockMushroom
+                || block instanceof BlockDoublePlant
+                || block instanceof BlockVine;
+
+            if (!isValidPlant) return null;
+
             return new EIGFlowerBucket(input);
         }
 
@@ -63,7 +73,11 @@ public class EIGFlowerBucket extends EIGBucket {
 
     @Override
     public void addProgress(double multiplier, EIGDropTable tracker) {
-        tracker.addDrop(this.seed, this.seedCount * multiplier);
+        int dropCount = seedCount;
+        Block block = Block.getBlockFromItem(seed.getItem());
+        if (block instanceof BlockDoublePlant) dropCount *= 2;
+
+        tracker.addDrop(seed, dropCount * multiplier);
     }
 
     @Override

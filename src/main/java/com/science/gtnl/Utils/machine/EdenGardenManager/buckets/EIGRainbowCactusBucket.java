@@ -17,9 +17,11 @@ import tb.init.TBBlocks;
 
 public class EIGRainbowCactusBucket extends EIGBucket {
 
-    public final static IEIGBucketFactory factory = new Factory();
+    private static final Random RANDOM = new Random();
     private static final String NBT_IDENTIFIER = "TB:RAINCACTI";
-    private static final int REVISION_NUMBER = 0;
+    private static final ArrayList<ItemStack> TEMP_DROPS = new ArrayList<>();
+
+    public static final IEIGBucketFactory factory = new Factory();
 
     public static class Factory implements IEIGBucketFactory {
 
@@ -30,19 +32,15 @@ public class EIGRainbowCactusBucket extends EIGBucket {
 
         @Override
         public EIGBucket tryCreateBucket(EdenGarden greenhouse, ItemStack input) {
-            // check if input is rainbow cacti;
-            if (!(Block.getBlockFromItem(input.getItem()) instanceof BlockRainbowCactus)) return null;
-            return new EIGRainbowCactusBucket(input, 1);
+            Block block = Block.getBlockFromItem(input.getItem());
+            return (block instanceof BlockRainbowCactus) ? new EIGRainbowCactusBucket(input, 1) : null;
         }
 
         @Override
         public EIGBucket restore(NBTTagCompound nbt) {
             return new EIGRainbowCactusBucket(nbt);
         }
-
     }
-
-    private final Random random = new Random();
 
     public EIGRainbowCactusBucket(ItemStack seed, int seedCount) {
         super(seed, seedCount, null);
@@ -65,12 +63,14 @@ public class EIGRainbowCactusBucket extends EIGBucket {
     @Override
     public void addProgress(double multiplier, EIGDropTable tracker) {
         if (!this.isValid()) return;
-        // TODO: make the addDyeDropsToOutput static in TB.
-        ArrayList<ItemStack> drops = new ArrayList<>();
-        ((BlockRainbowCactus) TBBlocks.rainbowCactus).addDyeDropsToOutput(this.random, drops);
-        for (ItemStack drop : drops) {
-            tracker.addDrop(drop, drop.stackSize * multiplier * this.seedCount);
+
+        TEMP_DROPS.clear();
+        ((BlockRainbowCactus) TBBlocks.rainbowCactus).addDyeDropsToOutput(RANDOM, TEMP_DROPS);
+
+        for (ItemStack drop : TEMP_DROPS) {
+            if (drop != null && drop.stackSize > 0) {
+                tracker.addDrop(drop, drop.stackSize * multiplier * this.seedCount);
+            }
         }
     }
-
 }

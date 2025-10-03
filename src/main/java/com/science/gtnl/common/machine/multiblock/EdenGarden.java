@@ -96,7 +96,8 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     public static int EIG_BALANCE_IC2_ACCELERATOR_TIER = VoltageIndex.EV;
     public static int EIG_BALANCE_REGULAR_MODE_MIN_TIER = VoltageIndex.EV;
-    public static double EIG_BALANCE_MAX_FERTILIZER_BOOST = 10.0d;
+    public static double EIG_BALANCE_MAX_FERTILIZER_BOOST = 5.0d;
+    public static int NUMBER_OF_DROPS_TO_SIMULATE = 100;
 
     public static boolean debug = false;
 
@@ -264,23 +265,20 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        if (this.toMigrate != null) {
-            if (this.mode == EIGModes.IC2) {
-                for (EIGMigrationHolder holder : toMigrate) {
-                    this.buckets
-                        .add(new EIGIC2Bucket(holder.seed, holder.count, holder.supportBlock, holder.useNoHumidity));
-                }
-            } else {
-                this.mode = EIGModes.Normal;
-                for (EIGMigrationHolder holder : toMigrate) {
+        if (this.toMigrate == null) return;
+
+        if (this.mode == EIGModes.IC2) {
+            toMigrate.forEach(holder -> buckets.add(new EIGIC2Bucket(this, holder.seed)));
+        } else {
+            this.mode = EIGModes.Normal;
+            for (EIGMigrationHolder holder : toMigrate) {
+                holder.seed.stackSize = holder.count;
+                EIGBucket bucket = this.mode.tryCreateNewBucket(this, holder.seed, Integer.MAX_VALUE, false);
+                if (bucket != null) {
+                    buckets.add(bucket);
+                } else {
                     holder.seed.stackSize = holder.count;
-                    EIGBucket bucket = this.mode.tryCreateNewBucket(this, holder.seed, Integer.MAX_VALUE, false);
-                    if (bucket == null) {
-                        holder.seed.stackSize = holder.count;
-                        this.addOutput(holder.seed);
-                        continue;
-                    }
-                    this.buckets.add(bucket);
+                    addOutput(holder.seed);
                 }
             }
         }
@@ -289,12 +287,11 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     @Override
     public void onRemoval() {
         super.onRemoval();
-
         buckets.removeIf(this::tryEmptyBucket);
         if (buckets.isEmpty()) return;
 
-        IGregTechTileEntity mte = this.getBaseMetaTileEntity();
-        for (EIGBucket bucket : this.buckets) {
+        IGregTechTileEntity mte = getBaseMetaTileEntity();
+        buckets.forEach(bucket -> {
             for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
                 EntityItem entityitem = new EntityItem(
                     mte.getWorld(),
@@ -306,7 +303,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                 mte.getWorld()
                     .spawnEntityInWorld(entityitem);
             }
-        }
+        });
     }
 
     @Override
@@ -328,24 +325,25 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     public void tryChangeSetupPhase(EntityPlayer aPlayer) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't enable/disable setup if the machine is working!");
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_SetupPhase_Working"));
             return;
         }
         this.setupPhase++;
         if (this.setupPhase == 3) this.setupPhase = 0;
-        String phaseChangeMessage = "EIG is now running in ";
+
+        String phaseChangeMessage = StatCollector.translateToLocal("Info_EdenGarden_SetupPhase_Change") + " ";
         switch (this.setupPhase) {
             case 0:
-                phaseChangeMessage += "operational mode.";
+                phaseChangeMessage += StatCollector.translateToLocal("Info_EdenGarden_Operating");
                 break;
             case 1:
-                phaseChangeMessage += "seed input mode.";
+                phaseChangeMessage += StatCollector.translateToLocal("Info_EdenGarden_Input");
                 break;
             case 2:
-                phaseChangeMessage += "seed output mode.";
+                phaseChangeMessage += StatCollector.translateToLocal("Info_EdenGarden_Output");
                 break;
             default:
-                phaseChangeMessage += "an invalid mode please send us a ticket!";
+                phaseChangeMessage += StatCollector.translateToLocal("Info_EdenGarden_SetupPhase_Invalid");
                 break;
         }
         this.updateSeedLimits();
@@ -354,25 +352,28 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     public void tryChangeMode(EntityPlayer aPlayer) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't change mode if the machine is working!");
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_Mode_Working"));
             return;
         }
         if (!this.buckets.isEmpty()) {
-            GTUtility.sendChatToPlayer(aPlayer, "You can't change mode if there are seeds inside!");
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_Mode_HasSeeds"));
             return;
         }
         this.mode = EIGModes.getNextMode(this.mode);
         this.updateSeedLimits();
-        GTUtility.sendChatToPlayer(aPlayer, "Changed mode to: " + this.mode.getName());
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocalFormatted("Info_EdenGarden_Mode_Change", this.mode.getName()));
     }
 
     public void tryChangeHumidityMode(EntityPlayer aPlayer) {
-        // TODO: Create l10n entries for the humidity status interactions.
         this.useNoHumidity = !this.useNoHumidity;
         if (this.useNoHumidity) {
-            GTUtility.sendChatToPlayer(aPlayer, "No Humidity mode enabled.");
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_NoHumidityMode_Enabled"));
         } else {
-            GTUtility.sendChatToPlayer(aPlayer, "No Humidity mode disabled.");
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_NoHumidityMode_Disabled"));
         }
     }
 
@@ -449,9 +450,9 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     }
 
     public int getTotalSeedCount() {
-        // null check is to prevent a occasional weird NPE from MUI
-        return this.buckets.parallelStream()
-            .reduce(0, (b, t) -> b + t.getSeedCount(), Integer::sum);
+        return buckets.stream()
+            .mapToInt(EIGBucket::getSeedCount)
+            .sum();
     }
 
     public void updateSeedLimits() {
@@ -461,33 +462,29 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     public boolean tryDrain(FluidStack toConsume, boolean drainPartial) {
         if (toConsume == null || toConsume.amount <= 0) return true;
-        List<FluidStack> fluids = this.getStoredFluids();
-        List<FluidStack> fluidsToUse = new ArrayList<>(fluids.size());
+
+        List<FluidStack> fluids = getStoredFluids();
         int remaining = toConsume.amount;
+
         for (FluidStack fluid : fluids) {
-            if (fluid.isFluidEqual(toConsume)) {
-                remaining -= fluid.amount;
-                fluidsToUse.add(fluid);
-                if (remaining <= 0) break;
-            }
-        }
-        if (!drainPartial && remaining > 0 && !debug) return false;
-        boolean success = remaining <= 0;
-        remaining = toConsume.amount - Math.max(0, remaining);
-        for (FluidStack fluid : fluidsToUse) {
+            if (!fluid.isFluidEqual(toConsume)) continue;
             int used = Math.min(remaining, fluid.amount);
             fluid.amount -= used;
             remaining -= used;
+            if (remaining <= 0) break;
         }
-        return success;
+
+        if (!drainPartial && remaining > 0 && !debug) return false;
+        return remaining <= 0;
     }
 
     public boolean tryEmptyBucket(EIGBucket bucket) {
-        if (bucket.getSeedCount() <= 0) return true;
+        int totalSeeds = bucket.getSeedCount();
+        if (totalSeeds <= 0) return true;
 
         for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
             if (!(tHatch instanceof MTEHatchOutputBusME)) continue;
-            for (ItemStack stack : bucket.tryRemoveSeed(bucket.getSeedCount(), false)) {
+            for (ItemStack stack : bucket.tryRemoveSeed(totalSeeds, false)) {
                 tHatch.storePartial(stack);
             }
             return true;
@@ -496,8 +493,9 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
         ItemStack[] simulated = bucket.tryRemoveSeed(1, true);
         VoidProtectionHelper helper = new VoidProtectionHelper().setMachine(this, true, false)
             .setItemOutputs(simulated)
-            .setMaxParallel(bucket.getSeedCount())
+            .setMaxParallel(totalSeeds)
             .build();
+
         if (helper.getMaxParallel() > 0) {
             for (ItemStack toOutput : bucket.tryRemoveSeed(helper.getMaxParallel(), false)) {
                 for (MTEHatchOutputBus tHatch : validMTEList(mOutputBusses)) {
@@ -505,6 +503,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
                 }
             }
         }
+
         return bucket.getSeedCount() <= 0;
     }
 
@@ -513,83 +512,85 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
     public CheckRecipeResult checkProcessing() {
         updateSeedLimits();
 
-        if (setupPhase > 0) {
-            if ((buckets.size() >= maxSeedTypes && setupPhase == 1) || (buckets.isEmpty() && setupPhase == 2))
-                return CheckRecipeResultRegistry.NO_RECIPE;
+        if (setupPhase > 0) return processSetupPhase();
 
-            if (setupPhase == 1) {
-                List<ItemStack> inputs = getStoredInputs();
-                for (ItemStack input : inputs) {
-                    addCrop(input);
-                    if (buckets.size() >= maxSeedTypes) break;
+        CheckRecipeResult validation = validateBuckets();
+        if (validation != null) return validation;
+
+        return calculateProgressAndDrops();
+    }
+
+    public CheckRecipeResult processSetupPhase() {
+        if ((setupPhase == 1 && buckets.size() >= maxSeedTypes) || (setupPhase == 2 && buckets.isEmpty())) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
+
+        if (setupPhase == 1) {
+            for (ItemStack input : getStoredInputs()) {
+                addCrop(input);
+                if (buckets.size() >= maxSeedTypes) break;
+            }
+        } else if (setupPhase == 2) {
+            Iterator<EIGBucket> iter = buckets.iterator();
+            while (iter.hasNext()) {
+                EIGBucket bucket = iter.next();
+                if (tryEmptyBucket(bucket)) iter.remove();
+                else {
+                    this.mMaxProgresstime = 20;
+                    this.lEUt = 0;
+                    return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
                 }
-            } else if (setupPhase == 2) {
-                for (Iterator<EIGBucket> iterator = this.buckets.iterator(); iterator.hasNext();) {
-                    EIGBucket bucket = iterator.next();
-                    if (tryEmptyBucket(bucket)) {
-                        iterator.remove();
-                    } else {
-                        this.mMaxProgresstime = 20;
-                        this.lEUt = 0;
-                        return CheckRecipeResultRegistry.ITEM_OUTPUT_FULL;
-                    }
-                }
-            }
-
-            this.updateSlots();
-            this.mMaxProgresstime = 10;
-            this.lEUt = 0;
-            this.mEfficiency = 10000;
-            this.mEfficiencyIncrease = 10000;
-            return CheckRecipeResultRegistry.SUCCESSFUL;
-        }
-        if (this.maxSeedTypes < this.buckets.size()) {
-            return SimpleCheckRecipeResult.ofFailure("EIG_slotoverflow");
-        }
-        int seedCount = this.getTotalSeedCount();
-        if (this.maxSeedCount < seedCount) {
-            return SimpleCheckRecipeResult.ofFailure("EIG_seedOverflow");
-        }
-
-        for (Iterator<EIGBucket> iterator = this.buckets.iterator(); iterator.hasNext();) {
-            EIGBucket bucket = iterator.next();
-            if (bucket.isValid() || bucket.revalidate(this)) continue;
-            tryEmptyBucket(bucket);
-            if (bucket.getSeedCount() <= 0) {
-                iterator.remove();
             }
         }
 
-        if (this.buckets.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        this.waterUsage = seedCount * 2000;
-
-        if (!this.tryDrain(new FluidStack(FluidRegistry.WATER, this.waterUsage), false)) {
-            return SimpleCheckRecipeResult.ofFailure("EIG_missingwater");
-        }
-
-        double multiplier = EIG_BALANCE_MAX_FERTILIZER_BOOST;
-        this.guiDropTracker = new EIGDropTable();
-        if (this.mode == EIGModes.IC2) {
-            this.mMaxProgresstime = Math.max(20, 100 / (mEnergyHatchTier - 5));
-            double timeElapsed = ((double) this.mMaxProgresstime * (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER));
-            for (EIGBucket bucket : this.buckets) {
-                bucket.addProgress(timeElapsed * multiplier, this.guiDropTracker);
-            }
-        } else if (this.mode == EIGModes.Normal) {
-            this.mMaxProgresstime = Math.max(20, 100 / (mEnergyHatchTier - 3)); // Min 1 s
-            for (EIGBucket bucket : this.buckets) {
-                bucket.addProgress(multiplier, this.guiDropTracker);
-            }
-        }
-
-        this.guiDropTracker.addTo(this.dropTracker, multiplier);
-        this.mOutputItems = this.dropTracker.getDrops();
-
-        this.lEUt = -(long) ((double) GTValues.V[mEnergyHatchTier] * 0.99d);
+        this.updateSlots();
+        this.mMaxProgresstime = 10;
+        this.lEUt = 0;
         this.mEfficiency = 10000;
         this.mEfficiencyIncrease = 10000;
-        this.updateSlots();
+        return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    public CheckRecipeResult validateBuckets() {
+        if (buckets.size() > maxSeedTypes) return SimpleCheckRecipeResult.ofFailure("EIG_slotoverflow");
+        if (getTotalSeedCount() > maxSeedCount) return SimpleCheckRecipeResult.ofFailure("EIG_seedOverflow");
+
+        Iterator<EIGBucket> iter = buckets.iterator();
+        while (iter.hasNext()) {
+            EIGBucket bucket = iter.next();
+            if (bucket.isValid() || bucket.revalidate(this)) continue;
+            tryEmptyBucket(bucket);
+            if (bucket.getSeedCount() <= 0) iter.remove();
+        }
+
+        if (buckets.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
+        if (!tryDrain(new FluidStack(FluidRegistry.WATER, getTotalSeedCount() * 2000), false))
+            return SimpleCheckRecipeResult.ofFailure("EIG_missingwater");
+
+        return null;
+    }
+
+    public CheckRecipeResult calculateProgressAndDrops() {
+        double multiplier = EIG_BALANCE_MAX_FERTILIZER_BOOST;
+        this.guiDropTracker = new EIGDropTable();
+
+        int baseTime = 1200;
+        if (mode == EIGModes.IC2) {
+            this.mMaxProgresstime = Math.max(20, baseTime / Math.max(mEnergyHatchTier - 3, 1));
+            double timeElapsed = (double) mMaxProgresstime * (1 << EIG_BALANCE_IC2_ACCELERATOR_TIER);
+            buckets.forEach(bucket -> bucket.addProgress(timeElapsed * multiplier, guiDropTracker));
+        } else {
+            this.mMaxProgresstime = Math.max(20, baseTime / mEnergyHatchTier);
+            buckets.forEach(bucket -> bucket.addProgress(multiplier, guiDropTracker));
+        }
+
+        guiDropTracker.addTo(dropTracker, multiplier);
+        mOutputItems = dropTracker.getDrops();
+
+        lEUt = -(long) (GTValues.V[mEnergyHatchTier] * 0.99d);
+        mEfficiency = mEfficiencyIncrease = 10000;
+
+        updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
@@ -599,25 +600,21 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> {
 
     public boolean addCrop(ItemStack input, boolean simulate) {
         if (input == null || input.stackSize <= 0) return true;
-
         if (simulate) input = input.copy();
 
-        int addCap = Math.min(input.stackSize, this.maxSeedCount - this.getTotalSeedCount());
+        int addCap = Math.min(input.stackSize, maxSeedCount - getTotalSeedCount());
         if (addCap <= 0) return false;
 
-        for (EIGBucket bucket : this.buckets) {
-            int consumed = bucket.tryAddSeed(this, input, addCap, simulate);
-            if (consumed <= 0) continue;
-            return input.stackSize <= 0;
-        }
+        ItemStack finalInput = input;
+        boolean added = buckets.stream()
+            .anyMatch(bucket -> bucket.tryAddSeed(this, finalInput, addCap, simulate) > 0);
+        if (added) return input.stackSize <= 0;
 
-        if (this.maxSeedTypes <= this.buckets.size()) {
-            return false;
-        }
-
-        EIGBucket bucket = this.mode.tryCreateNewBucket(this, input, addCap, simulate);
+        if (buckets.size() >= maxSeedTypes) return false;
+        EIGBucket bucket = mode.tryCreateNewBucket(this, input, addCap, simulate);
         if (bucket == null) return false;
-        this.buckets.add(bucket);
+
+        buckets.add(bucket);
         return input.stackSize <= 0;
     }
 

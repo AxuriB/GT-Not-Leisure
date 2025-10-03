@@ -1,10 +1,9 @@
 package com.science.gtnl.Utils.machine.EdenGardenManager.buckets;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
+import static com.science.gtnl.common.machine.multiblock.EdenGarden.*;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -12,10 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemSeedFood;
-import net.minecraft.item.ItemSeeds;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,9 +19,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDropTable;
-import com.science.gtnl.Utils.machine.EdenGardenManager.IEIGBucketFactory;
+import com.science.gtnl.Utils.machine.EdenGardenManager.*;
 import com.science.gtnl.common.machine.multiblock.EdenGarden;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -37,9 +31,15 @@ public class EIGSeedBucket extends EIGBucket {
     public static final IEIGBucketFactory factory = new Factory();
     private static final String NBT_IDENTIFIER = "SEED";
     private static final int REVISION_NUMBER = 0;
-    private static final int NUMBER_OF_DROPS_TO_SIMULATE = 100;
     private static final int FORTUNE_LEVEL = 200;
+
+    private static final int DEFAULT_GROWTH = 7;
+    private static final int NATURA_GROWTH = 8;
+
     private static final GreenHouseWorld fakeWorld = new GreenHouseWorld(5, 5, 5);
+
+    private boolean isValid = false;
+    private EIGDropTable drops = new EIGDropTable();
 
     public static class Factory implements IEIGBucketFactory {
 
@@ -57,11 +57,7 @@ public class EIGSeedBucket extends EIGBucket {
         public EIGBucket restore(NBTTagCompound nbt) {
             return new EIGSeedBucket(nbt);
         }
-
     }
-
-    private boolean isValid = false;
-    private EIGDropTable drops = new EIGDropTable();
 
     private EIGSeedBucket(EdenGarden greenhouse, ItemStack seed) {
         super(seed, 1, null);
@@ -89,8 +85,9 @@ public class EIGSeedBucket extends EIGBucket {
 
     @Override
     public void addProgress(double multiplier, EIGDropTable tracker) {
-        if (!this.isValid()) return;
-        this.drops.addTo(tracker, multiplier * this.seedCount);
+        if (this.isValid) {
+            this.drops.addTo(tracker, multiplier * this.seedCount);
+        }
     }
 
     @Override
@@ -104,116 +101,121 @@ public class EIGSeedBucket extends EIGBucket {
         return this.isValid();
     }
 
-    public void recalculateDrops(EdenGarden greenhouse) {
+    /** 核心：重新计算掉落表 */
+    private void recalculateDrops(EdenGarden greenhouse) {
         this.isValid = false;
-        int optimalGrowthMetadata = 7;
-        // Get the relevant item and block for this item.
+
         Item item = this.seed.getItem();
-        Block block;
         if (!(item instanceof IPlantable)) return;
-        if (item instanceof ItemSeeds) {
-            block = ((ItemSeeds) item).getPlant(fakeWorld, 0, 0, 0);
-        } else if (item instanceof ItemSeedFood) {
-            block = ((ItemSeedFood) item).getPlant(fakeWorld, 0, 0, 0);
-        } else {
-            // We can't plant it, we can't handle it, get out.
-            return;
-        }
 
-        // Natura crops have an optimal harvest stage of 8.
-        GameRegistry.UniqueIdentifier u = GameRegistry.findUniqueIdentifierFor(item);
-        if (u != null && Objects.equals(u.modId, "Natura")) optimalGrowthMetadata = 8;
+        Block plantBlock = getPlantBlock(item);
+        if (plantBlock == null) return;
 
-        // Pre-Generate drops.
-        EIGDropTable drops = new EIGDropTable();
-        World world = greenhouse.getBaseMetaTileEntity()
-            .getWorld();
+        int optimalGrowthMetadata = getOptimalGrowthStage(item);
 
-        fakeWorld.dropTable = drops;
-
+        // 模拟掉落
+        EIGDropTable newDrops = new EIGDropTable();
+        fakeWorld.dropTable = newDrops;
         for (int i = 0; i < NUMBER_OF_DROPS_TO_SIMULATE; i++) {
-            ArrayList<ItemStack> blockDrops = block.getDrops(fakeWorld, 0, 0, 0, optimalGrowthMetadata, FORTUNE_LEVEL);
-            for (ItemStack drop : blockDrops) {
-                drops.addDrop(drop, drop.stackSize);
-            }
-        }
-
-        // reduce the number of drops to account for the seeds
-        if (!removeSeedFromDrops(world, drops, this.seed, NUMBER_OF_DROPS_TO_SIMULATE)) return;
-
-        // reduce drop count to account for the number of simulations
-        drops.entrySet()
-            .forEach(x -> x.setValue(x.getValue() / NUMBER_OF_DROPS_TO_SIMULATE));
-
-        // make sure we actually got a drop
-        if (drops.isEmpty()) return;
-
-        // and we are good, see ya.
-        this.drops = drops;
-        this.isValid = true;
-    }
-
-    private boolean removeSeedFromDrops(World world, EIGDropTable drops, ItemStack seed, int seedsToConsume) {
-        // make a safe copy of the seed just in case
-        ItemStack seedSafe = seed.copy();
-        seedSafe.stackSize = 1;
-        // first check if we dropped an item identical to our seed item.
-        int inputSeedDropCountAfterRemoval = (int) Math.round(drops.getItemAmount(seedSafe)) - seedsToConsume;
-        if (inputSeedDropCountAfterRemoval > 0) {
-            drops.setItemAmount(seedSafe, inputSeedDropCountAfterRemoval);
-        } else {
-            drops.removeItem(seedSafe);
-        }
-        // return true if we were able to find enough seeds in the drops.
-        if (inputSeedDropCountAfterRemoval >= 0) return true;
-
-        // else try to find items that can be crafted into the seed
-        int seedsToCraft = -inputSeedDropCountAfterRemoval;
-        IRecipe[] validRecipes = CraftingManager.getInstance()
-            .getRecipeList()
-            .parallelStream()
-            .filter(recipe -> GTUtility.areStacksEqual(recipe.getRecipeOutput(), seed))
-            .toArray(IRecipe[]::new);
-
-        // if no recipes outputs the input seed, abort.
-        if (validRecipes.length == 0) return false;
-
-        // check the recipes we found for one that can consume our seed
-        for (Iterator<Map.Entry<ItemStack, Double>> dropIterator = drops.entrySet()
-            .iterator(); dropIterator.hasNext();) {
-            Map.Entry<ItemStack, Double> entry = dropIterator.next();
-            int inputCount = (int) Math.round(entry.getValue());
-            ItemStack input = entry.getKey()
-                .copy();
-            input.stackSize = 1;
-            EIGCraftingSeedFinder seedFinder = new EIGCraftingSeedFinder(input);
-            for (IRecipe recipe : validRecipes) {
-                if (recipe.matches(seedFinder, world)) {
-                    // account for recipes that potentially drop more than 1 seed per input.
-                    int outputsPerCraft = recipe.getCraftingResult(seedFinder).stackSize;
-                    int craftableSeeds = outputsPerCraft * inputCount;
-                    if (seedsToCraft >= craftableSeeds) {
-                        // if the entire drop is consumed, just remove it from the list.
-                        dropIterator.remove();
-                        seedsToCraft -= craftableSeeds;
-                        if (seedsToCraft <= 0) {
-                            return true;
-                        }
-                    } else {
-                        // else remove the right amount from the drop, and get out.
-                        entry.setValue(entry.getValue() - (double) seedsToCraft / outputsPerCraft);
-                        return true;
-                    }
+            List<ItemStack> blockDrops = plantBlock.getDrops(fakeWorld, 0, 0, 0, optimalGrowthMetadata, FORTUNE_LEVEL);
+            if (blockDrops != null) {
+                for (ItemStack drop : blockDrops) {
+                    newDrops.addDrop(drop, drop.stackSize);
                 }
             }
         }
 
+        // 移除种子，确保平衡
+        World world = greenhouse.getBaseMetaTileEntity()
+            .getWorld();
+        if (!removeSeedFromDrops(world, newDrops, this.seed, NUMBER_OF_DROPS_TO_SIMULATE)) return;
+
+        // 平均化
+        newDrops.entrySet()
+            .forEach(e -> e.setValue(e.getValue() / NUMBER_OF_DROPS_TO_SIMULATE));
+
+        if (newDrops.isEmpty()) return;
+
+        this.drops = newDrops;
+        this.isValid = true;
+    }
+
+    /** 获取对应的植物方块 */
+    private Block getPlantBlock(Item item) {
+        if (item instanceof ItemSeeds seeds) {
+            return seeds.getPlant(fakeWorld, 0, 0, 0);
+        }
+        if (item instanceof ItemSeedFood seedFood) {
+            return seedFood.getPlant(fakeWorld, 0, 0, 0);
+        }
+        return null;
+    }
+
+    /** 判断最佳成熟阶段 */
+    private int getOptimalGrowthStage(Item item) {
+        GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
+        return (id != null && Objects.equals(id.modId, "Natura")) ? NATURA_GROWTH : DEFAULT_GROWTH;
+    }
+
+    /** 移除掉落物中的种子 */
+    private boolean removeSeedFromDrops(World world, EIGDropTable drops, ItemStack seed, int seedsToConsume) {
+        ItemStack safeSeed = seed.copy();
+        safeSeed.stackSize = 1;
+
+        int seedCountAfterRemoval = (int) Math.round(drops.getItemAmount(safeSeed)) - seedsToConsume;
+        if (seedCountAfterRemoval >= 0) {
+            drops.setItemAmount(safeSeed, seedCountAfterRemoval);
+            return true;
+        }
+
+        // 否则尝试合成路径
+        return tryConsumeCraftableSeeds(world, drops, safeSeed, -seedCountAfterRemoval);
+    }
+
+    /** 尝试用合成配方消耗掉种子 */
+    private boolean tryConsumeCraftableSeeds(World world, EIGDropTable drops, ItemStack seed, int needed) {
+        List<IRecipe> recipes = CraftingManager.getInstance()
+            .getRecipeList()
+            .parallelStream()
+            .filter(r -> GTUtility.areStacksEqual(r.getRecipeOutput(), seed))
+            .collect(Collectors.toList());
+
+        if (recipes.isEmpty()) return false;
+
+        for (Iterator<Map.Entry<ItemStack, Double>> it = drops.entrySet()
+            .iterator(); it.hasNext();) {
+            Map.Entry<ItemStack, Double> entry = it.next();
+            ItemStack input = entry.getKey()
+                .copy();
+            input.stackSize = 1;
+
+            int count = (int) Math.round(entry.getValue());
+            EIGCraftingSeedFinder finder = new EIGCraftingSeedFinder(input);
+
+            for (IRecipe recipe : recipes) {
+                if (recipe.matches(finder, world)) {
+                    int outputsPerCraft = recipe.getCraftingResult(finder).stackSize;
+                    int craftableSeeds = outputsPerCraft * count;
+
+                    if (needed >= craftableSeeds) {
+                        it.remove();
+                        needed -= craftableSeeds;
+                    } else {
+                        entry.setValue(entry.getValue() - (double) needed / outputsPerCraft);
+                        return true;
+                    }
+
+                    if (needed <= 0) return true;
+                }
+            }
+        }
         return false;
     }
 
-    static class EIGCraftingSeedFinder extends InventoryCrafting {
+    /** 简易合成环境 */
+    public static class EIGCraftingSeedFinder extends InventoryCrafting {
 
-        public ItemStack recipeInput;
+        private final ItemStack recipeInput;
 
         public EIGCraftingSeedFinder(ItemStack recipeInput) {
             super(null, 3, 3);
@@ -221,27 +223,26 @@ public class EIGSeedBucket extends EIGBucket {
         }
 
         @Override
-        public ItemStack getStackInSlot(int p_70301_1_) {
-            if (p_70301_1_ == 0) return this.recipeInput.copy();
+        public ItemStack getStackInSlot(int slot) {
+            return slot == 0 ? this.recipeInput.copy() : null;
+        }
+
+        @Override
+        public ItemStack getStackInSlotOnClosing(int slot) {
             return null;
         }
 
         @Override
-        public ItemStack getStackInSlotOnClosing(int par1) {
+        public ItemStack decrStackSize(int slot, int amount) {
             return null;
         }
 
         @Override
-        public ItemStack decrStackSize(int par1, int par2) {
-            return null;
-        }
-
-        @SuppressWarnings("EmptyMethod")
-        @Override
-        public void setInventorySlotContents(int par1, ItemStack par2ItemStack) {}
+        public void setInventorySlotContents(int slot, ItemStack stack) {}
     }
 
-    private static class GreenHouseWorld extends GTDummyWorld {
+    /** 假想的温室世界 */
+    public static class GreenHouseWorld extends GTDummyWorld {
 
         public int x, y, z, meta = 0;
         public Block block;
@@ -252,37 +253,30 @@ public class EIGSeedBucket extends EIGBucket {
             this.x = x;
             this.y = y;
             this.z = z;
-            this.rand = new EIGSeedBucket.GreenHouseRandom();
+            this.rand = new GreenHouseRandom();
         }
 
         @Override
         public int getBlockMetadata(int aX, int aY, int aZ) {
-            if (aX == x && aY == y && aZ == z) return 7;
-            return 0;
+            return (aX == x && aY == y && aZ == z) ? 7 : 0;
         }
 
         @Override
         public Block getBlock(int aX, int aY, int aZ) {
-            if (aY == y - 1) return Blocks.farmland;
-            return Blocks.air;
+            return (aY == y - 1) ? Blocks.farmland : Blocks.air;
         }
 
         @Override
         public boolean spawnEntityInWorld(Entity entity) {
-            if (this.dropTable == null) {
-                return false;
-            }
-
-            if (entity instanceof EntityLivingBase livingEntity) {
-                livingEntity.captureDrops = true;
-
-                livingEntity.onDeath(DamageSource.generic);
-                livingEntity.captureDrops = false;
-
-                if (livingEntity.capturedDrops != null && !livingEntity.capturedDrops.isEmpty()) {
-                    for (EntityItem drop : livingEntity.capturedDrops) {
-                        ItemStack itemStack = drop.getEntityItem();
-                        this.dropTable.addDrop(itemStack, itemStack.stackSize);
+            if (dropTable == null) return false;
+            if (entity instanceof EntityLivingBase living) {
+                living.captureDrops = true;
+                living.onDeath(DamageSource.generic);
+                living.captureDrops = false;
+                if (living.capturedDrops != null) {
+                    for (EntityItem drop : living.capturedDrops) {
+                        ItemStack stack = drop.getEntityItem();
+                        dropTable.addDrop(stack, stack.stackSize);
                     }
                 }
             }
@@ -290,7 +284,7 @@ public class EIGSeedBucket extends EIGBucket {
         }
 
         @Override
-        public int getBlockLightValue(int p_72957_1_, int p_72957_2_, int p_72957_3_) {
+        public int getBlockLightValue(int x, int y, int z) {
             return 10;
         }
 
@@ -298,8 +292,8 @@ public class EIGSeedBucket extends EIGBucket {
         public boolean setBlock(int aX, int aY, int aZ, Block aBlock, int aMeta, int aFlags) {
             if (aBlock == Blocks.air) return false;
             if (aX == x && aY == y && aZ == z) return false;
-            block = aBlock;
-            meta = aMeta;
+            this.block = aBlock;
+            this.meta = aMeta;
             return true;
         }
     }
@@ -313,5 +307,4 @@ public class EIGSeedBucket extends EIGBucket {
             return 0;
         }
     }
-
 }

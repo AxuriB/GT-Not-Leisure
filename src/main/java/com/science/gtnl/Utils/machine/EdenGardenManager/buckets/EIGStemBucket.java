@@ -1,6 +1,8 @@
 package com.science.gtnl.Utils.machine.EdenGardenManager.buckets;
 
-import java.util.ArrayList;
+import static com.science.gtnl.common.machine.multiblock.EdenGarden.*;
+
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
@@ -19,10 +21,12 @@ import gregtech.mixin.interfaces.accessors.IBlockStemAccessor;
 
 public class EIGStemBucket extends EIGBucket {
 
-    public final static IEIGBucketFactory factory = new Factory();
+    public static final IEIGBucketFactory factory = new Factory();
     private static final String NBT_IDENTIFIER = "STEM";
     private static final int REVISION_NUMBER = 0;
-    private final static int NUMBER_OF_DROPS_TO_SIMULATE = 100;
+
+    private boolean isValid = false;
+    private EIGDropTable drops = new EIGDropTable();
 
     public static class Factory implements IEIGBucketFactory {
 
@@ -33,16 +37,18 @@ public class EIGStemBucket extends EIGBucket {
 
         @Override
         public EIGBucket tryCreateBucket(EdenGarden greenhouse, ItemStack input) {
-            // Check if input is a flower, reed or cacti. They all drop their source item multiplied by their seed count
             Item item = input.getItem();
             if (!(item instanceof IPlantable)) return null;
+
             Block block = ((IPlantable) item).getPlant(
                 greenhouse.getBaseMetaTileEntity()
                     .getWorld(),
                 0,
                 0,
                 0);
+
             if (!(block instanceof BlockStem)) return null;
+
             return new EIGStemBucket(greenhouse, input);
         }
 
@@ -51,9 +57,6 @@ public class EIGStemBucket extends EIGBucket {
             return new EIGStemBucket(nbt);
         }
     }
-
-    private boolean isValid = false;
-    private EIGDropTable drops = new EIGDropTable();
 
     private EIGStemBucket(EdenGarden greenhouse, ItemStack input) {
         super(input, 1, null);
@@ -99,61 +102,56 @@ public class EIGStemBucket extends EIGBucket {
     }
 
     /**
-     * Attempts to predetermine what item the stem crop will drop.
-     *
-     * @param greenhouse The greenhouse that houses this bucket.
+     * 重新计算茎类作物的掉落。
+     * 南瓜/西瓜类作物特殊处理：直接掉落对应方块。
      */
     public void recalculateDrops(EdenGarden greenhouse) {
         this.isValid = false;
+
         Item item = this.seed.getItem();
         if (!(item instanceof IPlantable)) return;
-        Block stemBlock = ((IPlantable) item).getPlant(
-            greenhouse.getBaseMetaTileEntity()
-                .getWorld(),
-            0,
-            0,
-            0);
+
+        var base = greenhouse.getBaseMetaTileEntity();
+        var world = base.getWorld();
+        int x = base.getXCoord();
+        int y = base.getYCoord();
+        int z = base.getZCoord();
+
+        Block stemBlock = ((IPlantable) item).getPlant(world, x, y, z);
         if (!(stemBlock instanceof BlockStem)) return;
+
         Block cropBlock = ((IBlockStemAccessor) stemBlock).gt5u$getCropBlock();
         if (cropBlock == null || cropBlock == Blocks.air) return;
-        // if we know some crops needs a specific metadata, remap here
-        int metadata = 0;
 
-        EIGDropTable drops = new EIGDropTable();
+        int metadata = 0; // 如果某些作物需要特定 metadata，可以在这里扩展
+
+        EIGDropTable newDrops = new EIGDropTable();
 
         for (int i = 0; i < NUMBER_OF_DROPS_TO_SIMULATE; i++) {
-            // simulate 1 round of drops
-            ArrayList<ItemStack> blockDrops = cropBlock.getDrops(
-                greenhouse.getBaseMetaTileEntity()
-                    .getWorld(),
-                greenhouse.getBaseMetaTileEntity()
-                    .getXCoord(),
-                greenhouse.getBaseMetaTileEntity()
-                    .getYCoord(),
-                greenhouse.getBaseMetaTileEntity()
-                    .getZCoord(),
-                metadata,
-                0);
-            if (blockDrops == null || blockDrops.isEmpty()) continue;
-            // if the droped item is a block that places itself, assume this is the only possible drop
-            // eg: pumpkin, redlon
+            List<ItemStack> blockDrops = cropBlock.getDrops(world, x, y, z, metadata, 0);
+            if (blockDrops.isEmpty()) continue;
+
+            // 特殊情况：如果是南瓜或西瓜，直接掉落自身方块，跳出循环
             if (i == 0 && blockDrops.size() == 1) {
                 ItemStack drop = blockDrops.get(0);
-                if (drop != null && drop.stackSize >= 1 && drop.getItem() == Item.getItemFromBlock(cropBlock)) {
-                    drops.addDrop(drop, drop.stackSize);
+                if (drop != null && drop.getItem() == Item.getItemFromBlock(cropBlock)) {
+                    newDrops.addDrop(drop, drop.stackSize);
                     break;
                 }
             }
-            // else append all the drops
+
             for (ItemStack drop : blockDrops) {
-                drops.addDrop(drop, drop.stackSize / (double) NUMBER_OF_DROPS_TO_SIMULATE);
+                newDrops.addDrop(drop, drop.stackSize);
             }
         }
-        // check that we did in fact drop something.s
-        if (drops.isEmpty()) return;
 
-        // all checks passed we are good to go
-        this.drops = drops;
+        // 归一化到平均值
+        newDrops.entrySet()
+            .forEach(e -> e.setValue(e.getValue() / NUMBER_OF_DROPS_TO_SIMULATE));
+
+        if (newDrops.isEmpty()) return;
+
+        this.drops = newDrops;
         this.isValid = true;
     }
 }

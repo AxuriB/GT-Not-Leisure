@@ -2378,6 +2378,14 @@ Info_EdenGarden_Disabled=关闭
 Info_EdenGarden_Enabled=开启
 Info_EdenGarden_IC2Mode=IC2模式
 Info_EdenGarden_NoHumidityMode=无湿度模式
+Info_EdenGarden_SetupPhase_Working=机器运行时无法启用/关闭设置模式！
+Info_EdenGarden_SetupPhase_Change=模式已切换为
+Info_EdenGarden_SetupPhase_Invalid=无效模式，请报告给开发者！
+Info_EdenGarden_Mode_Working=机器运行时无法切换模式！
+Info_EdenGarden_Mode_HasSeeds=机器内存在种子时无法切换温室模式！
+Info_EdenGarden_Mode_Change=已切换模式为：%s
+Info_EdenGarden_NoHumidityMode_Enabled=无湿度模式已开启
+Info_EdenGarden_NoHumidityMode_Disabled=无湿度模式已关闭
 
 NameGenerationEarthEngine=初代目行星发动机
 GenerationEarthEngineRecipeType=聚变反应堆

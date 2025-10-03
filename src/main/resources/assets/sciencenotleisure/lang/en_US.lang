@@ -2378,6 +2378,14 @@ Info_EdenGarden_Disabled=Disabled
 Info_EdenGarden_Enabled=Enabled  
 Info_EdenGarden_IC2Mode=IC2 Mode  
 Info_EdenGarden_NoHumidityMode=No Humidity Mode
+Info_EdenGarden_SetupPhase_Working=You can't enable/disable setup if the machine is working!
+Info_EdenGarden_SetupPhase_Change=EIG is now running in
+Info_EdenGarden_SetupPhase_Invalid=an invalid mode, please report to developers!
+Info_EdenGarden_Mode_Working=You can't change mode if the machine is working!
+Info_EdenGarden_Mode_HasSeeds=You can't change mode if there are seeds inside!
+Info_EdenGarden_Mode_Change=Changed mode to: %s
+Info_EdenGarden_NoHumidityMode_Enabled=No Humidity mode enabled.
+Info_EdenGarden_NoHumidityMode_Disabled=No Humidity mode disabled.
 
 NameGenerationEarthEngine=First Generation Planetary Engine
 GenerationEarthEngineRecipeType=Fusion Reactor
