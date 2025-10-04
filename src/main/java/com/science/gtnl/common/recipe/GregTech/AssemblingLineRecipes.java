@@ -1258,5 +1258,21 @@ public class AssemblingLineRecipes implements IRecipePool {
             GTNLItemList.Laser_Cooling_Casing.get(4),
             100,
             (int) TierEU.RECIPE_UV);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 55))
+            .metadata(SCANNING, new Scanning(4 * HOURS, TierEU.RECIPE_HV))
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_ME_Advanced.get(1),
+                ItemList.Conveyor_Module_IV.get(1),
+                ItemList.Emitter_IV.get(1),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 55),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 30),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockChest", 1))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(576), Materials.Lubricant.getFluid(1000))
+            .itemOutputs(GTNLItemList.OredictInputBusHatchME.get(1))
+            .eut(TierEU.RECIPE_IV)
+            .duration(10 * SECONDS)
+            .addTo(GTRecipeConstants.AssemblyLine);
     }
 }
