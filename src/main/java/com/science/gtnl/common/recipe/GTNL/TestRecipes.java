@@ -1,14 +1,10 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.item.crafting.*;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,9 +14,7 @@ import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.api.IRecipePool;
 
 import cpw.mods.fml.common.registry.GameData;
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Mods;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.recipe.RecipeMap;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 
@@ -31,6 +25,7 @@ public class TestRecipes implements IRecipePool {
     @Override
     public void loadRecipes() {
         if (!Mods.PamsHarvestCraft.isModLoaded()) return;
+
         String targetModId = Mods.PamsHarvestCraft.ID;
         String[] targetItemNames = { "potItem", "skilletItem", "bakewareItem", "saucepanItem", "mortarandpestleItem",
             "mixingbowlItem", "cuttingboardItem", "juicerItem" };
@@ -51,6 +46,8 @@ public class TestRecipes implements IRecipePool {
             return;
         }
 
+        Set<String> recipeSignatures = new HashSet<>();
+
         for (IRecipe recipe : CraftingManager.getInstance()
             .getRecipeList()) {
             if (!(recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe)) continue;
@@ -66,60 +63,14 @@ public class TestRecipes implements IRecipePool {
             }
 
             boolean hasTarget = false;
-            boolean hasFluid = false;
-            FluidStack fluid = null;
-
-            List<Object> finalInputs = new ArrayList<>();
-
             for (Object in : inputs) {
-                if (in == null) continue;
-                ItemStack stack = null;
-                Object resultInput = null;
-
-                if (in instanceof ItemStack itemStack) {
-                    stack = itemStack.copy();
-                    resultInput = stack;
-                } else if (in instanceof List<?>list && !list.isEmpty() && list.get(0) instanceof ItemStack itemStack) {
-                    stack = itemStack.copy();
-                    int[] ids = OreDictionary.getOreIDs(stack);
-                    if (ids.length > 0) {
-                        resultInput = new Object[] { OreDictionary.getOreName(ids[0]), 1 };
-                    } else {
-                        resultInput = stack;
-                    }
-                } else if (in instanceof String oreName) {
-                    resultInput = new Object[] { oreName, 1 };
-                    List<ItemStack> ores = OreDictionary.getOres(oreName);
-                    if (!ores.isEmpty()) {
-                        stack = ores.get(0)
-                            .copy();
-                    }
-                }
-
+                ItemStack stack = extractStack(in);
                 if (stack == null) continue;
-
-                boolean isTool = false;
                 for (Item target : targetItems) {
                     if (stack.getItem() == target) {
                         hasTarget = true;
-                        isTool = true;
                         break;
                     }
-                }
-
-                FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(stack);
-                if (fs != null && !hasFluid) {
-                    hasFluid = true;
-                    fluid = fs;
-                    continue;
-                }
-
-                if (isTool) {
-                    ItemStack zeroStack = stack.copy();
-                    zeroStack.stackSize = 0;
-                    finalInputs.add(zeroStack);
-                } else {
-                    finalInputs.add(resultInput);
                 }
             }
 
@@ -130,15 +81,172 @@ public class TestRecipes implements IRecipePool {
             output = output.copy();
             output.stackSize = Math.min(output.stackSize * 4, output.getMaxStackSize());
 
-            GTValues.RA.stdBuilder()
-                .itemInputs(finalInputs.toArray(new Object[0]))
-                .itemOutputs(output)
-                .fluidInputs(hasFluid ? new FluidStack[] { fluid } : new FluidStack[0])
-                .duration(100)
-                .eut(TierEU.LV)
-                .addTo(As);
+            List<List<Object>> expandedInputs = expandInputs(inputs);
+
+            for (List<Object> combo : expandedInputs) {
+                if (!combo.isEmpty()) {
+                    ItemStack first = combo.get(0) instanceof ItemStack s ? s : null;
+                    if (first != null) {
+                        int[] ids = OreDictionary.getOreIDs(first);
+                        for (int id : ids) {
+                            String oreName = OreDictionary.getOreName(id);
+                            Item matchedTool = findToolByOreName(targetItems, oreName);
+                            if (matchedTool != null) {
+                                ItemStack toolStack = new ItemStack(matchedTool, 0);
+                                combo.set(0, toolStack);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                List<Object> finalInputs = new ArrayList<>();
+                boolean hasFluid = false;
+                FluidStack fluid = null;
+
+                for (Object obj : combo) {
+                    if (!(obj instanceof ItemStack stack)) continue;
+
+                    FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(stack);
+                    if (fs != null && !hasFluid) {
+                        hasFluid = true;
+                        fluid = fs;
+                        continue;
+                    }
+
+                    boolean isTool = false;
+                    for (Item target : targetItems) {
+                        if (stack.getItem() == target) {
+                            isTool = true;
+                            break;
+                        }
+                    }
+
+                    if (isTool) {
+                        ItemStack zero = stack.copy();
+                        zero.stackSize = 0;
+                        finalInputs.add(zero);
+                    } else {
+                        finalInputs.add(stack);
+                    }
+                }
+
+                String sig = makeRecipeSignature(finalInputs, output, fluid);
+                if (recipeSignatures.contains(sig)) continue;
+                recipeSignatures.add(sig);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(finalInputs.toArray(new Object[0]))
+                    .itemOutputs(output)
+                    .fluidInputs(hasFluid ? new FluidStack[] { fluid } : new FluidStack[0])
+                    .duration(100)
+                    .eut(TierEU.LV)
+                    .addTo(As);
+            }
         }
 
-        ScienceNotLeisure.LOG.info("Pam’s Cooking Tool recipes successfully converted.");
+        ScienceNotLeisure.LOG.info("Pam’s Cooking Tool recipes successfully expanded, deduplicated, and converted.");
+    }
+
+    private static ItemStack extractStack(Object in) {
+        if (in instanceof ItemStack itemStack) {
+            return itemStack.copy();
+        } else if (in instanceof List<?>list && !list.isEmpty() && list.get(0) instanceof ItemStack itemStack) {
+            return itemStack.copy();
+        } else if (in instanceof String oreName) {
+            List<ItemStack> ores = OreDictionary.getOres(oreName);
+            if (!ores.isEmpty()) return ores.get(0)
+                .copy();
+        }
+        return null;
+    }
+
+    private static List<List<Object>> expandInputs(List<Object> inputs) {
+        List<List<Object>> result = new ArrayList<>();
+        result.add(new ArrayList<>());
+
+        for (Object in : inputs) {
+            List<ItemStack> candidates = new ArrayList<>();
+
+            if (in instanceof ItemStack stack) {
+                candidates.add(stack.copy());
+            } else if (in instanceof String oreName) {
+                candidates.addAll(OreDictionary.getOres(oreName));
+            } else if (in instanceof List<?>list) {
+                for (Object o : list) {
+                    if (o instanceof ItemStack stack2) {
+                        candidates.add(stack2.copy());
+                    }
+                }
+            }
+
+            if (candidates.isEmpty()) continue;
+
+            List<List<Object>> newResult = new ArrayList<>();
+            for (List<Object> base : result) {
+                for (ItemStack c : candidates) {
+                    List<Object> newCombo = new ArrayList<>(base);
+                    newCombo.add(c);
+                    newResult.add(newCombo);
+                }
+            }
+            result = newResult;
+        }
+
+        return result;
+    }
+
+    /**
+     * 根据输入物品的矿辞名，匹配拥有相同矿辞的工具
+     */
+    private static Item findToolByOreName(List<Item> targetItems, String oreName) {
+        if (oreName == null || oreName.isEmpty()) return null;
+
+        for (Item item : targetItems) {
+            ItemStack toolStack = new ItemStack(item);
+            int[] ids = OreDictionary.getOreIDs(toolStack);
+
+            for (int id : ids) {
+                String toolOreName = OreDictionary.getOreName(id);
+                if (toolOreName.equalsIgnoreCase(oreName)) {
+                    return item;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static String makeRecipeSignature(List<Object> inputs, ItemStack output, FluidStack fluid) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("OUT:")
+            .append(Item.itemRegistry.getNameForObject(output.getItem()))
+            .append(":")
+            .append(output.getItemDamage())
+            .append(":")
+            .append(output.stackSize);
+
+        sb.append(";IN:");
+        List<String> parts = new ArrayList<>();
+        for (Object obj : inputs) {
+            if (obj instanceof ItemStack stack) {
+                String name = Item.itemRegistry.getNameForObject(stack.getItem());
+                parts.add(name + ":" + stack.getItemDamage());
+            }
+        }
+        Collections.sort(parts);
+        for (String s : parts) sb.append(s)
+            .append(",");
+
+        if (fluid != null) {
+            sb.append(";FLUID:")
+                .append(
+                    fluid.getFluid()
+                        .getName())
+                .append(":")
+                .append(fluid.amount);
+        }
+
+        return sb.toString();
     }
 }
