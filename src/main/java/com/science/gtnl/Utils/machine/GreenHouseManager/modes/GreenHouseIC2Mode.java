@@ -1,18 +1,15 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager.modes;
-
-import static com.science.gtnl.common.machine.multiblock.EdenGarden.EIG_BALANCE_IC2_ACCELERATOR_TIER;
+package com.science.gtnl.Utils.machine.GreenHouseManager.modes;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGMode;
-import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode;
 
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class EIGIC2Mode extends EIGMode {
+public class GreenHouseIC2Mode extends GreenHouseMode {
 
-    public static final EIGIC2Mode instance = new EIGIC2Mode();
+    public static final GreenHouseIC2Mode instance = new GreenHouseIC2Mode();
 
     @Override
     public int getUIIndex() {
@@ -26,12 +23,12 @@ public class EIGIC2Mode extends EIGMode {
 
     @Override
     public int getMinVoltageTier() {
-        return EdenGarden.EIG_BALANCE_IC2_ACCELERATOR_TIER;
+        return EIG_BALANCE_IC2_ACCELERATOR_TIER;
     }
 
     @Override
     public int getMinGlassTier() {
-        return EdenGarden.EIG_BALANCE_IC2_ACCELERATOR_TIER;
+        return EIG_BALANCE_IC2_ACCELERATOR_TIER;
     }
 
     @Override

@@ -1,16 +1,15 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager.modes;
+package com.science.gtnl.Utils.machine.GreenHouseManager.modes;
 
 import net.minecraft.util.EnumChatFormatting;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGMode;
-import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode;
 
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class EIGNormalMode extends EIGMode {
+public class GreenHouseNormalMode extends GreenHouseMode {
 
-    public static final EIGNormalMode instance = new EIGNormalMode();
+    public static final GreenHouseNormalMode instance = new GreenHouseNormalMode();
 
     @Override
     public int getUIIndex() {
@@ -24,7 +23,7 @@ public class EIGNormalMode extends EIGMode {
 
     @Override
     public int getMinVoltageTier() {
-        return EdenGarden.EIG_BALANCE_REGULAR_MODE_MIN_TIER;
+        return EIG_BALANCE_REGULAR_MODE_MIN_TIER;
     }
 
     @Override

@@ -1441,5 +1441,4 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             .hatchIds(PIPELESS_STEAM_HATCH.ID)
             .shouldReject(t -> !t.mSteamWirelessInputFluids.isEmpty());
     }
-
 }

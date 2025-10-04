@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager;
+package com.science.gtnl.Utils.machine.GreenHouseManager;
 
 import static com.science.gtnl.Utils.item.ItemUtils.readItemStackFromNBT;
 import static com.science.gtnl.Utils.item.ItemUtils.writeItemStackToNBT;
@@ -11,31 +11,33 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGFlowerBucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGIC2Bucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGRainbowCactusBucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGSeedBucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.buckets.EIGStemBucket;
-import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.Utils.machine.GreenHouseManager.buckets.GreenHouseFlowerBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.buckets.GreenHouseIC2Bucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.buckets.GreenHouseRainbowCactusBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.buckets.GreenHouseSeedBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.buckets.GreenHouseStemBucket;
+import com.science.gtnl.api.IGreenHouse;
 
 import gregtech.api.util.GTUtility;
 import lombok.Getter;
 
-public abstract class EIGBucket {
+public abstract class GreenHouseBucket {
 
     protected ItemStack seed;
     @Getter
     protected int seedCount;
     protected ItemStack[] supportItems;
 
-    public EIGBucket(ItemStack seed, int seedCount, ItemStack[] supportItem) {
+    public static int NUMBER_OF_DROPS_TO_SIMULATE = 5;
+
+    public GreenHouseBucket(ItemStack seed, int seedCount, ItemStack[] supportItem) {
         this.seed = seed.copy();
         this.seed.stackSize = 1;
         this.seedCount = seedCount;
         this.supportItems = supportItem;
     }
 
-    public EIGBucket(NBTTagCompound nbt) {
+    public GreenHouseBucket(NBTTagCompound nbt) {
         this.seed = readItemStackFromNBT(nbt.getCompoundTag("seed"));
         this.seedCount = nbt.getInteger("count");
 
@@ -57,15 +59,15 @@ public abstract class EIGBucket {
 
     public static void LoadEIGBuckets() {
         // IC2 buckets
-        EIGModes.IC2.addLowPriorityFactory(EIGIC2Bucket.factory);
+        GreenHouseModes.IC2.addLowPriorityFactory(GreenHouseIC2Bucket.factory);
 
         // Regular Mode Buckets
         if (ThaumicBases.isModLoaded()) {
-            EIGModes.Normal.addLowPriorityFactory(EIGRainbowCactusBucket.factory);
+            GreenHouseModes.Normal.addLowPriorityFactory(GreenHouseRainbowCactusBucket.factory);
         }
-        EIGModes.Normal.addLowPriorityFactory(EIGFlowerBucket.factory);
-        EIGModes.Normal.addLowPriorityFactory(EIGStemBucket.factory);
-        EIGModes.Normal.addLowPriorityFactory(EIGSeedBucket.factory);
+        GreenHouseModes.Normal.addLowPriorityFactory(GreenHouseFlowerBucket.factory);
+        GreenHouseModes.Normal.addLowPriorityFactory(GreenHouseStemBucket.factory);
+        GreenHouseModes.Normal.addLowPriorityFactory(GreenHouseSeedBucket.factory);
     }
 
     /**
@@ -118,7 +120,7 @@ public abstract class EIGBucket {
 
     protected void getAdditionalInfoData(StringBuilder sb) {}
 
-    public int tryAddSeed(EdenGarden greenhouse, ItemStack input, int maxConsume, boolean simulate) {
+    public int tryAddSeed(IGreenHouse greenhouse, ItemStack input, int maxConsume, boolean simulate) {
         // Abort is input if empty
         if (input == null || input.stackSize <= 0) return -2;
         // Cap max to input count
@@ -210,15 +212,16 @@ public abstract class EIGBucket {
      * @param multiplier A multiplier to apply to the output.
      * @param tracker    The item drop tracker
      */
-    public abstract void addProgress(double multiplier, EIGDropTable tracker);
+    public abstract void addProgress(double multiplier, GreenHouseDropTable tracker);
 
     /**
      * Attempts to revalidate a seed bucket. If it returns false, attempt to seed and support items and delete the
      * bucket.
      *
      * @param greenhouse The greenhouse that contains the bucket.
-     * @return True if the bucket was successfully validated. {@link EIGBucket#isValid()} should also return true.
+     * @return True if the bucket was successfully validated. {@link GreenHouseBucket#isValid()} should also return
+     *         true.
      */
-    public abstract boolean revalidate(EdenGarden greenhouse);
+    public abstract boolean revalidate(IGreenHouse greenhouse);
 
 }

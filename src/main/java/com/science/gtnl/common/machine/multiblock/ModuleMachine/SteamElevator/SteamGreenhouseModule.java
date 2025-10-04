@@ -1,12 +1,6 @@
-package com.science.gtnl.common.machine.multiblock;
+package com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode.*;
-import static gregtech.api.GregTechAPI.*;
-import static gregtech.api.enums.HatchElement.*;
-import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +15,6 @@ import java.util.stream.Collectors;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -31,10 +24,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -48,35 +37,25 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDropTable;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseModes;
 import com.science.gtnl.Utils.machine.GreenHouseManager.buckets.GreenHouseIC2Bucket;
 import com.science.gtnl.api.IGreenHouse;
-import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.loader.BlockLoader;
 
-import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gtPlusPlus.core.block.ModBlocks;
-import gtnhlanth.common.register.LanthItemList;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 import lombok.Getter;
 import lombok.Setter;
 
-public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHouse {
+public class SteamGreenhouseModule extends SteamElevatorModule implements IGreenHouse {
 
     @Getter
     public List<GreenHouseBucket> buckets = new LinkedList<>();
@@ -86,7 +65,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
     public HashMap<ItemStack, Double> synchedGUIDropTracker = new HashMap<>();
     @Getter
     @Setter
-    public int maxSeedTypes = Integer.MAX_VALUE, maxSeedCount = Integer.MAX_VALUE, setupPhase = 1;
+    public int maxSeedTypes = 4, maxSeedCount = 16, setupPhase = 1;
     @Getter
     @Setter
     public GreenHouseMode mode = GreenHouseModes.Normal;
@@ -95,26 +74,9 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
     @Setter
     public boolean useNoHumidity = false;
 
-    private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String EG_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/eden_garden";
-    private static final String[][] shape = StructureUtils.readStructureFromFile(EG_STRUCTURE_FILE_PATH);
-    protected final int HORIZONTAL_OFF_SET = 6;
-    protected final int VERTICAL_OFF_SET = 43;
-    protected final int DEPTH_OFF_SET = 10;
-
     @Override
-    public int getCasingTextureID() {
-        return StructureUtils.getTextureIndex(sBlockCasings10, 5);
-    }
-
-    @Override
-    public boolean getPerfectOC() {
-        return true;
-    }
-
-    @Override
-    public int getMaxParallelRecipes() {
-        return 1;
+    protected int getMachineEffectRange() {
+        return 0;
     }
 
     @Override
@@ -139,130 +101,47 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
 
     @Override
     public int getWaterUsage() {
-        return 2000;
+        return 16000;
     }
 
     @Override
-    public IStructureDefinition<EdenGarden> getStructureDefinition() {
-        return StructureDefinition.<EdenGarden>builder()
-            .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
-            .addElement('A', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-            .addElement(
-                'B',
-                ofChain(
-                    buildHatchAdder(EdenGarden.class)
-                        .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Maintenance, Energy.or(ExoticEnergy))
-                        .dot(1)
-                        .casingIndex(StructureUtils.getTextureIndex(sBlockCasings10, 4))
-                        .build(),
-                    onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings10, 4))))
-            .addElement('C', ofBlock(sBlockCasings10, 5))
-            .addElement('D', ofBlock(sBlockCasings8, 10))
-            .addElement('E', ofBlock(sBlockCasings9, 11))
-            .addElement('F', ofBlock(ModBlocks.blockCasings2Misc, 3))
-            .addElement('G', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
-            .addElement('H', ofBlock(BlockLoader.metaBlockGlow, 0))
-            .addElement('I', ofBlock(Blocks.farmland, 0))
-            .addElement(
-                'J',
-                ofChain(
-                    ofBlockAnyMeta(Blocks.water),
-                    ofBlock(BlocksItems.getFluidBlock(InternalName.fluidDistilledWater), 0)))
-            .build();
+    public String getMachineType() {
+        return "SteamGreenhouseModuleRecipeType";
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatch()) {
-            return false;
-        }
-        setupParameters();
-        return mCountCasing >= 1000;
-    }
-
-    @Override
-    public boolean checkHatch() {
-        return super.checkHatch() && !(this.mEnergyHatches.isEmpty() && this.mExoticEnergyHatches.isEmpty());
-    }
-
-    @Override
-    public void setupParameters() {
-        super.setupParameters();
-    }
-
-    @Override
-    public void construct(ItemStack stackSize, boolean hintsOnly) {
-        this.buildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            hintsOnly,
-            HORIZONTAL_OFF_SET,
-            VERTICAL_OFF_SET,
-            DEPTH_OFF_SET);
-    }
-
-    @Override
-    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        if (this.mMachine) return -1;
-        return this.survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN,
-            stackSize,
-            HORIZONTAL_OFF_SET,
-            VERTICAL_OFF_SET,
-            DEPTH_OFF_SET,
-            elementBudget,
-            env,
-            false,
-            true);
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
+    public int clampRecipeOcCount(int value) {
+        return 0;
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("EdenGardenRecipeType"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_00"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_01"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_02"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_03"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_04"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_05"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_06"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_Tectech_Hatch"))
+        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        tt.addMachineType(StatCollector.translateToLocal("SteamGreenhouseModuleRecipeType"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_00"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_01"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_02"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_03"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_04"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
-            .beginStructureBlock(6, 43, 10, false)
-            .addInputBus(StatCollector.translateToLocal("Tooltip_EdenGarden_Casing"), 1)
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_EdenGarden_Casing"), 1)
-            .addInputHatch(StatCollector.translateToLocal("Tooltip_EdenGarden_Casing"), 1)
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_EdenGarden_Casing"), 1)
-            .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_EdenGarden_Casing"), 1)
+            .beginStructureBlock(1, 5, 2, false)
             .toolTipFinisher();
         return tt;
     }
 
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        List<String> info = new ArrayList<>(Arrays.asList(super.getStructureDescription(stackSize)));
-        return info.toArray(new String[] {});
+    public SteamGreenhouseModule(int aID, String aName, String aNameRegional) {
+        super(aID, aName, aNameRegional, 5);
     }
 
-    public EdenGarden(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional);
-    }
-
-    public EdenGarden(String aName) {
-        super(aName);
+    public SteamGreenhouseModule(String aName) {
+        super(aName, 5);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new EdenGarden(this.mName);
+        return new SteamGreenhouseModule(this.mName);
     }
 
     @Override
@@ -310,8 +189,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             tryChangeMode(aPlayer);
         } else {
@@ -324,6 +202,58 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
         float aX, float aY, float aZ, ItemStack aTool) {
         this.tryChangeHumidityMode(aPlayer);
         return true;
+    }
+
+    public void tryChangeSetupPhase(EntityPlayer aPlayer) {
+        if (this.mMaxProgresstime > 0) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_SetupPhase_Working"));
+            return;
+        }
+        this.setupPhase++;
+        if (this.setupPhase == 3) this.setupPhase = 0;
+
+        String phaseChangeMessage = StatCollector.translateToLocal("Info_EdenGarden_SetupPhase_Change") + " ";
+        switch (this.setupPhase) {
+            case 0:
+                phaseChangeMessage += StatCollector.translateToLocal("Info_EdenGarden_Operating");
+                break;
+            case 1:
+                phaseChangeMessage += StatCollector.translateToLocal("Info_EdenGarden_Input");
+                break;
+            case 2:
+                phaseChangeMessage += StatCollector.translateToLocal("Info_EdenGarden_Output");
+                break;
+            default:
+                phaseChangeMessage += StatCollector.translateToLocal("Info_EdenGarden_SetupPhase_Invalid");
+                break;
+        }
+        GTUtility.sendChatToPlayer(aPlayer, phaseChangeMessage);
+    }
+
+    public void tryChangeMode(EntityPlayer aPlayer) {
+        if (this.mMaxProgresstime > 0) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_Mode_Working"));
+            return;
+        }
+        if (!this.buckets.isEmpty()) {
+            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_Mode_HasSeeds"));
+            return;
+        }
+        this.mode = GreenHouseModes.getNextMode(this.mode);
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocalFormatted("Info_EdenGarden_Mode_Change", this.mode.getName()));
+    }
+
+    public void tryChangeHumidityMode(EntityPlayer aPlayer) {
+        this.useNoHumidity = !this.useNoHumidity;
+        if (this.useNoHumidity) {
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_NoHumidityMode_Enabled"));
+        } else {
+            GTUtility
+                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("Info_EdenGarden_NoHumidityMode_Disabled"));
+        }
     }
 
     @Override
@@ -353,6 +283,12 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
         new GreenHouseDropTable(aNBT.getTagList("progress", 10)).addTo(this.dropTracker);
     }
 
+    public int getTotalSeedCount() {
+        return buckets.stream()
+            .mapToInt(GreenHouseBucket::getSeedCount)
+            .sum();
+    }
+
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
@@ -367,30 +303,24 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
     }
 
     public CheckRecipeResult calculateProgressAndDrops() {
-        double multiplier = GreenHouseMode.EIG_BALANCE_MAX_FERTILIZER_BOOST;
         this.guiDropTracker = new GreenHouseDropTable();
 
-        int baseTime = 1200;
         if (mode == GreenHouseModes.IC2) {
-            this.mMaxProgresstime = Math.max(20, baseTime / Math.max(mEnergyHatchTier - 3, 1));
-            double timeElapsed = (double) mMaxProgresstime * (1 << GreenHouseMode.EIG_BALANCE_IC2_ACCELERATOR_TIER);
-            buckets.forEach(bucket -> bucket.addProgress(timeElapsed * multiplier, guiDropTracker));
+            buckets.forEach(bucket -> bucket.addProgress(200, guiDropTracker));
         } else {
-            this.mMaxProgresstime = Math.max(20, baseTime / mEnergyHatchTier);
-            buckets.forEach(bucket -> bucket.addProgress(multiplier, guiDropTracker));
+            buckets.forEach(bucket -> bucket.addProgress(100, guiDropTracker));
         }
 
-        guiDropTracker.addTo(dropTracker, multiplier);
+        guiDropTracker.addTo(dropTracker, 1);
         mOutputItems = dropTracker.getDrops();
 
-        lEUt = -(long) (GTValues.V[mEnergyHatchTier] * 0.99d);
+        lEUt = -8192L;
         mEfficiency = mEfficiencyIncrease = 10000;
+        this.mMaxProgresstime = 1200;
 
         updateSlots();
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
-
-    public static final UIInfo<?, ?> GreenhouseUI = GreenHouseMode.createGreenhouseUI(MUIContainer_Greenhouse::new);
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
@@ -404,7 +334,8 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
         return true;
     }
 
-    @Override
+    public static final UIInfo<?, ?> GreenhouseUI = GreenHouseMode.createGreenhouseUI(MUIContainer_Greenhouse::new);
+
     protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
         buildContext.addSyncedWindow(CONFIGURATION_WINDOW_ID, this::createConfigurationWindow);
         configurationElements.setSynced(false);
@@ -418,9 +349,6 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
                 .addTooltip(StatCollector.translateToLocal("Info_EdenGarden_Configuration"))
                 .setSize(16, 16));
     }
-
-    @Override
-    public void createInventorySlots() {}
 
     public boolean isInInventory = true;
 
@@ -597,33 +525,5 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
 
         info.addAll(Arrays.asList(super.getInfoData()));
         return info.toArray(new String[0]);
-    }
-
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 }

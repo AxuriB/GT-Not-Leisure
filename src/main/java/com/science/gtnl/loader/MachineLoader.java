@@ -127,6 +127,7 @@ import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.St
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamElevator;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamEntityCrusherModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamFlightModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamGreenhouseModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamMonsterRepellentModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamOreProcessorModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamWeatherModule;
@@ -1383,6 +1384,13 @@ public class MachineLoader {
                 "NameSteamBeeBreedingModule",
                 StatCollector.translateToLocal("NameSteamBeeBreedingModule")));
         addItemTooltip(GTNLItemList.SteamBeeBreedingModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamGreenhouseModule.set(
+            new SteamGreenhouseModule(
+                STEAM_GREENHOUSE_MODULE.ID,
+                "NameSteamGreenhouseModule",
+                StatCollector.translateToLocal("NameSteamGreenhouseModule")));
+        addItemTooltip(GTNLItemList.SteamGreenhouseModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

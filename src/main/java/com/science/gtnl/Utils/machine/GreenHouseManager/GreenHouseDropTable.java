@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager;
+package com.science.gtnl.Utils.machine.GreenHouseManager;
 
 import static com.science.gtnl.Utils.item.ItemUtils.readItemStackFromNBT;
 import static com.science.gtnl.Utils.item.ItemUtils.writeItemStackToNBT;
@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 
-public class EIGDropTable {
+public class GreenHouseDropTable {
 
     private static final String NBT_DROP_TABLE_ITEM_KEY = "item";
     private static final String NBT_DROP_TABLE_COUNT_KEY = "count";
@@ -23,7 +23,7 @@ public class EIGDropTable {
     /**
      * Initialises a new empty drop table.
      */
-    public EIGDropTable() {
+    public GreenHouseDropTable() {
         this.dropTable = new ItemStackMap<>(true);
     }
 
@@ -33,7 +33,7 @@ public class EIGDropTable {
      * @param nbt The nbt tag that contains the key for a drop table
      * @param key The name of the key name for the drop table.
      */
-    public EIGDropTable(NBTTagCompound nbt, String key) {
+    public GreenHouseDropTable(NBTTagCompound nbt, String key) {
         // should create an empty table if no drops are found.
         this(nbt.getTagList(key, 10));
     }
@@ -43,7 +43,7 @@ public class EIGDropTable {
      *
      * @param nbt The nbt tag that contains the key for a drop table
      */
-    public EIGDropTable(NBTTagList nbt) {
+    public GreenHouseDropTable(NBTTagList nbt) {
         this();
         for (int i = 0; i < nbt.tagCount(); i++) {
             NBTTagCompound drop = nbt.getCompoundTagAt(i);
@@ -89,7 +89,7 @@ public class EIGDropTable {
      * @param variance How much to vary the amounts of this drop table to, 0 < x < 1 plz
      * @param rand     The random source for the variance.
      */
-    public void addTo(EIGDropTable target, double variance, Random rand) {
+    public void addTo(GreenHouseDropTable target, double variance, Random rand) {
         this.addTo(target, 1.0, variance, rand);
     }
 
@@ -102,7 +102,7 @@ public class EIGDropTable {
      * @param variance   How much to vary the amounts of this drop table to, 0 < x < 1 plz.
      * @param rand       The random source for the variance.
      */
-    public void addTo(EIGDropTable target, double multiplier, double variance, Random rand) {
+    public void addTo(GreenHouseDropTable target, double multiplier, double variance, Random rand) {
         this.addTo(target, variance * (rand.nextDouble() - 0.5) * multiplier);
     }
 
@@ -111,7 +111,7 @@ public class EIGDropTable {
      *
      * @param target The drop table that you want to add the value to.
      */
-    public void addTo(EIGDropTable target) {
+    public void addTo(GreenHouseDropTable target) {
         this.addTo(target, 1.0);
     }
 
@@ -121,7 +121,7 @@ public class EIGDropTable {
      * @param target     The drop table that you want to add the value to.
      * @param multiplier A multiplier to apply to all amounts from this drop table.
      */
-    public void addTo(EIGDropTable target, double multiplier) {
+    public void addTo(GreenHouseDropTable target, double multiplier) {
         for (Map.Entry<ItemStack, Double> entry : this.dropTable.entrySet()) {
             target.dropTable.merge(entry.getKey(), entry.getValue() * multiplier, Double::sum);
         }
@@ -183,8 +183,8 @@ public class EIGDropTable {
      * @param with The drop table to intersect with.
      * @return The result of the intersection.
      */
-    public EIGDropTable intersect(EIGDropTable with) {
-        EIGDropTable ret = new EIGDropTable();
+    public GreenHouseDropTable intersect(GreenHouseDropTable with) {
+        GreenHouseDropTable ret = new GreenHouseDropTable();
         for (ItemStack key : with.dropTable.keySet()) {
             if (this.dropTable.containsKey(key)) {
                 ret.addDrop(key, this.dropTable.get(key));
@@ -202,7 +202,7 @@ public class EIGDropTable {
         // doesn't need to filter for less than 0 so that the EIG displays the progress of incomplete items.
         return this.dropTable.entrySet()
             .parallelStream()
-            .map(EIGDropTable::computeDrops)
+            .map(GreenHouseDropTable::computeDrops)
             .toArray(ItemStack[]::new);
     }
 

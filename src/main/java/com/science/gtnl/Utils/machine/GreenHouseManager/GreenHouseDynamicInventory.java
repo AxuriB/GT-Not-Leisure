@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager;
+package com.science.gtnl.Utils.machine.GreenHouseManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ import com.science.gtnl.Utils.gui.AutoScalingStackSizeText;
 
 import gregtech.api.util.GTUtility;
 
-public class EIGDynamicInventory<T> {
+public class GreenHouseDynamicInventory<T> {
 
     int width, height;
     Supplier<Integer> maxSeedCountGetter;
@@ -57,7 +57,7 @@ public class EIGDynamicInventory<T> {
     Supplier<Boolean> isEnabledGetter = null;
     boolean isEnabled = true;
 
-    public EIGDynamicInventory(int width, int height, Supplier<Integer> maxSeedTypeGetter,
+    public GreenHouseDynamicInventory(int width, int height, Supplier<Integer> maxSeedTypeGetter,
         Supplier<Integer> maxSeedCountGetter, Supplier<Integer> usedSeedTypesGetter,
         Supplier<Integer> usedSeedCountGetter, List<T> inventory, TInventoryGetter<T> inventoryGetter) {
         this.width = width;
@@ -70,22 +70,22 @@ public class EIGDynamicInventory<T> {
         this.inventoryGetter = inventoryGetter;
     }
 
-    public EIGDynamicInventory<T> allowInventoryInjection(TInventoryInjector inventoryInjector) {
+    public GreenHouseDynamicInventory<T> allowInventoryInjection(TInventoryInjector inventoryInjector) {
         this.inventoryInjector = inventoryInjector;
         return this;
     }
 
-    public EIGDynamicInventory<T> allowInventoryExtraction(TInventoryExtractor<T> inventoryExtractor) {
+    public GreenHouseDynamicInventory<T> allowInventoryExtraction(TInventoryExtractor<T> inventoryExtractor) {
         this.inventoryExtractor = inventoryExtractor;
         return this;
     }
 
-    public EIGDynamicInventory<T> allowInventoryReplace(TInventoryReplacerOrMerger inventoryReplacer) {
+    public GreenHouseDynamicInventory<T> allowInventoryReplace(TInventoryReplacerOrMerger inventoryReplacer) {
         this.inventoryReplacer = inventoryReplacer;
         return this;
     }
 
-    public EIGDynamicInventory<T> setEnabled(Supplier<Boolean> isEnabled) {
+    public GreenHouseDynamicInventory<T> setEnabled(Supplier<Boolean> isEnabled) {
         this.isEnabledGetter = isEnabled;
         return this;
     }

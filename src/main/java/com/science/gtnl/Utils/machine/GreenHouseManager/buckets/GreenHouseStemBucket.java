@@ -1,6 +1,4 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager.buckets;
-
-import static com.science.gtnl.common.machine.multiblock.EdenGarden.*;
+package com.science.gtnl.Utils.machine.GreenHouseManager.buckets;
 
 import java.util.List;
 
@@ -12,23 +10,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.IPlantable;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDropTable;
-import com.science.gtnl.Utils.machine.EdenGardenManager.IEIGBucketFactory;
-import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucketFactory;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDropTable;
+import com.science.gtnl.api.IGreenHouse;
 
 import gregtech.mixin.interfaces.accessors.IBlockStemAccessor;
 
-public class EIGStemBucket extends EIGBucket {
+public class GreenHouseStemBucket extends GreenHouseBucket {
 
-    public static final IEIGBucketFactory factory = new Factory();
+    public static final GreenHouseBucketFactory factory = new Factory();
     private static final String NBT_IDENTIFIER = "STEM";
     private static final int REVISION_NUMBER = 0;
 
     private boolean isValid = false;
-    private EIGDropTable drops = new EIGDropTable();
+    private GreenHouseDropTable drops = new GreenHouseDropTable();
 
-    public static class Factory implements IEIGBucketFactory {
+    public static class Factory implements GreenHouseBucketFactory {
 
         @Override
         public String getNBTIdentifier() {
@@ -36,7 +34,7 @@ public class EIGStemBucket extends EIGBucket {
         }
 
         @Override
-        public EIGBucket tryCreateBucket(EdenGarden greenhouse, ItemStack input) {
+        public GreenHouseBucket tryCreateBucket(IGreenHouse greenhouse, ItemStack input) {
             Item item = input.getItem();
             if (!(item instanceof IPlantable)) return null;
 
@@ -49,23 +47,23 @@ public class EIGStemBucket extends EIGBucket {
 
             if (!(block instanceof BlockStem)) return null;
 
-            return new EIGStemBucket(greenhouse, input);
+            return new GreenHouseStemBucket(greenhouse, input);
         }
 
         @Override
-        public EIGBucket restore(NBTTagCompound nbt) {
-            return new EIGStemBucket(nbt);
+        public GreenHouseBucket restore(NBTTagCompound nbt) {
+            return new GreenHouseStemBucket(nbt);
         }
     }
 
-    private EIGStemBucket(EdenGarden greenhouse, ItemStack input) {
+    private GreenHouseStemBucket(IGreenHouse greenhouse, ItemStack input) {
         super(input, 1, null);
         recalculateDrops(greenhouse);
     }
 
-    private EIGStemBucket(NBTTagCompound nbt) {
+    private GreenHouseStemBucket(NBTTagCompound nbt) {
         super(nbt);
-        this.drops = new EIGDropTable(nbt, "drops");
+        this.drops = new GreenHouseDropTable(nbt, "drops");
         this.isValid = nbt.getInteger("version") == REVISION_NUMBER && !this.drops.isEmpty();
     }
 
@@ -85,7 +83,7 @@ public class EIGStemBucket extends EIGBucket {
     }
 
     @Override
-    public void addProgress(double multiplier, EIGDropTable tracker) {
+    public void addProgress(double multiplier, GreenHouseDropTable tracker) {
         if (!this.isValid()) return;
         this.drops.addTo(tracker, multiplier * this.seedCount);
     }
@@ -96,7 +94,7 @@ public class EIGStemBucket extends EIGBucket {
     }
 
     @Override
-    public boolean revalidate(EdenGarden greenhouse) {
+    public boolean revalidate(IGreenHouse greenhouse) {
         recalculateDrops(greenhouse);
         return this.isValid();
     }
@@ -105,7 +103,7 @@ public class EIGStemBucket extends EIGBucket {
      * 重新计算茎类作物的掉落。
      * 南瓜/西瓜类作物特殊处理：直接掉落对应方块。
      */
-    public void recalculateDrops(EdenGarden greenhouse) {
+    public void recalculateDrops(IGreenHouse greenhouse) {
         this.isValid = false;
 
         Item item = this.seed.getItem();
@@ -125,7 +123,7 @@ public class EIGStemBucket extends EIGBucket {
 
         int metadata = 0; // 如果某些作物需要特定 metadata，可以在这里扩展
 
-        EIGDropTable newDrops = new EIGDropTable();
+        GreenHouseDropTable newDrops = new GreenHouseDropTable();
 
         for (int i = 0; i < NUMBER_OF_DROPS_TO_SIMULATE; i++) {
             List<ItemStack> blockDrops = cropBlock.getDrops(world, x, y, z, metadata, 0);

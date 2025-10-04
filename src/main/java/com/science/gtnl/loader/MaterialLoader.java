@@ -11,7 +11,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAvaritiaddonsChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableChest;
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
 import com.science.gtnl.Utils.text.LanguageLoader;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.common.entity.EntitySteamRocket;
@@ -72,7 +72,7 @@ public class MaterialLoader {
 
     public static void loadPostInit() {
         MilledOre.registry();
-        EIGBucket.LoadEIGBuckets();
+        GreenHouseBucket.LoadEIGBuckets();
         MachineLoader.registry();
         AchievementsLoader.registry();
 

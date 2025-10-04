@@ -66,7 +66,6 @@ import com.science.gtnl.common.recipe.GTNL.SmeltingMixingFurnaceRecipes;
 import com.science.gtnl.common.recipe.GTNL.SpaceDrillRecipes;
 import com.science.gtnl.common.recipe.GTNL.SpaceMinerRecipes;
 import com.science.gtnl.common.recipe.GTNL.SteamCrackerRecipes;
-import com.science.gtnl.common.recipe.GTNL.TestRecipes;
 import com.science.gtnl.common.recipe.GTNL.TheTwilightForestRecipes;
 import com.science.gtnl.common.recipe.GregTech.AlloyBlastSmelterRecipes;
 import com.science.gtnl.common.recipe.GregTech.AlloySmelterRecipes;
@@ -194,7 +193,7 @@ public class RecipeLoader {
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
             new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes(),
-            new ElectrocellGeneratorRecipes(), new TestRecipes() };
+            new ElectrocellGeneratorRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };

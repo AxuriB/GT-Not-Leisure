@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager.buckets;
+package com.science.gtnl.Utils.machine.GreenHouseManager.buckets;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,23 +7,23 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDropTable;
-import com.science.gtnl.Utils.machine.EdenGardenManager.IEIGBucketFactory;
-import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucketFactory;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDropTable;
+import com.science.gtnl.api.IGreenHouse;
 
 import tb.common.block.BlockRainbowCactus;
 import tb.init.TBBlocks;
 
-public class EIGRainbowCactusBucket extends EIGBucket {
+public class GreenHouseRainbowCactusBucket extends GreenHouseBucket {
 
     private static final Random RANDOM = new Random();
     private static final String NBT_IDENTIFIER = "TB:RAINCACTI";
     private static final ArrayList<ItemStack> TEMP_DROPS = new ArrayList<>();
 
-    public static final IEIGBucketFactory factory = new Factory();
+    public static final GreenHouseBucketFactory factory = new Factory();
 
-    public static class Factory implements IEIGBucketFactory {
+    public static class Factory implements GreenHouseBucketFactory {
 
         @Override
         public String getNBTIdentifier() {
@@ -31,27 +31,27 @@ public class EIGRainbowCactusBucket extends EIGBucket {
         }
 
         @Override
-        public EIGBucket tryCreateBucket(EdenGarden greenhouse, ItemStack input) {
+        public GreenHouseBucket tryCreateBucket(IGreenHouse greenhouse, ItemStack input) {
             Block block = Block.getBlockFromItem(input.getItem());
-            return (block instanceof BlockRainbowCactus) ? new EIGRainbowCactusBucket(input, 1) : null;
+            return (block instanceof BlockRainbowCactus) ? new GreenHouseRainbowCactusBucket(input, 1) : null;
         }
 
         @Override
-        public EIGBucket restore(NBTTagCompound nbt) {
-            return new EIGRainbowCactusBucket(nbt);
+        public GreenHouseBucket restore(NBTTagCompound nbt) {
+            return new GreenHouseRainbowCactusBucket(nbt);
         }
     }
 
-    public EIGRainbowCactusBucket(ItemStack seed, int seedCount) {
+    public GreenHouseRainbowCactusBucket(ItemStack seed, int seedCount) {
         super(seed, seedCount, null);
     }
 
-    public EIGRainbowCactusBucket(NBTTagCompound nbt) {
+    public GreenHouseRainbowCactusBucket(NBTTagCompound nbt) {
         super(nbt);
     }
 
     @Override
-    public boolean revalidate(EdenGarden greenhouse) {
+    public boolean revalidate(IGreenHouse greenhouse) {
         return this.isValid();
     }
 
@@ -61,7 +61,7 @@ public class EIGRainbowCactusBucket extends EIGBucket {
     }
 
     @Override
-    public void addProgress(double multiplier, EIGDropTable tracker) {
+    public void addProgress(double multiplier, GreenHouseDropTable tracker) {
         if (!this.isValid()) return;
 
         TEMP_DROPS.clear();

@@ -1,15 +1,13 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager.buckets;
-
-import static com.science.gtnl.common.machine.multiblock.EdenGarden.*;
+package com.science.gtnl.Utils.machine.GreenHouseManager.buckets;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDropTable;
-import com.science.gtnl.Utils.machine.EdenGardenManager.IEIGBucketFactory;
-import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucketFactory;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDropTable;
+import com.science.gtnl.api.IGreenHouse;
 
 import gregtech.api.enums.ItemList;
 import ic2.api.crops.CropCard;
@@ -17,13 +15,13 @@ import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
 
-public class EIGIC2Bucket extends EIGBucket {
+public class GreenHouseIC2Bucket extends GreenHouseBucket {
 
-    public final static IEIGBucketFactory factory = new Factory();
+    public final static GreenHouseBucketFactory factory = new Factory();
     public static final String NBT_IDENTIFIER = "IC2";
     public static final int REVISION_NUMBER = 0;
 
-    public static class Factory implements IEIGBucketFactory {
+    public static class Factory implements GreenHouseBucketFactory {
 
         @Override
         public String getNBTIdentifier() {
@@ -31,34 +29,34 @@ public class EIGIC2Bucket extends EIGBucket {
         }
 
         @Override
-        public EIGBucket tryCreateBucket(EdenGarden greenhouse, ItemStack input) {
+        public GreenHouseBucket tryCreateBucket(IGreenHouse greenhouse, ItemStack input) {
             if (!ItemList.IC2_Crop_Seeds.isStackEqual(input, true, true)) return null;
             if (!input.hasTagCompound()) return null;
 
             CropCard cc = Crops.instance.getCropCard(input);
             if (cc == null) return null;
-            return new EIGIC2Bucket(greenhouse, input);
+            return new GreenHouseIC2Bucket(greenhouse, input);
         }
 
         @Override
-        public EIGBucket restore(NBTTagCompound nbt) {
-            return new EIGIC2Bucket(nbt);
+        public GreenHouseBucket restore(NBTTagCompound nbt) {
+            return new GreenHouseIC2Bucket(nbt);
         }
     }
 
     public double growthTime = 0;
-    public EIGDropTable drops = new EIGDropTable();
+    public GreenHouseDropTable drops = new GreenHouseDropTable();
     public boolean isValid = false;
 
-    public EIGIC2Bucket(EdenGarden greenhouse, ItemStack seed) {
+    public GreenHouseIC2Bucket(IGreenHouse greenhouse, ItemStack seed) {
         super(seed, 1, null);
         this.recalculateDrops(greenhouse);
     }
 
-    public EIGIC2Bucket(NBTTagCompound nbt) {
+    public GreenHouseIC2Bucket(NBTTagCompound nbt) {
         super(nbt);
         if (!nbt.hasKey("invalid")) {
-            this.drops = new EIGDropTable(nbt, "drops");
+            this.drops = new GreenHouseDropTable(nbt, "drops");
             this.growthTime = nbt.getDouble("growthTime");
             this.isValid = nbt.getInteger("version") == REVISION_NUMBER && this.growthTime > 0 && !this.drops.isEmpty();
         }
@@ -83,7 +81,7 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     @Override
-    public void addProgress(double multiplier, EIGDropTable tracker) {
+    public void addProgress(double multiplier, GreenHouseDropTable tracker) {
         if (!this.isValid()) return;
         double growthPercent = multiplier / this.growthTime;
         if (this.drops != null) {
@@ -92,7 +90,7 @@ public class EIGIC2Bucket extends EIGBucket {
     }
 
     @Override
-    public boolean revalidate(EdenGarden greenhouse) {
+    public boolean revalidate(IGreenHouse greenhouse) {
         this.recalculateDrops(greenhouse);
         return this.isValid();
     }
@@ -102,7 +100,7 @@ public class EIGIC2Bucket extends EIGBucket {
         return super.isValid() && this.isValid;
     }
 
-    public void recalculateDrops(EdenGarden greenhouse) {
+    public void recalculateDrops(IGreenHouse greenhouse) {
         this.isValid = false;
         int[] xyz = new int[] { greenhouse.getBaseMetaTileEntity()
             .getXCoord(),
@@ -118,7 +116,7 @@ public class EIGIC2Bucket extends EIGBucket {
             CropCard cc = crop.getCrop();
             crop.setSize((byte) cc.maxSize());
 
-            EIGDropTable drops = new EIGDropTable();
+            GreenHouseDropTable drops = new GreenHouseDropTable();
             for (int i = 0; i < NUMBER_OF_DROPS_TO_SIMULATE; i++) {
                 ItemStack drop = cc.getGain(crop);
                 if (drop == null || drop.stackSize <= 0) continue;
@@ -140,7 +138,7 @@ public class EIGIC2Bucket extends EIGBucket {
 
         public boolean isValid;
 
-        public FakeTileEntityCrop(EIGIC2Bucket bucket, EdenGarden greenhouse, int[] xyz) {
+        public FakeTileEntityCrop(GreenHouseIC2Bucket bucket, IGreenHouse greenhouse, int[] xyz) {
             super();
             this.isValid = false;
             this.ticker = 1;

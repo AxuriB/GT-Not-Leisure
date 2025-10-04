@@ -417,6 +417,7 @@ public enum GTNLItemList implements IItemContainer {
     SteamEntityCrusherModule,
     SteamApiaryModule,
     SteamBeeBreedingModule,
+    SteamGreenhouseModule,
 
     CompoundExtremeCoolingUnit,
     EyeOfHarmonyInjector,

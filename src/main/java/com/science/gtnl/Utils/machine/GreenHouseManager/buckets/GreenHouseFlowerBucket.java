@@ -1,4 +1,4 @@
-package com.science.gtnl.Utils.machine.EdenGardenManager.buckets;
+package com.science.gtnl.Utils.machine.GreenHouseManager.buckets;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoublePlant;
@@ -11,18 +11,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGDropTable;
-import com.science.gtnl.Utils.machine.EdenGardenManager.IEIGBucketFactory;
-import com.science.gtnl.common.machine.multiblock.EdenGarden;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucketFactory;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDropTable;
+import com.science.gtnl.api.IGreenHouse;
 
-public class EIGFlowerBucket extends EIGBucket {
+public class GreenHouseFlowerBucket extends GreenHouseBucket {
 
-    public static final IEIGBucketFactory factory = new Factory();
+    public static final GreenHouseBucketFactory factory = new Factory();
     public static final String NBT_IDENTIFIER = "FLOWER";
     public static final int REVISION_NUMBER = 1;
 
-    public static class Factory implements IEIGBucketFactory {
+    public static class Factory implements GreenHouseBucketFactory {
 
         @Override
         public String getNBTIdentifier() {
@@ -30,11 +30,13 @@ public class EIGFlowerBucket extends EIGBucket {
         }
 
         @Override
-        public EIGBucket tryCreateBucket(EdenGarden greenhouse, ItemStack input) {
+        public GreenHouseBucket tryCreateBucket(IGreenHouse greenhouse, ItemStack input) {
             Item item = input.getItem();
             Block block = Block.getBlockFromItem(item);
+            int meta = input.getItemDamage();
 
-            boolean isValidPlant = item == Items.reeds || block == Blocks.cactus
+            boolean isValidPlant = item == Items.reeds || (item == Items.dye && meta == 3)
+                || block == Blocks.cactus
                 || block instanceof BlockFlower
                 || block instanceof BlockMushroom
                 || block instanceof BlockDoublePlant
@@ -42,20 +44,20 @@ public class EIGFlowerBucket extends EIGBucket {
 
             if (!isValidPlant) return null;
 
-            return new EIGFlowerBucket(input);
+            return new GreenHouseFlowerBucket(input);
         }
 
         @Override
-        public EIGBucket restore(NBTTagCompound nbt) {
-            return new EIGFlowerBucket(nbt);
+        public GreenHouseBucket restore(NBTTagCompound nbt) {
+            return new GreenHouseFlowerBucket(nbt);
         }
     }
 
-    private EIGFlowerBucket(ItemStack input) {
+    private GreenHouseFlowerBucket(ItemStack input) {
         super(input, 1, null);
     }
 
-    private EIGFlowerBucket(NBTTagCompound nbt) {
+    private GreenHouseFlowerBucket(NBTTagCompound nbt) {
         super(nbt);
     }
 
@@ -72,7 +74,7 @@ public class EIGFlowerBucket extends EIGBucket {
     }
 
     @Override
-    public void addProgress(double multiplier, EIGDropTable tracker) {
+    public void addProgress(double multiplier, GreenHouseDropTable tracker) {
         int dropCount = seedCount;
         Block block = Block.getBlockFromItem(seed.getItem());
         if (block instanceof BlockDoublePlant) dropCount *= 2;
@@ -81,7 +83,7 @@ public class EIGFlowerBucket extends EIGBucket {
     }
 
     @Override
-    public boolean revalidate(EdenGarden greenhouse) {
+    public boolean revalidate(IGreenHouse greenhouse) {
         return this.isValid();
     }
 }
