@@ -133,7 +133,7 @@ public class TestRecipes implements IRecipePool {
             GTValues.RA.stdBuilder()
                 .itemInputs(finalInputs.toArray(new Object[0]))
                 .itemOutputs(output)
-                .fluidInputs(hasFluid ? fluid : null)
+                .fluidInputs(hasFluid ? new FluidStack[] { fluid } : new FluidStack[0])
                 .duration(100)
                 .eut(TierEU.LV)
                 .addTo(As);
