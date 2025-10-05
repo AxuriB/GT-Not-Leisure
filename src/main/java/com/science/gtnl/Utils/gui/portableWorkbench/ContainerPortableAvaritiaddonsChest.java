@@ -79,6 +79,10 @@ public class ContainerPortableAvaritiaddonsChest extends Container implements IS
             ItemStack stackInSlot = slot.getStack();
             itemstack = stackInSlot.copy();
 
+            if (isMatchingPortableItem(itemStack, portableID)) {
+                return null;
+            }
+
             if (index < 243) {
                 if (!this.mergeItemStack(stackInSlot, 243, this.inventorySlots.size(), true)) {
                     return null;
@@ -106,4 +110,10 @@ public class ContainerPortableAvaritiaddonsChest extends Container implements IS
         }
         return itemstack;
     }
+
+    public boolean isMatchingPortableItem(ItemStack itemStack, String portableID) {
+        return itemStack != null && itemStack.getItem() instanceof PortableItem
+            && (itemStack.getItemDamage() == 6 || itemStack.getItemDamage() == 7);
+    }
+
 }
