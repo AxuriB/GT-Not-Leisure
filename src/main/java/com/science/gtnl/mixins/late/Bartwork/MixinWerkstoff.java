@@ -1,6 +1,7 @@
 package com.science.gtnl.mixins.late.Bartwork;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,6 +19,7 @@ public abstract class MixinWerkstoff {
         throw new AssertionError();
     }
 
+    @Mutable
     @Accessor(value = "prefixLogic", remap = false)
     public static void setPrefixLogic(NonNullWrappedHashMap<OrePrefixes, Integer> prefixLogic) {
         throw new AssertionError();
