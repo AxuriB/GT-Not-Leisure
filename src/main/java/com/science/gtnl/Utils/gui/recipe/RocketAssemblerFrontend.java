@@ -50,7 +50,7 @@ public class RocketAssemblerFrontend extends RecipeMapFrontend {
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder, Pos2d windowOffset) {
         builder.widget(
-            new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_STEAM_LOGO)
+            new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_LOGO)
                 .setSize(18, 18)
                 .setPos(new Pos2d(134, 98).add(windowOffset)));
     }
