@@ -8,7 +8,6 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,12 +20,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.enums.CommonElements;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
 import crazypants.enderio.EnderIO;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -34,7 +32,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.core.block.ModBlocks;
 import kubatech.loaders.BlockLoader;
@@ -134,12 +131,7 @@ public class GenerationEarthEngine extends MultiMachineBase<GenerationEarthEngin
                     .casingIndex(StructureUtils.getTextureIndex(sBlockCasings8, 5))
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
-            .addElement(
-                'M',
-                ofChain(
-                    Mods.EtFuturumRequiem.isModLoaded() ? ofBlockAnyMeta(
-                        ItemUtils.getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "beacon", 1)))
-                        : ofBlockAnyMeta(Blocks.beacon)))
+            .addElement('M', CommonElements.BlockBeacon.get())
             .addElement('N', ofBlock(EnderIO.blockIngotStorageEndergy, 3))
             .build();
     }
