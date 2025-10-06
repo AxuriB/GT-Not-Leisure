@@ -17,6 +17,7 @@ import com.science.gtnl.Utils.gui.recipe.FallingTowerFrontend;
 import com.science.gtnl.Utils.gui.recipe.GTNLLogoFrontend;
 import com.science.gtnl.Utils.gui.recipe.GeneralFrontend;
 import com.science.gtnl.Utils.gui.recipe.IndustrialInfusionCraftingRecipesFrontend;
+import com.science.gtnl.Utils.gui.recipe.RocketAssemblerFrontend;
 import com.science.gtnl.Utils.gui.recipe.SpaceMinerFrontend;
 import com.science.gtnl.Utils.gui.recipe.SteamGateAssemblerFrontend;
 import com.science.gtnl.Utils.gui.recipe.SteamLogoFrontend;
@@ -579,5 +580,16 @@ public class RecipePool {
         .progressBarPos(78, 26)
         .frontend(ElectrocellGeneratorFrontend::new)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTNLItemList.ElectrocellGenerator.get(1)))
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> RocketAssemblerRecipes = RecipeMapBuilder
+        .of("gtnl.recipe.RocketAssemblerRecipes")
+        .maxIO(52, 1, 0, 0)
+        .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
+        .frontend(RocketAssemblerFrontend::new)
+        .useSpecialSlot()
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(GTNLItemList.SteamGateAssembler.get(1))
+                .setMaxRecipesPerPage(1))
         .build();
 }
