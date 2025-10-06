@@ -57,7 +57,7 @@ public class RocketAssemblerFrontend extends RecipeMapFrontend {
 
     @Override
     public Pos2d getSpecialItemPosition() {
-        return new Pos2d(4, 3);
+        return new Pos2d(9, 14);
     }
 
     @Override
