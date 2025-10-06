@@ -585,7 +585,7 @@ public class RecipePool {
     public static final RecipeMap<RecipeMapBackend> RocketAssemblerRecipes = RecipeMapBuilder
         .of("gtnl.recipe.RocketAssemblerRecipes")
         .maxIO(52, 1, 0, 0)
-        .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
+        .dontUseProgressBar()
         .frontend(RocketAssemblerFrontend::new)
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(GTNLItemList.SteamGateAssembler.get(1))

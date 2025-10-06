@@ -59,6 +59,7 @@ import com.science.gtnl.common.recipe.GTNL.PrimitiveBrickKilnRecipes;
 import com.science.gtnl.common.recipe.GTNL.RareEarthCentrifugalRecipes;
 import com.science.gtnl.common.recipe.GTNL.ReFusionReactorRecipes;
 import com.science.gtnl.common.recipe.GTNL.RealArtificialStarRecipes;
+import com.science.gtnl.common.recipe.GTNL.RocketAssemblerRecipes;
 import com.science.gtnl.common.recipe.GTNL.ShallowChemicalCouplingRecipes;
 import com.science.gtnl.common.recipe.GTNL.ShapedArcaneCraftingRecipes;
 import com.science.gtnl.common.recipe.GTNL.ShimmerRecipes;
@@ -193,7 +194,7 @@ public class RecipeLoader {
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
             new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes(),
-            new ElectrocellGeneratorRecipes() };
+            new ElectrocellGeneratorRecipes(), new RocketAssemblerRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };

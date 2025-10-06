@@ -29,7 +29,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.gui.recipe.ElectrocellGeneratorFrontend;
+import com.science.gtnl.Utils.recipes.ElectrocellGeneratorSpecialValue;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -215,8 +215,8 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
                         if (depleteInput(leftItem) && depleteInput(rightItem)) {
                             mMaxProgresstime = recipe.mDuration;
                             generatorValue = recipe.mSpecialValue / 100D * multiplier;
-                            lEUt = Objects.requireNonNull(
-                                recipe.getMetadata(ElectrocellGeneratorFrontend.SpecialValueFormatter.INSTANCE));
+                            lEUt = Objects
+                                .requireNonNull(recipe.getMetadata(ElectrocellGeneratorSpecialValue.INSTANCE));
                             outputFluid = recipe.mFluidOutputs[0];
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }

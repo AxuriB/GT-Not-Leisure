@@ -22,17 +22,17 @@ public class RocketAssemblerRecipes implements IRecipePool {
 
     @Override
     public void loadRecipes() {
-        registerRocketRecipes(RocketRecipes.getRocketT1Recipes());
-        registerRocketRecipes(RocketRecipes.getRocketT2Recipes());
-        registerRocketRecipes(RocketRecipes.getRocketT3Recipes());
-        registerRocketRecipes(RocketRecipes.getRocketT4Recipes());
-        registerRocketRecipes(RocketRecipes.getRocketT5Recipes());
-        registerRocketRecipes(RocketRecipes.getRocketT6Recipes());
-        registerRocketRecipes(RocketRecipes.getRocketT7Recipes());
-        registerRocketRecipes(RocketRecipes.getRocketT8Recipes());
+        registerRocketRecipes(RocketRecipes.getRocketT1Recipes(), 1);
+        registerRocketRecipes(RocketRecipes.getRocketT2Recipes(), 2);
+        registerRocketRecipes(RocketRecipes.getRocketT3Recipes(), 3);
+        registerRocketRecipes(RocketRecipes.getRocketT4Recipes(), 4);
+        registerRocketRecipes(RocketRecipes.getRocketT5Recipes(), 5);
+        registerRocketRecipes(RocketRecipes.getRocketT6Recipes(), 6);
+        registerRocketRecipes(RocketRecipes.getRocketT7Recipes(), 7);
+        registerRocketRecipes(RocketRecipes.getRocketT8Recipes(), 8);
     }
 
-    public void registerRocketRecipes(List<INasaWorkbenchRecipe> recipes) {
+    public void registerRocketRecipes(List<INasaWorkbenchRecipe> recipes, int specialValue) {
         for (INasaWorkbenchRecipe recipe : recipes) {
             HashMap<Integer, ItemStack> inputs = recipe.getRecipeInput();
 
@@ -49,7 +49,8 @@ public class RocketAssemblerRecipes implements IRecipePool {
             RecipeBuilder.builder()
                 .itemInputsAllowNulls(orderedInputs)
                 .itemOutputs(recipe.getRecipeOutput())
-                .duration(30 * recipe.getRecipeSize() * SECONDS)
+                .duration(recipe.getRecipeSize() * SECONDS)
+                .specialValue(specialValue)
                 .eut((int) TierEU.RECIPE_HV)
                 .addTo(RAR);
         }

@@ -3,11 +3,6 @@ package com.science.gtnl;
 import static com.science.gtnl.ScienceNotLeisure.MODID;
 import static com.science.gtnl.ScienceNotLeisure.MODNAME;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import net.minecraft.item.ItemStack;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +15,6 @@ import com.science.gtnl.common.command.CommandSteamNetwork;
 import com.science.gtnl.common.command.CommandSudo;
 import com.science.gtnl.common.command.CommandTickrate;
 import com.science.gtnl.common.command.CommandTitle;
-import com.science.gtnl.common.recipe.GTNL.RocketAssemblerRecipes;
 import com.science.gtnl.loader.MaterialLoader;
 
 import cpw.mods.fml.common.Mod;
@@ -33,8 +27,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import galaxyspace.core.recipe.RocketRecipes;
-import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 
 @Mod(
     modid = MODID,
@@ -101,55 +93,6 @@ public class ScienceNotLeisure {
     public void completeInit(FMLLoadCompleteEvent event) {
         proxy.completeInit(event);
         MaterialLoader.loadCompleteInit();
-
-        for (INasaWorkbenchRecipe recipe : RocketRecipes.getRocketT1Recipes()) {
-            System.out.println("==== 新配方 ====");
-
-            // 打印配方长度
-            System.out.println("配方长度: " + recipe.getRecipeSize());
-
-            // 打印输入物品
-            HashMap<Integer, ItemStack> inputs = recipe.getRecipeInput();
-            for (Map.Entry<Integer, ItemStack> entry : inputs.entrySet()) {
-                int slot = entry.getKey();
-                ItemStack stack = entry.getValue();
-
-                if (stack != null) {
-                    String unlocalizedName = stack.getUnlocalizedName();
-                    String localizedName = stack.getDisplayName();
-                    int meta = stack.getItemDamage();
-                    System.out.println(
-                        String.format(
-                            "槽位 %d: %s (%s) meta=%d x%d",
-                            slot,
-                            unlocalizedName,
-                            localizedName,
-                            meta,
-                            stack.stackSize));
-                } else {
-                    System.out.println("槽位 " + slot + ": 空");
-                }
-            }
-
-            // 打印输出物品
-            ItemStack output = recipe.getRecipeOutput();
-            if (output != null) {
-                System.out.println(
-                    String.format(
-                        "输出物品: %s (%s) meta=%d x%d",
-                        output.getUnlocalizedName(),
-                        output.getDisplayName(),
-                        output.getItemDamage(),
-                        output.stackSize));
-            } else {
-                System.out.println("输出物品: 空");
-            }
-
-            System.out.println("==================\n");
-        }
-
-        new RocketAssemblerRecipes().loadRecipes();
-
     }
 
     // register server commands in this event handler (Remove if not needed)

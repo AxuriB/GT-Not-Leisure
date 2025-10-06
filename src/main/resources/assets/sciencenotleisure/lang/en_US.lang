@@ -1711,6 +1711,10 @@ Tooltip_SuperSpaceElevator_06=The system automatically activates wireless mode w
 Tooltip_SuperSpaceElevator_07=Disabling this controller also pauses all modules
 Tooltip_SuperSpaceElevator_Casing=Any Space Elevator Base Casing
 
+gtnl.recipe.RocketAssemblerRecipes=Rocket Assembler
+NEI.RocketAssembler.specialValue=Requires %s tier Rocket NASA Workbench Blueprint
+
+
 NameSteamItemVault=Steam Item Vault
 SteamItemVaultRecipeType=Item Vault
 Tooltip_SteamItemVault_00=Original-Tech item vault that can hold up to %s different items!
@@ -3234,4 +3238,4 @@ Info_RealArtificialStar_06=Material Recycling Probability
 RealArtificialStar_Render_Enabled=Enabled Render
 RealArtificialStar_Render_Disabled=Disabled Render
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=Chance to recycle some materials. Probability affected by module level.
-NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=Generates:
+NEI.RealArtificialStarGeneratingRecipes.specialValue=Generates:

@@ -1711,6 +1711,9 @@ Tooltip_SuperSpaceElevator_06=当主结构未安装能源仓时自动进入无�
 Tooltip_SuperSpaceElevator_07=关闭控制器即可暂停所有模块
 Tooltip_SuperSpaceElevator_Casing=任意太空电梯基座机械方块
 
+gtnl.recipe.RocketAssemblerRecipes=火箭组装厂
+NEI.RocketAssembler.specialValue=需要%s阶火箭NASA工作台图纸
+
 NameSteamItemVault=蒸汽物品保险库
 SteamItemVaultRecipeType=物品保险库
 Tooltip_SteamItemVault_00=原始科技保险库，最多可容纳%s种不同的物品！
@@ -3236,4 +3239,4 @@ Info_RealArtificialStar_04=时间场等级
 Info_RealArtificialStar_05=稳定场等级
 Info_RealArtificialStar_06=回收原料几率
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=有概率回收部分材料. 概率受模块等级影响.
-NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=产生：
+NEI.RealArtificialStarGeneratingRecipes.specialValue=产生：

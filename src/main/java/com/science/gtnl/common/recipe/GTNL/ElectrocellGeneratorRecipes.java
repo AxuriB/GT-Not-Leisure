@@ -1,6 +1,6 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import com.science.gtnl.Utils.gui.recipe.ElectrocellGeneratorFrontend;
+import com.science.gtnl.Utils.recipes.ElectrocellGeneratorSpecialValue;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.loader.RecipePool;
 
@@ -14,7 +14,7 @@ import gregtech.api.util.GTOreDictUnificator;
 public class ElectrocellGeneratorRecipes implements IRecipePool {
 
     public RecipeMap<?> EGR = RecipePool.ElectrocellGeneratorRecipes;
-    public ElectrocellGeneratorFrontend.SpecialValueFormatter GENERATOR_EUT = ElectrocellGeneratorFrontend.SpecialValueFormatter.INSTANCE;
+    public ElectrocellGeneratorSpecialValue GENERATOR_EUT = ElectrocellGeneratorSpecialValue.INSTANCE;
 
     @Override
     public void loadRecipes() {

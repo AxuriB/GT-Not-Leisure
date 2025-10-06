@@ -23,6 +23,7 @@
     "Gregtech.AccessorMTEHatch",
     "Gregtech.MixinMTEVoidMinerBase",
     "Gregtech.MixinBaseMetaTileEntity",
+    "Gregtech.MixinGTNEIDefaultHandler",
     "Gregtech.MixinGTShapedRecipe",
     "Gregtech.MixinGodForgeMath",
     "Gregtech.MixinGTShapelessRecipe",
