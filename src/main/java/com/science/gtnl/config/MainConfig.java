@@ -179,7 +179,12 @@ public class MainConfig {
         }
     }
 
+    public static float test = -1000f;
+
     public static void loadConfig() {
+
+        test = (float) config.get(CATEGORY_GTNL_CONFIG, "test", test, "test")
+            .getDouble(test);
 
         // Machine
         enableRecipeOutputChance = config

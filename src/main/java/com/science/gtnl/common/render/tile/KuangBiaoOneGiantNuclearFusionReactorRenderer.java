@@ -16,7 +16,6 @@ public class KuangBiaoOneGiantNuclearFusionReactorRenderer {
 
     public static void renderTileEntityAt(KuangBiaoOneGiantNuclearFusionReactor machine, double x, double y, double z,
         float partialTicks) {
-        if (machine.mMaxProgresstime <= 0) return;
         ForgeDirection back = machine.getExtendedFacing()
             .getRelativeBackInWorld();
         ForgeDirection up = machine.getExtendedFacing()

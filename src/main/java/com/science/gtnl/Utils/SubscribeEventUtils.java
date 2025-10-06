@@ -44,6 +44,8 @@ import net.minecraftforge.event.world.WorldEvent;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.Utils.gui.recipe.ElectrocellGeneratorFrontend;
+import com.science.gtnl.Utils.gui.recipe.RocketAssemblerFrontend;
 import com.science.gtnl.Utils.machine.CircuitMaterialHelper;
 import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.api.TickrateAPI;
@@ -347,7 +349,8 @@ public class SubscribeEventUtils {
         BLACKLISTED_SKIN_URLS.clear();
         BLACKLISTED_CAPE_URLS.clear();
         UUID_CACHE.clear();
-        initializedRecipes.clear();
+        ElectrocellGeneratorFrontend.initializedRecipes.clear();
+        RocketAssemblerFrontend.initializedRecipes.clear();
     }
 
     @SubscribeEvent

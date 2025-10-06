@@ -1,6 +1,7 @@
 package com.science.gtnl.Utils.gui.recipe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -47,9 +48,7 @@ public class FallingTowerFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(6, 7));
-        return positions;
+        return Collections.singletonList(new Pos2d(6, 7));
     }
 
     @Override

@@ -22,6 +22,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,6 +95,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     public float rotation = 0;
     public float prevRotation = 0;
     public static float ROTATION_SPEED = 1.2f;
+    public boolean enableRender = true;
 
     public KuangBiaoOneGiantNuclearFusionReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -114,6 +116,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        if (mMaxProgresstime <= 0 || !enableRender) return;
         KuangBiaoOneGiantNuclearFusionReactorRenderer.renderTileEntityAt(this, x, y, z, timeSinceLastTick);
     }
 
@@ -176,6 +179,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
                 StatCollector.translateToLocalFormatted(
                     "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_05",
                     TIER_COLORS[getRecipeMaxTier()] + VN[getRecipeMaxTier()]))
+            .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_06"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PerfectOverclock"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_03"))
@@ -200,6 +204,18 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     @Override
     public int getRecipeCatalystPriority() {
         return -2;
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            this.enableRender = !enableRender;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal(
+                    "KuangBiaoOneGiantNuclearFusionReactor_Render_" + (this.enableRender ? "Enabled" : "Disabled")));
+        }
     }
 
     @Override
@@ -782,6 +798,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             super.saveNBTData(aNBT);
             aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
             aNBT.setBoolean("wirelessMode", wirelessMode);
+            aNBT.setBoolean("enableRender", enableRender);
         }
 
         @Override
@@ -789,6 +806,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             super.loadNBTData(aNBT);
             wirelessUpgrade = aNBT.getBoolean("wirelessUpgrade");
             wirelessMode = aNBT.getBoolean("wirelessMode");
+            enableRender = aNBT.getBoolean("enableRender");
         }
 
         @Override

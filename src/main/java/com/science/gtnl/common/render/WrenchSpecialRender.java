@@ -200,7 +200,6 @@ public class WrenchSpecialRender {
                         renderPulse(drawX, drawY, width, height, x, y, textureWidth, textureHeight);
 
                         GL11.glEnable(GL11.GL_DEPTH_TEST);
-                        GL11.glEnable(GL11.GL_ALPHA_TEST);
 
                         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -211,6 +210,7 @@ public class WrenchSpecialRender {
                         Gui.func_146110_a(drawX, drawY, x, y, width, height, textureWidth, textureHeight);
 
                         GL11.glDisable(GL11.GL_BLEND);
+                        GL11.glDisable(GL11.GL_ALPHA_TEST);
                     }
                 }
                 break;

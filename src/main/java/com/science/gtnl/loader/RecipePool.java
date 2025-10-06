@@ -587,7 +587,6 @@ public class RecipePool {
         .maxIO(52, 1, 0, 0)
         .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
         .frontend(RocketAssemblerFrontend::new)
-        .useSpecialSlot()
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(GTNLItemList.SteamGateAssembler.get(1))
                 .setMaxRecipesPerPage(1))

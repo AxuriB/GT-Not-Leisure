@@ -1,14 +1,18 @@
 package com.science.gtnl.Utils.gui.recipe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.item.ItemStack;
+
 import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -19,19 +23,24 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.config.MainConfig;
 
+import codechicken.nei.PositionedStack;
 import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.SteamTexture;
-import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
+import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
+import gregtech.nei.GTNEIDefaultHandler;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class RocketAssemblerFrontend extends RecipeMapFrontend {
+
+    public static Object2IntOpenHashMap<GTRecipe> initializedRecipes = new Object2IntOpenHashMap<>();
 
     public RocketAssemblerFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
@@ -41,16 +50,24 @@ public class RocketAssemblerFrontend extends RecipeMapFrontend {
     }
 
     @Override
+    public void addGregTechLogo(ModularWindow.Builder builder, Pos2d windowOffset) {
+        builder.widget(
+            new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_STEAM_LOGO)
+                .setSize(18, 18)
+                .setPos(new Pos2d(126, 116).add(windowOffset)));
+    }
+
+    @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
         return new ArrayList<>();
     }
 
     @Override
     public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-        return new ArrayList<>();
+        return Collections.singletonList(new Pos2d(-1000, -1000));
     }
 
-    public static final int[][] rocketT1 = new int[][] { { 121, 21 }, // 1 Lander
+    public static final int[][] rocketT1Inputs = new int[][] { { 121, 21 }, // 1 Lander
         { 121, 39 }, // 2 Control Computer
         { 103, 30 }, // 3 Fuel Canister
         { 139, 30 }, // 4 Fuel Canister
@@ -73,53 +90,82 @@ public class RocketAssemblerFrontend extends RecipeMapFrontend {
         { 121, 57 } // 21 Chest
     };
 
-    // @Override
-    // public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-    // final GTRecipe recipe = neiCachedRecipe.mRecipe;
-    //
-    // if (!initializedRecipes.contains(recipe)) {
-    // ItemStack[] itemStacks = recipe.mInputs;
-    // if (itemStacks == null) return;
-    //
-    // if (itemStacks.length <= 21) {
-    // for (int i = 0; i < itemStacks.length; i++) {
-    // ItemStack stack = itemStacks[i];
-    // if (stack == null) continue;
-    //
-    // int[] pos = rocketT1[i];
-    // neiCachedRecipe.mInputs.add(new PositionedStack(stack, pos[0], pos[1], false));
-    // }
-    // }
-    //
-    // initializedRecipes.add(recipe);
-    // }
-    //
-    // super.drawNEIOverlays(neiCachedRecipe);
-    // }
+    public static final int[] rocketT1Output = new int[] { 121, 80 };
+
+    @Override
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        final GTRecipe recipe = neiCachedRecipe.mRecipe;
+        ItemStack[] inputs = recipe.mInputs;
+        ItemStack output = recipe.mOutputs[0];
+        if (inputs == null || output == null) return;
+
+        int[][] selectedInputs = null;
+        int[] selectedOutput = null;
+        int tier = 0;
+
+        switch (inputs.length) {
+            case 20, 21 -> {
+                selectedInputs = rocketT1Inputs;
+                selectedOutput = rocketT1Output;
+                tier = 1;
+            }
+            default -> {}
+        }
+
+        if (selectedInputs == null || selectedOutput == null) {
+            super.drawNEIOverlays(neiCachedRecipe);
+            return;
+        }
+
+        if (!initializedRecipes.containsKey(recipe)) {
+
+            for (int i = 0; i < inputs.length; i++) {
+                ItemStack stack = inputs[i];
+                if (stack == null) continue;
+                neiCachedRecipe.mInputs
+                    .add(new PositionedStack(stack, selectedInputs[i][0], selectedInputs[i][1], false));
+            }
+
+            neiCachedRecipe.mOutputs.add(new PositionedStack(output, selectedOutput[0], selectedOutput[1], false));
+
+            initializedRecipes.put(recipe, tier);
+        }
+
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_BLEND);
+        // GL11.glEnable(GL11.GL_ALPHA_TEST);
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(ModularUITextures.ITEM_SLOT.location);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glTranslatef(0f, 0f, MainConfig.test);
+
+        for (int i = 0; i < inputs.length; i++) {
+            Gui.func_146110_a(selectedInputs[i][0] - 1, selectedInputs[i][1] - 1, 0, 0, 18, 18, 18, 18);
+        }
+        Gui.func_146110_a(selectedOutput[0] - 1, selectedOutput[1] - 1, 0, 0, 18, 18, 18, 18);
+
+        GL11.glDisable(GL11.GL_BLEND);
+        // GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GL11.glPopMatrix();
+
+        super.drawNEIOverlays(neiCachedRecipe);
+    }
 
     @Override
     public ModularWindow.Builder createNEITemplate(IItemHandlerModifiable itemInputsInventory,
         IItemHandlerModifiable itemOutputsInventory, IItemHandlerModifiable specialSlotInventory,
         IItemHandlerModifiable fluidInputsInventory, IItemHandlerModifiable fluidOutputsInventory,
         Supplier<Float> progressSupplier, Pos2d windowOffset) {
+        // Override regular createNEITemplate method, so we can remove the background texture with the ugly border.
         ModularWindow.Builder builder = ModularWindow.builder(neiProperties.recipeBackgroundSize);
 
-        for (int i = 0; i < rocketT1.length; i++) {
-            int[] pos = rocketT1[i];
-            builder.widget(
-                SlotWidget.phantom(itemInputsInventory, i)
-                    .setBackground(ModularUITextures.ITEM_SLOT)
-                    .setPos(new Pos2d(pos[0], pos[1]).add(windowOffset))
-                    .setSize(18, 18));
+        // First draw progress bar in background
+        if (uiProperties.useProgressBar) {
+            addProgressBar(builder, progressSupplier, windowOffset);
         }
 
-        builder.widget(
-            SlotWidget.phantom(itemOutputsInventory, 0)
-                .setBackground(ModularUITextures.ITEM_SLOT)
-                .setPos(new Pos2d(139, 80).add(windowOffset))
-                .setSize(18, 18));
-
-        forEachSlots(
+        UIHelper.forEachSlots(
             (i, backgrounds, pos) -> builder.widget(
                 SlotWidget.phantom(itemInputsInventory, i)
                     .setBackground(backgrounds)
@@ -157,12 +203,7 @@ public class RocketAssemblerFrontend extends RecipeMapFrontend {
             SteamVariant.NONE,
             windowOffset);
 
-        addProgressBar(builder, progressSupplier, windowOffset);
-
-        builder.widget(
-            new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_STEAM_LOGO)
-                .setSize(18, 18)
-                .setPos(new Pos2d(130, 111).add(windowOffset)));
+        addGregTechLogo(builder, windowOffset);
 
         for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : uiProperties.specialTextures) {
             builder.widget(
@@ -178,83 +219,4 @@ public class RocketAssemblerFrontend extends RecipeMapFrontend {
 
         return builder;
     }
-
-    public static void forEachSlots(UIHelper.ForEachSlot forEachItemInputSlot,
-        UIHelper.ForEachSlot forEachItemOutputSlot, UIHelper.ForEachSlot forEachSpecialSlot,
-        UIHelper.ForEachSlot forEachFluidInputSlot, UIHelper.ForEachSlot forEachFluidOutputSlot,
-        IDrawable itemSlotBackground, IDrawable fluidSlotBackground, BasicUIProperties uiProperties, int itemInputCount,
-        int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant, Pos2d offset) {
-        List<Pos2d> itemInputPositions = uiProperties.itemInputPositionsGetter.apply(itemInputCount)
-            .stream()
-            .map(p -> p.add(offset))
-            .collect(Collectors.toList());
-        for (int i = 0; i < itemInputPositions.size(); i++) {
-            forEachItemInputSlot.accept(
-                i,
-                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, false, i, false, steamVariant),
-                itemInputPositions.get(i));
-        }
-
-        List<Pos2d> itemOutputPositions = uiProperties.itemOutputPositionsGetter.apply(itemOutputCount)
-            .stream()
-            .map(p -> p.add(offset))
-            .collect(Collectors.toList());
-        for (int i = 0; i < itemOutputPositions.size(); i++) {
-            forEachItemOutputSlot.accept(
-                i,
-                getBackgroundsForSlot(itemSlotBackground, uiProperties, false, true, i, false, steamVariant),
-                itemOutputPositions.get(i));
-        }
-
-        List<Pos2d> fluidInputPositions = uiProperties.fluidInputPositionsGetter.apply(fluidInputCount)
-            .stream()
-            .map(p -> p.add(offset))
-            .collect(Collectors.toList());
-        for (int i = 0; i < fluidInputPositions.size(); i++) {
-            forEachFluidInputSlot.accept(
-                i,
-                getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, false, i, false, steamVariant),
-                fluidInputPositions.get(i));
-        }
-
-        List<Pos2d> fluidOutputPositions = uiProperties.fluidOutputPositionsGetter.apply(fluidOutputCount)
-            .stream()
-            .map(p -> p.add(offset))
-            .collect(Collectors.toList());
-        for (int i = 0; i < fluidOutputPositions.size(); i++) {
-            forEachFluidOutputSlot.accept(
-                i,
-                getBackgroundsForSlot(fluidSlotBackground, uiProperties, true, true, i, false, steamVariant),
-                fluidOutputPositions.get(i));
-        }
-    }
-
-    public static IDrawable[] getBackgroundsForSlot(IDrawable base, BasicUIProperties uiProperties, boolean isFluid,
-        boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
-        IDrawable overlay = getOverlay(uiProperties, isFluid, isOutput, index, isSpecial, steamVariant);
-        if (overlay != null) {
-            return new IDrawable[] { base, overlay };
-        } else {
-            return new IDrawable[] { base };
-        }
-    }
-
-    @Nullable
-    public static IDrawable getOverlay(BasicUIProperties uiProperties, boolean isFluid, boolean isOutput, int index,
-        boolean isSpecial, SteamVariant steamVariant) {
-        if (isSpecial && !uiProperties.useSpecialSlot) {
-            return null;
-        }
-        if (steamVariant != SteamVariant.NONE) {
-            SteamTexture steamTexture = uiProperties.getOverlayForSlotSteam(index, isFluid, isOutput, isSpecial);
-            if (steamTexture != null) {
-                return steamTexture.get(steamVariant);
-            } else {
-                return null;
-            }
-        } else {
-            return uiProperties.getOverlayForSlot(index, isFluid, isOutput, isSpecial);
-        }
-    }
-
 }

@@ -85,7 +85,6 @@ public class SudokuOverlayHandler {
         int width = font.getStringWidth(textRemaining);
 
         GL11.glPushMatrix();
-        GL11.glTranslatef(0, 0, 0);
         GL11.glColor4f(1f, 1f, 1f, 1f);
 
         Minecraft.getMinecraft()

@@ -76,9 +76,9 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     protected final int HORIZONTAL_OFF_SET = 16;
     protected final int VERTICAL_OFF_SET = 10;
     protected final int DEPTH_OFF_SET = 9;
-    public static boolean isCreativeOrb = false;
-    public static boolean enableRender = true;
-    public static int currentEssence = 0;
+    public boolean isCreativeOrb = false;
+    public boolean enableRender = true;
+    public int currentEssence = 0;
     public static final String[][] shape = StructureUtils.readStructureFromFile(BSSA_STRUCTURE_FILE_PATH);
     private static final int MACHINEMODE_BLOOD_DEMON = 0;
     private static final int MACHINEMODE_FALLING_TOWER = 1;
@@ -164,12 +164,12 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (enableRender) {
-            enableRender = false;
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("BloodSoulSacrificialArray_Render_Off"));
-        } else {
-            enableRender = true;
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("BloodSoulSacrificialArray_Render_On"));
+        if (getBaseMetaTileEntity().isServerSide()) {
+            enableRender = !enableRender;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal(
+                    "BloodSoulSacrificialArray_Render_" + (this.enableRender ? "Enabled" : "Disabled")));
         }
         return true;
     }
