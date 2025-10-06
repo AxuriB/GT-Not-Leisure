@@ -16,7 +16,7 @@ public class RocketAssemblerSpecialValue implements INEISpecialInfoFormatter {
     @Override
     public List<String> format(RecipeDisplayInfo recipeInfo) {
         List<String> specialInfo = new ArrayList<>();
-        if (recipeInfo.recipe.mSpecialValue > 0) {
+        if (recipeInfo.recipe.mSpecialValue > 1) {
             specialInfo.add(
                 String.format(
                     StatCollector.translateToLocal("NEI.RocketAssembler.specialValue"),

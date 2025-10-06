@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -40,7 +41,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -201,8 +201,15 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
 
     @Override
     public boolean checkHatch() {
-        return super.checkHatch() && GTUtility
-            .areStacksEqual(getControllerSlot(), GTModHandler.getModItem(Thaumcraft.ID, "WandCasting", 1, 9000));
+        return super.checkHatch() && GTUtility.areStacksEqual(
+            getControllerSlot(),
+            ItemUtils.createItemStack(
+                Thaumcraft.ID,
+                "WandCasting",
+                1,
+                9000,
+                "{cap:\"matrix\",rod:\"infinity\",aer:999999900,aqua:999999900,ignis:999999900,ordo:999999900,perditio:999999900,terra:999999900}",
+                null));
     }
 
     @Override

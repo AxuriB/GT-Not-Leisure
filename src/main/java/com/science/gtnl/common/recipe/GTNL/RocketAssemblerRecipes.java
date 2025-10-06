@@ -12,13 +12,24 @@ import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.loader.RecipePool;
 
 import galaxyspace.core.recipe.RocketRecipes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.util.GTModHandler;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 
 public class RocketAssemblerRecipes implements IRecipePool {
 
     public RecipeMap<?> RAR = RecipePool.RocketAssemblerRecipes;
+
+    public ItemStack[] itemStacks = new ItemStack[] {
+        GTModHandler.getModItem(Mods.GalacticraftCore.ID, "item.schematic", 1, 1),
+        GTModHandler.getModItem(Mods.GalacticraftMars.ID, "item.schematic", 1, 0),
+        GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier4", 1, 0),
+        GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier5", 1, 0),
+        GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier6", 1, 0),
+        GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier7", 1, 0),
+        GTModHandler.getModItem(Mods.GalaxySpace.ID, "item.SchematicTier8", 1, 0) };
 
     @Override
     public void loadRecipes() {
@@ -46,13 +57,15 @@ public class RocketAssemblerRecipes implements IRecipePool {
                 orderedInputs[slot - 1] = inputs.getOrDefault(slot, null);
             }
 
-            RecipeBuilder.builder()
-                .itemInputsAllowNulls(orderedInputs)
+            RecipeBuilder recipeBuilder = new RecipeBuilder().itemInputsAllowNulls(orderedInputs)
                 .itemOutputs(recipe.getRecipeOutput())
                 .duration(recipe.getRecipeSize() * SECONDS)
                 .specialValue(specialValue)
-                .eut((int) TierEU.RECIPE_HV)
-                .addTo(RAR);
+                .eut((int) TierEU.RECIPE_HV);
+
+            if (specialValue - 2 >= 0) recipeBuilder.special(itemStacks[specialValue - 2]);
+
+            recipeBuilder.addTo(RAR);
         }
     }
 
