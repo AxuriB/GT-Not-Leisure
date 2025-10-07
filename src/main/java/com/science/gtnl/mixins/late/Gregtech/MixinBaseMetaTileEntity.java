@@ -9,7 +9,7 @@ import com.science.gtnl.api.ITileEntityTickAcceleration;
 import com.science.gtnl.common.machine.multiblock.MeteorMiner;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.KuangBiaoOneGiantNuclearFusionReactor;
-import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.RocketAssembler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,7 +26,9 @@ public abstract class MixinBaseMetaTileEntity extends CommonBaseMetaTileEntity i
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        if (mMetaTileEntity instanceof MeteorMiner && MainConfig.enableAprilFool) {
+        if (mMetaTileEntity instanceof MeteorMiner || mMetaTileEntity instanceof HighPerformanceComputationArray
+            || mMetaTileEntity instanceof KuangBiaoOneGiantNuclearFusionReactor
+            || mMetaTileEntity instanceof RocketAssembler) {
             return AxisAlignedBB.getBoundingBox(
                 this.xCoord - 256,
                 this.yCoord - 256,
@@ -35,27 +37,6 @@ public abstract class MixinBaseMetaTileEntity extends CommonBaseMetaTileEntity i
                 this.yCoord + 256,
                 this.zCoord + 256);
         }
-
-        if (mMetaTileEntity instanceof HighPerformanceComputationArray) {
-            return AxisAlignedBB.getBoundingBox(
-                this.xCoord - 256,
-                this.yCoord - 256,
-                this.zCoord - 256,
-                this.xCoord + 256,
-                this.yCoord + 256,
-                this.zCoord + 256);
-        }
-
-        if (mMetaTileEntity instanceof KuangBiaoOneGiantNuclearFusionReactor) {
-            return AxisAlignedBB.getBoundingBox(
-                this.xCoord - 256,
-                this.yCoord - 256,
-                this.zCoord - 256,
-                this.xCoord + 256,
-                this.yCoord + 256,
-                this.zCoord + 256);
-        }
-
         return super.getRenderBoundingBox();
     }
 }

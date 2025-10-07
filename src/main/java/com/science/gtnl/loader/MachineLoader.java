@@ -198,6 +198,7 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.M
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MegaBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MolecularTransformer;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.PrecisionAssembler;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.RocketAssembler;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumDryingFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumFreezer;
 import com.science.gtnl.common.machine.multiblock.SuperSpaceElevator;
@@ -1391,6 +1392,13 @@ public class MachineLoader {
                 "NameSteamGreenhouseModule",
                 StatCollector.translateToLocal("NameSteamGreenhouseModule")));
         addItemTooltip(GTNLItemList.SteamGreenhouseModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.RocketAssembler.set(
+            new RocketAssembler(
+                ROCKET_ASSEMBLER.ID,
+                "NameRocketAssembler",
+                StatCollector.translateToLocal("NameRocketAssembler")));
+        addItemTooltip(GTNLItemList.RocketAssembler.get(1), AnimatedText.SNL_QYZG);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

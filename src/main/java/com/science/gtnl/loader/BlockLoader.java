@@ -602,6 +602,8 @@ public class BlockLoader {
             .set(MetaBlockConstructors.initMetaBlockCasing("Industrial Steam Casing", 1, BlockLoader.metaCasing02));
         GTNLItemList.AdvancedIndustrialSteamCasing.set(
             MetaBlockConstructors.initMetaBlockCasing("Advanced Industrial Steam Casing", 2, BlockLoader.metaCasing02));
+        GTNLItemList.StainlessSteelGearBox
+            .set(MetaBlockConstructors.initMetaBlockCasing("Stainless Steel Gear Box", 3, BlockLoader.metaCasing02));
     }
 
     public static void registry() {

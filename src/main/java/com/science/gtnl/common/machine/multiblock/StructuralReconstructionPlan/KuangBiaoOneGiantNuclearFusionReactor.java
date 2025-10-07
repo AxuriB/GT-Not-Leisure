@@ -141,6 +141,18 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("enableRender", enableRender);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        enableRender = aNBT.getBoolean("enableRender");
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
@@ -798,7 +810,6 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             super.saveNBTData(aNBT);
             aNBT.setBoolean("wirelessUpgrade", wirelessUpgrade);
             aNBT.setBoolean("wirelessMode", wirelessMode);
-            aNBT.setBoolean("enableRender", enableRender);
         }
 
         @Override
@@ -806,7 +817,6 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             super.loadNBTData(aNBT);
             wirelessUpgrade = aNBT.getBoolean("wirelessUpgrade");
             wirelessMode = aNBT.getBoolean("wirelessMode");
-            enableRender = aNBT.getBoolean("enableRender");
         }
 
         @Override

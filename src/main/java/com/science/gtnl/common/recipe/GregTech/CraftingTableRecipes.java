@@ -976,6 +976,14 @@ public class CraftingTableRecipes implements IRecipePool {
                 "craftingToolWrench", 'C', ItemList.Casing_Firebricks.get(1), 'D', ItemList.Hull_Bronze_Bricks.get(1),
                 'E', ItemList.Casing_Firebox_Bronze.get(1), 'F', "craftingToolHardHammer" });
 
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.StainlessSteelGearBox.get(1),
+            new Object[] { "ABA", "CDC", "AEA", 'A',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1L), 'B', "craftingToolHardHammer",
+                'C', GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.StainlessSteel, 1L), 'D',
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1L), 'E',
+                "craftingToolWrench" });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),

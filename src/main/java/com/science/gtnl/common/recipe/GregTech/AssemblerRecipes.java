@@ -2353,6 +2353,18 @@ public class AssemblerRecipes implements IRecipePool {
                 .duration(300)
                 .eut(TierEU.ZPM)
                 .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1L),
+                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.StainlessSteel, 2L),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4L),
+                    GTUtility.getIntegratedCircuit(3))
+                .itemOutputs(GTNLItemList.StainlessSteelGearBox.get(1))
+                .specialValue(0)
+                .duration(100)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(As);
         }
     }
 }

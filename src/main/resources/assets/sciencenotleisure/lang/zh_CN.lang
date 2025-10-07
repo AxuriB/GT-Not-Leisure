@@ -446,6 +446,7 @@ MetaCasing.31.name=蒸汽压缩管道方块
 MetaCasing02.0.name=抗震安全外壳
 MetaCasing02.1.name=工业蒸汽机械方块
 MetaCasing02.2.name=进阶工业蒸汽机械方块
+MetaCasing02.3.name=不锈钢齿轮箱机械方块
 
 MetaBlock.0.name=测试方块
 MetaBlock.1.name=§d新视野线圈
@@ -1711,7 +1712,14 @@ Tooltip_SuperSpaceElevator_06=当主结构未安装能源仓时自动进入无�
 Tooltip_SuperSpaceElevator_07=关闭控制器即可暂停所有模块
 Tooltip_SuperSpaceElevator_Casing=任意太空电梯基座机械方块
 
+NameRocketAssembler=火箭组装厂
 gtnl.recipe.RocketAssemblerRecipes=火箭组装厂
+RocketAssemblerRecipeType=火箭组装厂
+Tooltip_RocketAssembler_00=§d§l我有一个航天梦
+Tooltip_RocketAssembler_01=使用螺丝刀开启/关闭动画特效
+Tooltip_RocketAssembler_Casing=任意洁净不锈钢机械方块
+RocketAssembler_Render_Enabled=开启渲染
+RocketAssembler_Render_Disabled=关闭渲染
 NEI.RocketAssembler.specialValue=需要%s阶火箭NASA工作台图纸
 
 NameSteamItemVault=蒸汽物品保险库

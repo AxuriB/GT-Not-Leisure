@@ -124,6 +124,7 @@ public enum GTNLItemList implements IItemContainer {
     VibrationSafeCasing,
     IndustrialSteamCasing,
     AdvancedIndustrialSteamCasing,
+    StainlessSteelGearBox,
 
     TrollFace,
     DepletedExcitedNaquadahFuelRod,
@@ -521,6 +522,7 @@ public enum GTNLItemList implements IItemContainer {
     FOGAlloySmelterModule,
     FOGAlloyBlastSmelterModule,
     FOGExtractorModule,
+    RocketAssembler,
 
     EnergyTransferNode,
     DieselGeneratorLV,

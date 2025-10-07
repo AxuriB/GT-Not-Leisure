@@ -338,7 +338,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     protected ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
 
-            @NotNull
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {

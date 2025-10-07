@@ -31,7 +31,7 @@ public abstract class MixinGTNEIDefaultHandler extends TemplateRecipeHandler {
      * @see RocketAssemblerFrontend
      */
     @Inject(method = "drawBackground", at = @At("TAIL"), cancellable = true)
-    private void onScrewdriverRightClickInject(int aRecipeIndex, CallbackInfo ci) {
+    private void drawBackground(int aRecipeIndex, CallbackInfo ci) {
         GTNEIDefaultHandler.CachedDefaultRecipe cachedRecipe = ((GTNEIDefaultHandler.CachedDefaultRecipe) this.arecipes
             .get(aRecipeIndex));
         GTRecipe recipe = cachedRecipe.mRecipe;
