@@ -553,6 +553,9 @@ tile.Stargate_Coil_Compressed.7.name=压缩星门线圈-七重
 tile.Stargate_Coil_Compressed.8.name=压缩星门线圈-八重
 tile.Stargate_Coil_Compressed.9.name=压缩星门线圈-九重
 
+tile.WaterCandle.name=水蜡烛
+gtnl.potion.battle=战斗
+
 tile.CardboardBox.name=纸箱
 Tooltip_CardBoardBox_00_Yes=方块数据：是
 Tooltip_CardBoardBox_00_No=方块数据：否

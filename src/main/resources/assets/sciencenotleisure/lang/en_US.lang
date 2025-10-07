@@ -553,6 +553,9 @@ tile.Stargate_Coil_Compressed.7.name=Compressed Stargate Coil - Tier 7
 tile.Stargate_Coil_Compressed.8.name=Compressed Stargate Coil - Tier 8
 tile.Stargate_Coil_Compressed.9.name=Compressed Stargate Coil - Tier 9
 
+tile.WaterCandle.name=Water Candle
+gtnl.potion.battle=Battle
+
 tile.CardboardBox.name=Cardboard Box
 Tooltip_CardBoardBox_00_Yes=Block Data: Yes
 Tooltip_CardBoardBox_00_No=Block Data：No

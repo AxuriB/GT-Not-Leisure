@@ -17,11 +17,13 @@
     "Minecraft.MixinEntityPlayer",
     "Minecraft.MixinEntity",
     "Minecraft.MixinEntityLiving",
+    "Minecraft.MixinPotion",
     "Minecraft.MixinEntityItem",
     "Minecraft.MixinEntityPlayerMP",
     "Minecraft.MixinExplosion",
     "Minecraft.MixinItemStack",
     "Minecraft.MixinItem",
+    "Minecraft.MixinPotionEffect",
     "Minecraft.MixinWorld",
     "Minecraft.MixinWorldServer"
   ],

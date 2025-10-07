@@ -31,6 +31,7 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorksh
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
+import com.science.gtnl.common.block.blocks.tile.TileEntityWaterCandle;
 import com.science.gtnl.common.entity.EntityPlayerLeashKnot;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.common.entity.EntitySteamRocket;
@@ -48,6 +49,7 @@ import com.science.gtnl.common.render.tile.LaserBeconRenderer;
 import com.science.gtnl.common.render.tile.NanoPhagocytosisPlantRenderer;
 import com.science.gtnl.common.render.tile.PlayerDollRenderer;
 import com.science.gtnl.common.render.tile.RealArtificialStarRenderer;
+import com.science.gtnl.common.render.tile.WaterCandleRenderer;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.ItemLoader;
@@ -74,6 +76,9 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
+
+        RenderingRegistry.registerBlockHandler(new WaterCandleRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterCandle.class, new WaterCandleRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserBeacon.class, new LaserBeconRenderer());
 

@@ -35,12 +35,14 @@ import com.science.gtnl.common.block.blocks.BlockNanoPhagocytosisPlantRender;
 import com.science.gtnl.common.block.blocks.BlockPlayerDoll;
 import com.science.gtnl.common.block.blocks.BlockPlayerLeash;
 import com.science.gtnl.common.block.blocks.BlockShimmerFluid;
+import com.science.gtnl.common.block.blocks.BlockWaterCandle;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
 import com.science.gtnl.common.block.blocks.tile.TileEntityCardboardBox;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
+import com.science.gtnl.common.block.blocks.tile.TileEntityWaterCandle;
 import com.science.gtnl.common.item.items.SaplingBrickuoia;
 
 import bartworks.common.loaders.ItemRegistry;
@@ -54,6 +56,7 @@ public class BlockLoader {
     public static Block blockArtificialStarRender;
     public static Block laserBeacon;
     public static Block playerDoll;
+    public static Block waterCandle;
     public static Block blockPlayerLeash;
     public static Block blockNanoPhagocytosisPlantRender;
     public static Block blockEternalGregTechWorkshopRender;
@@ -86,6 +89,7 @@ public class BlockLoader {
         cardboardBox = new BlockCardboardBox();
         laserBeacon = new BlockLaserBeacon();
         playerDoll = new BlockPlayerDoll();
+        waterCandle = new BlockWaterCandle();
         blockPlayerLeash = new BlockPlayerLeash();
         blockArtificialStarRender = new BlockArtificialStarRender();
         blockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
@@ -98,6 +102,7 @@ public class BlockLoader {
         GameRegistry.registerTileEntity(TileEntityArtificialStar.class, "ArtificialStarRenderTileEntity");
         GameRegistry.registerTileEntity(TileEntityPlayerDoll.class, "PlayerDollTileEntity");
         GameRegistry.registerTileEntity(TileEntityLaserBeacon.class, "LaserBeaconTileEntity");
+        GameRegistry.registerTileEntity(TileEntityWaterCandle.class, "WaterCandleTileEntity");
 
         GameRegistry
             .registerBlock(BlockLoader.metaBlock, ItemBlockBase.class, BlockLoader.metaBlock.getUnlocalizedName());
