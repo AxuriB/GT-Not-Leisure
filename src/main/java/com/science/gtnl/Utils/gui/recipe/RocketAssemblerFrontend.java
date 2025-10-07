@@ -43,7 +43,7 @@ public class RocketAssemblerFrontend extends RecipeMapFrontend {
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
             uiPropertiesBuilder,
-            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 180))
+            neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 175))
                 .neiSpecialInfoFormatter(new RocketAssemblerSpecialValue()));
     }
 
@@ -57,7 +57,7 @@ public class RocketAssemblerFrontend extends RecipeMapFrontend {
 
     @Override
     public Pos2d getSpecialItemPosition() {
-        return new Pos2d(9, 14);
+        return new Pos2d(9, 13);
     }
 
     @Override

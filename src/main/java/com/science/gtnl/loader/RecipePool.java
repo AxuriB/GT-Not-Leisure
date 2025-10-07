@@ -589,7 +589,7 @@ public class RecipePool {
         .frontend(RocketAssemblerFrontend::new)
         .useSpecialSlot()
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(GTNLItemList.SteamGateAssembler.get(1))
+            builder -> builder.setDisplayStack(GTNLItemList.RocketAssembler.get(1))
                 .setMaxRecipesPerPage(1))
         .build();
 }

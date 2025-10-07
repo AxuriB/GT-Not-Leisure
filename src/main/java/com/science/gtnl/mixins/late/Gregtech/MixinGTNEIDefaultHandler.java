@@ -89,6 +89,7 @@ public abstract class MixinGTNEIDefaultHandler extends TemplateRecipeHandler {
             }
 
             GL11.glPushMatrix();
+            GL11.glDisable(GL11.GL_LIGHTING);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             Minecraft.getMinecraft()
                 .getTextureManager()
@@ -99,6 +100,7 @@ public abstract class MixinGTNEIDefaultHandler extends TemplateRecipeHandler {
             }
             Gui.func_146110_a(selectedOutput[0] - 1, selectedOutput[1] - 1, 0, 0, 18, 18, 18, 18);
 
+            GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glPopMatrix();
         }
     }
