@@ -236,7 +236,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             && tierBrickCasing == 1
             && tierFireboxCasing == 1
             && tierIndustrialCasing == 1
-            && mCountCasing >= 100) {
+            && mCountCasing >= 50) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -248,7 +248,7 @@ public class LargeSteamFurnace extends SteamMultiMachineBase<LargeSteamFurnace> 
             && tierBrickCasing == 2
             && tierFireboxCasing == 2
             && tierIndustrialCasing == 2
-            && mCountCasing >= 100) {
+            && mCountCasing >= 50) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();

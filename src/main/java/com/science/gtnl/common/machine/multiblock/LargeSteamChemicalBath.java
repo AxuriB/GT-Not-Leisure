@@ -161,13 +161,13 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
             return false;
-        if (tierMachineCasing == 1 && tierFrameCasing == 1 && mCountCasing >= 230) {
+        if (tierMachineCasing == 1 && tierFrameCasing == 1 && mCountCasing >= 150) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        if (tierMachineCasing == 2 && tierFrameCasing == 2 && mCountCasing >= 230) {
+        if (tierMachineCasing == 2 && tierFrameCasing == 2 && mCountCasing >= 150) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
