@@ -831,6 +831,7 @@ item.SteamRocket.name=Steam Rocket
 Tooltip_SteamRocket_00=Requires Molten Compressed Steam as fuel
 Tooltip_SteamRocket_01=You must be someone who plays Oxygen Not Included!
 entity.GalacticraftCore.SteamRocket.name=Steam Rocket
+schematic.rocketSteam.name=Rocket (Steam)
 
 item.TestItem.name=Test Item
 Tooltip_Testitem_00=If you see this Tooltip

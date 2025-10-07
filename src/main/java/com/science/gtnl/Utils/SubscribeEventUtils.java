@@ -68,6 +68,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import ic2.api.event.ExplosionEvent;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 
 public class SubscribeEventUtils {
 
@@ -93,6 +94,9 @@ public class SubscribeEventUtils {
             // construct message from current server config
             ConfigSyncPacket msg = new ConfigSyncPacket();// or pass static values
             network.sendTo(msg, player);
+
+            SchematicRegistry
+                .addUnlockedPage(player, SchematicRegistry.getMatchingRecipeForID(MainConfig.idSchematicRocketSteam));
 
             TimeStopManager.setTimeStopped(false);
 

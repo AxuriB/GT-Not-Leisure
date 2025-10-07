@@ -831,6 +831,7 @@ item.SteamRocket.name=蒸汽火箭
 Tooltip_SteamRocket_00=需要熔融压缩蒸汽作为燃料
 Tooltip_SteamRocket_01=你就是玩缺氧玩的！
 entity.GalacticraftCore.SteamRocket.name=蒸汽火箭
+schematic.rocketSteam.name=火箭(蒸汽)
 
 item.TestItem.name=测试物品
 Tooltip_Testitem_00=如果你看到了这个Tooltip
