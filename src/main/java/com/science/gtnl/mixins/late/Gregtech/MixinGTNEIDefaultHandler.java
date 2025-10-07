@@ -32,8 +32,10 @@ public abstract class MixinGTNEIDefaultHandler extends TemplateRecipeHandler {
      */
     @Inject(method = "drawBackground", at = @At("TAIL"), cancellable = true)
     private void drawBackground(int aRecipeIndex, CallbackInfo ci) {
+        if (arecipes == null || arecipes.isEmpty()) return;
         GTNEIDefaultHandler.CachedDefaultRecipe cachedRecipe = ((GTNEIDefaultHandler.CachedDefaultRecipe) this.arecipes
             .get(aRecipeIndex));
+        if (cachedRecipe == null) return;
         GTRecipe recipe = cachedRecipe.mRecipe;
         if (recipe.getRecipeCategory().recipeMap != RecipePool.RocketAssemblerRecipes) return;
         if (lastRecipe == recipe || recipe.mSpecialValue > 0) {
