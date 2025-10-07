@@ -40,6 +40,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gtPlusPlus.core.block.ModBlocks;
@@ -227,16 +228,12 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
                 .hasWorkJustBeenEnabled()) {
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
-                    if (!this.depleteInputFromRestrictedHatches(
-                        this.mFluidIceInputHatch,
-                        (int) (10 * getInputVoltageTier() * getInputVoltageTier()))) {
+                    int baseAmount = (int) (10 * Math.pow(GTUtility.getTier(lEUt), 2));
+                    if (!this.depleteInputFromRestrictedHatches(this.mFluidIceInputHatch, baseAmount)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
-                            ShutDownReasonRegistry.outOfFluid(
-                                Objects.requireNonNull(
-                                    FluidUtils.getFluidStack(
-                                        "ice",
-                                        (int) (10 * getInputVoltageTier() * getInputVoltageTier())))));
+                            ShutDownReasonRegistry
+                                .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("ice", baseAmount))));
                         endRecipeProcessing();
                     }
                 }

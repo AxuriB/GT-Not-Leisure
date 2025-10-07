@@ -12,14 +12,14 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+import com.science.gtnl.ClientProxy;
 import com.science.gtnl.common.render.model.WaterCandleModel;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 
+@ThreadSafeISBRH(perThread = true)
 public class WaterCandleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
-
-    public static final int renderID = RenderingRegistry.getNextAvailableRenderId();
 
     private final WaterCandleModel model = new WaterCandleModel();
 
@@ -28,7 +28,7 @@ public class WaterCandleRenderer extends TileEntitySpecialRenderer implements IS
 
     @Override
     public int getRenderId() {
-        return renderID;
+        return ClientProxy.waterCandleRenderID;
     }
 
     @Override

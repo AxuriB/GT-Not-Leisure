@@ -73,6 +73,8 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 
 public class ClientProxy extends CommonProxy {
 
+    public static final int waterCandleRenderID = 114514;
+
     @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);

@@ -45,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.misc.GTStructureChannels;
@@ -289,7 +290,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
                 .hasWorkJustBeenEnabled()) {
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
-                    int baseAmount = (int) (10 * getInputVoltageTier() * getInputVoltageTier());
+                    int baseAmount = (int) (10 * Math.pow(GTUtility.getTier(lEUt), 2));
                     if (mMultiTier == 4) {
                         baseAmount *= 2;
                     }

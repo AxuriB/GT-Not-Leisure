@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import com.science.gtnl.ClientProxy;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.block.blocks.tile.TileEntityWaterCandle;
-import com.science.gtnl.common.render.tile.WaterCandleRenderer;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -46,18 +46,13 @@ public class BlockWaterCandle extends BlockContainer {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
-        return true;
-    }
-
-    @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityWaterCandle();
     }
 
     @Override
     public int getRenderType() {
-        return WaterCandleRenderer.renderID;
+        return ClientProxy.waterCandleRenderID;
     }
 
     @SideOnly(Side.CLIENT)

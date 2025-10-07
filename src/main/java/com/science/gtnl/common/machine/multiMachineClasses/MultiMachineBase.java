@@ -69,6 +69,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -1098,6 +1099,74 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         for (MTEHatch h : mDynamoHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mExoticDynamoHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mParallelControllerHatches) h.updateTexture(getCasingTextureID());
+    }
+
+    @Override
+    public long getMaxInputVoltage() {
+        long rVoltage = 0;
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) rVoltage += tHatch.getBaseMetaTileEntity()
+            .getInputVoltage();
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) rVoltage += tHatch.getBaseMetaTileEntity()
+            .getInputVoltage();
+        return rVoltage;
+    }
+
+    @Override
+    public long getAverageInputVoltage() {
+        return Math.max(
+            ExoticEnergyInputHelper.getAverageInputVoltageMulti(mEnergyHatches),
+            ExoticEnergyInputHelper.getAverageInputVoltageMulti(mExoticEnergyHatches));
+    }
+
+    @Override
+    public long getMaxInputAmps() {
+        return Math.max(
+            ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(mEnergyHatches),
+            ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(mExoticEnergyHatches));
+    }
+
+    @Override
+    public long getMaxInputEu() {
+        return Math.max(
+            ExoticEnergyInputHelper.getTotalEuMulti(mEnergyHatches),
+            ExoticEnergyInputHelper.getTotalEuMulti(mExoticEnergyHatches));
+    }
+
+    @Override
+    public long getMaxInputPower() {
+        long eut = 0;
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
+            eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
+        }
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
+            IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
+            eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
+        }
+        return eut;
+    }
+
+    @Override
+    public long getInputVoltageTier() {
+        long rTier = 0;
+        if (!mEnergyHatches.isEmpty()) {
+            rTier = mEnergyHatches.get(0)
+                .getInputTier();
+            for (int i = 1; i < mEnergyHatches.size(); i++) {
+                if (mEnergyHatches.get(i)
+                    .getInputTier() != rTier) return 0;
+            }
+        }
+        if (!mExoticEnergyHatches.isEmpty()) {
+            rTier = mExoticEnergyHatches.get(0)
+                .getInputTier();
+            for (int i = 1; i < mExoticEnergyHatches.size(); i++) {
+                if (mExoticEnergyHatches.get(i)
+                    .getInputTier() != rTier) return 0;
+            }
+        }
+
+        return rTier;
     }
 
     public enum CustomHatchElement implements IHatchElement<MultiMachineBase<?>> {
