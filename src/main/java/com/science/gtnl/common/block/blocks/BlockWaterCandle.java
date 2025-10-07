@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import com.science.gtnl.ClientProxy;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.block.blocks.tile.TileEntityWaterCandle;
@@ -20,6 +19,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockWaterCandle extends BlockContainer {
+
+    public static final int waterCandleRenderID = 114514;
 
     public BlockWaterCandle() {
         super(Material.iron);
@@ -52,7 +53,7 @@ public class BlockWaterCandle extends BlockContainer {
 
     @Override
     public int getRenderType() {
-        return ClientProxy.waterCandleRenderID;
+        return waterCandleRenderID;
     }
 
     @SideOnly(Side.CLIENT)
