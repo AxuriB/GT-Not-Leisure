@@ -79,7 +79,7 @@ public class ContainerPortableAvaritiaddonsChest extends Container implements IS
             ItemStack stackInSlot = slot.getStack();
             itemstack = stackInSlot.copy();
 
-            if (isMatchingPortableItem(itemStack, portableID)) {
+            if (isMatchingPortableItem(itemstack, portableID)) {
                 return null;
             }
 
