@@ -20,7 +20,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -35,6 +34,10 @@ import com.reavaritia.common.item.BlazeAxe;
 import com.reavaritia.common.item.BlazePickaxe;
 import com.reavaritia.common.item.BlazeShovel;
 import com.reavaritia.common.item.BlazeSword;
+import com.reavaritia.common.item.InfinityAxe;
+import com.reavaritia.common.item.InfinityHoe;
+import com.reavaritia.common.item.InfinityPickaxe;
+import com.reavaritia.common.item.InfinityShovel;
 import com.reavaritia.common.item.InfinitySword;
 import com.reavaritia.common.item.MatterCluster;
 import com.reavaritia.common.item.ToolHelper;
@@ -60,7 +63,7 @@ public class SubscribeEventUtils {
         int meta = event.world.getBlockMetadata(event.x, event.y, event.z);
         if (block.getBlockHardness(event.entityPlayer.worldObj, event.x, event.y, event.z) <= -1
             && event.entityPlayer.getHeldItem()
-                .getItem() == ItemLoader.InfinityPickaxe
+                .getItem() instanceof InfinityPickaxe
             && (block.getMaterial() == Material.rock || block.getMaterial() == Material.iron)) {
 
             if (event.entityPlayer.getHeldItem()
@@ -80,7 +83,7 @@ public class SubscribeEventUtils {
                         event.z,
                         event.entityPlayer);
                     if (drop == null) drop = new ItemStack(block, 1, meta);
-                    dropItem(drop, event.entityPlayer.worldObj, event.x, event.y, event.z);
+                    ToolHelper.dropItem(drop, event.entityPlayer.worldObj, event.x, event.y, event.z);
                 } else block.harvestBlock(event.world, event.entityPlayer, event.x, event.y, event.z, meta);
                 event.entityPlayer.worldObj.setBlockToAir(event.x, event.y, event.z);
                 event.world.playAuxSFX(2001, event.x, event.y, event.z, Block.getIdFromBlock(block) + (meta << 12));
@@ -93,7 +96,7 @@ public class SubscribeEventUtils {
         if (event.harvester == null) return;
         if (event.harvester.getHeldItem() == null) return;
         ItemStack held = event.harvester.getHeldItem();
-        if (held.getItem() == ItemLoader.InfinityPickaxe) {
+        if (held.getItem() instanceof InfinityPickaxe) {
             LudicrousEvents.extraLuck(event, 5);
 
             if (held.getTagCompound() != null && held.getTagCompound()
@@ -106,7 +109,7 @@ public class SubscribeEventUtils {
                     .addAll(event.drops);
                 event.drops.clear();
             }
-        } else if (held.getItem() == ItemLoader.InfinityShovel) {
+        } else if (held.getItem() instanceof InfinityShovel) {
 
             if (held.getTagCompound() != null && held.getTagCompound()
                 .getBoolean("DestroyerMode")
@@ -125,7 +128,7 @@ public class SubscribeEventUtils {
                     .addAll(event.drops);
                 event.drops.clear();
             }
-        } else if (held.getItem() == ItemLoader.InfinityAxe) {
+        } else if (held.getItem() instanceof InfinityAxe) {
 
             if (ToolHelper.hammering.contains(event.harvester) && ToolHelper.hammerdrops.containsKey(event.harvester)
                 && ToolHelper.hammerdrops.get(event.harvester) != null) {
@@ -141,7 +144,7 @@ public class SubscribeEventUtils {
     public void onHarvestDrops(BlockEvent.HarvestDropsEvent event) {
         if (event.harvester != null && event.harvester.getHeldItem() != null
             && event.harvester.getHeldItem()
-                .getItem() == ItemLoader.InfinityHoe) {
+                .getItem() instanceof InfinityHoe) {
 
             if (event.block == Blocks.melon_block || event.block == Blocks.pumpkin
                 || event.block instanceof BlockCocoa) {
@@ -162,21 +165,11 @@ public class SubscribeEventUtils {
         return false;
     }
 
-    public static void dropItem(ItemStack drop, World world, int x, int y, int z) {
-        float f = 0.7F;
-        double d0 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        double d1 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        double d2 = (double) (world.rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, (double) x + d0, (double) y + d1, (double) z + d2, drop);
-        entityitem.delayBeforeCanPickup = 10;
-        world.spawnEntityInWorld(entityitem);
-    }
-
     @SubscribeEvent
     public void onGetHurt(LivingHurtEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer player)) return;
         if (player.getHeldItem() != null && player.getHeldItem()
-            .getItem() == ItemLoader.InfinitySword && player.isUsingItem()) event.setCanceled(true);
+            .getItem() instanceof InfinitySword && player.isUsingItem()) event.setCanceled(true);
         if (LudicrousItems.isInfinite(player) && !event.source.damageType.equals("infinity")) event.setCanceled(true);
     }
 
@@ -185,7 +178,7 @@ public class SubscribeEventUtils {
         if (!(event.entityLiving instanceof EntityPlayer player)) return;
         if (event.source.getEntity() != null && event.source.getEntity() instanceof EntityPlayer) return;
         if (player.getHeldItem() != null && player.getHeldItem()
-            .getItem() == ItemLoader.InfinitySword && player.isUsingItem()) event.setCanceled(true);
+            .getItem() instanceof InfinitySword && player.isUsingItem()) event.setCanceled(true);
         if (LudicrousItems.isInfinite(player) && !event.source.damageType.equals("infinity")) event.setCanceled(true);
     }
 
@@ -193,7 +186,7 @@ public class SubscribeEventUtils {
     public void diggity(PlayerEvent.BreakSpeed event) {
         if (event.entityPlayer.getHeldItem() != null) {
             ItemStack held = event.entityPlayer.getHeldItem();
-            if (held.getItem() == ItemLoader.InfinityPickaxe || held.getItem() == ItemLoader.InfinityShovel) {
+            if (held.getItem() instanceof InfinityPickaxe || held.getItem() instanceof InfinityShovel) {
                 if (!event.entityPlayer.onGround) event.newSpeed *= 5;
                 if (!event.entityPlayer.isInsideOfMaterial(Material.water)
                     && !EnchantmentHelper.getAquaAffinityModifier(event.entityPlayer)) event.newSpeed *= 5;
@@ -213,7 +206,7 @@ public class SubscribeEventUtils {
     public void canHarvest(PlayerEvent.HarvestCheck event) {
         if (event.entityPlayer.getHeldItem() != null) {
             ItemStack held = event.entityPlayer.getHeldItem();
-            if (held.getItem() == ItemLoader.InfinityShovel && event.block.getMaterial() == Material.rock) {
+            if (held.getItem() instanceof InfinityShovel && event.block.getMaterial() == Material.rock) {
                 if (held.getTagCompound() != null && held.getTagCompound()
                     .getBoolean("DestroyerMode") && isGarbageBlock(event.block)) event.success = true;
             }
@@ -232,7 +225,7 @@ public class SubscribeEventUtils {
     @SubscribeEvent
     public void clusterClustererererer(EntityItemPickupEvent event) {
         if (event.entityPlayer != null && event.item.getEntityItem()
-            .getItem() == ItemLoader.MatterCluster) {
+            .getItem() instanceof MatterCluster) {
             ItemStack stack = event.item.getEntityItem();
             EntityPlayer player = event.entityPlayer;
 
@@ -241,7 +234,7 @@ public class SubscribeEventUtils {
                     break;
                 }
                 ItemStack slot = player.inventory.mainInventory[i];
-                if (slot != null && slot.getItem() != null && slot.getItem() == ItemLoader.MatterCluster) {
+                if (slot != null && slot.getItem() != null && slot.getItem() instanceof MatterCluster) {
                     MatterCluster.mergeClusters(stack, slot);
                 }
             }
