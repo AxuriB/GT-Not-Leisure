@@ -9,7 +9,7 @@ import ru.timeconqueror.lootgames.api.minigame.LootGame;
 import ru.timeconqueror.lootgames.api.packet.IServerGamePacket;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
 
-public class SPMSResetNumber implements IServerGamePacket {
+public class SPSudokuResetNumber implements IServerGamePacket {
 
     @Override
     public void encode(PacketBuffer bufferTo) {}

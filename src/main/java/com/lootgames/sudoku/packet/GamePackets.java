@@ -8,8 +8,8 @@ public class GamePackets {
 
         LootGamesAPI.regServerPacket(SPSSyncCell.class);
         LootGamesAPI.regServerPacket(SPSSyncBoard.class);
-        LootGamesAPI.regServerPacket(SPMSSpawnLevelBeatParticles.class);
-        LootGamesAPI.regServerPacket(SPMSResetNumber.class);
+        LootGamesAPI.regServerPacket(SPSudokuSpawnLevelBeatParticles.class);
+        LootGamesAPI.regServerPacket(SPSudokuResetNumber.class);
 
     }
 }

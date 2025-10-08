@@ -30,7 +30,9 @@ public class CraftingTableRecipes implements IRecipePool {
     public static long bitsd = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
         | GTModHandler.RecipeBits.BUFFERED
         | GTModHandler.RecipeBits.DISMANTLEABLE;
-    public static long recipeFlags = GTModHandler.RecipeBits.MIRRORED | GTModHandler.RecipeBits.KEEPNBT;
+    public static long recipeFlags = GTModHandler.RecipeBits.MIRRORED | GTModHandler.RecipeBits.KEEPNBT
+        | GTModHandler.RecipeBits.BUFFERED
+        | GTModHandler.RecipeBits.DISMANTLEABLE;
 
     @Override
     public void loadRecipes() {

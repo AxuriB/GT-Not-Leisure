@@ -19,7 +19,7 @@ import ru.timeconqueror.lootgames.api.util.Pos2i;
 
 public class SudokuRenderer extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation BOARD = new ResourceLocation("lootgames", "textures/game/ms_board.png");
+    public static ResourceLocation BOARD = new ResourceLocation("lootgames", "textures/game/ms_board.png");
 
     @Override
     public void renderTileEntityAt(TileEntity teIn, double x, double y, double z, float partialTicks) {
@@ -191,9 +191,13 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
 
                     GL11.glPushMatrix();
                     GL11.glEnable(GL11.GL_DEPTH_TEST);
+                    GL11.glPolygonOffset(-1f, -1f);
                     GL11.glScalef(0.1f, 0.1f, 0.1f);
-                    GL11.glTranslatef((cx + 0.33f) * 10f, (cz) * 10f, -0.2f);
-                    DrawHelper.drawString(Integer.toString(actualVal), 0, 0, 0, color, true);
+                    GL11.glTranslatef((cx + 0.33f) * 10f, cz * 10f, -0.2f);
+                    GL11.glTranslatef(0.5f, 0.5f, 0.05f);
+                    DrawHelper.drawString(Integer.toString(actualVal), 0, 0, 0, (color & 16579836) >> 2, false);
+                    GL11.glTranslatef(-0.5f, -0.5f, -0.05f);
+                    DrawHelper.drawString(Integer.toString(actualVal), 0, 0, 0, color, false);
                     GL11.glDisable(GL11.GL_DEPTH_TEST);
                     GL11.glPopMatrix();
                 }

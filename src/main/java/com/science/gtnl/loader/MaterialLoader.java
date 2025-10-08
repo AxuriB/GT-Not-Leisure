@@ -2,11 +2,16 @@ package com.science.gtnl.loader;
 
 import static com.science.gtnl.Utils.CardboardBoxUtils.*;
 
+import net.blay09.mods.craftingtweaks.api.CraftingTweaksAPI;
+import net.blay09.mods.craftingtweaks.api.SimpleTweakProvider;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.brandon3055.draconicevolution.common.ModBlocks;
 import com.cleanroommc.bogosorter.BogoSortAPI;
+import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAvaritiaddonsChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableChest;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
@@ -24,6 +29,7 @@ import com.science.gtnl.common.recipe.OreDictionary.WoodDistillationRecipes;
 import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.WerkstoffAdderRegistry;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -73,6 +79,10 @@ public class MaterialLoader {
             RocketAssemblerRecipes.loadSteamRocketRecipe();
         }
         RocketFuels.addFuel(EntitySteamRocket.class, MaterialPool.CompressedSteam.getMolten(1));
+
+        if (Mods.InventoryBogoSorter.isModLoaded()) {
+            loadCraftTweak();
+        }
     }
 
     public static void loadCompleteInit() {
@@ -87,6 +97,16 @@ public class MaterialLoader {
         if (MainConfig.enableStickItem) {
             RecipeLoader.loadVillageTrade();
         }
+    }
+
+    @Optional.Method(modid = "bogosorter")
+    public static void loadCraftTweak() {
+        SimpleTweakProvider provider = CraftingTweaksAPI
+            .registerSimpleProvider(ModList.ScienceNotLeisure.ID, ContainerPortableAdvancedWorkbench.class);
+        provider.setTweakRotate(true, true, 0, 0);
+        provider.setTweakBalance(true, true, 0, 0);
+        provider.setTweakClear(true, true, 0, 0);
+        provider.setAlignToGrid(EnumFacing.WEST);
     }
 
     public static void loadOreDictionaryRecipes() {

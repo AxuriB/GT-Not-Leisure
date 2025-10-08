@@ -9,7 +9,7 @@ import ru.timeconqueror.lootgames.api.packet.IServerGamePacket;
 import ru.timeconqueror.lootgames.utils.future.BlockPos;
 import ru.timeconqueror.lootgames.utils.sanity.Particles;
 
-public class SPMSSpawnLevelBeatParticles implements IServerGamePacket {
+public class SPSudokuSpawnLevelBeatParticles implements IServerGamePacket {
 
     @Override
     public void encode(PacketBuffer bufferTo) {}

@@ -15,16 +15,16 @@ public class SudokuBoard {
 
     @Getter
     @Setter
-    private long lastClickTime = -1;
+    public long lastClickTime = -1;
     public static long currentTime = 0;
     public static final int SIZE = 9;
     @Getter
     @Setter
-    private Integer[][] solution = new Integer[SIZE][SIZE]; // 完整解
-    private Integer[][] puzzle = new Integer[SIZE][SIZE]; // 挖空后的谜题
-    private Integer[][] player = new Integer[SIZE][SIZE]; // 玩家填写
+    public Integer[][] solution = new Integer[SIZE][SIZE]; // Complete solution
+    public Integer[][] puzzle = new Integer[SIZE][SIZE]; // Puzzle after removing cells
+    public Integer[][] player = new Integer[SIZE][SIZE]; // Player's filled values
 
-    /** 根据挖空数量生成棋盘 */
+    /** Generate a Sudoku board based on the number of blanks */
     public void generate(int blanks) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -38,7 +38,7 @@ public class SudokuBoard {
         resetPlayer();
     }
 
-    private boolean fillSolution(int row, int col) {
+    public boolean fillSolution(int row, int col) {
         if (row == SIZE) return true;
         int nextRow = col == SIZE - 1 ? row + 1 : row;
         int nextCol = (col + 1) % SIZE;
@@ -53,18 +53,18 @@ public class SudokuBoard {
         return false;
     }
 
-    private boolean canPlace(Integer[][] g, int r, int c, int n) {
+    public boolean canPlace(Integer[][] g, int r, int c, int n) {
         for (int i = 0; i < SIZE; i++) if (g[r][i] == n || g[i][c] == n) return false;
         int br = (r / 3) * 3, bc = (c / 3) * 3;
         for (int rr = br; rr < br + 3; rr++) for (int cc = bc; cc < bc + 3; cc++) if (g[rr][cc] == n) return false;
         return true;
     }
 
-    private void copySolutionToPuzzle() {
+    public void copySolutionToPuzzle() {
         for (int i = 0; i < SIZE; i++) System.arraycopy(solution[i], 0, puzzle[i], 0, SIZE);
     }
 
-    private void removeCells(int blanks) {
+    public void removeCells(int blanks) {
         List<Integer> pos = RandHelper.shuffledList(0, SIZE * SIZE - 1);
         int removed = 0;
 
@@ -73,10 +73,19 @@ public class SudokuBoard {
             int c = idx % SIZE;
 
             int backup = puzzle[r][c];
+            if (backup == 0) continue; // Skip if already empty
+
             puzzle[r][c] = 0;
 
-            if (countSolutions(new Integer[SIZE][SIZE], 0, 0) != 1) {
-                // 恢复，不能挖这个格子
+            // Create a deep copy of the current puzzle state for the solver
+            Integer[][] boardCopy = new Integer[SIZE][SIZE];
+            for (int i = 0; i < SIZE; i++) {
+                System.arraycopy(puzzle[i], 0, boardCopy[i], 0, SIZE);
+            }
+
+            // Check if the puzzle has a unique solution
+            if (countSolutions(boardCopy, 0, 0) != 1) {
+                // Restore, this cell cannot be removed
                 puzzle[r][c] = backup;
             } else {
                 removed++;
@@ -85,20 +94,13 @@ public class SudokuBoard {
         }
     }
 
-    private int countSolutions(Integer[][] board, int row, int col) {
-        // 初始复制 puzzle 给 board
-        if (row == 0 && col == 0) {
-            for (int i = 0; i < SIZE; i++) {
-                System.arraycopy(puzzle[i], 0, board[i], 0, SIZE);
-            }
-        }
-
+    public int countSolutions(Integer[][] board, int row, int col) {
         if (row == SIZE) return 1;
 
         int nextRow = col == SIZE - 1 ? row + 1 : row;
         int nextCol = (col + 1) % SIZE;
 
-        if (board[row][col] != 0) {
+        if (board[row][col] != null && board[row][col] != 0) {
             return countSolutions(board, nextRow, nextCol);
         }
 
@@ -107,14 +109,17 @@ public class SudokuBoard {
             if (canPlace(board, row, col, n)) {
                 board[row][col] = n;
                 totalSolutions += countSolutions(board, nextRow, nextCol);
-                if (totalSolutions > 1) return totalSolutions; // 超过一个解，提前退出
+                if (totalSolutions > 1) {
+                    board[row][col] = 0;
+                    return totalSolutions;
+                }
                 board[row][col] = 0;
             }
         }
         return totalSolutions;
     }
 
-    private void resetPlayer() {
+    public void resetPlayer() {
         for (int i = 0; i < SIZE; i++) System.arraycopy(puzzle[i], 0, player[i], 0, SIZE);
     }
 
@@ -163,7 +168,7 @@ public class SudokuBoard {
 
     public boolean checkWin() {
         for (int i = 0; i < SIZE; i++) for (int j = 0; j < SIZE; j++) {
-            if (player[i][j] == 0 || player[i][j].equals(solution[i][j])) return false;
+            if (player[i][j] == null || player[i][j] == 0 || !player[i][j].equals(solution[i][j])) return false;
         }
         return true;
     }
