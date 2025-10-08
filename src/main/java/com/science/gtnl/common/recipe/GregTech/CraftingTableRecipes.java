@@ -1008,6 +1008,36 @@ public class CraftingTableRecipes implements IRecipePool {
                 'B', new ItemStack(Items.diamond_boots, 1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
 
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_sword", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_sword, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_pickaxe", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_pickaxe, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_axe", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_axe, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_spade", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_shovel, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_hoe", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_hoe, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),
