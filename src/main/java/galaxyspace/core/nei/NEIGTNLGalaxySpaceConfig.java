@@ -89,17 +89,17 @@ public class NEIGTNLGalaxySpaceConfig implements IConfigureNEI {
         recipeHandler.addRecipe(input, new PositionedStack(GTNLItemList.SteamRocket.get(1), 134 - x, 73 - y));
 
         List<PositionedStack> input2 = new ArrayList<>(input);
-        input.add(new PositionedStack(new ItemStack(GSBlocks.ironChest, 1, 3), 134 - x, 46 - y));
+        input2.add(new PositionedStack(new ItemStack(GSBlocks.ironChest, 1, 3), 134 - x, 46 - y));
         recipeHandler
             .addRecipe(input2, new PositionedStack(GTNLItemList.SteamRocket.getWithMeta(1, 1), 134 - x, 73 - y));
 
         input2 = new ArrayList<>(input);
-        input.add(new PositionedStack(new ItemStack(GSBlocks.ironChest), 134 - x, 46 - y));
+        input2.add(new PositionedStack(new ItemStack(GSBlocks.ironChest, 1, 0), 134 - x, 46 - y));
         recipeHandler
             .addRecipe(input2, new PositionedStack(GTNLItemList.SteamRocket.getWithMeta(1, 2), 134 - x, 73 - y));
 
         input2 = new ArrayList<>(input);
-        input.add(new PositionedStack(new ItemStack(GSBlocks.ironChest, 1, 1), 134 - x, 46 - y));
+        input2.add(new PositionedStack(new ItemStack(GSBlocks.ironChest, 1, 1), 134 - x, 46 - y));
         recipeHandler
             .addRecipe(input2, new PositionedStack(GTNLItemList.SteamRocket.getWithMeta(1, 3), 134 - x, 73 - y));
     }
