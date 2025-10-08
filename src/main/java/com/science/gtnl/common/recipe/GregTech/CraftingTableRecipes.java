@@ -984,6 +984,30 @@ public class CraftingTableRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1L), 'E',
                 "craftingToolWrench" });
 
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_helmet", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_helmet, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_chestplate", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_chestplate, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_leggings", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_leggings, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_boots", 1),
+            new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
+                'B', new ItemStack(Items.diamond_boots, 1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),
