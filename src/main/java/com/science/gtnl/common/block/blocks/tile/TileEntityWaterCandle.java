@@ -24,7 +24,7 @@ public class TileEntityWaterCandle extends TileEntity {
                 double distance = player.getDistance(xCoord, yCoord, zCoord);
 
                 if (distance <= 64.0D) {
-                    player.addPotionEffect(new PotionEffect(EffectLoader.battle.id, 20, 4));
+                    player.addPotionEffect(new PotionEffect(EffectLoader.battle.id, 20, 2));
                 }
             }
         }
