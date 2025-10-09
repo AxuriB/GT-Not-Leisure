@@ -402,10 +402,12 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
 
             if (entity instanceof EntityItem item) {
                 item.setPosition(centerX, centerY, centerZ);
+                iterator.remove();
             }
 
             if (entity instanceof EntityXPOrb xpOrb) {
                 xpOrb.setPosition(centerX, centerY, centerZ);
+                iterator.remove();
             }
             processed++;
         }
