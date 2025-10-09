@@ -11,7 +11,7 @@ import gregtech.api.util.GTUtility;
 
 public class CustomChanceBonusProvider implements ChanceBonusManager.ChanceBonusProvider {
 
-    private final Map<MTEMultiBlockBase, GTRecipe> recipeMap = new WeakHashMap<>();
+    public Map<MTEMultiBlockBase, GTRecipe> recipeMap = new WeakHashMap<>();
 
     @Override
     public Double getBonus(Object machine, int recipeTier, double prevMultiplier, GTRecipe recipe) {
@@ -25,7 +25,7 @@ public class CustomChanceBonusProvider implements ChanceBonusManager.ChanceBonus
         return null;
     }
 
-    private double getTierChanceBonus(int tier, int baseTier, double bonusPerTier) {
+    public double getTierChanceBonus(int tier, int baseTier, double bonusPerTier) {
         return tier <= baseTier ? 0.0 : (tier - baseTier) * bonusPerTier;
     }
 

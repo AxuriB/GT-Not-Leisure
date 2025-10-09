@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.mojang.authlib.GameProfile;
 import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.BlockState;
-import com.science.gtnl.Utils.CraftingUnitHandler;
 import com.science.gtnl.Utils.Utils;
+import com.science.gtnl.Utils.recipes.CraftingUnitHandler;
 import com.science.gtnl.common.packet.StatusMessage;
 
 import appeng.api.config.SecurityPermissions;

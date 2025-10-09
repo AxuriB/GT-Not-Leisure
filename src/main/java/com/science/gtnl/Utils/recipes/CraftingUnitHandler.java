@@ -1,6 +1,9 @@
-package com.science.gtnl.Utils;
+package com.science.gtnl.Utils.recipes;
 
 import net.minecraft.item.ItemStack;
+
+import com.science.gtnl.Utils.BlockState;
+import com.science.gtnl.Utils.SimpleItem;
 
 import appeng.api.AEApi;
 import appeng.api.definitions.IBlockDefinition;

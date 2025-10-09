@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-import com.science.gtnl.Utils.CraftingUnitHandler;
 import com.science.gtnl.Utils.SubscribeEventUtils;
 import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
@@ -18,6 +17,7 @@ import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableFurnace;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableInfinityChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableChest;
 import com.science.gtnl.Utils.machine.VMTweakHelper;
+import com.science.gtnl.Utils.recipes.CraftingUnitHandler;
 import com.science.gtnl.common.item.ItemDebug;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.packet.NetWorkHandler;

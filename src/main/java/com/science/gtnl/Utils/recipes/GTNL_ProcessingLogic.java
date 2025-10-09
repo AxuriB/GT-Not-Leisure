@@ -32,45 +32,45 @@ import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
 public class GTNL_ProcessingLogic extends ProcessingLogic {
 
     // Traits
-    protected IVoidable machine;
-    protected IRecipeLockable recipeLockableMachine;
-    protected boolean isRecipeLocked;
-    protected ItemStack[] inputItems;
-    protected FluidStack[] inputFluids;
-    protected ItemStack specialSlotItem;
-    protected int maxParallel = 1;
-    protected Supplier<Integer> maxParallelSupplier;
-    protected int batchSize = 1;
-    protected Supplier<RecipeMap<?>> recipeMapSupplier;
-    protected double euModifier = 1.0;
-    protected double speedBoost = 1.0;
-    protected double extraSpeedBoost = 1.0;
-    protected long availableVoltage;
-    protected long availableAmperage;
-    protected int maxOverclocks = Integer.MAX_VALUE;
-    protected int maxTierSkips = 1;
-    protected boolean protectItems;
-    protected boolean protectFluids;
-    protected double overClockTimeReduction = 2.0;
-    protected double overClockPowerIncrease = 4.0;
-    protected boolean amperageOC = true;
+    public IVoidable machine;
+    public IRecipeLockable recipeLockableMachine;
+    public boolean isRecipeLocked;
+    public ItemStack[] inputItems;
+    public FluidStack[] inputFluids;
+    public ItemStack specialSlotItem;
+    public int maxParallel = 1;
+    public Supplier<Integer> maxParallelSupplier;
+    public int batchSize = 1;
+    public Supplier<RecipeMap<?>> recipeMapSupplier;
+    public double euModifier = 1.0;
+    public double speedBoost = 1.0;
+    public double extraSpeedBoost = 1.0;
+    public long availableVoltage;
+    public long availableAmperage;
+    public int maxOverclocks = Integer.MAX_VALUE;
+    public int maxTierSkips = 1;
+    public boolean protectItems;
+    public boolean protectFluids;
+    public double overClockTimeReduction = 2.0;
+    public double overClockPowerIncrease = 4.0;
+    public boolean amperageOC = true;
 
     // Calculated results
-    protected ItemStack[] outputItems;
-    protected FluidStack[] outputFluids;
-    protected long calculatedEut;
-    protected int duration;
-    protected int calculatedParallels = 0;
+    public ItemStack[] outputItems;
+    public FluidStack[] outputFluids;
+    public long calculatedEut;
+    public int duration;
+    public int calculatedParallels = 0;
 
     // Cache
-    protected RecipeMap<?> lastRecipeMap;
-    protected GTRecipe lastRecipe;
+    public RecipeMap<?> lastRecipeMap;
+    public GTRecipe lastRecipe;
 
     /**
      * The {@link IDualInputInventoryWithPattern} that has any possible recipe found in the last call of
      * {@link #tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern)}.
      */
-    protected IDualInputInventoryWithPattern activeDualInv;
+    public IDualInputInventoryWithPattern activeDualInv;
     /**
      * The cache keyed by the {@link IDualInputInventoryWithPattern}, storing the possible recipes of the inv.
      * <p>
@@ -79,7 +79,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      * <p>
      * It will also be fully cleared when the {@link #getCurrentRecipeMap()} is not same to the last.
      */
-    protected Map<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
+    public Map<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
 
     public GTNL_ProcessingLogic() {}
 
@@ -630,6 +630,14 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
     @Override
     public FluidStack[] getOutputFluids() {
         return outputFluids;
+    }
+
+    public ItemStack[] getInputItems() {
+        return inputItems;
+    }
+
+    public FluidStack[] getInputFluids() {
+        return inputFluids;
     }
 
     @Override
