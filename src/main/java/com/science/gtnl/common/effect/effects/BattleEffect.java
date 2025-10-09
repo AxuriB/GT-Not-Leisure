@@ -23,6 +23,7 @@ public class BattleEffect extends EffectBase {
 
     @Override
     public void performEffect(EntityLivingBase entity, int amplifier) {
+        if (amplifier <= 0) return;
         if (entity.worldObj.isRemote) return;
 
         if (!(entity instanceof EntityPlayerMP entityPlayerMP)) return;
