@@ -531,7 +531,7 @@ public class SmeltingMixingFurnaceRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTUtility.getIntegratedCircuit(4),
+                GTUtility.getIntegratedCircuit(7),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedAir, 4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.InfusedEarth, 4),
