@@ -49,7 +49,7 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
             configSnapshot = Sudoku.SUDOKU.snapshot();
             // 生成第一关谜题
             int blanks = configSnapshot.getStage1()
-                .getBlanksCount();
+                .blanksCount();
             board.generate(blanks);
         }
         super.onPlace();
@@ -91,7 +91,7 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
 
             currentLevel++;
             int blanks = configSnapshot.getStageByIndex(currentLevel)
-                .getBlanksCount();
+                .blanksCount();
             board.generate(blanks);
             saveAndSync();
         } else {
@@ -165,7 +165,7 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
             if (!isServerSide()) return;
             if (!board.isGenerated()) {
                 int blanks = configSnapshot.getStageByIndex(currentLevel)
-                    .getBlanksCount();
+                    .blanksCount();
                 board.generate(blanks);
                 sendUpdatePacketToNearby(new SPSSyncBoard(GameSudoku.this, board));
                 board.setLastClickTime(getWorld().getTotalWorldTime());
