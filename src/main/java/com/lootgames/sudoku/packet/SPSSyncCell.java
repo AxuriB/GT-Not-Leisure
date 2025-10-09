@@ -8,14 +8,11 @@ import ru.timeconqueror.lootgames.api.minigame.LootGame;
 import ru.timeconqueror.lootgames.api.packet.IServerGamePacket;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
 
-/**
- * 将单个格子的玩家输入值（0–9）同步到客户端。
- */
 public class SPSSyncCell implements IServerGamePacket {
 
-    private Pos2i pos;
-    private int value;
-    private long lastTime;
+    public Pos2i pos;
+    public int value;
+    public long lastTime;
 
     @Deprecated
     public SPSSyncCell() {}

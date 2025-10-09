@@ -1,28 +1,46 @@
 package com.lootgames.sudoku.sudoku;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.lootgames.sudoku.Utils.CodecUtils;
-import com.lootgames.sudoku.Utils.RandHelper;
 
 import lombok.Getter;
 import lombok.Setter;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
+import ru.timeconqueror.lootgames.utils.future.ICodec;
+import ru.timeconqueror.timecore.api.util.CodecUtils;
 
 public class SudokuBoard {
 
     @Getter
     @Setter
     public long lastClickTime = -1;
-    public static long currentTime = 0;
     public static final int SIZE = 9;
     @Getter
     @Setter
     public Integer[][] solution = new Integer[SIZE][SIZE]; // Complete solution
     public Integer[][] puzzle = new Integer[SIZE][SIZE]; // Puzzle after removing cells
     public Integer[][] player = new Integer[SIZE][SIZE]; // Player's filled values
+
+    public static final ICodec<Integer, NBTTagCompound> INT_CODEC = new ICodec<>() {
+
+        @Override
+        public NBTTagCompound encode(Integer obj) {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("v", obj);
+            return tag;
+        }
+
+        @Override
+        public Integer decode(NBTTagCompound nbtTag) {
+            return nbtTag.getInteger("v");
+        }
+    };
+
+    public static final Random RANDOM = new Random();
 
     /** Generate a Sudoku board based on the number of blanks */
     public void generate(int blanks) {
@@ -42,7 +60,7 @@ public class SudokuBoard {
         if (row == SIZE) return true;
         int nextRow = col == SIZE - 1 ? row + 1 : row;
         int nextCol = (col + 1) % SIZE;
-        List<Integer> nums = RandHelper.shuffledList(1, 9);
+        List<Integer> nums = shuffledList(1, 9);
         for (int n : nums) {
             if (canPlace(solution, row, col, n)) {
                 solution[row][col] = n;
@@ -65,7 +83,7 @@ public class SudokuBoard {
     }
 
     public void removeCells(int blanks) {
-        List<Integer> pos = RandHelper.shuffledList(0, SIZE * SIZE - 1);
+        List<Integer> pos = shuffledList(0, SIZE * SIZE - 1);
         int removed = 0;
 
         for (int idx : pos) {
@@ -175,16 +193,16 @@ public class SudokuBoard {
 
     public NBTTagCompound writeNBT() {
         NBTTagCompound t = new NBTTagCompound();
-        t.setTag("puzzle", CodecUtils.write2DimArr(puzzle, CodecUtils.INT_CODEC));
-        t.setTag("player", CodecUtils.write2DimArr(player, CodecUtils.INT_CODEC));
-        t.setTag("solution", CodecUtils.write2DimArr(solution, CodecUtils.INT_CODEC));
+        t.setTag("puzzle", CodecUtils.write2DimArr(puzzle, INT_CODEC));
+        t.setTag("player", CodecUtils.write2DimArr(player, INT_CODEC));
+        t.setTag("solution", CodecUtils.write2DimArr(solution, INT_CODEC));
         return t;
     }
 
     public void readNBT(NBTTagCompound t) {
-        puzzle = CodecUtils.read2DimArr(t.getCompoundTag("puzzle"), Integer.class, CodecUtils.INT_CODEC);
-        player = CodecUtils.read2DimArr(t.getCompoundTag("player"), Integer.class, CodecUtils.INT_CODEC);
-        solution = CodecUtils.read2DimArr(t.getCompoundTag("solution"), Integer.class, CodecUtils.INT_CODEC);
+        puzzle = CodecUtils.read2DimArr(t.getCompoundTag("puzzle"), Integer.class, INT_CODEC);
+        player = CodecUtils.read2DimArr(t.getCompoundTag("player"), Integer.class, INT_CODEC);
+        solution = CodecUtils.read2DimArr(t.getCompoundTag("solution"), Integer.class, INT_CODEC);
     }
 
     public void cSetPlayerValue(Pos2i pos, int value) {
@@ -217,5 +235,17 @@ public class SudokuBoard {
             }
         }
         return count;
+    }
+
+    public static List<Integer> shuffledList(int start, int end) {
+        if (start > end) {
+            throw new IllegalArgumentException(String.format("Start (%d) must be <= end (%d)", start, end));
+        }
+        List<Integer> list = new ArrayList<>(end - start + 1);
+        for (int i = start; i <= end; i++) {
+            list.add(i);
+        }
+        Collections.shuffle(list, RANDOM);
+        return list;
     }
 }

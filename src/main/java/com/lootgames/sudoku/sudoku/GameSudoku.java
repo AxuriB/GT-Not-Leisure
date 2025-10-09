@@ -86,7 +86,7 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
     public void onLevelSuccessfullyFinished() {
         if (currentLevel < 4) {
             sendUpdatePacketToNearby(new SPSudokuSpawnLevelBeatParticles());
-            sendToNearby(new ChatComponentTranslation("msg.lootgames.stage_complete"));
+            sendToNearby(new ChatComponentTranslation("msg.com.lootgames.stage_complete"));
             WorldExt.playSoundServerly(getWorld(), getGameCenter(), Sounds.PLAYER_LEVELUP, 0.75F, 1.0F);
 
             currentLevel++;
@@ -176,8 +176,8 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
             } else if (type == MouseClickType.RIGHT) {
                 board.cycleValueAdd(pos);
             }
-            board.setLastClickTime(SudokuBoard.currentTime);
-            sendUpdatePacketToNearby(new SPSSyncCell(pos, board.getPlayerValue(pos), SudokuBoard.currentTime));
+            board.setLastClickTime(getWorld().getTotalWorldTime());
+            sendUpdatePacketToNearby(new SPSSyncCell(pos, board.getPlayerValue(pos), getWorld().getTotalWorldTime()));
             save();
             if (board.checkWin()) {
                 onLevelSuccessfullyFinished();
@@ -187,9 +187,8 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
         @Override
         public void onTick() {
             if (isServerSide()) {
-                SudokuBoard.currentTime = getWorld().getTotalWorldTime();
                 if (board.getLastClickTime() > 0
-                    && SudokuBoard.currentTime - board.getLastClickTime() >= currentLevel * 1200L) {
+                    && getWorld().getTotalWorldTime() - board.getLastClickTime() >= currentLevel * 1200L) {
                     if (currentLevel > 1) {
                         triggerGameWin();
                     } else {
