@@ -1814,7 +1814,7 @@ Tooltip_SteamEntityCrusherModule_01=Each operation has a 2% chance to double out
 Tooltip_SteamEntityCrusherModule_02=Each additional identical spawner increases the chance by 0.5%.
 Tooltip_SteamEntityCrusherModule_03=Maximum chance increase is 34%.
 Tooltip_SteamEntityCrusherModule_04=As a trade-off, default time is doubled, power is halved.
-Tooltip_SteamEntityCrusherModule_05=Can be overclocked at most 2 times.
+Tooltip_SteamEntityCrusherModule_05=Cannot be overclocked
 
 NameSteamOreProcessorModule=Steam Ore Processing Module
 SteamOreProcessorModuleRecipeType=Miniature Ore Processing Factory

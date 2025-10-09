@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.loader.RecipePool;
-import com.science.gtnl.mixins.late.Gregtech.AccessorProcessingLogic;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -77,12 +77,12 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
 
     @Override
     public int getMaxParallelRecipes() {
-        return 4;
+        return 1;
     }
 
     @Override
     public int clampRecipeOcCount(int value) {
-        return Math.min(2, value);
+        return 0;
     }
 
     @Override
@@ -116,7 +116,7 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
         setEnergyUsage(processingLogic);
 
         ItemStack[] outputItems = processingLogic.getOutputItems();
-        ItemStack inputItem = ((AccessorProcessingLogic) processingLogic).getLastRecipe().mInputs[0];
+        ItemStack inputItem = ((GTNL_ProcessingLogic) processingLogic).getInputItems()[0];
 
         double multiplier = 2.0;
 
@@ -127,6 +127,13 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
                     multiplier = 34.0;
                     break;
                 }
+            }
+        }
+
+        if (GTUtility.areStacksEqual(inputItem, getControllerSlot())) {
+            multiplier += 0.5 * getControllerSlot().stackSize;
+            if (multiplier >= 34.0) {
+                multiplier = 34.0;
             }
         }
 

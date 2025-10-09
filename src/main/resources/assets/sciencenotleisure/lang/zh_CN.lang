@@ -1814,7 +1814,7 @@ Tooltip_SteamEntityCrusherModule_01=每次运行有2%的概率双倍产出
 Tooltip_SteamEntityCrusherModule_02=每多一个同一种刷怪笼，概率+0.5%
 Tooltip_SteamEntityCrusherModule_03=最大增加34%的概率
 Tooltip_SteamEntityCrusherModule_04=作为代价，默认时间加倍，功率减半
-Tooltip_SteamEntityCrusherModule_05=最多只能超频2次
+Tooltip_SteamEntityCrusherModule_05=无法超频
 
 NameSteamOreProcessorModule=蒸汽矿石处理模块
 SteamOreProcessorModuleRecipeType=微缩矿石处理厂
