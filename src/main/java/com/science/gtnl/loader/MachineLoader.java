@@ -2378,6 +2378,12 @@ public class MachineLoader {
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(ITEM_VOID_SIGN)),
             VoidCover::new,
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+
+        // CoverRegistry.registerCover(
+        // GTNLItemList.SteelTurbine.get(1L),
+        // TextureFactory.of(TexturesGtBlock.Overlay_Water),
+        // ctx -> new FluidCover(ctx, Materials.Water.mFluid, "InfinityWaterCover"),
+        // CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
     public static void registerGlasses() {
