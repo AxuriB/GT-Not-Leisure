@@ -32,7 +32,7 @@ public class BattleEffect extends EffectBase {
 
         if (entityPlayerMP.getServerForPlayer()
             .getGameRules()
-            .getGameRuleBooleanValue("doMobSpawning") && tick % (20 / amplifier) == 0) {
+            .getGameRuleBooleanValue("doMobSpawning") && tick % (Math.max(1, 20 / amplifier)) == 0) {
             spawnerAnimals.setMaxSpawnSize(amplifier * 10);
             spawnerAnimals.setMaxSpawnMultiplier(amplifier * 4);
             spawnerAnimals.setMaxAttempts(amplifier * 2);
