@@ -12,7 +12,6 @@ import static gtPlusPlus.core.block.ModBlocks.*;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -161,15 +160,15 @@ public class RocketAssembler extends GTMMultiMachineBase<RocketAssembler>
                 ofChain(
                     ofBlockAnyMeta(GCBlocks.landingPad, 0),
                     ofBlockAnyMeta(GCBlocks.landingPadFull, 0),
-                    ofBlockAnyMeta(Blocks.air),
-                    ofBlockAnyMeta(GCBlocks.fakeBlock)))
+                    ofBlockAnyMeta(GCBlocks.fakeBlock),
+                    isAir()))
             .addElement(
                 'L',
                 ofChain(
                     ofBlockAnyMeta(GCBlocks.landingPad, 0),
                     ofBlockAnyMeta(GCBlocks.landingPadFull, 0),
-                    ofBlockAnyMeta(Blocks.air),
-                    ofBlockAnyMeta(GCBlocks.fakeBlock)))
+                    ofBlockAnyMeta(GCBlocks.fakeBlock),
+                    isAir()))
             .build();
     }
 
