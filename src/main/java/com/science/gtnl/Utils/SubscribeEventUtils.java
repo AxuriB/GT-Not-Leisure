@@ -288,9 +288,8 @@ public class SubscribeEventUtils {
     }
 
     // Item
-
-    private static final Map<ItemStack, Supplier<String>> tooltipCache = new ItemStackMap<>(false);
-    private static boolean circuitMaterialLoad = false;
+    public static final Map<ItemStack, Supplier<String>> tooltipCache = new ItemStackMap<>(false);
+    public static boolean circuitMaterialLoad = false;
 
     // World
     @SubscribeEvent
@@ -342,7 +341,7 @@ public class SubscribeEventUtils {
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         for (Map.Entry<ItemStack, Supplier<String>> entry : tooltipCache.entrySet()) {
-            AnimatedTooltipHandler.removeItemTooltipShift(entry.getKey(), entry.getValue());
+            AnimatedTooltipHandler.clearItemTooltipsShift(entry.getKey());
         }
         tooltipCache.clear();
         CircuitMaterialHelper.materialParameterList.clear();
