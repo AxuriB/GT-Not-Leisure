@@ -48,7 +48,7 @@ death.attack.damage.gtnl.awe=%1$s §c§lFailed to complete the §r§d§lViolet B
 Info_SteamNetwork_00=User %s has no global steam network.
 Info_SteamNetwork_01=User %s has %s%s%s Steam in their network.
 Info_SteamNetwork_02=User %s is currently in network of %s%s%s .
-Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s %% §r(Voltage Tier: §3%s§r, Base Voltage Tier: §3%s§r)
+Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s%% §7(Voltage Tier: §3%s§r, Recipe Voltage Tier: §3%s§r)
 
 Info_Dimension_Override=Dimension Override: 
 

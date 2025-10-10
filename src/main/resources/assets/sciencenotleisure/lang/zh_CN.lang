@@ -48,7 +48,7 @@ death.attack.damage.gtnl.awe=%1$s §c§l没能完成§r§d§l紫罗兰的洗礼�
 Info_SteamNetwork_00=玩家 %s 没有无线蒸汽网络.
 Info_SteamNetwork_01=玩家 %s 的无线蒸汽网络中有 %s%s%s 蒸汽.
 Info_SteamNetwork_02=玩家 %s 当前在 %s%s%s 的无线蒸汽网络.
-Info_VoltageChanceBonus_00=电压概率加成：§3%s %% §r(电压等级：§3%s§r，基础电压等级：§3%s§r) 
+Info_VoltageChanceBonus_00=电压概率加成：§3%s%% §7(机器电压：%s，配方电压：%s) 
 
 Info_Dimension_Override=维度覆盖为：
 

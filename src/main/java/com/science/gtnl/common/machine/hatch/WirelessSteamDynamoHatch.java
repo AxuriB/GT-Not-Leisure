@@ -1,17 +1,23 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.addSteamToGlobalSteamMap;
+import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.*;
 import static gregtech.common.misc.WirelessNetworkManager.number_of_energy_additions;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,10 +43,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidStore, IAddGregtechLogo {
 
-    private UUID owner_uuid;
+    public UUID ownerUUID;
     public Set<Fluid> mLockedFluids;
 
     public WirelessSteamDynamoHatch(final int aID, final String aName, final String aNameRegional, int aTier) {
@@ -214,9 +222,9 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
 
         if (!aBaseMetaTileEntity.isServerSide()) return;
 
-        owner_uuid = aBaseMetaTileEntity.getOwnerUuid();
+        ownerUUID = aBaseMetaTileEntity.getOwnerUuid();
 
-        SpaceProjectManager.checkOrCreateTeam(owner_uuid);
+        SpaceProjectManager.checkOrCreateTeam(ownerUUID);
 
         tryFetchingSteam();
     }
@@ -252,12 +260,66 @@ public class WirelessSteamDynamoHatch extends MTEHatchOutput implements IFluidSt
             if (matchedSteamType != null) {
                 int convertedAmount = rawAmount * matchedSteamType.efficiencyFactor;
 
-                if (!addSteamToGlobalSteamMap(owner_uuid, convertedAmount)) {
+                if (!addSteamToGlobalSteamMap(ownerUUID, convertedAmount)) {
                     return;
                 }
 
                 drain(rawAmount, true);
             }
         }
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setString("OwnerUUID", ownerUUID.toString());
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        ownerUUID = UUID.fromString(aNBT.getString("OwnerUUID"));
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        UUID userUUID = UUID.fromString(tag.getString("OwnerUUID"));
+        UUID teamUUID = SpaceProjectManager.getLeader(userUUID);
+        String username = SpaceProjectManager.getPlayerNameFromUUID(userUUID);
+        String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
+
+        if (!SpaceProjectManager.isInTeam(userUUID)) {
+            String notInNetwork = String
+                .format(StatCollector.translateToLocal("Info_SteamNetwork_00"), formatted_username);
+            currenttip.add(notInNetwork);
+        } else {
+            String steamInfo = String.format(
+                StatCollector.translateToLocal("Info_SteamNetwork_01"),
+                formatted_username,
+                EnumChatFormatting.RED,
+                GTUtility.formatNumbers(getUserSteam(userUUID)),
+                "L" + EnumChatFormatting.RESET);
+            currenttip.add(steamInfo);
+
+            if (!userUUID.equals(teamUUID)) {
+                String networkInfo = String.format(
+                    StatCollector.translateToLocal("Info_SteamNetwork_02"),
+                    formatted_username,
+                    EnumChatFormatting.BLUE,
+                    SpaceProjectManager.getPlayerNameFromUUID(teamUUID),
+                    EnumChatFormatting.RESET);
+                currenttip.add(networkInfo);
+            }
+        }
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setString("OwnerUUID", ownerUUID.toString());
     }
 }
