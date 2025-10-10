@@ -2,7 +2,7 @@ package com.science.gtnl.common.machine.hatch;
 
 import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.addSteamToGlobalSteamMap;
 import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.getUserSteam;
-import static gregtech.common.misc.WirelessNetworkManager.number_of_energy_additions;
+import static gregtech.common.misc.WirelessNetworkManager.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,6 +36,9 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class WirelessSteamEnergyHatch extends CustomFluidHatch {
 
     public UUID ownerUUID;
+    public UUID teamUUID;
+    public boolean isInTeam;
+    public BigInteger steamDisplay;
 
     public WirelessSteamEnergyHatch(final int aID, final String aName, final String aNameRegional, int aTier) {
         super(
@@ -116,24 +118,43 @@ public class WirelessSteamEnergyHatch extends CustomFluidHatch {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-
         if (!aBaseMetaTileEntity.isServerSide()) return;
 
         ownerUUID = aBaseMetaTileEntity.getOwnerUuid();
 
         SpaceProjectManager.checkOrCreateTeam(ownerUUID);
 
+        isInTeam = SpaceProjectManager.isInTeam(ownerUUID);
+
+        if (isInTeam) {
+            teamUUID = SpaceProjectManager.getLeader(ownerUUID);
+            steamDisplay = getUserSteam(ownerUUID);
+        }
+
         tryFetchingSteam();
     }
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-
         super.onPreTick(aBaseMetaTileEntity, aTick);
-
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTick % number_of_energy_additions == 0L) {
                 tryFetchingSteam();
+            }
+        }
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
+        super.onPostTick(baseMetaTileEntity, tick);
+        if (baseMetaTileEntity.isServerSide()) {
+            if (tick % 200 == 0L) {
+                isInTeam = SpaceProjectManager.isInTeam(ownerUUID);
+
+                if (isInTeam) {
+                    teamUUID = SpaceProjectManager.getLeader(ownerUUID);
+                    steamDisplay = getUserSteam(ownerUUID);
+                }
             }
         }
     }
@@ -185,32 +206,22 @@ public class WirelessSteamEnergyHatch extends CustomFluidHatch {
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        UUID userUUID = UUID.fromString(tag.getString("OwnerUUID"));
-        UUID teamUUID = SpaceProjectManager.getLeader(userUUID);
-        String username = SpaceProjectManager.getPlayerNameFromUUID(userUUID);
-        String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
+        String steamNetworkOwner = tag.getString("SteamNetworkOwner");
+        boolean isInTeam = tag.getBoolean("isInSteamNetwork");
 
-        if (!SpaceProjectManager.isInTeam(userUUID)) {
-            String notInNetwork = String
-                .format(StatCollector.translateToLocal("Info_SteamNetwork_00"), formatted_username);
-            currenttip.add(notInNetwork);
+        if (!isInTeam) {
+            currenttip.add(StatCollector.translateToLocalFormatted("Info_SteamNetwork_00", steamNetworkOwner));
         } else {
-            String steamInfo = String.format(
-                StatCollector.translateToLocal("Info_SteamNetwork_01"),
-                formatted_username,
-                EnumChatFormatting.RED,
-                GTUtility.formatNumbers(getUserSteam(userUUID)),
-                "L" + EnumChatFormatting.RESET);
-            currenttip.add(steamInfo);
-
-            if (!userUUID.equals(teamUUID)) {
-                String networkInfo = String.format(
-                    StatCollector.translateToLocal("Info_SteamNetwork_02"),
-                    formatted_username,
-                    EnumChatFormatting.BLUE,
-                    SpaceProjectManager.getPlayerNameFromUUID(teamUUID),
-                    EnumChatFormatting.RESET);
-                currenttip.add(networkInfo);
+            String steamNetworkDisplay = tag.getString("SteamNetworkDisplay");
+            currenttip.add(
+                StatCollector
+                    .translateToLocalFormatted("Info_SteamNetwork_01", steamNetworkOwner, steamNetworkDisplay));
+            if (tag.hasKey("SteamNetworkTeam")) {
+                currenttip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "Info_SteamNetwork_02",
+                        steamNetworkOwner,
+                        tag.getString("SteamNetworkTeam")));
             }
         }
     }
@@ -219,6 +230,14 @@ public class WirelessSteamEnergyHatch extends CustomFluidHatch {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("OwnerUUID", ownerUUID.toString());
+        tag.setString("SteamNetworkOwner", SpaceProjectManager.getPlayerNameFromUUID(ownerUUID));
+        tag.setBoolean("isInSteamNetwork", isInTeam);
+
+        if (isInTeam) {
+            tag.setString("SteamNetworkDisplay", GTUtility.formatNumbers(steamDisplay));
+            if (!ownerUUID.equals(teamUUID)) {
+                tag.setString("SteamNetworkTeam", SpaceProjectManager.getPlayerNameFromUUID(teamUUID));
+            }
+        }
     }
 }

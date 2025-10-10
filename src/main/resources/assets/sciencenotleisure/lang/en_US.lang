@@ -45,10 +45,10 @@ death.attack.damage.gtnl.infinity=%1$s was excised from existence
 death.attack.damage.gtnl.portalExplode=%1$s was backlashed by the Alfheim Teleportation Array.
 death.attack.damage.gtnl.awe=%1$s §c§lFailed to complete the §r§d§lViolet Baptism.
 
-Info_SteamNetwork_00=User %s has no global steam network.
-Info_SteamNetwork_01=User %s has %s%s%s Steam in their network.
-Info_SteamNetwork_02=User %s is currently in network of %s%s%s .
-Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s%% §7(Voltage Tier: §3%s§r, Recipe Voltage Tier: §3%s§r)
+Info_SteamNetwork_00=User §9%s§7 has no global steam network.
+Info_SteamNetwork_01=User §9%s§7 has §c%sL§7 of Steam in their network.
+Info_SteamNetwork_02=User §9%s§7 is currently in the network of §9%s§7.
+Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s%% §7(Voltage Tier: %s, Recipe Voltage Tier: %s)
 
 Info_Dimension_Override=Dimension Override: 
 
