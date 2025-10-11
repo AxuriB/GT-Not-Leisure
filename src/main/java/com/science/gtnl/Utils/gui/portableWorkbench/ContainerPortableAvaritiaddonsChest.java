@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -18,12 +19,14 @@ import cpw.mods.fml.common.Optional;
 @Optional.Interface(iface = "com.cleanroommc.bogosorter.api.ISortableContainer", modid = "bogosorter")
 public class ContainerPortableAvaritiaddonsChest extends Container implements ISortableContainer {
 
-    public InventoryInfinityChest chestInventory;
+    protected final PortableItem.PortableType type;
+    public IInventory chestInventory;
     public ItemStack itemStack;
     protected final String portableID;
 
-    public ContainerPortableAvaritiaddonsChest(ItemStack stack, InventoryPlayer playerInv, boolean isInfinity) {
-        chestInventory = isInfinity ? PortableItem.getInfinityInventory(stack) : PortableItem.getInventory(stack);
+    public ContainerPortableAvaritiaddonsChest(ItemStack stack, InventoryPlayer playerInv) {
+        type = PortableItem.getPortableType(stack);
+        chestInventory = type.getInventory(stack);
         itemStack = stack;
 
         this.portableID = PortableItem.ensurePortableID(stack);
@@ -100,11 +103,8 @@ public class ContainerPortableAvaritiaddonsChest extends Container implements IS
 
         ItemStack held = player.getHeldItem();
         if (held != null && held.getItem() instanceof PortableItem) {
-            if (held.getItemDamage() == 6 && PortableItem.matchesPortableID(held, portableID)) {
-                PortableItem.saveInventory(held, this.chestInventory);
-                itemStack = held;
-            } else if (held.getItemDamage() == 7 && PortableItem.matchesPortableID(held, portableID)) {
-                PortableItem.saveInfinityInventory(held, this.chestInventory);
+            if (PortableItem.getPortableType(held) == type) {
+                type.saveInventory(held, this.chestInventory);
                 itemStack = held;
             }
         }

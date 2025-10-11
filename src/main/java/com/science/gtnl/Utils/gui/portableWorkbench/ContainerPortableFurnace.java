@@ -37,7 +37,8 @@ public class ContainerPortableFurnace extends Container {
 
         this.portableID = PortableItem.ensurePortableID(stack);
         IInventory furnaceInventory = new InventoryBasic("PortableFurnace", false, 3);
-        IInventory saved = PortableItem.getFurnaceInventory(stack);
+        IInventory saved = PortableItem.getPortableType(stack)
+            .getInventory(stack);
         for (int i = 0; i < 3; i++) {
             furnaceInventory.setInventorySlotContents(i, saved.getStackInSlot(i));
         }
@@ -115,7 +116,8 @@ public class ContainerPortableFurnace extends Container {
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
             this.furnaceStack = held;
-            IInventory furnaceInv = PortableItem.getFurnaceInventory(held);
+            IInventory furnaceInv = PortableItem.getPortableType(held)
+                .getInventory(held);
             for (int i = 0; i <= 2; i++) {
                 ItemStack stack = furnaceInv.getStackInSlot(i);
                 inventorySlots.get(i).inventory.setInventorySlotContents(i, stack);
@@ -213,7 +215,7 @@ public class ContainerPortableFurnace extends Container {
         if (PortableItem.matchesPortableID(held, portableID)) {
             IInventory furnaceInventory = getIInventory();
 
-            PortableItem.saveFurnaceInventory(held, furnaceInventory);
+            PortableItem.PortableType.FURNACE.saveInventory(held, furnaceInventory);
             furnaceStack = held;
         }
     }

@@ -21,7 +21,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 public class ContainerPortableInfinityChest extends ContainerPortableAvaritiaddonsChest {
 
     public ContainerPortableInfinityChest(@Nonnull ItemStack stack, InventoryPlayer playerInv) {
-        super(stack, playerInv, true);
+        super(stack, playerInv);
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ContainerPortableInfinityChest extends ContainerPortableAvaritiaddo
             }
             ItemStack held = player.getHeldItem();
             if (PortableItem.matchesPortableID(held, portableID)) {
-                PortableItem.saveInfinityInventory(held, this.chestInventory);
+                type.saveInventory(held, this.chestInventory);
                 itemStack = held;
             }
             return actualSlot.getHasStack() ? actualSlot.getStack()
@@ -153,14 +153,14 @@ public class ContainerPortableInfinityChest extends ContainerPortableAvaritiaddo
         } else if (slot >= 0 && slot < 243 && modifier == 2) {
             ItemStack held = player.getHeldItem();
             if (PortableItem.matchesPortableID(held, portableID)) {
-                PortableItem.saveInfinityInventory(held, this.chestInventory);
+                type.saveInventory(held, this.chestInventory);
                 itemStack = held;
             }
             return null;
         } else {
             ItemStack held = player.getHeldItem();
             if (PortableItem.matchesPortableID(held, portableID)) {
-                PortableItem.saveInfinityInventory(held, this.chestInventory);
+                type.saveInventory(held, this.chestInventory);
                 itemStack = held;
             }
             return super.slotClick(slot, mouseButton, modifier, player);
@@ -172,7 +172,7 @@ public class ContainerPortableInfinityChest extends ContainerPortableAvaritiaddo
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInfinityInventory(held, this.chestInventory);
+            type.saveInventory(held, this.chestInventory);
         }
     }
 

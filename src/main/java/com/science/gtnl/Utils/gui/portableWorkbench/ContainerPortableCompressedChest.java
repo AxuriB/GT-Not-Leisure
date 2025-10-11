@@ -9,7 +9,7 @@ import com.science.gtnl.common.item.items.PortableItem;
 public class ContainerPortableCompressedChest extends ContainerPortableAvaritiaddonsChest {
 
     public ContainerPortableCompressedChest(ItemStack stack, InventoryPlayer playerInv) {
-        super(stack, playerInv, false);
+        super(stack, playerInv);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class ContainerPortableCompressedChest extends ContainerPortableAvaritiad
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInventory(held, chestInventory);
+            type.saveInventory(held, chestInventory);
             itemStack = held;
         }
     }

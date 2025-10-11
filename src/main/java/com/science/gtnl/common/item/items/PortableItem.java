@@ -19,18 +19,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
+import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.science.gtnl.GuiType;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.InventoryInfinityChest;
 import com.science.gtnl.client.GTNLCreativeTabs;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import lombok.val;
 
 public class PortableItem extends Item {
 
@@ -45,6 +49,44 @@ public class PortableItem extends Item {
             GTNLItemList.valueOf(type.getUnlocalizedName())
                 .set(new ItemStack(this, 1, type.ordinal()));
         }
+    }
+
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+        float hitX, float hitY, float hitZ) {
+        if (!world.isRemote && player.isSneaking()) {
+            return this.tryMoveItems(world, x, y, z, player.getHeldItem(), player);
+        } else {
+            return false;
+        }
+    }
+
+    //TODO:对ME接口特判，直接进入AE网络而不是缓冲区
+    private boolean tryMoveItems(World world, int x, int y, int z, ItemStack stack, EntityPlayer player) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof IInventory inventory) {
+            val type = getPortableType(stack);
+            val bagIInv = type.getInventory(stack);
+            if (bagIInv == null) return false;
+            val bagInv = new InvWrapper(bagIInv);
+            val inv = new InvWrapper(inventory);
+
+            for (int slot = 0; slot < bagInv.getSlots(); slot++) {
+                var item = bagInv.getStackInSlot(slot);
+                if (item == null) continue;
+                item = item.copy();
+                for (int iSlot = 0; iSlot < inv.getSlots(); iSlot++) {
+                    item = inv.insertItem(iSlot, item, false);
+                    if (item == null) break;
+                }
+                if (item == null || bagInv.getStackInSlot(slot).stackSize != item.stackSize) {
+                    bagInv.setStackInSlot(slot, item);
+                }
+            }
+            type.saveInventory(stack, bagIInv);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -72,8 +114,8 @@ public class PortableItem extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!world.isRemote) {
-            PortableType type = PortableType.byMeta(stack.getItemDamage());
+        if (!world.isRemote && !player.isSneaking()) {
+            PortableType type = getPortableType(stack);
             if (type != null && type.getGuiID() >= 0) {
                 player.openGui(instance, type.getGuiID(), world, 0, 0, 0);
             }
@@ -155,146 +197,11 @@ public class PortableItem extends Item {
         tag.setInteger("BurnTime", burnTime);
         tag.setInteger("CurrentItemBurnTime", currentItemBurnTime);
         stack.setTagCompound(tag);
-        saveFurnaceInventory(stack, inv);
+        saveFurnaceInventory.save(stack, inv);
     }
 
-    public static IInventory getInventory(ItemStack stack, int size) {
-        InventoryBasic inv = new InventoryBasic("PortableAdvancedWorkbench", false, size);
-
-        if (stack.hasTagCompound()) {
-            NBTTagList list = stack.getTagCompound()
-                .getTagList("Items", 10);
-            for (int i = 0; i < list.tagCount(); i++) {
-                NBTTagCompound itemTag = list.getCompoundTagAt(i);
-                int slot = itemTag.getByte("Slot") & 255;
-                if (slot < inv.getSizeInventory()) {
-                    inv.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(itemTag));
-                }
-            }
-        }
-
-        return inv;
-    }
-
-    public static InventoryInfinityChest getInventory(ItemStack stack) {
-        InventoryInfinityChest inv = new InventoryInfinityChest(64);
-
-        if (stack.hasTagCompound()) {
-            NBTTagList list = stack.getTagCompound()
-                .getTagList("Items", 10);
-            for (int i = 0; i < list.tagCount(); i++) {
-                NBTTagCompound itemTag = list.getCompoundTagAt(i);
-                int slot = itemTag.getByte("Slot") & 255;
-                if (slot < inv.getSizeInventory()) {
-                    inv.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(itemTag));
-                }
-            }
-        }
-
-        return inv;
-    }
-
-    public static void saveInventory(ItemStack stack, IInventory inv) {
-        NBTTagList list = new NBTTagList();
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack s = inv.getStackInSlot(i);
-            if (s != null) {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setByte("Slot", (byte) i);
-                s.writeToNBT(tag);
-                list.appendTag(tag);
-            }
-        }
-
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        stack.getTagCompound()
-            .setTag("Items", list);
-    }
-
-    public static InventoryInfinityChest getInfinityInventory(@Nonnull ItemStack stack) {
-        InventoryInfinityChest inv = new InventoryInfinityChest(Integer.MAX_VALUE);
-        if (!stack.hasTagCompound()) return inv;
-        NBTTagCompound compound = stack.getTagCompound();
-        if (!compound.hasKey("Contents")) return inv;
-
-        NBTTagList list = compound.getTagList("Contents", 10);
-        for (int i = 0; i < list.tagCount(); i++) {
-            NBTTagCompound slotTag = list.getCompoundTagAt(i);
-            int slot = slotTag.getShort("Slot");
-            if (slot >= 0 && slot < inv.getSizeInventory()) {
-                ItemStack slotStack = ItemStack.loadItemStackFromNBT(slotTag);
-                if (slotStack != null) {
-                    slotStack.stackSize = slotTag.getInteger("intCount");
-                    if (slotTag.hasKey("tag")) {
-                        slotStack.setTagCompound(slotTag.getCompoundTag("tag"));
-                    }
-                    inv.setInventorySlotContents(slot, slotStack);
-                }
-            }
-        }
-        return inv;
-    }
-
-    public static void saveInfinityInventory(@Nonnull ItemStack stack, @Nonnull IInventory inv) {
-        NBTTagList list = new NBTTagList();
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack slotStack = inv.getStackInSlot(i);
-            if (slotStack != null) {
-                NBTTagCompound slotTag = new NBTTagCompound();
-                slotTag.setShort("Slot", (short) i);
-                slotStack.writeToNBT(slotTag);
-                slotTag.setInteger("intCount", slotStack.stackSize);
-                if (slotStack.hasTagCompound()) {
-                    slotTag.setTag("tag", slotStack.getTagCompound());
-                }
-                list.appendTag(slotTag);
-            }
-        }
-
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        stack.getTagCompound()
-            .setTag("Contents", list);
-    }
-
-    public static IInventory getFurnaceInventory(ItemStack stack) {
-        InventoryBasic inv = new InventoryBasic("PortableFurnace", false, 3);
-
-        if (stack.hasTagCompound()) {
-            NBTTagList list = stack.getTagCompound()
-                .getTagList("Items", 10);
-            for (int i = 0; i < list.tagCount(); i++) {
-                NBTTagCompound itemTag = list.getCompoundTagAt(i);
-                int slot = itemTag.getByte("Slot") & 255;
-                if (slot < inv.getSizeInventory()) {
-                    inv.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(itemTag));
-                }
-            }
-        }
-
-        return inv;
-    }
-
-    public static void saveFurnaceInventory(ItemStack stack, IInventory inv) {
-        NBTTagList list = new NBTTagList();
-        for (int i = 0; i < inv.getSizeInventory(); i++) {
-            ItemStack s = inv.getStackInSlot(i);
-            if (s != null) {
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setByte("Slot", (byte) i);
-                s.writeToNBT(tag);
-                list.appendTag(tag);
-            }
-        }
-
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        stack.getTagCompound()
-            .setTag("Items", list);
+    public static PortableType getPortableType(@Nonnull ItemStack stack) {
+        return PortableType.byMeta(stack.getItemDamage());
     }
 
     public static String ensurePortableID(ItemStack stack) {
@@ -347,34 +254,211 @@ public class PortableItem extends Item {
         }
     }
 
+    @FunctionalInterface
+    public interface PortableInventory {
+
+        PortableInventory NULL = s -> null;
+
+        IInventory get(ItemStack stack);
+    }
+
+    @FunctionalInterface
+    public interface PortableInventorySave {
+
+        void save(@Nonnull ItemStack stack, @Nonnull IInventory inv);
+    }
+
+    protected static IInventory getInventory(ItemStack stack, int size) {
+        InventoryBasic inv = new InventoryBasic("PortableAdvancedWorkbench", false, size);
+
+        if (stack.hasTagCompound()) {
+            NBTTagList list = stack.getTagCompound()
+                .getTagList("Items", 10);
+            for (int i = 0; i < list.tagCount(); i++) {
+                NBTTagCompound itemTag = list.getCompoundTagAt(i);
+                int slot = itemTag.getByte("Slot") & 255;
+                if (slot < inv.getSizeInventory()) {
+                    inv.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(itemTag));
+                }
+            }
+        }
+
+        return inv;
+    }
+
+    protected static InventoryInfinityChest getInfinityInventory(@Nonnull ItemStack stack) {
+        InventoryInfinityChest inv = new InventoryInfinityChest(
+            getPortableType(stack) == PortableType.INFINITYCHEST ? Integer.MAX_VALUE : 64);
+        if (!stack.hasTagCompound()) return inv;
+        NBTTagCompound compound = stack.getTagCompound();
+        if (!compound.hasKey("Contents")) return inv;
+
+        NBTTagList list = compound.getTagList("Contents", 10);
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound slotTag = list.getCompoundTagAt(i);
+            int slot = slotTag.getShort("Slot");
+            if (slot >= 0 && slot < inv.getSizeInventory()) {
+                ItemStack slotStack = ItemStack.loadItemStackFromNBT(slotTag);
+                if (slotStack != null) {
+                    slotStack.stackSize = slotTag.getInteger("intCount");
+                    if (slotTag.hasKey("tag")) {
+                        slotStack.setTagCompound(slotTag.getCompoundTag("tag"));
+                    }
+                    inv.setInventorySlotContents(slot, slotStack);
+                }
+            }
+        }
+        return inv;
+    }
+
+    protected static IInventory getFurnaceInventory(ItemStack stack) {
+        InventoryBasic inv = new InventoryBasic("PortableFurnace", false, 3);
+
+        if (stack.hasTagCompound()) {
+            NBTTagList list = stack.getTagCompound()
+                .getTagList("Items", 10);
+            for (int i = 0; i < list.tagCount(); i++) {
+                NBTTagCompound itemTag = list.getCompoundTagAt(i);
+                int slot = itemTag.getByte("Slot") & 255;
+                if (slot < inv.getSizeInventory()) {
+                    inv.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(itemTag));
+                }
+            }
+        }
+
+        return inv;
+    }
+
+    protected static final PortableInventorySave saveInventory = (stack, inv) -> {
+        NBTTagList list = new NBTTagList();
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack s = inv.getStackInSlot(i);
+            if (s != null) {
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setByte("Slot", (byte) i);
+                s.writeToNBT(tag);
+                list.appendTag(tag);
+            }
+        }
+
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        stack.getTagCompound()
+            .setTag("Items", list);
+    };
+
+    protected static final PortableInventorySave saveInfinityInventory = (stack, inv) -> {
+        NBTTagList list = new NBTTagList();
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack slotStack = inv.getStackInSlot(i);
+            if (slotStack != null) {
+                NBTTagCompound slotTag = new NBTTagCompound();
+                slotTag.setShort("Slot", (short) i);
+                slotStack.writeToNBT(slotTag);
+                slotTag.setInteger("intCount", slotStack.stackSize);
+                if (slotStack.hasTagCompound()) {
+                    slotTag.setTag("tag", slotStack.getTagCompound());
+                }
+                list.appendTag(slotTag);
+            }
+        }
+
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        stack.getTagCompound()
+            .setTag("Contents", list);
+    };
+
+    protected static final PortableInventorySave saveFurnaceInventory = (stack, inv) -> {
+        NBTTagList list = new NBTTagList();
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack s = inv.getStackInSlot(i);
+            if (s != null) {
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setByte("Slot", (byte) i);
+                s.writeToNBT(tag);
+                list.appendTag(tag);
+            }
+        }
+
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        stack.getTagCompound()
+            .setTag("Items", list);
+    };
+
     public enum PortableType {
 
         BASIC("BasicWorkBench", GuiType.PortableBasicWorkBenchGUI),
-        ADVANCED("AdvancedWorkBench", GuiType.PortableAdvancedWorkBenchGUI),
-        FURNACE("Furnace", GuiType.PortableFurnaceGUI),
+        ADVANCED("AdvancedWorkBench", GuiType.PortableAdvancedWorkBenchGUI,
+            stack -> PortableItem.getInventory(stack, 9)),
+        FURNACE("Furnace", GuiType.PortableFurnaceGUI, PortableItem::getFurnaceInventory, saveFurnaceInventory),
         ANVIL("Anvil", GuiType.PortableAnvilGUI),
         ENDERCHEST("EnderChest", GuiType.PortableEnderChestGUI),
         ENCHANTING("EnchantingTable", GuiType.PortableEnchantingGUI),
-        COMPRESSEDCHEST("CompressedChest", GuiType.PortableCompressedChestGUI),
-        INFINITYCHEST("InfinityChest", GuiType.PortableInfinityChestGUI),
-        COPPER("CopperChest", GuiType.PortableCopperChestGUI),
-        IRON("IronChest", GuiType.PortableIronChestGUI),
-        SILVER("SilverChest", GuiType.PortableSilverChestGUI),
-        STEEL("SteelChest", GuiType.PortableSteelChestGUI),
-        GOLD("GoldenChest", GuiType.PortableGoldenChestGUI),
-        DIAMOND("DiamondChest", GuiType.PortableDiamondChestGUI),
-        CRYSTAL("CrystalChest", GuiType.PortableCrystalChestGUI),
-        OBSIDIAN("ObsidianChest", GuiType.PortableObsidianChestGUI),
-        NETHERITE("NetheriteChest", GuiType.PortableNetheriteChestGUI),
-        DARKSTEEL("DarkSteelChest", GuiType.PortableDarkSteelChestGUI);
+        COMPRESSEDCHEST("CompressedChest", GuiType.PortableCompressedChestGUI, PortableItem::getInfinityInventory,
+            saveInfinityInventory),
+        INFINITYCHEST("InfinityChest", GuiType.PortableInfinityChestGUI, PortableItem::getInfinityInventory,
+            saveInfinityInventory),
+        COPPER("CopperChest", GuiType.PortableCopperChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.COPPER.getCapacity())),
+        IRON("IronChest", GuiType.PortableIronChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.IRON.getCapacity())),
+        SILVER("SilverChest", GuiType.PortableSilverChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.SILVER.getCapacity())),
+        STEEL("SteelChest", GuiType.PortableSteelChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.STEEL.getCapacity())),
+        GOLD("GoldenChest", GuiType.PortableGoldenChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.GOLD.getCapacity())),
+        DIAMOND("DiamondChest", GuiType.PortableDiamondChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.DIAMOND.getCapacity())),
+        CRYSTAL("CrystalChest", GuiType.PortableCrystalChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.CRYSTAL.getCapacity())),
+        OBSIDIAN("ObsidianChest", GuiType.PortableObsidianChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.OBSIDIAN.getCapacity())),
+        NETHERITE("NetheriteChest", GuiType.PortableNetheriteChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.NETHERITE.getCapacity())),
+        DARKSTEEL("DarkSteelChest", GuiType.PortableDarkSteelChestGUI,
+            stack -> PortableItem.getInventory(stack, GuiPortableChest.GUI.DARKSTEEL.getCapacity()));
 
         private final String baseName;
         public final GuiType gui;
         public IIcon icon;
+        private final PortableInventory inventory;
+        private final PortableInventorySave inventorySave;
 
         PortableType(String baseName, GuiType gui) {
             this.baseName = baseName;
             this.gui = gui;
+            this.inventory = PortableInventory.NULL;
+            this.inventorySave = null;
+        }
+
+        PortableType(String baseName, GuiType gui, @Nonnull PortableInventory p) {
+            this.baseName = baseName;
+            this.gui = gui;
+            this.inventory = p;
+            this.inventorySave = saveInventory;
+        }
+
+        PortableType(String baseName, GuiType gui, @Nonnull PortableInventory p, @Nonnull PortableInventorySave s) {
+            this.baseName = baseName;
+            this.gui = gui;
+            this.inventory = p;
+            this.inventorySave = s;
+        }
+
+        public IInventory getInventory(ItemStack stack) {
+            return inventory.get(stack);
+        }
+
+        public void saveInventory(ItemStack stack, IInventory inventory) {
+            if (inventorySave != null) {
+                inventorySave.save(stack, inventory);
+            }
         }
 
         public int getMeta() {
