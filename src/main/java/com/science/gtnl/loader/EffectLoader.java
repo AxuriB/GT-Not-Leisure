@@ -28,7 +28,7 @@ public class EffectLoader {
     }
 
     public static int findNextFreePotionId() {
-        for (int i = 80; i < Potion.potionTypes.length; i++) {
+        for (int i = 200; i < Potion.potionTypes.length; i++) {
             if (Potion.potionTypes[i] == null) {
                 return i;
             }
