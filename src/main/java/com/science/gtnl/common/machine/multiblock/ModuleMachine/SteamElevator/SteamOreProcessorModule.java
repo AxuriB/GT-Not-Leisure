@@ -501,55 +501,55 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
     }
 
     public static List<String> getDisplayMode(int mode) {
-        EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
-        String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
-        String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
-            .replace(" ", " " + AQUA);
-        String THERMAL = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Thermal_Centrifuge")
-            .replace(" ", " " + AQUA);
-        String CENTRIFUGE = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Centrifuge");
-        String SIFTER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
-        String CHEM_WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
-            .replace(" ", " " + AQUA);
-        String ARROW = " " + AQUA + "-> ";
+        EnumChatFormatting aqua = EnumChatFormatting.AQUA;
+        String crush = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
+        String wash = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
+            .replace(" ", " " + aqua);
+        String thermal = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Thermal_Centrifuge")
+            .replace(" ", " " + aqua);
+        String centrifuge = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Centrifuge");
+        String sifter = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
+        String chemWash = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
+            .replace(" ", " " + aqua);
+        String arrow = " " + aqua + "-> ";
 
         List<String> des = new ArrayList<>();
         des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1") + " ");
 
         switch (mode) {
             case 0 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH + ARROW);
-                des.add(AQUA + THERMAL + ARROW);
-                des.add(AQUA + CRUSH + ' ');
+                des.add(aqua + crush + arrow);
+                des.add(aqua + wash + arrow);
+                des.add(aqua + thermal + arrow);
+                des.add(aqua + crush + ' ');
             }
             case 1 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH + ARROW);
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CENTRIFUGE + ' ');
+                des.add(aqua + crush + arrow);
+                des.add(aqua + wash + arrow);
+                des.add(aqua + crush + arrow);
+                des.add(aqua + centrifuge + ' ');
             }
             case 2 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CENTRIFUGE + ' ');
+                des.add(aqua + crush + arrow);
+                des.add(aqua + crush + arrow);
+                des.add(aqua + centrifuge + ' ');
             }
             case 3 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH + ARROW);
-                des.add(AQUA + SIFTER + ' ');
+                des.add(aqua + crush + arrow);
+                des.add(aqua + wash + arrow);
+                des.add(aqua + sifter + ' ');
             }
             case 4 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CHEM_WASH + ARROW);
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CENTRIFUGE + ' ');
+                des.add(aqua + crush + arrow);
+                des.add(aqua + chemWash + arrow);
+                des.add(aqua + crush + arrow);
+                des.add(aqua + centrifuge + ' ');
             }
             case 5 -> {
-                des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CHEM_WASH + ARROW);
-                des.add(AQUA + THERMAL + ARROW);
-                des.add(AQUA + CRUSH + ' ');
+                des.add(aqua + crush + arrow);
+                des.add(aqua + chemWash + arrow);
+                des.add(aqua + thermal + arrow);
+                des.add(aqua + crush + ' ');
             }
             default -> des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }

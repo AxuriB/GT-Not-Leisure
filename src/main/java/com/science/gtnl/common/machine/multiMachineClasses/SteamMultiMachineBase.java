@@ -3,6 +3,7 @@ package com.science.gtnl.common.machine.multiMachineClasses;
 import static bartworks.system.material.WerkstoffLoader.BWBlockCasings;
 import static com.science.gtnl.Utils.enums.GTNLMachineID.BIG_STEAM_INPUT_HATCH;
 import static com.science.gtnl.Utils.enums.GTNLMachineID.PIPELESS_STEAM_HATCH;
+import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.GregTechAPI.sBlockFrames;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
@@ -12,6 +13,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 import static gtPlusPlus.core.block.ModBlocks.blockCustomMachineCasings;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -91,6 +94,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.render.GTRenderedTexture;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
@@ -130,6 +134,12 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     public long uiSteamStored = 0;
     public long uiSteamCapacity = 0;
     public int uiSteamStoredOfAllTypes = 0;
+
+    public UUID ownerUUID;
+    public UUID teamUUID;
+    public boolean isInTeam;
+    public BigInteger steamDisplay;
+
     public static final UITexture STEAM_GAUGE_BG = UITexture
         .fullImage(ModList.ScienceNotLeisure.ID, "gui/background/steam_dial");
     public static final UITexture STEAM_GAUGE_STEEL_BG = UITexture
@@ -331,6 +341,25 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 + EnumChatFormatting.BLUE
                 + tag.getInteger("parallel")
                 + EnumChatFormatting.RESET);
+
+        String steamNetworkOwner = tag.getString("SteamNetworkOwner");
+        boolean isInTeam = tag.getBoolean("isInSteamNetwork");
+
+        if (!isInTeam) {
+            currenttip.add(StatCollector.translateToLocalFormatted("Info_SteamNetwork_00", steamNetworkOwner));
+        } else {
+            String steamNetworkDisplay = tag.getString("SteamNetworkDisplay");
+            currenttip.add(
+                StatCollector
+                    .translateToLocalFormatted("Info_SteamNetwork_01", steamNetworkOwner, steamNetworkDisplay));
+            if (tag.hasKey("SteamNetworkTeam")) {
+                currenttip.add(
+                    StatCollector.translateToLocalFormatted(
+                        "Info_SteamNetwork_02",
+                        steamNetworkOwner,
+                        tag.getString("SteamNetworkTeam")));
+            }
+        }
     }
 
     @Override
@@ -339,6 +368,16 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("tierMachine", tierMachine);
         tag.setInteger("parallel", getTrueParallel());
+
+        tag.setString("SteamNetworkOwner", SpaceProjectManager.getPlayerNameFromUUID(ownerUUID));
+        tag.setBoolean("isInSteamNetwork", isInTeam);
+
+        if (isInTeam) {
+            tag.setString("SteamNetworkDisplay", GTUtility.formatNumbers(steamDisplay));
+            if (!ownerUUID.equals(teamUUID)) {
+                tag.setString("SteamNetworkTeam", SpaceProjectManager.getPlayerNameFromUUID(teamUUID));
+            }
+        }
     }
 
     @Override
@@ -347,6 +386,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("mMode", machineMode);
         aNBT.setInteger("recipeOcCount", recipeOcCount);
+        ownerUUID = UUID.fromString(aNBT.getString("OwnerUUID"));
     }
 
     @Override
@@ -354,11 +394,37 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
         recipeOcCount = aNBT.getInteger("recipeOcCount");
+        ownerUUID = UUID.fromString(aNBT.getString("OwnerUUID"));
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+
+        ownerUUID = aBaseMetaTileEntity.getOwnerUuid();
+
+        SpaceProjectManager.checkOrCreateTeam(ownerUUID);
+
+        isInTeam = SpaceProjectManager.isInTeam(ownerUUID);
+
+        if (isInTeam) {
+            teamUUID = SpaceProjectManager.getLeader(ownerUUID);
+            steamDisplay = getUserSteam(ownerUUID);
+        }
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (aTick % 200 == 0L) {
+                isInTeam = SpaceProjectManager.isInTeam(ownerUUID);
+
+                if (isInTeam) {
+                    teamUUID = SpaceProjectManager.getLeader(ownerUUID);
+                    steamDisplay = getUserSteam(ownerUUID);
+                }
+            }
             if (aTick % 20 == 0) {
                 boolean found = false;
                 for (MTEHatchMaintenance module : mMaintenanceHatches) {
