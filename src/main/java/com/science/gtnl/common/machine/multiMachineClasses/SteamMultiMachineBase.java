@@ -373,7 +373,10 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         tag.setBoolean("isInSteamNetwork", isInTeam);
 
         if (isInTeam) {
-            tag.setString("SteamNetworkDisplay", GTUtility.formatNumbers(steamDisplay));
+            tag.setString(
+                "SteamNetworkDisplay",
+                steamDisplay.toString()
+                    .length() > 10 ? GTUtility.scientificFormat(steamDisplay) : GTUtility.formatNumbers(steamDisplay));
             if (!ownerUUID.equals(teamUUID)) {
                 tag.setString("SteamNetworkTeam", SpaceProjectManager.getPlayerNameFromUUID(teamUUID));
             }
