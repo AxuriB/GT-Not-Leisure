@@ -7,6 +7,12 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
+import appeng.api.config.Actionable;
+import appeng.api.networking.security.PlayerSource;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.tile.misc.TileInterface;
+import appeng.util.item.AEItemStack;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -61,7 +67,6 @@ public class PortableItem extends Item {
         }
     }
 
-    // TODO:对ME接口特判，直接进入AE网络而不是缓冲区
     private boolean tryMoveItems(World world, int x, int y, int z, ItemStack stack, EntityPlayer player) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof IInventory inventory) {
@@ -69,6 +74,10 @@ public class PortableItem extends Item {
             val bagIInv = type.getInventory(stack);
             if (bagIInv == null) return false;
             val bagInv = new InvWrapper(bagIInv);
+            if (tryMoveItemsToAE(te,bagInv,player)) {
+                type.saveInventory(stack, bagIInv);
+                return true;
+            }
             val inv = new InvWrapper(inventory);
 
             for (int slot = 0; slot < bagInv.getSlots(); slot++) {
@@ -87,6 +96,30 @@ public class PortableItem extends Item {
             return true;
         }
         return false;
+    }
+
+    private boolean tryMoveItemsToAE(TileEntity te,InvWrapper bagInv,EntityPlayer player) {
+        if (!(te instanceof TileInterface ae)) return false;
+        val node = ae.getActionableNode();
+        if (node == null) return false;
+        val grid = node.getGrid();
+        if (grid == null) return false;
+        IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+        if (storageGrid == null) return false;
+        val s = storageGrid.getItemInventory();
+        val source = new PlayerSource(player, ae);
+        for (int slot = 0; slot < bagInv.getSlots(); slot++) {
+            val item = bagInv.getStackInSlot(slot);
+            if (item == null) continue;
+            IAEItemStack aeItem = AEItemStack.create(item);
+            aeItem = s.injectItems(aeItem, Actionable.MODULATE, source);
+            if (aeItem == null) {
+                bagInv.setStackInSlot(slot, null);
+            } else if (bagInv.getStackInSlot(slot).stackSize != aeItem.getStackSize()) {
+                bagInv.getStackInSlot(slot).stackSize = (int) aeItem.getStackSize();
+            }
+        }
+        return true;
     }
 
     @Override
