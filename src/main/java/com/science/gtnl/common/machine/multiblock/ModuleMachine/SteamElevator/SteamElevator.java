@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -96,7 +95,6 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
     public ArrayList<SteamElevatorModule> mModuleHatches = new ArrayList<>();
     private boolean isLoadedChunk;
     private boolean wirelessMode = false;
-    private UUID ownerUUID;
     private String costingEUText = ZERO_STRING;
 
     protected final int HORIZONTAL_OFF_SET = 17;
@@ -253,11 +251,6 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
             }
         }
         super.onRemoval();
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        this.ownerUUID = aBaseMetaTileEntity.getOwnerUuid();
     }
 
     @Override
