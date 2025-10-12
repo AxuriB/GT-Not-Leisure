@@ -86,7 +86,6 @@ public class GuiPortablePortableInfinityChest extends GuiPortableAvaritiaddonsCh
         GL11.glTranslatef((float) guiLeft, (float) guiTop, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        Slot theSlot = null;
         short short1 = 240;
         short short2 = 240;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, short1, short2);
