@@ -20,6 +20,8 @@
     "DraconicEvolution.MixinMinecraftForgeEventHandler",
     "DraconicEvolution.MixinReactorExplosion",
     "GalaxySpace.MixinRocketRecipeHandler",
+    "InventoryBogoSorter.MixinShortcutHandler",
+    "InventoryBogoSorter.MixinSortHandler",
     "Gregtech.AccessorProcessingLogic",
     "Gregtech.AccessorMTEHatch",
     "Gregtech.MixinMTEVoidMinerBase",

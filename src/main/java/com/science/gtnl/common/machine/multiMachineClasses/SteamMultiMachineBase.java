@@ -389,7 +389,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("mMode", machineMode);
         aNBT.setInteger("recipeOcCount", recipeOcCount);
-        ownerUUID = UUID.fromString(aNBT.getString("OwnerUUID"));
+        aNBT.setString("OwnerUUID", ownerUUID.toString());
     }
 
     @Override

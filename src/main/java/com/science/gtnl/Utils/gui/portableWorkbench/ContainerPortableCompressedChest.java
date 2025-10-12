@@ -9,7 +9,7 @@ import com.science.gtnl.common.item.items.PortableItem;
 public class ContainerPortableCompressedChest extends ContainerPortableAvaritiaddonsChest {
 
     public ContainerPortableCompressedChest(ItemStack stack, InventoryPlayer playerInv) {
-        super(stack, playerInv);
+        super(stack, playerInv, false);
     }
 
     @Override
