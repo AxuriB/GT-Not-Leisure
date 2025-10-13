@@ -43,7 +43,7 @@ public class LootBagRedemption extends MTEBasicMachine {
                 StatCollector.translateToLocal("Tooltip_LootBagRedemption_03"),
                 StatCollector.translateToLocal("Tooltip_LootBagRedemption_04") },
             2,
-            16,
+            9,
             TextureFactory.of(
                 TextureFactory.of(BlockIcons.OVERLAY_SIDE_REPLICATOR_ACTIVE),
                 TextureFactory.builder()
@@ -95,7 +95,7 @@ public class LootBagRedemption extends MTEBasicMachine {
     }
 
     public LootBagRedemption(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures, 2, 16);
+        super(aName, aTier, 1, aDescription, aTextures, 2, 9);
     }
 
     @Override
@@ -126,9 +126,9 @@ public class LootBagRedemption extends MTEBasicMachine {
             lootBagStack = slotB;
         }
 
-        if (slotA != null && GTUtility.areStacksEqual(slotA, CustomItemList.CoinTechnicianI.get(1))) {
+        if (slotA != null && GTUtility.areStacksEqual(slotA, CustomItemList.CoinTechnician.get(1))) {
             coinStack = slotA;
-        } else if (slotB != null && GTUtility.areStacksEqual(slotB, CustomItemList.CoinTechnicianI.get(1))) {
+        } else if (slotB != null && GTUtility.areStacksEqual(slotB, CustomItemList.CoinTechnician.get(1))) {
             coinStack = slotB;
         }
 
@@ -174,7 +174,7 @@ public class LootBagRedemption extends MTEBasicMachine {
             int specialItemCount = 0;
             for (ItemStack stack : resultItems) {
                 if (GTUtility.areStacksEqual(stack, specialItem, true)) {
-                    specialItemCount -= stack.stackSize;
+                    specialItemCount += stack.stackSize;
                 }
             }
             itemsToDropCount = Math.max(0, itemsToDropCount - specialItemCount);

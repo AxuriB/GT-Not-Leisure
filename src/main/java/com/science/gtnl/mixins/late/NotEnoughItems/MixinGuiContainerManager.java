@@ -18,15 +18,17 @@ import wanion.avaritiaddons.network.InfinityChestClick;
 @Mixin(value = GuiContainerManager.class, remap = false)
 public class MixinGuiContainerManager {
 
-    @Shadow
+    @Shadow(remap = false)
     public GuiContainer window;
 
     @Inject(
         method = "handleSlotClick",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;windowClick(IIIILnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;"),
-        cancellable = true)
+            target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;windowClick(IIIILnet/minecraft/entity/player/EntityPlayer;)Lnet/minecraft/item/ItemStack;",
+            remap = true),
+        cancellable = true,
+        remap = false)
     public void onBeforeWindowClick(int slotId, int clickedButton, int clickType, CallbackInfo ci) {
         if (!(this instanceof IInfinityChestGui)) return;
         short nextTransactionID = window.mc.thePlayer.openContainer.getNextTransactionID(window.mc.thePlayer.inventory);
