@@ -525,6 +525,7 @@ public enum GTNLItemList implements IItemContainer {
     FOGExtractorModule,
     RocketAssembler,
 
+    LootBagRedemption,
     EnergyTransferNode,
     DieselGeneratorLV,
     DieselGeneratorMV,

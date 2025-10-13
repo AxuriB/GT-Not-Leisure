@@ -679,7 +679,7 @@ public class ItemLoader {
                         "Tooltip_VoidCover_03") }));
 
         GTNLItemList.ManaElectricProspectorTool
-            .set(ElectricProspectorTool.initItem("Mana Electric Prospector Tool", 0, 5, 9999));
+            .set(ElectricProspectorTool.initItem("Mana Electric Prospector Tool", 0, 17, 9999));
     }
 
     public static void registry() {

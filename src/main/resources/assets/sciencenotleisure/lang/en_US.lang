@@ -385,6 +385,13 @@ Tooltip_DebugResearchStation_00=Immediately scans Research Station recipes, requ
 Replicator=Replicator
 Enchanting=Enchanting
 
+LootBagRedemption=Loot Bag Redemption Machine
+Tooltip_LootBagRedemption_00=§3You're feeling lucky!
+Tooltip_LootBagRedemption_01=Automatically extract items from loot bags
+Tooltip_LootBagRedemption_02=Includes a built-in trash loot filter
+Tooltip_LootBagRedemption_03=Place an item in the special slot to guarantee it drops
+Tooltip_LootBagRedemption_04=Consumes 4 Technician Coins per operation
+
 GasCollectorLV=Basic Gas Collector
 GasCollectorMV=Advanced Gas Collector
 GasCollectorHV=Advanced Gas Collector II

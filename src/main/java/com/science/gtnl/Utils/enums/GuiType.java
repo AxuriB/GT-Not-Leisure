@@ -1,4 +1,4 @@
-package com.science.gtnl;
+package com.science.gtnl.Utils.enums;
 
 public enum GuiType {
 

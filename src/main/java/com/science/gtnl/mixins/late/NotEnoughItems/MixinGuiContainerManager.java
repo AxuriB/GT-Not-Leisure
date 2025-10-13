@@ -1,4 +1,4 @@
-package com.science.gtnl.mixins.early.NotEnoughItems;
+package com.science.gtnl.mixins.late.NotEnoughItems;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;

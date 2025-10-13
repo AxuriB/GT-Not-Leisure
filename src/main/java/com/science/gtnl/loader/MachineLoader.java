@@ -22,6 +22,7 @@ import com.science.gtnl.common.machine.basicMachine.DebugResearchStation;
 import com.science.gtnl.common.machine.basicMachine.DieselGenerator;
 import com.science.gtnl.common.machine.basicMachine.Enchanting;
 import com.science.gtnl.common.machine.basicMachine.GasTurbine;
+import com.science.gtnl.common.machine.basicMachine.LootBagRedemption;
 import com.science.gtnl.common.machine.basicMachine.ManaTank;
 import com.science.gtnl.common.machine.basicMachine.Replicator;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
@@ -2328,6 +2329,14 @@ public class MachineLoader {
                 "EnergyTransferNode",
                 StatCollector.translateToLocal("EnergyTransferNode")));
         addItemTooltip(GTNLItemList.EnergyTransferNode.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LootBagRedemption.set(
+            new LootBagRedemption(
+                LOOT_BAG_REDEMPTION.ID,
+                "LootBagRedemption",
+                StatCollector.translateToLocal("LootBagRedemption"),
+                1));
+        addItemTooltip(GTNLItemList.LootBagRedemption.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     public static void registerWireAndPipe() {
