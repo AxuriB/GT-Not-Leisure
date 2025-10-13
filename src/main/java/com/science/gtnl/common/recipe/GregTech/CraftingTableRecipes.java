@@ -3,12 +3,14 @@ package com.science.gtnl.common.recipe.GregTech;
 import static com.dreammaster.scripts.IScriptLoader.missing;
 import static gregtech.api.enums.Mods.*;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import com.dreammaster.item.NHItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.config.MainConfig;
@@ -1049,6 +1051,13 @@ public class CraftingTableRecipes implements IRecipePool {
             new Object[] { "AAA", "ABC", "CCC", 'A', GTModHandler.getModItem(EtFuturumRequiem.ID, "netherite_scrap", 1),
                 'B', new ItemStack(Items.diamond_hoe, 1), 'C',
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.LootBagRedemption.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L),
+                'B', ItemUtils.getEnchantedBook(Enchantment.fortune, 3), 'C', "circuitBasic", 'D',
+                ItemList.Hull_LV.get(1), 'E', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'F',
+                GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1) });
 
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(

@@ -294,6 +294,17 @@ public class ItemUtils {
         return stack;
     }
 
+    public static ItemStack getEnchantedBook(Object... enchants) {
+        ItemStack book = new ItemStack(Items.enchanted_book);
+        for (int i = 0; i < enchants.length - 1; i += 2) {
+            if (enchants[i] instanceof Enchantment && enchants[i + 1] instanceof Integer) {
+                Items.enchanted_book
+                    .addEnchantment(book, new EnchantmentData((Enchantment) enchants[i], (Integer) enchants[i + 1]));
+            }
+        }
+        return book;
+    }
+
     public static ItemStack createPlayerSkull(String playerName) {
         ItemStack skullStack = new ItemStack(Items.skull, 1, 3);
 
