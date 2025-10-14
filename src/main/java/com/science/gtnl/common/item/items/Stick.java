@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMerchant;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +24,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
 import org.lwjgl.input.Keyboard;
 
+import com.rwtema.extrautils.gui.GuiTradingPost;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IItemStackExtra;
 import com.science.gtnl.api.IKeyHandler;
@@ -30,6 +32,7 @@ import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.ItemLoader;
 
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -233,19 +236,20 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean isShiftDown() {
-        Object screen = Minecraft.getMinecraft().currentScreen;
-
-        if (screen instanceof GuiMerchant) {
+        if (Minecraft.getMinecraft().currentScreen instanceof GuiMerchant) {
             return false;
         }
 
-        if (screen != null && screen.getClass()
-            .getName()
-            .equals("com.rwtema.extrautils.gui.GuiTradingPost")) {
+        if (Mods.ExtraUtilities.isModLoaded() && isGuiTradingPost(Minecraft.getMinecraft().currentScreen)) {
             return false;
         }
 
         return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+    }
+
+    @Optional.Method(modid = "ExtraUtilities")
+    public boolean isGuiTradingPost(GuiScreen screen) {
+        return screen instanceof GuiTradingPost;
     }
 
     @Override
