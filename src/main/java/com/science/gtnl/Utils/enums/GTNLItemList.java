@@ -525,6 +525,7 @@ public enum GTNLItemList implements IItemContainer {
     FOGExtractorModule,
     RocketAssembler,
 
+    ModFilteredInputBusME,
     LootBagRedemption,
     EnergyTransferNode,
     DieselGeneratorLV,
@@ -541,7 +542,7 @@ public enum GTNLItemList implements IItemContainer {
     VaultPortHatch,
     NanitesInputBus,
     Enchanting,
-    OredictInputBusHatchME,
+    OredictInputBusME,
     Replicator,
     SuperInputHatchME,
     AdvancedSuperInputHatchME,

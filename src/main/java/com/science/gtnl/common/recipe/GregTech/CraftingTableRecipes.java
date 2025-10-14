@@ -1097,6 +1097,18 @@ public class CraftingTableRecipes implements IRecipePool {
                 ItemList.Large_Fluid_Cell_StainlessSteel.get(1), 'D', ItemList.Hull_HV.get(1), 'E',
                 ItemList.Electric_Piston_HV, 'F', GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Gold, 1L) });
 
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "elytra", 1),
+            new Object[] { "ABA", "ACA", "A A", 'A', new ItemStack(Items.leather, 1), 'B',
+                GTModHandler.getModItem(EtFuturumRequiem.ID, "shulker_shell", 1), 'C',
+                new ItemStack(Items.ender_pearl, 1) });
+
+        GTModHandler.addCraftingRecipe(
+            GTModHandler.getModItem(EtFuturumRequiem.ID, "totem_of_undying", 1),
+            new Object[] { "ABA", "BCB", " B ", 'A', new ItemStack(Items.emerald, 1), 'B',
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L), 'C',
+                new ItemStack(Items.golden_apple, 1, 1) });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),

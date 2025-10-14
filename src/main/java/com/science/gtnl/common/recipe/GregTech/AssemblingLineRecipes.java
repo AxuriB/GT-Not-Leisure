@@ -1270,7 +1270,7 @@ public class AssemblingLineRecipes implements IRecipePool {
                 GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 30),
                 GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockChest", 1))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(576), Materials.Lubricant.getFluid(1000))
-            .itemOutputs(GTNLItemList.OredictInputBusHatchME.get(1))
+            .itemOutputs(GTNLItemList.OredictInputBusME.get(1))
             .eut(TierEU.RECIPE_IV)
             .duration(10 * SECONDS)
             .addTo(GTRecipeConstants.AssemblyLine);
