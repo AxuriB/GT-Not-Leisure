@@ -196,19 +196,19 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 ItemStack specialItem = (ItemStack) recipe.mSpecialItems;
 
-                if (!BWUtil.areStacksEqualOrNull(specialItem, LargeIncubator.this.getControllerSlot())) {
+                if (!BWUtil.areStacksEqualOrNull(specialItem, getControllerSlot())) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
                 }
 
                 int[] conditions = LargeIncubator.specialValueUnpack(recipe.mSpecialValue);
-                LargeIncubator.this.mNeededSievert = conditions[3];
+                mNeededSievert = conditions[3];
 
-                if (LargeIncubator.this.mSievert < LargeIncubator.this.mNeededSievert) {
-                    return ResultWrongSievert.insufficientSievert(LargeIncubator.this.mNeededSievert);
+                if (mSievert < mNeededSievert) {
+                    return ResultWrongSievert.insufficientSievert(mNeededSievert);
                 }
 
                 itemQuantity = 1;
-                ItemStack controllerSlotItem = LargeIncubator.this.getControllerSlot();
+                ItemStack controllerSlotItem = getControllerSlot();
                 itemQuantity = controllerSlotItem != null ? controllerSlotItem.stackSize : 1;
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;

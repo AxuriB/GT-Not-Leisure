@@ -43,9 +43,10 @@ import com.science.gtnl.common.machine.hatch.HumongousNinefoldInputHatch;
 import com.science.gtnl.common.machine.hatch.HumongousSolidifierHatch;
 import com.science.gtnl.common.machine.hatch.ManaDynamoHatch;
 import com.science.gtnl.common.machine.hatch.ManaEnergyHatch;
+import com.science.gtnl.common.machine.hatch.ModFilteredInputBusME;
 import com.science.gtnl.common.machine.hatch.NanitesInputBus;
 import com.science.gtnl.common.machine.hatch.NinefoldInputHatch;
-import com.science.gtnl.common.machine.hatch.OredictInputBusHatchME;
+import com.science.gtnl.common.machine.hatch.OredictInputBusME;
 import com.science.gtnl.common.machine.hatch.OriginalInputHatch;
 import com.science.gtnl.common.machine.hatch.OriginalOutputHatch;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
@@ -1962,12 +1963,12 @@ public class MachineLoader {
             .set(new Enchanting(ENCHANTING.ID, "Enchanting", StatCollector.translateToLocal("Enchanting"), 7));
         addItemTooltip(GTNLItemList.Enchanting.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.OredictInputBusHatchME.set(
-            new OredictInputBusHatchME(
+        GTNLItemList.OredictInputBusME.set(
+            new OredictInputBusME(
                 OREDICT_INPUT_BUS_HATCH_ME.ID,
-                "OredictInputBusHatchME",
-                StatCollector.translateToLocal("OredictInputBusHatchME")));
-        addItemTooltip(GTNLItemList.OredictInputBusHatchME.get(1), AnimatedText.SNL_SKYINR);
+                "OredictInputBusME",
+                StatCollector.translateToLocal("OredictInputBusME")));
+        addItemTooltip(GTNLItemList.OredictInputBusME.get(1), AnimatedText.SNL_SKYINR);
 
         GTNLItemList.NanitesInputBus.set(
             new NanitesInputBus(
@@ -2198,6 +2199,13 @@ public class MachineLoader {
                 7,
                 16));
         addItemTooltip(GTNLItemList.ManaEnergyHatchZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.ModFilteredInputBusME.set(
+            new ModFilteredInputBusME(
+                MOD_FILTERED_INPUT_BUS_ME.ID,
+                "ModFilteredInputBusME",
+                StatCollector.translateToLocal("ModFilteredInputBusME")));
+        addItemTooltip(GTNLItemList.ModFilteredInputBusME.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     @Deprecated

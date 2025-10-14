@@ -52,6 +52,7 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_04"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_05"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_06"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))

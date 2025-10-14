@@ -107,7 +107,7 @@ public class SubscribeEventClientUtils {
             }
 
             if (newRange < -1) newRange = -1;
-            if (newRange > 32) newRange = 32;
+            if (newRange > MainConfig.veinMiningPickaxeMaxRange) newRange = MainConfig.veinMiningPickaxeMaxRange;
 
             if (newRange != oldRange) {
                 nbt.setInteger("range", newRange);
@@ -123,13 +123,13 @@ public class SubscribeEventClientUtils {
             int newAmount = oldAmount;
 
             if (event.dwheel > 0) {
-                newAmount += 1000;
+                newAmount += 10000;
             } else {
-                newAmount -= 1000;
+                newAmount -= 10000;
             }
 
             if (newAmount < 0) newAmount = 0;
-            if (newAmount > 327670) newAmount = 327670;
+            if (newAmount > MainConfig.veinMiningPickaxeMaxAmount) newAmount = MainConfig.veinMiningPickaxeMaxAmount;
 
             if (newAmount != oldAmount) {
                 nbt.setInteger("amount", newAmount);

@@ -96,6 +96,10 @@ public class MainConfig {
     public static int chronarchsClockDurationTicks = 600;
     public static int chronarchsClockCooldown = 300;
 
+    // Vein Mining Pickaxe
+    public static int veinMiningPickaxeMaxRange = 32;
+    public static int veinMiningPickaxeMaxAmount = 327670;
+
     // Stick
     public static boolean enableStickItem = true;
 
@@ -404,6 +408,23 @@ public class MainConfig {
         chronarchsClockCooldown = config
             .get(SUB_CATEGORY_CHRONARCHS_CLOCK, "Cooldown", chronarchsClockCooldown, "Change Chronarchs Clock Cooldown")
             .getInt(chronarchsClockCooldown);
+
+        // Vein Mining Pickaxe
+        veinMiningPickaxeMaxRange = config
+            .get(
+                SUB_CATEGORY_CHRONARCHS_CLOCK,
+                "veinMiningPickaxeMaxRange",
+                veinMiningPickaxeMaxRange,
+                "Set maximum block distance for Vein Mining Pickaxe")
+            .getInt(veinMiningPickaxeMaxRange);
+
+        veinMiningPickaxeMaxAmount = config
+            .get(
+                SUB_CATEGORY_CHRONARCHS_CLOCK,
+                "veinMiningPickaxeMaxAmount",
+                veinMiningPickaxeMaxAmount,
+                "Set maximum number of chained blocks for Vein Mining Pickaxe")
+            .getInt(veinMiningPickaxeMaxAmount);
 
         // Stick
         enableStickItem = config

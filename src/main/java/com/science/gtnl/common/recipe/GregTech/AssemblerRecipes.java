@@ -2115,7 +2115,7 @@ public class AssemblerRecipes implements IRecipePool {
             .addTo(As);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.paper, 7))
+            .itemInputs(GTUtility.getIntegratedCircuit(4), new ItemStack(Items.paper, 7))
             .itemOutputs(GTNLItemList.CardboardBox.get(1))
             .fluidInputs(FluidRegistry.getFluidStack("refinedglue", 200))
             .duration(20)
@@ -2237,7 +2237,8 @@ public class AssemblerRecipes implements IRecipePool {
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
                     GTNLItemList.HydraulicVaporGenerator.get(4),
                     GTNLItemList.HydraulicRegulator.get(8),
-                    GTNLItemList.CompressedSteamTurbine.get(8))
+                    GTNLItemList.CompressedSteamTurbine.get(8),
+                    new ItemStack(Items.blaze_powder, 8))
                 .fluidInputs(Materials.SolderingAlloy.getMolten(1296))
                 .itemOutputs(GTNLItemList.SteamBeaconModuleIII.get(1))
                 .duration(200)
@@ -2255,12 +2256,12 @@ public class AssemblerRecipes implements IRecipePool {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTNLItemList.SteamCompactPipeCasing.get(4),
-                    GTModHandler.getModItem(Forestry.ID, "alveary", 16, 0),
-                    GTModHandler.getModItem(Forestry.ID, "alveary", 16, 2),
-                    GTModHandler.getModItem(Forestry.ID, "alveary", 16, 6),
-                    GTModHandler.getModItem(Forestry.ID, "royalJelly", 64),
-                    GTModHandler.getModItem(Forestry.ID, "beeswax", 64),
-                    GTModHandler.getModItem(Forestry.ID, "pollen", 64),
+                    GTModHandler.getModItem(Forestry.ID, "alveary", 2, 0),
+                    GTModHandler.getModItem(Forestry.ID, "alveary", 2, 2),
+                    GTModHandler.getModItem(Forestry.ID, "alveary", 2, 6),
+                    GTModHandler.getModItem(Forestry.ID, "royalJelly", 4),
+                    GTModHandler.getModItem(Forestry.ID, "beeswax", 8),
+                    GTModHandler.getModItem(Forestry.ID, "pollen", 2),
                     ItemList.IndustrialApiary_Upgrade_FLOWERING.get(2))
                 .fluidInputs(Materials.Honey.getFluid(10000L))
                 .itemOutputs(GTNLItemList.SteamBeeBreedingModule.get(1))
@@ -2271,10 +2272,10 @@ public class AssemblerRecipes implements IRecipePool {
             GTValues.RA.stdBuilder()
                 .itemInputs(
                     GTNLItemList.SteamCompactPipeCasing.get(4),
-                    GTModHandler.getModItem(Forestry.ID, "alveary", 16, 0),
-                    ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(16),
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(16),
-                    ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(16))
+                    GTModHandler.getModItem(Forestry.ID, "alveary", 2, 0),
+                    ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(4),
+                    ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(4),
+                    ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(4))
                 .fluidInputs(Materials.Honey.getFluid(10000L))
                 .itemOutputs(GTNLItemList.SteamApiaryModule.get(1))
                 .duration(300)
@@ -2363,6 +2364,21 @@ public class AssemblerRecipes implements IRecipePool {
                 .itemOutputs(GTNLItemList.StainlessSteelGearBox.get(1))
                 .specialValue(0)
                 .duration(100)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GregtechItemList.GT4_Crop_Harvester_LV.get(2),
+                    new ItemStack(Blocks.dirt, 64),
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "blockCrop", 64),
+                    GTModHandler.getModItem(Forestry.ID, "ffarm", 16, 4),
+                    GTModHandler.getModItem(Forestry.ID, "ffarm", 16, 2),
+                    GTModHandler.getModItem(Forestry.ID, "ffarm", 4, 5))
+                .itemOutputs(GTNLItemList.SteamGreenhouseModule.get(1))
+                .fluidInputs(FluidRegistry.getFluidStack("liquid_sunshine", 16000))
+                .specialValue(0)
+                .duration(200)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(As);
         }
