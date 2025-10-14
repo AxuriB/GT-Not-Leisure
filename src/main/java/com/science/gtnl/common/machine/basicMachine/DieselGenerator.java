@@ -38,14 +38,16 @@ public class DieselGenerator extends MTEBasicGenerator implements IAddGregtechLo
             aNameRegional,
             aTier,
             new String[] { StatCollector.translateToLocal("Tooltip_DieselGenerator_00"), "", "" });
-        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_DieselGenerator_01") + getEfficiency() + "%";
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_DieselGenerator_02") + getCapacity() + "L";
+        mDescriptionArray[1] = StatCollector.translateToLocalFormatted("Tooltip_DieselGenerator_01", getEfficiency());
+        mDescriptionArray[2] = StatCollector
+            .translateToLocalFormatted("Tooltip_DieselGenerator_02", GTUtility.formatNumbers(getCapacity()));
     }
 
     public DieselGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_DieselGenerator_01") + getEfficiency() + "%";
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_DieselGenerator_02") + getCapacity() + "L";
+        mDescriptionArray[1] = StatCollector.translateToLocalFormatted("Tooltip_DieselGenerator_01", getEfficiency());
+        mDescriptionArray[2] = StatCollector
+            .translateToLocalFormatted("Tooltip_DieselGenerator_02", GTUtility.formatNumbers(getCapacity()));
     }
 
     @Override

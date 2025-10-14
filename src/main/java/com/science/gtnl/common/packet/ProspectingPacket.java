@@ -21,6 +21,7 @@ import detrav.utils.GTppHelper;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
+import gtPlusPlus.core.material.Material;
 import io.netty.buffer.ByteBuf;
 
 public class ProspectingPacket implements IMessage {
@@ -152,7 +153,7 @@ public class ProspectingPacket implements IMessage {
                         rgba = w.getRGBA();
                     }
                 } else {
-                    gtPlusPlus.core.material.Material mat = GTppHelper.getMatFromMeta(meta);
+                    Material mat = GTppHelper.getMatFromMeta(meta);
                     rgba = mat.getRGBA();
                     name = mat.getLocalizedName() + " Ore";
                 }

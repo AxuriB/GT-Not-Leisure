@@ -18,6 +18,7 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
 public class GasTurbine extends MTEBasicGenerator implements IAddGregtechLogo {
 
@@ -28,14 +29,16 @@ public class GasTurbine extends MTEBasicGenerator implements IAddGregtechLogo {
             aNameRegional,
             aTier,
             new String[] { StatCollector.translateToLocal("Tooltip_GasTurbine_00"), "", "" });
-        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_GasTurbine_01") + getEfficiency() + "%";
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_GasTurbine_02") + getCapacity() + "L";
+        mDescriptionArray[1] = StatCollector.translateToLocalFormatted("Tooltip_GasTurbine_01", getEfficiency());
+        mDescriptionArray[2] = StatCollector
+            .translateToLocalFormatted("Tooltip_GasTurbine_02", GTUtility.formatNumbers(getCapacity()));
     }
 
     public GasTurbine(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_GasTurbine_01") + getEfficiency() + "%";
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_GasTurbine_02") + getCapacity() + "L";
+        mDescriptionArray[1] = StatCollector.translateToLocalFormatted("Tooltip_GasTurbine_01", getEfficiency());
+        mDescriptionArray[2] = StatCollector
+            .translateToLocalFormatted("Tooltip_GasTurbine_02", GTUtility.formatNumbers(getCapacity()));
     }
 
     @Override
