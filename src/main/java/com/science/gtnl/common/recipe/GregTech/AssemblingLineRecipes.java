@@ -1,6 +1,6 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import static bartworks.common.loaders.ItemRegistry.bw_realglas;
+import static bartworks.common.loaders.ItemRegistry.*;
 import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_LuV;
 import static gregtech.api.enums.Mods.*;
@@ -34,6 +34,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsBotania;
 import gregtech.api.enums.MaterialsKevlar;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
@@ -1273,6 +1274,24 @@ public class AssemblingLineRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.OredictInputBusME.get(1))
             .eut(TierEU.RECIPE_IV)
             .duration(10 * SECONDS)
+            .addTo(GTRecipeConstants.AssemblyLine);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, new ItemStack(GregTechAPI.sBlockMachines, 1, MetaTileEntityIDs.ManualTrafo.ID))
+            .metadata(SCANNING, new Scanning(30 * MINUTES, TierEU.RECIPE_HV))
+            .itemInputs(
+                CustomItemList.Machine_Multi_Transformer.get(1),
+                new ItemStack(GregTechAPI.sBlockMachines, 1, MetaTileEntityIDs.ManualTrafo.ID),
+                new ItemStack(ItemRegistry.BW_BLOCKS[2], 8, 1),
+                ItemList.Circuit_Chip_NanoCPU.get(16),
+                CustomItemList.LASERpipe.get(8),
+                com.dreammaster.gthandler.CustomItemList.HighEnergyFlowCircuit.get(4),
+                new Object[] { OrePrefixes.circuit.get(Materials.LuV), 2L },
+                GTOreDictUnificator.get(OrePrefixes.lens, Materials.NetherStar, 2))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(576), Materials.Lubricant.getFluid(1000))
+            .itemOutputs(GTNLItemList.EnergyTransferNode.get(1))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(30 * SECONDS)
             .addTo(GTRecipeConstants.AssemblyLine);
     }
 }
