@@ -233,7 +233,15 @@ public class Stick extends Item implements IItemStackExtra, IKeyHandler {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean isShiftDown() {
-        if (Minecraft.getMinecraft().currentScreen instanceof GuiMerchant) {
+        Object screen = Minecraft.getMinecraft().currentScreen;
+
+        if (screen instanceof GuiMerchant) {
+            return false;
+        }
+
+        if (screen != null && screen.getClass()
+            .getName()
+            .equals("com.rwtema.extrautils.gui.GuiTradingPost")) {
             return false;
         }
 

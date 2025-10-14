@@ -2115,7 +2115,7 @@ public class AssemblerRecipes implements IRecipePool {
             .addTo(As);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.paper, 7))
+            .itemInputs(GTUtility.getIntegratedCircuit(4), new ItemStack(Items.paper, 7))
             .itemOutputs(GTNLItemList.CardboardBox.get(1))
             .fluidInputs(FluidRegistry.getFluidStack("refinedglue", 200))
             .duration(20)
@@ -2364,6 +2364,21 @@ public class AssemblerRecipes implements IRecipePool {
                 .itemOutputs(GTNLItemList.StainlessSteelGearBox.get(1))
                 .specialValue(0)
                 .duration(100)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GregtechItemList.GT4_Crop_Harvester_LV.get(2),
+                    new ItemStack(Blocks.dirt, 64),
+                    GTModHandler.getModItem(IndustrialCraft2.ID, "blockCrop", 64),
+                    GTModHandler.getModItem(Forestry.ID, "ffarm", 16, 4),
+                    GTModHandler.getModItem(Forestry.ID, "ffarm", 16, 2),
+                    GTModHandler.getModItem(Forestry.ID, "ffarm", 4, 5))
+                .itemOutputs(GTNLItemList.SteamGreenhouseModule.get(1))
+                .fluidInputs(FluidRegistry.getFluidStack("liquid_sunshine", 16000))
+                .specialValue(0)
+                .duration(200)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(As);
         }
