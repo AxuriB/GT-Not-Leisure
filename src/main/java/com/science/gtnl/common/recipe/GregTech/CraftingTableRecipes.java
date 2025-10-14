@@ -1059,6 +1059,44 @@ public class CraftingTableRecipes implements IRecipePool {
                 ItemList.Hull_LV.get(1), 'E', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L), 'F',
                 GTModHandler.getModItem(IronChests.ID, "BlockIronChest", 1) });
 
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.DieselGeneratorLV.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', ItemList.Electric_Piston_LV.get(1), 'B', "circuitBasic", 'C',
+                GregtechItemList.GTFluidTank_LV.get(1), 'D', ItemList.Hull_LV.get(1), 'E', ItemList.Electric_Pump_LV,
+                'F', GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Tin, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.DieselGeneratorMV.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', ItemList.Electric_Piston_MV.get(1), 'B', "circuitGood", 'C',
+                GregtechItemList.GTFluidTank_MV.get(1), 'D', ItemList.Hull_MV.get(1), 'E', ItemList.Electric_Pump_MV,
+                'F', "cableGt08AnyCopper" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.DieselGeneratorHV.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', ItemList.Electric_Piston_HV.get(1), 'B', "circuitAdvanced", 'C',
+                GregtechItemList.GTFluidTank_HV.get(1), 'D', ItemList.Hull_HV.get(1), 'E', ItemList.Electric_Pump_HV,
+                'F', GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Gold, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.GasTurbineLV.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Steel, 1L),
+                'B', "circuitBasic", 'C', ItemList.Large_Fluid_Cell_Steel.get(1), 'D', ItemList.Hull_LV.get(1), 'E',
+                ItemList.Electric_Piston_LV, 'F', GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Tin, 1L) });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.GasTurbineMV.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A',
+                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Aluminium, 1L), 'B', "circuitGood", 'C',
+                ItemList.Large_Fluid_Cell_Aluminium.get(1), 'D', ItemList.Hull_MV.get(1), 'E',
+                ItemList.Electric_Piston_MV, 'F', "cableGt08AnyCopper" });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.GasTurbineHV.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A',
+                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 1L), 'B', "circuitAdvanced", 'C',
+                ItemList.Large_Fluid_Cell_StainlessSteel.get(1), 'D', ItemList.Hull_HV.get(1), 'E',
+                ItemList.Electric_Piston_HV, 'F', GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Gold, 1L) });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),

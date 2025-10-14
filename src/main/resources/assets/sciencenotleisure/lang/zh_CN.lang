@@ -94,8 +94,16 @@ SuperVoidBus=超级虚空总线
 SuperVoidHatch=超级虚空仓
 
 OriginalInputHatch=输入仓(蒸汽)
+Tooltip_OriginalInputHatch_00=为多方块机器输入流体
+Tooltip_OriginalInputHatch_01=手持螺丝刀右键以切换输入过滤
+Tooltip_OriginalInputHatch_02=容量：%s升
 
 OriginalOutputHatch=输出仓(蒸汽)
+Tooltip_OriginalOutputHatch_00=为多方块机器输出流体
+Tooltip_OriginalOutputHatch_01=容量：%s升
+Tooltip_OriginalOutputHatch_02=用螺丝刀右键以限制自动输出
+Tooltip_OriginalOutputHatch_03=可以被设定为仅输出/仅不输出 物品/蒸汽/流体
+Tooltip_OriginalOutputHatch_04=被设定过的输出仓在多方块中拥有更高的优先级
 
 VaultPortHatch=保险库多方块输入/输出总成
 Tooltip_VaultPortHatch_00=保险库的一站式访问节点
@@ -362,22 +370,22 @@ SteamTurbineMV=进阶蒸汽轮机
 SteamTurbineHV=进阶蒸汽轮机 II
 Tooltip_SteamTurbine_00=将蒸汽转换为EU
 Tooltip_SteamTurbine_01=基础效率：2L蒸汽/EU
-Tooltip_SteamTurbine_02=燃料效率：
-Tooltip_SteamTurbine_03=流体容量：
+Tooltip_SteamTurbine_02=燃料效率：%s%
+Tooltip_SteamTurbine_03=流体容量：%sL
 
 GasTurbineLV=基础燃气轮机
 GasTurbineMV=进阶燃气轮机
 GasTurbineHV=进阶燃气轮机 II
 Tooltip_GasTurbine_00=需要可燃气体
-Tooltip_GasTurbine_01=燃料效率：
-Tooltip_GasTurbine_02=流体容量：
+Tooltip_GasTurbine_01=燃料效率：%s%
+Tooltip_GasTurbine_02=流体容量：%sL
 
 DieselGeneratorLV=基础内燃发电机
 DieselGeneratorMV=进阶内燃发电机
 DieselGeneratorHV=进阶内燃发电机 II
 Tooltip_DieselGenerator_00=需要液体燃料
-Tooltip_DieselGenerator_01=燃料效率：
-Tooltip_DieselGenerator_02=流体容量：
+Tooltip_DieselGenerator_01=燃料效率：%s%
+Tooltip_DieselGenerator_02=流体容量：%sL
 
 DebugResearchStation=Debug研究站
 Tooltip_DebugResearchStation_00=立即扫描研究站配方，无需能量

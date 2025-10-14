@@ -94,8 +94,16 @@ SuperVoidBus=Super Void Bus
 SuperVoidHatch=Super Void Hatch
 
 OriginalInputHatch=Input Hatch (Steam)
+Tooltip_OriginalInputHatch_00=Fluid Input for Multiblocks
+Tooltip_OriginalInputHatch_01=Right click with screwdriver to toggle input filter
+Tooltip_OriginalInputHatch_02=Capacity: %sL
 
 OriginalOutputHatch=Output Hatch (Steam)
+Tooltip_OriginalOutputHatch_00=Fluid Output for Multiblocks
+Tooltip_OriginalOutputHatch_01=Capacity: %sL
+Tooltip_OriginalOutputHatch_02=Right click with screwdriver to restrict output
+Tooltip_OriginalOutputHatch_03=Can be restricted to put out Items and/or Steam/No Steam/1 specific Fluid
+Tooltip_OriginalOutputHatch_04=Restricted Output Hatches are given priority for Multiblock Fluid output
 
 VaultPortHatch=Vault Port Assembly
 Tooltip_VaultPortHatch_00=All-in-one access for the Vault
@@ -362,22 +370,22 @@ SteamTurbineMV=Advanced Steam Turbine
 SteamTurbineHV=Advanced Steam Turbine II
 Tooltip_SteamTurbine_00=Converts steam into EU
 Tooltip_SteamTurbine_01=Base efficiency: 2L steam/EU
-Tooltip_SteamTurbine_02=Fuel efficiency: 
-Tooltip_SteamTurbine_03=Fluid capacity: 
+Tooltip_SteamTurbine_02=Fuel efficiency: %s%
+Tooltip_SteamTurbine_03=Fluid capacity: %sL
 
 GasTurbineLV=Basic Gas Turbine
 GasTurbineMV=Advanced Gas Turbine
 GasTurbineHV=Advanced Gas Turbine II
 Tooltip_GasTurbine_00=Requires flammable Gasses
-Tooltip_GasTurbine_01=Fuel efficiency: 
-Tooltip_GasTurbine_02=Fluid capacity: 
+Tooltip_GasTurbine_01=Fuel efficiency: %s%
+Tooltip_GasTurbine_02=Fluid capacity: %sL
 
 DieselGeneratorLV=Basic Combustion Generator
 DieselGeneratorMV=Advanced Combustion Generator
 DieselGeneratorHV=Advanced Combustion Generator II
 Tooltip_DieselGenerator_00=Requires liquid Fuel
-Tooltip_DieselGenerator_01=Fuel efficiency: 
-Tooltip_DieselGenerator_02=Fluid capacity: 
+Tooltip_DieselGenerator_01=Fuel efficiency: %s%
+Tooltip_DieselGenerator_02=Fluid capacity: %sL
 
 DebugResearchStation=Debug Research Station
 Tooltip_DebugResearchStation_00=Immediately scans Research Station recipes, requires no energy
