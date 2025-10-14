@@ -41,6 +41,7 @@ import com.reavaritia.common.item.ItemStackWrapper;
 import com.reavaritia.common.item.ToolHelper;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.ItemLoader;
 
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -79,10 +80,10 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
         if (tags != null) {
             if (tags.hasKey("range")) {
-                range = Math.max(0, Math.min(32, tags.getInteger("range")));
+                range = Math.max(0, Math.min(MainConfig.veinMiningPickaxeMaxRange, tags.getInteger("range")));
             }
             if (tags.hasKey("amount")) {
-                amount = Math.max(0, Math.min(327670, tags.getInteger("amount")));
+                amount = Math.max(0, Math.min(MainConfig.veinMiningPickaxeMaxAmount, tags.getInteger("amount")));
             }
             if (tags.hasKey("preciseMode")) {
                 preciseMode = tags.getBoolean("preciseMode");
@@ -187,13 +188,13 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
             NBTTagCompound tags = stack.getTagCompound();
             if (tags != null) {
                 if (tags.hasKey("range")) {
-                    range = Math.max(-1, Math.min(32, tags.getInteger("range")));
+                    range = Math.max(-1, Math.min(MainConfig.veinMiningPickaxeMaxRange, tags.getInteger("range")));
                 }
                 if (tags.hasKey("preciseMode")) {
                     preciseMode = tags.getBoolean("preciseMode");
                 }
                 if (tags.hasKey("amount")) {
-                    amount = Math.max(0, Math.min(32767, tags.getInteger("amount")));
+                    amount = Math.max(0, Math.min(MainConfig.veinMiningPickaxeMaxAmount, tags.getInteger("amount")));
                 }
             }
 
