@@ -1,5 +1,8 @@
 package com.science.gtnl.client.nei;
 
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
+
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
@@ -7,11 +10,16 @@ import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.loader.RecipePool;
+import com.science.gtnl.mixins.late.EnhancedLootBags.AccessorItemLootBag;
 
 import bartworks.system.material.Werkstoff;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.DefaultOverlayHandler;
+import eu.usrv.enhancedlootbags.EnhancedLootBags;
+import eu.usrv.enhancedlootbags.core.LootGroupsHandler;
+import eu.usrv.enhancedlootbags.core.serializer.LootGroups;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 
 @SuppressWarnings("unused")
@@ -46,6 +54,20 @@ public class NEIGTNLConfig implements IConfigureNEI {
         API.addRecipeCatalyst(GTNLItemList.PortableFurnace.get(1), "smelting");
         API.addRecipeCatalyst(GTNLItemList.PortableBasicWorkBench.get(1), "crafting");
         API.addRecipeCatalyst(GTNLItemList.PortableAdvancedWorkBench.get(1), "crafting");
+        API.addRecipeCatalyst(GTNLItemList.LootBagRedemption.get(1), Mods.EnhancedLootBags.ID);
+
+        for (LootGroups.LootGroup tGrp : ((AccessorItemLootBag) LootGroupsHandler.getLootBagItem()).getLGHandler()
+            .getLootGroupsClient()
+            .getLootTable()) {
+            ItemStack loogBag = new ItemStack(LootGroupsHandler.getLootBagItem(), 1, tGrp.getGroupID());
+            API.addRecipeCatalyst(loogBag, Mods.EnhancedLootBags.ID);
+
+            if (EnhancedLootBags.ELBCfg.AllowFortuneBags && tGrp.getCombineWithTrash()) {
+                ItemStack enhancedLootBag = loogBag.copy();
+                enhancedLootBag.addEnchantment(Enchantment.fortune, 3);
+                API.addRecipeCatalyst(enhancedLootBag, Mods.EnhancedLootBags.ID);
+            }
+        }
 
         Werkstoff[] hiddenMaterials = { MaterialPool.Polyimide, MaterialPool.AcrylonitrileButadieneStyrene,
             MaterialPool.Polyetheretherketone, MaterialPool.HSLASteel, MaterialPool.Actinium,
