@@ -45,10 +45,10 @@ death.attack.damage.gtnl.infinity=%1$s was excised from existence
 death.attack.damage.gtnl.portalExplode=%1$s was backlashed by the Alfheim Teleportation Array.
 death.attack.damage.gtnl.awe=%1$s §c§lFailed to complete the §r§d§lViolet Baptism.
 
-Info_SteamNetwork_00=User %s has no global steam network.
-Info_SteamNetwork_01=User %s has %s%s%s Steam in their network.
-Info_SteamNetwork_02=User %s is currently in network of %s%s%s .
-Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s %% §r(Voltage Tier: §3%s§r, Base Voltage Tier: §3%s§r)
+Info_SteamNetwork_00=User §9%s§7 has no global steam network.
+Info_SteamNetwork_01=User §9%s§7 has §c%sL§7 of Steam in their network.
+Info_SteamNetwork_02=User §9%s§7 is currently in the network of §9%s§7.
+Info_VoltageChanceBonus_00=Voltage Chance Bonus: §3%s%% §7(Voltage Tier: %s, Recipe Voltage Tier: %s)
 
 Info_Dimension_Override=Dimension Override: 
 
@@ -60,14 +60,19 @@ HatchCustomFluid_00=Input fluids for multiblock machines
 HatchCustomFluid_01=Capacity: 
 HatchCustomFluid_02=Allowed fluids:
 
-tc.research_category.GTNL=GTNL: Whimsical Thaumaturgy
-tc.research_name.GTNL_WELCOME=Your New Beginning
-tc.research_text.GTNL_WELCOME=No friendly
-tc.research_text.GTNL_WELCOME.1=Welcome to a world of curious thoughts and wonders!
+achievement.gtnl.welcome=GT Not Leisure
+achievement.gtnl.welcome.desc=This is where it begins
+achievement.gtnl.installAllCommunityMod=Community Mod Master
+achievement.gtnl.installAllCommunityMod.desc=You are the master of playing all the community mods
 
-tc.research_name.GTNL_TIME_STOP_POCKET_WATCH=Time Stop Pocket Watch
-tc.research_text.GTNL_TIME_STOP_POCKET_WATCH=Mastering the Secret of Time
-tc.research_text.GTNL_TIME_STOP_POCKET_WATCH.1=In the ancient manuscripts of the Chronomantic school, records of the “Time Stop Pocket Watch” are scarce. It is said to have been first crafted by an alchemist weary of war and noise, longing to capture eternity within the flow of time. The construction of the watch itself is not complex—the true challenge lies in imbuing it with the essence of stillness. Rumors tell that the infusion must take place on the darkest night of the lunar cycle, surrounded by silent temporal crystals and hushed metals. Every thought of the practitioner must be held in perfect focus, lest the ritual turn awry and time itself lash back. If the ritual succeeds, one may briefly freeze the world’s flow at this very moment—but beware: time is never truly mastered. It merely waits for the moment to retaliate.
+tc.research_category.gtnl=GTNL: Whimsical Thaumaturgy
+tc.research_name.gtnl.welcome=Your New Beginning
+tc.research_text.gtnl.welcome=No friendly
+tc.research_text.gtnl.welcome.1=Welcome to a world of curious thoughts and wonders!
+
+tc.research_name.gtnl.timeStopPocketWatch=Time Stop Pocket Watch
+tc.research_text.gtnl.timeStopPocketWatch=Mastering the Secret of Time
+tc.research_text.gtnl.timeStopPocketWatch.1=In the ancient manuscripts of the Chronomantic school, records of the “Time Stop Pocket Watch” are scarce. It is said to have been first crafted by an alchemist weary of war and noise, longing to capture eternity within the flow of time. The construction of the watch itself is not complex—the true challenge lies in imbuing it with the essence of stillness. Rumors tell that the infusion must take place on the darkest night of the lunar cycle, surrounded by silent temporal crystals and hushed metals. Every thought of the practitioner must be held in perfect focus, lest the ritual turn awry and time itself lash back. If the ritual succeeds, one may briefly freeze the world’s flow at this very moment—but beware: time is never truly mastered. It merely waits for the moment to retaliate.
 
 EnergyTransferNode=Universal Flux Transfer Node
 Tooltip_EnergyTransferNode_00=§9A great helper for Active Transformers!
@@ -144,6 +149,13 @@ Tooltip_AdvancedSuperInputHatchME_03=WARNING: Fast recipe checks can be laggy. U
 
 ExplosionDynamoHatch=Explosion Dynamo Hatch
 Tooltip_ExplosionDynamoHatch_00=Concept God!
+
+VoidCover=Void Cover
+Tooltip_VoidCover_00=Just like the Void Assembly!
+Tooltip_VoidCover_01=Immediately erases all matching contents
+Tooltip_VoidCover_02=Must be configured to work
+Tooltip_VoidCover_03=Can toggle between destroying input/output slots via button
+Info_VoidCover_00=Press to destroy input slot, release to destroy output slot
 
 PipelessSteamCover=Pipeless Steam Cover
 Tooltip_WirelessSteamCover_00=§b§oYou recall a dream of an endless, unseen sea of steam...
@@ -373,6 +385,13 @@ Tooltip_DebugResearchStation_00=Immediately scans Research Station recipes, requ
 Replicator=Replicator
 Enchanting=Enchanting
 
+LootBagRedemption=Loot Bag Redemption Machine
+Tooltip_LootBagRedemption_00=§3You're feeling lucky!
+Tooltip_LootBagRedemption_01=Automatically extract items from loot bags
+Tooltip_LootBagRedemption_02=Includes a built-in trash loot filter
+Tooltip_LootBagRedemption_03=Place an item in the special slot to guarantee it drops
+Tooltip_LootBagRedemption_04=Consumes 4 Technician Coins per operation
+
 GasCollectorLV=Basic Gas Collector
 GasCollectorMV=Advanced Gas Collector
 GasCollectorHV=Advanced Gas Collector II
@@ -434,6 +453,7 @@ MetaCasing.31.name=Steam Compact Pipe Casing
 MetaCasing02.0.name=Vibration-Safe Casing
 MetaCasing02.1.name=Industrial Steam Casing
 MetaCasing02.2.name=Advanced Industrial Steam Casing
+MetaCasing02.3.name=Stainless Steel Gear Box
 
 MetaBlock.0.name=Test Block
 MetaBlock.1.name=§dNew Horizons Coil
@@ -540,6 +560,9 @@ tile.Stargate_Coil_Compressed.7.name=Compressed Stargate Coil - Tier 7
 tile.Stargate_Coil_Compressed.8.name=Compressed Stargate Coil - Tier 8
 tile.Stargate_Coil_Compressed.9.name=Compressed Stargate Coil - Tier 9
 
+tile.WaterCandle.name=Water Candle
+gtnl.potion.battle=Battle
+
 tile.CardboardBox.name=Cardboard Box
 Tooltip_CardBoardBox_00_Yes=Block Data: Yes
 Tooltip_CardBoardBox_00_No=Block Data：No
@@ -550,7 +573,7 @@ Tooltip_CardBoardBox_03=TileEntity:
 tile.LaserBeacon.name=Laser Beacon
 Tooltip_LaserBeacon=Generates high-precision laser using powerful electric current
 
-tile.RealArtificialStarRender.name=True Annihilation Generator Renderer
+tile.RealArtificialStarRenderer.name=True Annihilation Generator Renderer
 tile.NanoPhagocytosisPlantRenderer.name=Nano Phagocytosis Plant Renderer
 tile.EternalGregTechWorkshopRenderer.name=Eternal GregTech Workshop Renderer
 tile.BlockSoulFarmland.name=Soul Farmland
@@ -807,6 +830,7 @@ MetaItem.104.name=Iron Turbine
 Tooltip_IronTurbine_00=Sturdy and Durable
 MetaItem.105.name=Bronze Turbine
 Tooltip_BronzeTurbine_00=Antique and Solid
+MetaItem.106.name=Void Cover
 
 item.SuspiciousStew.name=Suspicious Stew
 
@@ -814,6 +838,7 @@ item.SteamRocket.name=Steam Rocket
 Tooltip_SteamRocket_00=Requires Molten Compressed Steam as fuel
 Tooltip_SteamRocket_01=You must be someone who plays Oxygen Not Included!
 entity.GalacticraftCore.SteamRocket.name=Steam Rocket
+schematic.rocketSteam.name=Rocket (Steam)
 
 item.TestItem.name=Test Item
 Tooltip_Testitem_00=If you see this Tooltip
@@ -1635,7 +1660,10 @@ Tooltip_KuangBiaoOneGiantNuclearFusionReactor_02=Only requires %%s%% of the reci
 Tooltip_KuangBiaoOneGiantNuclearFusionReactor_03=Does not consume recipe startup energy, but you still need the corresponding startup energy to turn it on
 Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04=Energy storage limit:
 Tooltip_KuangBiaoOneGiantNuclearFusionReactor_05=Fusion cannot be performed when the recipe voltage exceeds %s
+Tooltip_KuangBiaoOneGiantNuclearFusionReactor_06=Use a screwdriver to turn on/off the animation effects.
 Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing=Any fusion machine block
+KuangBiaoOneGiantNuclearFusionReactor_Render_Enabled=Enabled Render
+KuangBiaoOneGiantNuclearFusionReactor_Render_Disabled=Disabled Render
 
 NameIsaMill=Isa Mill
 gtnl.recipe.IsaMillRecipes=Wet Grinding
@@ -1695,6 +1723,16 @@ Tooltip_SuperSpaceElevator_06=The system automatically activates wireless mode w
 Tooltip_SuperSpaceElevator_07=Disabling this controller also pauses all modules
 Tooltip_SuperSpaceElevator_Casing=Any Space Elevator Base Casing
 
+NameRocketAssembler=Rocket Assembler
+gtnl.recipe.RocketAssemblerRecipes=Rocket Assembler
+RocketAssemblerRecipeType=Rocket Assembler
+Tooltip_RocketAssembler_00=§d§lI have a space dream
+Tooltip_RocketAssembler_01=Use a screwdriver to turn on/off the animation effects.
+Tooltip_RocketAssembler_Casing=Any clean stainless steel machine block
+RocketAssembler_Render_Enabled=Enabled Render
+RocketAssembler_Render_Disabled=Disabled Render
+NEI.RocketAssembler.specialValue=Requires %s tier Rocket NASA Workbench Blueprint
+
 NameSteamItemVault=Steam Item Vault
 SteamItemVaultRecipeType=Item Vault
 Tooltip_SteamItemVault_00=Original-Tech item vault that can hold up to %s different items!
@@ -1753,6 +1791,38 @@ Tooltip_SteamElevator_03=The system automatically activates wireless mode when n
 Tooltip_SteamElevator_04=Disabling this controller also pauses all modules
 Tooltip_SteamElevator_Casing=Any Brick Steel Shell
 
+NameSteamGreenhouseModule=Steam Greenhouse Planting Module
+SteamGreenhouseModuleRecipeType=Crop Farm
+Tooltip_SteamGreenhouseModule_00=§a§lFarmer’s Secret to Fortune.
+Tooltip_SteamGreenhouseModule_01=No more fertilizer or herbicide needed!
+Tooltip_SteamGreenhouseModule_02=Consumes 16,000L of water per crop
+Tooltip_SteamGreenhouseModule_03=Fixed operation time of 60 seconds
+Tooltip_SteamGreenhouseModule_04=Cannot be overclocked
+
+NameSteamApiaryModule=Steam-Powered Apiary Module
+SteamApiaryModuleRecipeType=Pneumatic Beehive
+Tooltip_SteamApiaryModule_00=§a§lHigh pressure makes the bees work §0§mharder§a§l and more efficiently.
+Tooltip_SteamApiaryModule_01=The bees' (ideal?) home
+Tooltip_SteamApiaryModule_02=Fixed operating time: 15 seconds
+Tooltip_SteamApiaryModule_03=Each overclock doubles the capacity, power ×4
+Tooltip_SteamApiaryModule_04=Base amount: 8
+
+NameSteamBeeBreedingModule=Steam Bee Breeding Module
+SteamBeeBreedingModuleRecipeType=§a§lLet the bees feel the scorching♂love.
+Tooltip_SteamBeeBreedingModule_00=Place a queen bee inside the controller
+Tooltip_SteamBeeBreedingModule_01=It will slowly produce ignoble princesses
+Tooltip_SteamBeeBreedingModule_02=Consumes 128 royal jelly per operation
+Tooltip_SteamBeeBreedingModule_03=Base processing time: 10 minutes
+
+NameSteamEntityCrusherModule=Steam Entity Crusher Module
+SteamEntityCrusherModuleRecipeType=Pneumatic Spawner Cage
+Tooltip_SteamEntityCrusherModule_00=§a§lSmelt mobs using high-temperature steam.
+Tooltip_SteamEntityCrusherModule_01=Each operation has a 2% chance to double output.
+Tooltip_SteamEntityCrusherModule_02=Each additional identical spawner increases the chance by 0.5%.
+Tooltip_SteamEntityCrusherModule_03=Maximum chance increase is 34%.
+Tooltip_SteamEntityCrusherModule_04=As a trade-off, default time is doubled, power is halved.
+Tooltip_SteamEntityCrusherModule_05=Cannot be overclocked
+
 NameSteamOreProcessorModule=Steam Ore Processing Module
 SteamOreProcessorModuleRecipeType=Miniature Ore Processing Factory
 Tooltip_SteamOreProcessorModule_00=§a§lHave you ever wondered about the meaning of its existence?
@@ -1761,7 +1831,7 @@ Tooltip_SteamOreProcessorModule_02=Do all ore processing in one step
 Tooltip_SteamOreProcessorModule_03=Can process up to 16 ores at a time
 Tooltip_SteamOreProcessorModule_04=Every ore costs 128L Steam/t, 1L lubricant, 10L distilled water
 Tooltip_SteamOreProcessorModule_05=Processing time is fixed at 128 ticks
-Tooltip_SteamOreProcessorModule_06=Set overclock count to double both parallel and EU consumption
+Tooltip_SteamOreProcessorModule_06=Set circuit to double both parallel and EU consumption
 Tooltip_SteamOreProcessorModule_07=Use a screwdriver to switch mode
 Tooltip_SteamOreProcessorModule_08=Sneak click with screwdriver to void the stone dust
 Info_SteamOreProcessorModule_00=Actual Parallel: 
@@ -2146,7 +2216,7 @@ Tooltip_BrickBlastFurnace_Casing_03=24x Bronze Fireboxes
 Tooltip_BrickBlastFurnace_Casing_04=16x Copper Plated Bricks
 
 NameSteamGateAssembler=Perfect Steam Progenitor
-gtnl.recipe.SteamgateAssembler=Hydraulic Manufacturing
+gtnl.recipe.SteamGateAssemblerRecipes=Hydraulic Manufacturing
 SteamGateAssemblerRecipeType=Boundless Creation Engine
 Tooltip_SteamGateAssembler_00=§b§oAn unholy amalgamation of pipes and cogs, capable of using incredible amounts of steam.
 Tooltip_SteamGateAssembler_01=§b§oEach chamber is carefully calibrated with near-infinite amounts of pressure.
@@ -2161,7 +2231,7 @@ Tooltip_MegaSteamCompressor_02=§b§oCapable of creating superdense plates...
 Tooltip_MegaSteamCompressor_03=Author: §d§oSteam§f§oIs§d§oThe§f§oNumber
 
 NameSteamExtractinator=Steam Extractinator
-gtnl.recipe.SteamExtractinator=Extractination
+gtnl.recipe.SteamExtractinatorRecipes=Extractination
 SteamExtractinatorRecipeType=Resource Extractor
 Tooltip_SteamExtractinator_00=Vaporizes impurities in different soil slurries to generate usable materials
 Tooltip_SteamExtractinator_01=Processes up to 4 recipes at once
@@ -2177,7 +2247,7 @@ Tooltip_MegaSolarBoiler_01=Produces 96,000 L/s of Steam
 Tooltip_MegaSolarBoiler_02=§b§oMore steam/s than unplayed games in your steam library
 
 NameSteamCactusWonder=Cactus Wonder
-gtnl.recipe.CactusWonder=Offerings to the Cacti Pantheon
+gtnl.recipe.CactusWonderFakeRecipes=Offerings to the Cacti Pantheon
 SteamCactusWonderRecipeType=Temple of Cacti Blessings
 Tooltip_SteamCactusWonder_00=Burns Cactus Coke and Charcoal for increasingly efficient amounts of steam.
 Tooltip_SteamCactusWonder_01=Every second the cactus wonder will consume all offers stored
@@ -2189,7 +2259,7 @@ Tooltip_SteamCactusWonder_06=Offer Value:
 NEI.CactusWonderFakeRecipes.specialValue=Offer Value: 
 
 NameSteamCarpenter=Steam Carpenter
-gtnl.recipe.SteamCarpenter=Steamic Carpentry
+gtnl.recipe.SteamCarpenterRecipes=Steamic Carpentry
 SteamCarpenterRecipeType=Carpenter
 Tooltip_SteamCarpenter_00=§b§oCuts wood efficiently into many forms.
 Tooltip_SteamCarpenter_01=Author: §d§oSteam§f§oIs§d§oThe§f§oNumber
@@ -2203,7 +2273,7 @@ Tooltip_SteamLavaMaker_02=Author: §d§oSteam§f§oIs§d§oThe§f§oNumber
 Tooltip_SteamLavaMaker_Casing=Any Copper Plated Bricks or Deoxidized Steel Machine Block
 
 NameSteamManufacturer=Steam Manufacturer
-gtnl.recipe.SteamManufacturer=Hydraulic Manufacturing
+gtnl.recipe.SteamManufacturerRecipes=Hydraulic Manufacturing
 SteamManufacturerRecipeType=Assembler
 Tooltip_SteamManufacturer_00=Has 4 Parallel
 Tooltip_SteamManufacturer_01=Assembles assemblies assemblically
@@ -2220,13 +2290,13 @@ Tooltip_SteamRockBreaker_04=§b§oKeep an eye for Wallsharing :>
 Tooltip_SteamRockBreaker_Casing=Any Copper Plated Bricks or Deoxidized Steel Machine Block
 
 NameSteamWoodcutter=Steam Woodcutter
-gtnl.recipe.SteamWoodcutter=Vapor Gardening
+gtnl.recipe.SteamWoodcutterRecipes=Vapor Gardening
 SteamWoodcutterRecipeType=Woodcutter
 Tooltip_SteamWoodcutter_00=§b§oGrows trees slowly from saplings.
 Tooltip_SteamWoodcutter_01=Author: §d§oSteam§f§oIs§d§oThe§f§oNumber
 
 NameSteamFusionReactor=Hyper Pressure Reactor
-gtnl.recipe.SteamFusion=High Pressure Reactor
+gtnl.recipe.SteamFusionReactorRecipes=High Pressure Reactor
 SteamFusionTierKey.0=Requires Compact Hyper Pressure Reactor
 SteamFusionReactorRecipeType=High Pressure Reactor
 GT5U.gui.text.metadata.steamfusion=Need Compact Hyper Pressure Reactor
@@ -2244,7 +2314,7 @@ Tooltip_HighPressureSteamFusionReactor_03=§b§oWhat in the world have you done
 Tooltip_HighPressureSteamFusionReactor_Casing=1-8, Blocks Adjacent to Glass
 
 NameSteamInfernalCokeOven=Infernal Coke Oven
-gtnl.recipe.InfernalCock=Coke Oven but OP
+gtnl.recipe.InfernalCockRecipes=Coke Oven but OP
 SteamInfernalCokeOvenRecipeType=Coke Oven
 Tooltip_SteamInfernalCokeOven_00=Works more efficiently than a clay oven
 Tooltip_SteamInfernalCokeOven_01=Every 5 seconds of continuous working it gets 1% faster, up to 600%
@@ -2283,7 +2353,7 @@ NameLargeSteamHammer=Large Steam Forging Hammer
 LargeSteamHammerRecipeType=Forging Hammer
 Tooltip_LargeSteamHammer_00=33% faster than single-block forging hammers of the same tier.
 Tooltip_LargeSteamHammer_01=Only consumes 75% of the normal steam requirement.
-Tooltip_LargeSteamHammer_02=Can process up to 16 items at once.
+Tooltip_LargeSteamHammer_02=Can process up to 32 items at once.
 Tooltip_LargeSteamHammer_Casing=Any Copper Plated Bricks or Deoxidized Steel Machine Block
 
 NameLargeSteamCompressor=Large Steam Compressor
@@ -2332,9 +2402,37 @@ Tooltip_EdenGarden_00=§e§oGod said, "Let the land produce vegetation: seed-bea
 Tooltip_EdenGarden_01=§e§oAnd it was so. The land produced vegetation: plants bearing seed according to their kinds and trees bearing fruit with seed in it according to their kinds.
 Tooltip_EdenGarden_02=§e§oAnd God saw that it was good.
 Tooltip_EdenGarden_03=100x faster than Industrial Greenhouses!
-Tooltip_EdenGarden_04=No longer requires fertilizer or herbicides!
-Tooltip_EdenGarden_05=Each plant consumes 2000L of water.
+Tooltip_EdenGarden_04=All IC2 crops will gain perfect stats
+Tooltip_EdenGarden_05=No longer requires fertilizer or herbicides!
+Tooltip_EdenGarden_06=Each plant consumes 2000L of water.
 Tooltip_EdenGarden_Casing=Any Electric Compressor Machine Block
+Info_EdenGarden_00=Can't insert while running !
+Info_EdenGarden_01=Running in mode: %s
+Info_EdenGarden_02=Setup mode (input)
+Info_EdenGarden_03=Setup mode (output)
+Info_EdenGarden_04=Max slots: §a%s§r
+Info_EdenGarden_05=Used slots: %s%s§r
+Info_EdenGarden_06=There are too many seed types inside to run!
+Info_EdenGarden_07=There are too many seeds inside to run!
+Info_EdenGarden_Inventory=Inventory  
+Info_EdenGarden_Status=Status  
+Info_EdenGarden_Configuration=Configuration  
+Info_EdenGarden_SetupMode=SetupMode  
+Info_EdenGarden_Operating=Operating  
+Info_EdenGarden_Input=Input  
+Info_EdenGarden_Output=Output  
+Info_EdenGarden_Disabled=Disabled  
+Info_EdenGarden_Enabled=Enabled  
+Info_EdenGarden_IC2Mode=IC2 Mode  
+Info_EdenGarden_NoHumidityMode=No Humidity Mode
+Info_EdenGarden_SetupPhase_Working=You can't enable/disable setup if the machine is working!
+Info_EdenGarden_SetupPhase_Change=EIG is now running in
+Info_EdenGarden_SetupPhase_Invalid=an invalid mode, please report to developers!
+Info_EdenGarden_Mode_Working=You can't change mode if the machine is working!
+Info_EdenGarden_Mode_HasSeeds=You can't change mode if there are seeds inside!
+Info_EdenGarden_Mode_Change=Changed mode to: %s
+Info_EdenGarden_NoHumidityMode_Enabled=No Humidity mode enabled.
+Info_EdenGarden_NoHumidityMode_Disabled=No Humidity mode disabled.
 
 NameGenerationEarthEngine=First Generation Planetary Engine
 GenerationEarthEngineRecipeType=Fusion Reactor
@@ -2362,8 +2460,8 @@ Tooltip_BloodSoulSacrificialArray_03=Directly draws LP from the machine owner's 
 Tooltip_BloodSoulSacrificialArray_04=Using Amonk’s Blood Orb ignores all LP consumption.
 Tooltip_BloodSoulSacrificialArray_05=Right click on the machine using a wire cutter to turn on and off the falling tower rendering
 Tooltip_BloodSoulSacrificialArray_Casing=Front-left-right Radiant Naquadah Alloy Casing
-BloodSoulSacrificialArray_Render_On=Enable Falling Tower Render
-BloodSoulSacrificialArray_Render_Off=Disable Falling Tower Render
+BloodSoulSacrificialArray_Render_Enabled=Enabled Falling Tower Render
+BloodSoulSacrificialArray_Render_Disabled=Disabled Falling Tower Render
 
 NameTeleportationArrayToAlfheim=Alfheim Teleportation Array
 FluidManaInputHatch=Mana Input Hatch
@@ -2458,8 +2556,8 @@ NanoPhagocytosisPlantRecipeType=Macerator
 Tooltip_NanoPhagocytosisPlant_00=Ruthlessly shred everything with a swarm of Nanites
 Tooltip_NanoPhagocytosisPlant_01=Each voltage tier provides an additional 5% speed and power reduction (multiplicative).
 Tooltip_NanoPhagocytosisPlant_Casing=Any Superconductor Reinforced Sterile Water Purifier Machine Block
-Render_NanoPhagocytosisPlant_Enabled=Render Enabled
-Render_NanoPhagocytosisPlant_Disabled=Render Disabled
+NanoPhagocytosisPlant_Render_Enabled=Enabled Render
+NanoPhagocytosisPlant_Render_Disabled=Disabled Render
 
 NameMagneticEnergyReactionFurnace=Magnetic Energy Reaction Furnace
 MagneticEnergyReactionFurnaceRecipeType=Arc Furnace / Plasma Arc Furnace
@@ -2506,8 +2604,8 @@ NameEternalGregTechWorkshop=Eternal GregTech Workshop
 gtnl.recipe.EternalGregTechWorkshopUpgradeRecipes=Eternal GregTech Workshop Module Upgrade
 EternalGregTechWorkshopRecipeType=Eternal GregTech Workshop Central Control Center
 Tooltip_EternalGregTechWorkshop_Casing=Hint 1 dots
-Render_EternalGregTechWorkshop_Enabled=Render Enabled
-Render_EternalGregTechWorkshop_Disabled=Render Disabled
+EternalGregTechWorkshop_Render_Enabled=Enabled Render
+EternalGregTechWorkshop_Render_Disabled=Disabled Render
 EGTW_UpdateStructureCheck=Refresh module connection status
 EGTW_ExtraModule=Extra Structure:
 EGTW_ExtraModule_On=Enable
@@ -2726,8 +2824,8 @@ Tooltip_MeteorMiner_Casing_02_01=Top layer of the meteor ritual.
 Tooltip_MeteorMiner_Casing_02_02=Any Neutron Mining Machine Block below the controller.
 Info_MeteorMiner_00=Machine Tier: 
 Info_MeteorMiner_01=Fortune Tier: 
-MeteorMiner_Render_On=Enable Laser Render
-MeteorMiner_Render_Off=Disabled Laser Render
+MeteorMiner_Render_Enabled=Enable Laser Render
+MeteorMiner_Render_Disabled=Disabled Laser Render
 GT5U.gui.text.meteor_mining=§dMining in Progress!
 GT5U.gui.text.meteor_waiting=§dWaiting for Meteor...
 GT5U.gui.text.meteor_reset=§dReset Complete!
@@ -2861,7 +2959,7 @@ Tooltip_BlazeBlastFurnace_00=150% faster than the Industrial Blast Furnace!
 Tooltip_BlazeBlastFurnace_01=Maximum parallel fixed at 64.
 Tooltip_BlazeBlastFurnace_02=Placing a Blaze Cube in the controller increases parallel to 256.
 Tooltip_BlazeBlastFurnace_03=Requires 10x recipe voltage level^2 of Molten Blaze per second.
-Tooltip_BlazeBlastFurnace_04=Consumption doubles when a Blaze Cube is installed.
+Tooltip_BlazeBlastFurnace_04=Placing into the Blaze Cube, consumption multiplied by 4
 Tooltip_BlazeBlastFurnace_05=Each voltage level above MV increases temperature by 100K.
 Tooltip_BlazeBlastFurnace_Casing_00=Any Blast Furnace Machine Block
 Tooltip_BlazeBlastFurnace_Casing_01=Recovers gas, any Blazing Blast Furnace Machine Block.
@@ -3116,8 +3214,6 @@ Awe_Cancel_02_02=§f§lMy deeds are unknown, untraceable.
 Awe_Kick=§f§l!!! At a loss !!!
 
 NameRealArtificialStar=Real · Annihilation Generator
-ArtificialStar.enableRender.0=Disable effect rendering
-ArtificialStar.enableRender.1=Enable effect rendering
 gtnl.recipe.ArtificialStarGeneratingRecipes=Real · Annihilation Generator
 Tooltip_RealArtificialStar_MachineType=Real · Annihilation Generator
 Tooltip_RealArtificialStar_00=§d§lJust replaced the structure of TST, the rest of the functions are consistent
@@ -3157,5 +3253,7 @@ Info_RealArtificialStar_03=Space Field Level
 Info_RealArtificialStar_04=Time Field Level
 Info_RealArtificialStar_05=Stability Field Level
 Info_RealArtificialStar_06=Material Recycling Probability
+RealArtificialStar_Render_Enabled=Enabled Render
+RealArtificialStar_Render_Disabled=Disabled Render
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=Chance to recycle some materials. Probability affected by module level.
-NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=Generates:
+NEI.RealArtificialStarGeneratingRecipes.specialValue=Generates:

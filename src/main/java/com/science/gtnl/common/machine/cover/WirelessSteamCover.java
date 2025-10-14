@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.science.gtnl.Utils.enums.SteamTypes;
-import com.science.gtnl.Utils.gui.SteamUIFactory;
 import com.science.gtnl.Utils.gui.WirelessSteamCoverGui;
+import com.science.gtnl.Utils.gui.WirelessSteamCoverUIFactory;
 import com.science.gtnl.Utils.steam.SteamWirelessNetworkManager;
 
 import gregtech.api.covers.CoverContext;
@@ -138,6 +138,6 @@ public class WirelessSteamCover extends CoverLegacyData {
 
     @Override
     public ModularWindow createWindow(CoverUIBuildContext buildContext) {
-        return new SteamUIFactory(buildContext).createWindow();
+        return new WirelessSteamCoverUIFactory(buildContext).createWindow();
     }
 }

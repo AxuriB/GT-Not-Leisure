@@ -3,11 +3,9 @@ package com.science.gtnl.Utils.gui.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableList;
@@ -15,18 +13,16 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.ElectrocellGeneratorSpecialValue;
 
 import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
-import gregtech.nei.RecipeDisplayInfo;
-import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -36,7 +32,9 @@ public class ElectrocellGeneratorFrontend extends RecipeMapFrontend {
 
     public ElectrocellGeneratorFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
-        super(uiPropertiesBuilder, neiPropertiesBuilder.neiSpecialInfoFormatter(SpecialValueFormatter.INSTANCE));
+        super(
+            uiPropertiesBuilder,
+            neiPropertiesBuilder.neiSpecialInfoFormatter(ElectrocellGeneratorSpecialValue.INSTANCE));
     }
 
     @Override
@@ -87,31 +85,5 @@ public class ElectrocellGeneratorFrontend extends RecipeMapFrontend {
         }
 
         super.drawNEIOverlays(neiCachedRecipe);
-    }
-
-    public static class SpecialValueFormatter extends RecipeMetadataKey<Long> implements INEISpecialInfoFormatter {
-
-        public static final SpecialValueFormatter INSTANCE = new SpecialValueFormatter();
-
-        public SpecialValueFormatter() {
-            super(Long.class, "electricellgeneratorfrontend_metadata");
-        }
-
-        @Override
-        public void drawInfo(RecipeDisplayInfo recipeInfo, @Nullable Object value) {
-            long generatorEUt = cast(value, 1L);
-            recipeInfo.drawText(
-                StatCollector.translateToLocalFormatted("NEI.ElectrocellGenerator.generatorEUt", generatorEUt));
-        }
-
-        @Override
-        public List<String> format(RecipeDisplayInfo recipeInfo) {
-            List<String> specialInfo = new ArrayList<>();
-            specialInfo.add(
-                StatCollector.translateToLocalFormatted(
-                    "NEI.ElectrocellGenerator.specialValue",
-                    recipeInfo.recipe.mSpecialValue / 100D));
-            return specialInfo;
-        }
     }
 }

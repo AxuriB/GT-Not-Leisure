@@ -45,10 +45,10 @@ death.attack.damage.gtnl.infinity=%1$s 被抹杀了存在
 death.attack.damage.gtnl.portalExplode=%1$s 被精灵传送法阵反噬了
 death.attack.damage.gtnl.awe=%1$s §c§l没能完成§r§d§l紫罗兰的洗礼。
 
-Info_SteamNetwork_00=玩家 %s 没有无线蒸汽网络.
-Info_SteamNetwork_01=玩家 %s 的无线蒸汽网络中有 %s%s%s 蒸汽.
-Info_SteamNetwork_02=玩家 %s 当前在 %s%s%s 的无线蒸汽网络.
-Info_VoltageChanceBonus_00=电压概率加成：§3%s %% §r(电压等级：§3%s§r，基础电压等级：§3%s§r) 
+Info_SteamNetwork_00=玩家 §9%s§7 没有无线蒸汽网络.
+Info_SteamNetwork_01=玩家 §9%s§7 的无线蒸汽网络中有 §c%sL§7 蒸汽.
+Info_SteamNetwork_02=玩家 §9%s§7 当前在 §9%s§7 的无线蒸汽网络.
+Info_VoltageChanceBonus_00=电压概率加成：§3%s%% §7(机器电压：%s，配方电压：%s) 
 
 Info_Dimension_Override=维度覆盖为：
 
@@ -60,14 +60,19 @@ HatchCustomFluid_00=为多方块机器输入流体
 HatchCustomFluid_01=容量：
 HatchCustomFluid_02=允许的流体：
 
-tc.research_category.GTNL=GTNL：随想魔法
-tc.research_name.GTNL_WELCOME=你的新起点
-tc.research_text.GTNL_WELCOME=并不友善
-tc.research_text.GTNL_WELCOME.1=欢迎来到奇思妙想的新世界！
+achievement.gtnl.welcome=GT不再业余
+achievement.gtnl.welcome.desc=由此开始
+achievement.gtnl.installAllCommunityMod=私货大王
+achievement.gtnl.installAllCommunityMod.desc=你就是玩私货玩的
 
-tc.research_name.GTNL_TIME_STOP_POCKET_WATCH=岁月静滞怀表
-tc.research_text.GTNL_TIME_STOP_POCKET_WATCH=掌握时间的秘密
-tc.research_text.GTNL_TIME_STOP_POCKET_WATCH.1=在古老的时间学派手稿中，有关「岁月静滞怀表」的记载寥寥无几。据说，它最早是由一位厌倦战争与喧嚣的炼金术士打造，他渴望在流逝中捕捉永恒。怀表的构造并不复杂，真正的难点在于为其注入“停滞”的本质。传闻整个仪式必须在月相最黯淡之夜进行，四周环绕以安静的时空晶体与沉默的金属，施术者的每一缕意念都必须精确控制，否则整个注魔仪式会使时间本身反噬施法者。若仪式成功，便可暂时将世界之流冻结于此刻，但切记：时间从不会真正被掌控，它只是在等待反扑的时机。
+tc.research_category.gtnl=GTNL：随想魔法
+tc.research_name.gtnl.welcome=你的新起点
+tc.research_text.gtnl.welcome=并不友善
+tc.research_text.gtnl.welcome.1=欢迎来到奇思妙想的新世界！
+
+tc.research_name.gtnl.timeStopPocketWatch=岁月静滞怀表
+tc.research_text.gtnl.timeStopPocketWatch=掌握时间的秘密
+tc.research_text.gtnl.timeStopPocketWatch.1=在古老的时间学派手稿中，有关「岁月静滞怀表」的记载寥寥无几。据说，它最早是由一位厌倦战争与喧嚣的炼金术士打造，他渴望在流逝中捕捉永恒。怀表的构造并不复杂，真正的难点在于为其注入“停滞”的本质。传闻整个仪式必须在月相最黯淡之夜进行，四周环绕以安静的时空晶体与沉默的金属，施术者的每一缕意念都必须精确控制，否则整个注魔仪式会使时间本身反噬施法者。若仪式成功，便可暂时将世界之流冻结于此刻，但切记：时间从不会真正被掌控，它只是在等待反扑的时机。
 
 EnergyTransferNode=万用通量传输节点
 Tooltip_EnergyTransferNode_00=§9有源变压器的好帮手！
@@ -144,6 +149,13 @@ Tooltip_AdvancedSuperInputHatchME_03=警告：快速配方检查可能会很卡.
 
 ExplosionDynamoHatch=爆炸动力仓
 Tooltip_ExplosionDynamoHatch_00=概念神！
+
+VoidCover=虚空覆盖板
+Tooltip_VoidCover_00=如同虚空总成一样！
+Tooltip_VoidCover_01=立刻抹除所有匹配的内容物
+Tooltip_VoidCover_02=必须配置才能工作
+Tooltip_VoidCover_03=可通过按钮切换销毁输入输出槽
+Info_VoidCover_00=按下销毁输入槽，松开销毁输出槽
 
 PipelessSteamCover=无管蒸汽覆盖板
 Tooltip_WirelessSteamCover_00=§b§o你忆起梦中那片无形的蒸汽之海……
@@ -373,6 +385,13 @@ Tooltip_DebugResearchStation_00=立即扫描研究站配方，无需能量
 Replicator=复制器
 Enchanting=附魔器
 
+LootBagRedemption=兑奖机
+Tooltip_LootBagRedemption_00=§3你觉得手气不错！
+Tooltip_LootBagRedemption_01=自动化抽取战利品袋
+Tooltip_LootBagRedemption_02=自带过滤垃圾战利品池
+Tooltip_LootBagRedemption_03=在特殊槽放入物品指定必定产出的物品
+Tooltip_LootBagRedemption_04=每次运行需要消耗4个技术员币
+
 GasCollectorLV=基础集气室
 GasCollectorMV=进阶集气室
 GasCollectorHV=进阶集气室 II
@@ -434,6 +453,7 @@ MetaCasing.31.name=蒸汽压缩管道方块
 MetaCasing02.0.name=抗震安全外壳
 MetaCasing02.1.name=工业蒸汽机械方块
 MetaCasing02.2.name=进阶工业蒸汽机械方块
+MetaCasing02.3.name=不锈钢齿轮箱机械方块
 
 MetaBlock.0.name=测试方块
 MetaBlock.1.name=§d新视野线圈
@@ -540,6 +560,9 @@ tile.Stargate_Coil_Compressed.7.name=压缩星门线圈-七重
 tile.Stargate_Coil_Compressed.8.name=压缩星门线圈-八重
 tile.Stargate_Coil_Compressed.9.name=压缩星门线圈-九重
 
+tile.WaterCandle.name=水蜡烛
+gtnl.potion.battle=战斗
+
 tile.CardboardBox.name=纸箱
 Tooltip_CardBoardBox_00_Yes=方块数据：是
 Tooltip_CardBoardBox_00_No=方块数据：否
@@ -550,7 +573,7 @@ Tooltip_CardBoardBox_03=方块实体：
 tile.LaserBeacon.name=激光诱导信标
 Tooltip_LaserBeacon=利用强大的电流产生高精度激光
 
-tile.RealArtificialStarRender.name=真·湮灭发电机渲染器
+tile.RealArtificialStarRenderer.name=真·湮灭发电机渲染器
 tile.NanoPhagocytosisPlantRenderer.name=纳米吞噬厂渲染器
 tile.EternalGregTechWorkshopRenderer.name=永恒格雷工坊渲染器
 tile.BlockSoulFarmland.name=灵魂耕地
@@ -807,6 +830,7 @@ MetaItem.104.name=铁涡轮
 Tooltip_IronTurbine_00=结实耐用
 MetaItem.105.name=青铜涡轮
 Tooltip_BronzeTurbine_00=古朴厚重
+MetaItem.106.name=虚空覆盖板
 
 item.SuspiciousStew.name=迷之炖菜
 
@@ -814,6 +838,7 @@ item.SteamRocket.name=蒸汽火箭
 Tooltip_SteamRocket_00=需要熔融压缩蒸汽作为燃料
 Tooltip_SteamRocket_01=你就是玩缺氧玩的！
 entity.GalacticraftCore.SteamRocket.name=蒸汽火箭
+schematic.rocketSteam.name=火箭(蒸汽)
 
 item.TestItem.name=测试物品
 Tooltip_Testitem_00=如果你看到了这个Tooltip
@@ -1635,7 +1660,10 @@ Tooltip_KuangBiaoOneGiantNuclearFusionReactor_02=只需要使用配方要求功�
 Tooltip_KuangBiaoOneGiantNuclearFusionReactor_03=无需消耗配方启动能量，但你仍然需要相应的启动能量来开机
 Tooltip_KuangBiaoOneGiantNuclearFusionReactor_04=储能上限：
 Tooltip_KuangBiaoOneGiantNuclearFusionReactor_05=当配方需求电压超过%s§r§7时，无法进行聚变
+Tooltip_KuangBiaoOneGiantNuclearFusionReactor_06=使用螺丝刀开启/关闭动画特效
 Tooltip_KuangBiaoTwoGiantNuclearFusionReactor_Casing=任意聚变机械方块
+KuangBiaoOneGiantNuclearFusionReactor_Render_Enabled=开启渲染
+KuangBiaoOneGiantNuclearFusionReactor_Render_Disabled=关闭渲染
 
 NameIsaMill=艾萨研磨机
 gtnl.recipe.IsaMillRecipes=湿法碾磨
@@ -1695,6 +1723,16 @@ Tooltip_SuperSpaceElevator_06=当主结构未安装能源仓时自动进入无�
 Tooltip_SuperSpaceElevator_07=关闭控制器即可暂停所有模块
 Tooltip_SuperSpaceElevator_Casing=任意太空电梯基座机械方块
 
+NameRocketAssembler=火箭组装厂
+gtnl.recipe.RocketAssemblerRecipes=火箭组装厂
+RocketAssemblerRecipeType=火箭组装厂
+Tooltip_RocketAssembler_00=§d§l我有一个航天梦
+Tooltip_RocketAssembler_01=使用螺丝刀开启/关闭动画特效
+Tooltip_RocketAssembler_Casing=任意洁净不锈钢机械方块
+RocketAssembler_Render_Enabled=开启渲染
+RocketAssembler_Render_Disabled=关闭渲染
+NEI.RocketAssembler.specialValue=需要%s阶火箭NASA工作台图纸
+
 NameSteamItemVault=蒸汽物品保险库
 SteamItemVaultRecipeType=物品保险库
 Tooltip_SteamItemVault_00=原始科技保险库，最多可容纳%s种不同的物品！
@@ -1753,6 +1791,38 @@ Tooltip_SteamElevator_03=当主结构未安装蒸汽输入仓时自动进入无�
 Tooltip_SteamElevator_04=关闭控制器即可暂停所有模块
 Tooltip_SteamElevator_Casing=任意砖砌钢外壳
 
+NameSteamGreenhouseModule=蒸汽温室种植模块
+SteamGreenhouseModuleRecipeType=作物农场
+Tooltip_SteamGreenhouseModule_00=§a§l农场主的致富经.
+Tooltip_SteamGreenhouseModule_01=不再需要肥料和除草剂！ 
+Tooltip_SteamGreenhouseModule_02=每株作物消耗16000L水
+Tooltip_SteamGreenhouseModule_03=运行时间固定为60秒
+Tooltip_SteamGreenhouseModule_04=无法超频
+
+NameSteamApiaryModule=蒸汽蜜蜂养殖模块
+SteamApiaryModuleRecipeType=气动蜂箱
+Tooltip_SteamApiaryModule_00=§a§l高压力让蜜蜂工作§0§m内卷§a§l更卖力.
+Tooltip_SteamApiaryModule_01=蜜蜂的理想(?)家园
+Tooltip_SteamApiaryModule_02=固定运行时间为15秒
+Tooltip_SteamApiaryModule_03=每次超频，可放入数翻倍，功率*4
+Tooltip_SteamApiaryModule_04=基础数量为8
+
+NameSteamBeeBreedingModule=蒸汽蜜蜂繁殖模块
+SteamBeeBreedingModuleRecipeType=§a§l让蜜蜂感受灼♂热的爱吧.
+Tooltip_SteamBeeBreedingModule_00=在控制器内放入蜂后
+Tooltip_SteamBeeBreedingModule_01=它会缓慢生产卑贱种公主蜂
+Tooltip_SteamBeeBreedingModule_02=每次运行消耗128蜂王浆
+Tooltip_SteamBeeBreedingModule_03=基础运行时间：10分钟
+
+NameSteamEntityCrusherModule=蒸汽屠宰场模块
+SteamEntityCrusherModuleRecipeType=气动刷怪笼
+Tooltip_SteamEntityCrusherModule_00=§a§l使用高温蒸汽熔炼怪物.
+Tooltip_SteamEntityCrusherModule_01=每次运行有2%的概率双倍产出
+Tooltip_SteamEntityCrusherModule_02=每多一个同一种刷怪笼，概率+0.5%
+Tooltip_SteamEntityCrusherModule_03=最大增加34%的概率
+Tooltip_SteamEntityCrusherModule_04=作为代价，默认时间加倍，功率减半
+Tooltip_SteamEntityCrusherModule_05=无法超频
+
 NameSteamOreProcessorModule=蒸汽矿石处理模块
 SteamOreProcessorModuleRecipeType=微缩矿石处理厂
 Tooltip_SteamOreProcessorModule_00=§a§l你有想过它存在的意义吗？
@@ -1761,7 +1831,7 @@ Tooltip_SteamOreProcessorModule_02=一步完成所有矿石处理
 Tooltip_SteamOreProcessorModule_03=一次至多可处理8个矿石
 Tooltip_SteamOreProcessorModule_04=每个矿石消耗128L蒸汽/t、1升润滑油、10升蒸馏水
 Tooltip_SteamOreProcessorModule_05=处理时间固定为128tick
-Tooltip_SteamOreProcessorModule_06=设置超频次数来翻倍并行和耗电
+Tooltip_SteamOreProcessorModule_06=设置电路板来翻倍并行和耗电
 Tooltip_SteamOreProcessorModule_07=使用螺丝刀切换模式
 Tooltip_SteamOreProcessorModule_08=手持螺丝刀Shift+右键以销毁石粉
 Info_SteamOreProcessorModule_00=实际并行：
@@ -1789,7 +1859,7 @@ Tooltip_SteamFlightModule_04=生效范围：64 * 超频次数
 NameSteamWeatherModule=蒸汽天气更替模块
 gtnl.recipe.SteamWeatherModuleFakeRecipes=天气更替
 SteamWeatherModuleRecipeType=天气更替
-Tooltip_SteamWeatherModule_00=§a§l恩里克·普奇...这就是我的替身...「Weather Report！ 」
+Tooltip_SteamWeatherModule_00=§a§l恩里克·普奇...这就是我的替身...「Weather Report！」
 Tooltip_SteamWeatherModule_01=将天气更替功能添加到蒸汽楼梯
 Tooltip_SteamWeatherModule_02=输入特定材料切换天气，持续1小时
 
@@ -2146,7 +2216,7 @@ Tooltip_BrickBlastFurnace_Casing_03=24x 青铜燃烧室
 Tooltip_BrickBlastFurnace_Casing_04=16x 镀铜砖块
 
 NameSteamGateAssembler=蒸汽至臻先驱者
-gtnl.recipe.SteamgateAssembler=液压动力精密制造
+gtnl.recipe.SteamGateAssemblerRecipes=液压动力精密制造
 SteamGateAssemblerRecipeType=无界造物核心
 Tooltip_SteamGateAssembler_00=§b§o管道与齿轮的亵渎混合体，暴躁地吞噬着浩瀚蒸汽。
 Tooltip_SteamGateAssembler_01=§b§o无数压力在每个精密调校的仓室内涌动，维持着机械的至高平衡。
@@ -2161,7 +2231,7 @@ Tooltip_MegaSteamCompressor_02=§b§o可制造超致密金属板……
 Tooltip_MegaSteamCompressor_03=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
 
 NameSteamExtractinator=蒸汽精萃机
-gtnl.recipe.SteamExtractinator=萃取
+gtnl.recipe.SteamExtractinatorRecipes=萃取
 SteamExtractinatorRecipeType=资源萃取
 Tooltip_SteamExtractinator_00=蒸发不同泥浆中的杂质，以生成可用材料
 Tooltip_SteamExtractinator_01=一次可处理多达4个物品
@@ -2177,7 +2247,7 @@ Tooltip_MegaSolarBoiler_01=产生 96,000 升/秒的蒸汽
 Tooltip_MegaSolarBoiler_02=§b§o每秒产生的蒸汽比你的Steam游戏库里未游玩的游戏还要多
 
 NameSteamCactusWonder=仙人掌奇迹
-gtnl.recipe.CactusWonder=献给仙人掌神的供奉
+gtnl.recipe.CactusWonderFakeRecipes=献给仙人掌神的供奉
 SteamCactusWonderRecipeType=仙人掌祝福之庙
 Tooltip_SteamCactusWonder_00=燃烧仙人掌焦炭和仙人掌炭，以产生越来越高效的蒸汽
 Tooltip_SteamCactusWonder_01=仙人掌奇迹每秒都会消耗所有储存的供奉
@@ -2189,7 +2259,7 @@ Tooltip_SteamCactusWonder_06=提供价值：
 NEI.CactusWonderFakeRecipes.specialValue=提供价值：
 
 NameSteamCarpenter=蒸汽木匠
-gtnl.recipe.SteamCarpenter=蒸汽工艺
+gtnl.recipe.SteamCarpenterRecipes=蒸汽工艺
 SteamCarpenterRecipeType=木匠
 Tooltip_SteamCarpenter_00=§b§o高效地将木材切割成多种形态
 Tooltip_SteamCarpenter_01=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
@@ -2203,7 +2273,7 @@ Tooltip_SteamLavaMaker_02=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
 Tooltip_SteamLavaMaker_Casing=任意镀铜砖块或脱氧钢机械方块
 
 NameSteamManufacturer=蒸汽制造商
-gtnl.recipe.SteamManufacturer=液压制造
+gtnl.recipe.SteamManufacturerRecipes=液压制造
 SteamManufacturerRecipeType=组装机
 Tooltip_SteamManufacturer_00=拥有4并行
 Tooltip_SteamManufacturer_01=以组装的方式组装组件
@@ -2220,13 +2290,13 @@ Tooltip_SteamRockBreaker_04=§b§o注意结构共用：>
 Tooltip_SteamRockBreaker_Casing=任意镀铜砖块或脱氧钢机械方块
 
 NameSteamWoodcutter=蒸汽树场
-gtnl.recipe.SteamWoodcutter=蒸汽园艺
+gtnl.recipe.SteamWoodcutterRecipes=蒸汽园艺
 SteamWoodcutterRecipeType=树场
 Tooltip_SteamWoodcutter_00=§b§o从树苗缓慢生长成树木
 Tooltip_SteamWoodcutter_01=作者：§d§oSteam§f§oIs§d§oThe§f§oNumber
 
 NameSteamFusionReactor=超高压反应堆
-gtnl.recipe.SteamFusion=高压反应堆
+gtnl.recipe.SteamFusionReactorRecipes=高压反应堆
 SteamFusionTierKey.0=需要压缩超高压聚变反应堆
 SteamFusionReactorRecipeType=高压反应堆
 GT5U.gui.text.metadata.steamfusion=需要压缩超高压反应堆
@@ -2244,7 +2314,7 @@ Tooltip_HighPressureSteamFusionReactor_03=§b§o天啊，你到底做了什么
 Tooltip_HighPressureSteamFusionReactor_Casing=1-8，玻璃相邻的方块
 
 NameSteamInfernalCokeOven=炼狱焦炉
-gtnl.recipe.InfernalCock=焦炉但是超模
+gtnl.recipe.InfernalCockRecipes=焦炉但是超模
 SteamInfernalCokeOvenRecipeType=焦炉
 Tooltip_SteamInfernalCokeOven_00=比粘土高炉更高效运作
 Tooltip_SteamInfernalCokeOven_01=每连续工作5秒，速度提升1%，最高可达600%
@@ -2283,7 +2353,7 @@ NameLargeSteamHammer=大型蒸汽锻造锤
 LargeSteamHammerRecipeType=锻造锤
 Tooltip_LargeSteamHammer_00=比同等级的单方块锻造锤快33%
 Tooltip_LargeSteamHammer_01=仅消耗正常需求75%的蒸汽
-Tooltip_LargeSteamHammer_02=一次可处理多达16个物品
+Tooltip_LargeSteamHammer_02=一次可处理多达32个物品
 Tooltip_LargeSteamHammer_Casing=任意镀铜砖块或脱氧钢机械方块
 
 NameLargeSteamCompressor=大型蒸汽压缩机
@@ -2332,9 +2402,37 @@ Tooltip_EdenGarden_00=§e§o神说：“陆地上要生出草木和各种蔬菜�
 Tooltip_EdenGarden_01=§e§o于是大地生出了草木，出现了各种瓜果蔬菜
 Tooltip_EdenGarden_02=§e§o籽实累累，整个大地上一片生机盎然。
 Tooltip_EdenGarden_03=比极限工业温室快100倍！ 
-Tooltip_EdenGarden_04=不再需要肥料和除草剂！ 
-Tooltip_EdenGarden_05=每株作物消耗2000L水
+Tooltip_EdenGarden_04=所有IC2作物将获得完美属性
+Tooltip_EdenGarden_05=不再需要肥料和除草剂！ 
+Tooltip_EdenGarden_06=每株作物消耗2000L水
 Tooltip_EdenGarden_Casing=任意电力压缩机机械方块
+Info_EdenGarden_00=运行时无法输入种子！
+Info_EdenGarden_01=运行模式：%s
+Info_EdenGarden_02=设置模式（输入）
+Info_EdenGarden_03=设置模式（输出）
+Info_EdenGarden_04=最大槽位数：§a%s§r
+Info_EdenGarden_05=已用槽位数：%s%s§r
+Info_EdenGarden_06=种子类型过多，无法运行！
+Info_EdenGarden_07=种子数量过多，无法运行！
+Info_EdenGarden_Inventory=物品栏
+Info_EdenGarden_Status=状态
+Info_EdenGarden_Configuration=机器设置
+Info_EdenGarden_SetupMode=设置模式
+Info_EdenGarden_Operating=运行
+Info_EdenGarden_Input=输入
+Info_EdenGarden_Output=输出
+Info_EdenGarden_Disabled=关闭
+Info_EdenGarden_Enabled=开启
+Info_EdenGarden_IC2Mode=IC2模式
+Info_EdenGarden_NoHumidityMode=无湿度模式
+Info_EdenGarden_SetupPhase_Working=机器运行时无法启用/关闭设置模式！
+Info_EdenGarden_SetupPhase_Change=模式已切换为
+Info_EdenGarden_SetupPhase_Invalid=无效模式，请报告给开发者！
+Info_EdenGarden_Mode_Working=机器运行时无法切换模式！
+Info_EdenGarden_Mode_HasSeeds=机器内存在种子时无法切换温室模式！
+Info_EdenGarden_Mode_Change=已切换模式为：%s
+Info_EdenGarden_NoHumidityMode_Enabled=无湿度模式已开启
+Info_EdenGarden_NoHumidityMode_Disabled=无湿度模式已关闭
 
 NameGenerationEarthEngine=初代目行星发动机
 GenerationEarthEngineRecipeType=聚变反应堆
@@ -2362,8 +2460,8 @@ Tooltip_BloodSoulSacrificialArray_03=直接从机器所有者的LP网络抽取LP
 Tooltip_BloodSoulSacrificialArray_04=放入阿蒙克气血宝珠无视所有LP消耗
 Tooltip_BloodSoulSacrificialArray_05=使用剪线钳右键主机来开关坠星渲染
 Tooltip_BloodSoulSacrificialArray_Casing=左前右方的放射硅岩合金机械方块
-BloodSoulSacrificialArray_Render_On=开启坠星渲染
-BloodSoulSacrificialArray_Render_Off=关闭坠星渲染
+BloodSoulSacrificialArray_Render_Enabled=开启坠星渲染
+BloodSoulSacrificialArray_Render_Disabled=关闭坠星渲染
 
 NameTeleportationArrayToAlfheim=精灵传送法阵
 FluidManaInputHatch=魔力输入仓
@@ -2460,6 +2558,8 @@ Tooltip_NanoPhagocytosisPlant_01=每级电压等级额外提供25%的加速和�
 Tooltip_NanoPhagocytosisPlant_Casing=任意超能硅岩强化无菌净水厂机械方块
 Render_NanoPhagocytosisPlant_Enabled=渲染已开启
 Render_NanoPhagocytosisPlant_Disabled=渲染已关闭
+NanoPhagocytosisPlant_Render_Enabled=开启渲染
+NanoPhagocytosisPlant_Render_Disabled=关闭渲染
 
 NameMagneticEnergyReactionFurnace=磁能反应炉
 MagneticEnergyReactionFurnaceRecipeType=电弧炉 / 等离子电弧炉
@@ -2506,8 +2606,8 @@ NameEternalGregTechWorkshop=永恒格雷工坊
 gtnl.recipe.EternalGregTechWorkshopUpgradeRecipes=永恒格雷工坊模块升级
 EternalGregTechWorkshopRecipeType=永恒格雷工坊中央控制中心
 Tooltip_EternalGregTechWorkshop_Casing=提示方块：1号
-Render_EternalGregTechWorkshop_Enabled=渲染已开启
-Render_EternalGregTechWorkshop_Disabled=渲染已关闭
+EternalGregTechWorkshop_Render_Enabled=开启渲染
+EternalGregTechWorkshop_Render_Disabled=关闭渲染
 EGTW_UpdateStructureCheck=更新模块连接状态
 EGTW_ExtraModule=额外结构：
 EGTW_ExtraModule_On=已启用
@@ -2726,8 +2826,8 @@ Tooltip_MeteorMiner_Casing_02_01=坠星仪式的最高层
 Tooltip_MeteorMiner_Casing_02_02=任意在控制器下方的中子采矿机械方块
 Info_MeteorMiner_00=机器等级：
 Info_MeteorMiner_01=时运等级：
-MeteorMiner_Render_On=开启激光渲染
-MeteorMiner_Render_Off=关闭激光渲染
+MeteorMiner_Render_Enabled=开启激光渲染
+MeteorMiner_Render_Disabled=关闭激光渲染
 GT5U.gui.text.meteor_mining=§d正在挖矿！ 
 GT5U.gui.text.meteor_waiting=§d等待坠星…
 GT5U.gui.text.meteor_reset=§d重置完成！ 
@@ -2861,7 +2961,7 @@ Tooltip_BlazeBlastFurnace_00=比工业高炉快150%！
 Tooltip_BlazeBlastFurnace_01=最大并行数固定为64
 Tooltip_BlazeBlastFurnace_02=在控制器内放入炽骨立方将并行提高到256
 Tooltip_BlazeBlastFurnace_03=需每秒提供10x配方电压等级^2的熔融烈焰
-Tooltip_BlazeBlastFurnace_04=安装炽骨立方后消耗翻倍
+Tooltip_BlazeBlastFurnace_04=放入炽骨立方后消耗乘以4倍
 Tooltip_BlazeBlastFurnace_05=超过MV后的每一级电压，都会将温度提高100K
 Tooltip_BlazeBlastFurnace_Casing_00=任意冶炼炉机械方块
 Tooltip_BlazeBlastFurnace_Casing_01=回收气体，任意炽焱高炉机械方块
@@ -3116,8 +3216,8 @@ Awe_Cancel_02_02=§f§l我的事迹，无人知晓，无处可寻。
 Awe_Kick=§f§l！！！ 不知所措 ！！！
 
 NameRealArtificialStar=真·湮灭发电机
-ArtificialStar.enableRender.0=关闭特效渲染
-ArtificialStar.enableRender.1=开启特效渲染
+RealArtificialStar_Render_Enabled=开启渲染
+RealArtificialStar_Render_Disabled=关闭渲染
 gtnl.recipe.ArtificialStarGeneratingRecipes=真·湮灭发电机
 Tooltip_RealArtificialStar_MachineType=真·湮灭发电机
 Tooltip_RealArtificialStar_00=§d§l只是替换了TST的结构，其余功能一致
@@ -3158,4 +3258,4 @@ Info_RealArtificialStar_04=时间场等级
 Info_RealArtificialStar_05=稳定场等级
 Info_RealArtificialStar_06=回收原料几率
 NEI.RealAntimatterFuelRodGeneratingRecipe.01=有概率回收部分材料. 概率受模块等级影响.
-NEI.RealArtificialStarGeneratingRecipes.specialValue.pre=产生：
+NEI.RealArtificialStarGeneratingRecipes.specialValue=产生：

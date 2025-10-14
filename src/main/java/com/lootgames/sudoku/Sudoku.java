@@ -10,7 +10,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.lootgames.sudoku.block.SudokuBlocks;
 import com.lootgames.sudoku.config.ConfigSudoku;
-import com.lootgames.sudoku.packet.GamePackets;
+import com.lootgames.sudoku.packet.SPSSyncBoard;
+import com.lootgames.sudoku.packet.SPSSyncCell;
+import com.lootgames.sudoku.packet.SPSudokuResetNumber;
+import com.lootgames.sudoku.packet.SPSudokuSpawnLevelBeatParticles;
 import com.lootgames.sudoku.sudoku.GameSudoku;
 import com.lootgames.sudoku.sudoku.SudokuOverlayHandler;
 import com.science.gtnl.Utils.enums.ModList;
@@ -42,7 +45,12 @@ public class Sudoku {
     // load "Do your mod setup. Build whatever data structures you care about. Register recipes." (Remove if not needed)
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-        GamePackets.register();
+
+        LootGamesAPI.regServerPacket(SPSSyncCell.class);
+        LootGamesAPI.regServerPacket(SPSSyncBoard.class);
+        LootGamesAPI.regServerPacket(SPSudokuSpawnLevelBeatParticles.class);
+        LootGamesAPI.regServerPacket(SPSudokuResetNumber.class);
+
         LootGamesAPI.registerGameGenerator(new GameSudoku.Factory());
     }
 

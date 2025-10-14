@@ -2,35 +2,39 @@ package com.science.gtnl.loader;
 
 import static com.science.gtnl.Utils.CardboardBoxUtils.*;
 
+import net.blay09.mods.craftingtweaks.api.CraftingTweaksAPI;
+import net.blay09.mods.craftingtweaks.api.SimpleTweakProvider;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.brandon3055.draconicevolution.common.ModBlocks;
 import com.cleanroommc.bogosorter.BogoSortAPI;
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAvaritiaddonsChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableChest;
-import com.science.gtnl.Utils.machine.EdenGardenManager.EIGBucket;
+import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
 import com.science.gtnl.Utils.text.LanguageLoader;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.common.entity.EntitySteamRocket;
 import com.science.gtnl.common.item.items.MilledOre;
+import com.science.gtnl.common.item.steamRocket.SchematicSteamRocket;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.recipe.AprilFool.OreDictionary.SteamCarpenterOreRecipe;
+import com.science.gtnl.common.recipe.GTNL.RocketAssemblerRecipes;
 import com.science.gtnl.common.recipe.OreDictionary.LaserEngraverOreRecipes;
 import com.science.gtnl.common.recipe.OreDictionary.PortalToAlfheimOreRecipes;
 import com.science.gtnl.common.recipe.OreDictionary.WoodDistillationRecipes;
 import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.WerkstoffAdderRegistry;
-import bartworks.system.material.Werkstoff;
-import codechicken.nei.api.API;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import micdoodle8.mods.galacticraft.api.recipe.RocketFuels;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 
 public class MaterialLoader {
 
@@ -50,14 +54,6 @@ public class MaterialLoader {
 
         loadOreDictionaryRecipes();
 
-        API.hideItem(GTNLItemList.EternalGregTechWorkshopRender.get(1));
-        API.hideItem(GTNLItemList.NanoPhagocytosisPlantRender.get(1));
-        API.hideItem(GTNLItemList.ArtificialStarRender.get(1));
-        API.hideItem(GTNLItemList.NullPointerException.get(1));
-        API.hideItem(GTNLItemList.TwilightSword.get(1));
-        API.hideItem(GTNLItemList.FakeItemSiren.get(1));
-        API.hideItem(ModList.ScienceNotLeisure.ID + ":" + GTNLItemList.Stick.name());
-
         if (Mods.InventoryBogoSorter.isModLoaded()) {
             BogoSortAPI.INSTANCE.addGenericCompat(ContainerPortableChest.class);
             BogoSortAPI.INSTANCE.addGenericCompat(ContainerPortableAvaritiaddonsChest.class);
@@ -72,33 +68,25 @@ public class MaterialLoader {
 
     public static void loadPostInit() {
         MilledOre.registry();
-        EIGBucket.LoadEIGBuckets();
+        GreenHouseBucket.LoadEIGBuckets();
         MachineLoader.registry();
+        AchievementsLoader.registry();
 
+        if (Mods.StevesCarts2.isModLoaded() && Mods.Railcraft.isModLoaded()
+            && Mods.IronTanks.isModLoaded()
+            && Mods.GraviSuite.isModLoaded()) {
+            SchematicRegistry.registerSchematicRecipe(new SchematicSteamRocket());
+            RocketAssemblerRecipes.loadSteamRocketRecipe();
+        }
         RocketFuels.addFuel(EntitySteamRocket.class, MaterialPool.CompressedSteam.getMolten(1));
+
+        if (Mods.InventoryBogoSorter.isModLoaded()) {
+            loadCraftTweak();
+        }
     }
 
     public static void loadCompleteInit() {
         ScriptLoader.registry();
-
-        Werkstoff[] hiddenMaterials = { MaterialPool.Polyimide, MaterialPool.AcrylonitrileButadieneStyrene,
-            MaterialPool.Polyetheretherketone, MaterialPool.HSLASteel, MaterialPool.Actinium,
-            MaterialPool.Rutherfordium, MaterialPool.Dubnium, MaterialPool.Seaborgium, MaterialPool.Technetium,
-            MaterialPool.Bohrium, MaterialPool.Hassium, MaterialPool.Meitnerium, MaterialPool.Darmstadtium,
-            MaterialPool.Roentgenium, MaterialPool.Copernicium, MaterialPool.Moscovium, MaterialPool.Livermorium,
-            MaterialPool.Astatine, MaterialPool.Tennessine, MaterialPool.Francium, MaterialPool.Berkelium,
-            MaterialPool.Einsteinium, MaterialPool.Mendelevium, MaterialPool.Nobelium, MaterialPool.Lawrencium,
-            MaterialPool.Nihonium, MaterialPool.CompressedSteam, MaterialPool.Breel, MaterialPool.Stronze,
-            MaterialPool.Periodicium, MaterialPool.Stargate };
-
-        OrePrefixes[] orePrefixes = { OrePrefixes.ingotHot, OrePrefixes.toolHeadSaw, OrePrefixes.toolHeadWrench,
-            OrePrefixes.toolHeadHammer };
-
-        for (OrePrefixes ore : orePrefixes) {
-            for (Werkstoff mat : hiddenMaterials) {
-                API.hideItem(mat.get(ore));
-            }
-        }
 
         if (Mods.Nutrition.isModLoaded()) {
             NutrientLoader.registry();
@@ -109,6 +97,16 @@ public class MaterialLoader {
         if (MainConfig.enableStickItem) {
             RecipeLoader.loadVillageTrade();
         }
+    }
+
+    @Optional.Method(modid = "bogosorter")
+    public static void loadCraftTweak() {
+        SimpleTweakProvider provider = CraftingTweaksAPI
+            .registerSimpleProvider(ModList.ScienceNotLeisure.ID, ContainerPortableAdvancedWorkbench.class);
+        provider.setTweakRotate(true, true, 0, 0);
+        provider.setTweakBalance(true, true, 0, 0);
+        provider.setTweakClear(true, true, 0, 0);
+        provider.setAlignToGrid(EnumFacing.WEST);
     }
 
     public static void loadOreDictionaryRecipes() {

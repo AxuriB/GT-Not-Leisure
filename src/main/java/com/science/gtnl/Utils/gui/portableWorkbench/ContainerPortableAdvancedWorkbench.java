@@ -22,6 +22,7 @@ public class ContainerPortableAdvancedWorkbench extends Container {
     public EntityPlayer player;
     public ItemStack itemStack;
     private final String portableID;
+    private final PortableItem.PortableType type;
 
     public ContainerPortableAdvancedWorkbench(InventoryPlayer playerInventory, World world, ItemStack stack) {
         this.worldObj = world;
@@ -29,7 +30,8 @@ public class ContainerPortableAdvancedWorkbench extends Container {
         this.itemStack = stack;
 
         this.portableID = PortableItem.ensurePortableID(stack);
-        IInventory savedInv = PortableItem.getInventory(stack, 9);
+        this.type = PortableItem.getPortableType(stack);
+        IInventory savedInv = type.getInventory(stack);
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             craftMatrix.setInventorySlotContents(i, savedInv.getStackInSlot(i));
         }
@@ -77,7 +79,7 @@ public class ContainerPortableAdvancedWorkbench extends Container {
 
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInventory(held, this.craftMatrix);
+            type.saveInventory(held, this.craftMatrix);
             itemStack = held;
         }
     }
@@ -87,7 +89,7 @@ public class ContainerPortableAdvancedWorkbench extends Container {
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInventory(held, this.craftMatrix);
+            type.saveInventory(held, this.craftMatrix);
             itemStack = held;
         }
     }
@@ -131,7 +133,7 @@ public class ContainerPortableAdvancedWorkbench extends Container {
 
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInventory(held, this.craftMatrix);
+            type.saveInventory(held, this.craftMatrix);
             itemStack = held;
         }
 

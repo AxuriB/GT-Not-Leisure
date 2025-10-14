@@ -223,7 +223,7 @@ public class VacuumDryingFurnace extends GTMMultiMachineBase<VacuumDryingFurnace
             return false;
         }
         setupParameters();
-        return mCountCasing >= 10;
+        return mCountCasing >= 5;
     }
 
     @Override

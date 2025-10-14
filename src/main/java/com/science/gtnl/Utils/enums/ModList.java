@@ -9,6 +9,7 @@ import cpw.mods.fml.common.Loader;
 public enum ModList {
 
     ScienceNotLeisure(ModIds.SCIENCENOTLEISURE, Names.SCIENCENOTLEISURE),
+    TakoTech(ModIds.TAKOTECH, Names.TAKOTECH),
     EyeOfHarmonyBuffer(ModIds.EYEOFHARMONYBUFFER, Names.EYEOFHARMONYBUFFER),
     ProgrammableHatches(ModIds.PROGRAMMABLEHATCHES, Names.PROGRAMMABLEHATCHES),
     TwistSpaceTechnology(ModIds.TWISTSPACETECHNOLOGY, Names.TWISTSPACETECHNOLOGY),
@@ -43,6 +44,7 @@ public enum ModList {
         public static final String GIVECOUNT = "givecount";
         public static final String REAVARITIA = "reavaritia";
         public static final String SUDOKU = "sudoku";
+        public static final String TAKOTECH = "TakoTech";
     }
 
     public static class Names {
@@ -63,6 +65,7 @@ public enum ModList {
         public static final String GIVECOUNT = "GiveCount";
         public static final String REAVARITIA = "ReAvaritia";
         public static final String SUDOKU = "Sudoku";
+        public static final String TAKOTECH = "TakoTech";
     }
 
     public final String ID;

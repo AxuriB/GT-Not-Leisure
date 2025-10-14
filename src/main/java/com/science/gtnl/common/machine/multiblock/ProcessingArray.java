@@ -389,12 +389,12 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
             return false;
         }
         setTierAndMult();
-        setupParameters();
         return mCountCasing >= 40;
     }
 
     @Override
     public boolean checkHatch() {
+        setupParameters();
         return super.checkHatch() && getMCoilLevel() != HeatingCoilLevel.None
             && GTUtility.getTier(this.getMaxInputVoltage()) <= tTier + 4
             && mMufflerHatches.size() == 1;

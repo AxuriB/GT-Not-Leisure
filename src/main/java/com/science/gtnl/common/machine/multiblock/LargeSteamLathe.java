@@ -219,7 +219,7 @@ public class LargeSteamLathe extends SteamMultiMachineBase<LargeSteamLathe> impl
             && tierIndustrialCasing == 1
             && tierMaterialBlock == 1
             && tierMachineFrame == 1
-            && mCountCasing >= 15) {
+            && mCountCasing >= 5) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -230,7 +230,7 @@ public class LargeSteamLathe extends SteamMultiMachineBase<LargeSteamLathe> impl
             && tierIndustrialCasing == 2
             && tierMaterialBlock == 2
             && tierMachineFrame == 2
-            && mCountCasing >= 15) {
+            && mCountCasing >= 5) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();

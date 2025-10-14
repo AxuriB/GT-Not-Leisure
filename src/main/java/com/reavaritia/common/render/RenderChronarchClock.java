@@ -10,6 +10,10 @@ import net.minecraftforge.client.model.IModelCustom;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
 public class RenderChronarchClock extends Render {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation(
@@ -17,11 +21,7 @@ public class RenderChronarchClock extends Render {
     private static final ResourceLocation MODEL = new ResourceLocation(
         RESOURCE_ROOT_ID + ":" + "model/ChronarchsClock.obj");
 
-    private final IModelCustom model;
-
-    public RenderChronarchClock() {
-        this.model = AdvancedModelLoader.loadModel(MODEL);
-    }
+    private static final IModelCustom model = AdvancedModelLoader.loadModel(MODEL);
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {

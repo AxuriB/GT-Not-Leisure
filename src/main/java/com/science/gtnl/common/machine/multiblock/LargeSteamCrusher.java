@@ -186,7 +186,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
             && tierFrameCasing == 1
             && tierPlatedCasing == 1
             && tierBrickCasing == 1
-            && mCountCasing >= 160) {
+            && mCountCasing >= 100) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -196,7 +196,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
             && tierFrameCasing == 2
             && tierPlatedCasing == 2
             && tierBrickCasing == 2
-            && mCountCasing >= 160) {
+            && mCountCasing >= 100) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();

@@ -34,7 +34,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.enums.CommonElements;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -48,7 +48,6 @@ import WayofTime.alchemicalWizardry.common.entity.projectile.EntityMeteor;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
@@ -76,9 +75,9 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     protected final int HORIZONTAL_OFF_SET = 16;
     protected final int VERTICAL_OFF_SET = 10;
     protected final int DEPTH_OFF_SET = 9;
-    public static boolean isCreativeOrb = false;
-    public static boolean enableRender = true;
-    public static int currentEssence = 0;
+    public boolean isCreativeOrb = false;
+    public boolean enableRender = true;
+    public int currentEssence = 0;
     public static final String[][] shape = StructureUtils.readStructureFromFile(BSSA_STRUCTURE_FILE_PATH);
     private static final int MACHINEMODE_BLOOD_DEMON = 0;
     private static final int MACHINEMODE_FALLING_TOWER = 1;
@@ -164,12 +163,12 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (enableRender) {
-            enableRender = false;
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("BloodSoulSacrificialArray_Render_Off"));
-        } else {
-            enableRender = true;
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("BloodSoulSacrificialArray_Render_On"));
+        if (getBaseMetaTileEntity().isServerSide()) {
+            enableRender = !enableRender;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal(
+                    "BloodSoulSacrificialArray_Render_" + (this.enableRender ? "Enabled" : "Disabled")));
         }
         return true;
     }
@@ -244,12 +243,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             .addElement('S', ofBlockAnyMeta(ModBlocks.runeOfSacrifice))
             .addElement('T', ofBlockAnyMeta(ModBlocks.runeOfSelfSacrifice))
             .addElement('U', ofBlockAnyMeta(ModBlocks.speedRune))
-            .addElement(
-                'V',
-                ofChain(
-                    Mods.EtFuturumRequiem.isModLoaded() ? ofBlockAnyMeta(
-                        ItemUtils.getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "beacon", 1)))
-                        : ofBlockAnyMeta(Blocks.beacon)))
+            .addElement('V', CommonElements.BlockBeacon.get())
             .addElement('W', ofBlockAnyMeta(com.arc.bloodarsenal.common.block.ModBlocks.lp_materializer))
             .addElement('X', ofFrame(Materials.NaquadahAlloy))
             .addElement('Y', ofBlockAnyMeta(ModBlocks.ritualStone))
@@ -416,7 +410,8 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
             }
 
             @Nonnull
-            private CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+            @Override
+            protected CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
                 CheckRecipeResult result = validateRecipe(recipe);
                 if (!result.wasSuccessful()) {
                     return CalculationResult.ofFailure(result);

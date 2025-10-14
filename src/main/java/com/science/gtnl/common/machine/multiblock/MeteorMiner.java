@@ -47,7 +47,7 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
-import com.science.gtnl.common.render.tile.MeteorMinerMachineRender;
+import com.science.gtnl.common.render.tile.MeteorMinerRenderer;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -101,10 +101,9 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     public boolean hasFinished = true;
     public boolean isWaiting = false;
     public boolean isResetting = false;
-    public boolean stopAllRendering = false;
+    public boolean enableRender = false;
     public final Collection<ItemStack> itemDrop = new ArrayList<>();
     public byte tierMachine = 0;
-    public int tCountCasing;
 
     public final Deque<BlockPos> scanQueue = new ArrayDeque<>();
     public final Deque<List<BlockPos>> rowQueue = new ArrayDeque<>();
@@ -144,7 +143,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         if (MainConfig.enableAprilFool) {
-            MeteorMinerMachineRender.renderTileEntity(this, x, y, z, timeSinceLastTick);
+            MeteorMinerRenderer.renderTileEntity(this, x, y, z, timeSinceLastTick);
         }
     }
 
@@ -333,11 +332,11 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        stopAllRendering = !stopAllRendering;
-        if (stopAllRendering) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("MeteorMiner_Render_Off"));
-            if (renderer != null) renderer.setShouldRender(false);
-        } else GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("MeteorMiner_Render_On"));
+        enableRender = !enableRender;
+        GTUtility.sendChatToPlayer(
+            aPlayer,
+            StatCollector.translateToLocal("MeteorMiner_Render_" + (enableRender ? "Enabled" : "Disabled")));
+        if (renderer != null) renderer.setShouldRender(enableRender);
     }
 
     @Override
@@ -397,7 +396,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         aNBT.setBoolean("isStartInitialized", isStartInitialized);
         aNBT.setBoolean("hasFinished", hasFinished);
         aNBT.setBoolean("isWaiting", isWaiting);
-        aNBT.setBoolean("stopAllRendering", stopAllRendering);
+        aNBT.setBoolean("enableRender", enableRender);
         aNBT.setInteger("tierMachine", tierMachine);
         aNBT.setInteger("fortuneTier", fortuneTier);
         aNBT.setDouble("renderAngle", renderAngle);
@@ -412,7 +411,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
         isStartInitialized = aNBT.getBoolean("isStartInitialized");
         hasFinished = aNBT.getBoolean("hasFinished");
         isWaiting = aNBT.getBoolean("isWaiting");
-        stopAllRendering = aNBT.getBoolean("stopAllRendering");
+        enableRender = aNBT.getBoolean("enableRender");
         tierMachine = aNBT.getByte("tierMachine");
         fortuneTier = aNBT.getInteger("fortuneTier");
         renderAngle = (float) aNBT.getDouble("renderAngle");

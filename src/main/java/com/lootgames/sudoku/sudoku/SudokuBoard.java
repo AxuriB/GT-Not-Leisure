@@ -1,30 +1,48 @@
 package com.lootgames.sudoku.sudoku;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.lootgames.sudoku.Utils.CodecUtils;
-import com.lootgames.sudoku.Utils.RandHelper;
 
 import lombok.Getter;
 import lombok.Setter;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
+import ru.timeconqueror.lootgames.utils.future.ICodec;
+import ru.timeconqueror.timecore.api.util.CodecUtils;
 
 public class SudokuBoard {
 
     @Getter
     @Setter
-    private long lastClickTime = -1;
-    public static long currentTime = 0;
+    public long lastClickTime = -1;
     public static final int SIZE = 9;
     @Getter
     @Setter
-    private Integer[][] solution = new Integer[SIZE][SIZE]; // 完整解
-    private Integer[][] puzzle = new Integer[SIZE][SIZE]; // 挖空后的谜题
-    private Integer[][] player = new Integer[SIZE][SIZE]; // 玩家填写
+    public Integer[][] solution = new Integer[SIZE][SIZE]; // Complete solution
+    public Integer[][] puzzle = new Integer[SIZE][SIZE]; // Puzzle after removing cells
+    public Integer[][] player = new Integer[SIZE][SIZE]; // Player's filled values
 
-    /** 根据挖空数量生成棋盘 */
+    public static final ICodec<Integer, NBTTagCompound> INT_CODEC = new ICodec<>() {
+
+        @Override
+        public NBTTagCompound encode(Integer obj) {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setInteger("v", obj);
+            return tag;
+        }
+
+        @Override
+        public Integer decode(NBTTagCompound nbtTag) {
+            return nbtTag.getInteger("v");
+        }
+    };
+
+    public static final Random RANDOM = new Random();
+
+    /** Generate a Sudoku board based on the number of blanks */
     public void generate(int blanks) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -38,11 +56,11 @@ public class SudokuBoard {
         resetPlayer();
     }
 
-    private boolean fillSolution(int row, int col) {
+    public boolean fillSolution(int row, int col) {
         if (row == SIZE) return true;
         int nextRow = col == SIZE - 1 ? row + 1 : row;
         int nextCol = (col + 1) % SIZE;
-        List<Integer> nums = RandHelper.shuffledList(1, 9);
+        List<Integer> nums = shuffledList(1, 9);
         for (int n : nums) {
             if (canPlace(solution, row, col, n)) {
                 solution[row][col] = n;
@@ -53,19 +71,19 @@ public class SudokuBoard {
         return false;
     }
 
-    private boolean canPlace(Integer[][] g, int r, int c, int n) {
+    public boolean canPlace(Integer[][] g, int r, int c, int n) {
         for (int i = 0; i < SIZE; i++) if (g[r][i] == n || g[i][c] == n) return false;
         int br = (r / 3) * 3, bc = (c / 3) * 3;
         for (int rr = br; rr < br + 3; rr++) for (int cc = bc; cc < bc + 3; cc++) if (g[rr][cc] == n) return false;
         return true;
     }
 
-    private void copySolutionToPuzzle() {
+    public void copySolutionToPuzzle() {
         for (int i = 0; i < SIZE; i++) System.arraycopy(solution[i], 0, puzzle[i], 0, SIZE);
     }
 
-    private void removeCells(int blanks) {
-        List<Integer> pos = RandHelper.shuffledList(0, SIZE * SIZE - 1);
+    public void removeCells(int blanks) {
+        List<Integer> pos = shuffledList(0, SIZE * SIZE - 1);
         int removed = 0;
 
         for (int idx : pos) {
@@ -73,10 +91,19 @@ public class SudokuBoard {
             int c = idx % SIZE;
 
             int backup = puzzle[r][c];
+            if (backup == 0) continue; // Skip if already empty
+
             puzzle[r][c] = 0;
 
-            if (countSolutions(new Integer[SIZE][SIZE], 0, 0) != 1) {
-                // 恢复，不能挖这个格子
+            // Create a deep copy of the current puzzle state for the solver
+            Integer[][] boardCopy = new Integer[SIZE][SIZE];
+            for (int i = 0; i < SIZE; i++) {
+                System.arraycopy(puzzle[i], 0, boardCopy[i], 0, SIZE);
+            }
+
+            // Check if the puzzle has a unique solution
+            if (countSolutions(boardCopy, 0, 0) != 1) {
+                // Restore, this cell cannot be removed
                 puzzle[r][c] = backup;
             } else {
                 removed++;
@@ -85,20 +112,13 @@ public class SudokuBoard {
         }
     }
 
-    private int countSolutions(Integer[][] board, int row, int col) {
-        // 初始复制 puzzle 给 board
-        if (row == 0 && col == 0) {
-            for (int i = 0; i < SIZE; i++) {
-                System.arraycopy(puzzle[i], 0, board[i], 0, SIZE);
-            }
-        }
-
+    public int countSolutions(Integer[][] board, int row, int col) {
         if (row == SIZE) return 1;
 
         int nextRow = col == SIZE - 1 ? row + 1 : row;
         int nextCol = (col + 1) % SIZE;
 
-        if (board[row][col] != 0) {
+        if (board[row][col] != null && board[row][col] != 0) {
             return countSolutions(board, nextRow, nextCol);
         }
 
@@ -107,14 +127,17 @@ public class SudokuBoard {
             if (canPlace(board, row, col, n)) {
                 board[row][col] = n;
                 totalSolutions += countSolutions(board, nextRow, nextCol);
-                if (totalSolutions > 1) return totalSolutions; // 超过一个解，提前退出
+                if (totalSolutions > 1) {
+                    board[row][col] = 0;
+                    return totalSolutions;
+                }
                 board[row][col] = 0;
             }
         }
         return totalSolutions;
     }
 
-    private void resetPlayer() {
+    public void resetPlayer() {
         for (int i = 0; i < SIZE; i++) System.arraycopy(puzzle[i], 0, player[i], 0, SIZE);
     }
 
@@ -163,23 +186,23 @@ public class SudokuBoard {
 
     public boolean checkWin() {
         for (int i = 0; i < SIZE; i++) for (int j = 0; j < SIZE; j++) {
-            if (player[i][j] == 0 || player[i][j].equals(solution[i][j])) return false;
+            if (player[i][j] == null || player[i][j] == 0 || !player[i][j].equals(solution[i][j])) return false;
         }
         return true;
     }
 
     public NBTTagCompound writeNBT() {
         NBTTagCompound t = new NBTTagCompound();
-        t.setTag("puzzle", CodecUtils.write2DimArr(puzzle, CodecUtils.INT_CODEC));
-        t.setTag("player", CodecUtils.write2DimArr(player, CodecUtils.INT_CODEC));
-        t.setTag("solution", CodecUtils.write2DimArr(solution, CodecUtils.INT_CODEC));
+        t.setTag("puzzle", CodecUtils.write2DimArr(puzzle, INT_CODEC));
+        t.setTag("player", CodecUtils.write2DimArr(player, INT_CODEC));
+        t.setTag("solution", CodecUtils.write2DimArr(solution, INT_CODEC));
         return t;
     }
 
     public void readNBT(NBTTagCompound t) {
-        puzzle = CodecUtils.read2DimArr(t.getCompoundTag("puzzle"), Integer.class, CodecUtils.INT_CODEC);
-        player = CodecUtils.read2DimArr(t.getCompoundTag("player"), Integer.class, CodecUtils.INT_CODEC);
-        solution = CodecUtils.read2DimArr(t.getCompoundTag("solution"), Integer.class, CodecUtils.INT_CODEC);
+        puzzle = CodecUtils.read2DimArr(t.getCompoundTag("puzzle"), Integer.class, INT_CODEC);
+        player = CodecUtils.read2DimArr(t.getCompoundTag("player"), Integer.class, INT_CODEC);
+        solution = CodecUtils.read2DimArr(t.getCompoundTag("solution"), Integer.class, INT_CODEC);
     }
 
     public void cSetPlayerValue(Pos2i pos, int value) {
@@ -212,5 +235,17 @@ public class SudokuBoard {
             }
         }
         return count;
+    }
+
+    public static List<Integer> shuffledList(int start, int end) {
+        if (start > end) {
+            throw new IllegalArgumentException(String.format("Start (%d) must be <= end (%d)", start, end));
+        }
+        List<Integer> list = new ArrayList<>(end - start + 1);
+        for (int i = start; i <= end; i++) {
+            list.add(i);
+        }
+        Collections.shuffle(list, RANDOM);
+        return list;
     }
 }

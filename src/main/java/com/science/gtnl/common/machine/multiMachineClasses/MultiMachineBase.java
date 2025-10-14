@@ -16,7 +16,6 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,15 +30,9 @@ import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
-import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
-import com.gtnewhorizons.modularui.common.builder.UIBuilder;
-import com.gtnewhorizons.modularui.common.builder.UIInfo;
-import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
-import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -66,7 +59,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -77,6 +69,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -346,7 +339,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     protected ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
 
-            @NotNull
             @Override
             @Nonnull
             protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
@@ -488,43 +480,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             }
         }
         return 0;
-    }
-
-    @FunctionalInterface
-    protected interface ContainerConstructor<T extends MultiMachineBase<?>> {
-
-        ModularUIContainer of(ModularUIContext context, ModularWindow mainWindow, T multiBlock);
-    }
-
-    @SuppressWarnings("unchecked")
-    protected static <K extends MultiMachineBase<?>> UIInfo<?, ?> createMetaTileEntityUI(
-        MultiMachineBase.ContainerConstructor<K> containerConstructor) {
-        return UIBuilder.of()
-            .container((player, world, x, y, z) -> {
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof BaseMetaTileEntity) {
-                    IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
-                    if (!(mte instanceof MultiMachineBase)) return null;
-                    final UIBuildContext buildContext = new UIBuildContext(player);
-                    final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
-                    return containerConstructor.of(new ModularUIContext(buildContext, te::markDirty), window, (K) mte);
-                }
-                return null;
-            })
-            .gui(((player, world, x, y, z) -> {
-                if (!world.isRemote) return null;
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof BaseMetaTileEntity) {
-                    IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
-                    if (!(mte instanceof MultiMachineBase)) return null;
-                    final UIBuildContext buildContext = new UIBuildContext(player);
-                    final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
-                    return new ModularGui(
-                        containerConstructor.of(new ModularUIContext(buildContext, null), window, (K) mte));
-                }
-                return null;
-            }))
-            .build();
     }
 
     protected List<SlotWidget> slotWidgets = new ArrayList<>(1);
@@ -1144,6 +1099,74 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         for (MTEHatch h : mDynamoHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mExoticDynamoHatches) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mParallelControllerHatches) h.updateTexture(getCasingTextureID());
+    }
+
+    @Override
+    public long getMaxInputVoltage() {
+        long rVoltage = 0;
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) rVoltage += tHatch.getBaseMetaTileEntity()
+            .getInputVoltage();
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) rVoltage += tHatch.getBaseMetaTileEntity()
+            .getInputVoltage();
+        return rVoltage;
+    }
+
+    @Override
+    public long getAverageInputVoltage() {
+        return Math.max(
+            ExoticEnergyInputHelper.getAverageInputVoltageMulti(mEnergyHatches),
+            ExoticEnergyInputHelper.getAverageInputVoltageMulti(mExoticEnergyHatches));
+    }
+
+    @Override
+    public long getMaxInputAmps() {
+        return Math.max(
+            ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(mEnergyHatches),
+            ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(mExoticEnergyHatches));
+    }
+
+    @Override
+    public long getMaxInputEu() {
+        return Math.max(
+            ExoticEnergyInputHelper.getTotalEuMulti(mEnergyHatches),
+            ExoticEnergyInputHelper.getTotalEuMulti(mExoticEnergyHatches));
+    }
+
+    @Override
+    public long getMaxInputPower() {
+        long eut = 0;
+        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+            IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
+            eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
+        }
+        for (MTEHatch tHatch : validMTEList(mExoticEnergyHatches)) {
+            IGregTechTileEntity baseTile = tHatch.getBaseMetaTileEntity();
+            eut += baseTile.getInputVoltage() * baseTile.getInputAmperage();
+        }
+        return eut;
+    }
+
+    @Override
+    public long getInputVoltageTier() {
+        long rTier = 0;
+        if (!mEnergyHatches.isEmpty()) {
+            rTier = mEnergyHatches.get(0)
+                .getInputTier();
+            for (int i = 1; i < mEnergyHatches.size(); i++) {
+                if (mEnergyHatches.get(i)
+                    .getInputTier() != rTier) return 0;
+            }
+        }
+        if (!mExoticEnergyHatches.isEmpty()) {
+            rTier = mExoticEnergyHatches.get(0)
+                .getInputTier();
+            for (int i = 1; i < mExoticEnergyHatches.size(); i++) {
+                if (mExoticEnergyHatches.get(i)
+                    .getInputTier() != rTier) return 0;
+            }
+        }
+
+        return rTier;
     }
 
     public enum CustomHatchElement implements IHatchElement<MultiMachineBase<?>> {

@@ -66,7 +66,7 @@ public class SteamFlightModule extends SteamElevatorModule {
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
-        this.lEUt = mTier * V[5] * recipeOcCount;
+        this.lEUt = mTier * V[5] * Math.max(recipeOcCount, 1);
         this.mEfficiency = 10000;
         this.mMaxProgresstime = 1000;
         return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -105,6 +105,6 @@ public class SteamFlightModule extends SteamElevatorModule {
 
     @Override
     protected int getMachineEffectRange() {
-        return 64 * recipeOcCount;
+        return 64 * Math.max(recipeOcCount, 1);
     }
 }

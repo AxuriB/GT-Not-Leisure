@@ -19,9 +19,10 @@ public class RecipeBuilder {
         return new RecipeBuilder();
     }
 
-    protected ItemStack[] inputsBasic = new ItemStack[0];
-    protected Object[] inputsOreDict;
-    protected ItemStack[][] alts;
+    public ItemStack[] inputsBasic = new ItemStack[0];
+    public Object[] inputsOreDict;
+    public Object special;
+    public ItemStack[][] alts;
     public ItemStack[] inputItems = new ItemStack[0];
     public ItemStack[] outputItems = new ItemStack[0];
     public FluidStack[] inputFluids = new FluidStack[0];
@@ -69,6 +70,11 @@ public class RecipeBuilder {
         return this;
     }
 
+    public RecipeBuilder special(Object special) {
+        this.special = special;
+        return this;
+    }
+
     public RecipeBuilder eut(int eut) {
         this.eut = eut;
         return this;
@@ -112,7 +118,7 @@ public class RecipeBuilder {
             false,
             inputItems,
             outputItems,
-            null,
+            special,
             outputChance,
             inputFluids,
             outputFluids,

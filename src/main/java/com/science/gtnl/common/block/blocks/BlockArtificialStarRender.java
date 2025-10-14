@@ -29,7 +29,7 @@ public class BlockArtificialStarRender extends Block {
         this.setResistance(20f);
         this.setHardness(-1.0f);
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
-        this.setBlockName("RealArtificialStarRender");
+        this.setBlockName("RealArtificialStarRenderer");
         this.setLightLevel(100.0f);
         GameRegistry.registerBlock(this, ItemBlockArtificialStarRender.class, getUnlocalizedName());
         GTNLItemList.ArtificialStarRender.set(new ItemStack(this, 1));

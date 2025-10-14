@@ -9,7 +9,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelCustom;
 
-import com.science.gtnl.common.render.tile.RealArtificialStarRender;
+import com.science.gtnl.common.render.tile.RealArtificialStarRenderer;
 
 import lombok.Getter;
 
@@ -40,8 +40,8 @@ public class TileEntityArtificialStar extends TileEntity {
     public final List<ResourceLocation> textures = new ArrayList<>();
 
     public TileEntityArtificialStar() {
-        models.add(RealArtificialStarRender.STAR_MODEL);
-        textures.add(RealArtificialStarRender.STAR_TEXTURE);
+        models.add(RealArtificialStarRenderer.STAR_MODEL);
+        textures.add(RealArtificialStarRenderer.STAR_TEXTURE);
     }
 
     @Override
@@ -73,8 +73,8 @@ public class TileEntityArtificialStar extends TileEntity {
         models.clear();
         textures.clear();
         for (int i = 0; i < modelsCount; i++) {
-            models.add(RealArtificialStarRender.STAR_MODEL);
-            textures.add(RealArtificialStarRender.STAR_TEXTURE);
+            models.add(RealArtificialStarRenderer.STAR_MODEL);
+            textures.add(RealArtificialStarRenderer.STAR_TEXTURE);
         }
     }
 

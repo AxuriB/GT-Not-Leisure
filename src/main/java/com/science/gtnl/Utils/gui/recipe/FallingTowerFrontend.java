@@ -1,6 +1,7 @@
 package com.science.gtnl.Utils.gui.recipe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -17,6 +18,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.recipes.BloodSoulSpecialValue;
 
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -34,7 +36,7 @@ public class FallingTowerFrontend extends RecipeMapFrontend {
         super(
             uiPropertiesBuilder.progressBarPos(new Pos2d(26, 7)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 170))
-                .neiSpecialInfoFormatter(new BloodSoulFrontend.BloodSoulSpecialValueFormatter()));
+                .neiSpecialInfoFormatter(new BloodSoulSpecialValue()));
     }
 
     @Override
@@ -47,9 +49,7 @@ public class FallingTowerFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(6, 7));
-        return positions;
+        return Collections.singletonList(new Pos2d(6, 7));
     }
 
     @Override

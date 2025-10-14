@@ -180,13 +180,13 @@ public class LargeSteamOreWasher extends SteamMultiMachineBase<LargeSteamOreWash
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET) || !checkHatches())
             return false;
-        if (tierPipeCasing == 1 && tierMachineCasing == 1 && mCountCasing >= 195) {
+        if (tierPipeCasing == 1 && tierMachineCasing == 1 && mCountCasing >= 100) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
             return true;
         }
-        if (tierPipeCasing == 2 && tierMachineCasing == 2 && mCountCasing >= 195) {
+        if (tierPipeCasing == 2 && tierMachineCasing == 2 && mCountCasing >= 100) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();

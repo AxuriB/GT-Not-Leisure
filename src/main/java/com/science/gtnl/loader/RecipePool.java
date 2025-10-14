@@ -17,6 +17,7 @@ import com.science.gtnl.Utils.gui.recipe.FallingTowerFrontend;
 import com.science.gtnl.Utils.gui.recipe.GTNLLogoFrontend;
 import com.science.gtnl.Utils.gui.recipe.GeneralFrontend;
 import com.science.gtnl.Utils.gui.recipe.IndustrialInfusionCraftingRecipesFrontend;
+import com.science.gtnl.Utils.gui.recipe.RocketAssemblerFrontend;
 import com.science.gtnl.Utils.gui.recipe.SpaceMinerFrontend;
 import com.science.gtnl.Utils.gui.recipe.SteamGateAssemblerFrontend;
 import com.science.gtnl.Utils.gui.recipe.SteamLogoFrontend;
@@ -393,7 +394,7 @@ public class RecipePool {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> SteamGateAssemblerRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.SteamgateAssembler")
+        .of("gtnl.recipe.SteamGateAssemblerRecipes")
         .maxIO(81, 1, 0, 0)
         .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
         .frontend(SteamGateAssemblerFrontend::new)
@@ -407,7 +408,7 @@ public class RecipePool {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> CactusWonderFakeRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.CactusWonder")
+        .of("gtnl.recipe.CactusWonderFakeRecipes")
         .maxIO(1, 0, 0, 1)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_2_STEAM)
         .frontend(SteamLogoFrontend::new)
@@ -415,7 +416,7 @@ public class RecipePool {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> SteamManufacturerRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.SteamManufacturer")
+        .of("gtnl.recipe.SteamManufacturerRecipes")
         .maxIO(9, 1, 0, 1)
         .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
         .frontend(SteamLogoFrontend::new)
@@ -423,7 +424,7 @@ public class RecipePool {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> SteamCarpenterRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.SteamCarpenter")
+        .of("gtnl.recipe.SteamCarpenterRecipes")
         .maxIO(2, 2, 0, 0)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .frontend(SteamLogoFrontend::new)
@@ -438,7 +439,7 @@ public class RecipePool {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> SteamWoodcutterRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.SteamWoodcutter")
+        .of("gtnl.recipe.SteamWoodcutterRecipes")
         .maxIO(1, 4, 0, 0)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
         .frontend(SteamLogoFrontend::new)
@@ -446,7 +447,7 @@ public class RecipePool {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> SteamExtractinatorRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.SteamExtractinator")
+        .of("gtnl.recipe.SteamExtractinatorRecipes")
         .maxIO(1, 6, 1, 0)
         .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
         .frontend(SteamLogoFrontend::new)
@@ -454,7 +455,7 @@ public class RecipePool {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> SteamFusionReactorRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.SteamFusion")
+        .of("gtnl.recipe.SteamFusionReactorRecipes")
         .maxIO(0, 0, 2, 1)
         .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
         .frontend(SteamLogoFrontend::new)
@@ -466,7 +467,7 @@ public class RecipePool {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> InfernalCockRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.InfernalCock")
+        .of("gtnl.recipe.InfernalCockRecipes")
         .maxIO(1, 1, 0, 1)
         .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
         .frontend(SteamLogoFrontend::new)
@@ -579,5 +580,16 @@ public class RecipePool {
         .progressBarPos(78, 26)
         .frontend(ElectrocellGeneratorFrontend::new)
         .neiHandlerInfo(builder -> builder.setDisplayStack(GTNLItemList.ElectrocellGenerator.get(1)))
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> RocketAssemblerRecipes = RecipeMapBuilder
+        .of("gtnl.recipe.RocketAssemblerRecipes")
+        .maxIO(52, 1, 0, 0)
+        .dontUseProgressBar()
+        .frontend(RocketAssemblerFrontend::new)
+        .useSpecialSlot()
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(GTNLItemList.RocketAssembler.get(1))
+                .setMaxRecipesPerPage(1))
         .build();
 }

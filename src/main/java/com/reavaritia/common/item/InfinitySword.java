@@ -4,6 +4,7 @@ import static com.reavaritia.ReAvaritia.RESOURCE_ROOT_ID;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -67,7 +68,7 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
 
     public static boolean cancelBloodSword = false;
     public static boolean cancelDragonArmor = false;
-    private static final long COOLDOWN = 1000; // 1000 ms = 1 second
+    private static final long COOLDOWN = 1000;
     private static final ToolMaterial INFINITY = EnumHelper.addToolMaterial("INFINITY", 32, 9999, 9999F, 9999F, 200);
     private IIcon cosmicMask;
     private IIcon pommel;
@@ -78,6 +79,10 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
         .setProjectile()
         .setDamageAllowedInCreativeMode()
         .setMagicDamage();
+
+    public List<Entity> sweepAttackTargets = new ArrayList<>();
+    public List<Entity> magnetTargets = new ArrayList<>();
+    public static final int MAX_ENTITY_PROCESS_PER_TICK = 100;
 
     public InfinitySword() {
         super(INFINITY);
@@ -110,9 +115,6 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
             if (wearingInfinityArmor) {
                 targetPlayer.setHealth(targetPlayer.getHealth() - 20.0F);
             } else {
-                // 将玩家的盔甲栏和主手的物品变成掉落物
-                // dropInventoryItems(targetPlayer);
-
                 applyInfinityDamage(victim, player);
             }
             return true;
@@ -215,25 +217,13 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (!world.isRemote) {
+            magnetTargets.clear();
             AxisAlignedBB area = player.boundingBox.expand(50.0, 50.0, 50.0);
             List<Entity> entities = world.getEntitiesWithinAABB(Entity.class, area);
 
             for (Entity entity : entities) {
-                if (entity instanceof EntityItem item) {
-
-                    double centerX = player.posX;
-                    double centerY = player.posY + (player.height / 2.0);
-                    double centerZ = player.posZ;
-                    item.setPosition(centerX, centerY, centerZ);
-
-                }
-
-                if (entity instanceof EntityXPOrb xpOrb) {
-
-                    double centerX = player.posX;
-                    double centerY = player.posY + (player.height / 2.0);
-                    double centerZ = player.posZ;
-                    xpOrb.setPosition(centerX, centerY, centerZ);
+                if (entity instanceof EntityItem || entity instanceof EntityXPOrb) {
+                    magnetTargets.add(entity);
                 }
             }
         }
@@ -263,19 +253,33 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
         }
 
         if (!world.isRemote) {
-            executeSweepAttack(world, player);
+            sweepAttackTargets.clear();
+            AxisAlignedBB area = player.boundingBox.expand(100.0, 100.0, 100.0);
+            List<Entity> targets = world.getEntitiesWithinAABBExcludingEntity(player, area);
+
+            for (Entity target : targets) {
+                if (target instanceof EntitySaddleSlime) continue;
+                if (!player.isSneaking() && !(target instanceof IMob || target instanceof EntityPlayer)) continue;
+
+                sweepAttackTargets.add(target);
+            }
         }
 
         nbt.setLong("LastUsed", System.currentTimeMillis());
     }
 
-    private void executeSweepAttack(World world, EntityPlayer player) {
-        AxisAlignedBB area = player.boundingBox.expand(100.0, 100.0, 100.0);
-        List<Entity> targets = world.getEntitiesWithinAABBExcludingEntity(player, area);
+    private void tickSweepAttack(World world, EntityPlayer player) {
+        if (world.isRemote || sweepAttackTargets.isEmpty()) return;
 
-        for (Entity target : targets) {
-            if (target == player) continue;
-            if (target instanceof EntitySaddleSlime) continue;
+        int processed = 0;
+        Iterator<Entity> iterator = sweepAttackTargets.iterator();
+        while (iterator.hasNext() && processed < MAX_ENTITY_PROCESS_PER_TICK) {
+            Entity target = iterator.next();
+
+            if (target.isDead || target.worldObj != world) {
+                iterator.remove();
+                continue;
+            }
 
             if (target instanceof EntityDoppleganger livingTarget) {
                 try {
@@ -294,28 +298,26 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
                     livingTarget.onDeath(playerSource);
                     livingTarget.setDead();
                     livingTarget.worldObj.removeEntity(livingTarget);
-
+                    iterator.remove();
                 } catch (NoSuchFieldException | IllegalAccessException ignored) {}
             }
 
             if (target instanceof EntityDragon) {
                 target.attackEntityFrom(INFINITY_DAMAGE, Float.POSITIVE_INFINITY);
                 target.setDead();
+                iterator.remove();
             }
-
-            if (!player.isSneaking() && !(target instanceof IMob || target instanceof EntityPlayer)) continue;
 
             if (target instanceof EntityPlayer targetPlater) {
                 if (player.isSneaking()) {
                     handlePlayerTarget(targetPlater, player, world);
-                    return;
                 }
-            }
-
-            if (target instanceof EntityLivingBase livingTarget) {
+            } else if (target instanceof EntityLivingBase livingTarget) {
                 livingTarget.recentlyHit = 100;
                 applyDoubleSweepDamage(livingTarget, player);
             }
+            processed++;
+            iterator.remove();
         }
     }
 
@@ -380,6 +382,37 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
         }
     }
 
+    private void tickMagnetEffect(World world, EntityPlayer player) {
+        if (world.isRemote || magnetTargets.isEmpty()) return;
+
+        double centerX = player.posX;
+        double centerY = player.posY + (player.height / 2.0);
+        double centerZ = player.posZ;
+
+        int processed = 0;
+        Iterator<Entity> iterator = magnetTargets.iterator();
+        while (iterator.hasNext() && processed < MAX_ENTITY_PROCESS_PER_TICK) {
+            Entity entity = iterator.next();
+
+            if (entity.isDead || entity.worldObj != world
+                || entity.getDistanceSq(player.posX, player.posY, player.posZ) > 2500.0) {
+                iterator.remove();
+                continue;
+            }
+
+            if (entity instanceof EntityItem item) {
+                item.setPosition(centerX, centerY, centerZ);
+                iterator.remove();
+            }
+
+            if (entity instanceof EntityXPOrb xpOrb) {
+                xpOrb.setPosition(centerX, centerY, centerZ);
+                iterator.remove();
+            }
+            processed++;
+        }
+    }
+
     @Override
     public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity victim) {
         if (player.worldObj.isRemote) return true;
@@ -402,9 +435,6 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
                 if (wearingInfinityArmor) {
                     targetPlayer.setHealth(targetPlayer.getHealth() - 20.0F);
                 } else {
-                    // 将玩家的盔甲栏和主手的物品变成掉落物
-                    // dropInventoryItems(targetPlayer);
-
                     applyInfinityDamage(targetPlayer, player);
                 }
                 return true;
@@ -444,45 +474,6 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
         return true;
     }
 
-    @SuppressWarnings("unused")
-    private void dropInventoryItems(EntityPlayer player) {
-        if (player.worldObj.isRemote) {
-            return;
-        }
-
-        for (int i = 0; i < player.inventory.armorInventory.length; i++) {
-            ItemStack armorStack = player.inventory.armorInventory[i];
-            if (armorStack != null) {
-                if (armorStack.hasTagCompound()) {
-                    if (armorStack.getTagCompound()
-                        .hasKey("Energy")) {
-                        armorStack.getTagCompound()
-                            .setInteger("Energy", 0);
-                    }
-                    if (armorStack.getTagCompound()
-                        .hasKey("charge")) {
-                        armorStack.getTagCompound()
-                            .setDouble("charge", 0.0);
-                    }
-                }
-
-                EntityItem entityItem = new EntityItem(
-                    player.worldObj,
-                    player.posX,
-                    player.posY,
-                    player.posZ,
-                    armorStack.copy());
-                player.worldObj.spawnEntityInWorld(entityItem);
-                player.inventory.armorInventory[i] = null;
-                player.inventory.markDirty();
-
-                if (player.openContainer != null) {
-                    player.openContainer.detectAndSendChanges();
-                }
-            }
-        }
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack itemStack, EntityPlayer player, List<String> toolTip,
@@ -495,6 +486,12 @@ public class InfinitySword extends ItemSword implements ICosmicRenderItem, Subti
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
         super.onUpdate(stack, world, entity, slot, isSelected);
+
+        if (!world.isRemote && isSelected && entity instanceof EntityPlayer player) {
+            tickSweepAttack(world, player);
+            tickMagnetEffect(world, player);
+        }
+
         if (entity instanceof EntityPlayer player) {
             if (player.getCurrentEquippedItem() == stack && player.swingProgress == 0.5F && !world.isRemote) {
                 MovingObjectPosition rayTraceResult = Utils.rayTrace(player, false, true, false, 100);

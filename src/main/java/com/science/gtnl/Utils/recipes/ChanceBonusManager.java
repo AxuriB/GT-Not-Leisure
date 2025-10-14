@@ -53,7 +53,7 @@ public class ChanceBonusManager {
                 .apply(new ChanceBonusProviderContext(machine, tier, prev, recipe)));
     }
 
-    private static double getTierChanceBonus(int tier, int baseTier, double bonusPerTier) {
+    public static double getTierChanceBonus(int tier, int baseTier, double bonusPerTier) {
         return tier <= baseTier ? 0.0 : (tier - baseTier) * bonusPerTier;
     }
 

@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.config.MainConfig;
 
@@ -18,7 +16,6 @@ import io.github.tox1cozz.mixinbooterlegacy.LateMixin;
 @LateMixin
 public class LateMixinLoader implements ILateMixinLoader {
 
-    public static final Logger LOG = LogManager.getLogger("GTNL");
     public static final String LOG_PREFIX = "[GTNL]" + ' ';
     private static final Map<String, BooleanSupplier> MIXIN_CONFIGS = new LinkedHashMap<>();
 
@@ -46,7 +43,8 @@ public class LateMixinLoader implements ILateMixinLoader {
     public boolean shouldMixinConfigQueue(final String mixinConfig) {
         var supplier = MIXIN_CONFIGS.get(mixinConfig);
         if (supplier == null) {
-            LOG.warn(LOG_PREFIX + "Mixin config {} is not found in config map! It will never be loaded.", mixinConfig);
+            ScienceNotLeisure.LOG
+                .warn(LOG_PREFIX + "Mixin config {} is not found in config map! It will never be loaded.", mixinConfig);
             return false;
         }
         return supplier.getAsBoolean();

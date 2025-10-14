@@ -246,7 +246,14 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             }
         }
 
-        if (inputInventories.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
+        List<IDualInputInventory> validInventories = inputInventories.stream()
+            .filter(Objects::nonNull)
+            .filter(inv -> inv.getItemInputs() != null && inv.getItemInputs().length > 0)
+            .collect(Collectors.toList());
+
+        if (validInventories.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
+        }
 
         List<GTRecipe.RecipeAssemblyLine> validRecipes = new ArrayList<>();
         findRecipe(validRecipes, energyEU);
@@ -377,7 +384,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                 0);
 
             overclockedRecipes.add(overclockedRecipe);
-            powerParallel = (int) energyEU / recipe.mEUt;
+            powerParallel = (int) Math.min(Integer.MAX_VALUE, energyEU / recipe.mEUt);
         }
 
         // 遍历每个输入仓
@@ -582,6 +589,10 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
                     depleteInputLong(fluid, (long) fluid.amount * parallel, allFluids, false);
                 }
             }
+        }
+
+        if (totalOutputs.isEmpty()) {
+            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         mOutputItems = totalOutputs.toArray(new ItemStack[0]);
@@ -931,14 +942,14 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
             wirelessMode = true;
             useSingleAmp = false;
             mEnergyHatchTier = 14;
+            return mDataAccessHatches.size() <= 1 && mMaintenanceHatches.size() <= 1;
         } else if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) return false;
 
         if (!mDualInputHatches.isEmpty()) {
             isDualInputHatch = true;
             if (!mInputBusses.isEmpty() || !mInputHatches.isEmpty()) return false;
         }
-        return super.checkHatch() && !(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty())
-            && mDataAccessHatches.size() <= 1
+        return !(mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) && mDataAccessHatches.size() <= 1
             && mMaintenanceHatches.size() <= 1;
     }
 

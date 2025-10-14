@@ -71,7 +71,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     protected final int VERTICAL_OFF_SET = 4;
     protected final int DEPTH_OFF_SET = 0;
     public static final String[][] shape = StructureUtils.readStructureFromFile(LPA_STRUCTURE_FILE_PATH);
-    protected int mCasingTier = 0;
+    protected int mCasingTier = -1;
     protected int mMachineTier = -1;
 
     public PrecisionAssembler(int aID, String aName, String aNameRegional) {
@@ -90,19 +90,18 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        int id = Math.max(getCasingTextureID(), getCasingTextureID() + mCasingTier);
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.of(TexturesGtBlock.oMCDIndustrialCuttingMachineActive), TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCDIndustrialCuttingMachineActive)
                     .glow()
                     .build() };
-            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id),
+            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
                 TextureFactory.of(TexturesGtBlock.oMCDIndustrialCuttingMachine), TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCDIndustrialCuttingMachine)
                     .glow()
                     .build() };
-        } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(id) };
+        } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
     }
 
     @Override
@@ -122,7 +121,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     public int getCasingTextureID() {
         if (mCasingTier >= 0) {
             return 1540 + mCasingTier;
-        } else return getCasingTextureID();
+        } else return 1540;
     }
 
     @Override
@@ -194,7 +193,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
                 ofChain(
                     buildHatchAdder(PrecisionAssembler.class).casingIndex(getCasingTextureID())
                         .dot(1)
-                        .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
+                        .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                         .buildAndChain(
                             onElementPass(
                                 x -> ++x.mCountCasing,
@@ -293,6 +292,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     @Override
     public void clearHatches() {
         super.clearHatches();
+        mCasingTier = -1;
         mMachineTier = -1;
     }
 

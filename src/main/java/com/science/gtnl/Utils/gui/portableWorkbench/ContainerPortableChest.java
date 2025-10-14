@@ -26,6 +26,7 @@ public class ContainerPortableChest extends Container implements ISortableContai
     public int cols;
     public ItemStack itemStack;
     protected final String portableID;
+    private final PortableItem.PortableType type;
 
     public ContainerPortableChest(InventoryPlayer playerInventory, ItemStack stack, GuiPortableChest.GUI type) {
         this(playerInventory, stack, type.xSize, type.ySize, type.rows, type.cols);
@@ -33,7 +34,6 @@ public class ContainerPortableChest extends Container implements ISortableContai
 
     public ContainerPortableChest(InventoryPlayer playerInventory, ItemStack stack, int xSize, int ySize, int rows,
         int cols) {
-
         this.rows = rows;
         this.cols = cols;
         this.chestInventory = new InventoryBasic("PortableChest", false, rows * cols);
@@ -41,7 +41,8 @@ public class ContainerPortableChest extends Container implements ISortableContai
         this.itemStack = stack;
 
         this.portableID = PortableItem.ensurePortableID(stack);
-        IInventory saved = PortableItem.getInventory(stack, rows * cols);
+        this.type = PortableItem.getPortableType(stack);
+        IInventory saved = type.getInventory(stack);
         for (int i = 0; i < rows * cols; i++) {
             chestInventory.setInventorySlotContents(i, saved.getStackInSlot(i));
         }
@@ -102,7 +103,7 @@ public class ContainerPortableChest extends Container implements ISortableContai
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInventory(held, chestInventory);
+            type.saveInventory(held, chestInventory);
             itemStack = held;
         }
     }
@@ -112,7 +113,7 @@ public class ContainerPortableChest extends Container implements ISortableContai
         ItemStack result = super.slotClick(slotId, clickedButton, mode, player);
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInventory(held, chestInventory);
+            type.saveInventory(held, chestInventory);
             itemStack = held;
         }
         return result;
@@ -145,7 +146,7 @@ public class ContainerPortableChest extends Container implements ISortableContai
 
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInventory(held, chestInventory);
+            type.saveInventory(held, chestInventory);
             itemStack = held;
         }
         return itemstack;

@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.client.GTNLCreativeTabs;
 
@@ -15,7 +16,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -45,6 +45,7 @@ public enum GTNLItemList implements IItemContainer {
     HoneyFluidBlock,
     ShimmerFluidBlock,
     CardboardBox,
+    WaterCandle,
 
     BronzeBrickCasing,
     SteelBrickCasing,
@@ -124,6 +125,7 @@ public enum GTNLItemList implements IItemContainer {
     VibrationSafeCasing,
     IndustrialSteamCasing,
     AdvancedIndustrialSteamCasing,
+    StainlessSteelGearBox,
 
     TrollFace,
     DepletedExcitedNaquadahFuelRod,
@@ -231,6 +233,7 @@ public enum GTNLItemList implements IItemContainer {
     PipelessSteamCover,
     IronTurbine,
     BronzeTurbine,
+    VoidCover,
 
     ManaElectricProspectorTool,
 
@@ -413,6 +416,10 @@ public enum GTNLItemList implements IItemContainer {
     SteamFlightModule,
     SteamWeatherModule,
     SteamOreProcessorModule,
+    SteamEntityCrusherModule,
+    SteamApiaryModule,
+    SteamBeeBreedingModule,
+    SteamGreenhouseModule,
 
     CompoundExtremeCoolingUnit,
     EyeOfHarmonyInjector,
@@ -516,7 +523,9 @@ public enum GTNLItemList implements IItemContainer {
     FOGAlloySmelterModule,
     FOGAlloyBlastSmelterModule,
     FOGExtractorModule,
+    RocketAssembler,
 
+    LootBagRedemption,
     EnergyTransferNode,
     DieselGeneratorLV,
     DieselGeneratorMV,
@@ -675,14 +684,28 @@ public enum GTNLItemList implements IItemContainer {
         sanityCheck();
         // if invalid, return a replacements
         if (Utils.isStackInvalid(mStack)) {
-            GTLog.out.println("Object in the ReAvaItemList is null at:");
-            new NullPointerException().printStackTrace(GTLog.out);
+            ScienceNotLeisure.LOG.warn("Object in the GTNLItemList is null at:", new NullPointerException());
             return Utils.copyAmount(Math.toIntExact(aAmount), TestMetaBlock01_0.get(1));
         }
         return Utils.copyAmount(Math.toIntExact(aAmount), mStack);
     }
 
-    public int getMeta() {
+    public ItemStack getWithMeta(long aAmount, int meta, Object... aReplacements) {
+        sanityCheck();
+        // if invalid, return a replacements
+        if (Utils.isStackInvalid(mStack)) {
+            ScienceNotLeisure.LOG.warn("Object in the GTNLItemList is null at:", new NullPointerException());
+            ItemStack fallback = TestMetaBlock01_0.get(1);
+            fallback.setItemDamage(meta);
+            return Utils.copyAmount(Math.toIntExact(aAmount), fallback);
+        }
+
+        ItemStack stack = Utils.copyAmount(Math.toIntExact(aAmount), mStack);
+        stack.setItemDamage(meta);
+        return stack;
+    }
+
+    public int getWithMeta() {
         return mStack.getItemDamage();
     }
 
@@ -726,7 +749,7 @@ public enum GTNLItemList implements IItemContainer {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            ScienceNotLeisure.LOG.error("{} is now deprecated", this, new Exception());
             // warn only once
             mWarned = true;
         }
@@ -740,7 +763,7 @@ public enum GTNLItemList implements IItemContainer {
     @Override
     public boolean isStackEqual(Object aStack, boolean aWildcard, boolean aIgnoreNBT) {
         if (mDeprecated && !mWarned) {
-            new Exception(this + " is now deprecated").printStackTrace(GTLog.err);
+            ScienceNotLeisure.LOG.error("{} is now deprecated", this, new Exception());
             // warn only once
             mWarned = true;
         }

@@ -28,7 +28,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -178,7 +177,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     @Setter
     private boolean enableExtraModule;
     private boolean secretUpgrade;
-    private boolean isRendererDisabled;
+    private boolean enableRender;
     private boolean isRenderActive;
 
     private static final MilestoneFormatter DEFAULT_FORMATTING_MODE = MilestoneFormatter.COMMA;
@@ -262,7 +261,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
         aNBT.setBoolean("enableExtraModule", enableExtraModule);
         aNBT.setBoolean("mExtraModule", mExtraModule);
         aNBT.setBoolean("isRenderActive", isRenderActive);
-        aNBT.setBoolean("isRendererDisabled", isRendererDisabled);
+        aNBT.setBoolean("enableRender", enableRender);
     }
 
     @Override
@@ -274,7 +273,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
         mExtraModule = NBT.getBoolean("mExtraModule");
         gravitonShardsSpent = NBT.getInteger("gravitonShardsSpent");
         isRenderActive = NBT.getBoolean("isRenderActive");
-        isRendererDisabled = NBT.getBoolean("isRendererDisabled");
+        enableRender = NBT.getBoolean("enableRender");
 
         if (NBT.hasKey("totalPowerConsumed")) {
             totalPowerConsumed = new BigInteger(NBT.getByteArray("totalPowerConsumed"));
@@ -328,19 +327,17 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (isRendererDisabled) {
-            isRendererDisabled = false;
-            // let the renderer automatically rebuild itself as needed through normal logic
-        } else {
-            isRendererDisabled = true;
-            if (isRenderActive) destroyRenderer();
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            enableRender = !enableRender;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector
+                    .translateToLocal("EternalGregTechWorkshop_Render_" + (enableRender ? "Enabled" : "Disabled")));
+            if (!enableRender && isRenderActive) destroyRenderer();
         }
-        aPlayer.addChatMessage(
-            new ChatComponentTranslation(
-                isRendererDisabled ? "Render_EternalGregTechWorkshop_Disabled"
-                    : "Render_EternalGregTechWorkshop_Enabled"));
+        return true;
     }
 
     @Override
@@ -550,7 +547,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
         }
         mMachineTier = checkTier;
 
-        if (enableExtraModule && !isRenderActive && !isRendererDisabled && mTotalRunTime > 0) {
+        if (enableExtraModule && !isRenderActive && enableRender && mTotalRunTime > 0) {
             createRenderer();
         }
         return tCountCasing > 1;

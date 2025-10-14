@@ -4,7 +4,7 @@ import static com.science.gtnl.ScienceNotLeisure.*;
 import static com.science.gtnl.common.packet.ClientSoundHandler.PLAYING_SOUNDS;
 import static com.science.gtnl.common.packet.ClientTitleDisplayHandler.*;
 import static com.science.gtnl.common.render.PlayerDollRenderManagerClient.textureCache;
-import static com.science.gtnl.common.render.tile.MeteorMinerMachineRender.visualStateMap;
+import static com.science.gtnl.common.render.tile.MeteorMinerRenderer.visualStateMap;
 
 import java.util.Map;
 import java.util.Random;

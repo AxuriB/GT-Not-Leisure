@@ -12,6 +12,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -23,6 +24,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -37,6 +39,7 @@ import com.reavaritia.common.SubtitleDisplay;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import fox.spiteful.avaritia.entity.EntityImmortalItem;
+import fox.spiteful.avaritia.items.LudicrousItems;
 
 public class InfinityPickaxe extends ItemPickaxe implements SubtitleDisplay {
 
@@ -126,6 +129,23 @@ public class InfinityPickaxe extends ItemPickaxe implements SubtitleDisplay {
     }
 
     @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase victim, EntityLivingBase player) {
+        if (stack.getTagCompound() != null) {
+            if (stack.getTagCompound()
+                .getBoolean("HammerMode")) {
+                if (!(victim instanceof EntityPlayer entityPlayer && LudicrousItems.isInfinite(entityPlayer))) {
+                    int i = 10;
+                    victim.addVelocity(
+                        (double) (-MathHelper.sin(player.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F),
+                        2.0D,
+                        (double) (MathHelper.cos(player.rotationYaw * (float) Math.PI / 180.0F) * (float) i * 0.5F));
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public float getDigSpeed(ItemStack stack, Block block, int meta) {
         boolean isHammerMode = stack.hasTagCompound() && stack.getTagCompound()
             .getBoolean("HammerMode");
@@ -140,7 +160,7 @@ public class InfinityPickaxe extends ItemPickaxe implements SubtitleDisplay {
         boolean isHammerMode = stack.hasTagCompound() && stack.getTagCompound()
             .getBoolean("HammerMode");
 
-        if (isHammerMode) {
+        if (!player.worldObj.isRemote && isHammerMode) {
             MovingObjectPosition raycast = ToolHelper.raytraceFromEntity(player.worldObj, player, true, 10);
             if (raycast != null) {
                 breakOtherBlock(player, stack, x, y, z, raycast.sideHit);

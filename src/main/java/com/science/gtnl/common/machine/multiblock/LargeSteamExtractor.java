@@ -173,7 +173,7 @@ public class LargeSteamExtractor extends SteamMultiMachineBase<LargeSteamExtract
         if (tierPipeCasing == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierGearCasing == 1
-            && mCountCasing >= 55) {
+            && mCountCasing >= 20) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -182,7 +182,7 @@ public class LargeSteamExtractor extends SteamMultiMachineBase<LargeSteamExtract
         if (tierPipeCasing == 2 && tierMachineCasing == 2
             && tierFrameCasing == 2
             && tierGearCasing == 2
-            && mCountCasing >= 55) {
+            && mCountCasing >= 20) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();

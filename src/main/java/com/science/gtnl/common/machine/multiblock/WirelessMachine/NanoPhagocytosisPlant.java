@@ -16,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -60,7 +59,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
     private String selectedStarColor = DEFAULT_STAR_COLOR;
     private int starSize = DEFAULT_STAR_SIZE;
     private boolean neiEnableRender;
-    private boolean isRendererDisabled;
+    private boolean enableRender;
     private boolean isRenderActive;
     private static final int HORIZONTAL_OFF_SET = 10;
     private static final int VERTICAL_OFF_SET = 22;
@@ -315,18 +314,17 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (isRendererDisabled) {
-            isRendererDisabled = false;
-            // let the renderer automatically rebuild itself as needed through normal logic
-        } else {
-            isRendererDisabled = true;
-            if (isRenderActive) destroyRenderer();
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            enableRender = !enableRender;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector
+                    .translateToLocal("NanoPhagocytosisPlant_Render_" + (enableRender ? "Enabled" : "Disabled")));
+            if (!enableRender && isRenderActive) destroyRenderer();
         }
-        aPlayer.addChatMessage(
-            new ChatComponentTranslation(
-                isRendererDisabled ? "Render_NanoPhagocytosisPlant_Disabled" : "Render_NanoPhagocytosisPlant_Enabled"));
+        return true;
     }
 
     private TileEntityNanoPhagocytosisPlant getRenderer() {
@@ -507,7 +505,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
                     return false;
                 }
 
-        if (!isRenderActive && !isRendererDisabled && mTotalRunTime > 0 || neiEnableRender) {
+        if (!isRenderActive && enableRender && mTotalRunTime > 0 || neiEnableRender) {
             createRenderer();
         }
 
@@ -542,7 +540,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("isRenderActive", isRenderActive);
-        aNBT.setBoolean("isRendererDisabled", isRendererDisabled);
+        aNBT.setBoolean("enableRender", enableRender);
         aNBT.setString("selectedStarColor", selectedStarColor);
     }
 
@@ -552,7 +550,7 @@ public class NanoPhagocytosisPlant extends WirelessEnergyMultiMachineBase<NanoPh
         if (aNBT.hasKey("starSize")) starSize = aNBT.getInteger("starSize");
         if (aNBT.hasKey("selectedStarColor")) selectedStarColor = aNBT.getString("selectedStarColor");
         isRenderActive = aNBT.getBoolean("isRenderActive");
-        isRendererDisabled = aNBT.getBoolean("isRendererDisabled");
+        enableRender = aNBT.getBoolean("enableRender");
     }
 
     @Override

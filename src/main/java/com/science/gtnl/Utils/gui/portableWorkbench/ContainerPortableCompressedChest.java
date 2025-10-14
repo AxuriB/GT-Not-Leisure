@@ -23,7 +23,7 @@ public class ContainerPortableCompressedChest extends ContainerPortableAvaritiad
         super.onContainerClosed(player);
         ItemStack held = player.getHeldItem();
         if (PortableItem.matchesPortableID(held, portableID)) {
-            PortableItem.saveInventory(held, chestInventory);
+            type.saveInventory(held, chestInventory);
             itemStack = held;
         }
     }

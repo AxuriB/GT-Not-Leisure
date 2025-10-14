@@ -179,7 +179,7 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
 
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             if (aBaseMetaTileEntity.getWorld()
-                .isDaytime() || !depleteInputReal(Materials.Water.getFluid(30), true)) {
+                .isDaytime() && depleteInputReal(Materials.Water.getFluid(30), true)) {
                 addOutput(Materials.Steam.getGas(4800));
                 depleteInputReal(Materials.Water.getFluid(30));
                 state = "Boiling! :D";

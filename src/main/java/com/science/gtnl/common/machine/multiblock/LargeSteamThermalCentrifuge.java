@@ -176,7 +176,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
         if (tierPipeCasing == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierFireboxCasing == 1
-            && mCountCasing >= 80) {
+            && mCountCasing >= 40) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -185,7 +185,7 @@ public class LargeSteamThermalCentrifuge extends SteamMultiMachineBase<LargeStea
         if (tierPipeCasing == 2 && tierMachineCasing == 2
             && tierFrameCasing == 2
             && tierFireboxCasing == 2
-            && mCountCasing >= 80) {
+            && mCountCasing >= 40) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();

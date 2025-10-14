@@ -134,7 +134,7 @@ public class ProspectingPacket implements IMessage {
         }
     }
 
-    private static void addOre(ProspectingPacket packet, byte y, int i, int j, short meta) {
+    public static void addOre(ProspectingPacket packet, byte y, int i, int j, short meta) {
         final short[] rgba;
         final String name;
         try {

@@ -9,13 +9,16 @@ import com.science.gtnl.common.item.items.PortableItem;
 
 public class ContainerPortableBasicWorkbench extends ContainerWorkbench {
 
-    public ContainerPortableBasicWorkbench(EntityPlayer player, World world) {
+    private final String portableID;
+
+    public ContainerPortableBasicWorkbench(EntityPlayer player, World world, ItemStack stack) {
         super(player.inventory, world, 0, 0, 0);
+        this.portableID = PortableItem.ensurePortableID(stack);
     }
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
         ItemStack held = player.getHeldItem();
-        return held != null && held.getItemDamage() == 0 && held.getItem() instanceof PortableItem;
+        return PortableItem.matchesPortableID(held, portableID);
     }
 }

@@ -22,11 +22,13 @@ import com.science.gtnl.common.machine.basicMachine.DebugResearchStation;
 import com.science.gtnl.common.machine.basicMachine.DieselGenerator;
 import com.science.gtnl.common.machine.basicMachine.Enchanting;
 import com.science.gtnl.common.machine.basicMachine.GasTurbine;
+import com.science.gtnl.common.machine.basicMachine.LootBagRedemption;
 import com.science.gtnl.common.machine.basicMachine.ManaTank;
 import com.science.gtnl.common.machine.basicMachine.Replicator;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerSteel;
 import com.science.gtnl.common.machine.basicMachine.SteamTurbine;
+import com.science.gtnl.common.machine.cover.VoidCover;
 import com.science.gtnl.common.machine.cover.WirelessSteamCover;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
@@ -120,9 +122,13 @@ import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechW
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.EternalGregTechWorkshop;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.BioengineeringModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.NanitesIntegratedProcessingCenter.NanitesIntegratedProcessingCenter;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamApiaryModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamBeaconModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamBeeBreedingModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamElevator;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamEntityCrusherModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamFlightModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamGreenhouseModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamMonsterRepellentModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamOreProcessorModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamWeatherModule;
@@ -193,6 +199,7 @@ import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.M
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MegaBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.MolecularTransformer;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.PrecisionAssembler;
+import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.RocketAssembler;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumDryingFurnace;
 import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.VacuumFreezer;
 import com.science.gtnl.common.machine.multiblock.SuperSpaceElevator;
@@ -1359,6 +1366,41 @@ public class MachineLoader {
                 StatCollector.translateToLocal("NameFOGExtractorModule")));
         addItemTooltip(GTNLItemList.FOGExtractorModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
+        GTNLItemList.SteamEntityCrusherModule.set(
+            new SteamEntityCrusherModule(
+                STEAM_ENTITY_CRUSHER_MODULE.ID,
+                "NameSteamEntityCrusherModule",
+                StatCollector.translateToLocal("NameSteamEntityCrusherModule")));
+        addItemTooltip(GTNLItemList.SteamEntityCrusherModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamApiaryModule.set(
+            new SteamApiaryModule(
+                STEAM_APIARY_MODULE.ID,
+                "NameSteamApiaryModule",
+                StatCollector.translateToLocal("NameSteamApiaryModule")));
+        addItemTooltip(GTNLItemList.SteamApiaryModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamBeeBreedingModule.set(
+            new SteamBeeBreedingModule(
+                STEAM_BEE_BREEDING_MODULE.ID,
+                "NameSteamBeeBreedingModule",
+                StatCollector.translateToLocal("NameSteamBeeBreedingModule")));
+        addItemTooltip(GTNLItemList.SteamBeeBreedingModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamGreenhouseModule.set(
+            new SteamGreenhouseModule(
+                STEAM_GREENHOUSE_MODULE.ID,
+                "NameSteamGreenhouseModule",
+                StatCollector.translateToLocal("NameSteamGreenhouseModule")));
+        addItemTooltip(GTNLItemList.SteamGreenhouseModule.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.RocketAssembler.set(
+            new RocketAssembler(
+                ROCKET_ASSEMBLER.ID,
+                "NameRocketAssembler",
+                StatCollector.translateToLocal("NameRocketAssembler")));
+        addItemTooltip(GTNLItemList.RocketAssembler.get(1), AnimatedText.SNL_QYZG);
+
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(
             new CheatOreProcessingFactory(
@@ -2287,6 +2329,14 @@ public class MachineLoader {
                 "EnergyTransferNode",
                 StatCollector.translateToLocal("EnergyTransferNode")));
         addItemTooltip(GTNLItemList.EnergyTransferNode.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LootBagRedemption.set(
+            new LootBagRedemption(
+                LOOT_BAG_REDEMPTION.ID,
+                "LootBagRedemption",
+                StatCollector.translateToLocal("LootBagRedemption"),
+                1));
+        addItemTooltip(GTNLItemList.LootBagRedemption.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     public static void registerWireAndPipe() {
@@ -2331,6 +2381,18 @@ public class MachineLoader {
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAYS_ENERGY_ON_WIRELESS[0])),
             WirelessSteamCover::new,
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+
+        CoverRegistry.registerCover(
+            GTNLItemList.VoidCover.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(ITEM_VOID_SIGN)),
+            VoidCover::new,
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+
+        // CoverRegistry.registerCover(
+        // GTNLItemList.SteelTurbine.get(1L),
+        // TextureFactory.of(TexturesGtBlock.Overlay_Water),
+        // ctx -> new FluidCover(ctx, Materials.Water.mFluid, "InfinityWaterCover"),
+        // CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
     }
 
     public static void registerGlasses() {

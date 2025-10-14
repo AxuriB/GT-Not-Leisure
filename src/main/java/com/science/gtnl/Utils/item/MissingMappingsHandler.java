@@ -19,8 +19,8 @@ public class MissingMappingsHandler {
     // spotless:off
     private static final Remapper REMAPPER = new Remapper()
         // Block remappings
-        .remapBlock("ScienceNotLeisure:RealArtificialStarRender", GameRegistry.findBlock(ScienceNotLeisure.ID, "RealArtificialStarRender"))
-        .remapBlock("ScienceNotLeisure:tile.RealArtificialStarRender", GameRegistry.findBlock(ScienceNotLeisure.ID, "tile.RealArtificialStarRender"))
+        .remapBlock("ScienceNotLeisure:RealArtificialStarRenderer", GameRegistry.findBlock(ScienceNotLeisure.ID, "RealArtificialStarRenderer"))
+        .remapBlock("ScienceNotLeisure:tile.RealArtificialStarRenderer", GameRegistry.findBlock(ScienceNotLeisure.ID, "tile.RealArtificialStarRenderer"))
         .remapBlock("ScienceNotLeisure:LaserBeacon", GameRegistry.findBlock(ScienceNotLeisure.ID, "LaserBeacon"))
         .remapBlock("ScienceNotLeisure:tile.LaserBeacon", GameRegistry.findBlock(ScienceNotLeisure.ID, "tile.LaserBeacon"))
         .remapBlock("ScienceNotLeisure:NanoPhagocytosisPlantRenderer", GameRegistry.findBlock(ScienceNotLeisure.ID, "NanoPhagocytosisPlantRenderer"))

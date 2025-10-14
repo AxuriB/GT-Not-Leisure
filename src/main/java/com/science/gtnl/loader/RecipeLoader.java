@@ -59,6 +59,7 @@ import com.science.gtnl.common.recipe.GTNL.PrimitiveBrickKilnRecipes;
 import com.science.gtnl.common.recipe.GTNL.RareEarthCentrifugalRecipes;
 import com.science.gtnl.common.recipe.GTNL.ReFusionReactorRecipes;
 import com.science.gtnl.common.recipe.GTNL.RealArtificialStarRecipes;
+import com.science.gtnl.common.recipe.GTNL.RocketAssemblerRecipes;
 import com.science.gtnl.common.recipe.GTNL.ShallowChemicalCouplingRecipes;
 import com.science.gtnl.common.recipe.GTNL.ShapedArcaneCraftingRecipes;
 import com.science.gtnl.common.recipe.GTNL.ShimmerRecipes;
@@ -114,7 +115,6 @@ import com.science.gtnl.common.recipe.Thaumcraft.TCResearches;
 import com.science.gtnl.config.MainConfig;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
-import codechicken.nei.api.API;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.CrackRecipeAdder;
@@ -139,7 +139,6 @@ public class RecipeLoader {
     public static void loadRecipesServerStart() {
         if (!recipesAdded) {
             loadRecipes();
-            registerNEIRecipeCatalyst();
             if (MainConfig.enableDeleteRecipe) {
                 loadNewRemoveRecipes();
             }
@@ -193,7 +192,7 @@ public class RecipeLoader {
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
             new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes(),
-            new ElectrocellGeneratorRecipes() };
+            new ElectrocellGeneratorRecipes(), new RocketAssemblerRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };
@@ -408,18 +407,6 @@ public class RecipeLoader {
         if (!recipesAdded && ModList.TwistSpaceTechnology.isModLoaded()) {
             CircuitAssemblyLineWithoutImprintRecipePool.loadRecipes();
         }
-    }
-
-    private static void registerNEIRecipeCatalyst() {
-        API.addRecipeCatalyst(GTNLItemList.ShimmerBucket.get(1), RecipePool.ShimmerRecipes.unlocalizedName);
-        API.addRecipeCatalyst(GTNLItemList.InfinityShimmerBucket.get(1), RecipePool.ShimmerRecipes.unlocalizedName);
-        API.addRecipeCatalyst(GTNLItemList.ShimmerFluidBlock.get(1), RecipePool.ShimmerRecipes.unlocalizedName);
-
-        API.addRecipeCatalyst(GTNLItemList.ReactionFurnace.get(1), "smelting");
-        API.addRecipeCatalyst(GTNLItemList.LargeSteamFurnace.get(1), "smelting");
-        API.addRecipeCatalyst(GTNLItemList.PortableFurnace.get(1), "smelting");
-        API.addRecipeCatalyst(GTNLItemList.PortableBasicWorkBench.get(1), "crafting");
-        API.addRecipeCatalyst(GTNLItemList.PortableAdvancedWorkBench.get(1), "crafting");
     }
 
     private static void registerBuffTargetChamberRecipe() {

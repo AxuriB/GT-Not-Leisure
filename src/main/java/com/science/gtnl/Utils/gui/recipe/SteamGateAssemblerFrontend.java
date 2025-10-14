@@ -1,6 +1,7 @@
 package com.science.gtnl.Utils.gui.recipe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -57,9 +58,7 @@ public class SteamGateAssemblerFrontend extends RecipeMapFrontend {
 
     @Override
     public List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(150, 175));
-        return positions;
+        return Collections.singletonList(new Pos2d(150, 175));
     }
 
     @Override

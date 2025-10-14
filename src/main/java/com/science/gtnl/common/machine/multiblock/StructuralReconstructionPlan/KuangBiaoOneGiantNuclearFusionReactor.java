@@ -22,6 +22,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,6 +45,7 @@ import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.api.IWirelessEnergy;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
+import com.science.gtnl.common.render.tile.KuangBiaoOneGiantNuclearFusionReactorRenderer;
 import com.science.gtnl.loader.BlockLoader;
 
 import cpw.mods.fml.relauncher.Side;
@@ -71,13 +73,14 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.render.IMTERenderer;
 import lombok.Getter;
 import lombok.Setter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class KuangBiaoOneGiantNuclearFusionReactor
-    extends GTMMultiMachineBase<KuangBiaoOneGiantNuclearFusionReactor> implements ISurvivalConstructable {
+    extends GTMMultiMachineBase<KuangBiaoOneGiantNuclearFusionReactor> implements ISurvivalConstructable, IMTERenderer {
 
     public GTRecipe mLastRecipe;
     public long mEUStore;
@@ -88,6 +91,11 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     protected final int VERTICAL_OFF_SET = 14;
     protected final int DEPTH_OFF_SET = 0;
     public static final String[][] shape = StructureUtils.readStructureFromFile(KBFR_STRUCTURE_FILE_PATH);
+
+    public float rotation = 0;
+    public float prevRotation = 0;
+    public static float ROTATION_SPEED = 1.2f;
+    public boolean enableRender = true;
 
     public KuangBiaoOneGiantNuclearFusionReactor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -104,6 +112,12 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
         }
         setupParameters();
         return mCountCasing >= 1500;
+    }
+
+    @Override
+    public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+        if (mMaxProgresstime <= 0 || !enableRender) return;
+        KuangBiaoOneGiantNuclearFusionReactorRenderer.renderTileEntityAt(this, x, y, z, timeSinceLastTick);
     }
 
     @Override
@@ -124,6 +138,18 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
             env,
             false,
             true);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean("enableRender", enableRender);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        enableRender = aNBT.getBoolean("enableRender");
     }
 
     @Override
@@ -165,6 +191,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
                 StatCollector.translateToLocalFormatted(
                     "Tooltip_KuangBiaoOneGiantNuclearFusionReactor_05",
                     TIER_COLORS[getRecipeMaxTier()] + VN[getRecipeMaxTier()]))
+            .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_06"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PerfectOverclock"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_03"))
@@ -189,6 +216,25 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     @Override
     public int getRecipeCatalystPriority() {
         return -2;
+    }
+
+    @Override
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        if (getBaseMetaTileEntity().isServerSide()) {
+            this.enableRender = !enableRender;
+            GTUtility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal(
+                    "KuangBiaoOneGiantNuclearFusionReactor_Render_" + (this.enableRender ? "Enabled" : "Disabled")));
+        }
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        prevRotation = rotation;
+        rotation = (rotation + ROTATION_SPEED) % 360f;
+        return super.onRunningTick(aStack);
     }
 
     @Override

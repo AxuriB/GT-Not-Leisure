@@ -5,21 +5,23 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import com.lootgames.sudoku.Utils.DrawHelper;
 import com.lootgames.sudoku.block.SudokuTile;
 
 import ru.timeconqueror.lootgames.api.block.tile.BoardGameMasterTile;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
+import ru.timeconqueror.timecore.api.util.client.DrawHelper;
 
 public class SudokuRenderer extends TileEntitySpecialRenderer {
 
-    private static final ResourceLocation BOARD = new ResourceLocation("lootgames", "textures/game/ms_board.png");
+    public static ResourceLocation BOARD = new ResourceLocation("lootgames", "textures/game/ms_board.png");
 
     @Override
     public void renderTileEntityAt(TileEntity teIn, double x, double y, double z, float partialTicks) {
@@ -38,8 +40,7 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
 
         for (int cx = 0; cx < size; cx++) {
             for (int cz = 0; cz < size; cz++) {
-                ru.timeconqueror.timecore.api.util.client.DrawHelper
-                    .drawTexturedRectByParts(cx, cz, 1, 1, -0.005f, 0, 0, 1, 1, 4);
+                DrawHelper.drawTexturedRectByParts(cx, cz, 1, 1, -0.005f, 0, 0, 1, 1, 4);
             }
         }
 
@@ -61,7 +62,6 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
         Set<Pos2i> duplicatePositions = new HashSet<>();
         Set<Pos2i> correctCompletedPositions = new HashSet<>();
 
-        // 行
         for (int row = 0; row < size; row++) {
             Set<Pos2i> section = new HashSet<>();
             Map<Integer, Integer> counts = new HashMap<>();
@@ -94,7 +94,6 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
             if (valid && counts.size() == 9) correctCompletedPositions.addAll(section);
         }
 
-        // 列
         for (int col = 0; col < size; col++) {
             Set<Pos2i> section = new HashSet<>();
             Map<Integer, Integer> counts = new HashMap<>();
@@ -127,7 +126,6 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
             if (valid && counts.size() == 9) correctCompletedPositions.addAll(section);
         }
 
-        // 宫格
         for (int boxRow = 0; boxRow < 3; boxRow++) {
             for (int boxCol = 0; boxCol < 3; boxCol++) {
                 Set<Pos2i> section = new HashSet<>();
@@ -165,7 +163,6 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
             }
         }
 
-        // 绘制数字
         for (int cx = 0; cx < size; cx++) {
             for (int cz = 0; cz < size; cz++) {
                 Pos2i pos = new Pos2i(cx, cz);
@@ -191,9 +188,9 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
 
                     GL11.glPushMatrix();
                     GL11.glEnable(GL11.GL_DEPTH_TEST);
-                    GL11.glScalef(0.1f, 0.1f, 0.1f);
-                    GL11.glTranslatef((cx + 0.33f) * 10f, (cz) * 10f, -0.2f);
-                    DrawHelper.drawString(Integer.toString(actualVal), 0, 0, 0, color, true);
+                    GL11.glTranslatef(cx + 0.25f, cz + 0.175f, -0.01f);
+                    GL11.glScalef(0.08f, 0.08f, 0.08f);
+                    drawString(Integer.toString(actualVal), 0, 0, 0, color, true);
                     GL11.glDisable(GL11.GL_DEPTH_TEST);
                     GL11.glPopMatrix();
                 }
@@ -241,6 +238,19 @@ public class SudokuRenderer extends TileEntitySpecialRenderer {
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_CULL_FACE);
+    }
+
+    public static void drawString(String text, float x, float y, float z, int color, boolean shadow) {
+        FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+
+        GL11.glPushMatrix();
+        GL11.glTranslatef(0F, 0F, z);
+        if (shadow) {
+            fr.drawStringWithShadow(text, (int) x, (int) y, color);
+        } else {
+            fr.drawString(text, (int) x, (int) y, color);
+        }
+        GL11.glPopMatrix();
     }
 
 }

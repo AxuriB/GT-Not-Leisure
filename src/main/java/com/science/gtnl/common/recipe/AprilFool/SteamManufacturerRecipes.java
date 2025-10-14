@@ -155,7 +155,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
 
         RA.stdBuilder()
             .itemInputs(
-                GTNLItemList.IronTurbine.get(2),
+                GTNLItemList.SteelTurbine.get(2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Bronze, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bronze, 4),
                 GTNLItemList.HydraulicPump.get(1))
@@ -203,7 +203,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Iron, 2))
             .itemOutputs(GTNLItemList.IronTurbine.get(1))
-            .duration(2 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(16)
             .addTo(SMFR);
 
@@ -213,7 +213,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Bronze, 2))
             .itemOutputs(GTNLItemList.BronzeTurbine.get(1))
-            .duration(2 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(16)
             .addTo(SMFR);
 
@@ -222,7 +222,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.turbineBlade, Materials.Steel, 4),
                 MaterialPool.Stronze.get(OrePrefixes.stickLong, 1))
             .itemOutputs(GTNLItemList.SteelTurbine.get(1))
-            .duration(23 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(512)
             .addTo(SMFR);
 
@@ -231,7 +231,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 MaterialPool.CompressedSteam.get(OrePrefixes.turbineBlade, 4),
                 MaterialPool.Breel.get(OrePrefixes.stickLong, 1))
             .itemOutputs(GTNLItemList.CompressedSteamTurbine.get(1))
-            .duration(23 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(512)
             .addTo(SMFR);
 
@@ -779,6 +779,82 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 4))
             .itemOutputs(GTNLItemList.SteelMachineFrame.get(1))
             .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 5),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1))
+            .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 2))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Gold, 1))
+            .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 3))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Obsidian, 1))
+            .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 4))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Diamond, 1))
+            .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 5))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tantalum, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Emerald, 4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Emerald, 1))
+            .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 6))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Ruby, 4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Ruby, 1))
+            .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 7))
+            .duration(5 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(StorageDrawers.ID, "upgradeTemplate", 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tanzanite, 4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Tanzanite, 1))
+            .itemOutputs(GTModHandler.getModItem(StorageDrawers.ID, "upgrade", 1, 8))
+            .duration(5 * SECONDS)
             .eut(16)
             .addTo(SMFR);
     }

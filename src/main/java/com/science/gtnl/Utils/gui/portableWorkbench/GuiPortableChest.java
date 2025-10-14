@@ -92,6 +92,10 @@ public class GuiPortableChest extends GuiContainer {
             this.guiResourceList = guiResourceList;
         }
 
+        public int getCapacity() {
+            return rows * cols;
+        }
+
         public Container makeContainer(InventoryPlayer player, ItemStack stack) {
             return new ContainerPortableChest(player, stack, xSize, ySize, rows, cols);
         }

@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.Utils.enums.GuiType;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAnvil;
@@ -31,6 +32,7 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorksh
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
+import com.science.gtnl.common.block.blocks.tile.TileEntityWaterCandle;
 import com.science.gtnl.common.entity.EntityPlayerLeashKnot;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.common.entity.EntitySteamRocket;
@@ -43,19 +45,18 @@ import com.science.gtnl.common.render.item.ItemNullPointerExceptionRender;
 import com.science.gtnl.common.render.item.ItemPlayerDollRenderer;
 import com.science.gtnl.common.render.item.ItemSteamRocketRenderer;
 import com.science.gtnl.common.render.item.ItemTwilightSwordRender;
+import com.science.gtnl.common.render.tile.EternalGregTechWorkshopRenderer;
 import com.science.gtnl.common.render.tile.LaserBeconRenderer;
+import com.science.gtnl.common.render.tile.NanoPhagocytosisPlantRenderer;
 import com.science.gtnl.common.render.tile.PlayerDollRenderer;
-import com.science.gtnl.common.render.tile.RealArtificialStarRender;
-import com.science.gtnl.common.render.tile.RenderEternalGregTechWorkshop;
-import com.science.gtnl.common.render.tile.RenderNanoPhagocytosisPlant;
+import com.science.gtnl.common.render.tile.RealArtificialStarRenderer;
+import com.science.gtnl.common.render.tile.WaterCandleRenderer;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.ItemLoader;
 
 import Forge.NullPointerException;
-import codechicken.nei.api.API;
 import codechicken.nei.guihook.GuiContainerManager;
-import codechicken.nei.recipe.DefaultOverlayHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -75,13 +76,16 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
+        RenderingRegistry.registerBlockHandler(new WaterCandleRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWaterCandle.class, new WaterCandleRenderer());
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserBeacon.class, new LaserBeconRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlayerDoll.class, new PlayerDollRenderer());
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(BlockLoader.playerDoll), new ItemPlayerDollRenderer());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArtificialStar.class, new RealArtificialStarRender());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArtificialStar.class, new RealArtificialStarRenderer());
         MinecraftForgeClient.registerItemRenderer(
             Item.getItemFromBlock(BlockLoader.blockArtificialStarRender),
             new ItemBlockArtificialStarRender());
@@ -92,14 +96,14 @@ public class ClientProxy extends CommonProxy {
             Item.getItemFromBlock(BlockLoader.blockNanoPhagocytosisPlantRender),
             new ItemBlockNanoPhagocytosisPlantRender(BlockLoader.blockNanoPhagocytosisPlantRender));
         ClientRegistry
-            .bindTileEntitySpecialRenderer(TileEntityNanoPhagocytosisPlant.class, new RenderNanoPhagocytosisPlant());
+            .bindTileEntitySpecialRenderer(TileEntityNanoPhagocytosisPlant.class, new NanoPhagocytosisPlantRenderer());
 
         MinecraftForgeClient.registerItemRenderer(
             Item.getItemFromBlock(BlockLoader.blockEternalGregTechWorkshopRender),
             new ItemBlockEternalGregTechWorkshopRender(BlockLoader.blockEternalGregTechWorkshopRender));
         ClientRegistry.bindTileEntitySpecialRenderer(
             TileEntityEternalGregTechWorkshop.class,
-            new RenderEternalGregTechWorkshop());
+            new EternalGregTechWorkshopRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ItemLoader.testItem, new FancyHaloRenderer());
         MinecraftForgeClient.registerItemRenderer(ItemLoader.metaItem, new FancyHaloRenderer());
@@ -148,13 +152,6 @@ public class ClientProxy extends CommonProxy {
             .register(new SubscribeEventClientUtils());
         GuiContainerManager.addTooltipHandler(new GTNLTooltipManager());
 
-        API.registerGuiOverlay(GuiPortableAdvancedWorkbench.class, "crafting");
-        API.registerGuiOverlay(GuiPortableBasicWorkbench.class, "crafting");
-        API.registerGuiOverlay(GuiPortableFurnace.class, "smelting");
-        API.registerGuiOverlay(GuiPortableFurnace.class, "fuel");
-
-        API.registerGuiOverlayHandler(GuiPortableAdvancedWorkbench.class, new DefaultOverlayHandler(), "crafting");
-        API.registerGuiOverlayHandler(GuiPortableBasicWorkbench.class, new DefaultOverlayHandler(), "crafting");
     }
 
     @Override

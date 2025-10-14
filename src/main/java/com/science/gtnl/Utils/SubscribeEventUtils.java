@@ -36,7 +36,6 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -45,6 +44,8 @@ import net.minecraftforge.event.world.WorldEvent;
 import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.Utils.gui.recipe.ElectrocellGeneratorFrontend;
+import com.science.gtnl.Utils.gui.recipe.RocketAssemblerFrontend;
 import com.science.gtnl.Utils.machine.CircuitMaterialHelper;
 import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.api.TickrateAPI;
@@ -56,6 +57,7 @@ import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.SoundPacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.loader.AchievementsLoader;
 import com.science.gtnl.mixins.early.Minecraft.AccessorFoodStats;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
@@ -66,6 +68,7 @@ import cpw.mods.fml.common.network.FMLNetworkEvent;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import ic2.api.event.ExplosionEvent;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 
 public class SubscribeEventUtils {
 
@@ -83,29 +86,29 @@ public class SubscribeEventUtils {
     public static final DamageSource CRUSHING_DAMAGE = new DamageSource("damage.gtnl.crushing")
         .setDamageBypassesArmor();
 
-    @SubscribeEvent
-    public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        int fromDim = event.fromDim;
-        int toDim = event.toDim;
-
-        String providerClassName = DimensionManager.getProvider(toDim)
-            .getClass()
-            .getName();
-
-        System.out.println(
-            event.player
-                .getDisplayName() + " 从维度 " + fromDim + " 切换到了维度 " + toDim + "，Provider = " + providerClassName);
-    }
-
     // Player
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.player instanceof EntityPlayerMP player) {
+            player.triggerAchievement(AchievementsLoader.welcome);
             // construct message from current server config
             ConfigSyncPacket msg = new ConfigSyncPacket();// or pass static values
             network.sendTo(msg, player);
 
+            SchematicRegistry
+                .addUnlockedPage(player, SchematicRegistry.getMatchingRecipeForID(MainConfig.idSchematicRocketSteam));
+
             TimeStopManager.setTimeStopped(false);
+
+            boolean giveAchievement = Arrays.stream(ModList.values())
+                .filter(mod -> !MOD_BLACKLIST.contains(mod.getModId()))
+                .allMatch(ModList::isModLoaded);
+
+            if (giveAchievement) {
+                AchievementsLoader.gtnlAchievementsPage.getAchievements()
+                    .add(AchievementsLoader.installAllCommunityMod);
+                player.triggerAchievement(AchievementsLoader.installAllCommunityMod);
+            }
 
             if (MainConfig.enableShowJoinMessage || MainConfig.enableDebugMode) {
 
@@ -285,9 +288,8 @@ public class SubscribeEventUtils {
     }
 
     // Item
-
-    private static final Map<ItemStack, Supplier<String>> tooltipCache = new ItemStackMap<>(false);
-    private static boolean circuitMaterialLoad = false;
+    public static final Map<ItemStack, Supplier<String>> tooltipCache = new ItemStackMap<>(false);
+    public static boolean circuitMaterialLoad = false;
 
     // World
     @SubscribeEvent
@@ -339,7 +341,7 @@ public class SubscribeEventUtils {
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         for (Map.Entry<ItemStack, Supplier<String>> entry : tooltipCache.entrySet()) {
-            AnimatedTooltipHandler.removeItemTooltipShift(entry.getKey(), entry.getValue());
+            AnimatedTooltipHandler.clearItemTooltipsShift(entry.getKey());
         }
         tooltipCache.clear();
         CircuitMaterialHelper.materialParameterList.clear();
@@ -350,7 +352,8 @@ public class SubscribeEventUtils {
         BLACKLISTED_SKIN_URLS.clear();
         BLACKLISTED_CAPE_URLS.clear();
         UUID_CACHE.clear();
-        initializedRecipes.clear();
+        ElectrocellGeneratorFrontend.initializedRecipes.clear();
+        RocketAssemblerFrontend.initializedRecipes.clear();
     }
 
     @SubscribeEvent

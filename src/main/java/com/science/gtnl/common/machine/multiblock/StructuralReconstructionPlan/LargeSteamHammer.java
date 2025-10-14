@@ -177,7 +177,7 @@ public class LargeSteamHammer extends SteamMultiMachineBase<LargeSteamHammer> im
         if (tierMaterialBlock == 1 && tierMachineCasing == 1
             && tierFrameCasing == 1
             && tierGearCasing == 1
-            && mCountCasing >= 160) {
+            && mCountCasing >= 100) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -186,7 +186,7 @@ public class LargeSteamHammer extends SteamMultiMachineBase<LargeSteamHammer> im
         if (tierMaterialBlock == 2 && tierMachineCasing == 2
             && tierFrameCasing == 2
             && tierGearCasing == 2
-            && mCountCasing >= 160) {
+            && mCountCasing >= 100) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();
@@ -198,11 +198,11 @@ public class LargeSteamHammer extends SteamMultiMachineBase<LargeSteamHammer> im
     @Override
     public int getMaxParallelRecipes() {
         if (tierMachine == 1) {
-            return 16;
-        } else if (tierMachine == 2) {
             return 32;
+        } else if (tierMachine == 2) {
+            return 48;
         }
-        return 16;
+        return 32;
     }
 
     @Override

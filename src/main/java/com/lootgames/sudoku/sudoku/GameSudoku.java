@@ -9,9 +9,10 @@ import net.minecraft.world.WorldServer;
 import com.lootgames.sudoku.Sudoku;
 import com.lootgames.sudoku.block.SudokuBlocks;
 import com.lootgames.sudoku.config.ConfigSudoku;
-import com.lootgames.sudoku.packet.SPMSSpawnLevelBeatParticles;
 import com.lootgames.sudoku.packet.SPSSyncBoard;
 import com.lootgames.sudoku.packet.SPSSyncCell;
+import com.lootgames.sudoku.packet.SPSudokuResetNumber;
+import com.lootgames.sudoku.packet.SPSudokuSpawnLevelBeatParticles;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,6 @@ import ru.timeconqueror.lootgames.api.minigame.ILootGameFactory;
 import ru.timeconqueror.lootgames.api.util.Pos2i;
 import ru.timeconqueror.lootgames.api.util.RewardUtils;
 import ru.timeconqueror.lootgames.common.config.LGConfigs;
-import ru.timeconqueror.lootgames.common.packet.game.SPMSResetFlags;
 import ru.timeconqueror.lootgames.utils.MouseClickType;
 import ru.timeconqueror.lootgames.utils.future.BlockPos;
 import ru.timeconqueror.lootgames.utils.future.WorldExt;
@@ -29,12 +29,13 @@ import ru.timeconqueror.timecore.api.common.tile.SerializationType;
 
 public class GameSudoku extends BoardLootGame<GameSudoku> {
 
-    private int currentLevel = 1; // 难度等级 1-4
+    public int currentLevel = 1; // 难度等级 1-4
     @Getter
-    private final SudokuBoard board; // 数独棋盘对象
+    public final SudokuBoard board; // 数独棋盘对象
+    @Getter
     @Setter
-    private ConfigSudoku.ConfigSudokuSnapshot configSnapshot = null;
-    private int ticks;
+    public ConfigSudoku.ConfigSudokuSnapshot configSnapshot = null;
+    public int ticks;
 
     public GameSudoku() {
         board = new SudokuBoard();
@@ -48,7 +49,7 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
             configSnapshot = Sudoku.SUDOKU.snapshot();
             // 生成第一关谜题
             int blanks = configSnapshot.getStage1()
-                .getBlanksCount();
+                .blanksCount();
             board.generate(blanks);
         }
         super.onPlace();
@@ -82,15 +83,15 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
         }
     }
 
-    private void onLevelSuccessfullyFinished() {
+    public void onLevelSuccessfullyFinished() {
         if (currentLevel < 4) {
-            sendUpdatePacketToNearby(new SPMSSpawnLevelBeatParticles());
-            sendToNearby(new ChatComponentTranslation("msg.lootgames.stage_complete"));
+            sendUpdatePacketToNearby(new SPSudokuSpawnLevelBeatParticles());
+            sendToNearby(new ChatComponentTranslation("msg.com.lootgames.stage_complete"));
             WorldExt.playSoundServerly(getWorld(), getGameCenter(), Sounds.PLAYER_LEVELUP, 0.75F, 1.0F);
 
             currentLevel++;
             int blanks = configSnapshot.getStageByIndex(currentLevel)
-                .getBlanksCount();
+                .blanksCount();
             board.generate(blanks);
             saveAndSync();
         } else {
@@ -128,7 +129,6 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
         nbt.setTag("board", board.writeNBT());
         nbt.setInteger("current_level", currentLevel);
         nbt.setInteger("ticks", ticks);
-        // 序列化配置快照
         nbt.setTag("config_snapshot", ConfigSudoku.ConfigSudokuSnapshot.serialize(configSnapshot));
     }
 
@@ -165,7 +165,7 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
             if (!isServerSide()) return;
             if (!board.isGenerated()) {
                 int blanks = configSnapshot.getStageByIndex(currentLevel)
-                    .getBlanksCount();
+                    .blanksCount();
                 board.generate(blanks);
                 sendUpdatePacketToNearby(new SPSSyncBoard(GameSudoku.this, board));
                 board.setLastClickTime(getWorld().getTotalWorldTime());
@@ -173,35 +173,28 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
             }
             if (type == MouseClickType.LEFT) {
                 board.cycleValueMinus(pos);
-                board.setLastClickTime(SudokuBoard.currentTime);
-                sendUpdatePacketToNearby(new SPSSyncCell(pos, board.getPlayerValue(pos), SudokuBoard.currentTime));
-                save();
-                if (board.checkWin()) {
-                    onLevelSuccessfullyFinished();
-                }
             } else if (type == MouseClickType.RIGHT) {
                 board.cycleValueAdd(pos);
-                board.setLastClickTime(SudokuBoard.currentTime);
-                sendUpdatePacketToNearby(new SPSSyncCell(pos, board.getPlayerValue(pos), SudokuBoard.currentTime));
-                save();
-                if (board.checkWin()) {
-                    onLevelSuccessfullyFinished();
-                }
+            }
+            board.setLastClickTime(getWorld().getTotalWorldTime());
+            sendUpdatePacketToNearby(new SPSSyncCell(pos, board.getPlayerValue(pos), getWorld().getTotalWorldTime()));
+            save();
+            if (board.checkWin()) {
+                onLevelSuccessfullyFinished();
             }
         }
 
         @Override
         public void onTick() {
             if (isServerSide()) {
-                SudokuBoard.currentTime = getWorld().getTotalWorldTime();
                 if (board.getLastClickTime() > 0
-                    && SudokuBoard.currentTime - board.getLastClickTime() >= currentLevel * 1200L) {
+                    && getWorld().getTotalWorldTime() - board.getLastClickTime() >= currentLevel * 1200L) {
                     if (currentLevel > 1) {
                         triggerGameWin();
                     } else {
                         triggerGameLose();
                     }
-                    sendUpdatePacketToNearby(new SPMSResetFlags());
+                    sendUpdatePacketToNearby(new SPSudokuResetNumber());
                     saveAndSync();
                 }
             }

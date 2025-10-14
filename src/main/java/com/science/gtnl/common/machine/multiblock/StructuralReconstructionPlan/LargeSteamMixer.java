@@ -196,7 +196,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
             && tierPipeCasing == 1
             && tierFireboxCasing == 1
             && tierIndustrialCasing == 1
-            && mCountCasing >= 60) {
+            && mCountCasing >= 30) {
             tierMachine = 1;
             getCasingTextureID();
             updateHatchTexture();
@@ -206,7 +206,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
             && tierPipeCasing == 2
             && tierFireboxCasing == 2
             && tierIndustrialCasing == 2
-            && mCountCasing >= 60) {
+            && mCountCasing >= 30) {
             tierMachine = 2;
             getCasingTextureID();
             updateHatchTexture();

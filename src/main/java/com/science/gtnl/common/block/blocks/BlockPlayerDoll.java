@@ -191,4 +191,9 @@ public class BlockPlayerDoll extends BlockContainer {
     public int getRenderType() {
         return -1;
     }
+
+    @Override
+    public boolean hasTileEntity(int metadata) {
+        return true;
+    }
 }

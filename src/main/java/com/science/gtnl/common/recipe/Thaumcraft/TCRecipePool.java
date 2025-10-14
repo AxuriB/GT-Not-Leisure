@@ -32,7 +32,7 @@ public class TCRecipePool implements IRecipePool {
     public void loadRecipes() {
 
         infusionRecipeTimeStopPocketWatch = ThaumcraftApi.addInfusionCraftingRecipe(
-            "GTNL_TIME_STOP_POCKET_WATCH",
+            "timeStopPocketWatch",
             GTNLItemList.TimeStopPocketWatch.get(1),
             500,
             (new AspectList()).merge(Aspect.getAspect("terminus"), Integer.MAX_VALUE)

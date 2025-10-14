@@ -29,6 +29,7 @@ import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,7 +47,7 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
     protected int tCountCasing;
     protected int fuelConsumption;
 
-    protected abstract int getOutputEUt();
+    protected abstract long getOutputEUt();
 
     protected abstract int getCasingTextureIndex();
 
@@ -114,7 +115,7 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
                     }
                 }
 
-                int output = getOutputEUt();
+                long output = getOutputEUt();
                 if (notAirBlocks) output /= 2;
                 if (base.getWorld()
                     .isRaining()) output /= 2;
@@ -293,8 +294,8 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
         }
 
         @Override
-        protected int getOutputEUt() {
-            return 112;
+        protected long getOutputEUt() {
+            return TierEU.LV * 32;
         }
 
         @Override
@@ -356,8 +357,8 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
         }
 
         @Override
-        protected int getOutputEUt() {
-            return 448;
+        protected long getOutputEUt() {
+            return TierEU.MV * 32;
         }
 
         @Override
@@ -419,8 +420,8 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
         }
 
         @Override
-        protected int getOutputEUt() {
-            return 1792;
+        protected long getOutputEUt() {
+            return TierEU.HV * 32;
         }
 
         @Override

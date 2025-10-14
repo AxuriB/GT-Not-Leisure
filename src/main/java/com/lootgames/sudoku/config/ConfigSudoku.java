@@ -3,6 +3,8 @@ package com.lootgames.sudoku.config;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.config.Configuration;
 
+import com.github.bsideup.jabel.Desugar;
+
 import lombok.Getter;
 import ru.timeconqueror.lootgames.common.config.LGConfigs;
 import ru.timeconqueror.timecore.api.common.config.Config;
@@ -36,20 +38,14 @@ public class ConfigSudoku extends Config {
         return LGConfigs.resolve("games/" + getKey());
     }
 
-    /**
-     * 生成当前配置快照，用于游戏运行时读取
-     */
     public ConfigSudokuSnapshot snapshot() {
         return new ConfigSudokuSnapshot(level1.snapshot(), level2.snapshot(), level3.snapshot(), level4.snapshot());
     }
 
-    /**
-     * 单级别空格配置
-     */
     public static class StageConfig extends ru.timeconqueror.timecore.api.common.config.ConfigSection {
 
-        private int blanksCount;
-        private final int defaultBlanks;
+        public int blanksCount;
+        public final int defaultBlanks;
 
         public StageConfig(String parent, String name, String comment, int defaultBlanks) {
             super(parent, name, comment);
@@ -66,16 +62,13 @@ public class ConfigSudoku extends Config {
         }
     }
 
-    /**
-     * 运行时快照：仅包含挖空数量
-     */
     @Getter
     public static class ConfigSudokuSnapshot {
 
-        private final LevelSnapshot stage1;
-        private final LevelSnapshot stage2;
-        private final LevelSnapshot stage3;
-        private final LevelSnapshot stage4;
+        public final LevelSnapshot stage1;
+        public final LevelSnapshot stage2;
+        public final LevelSnapshot stage3;
+        public final LevelSnapshot stage4;
 
         public ConfigSudokuSnapshot(LevelSnapshot s1, LevelSnapshot s2, LevelSnapshot s3, LevelSnapshot s4) {
             this.stage1 = s1;
@@ -109,9 +102,6 @@ public class ConfigSudoku extends Config {
                 LevelSnapshot.stub());
         }
 
-        /**
-         * 根据难度索引（1-4）获取对应快照
-         */
         public LevelSnapshot getStageByIndex(int idx) {
             return switch (idx) {
                 case 1 -> stage1;
@@ -123,29 +113,20 @@ public class ConfigSudoku extends Config {
         }
     }
 
-    /**
-     * Stage快照数据，存储挖空数量
-     */
-    @Getter
-    public static class LevelSnapshot {
+    @Desugar
+    public record LevelSnapshot(int blanksCount) {
 
-        private final int blanksCount;
-
-        private LevelSnapshot(int blanksCount) {
-            this.blanksCount = blanksCount;
-        }
-
-        private static NBTTagCompound serialize(LevelSnapshot s) {
+        public static NBTTagCompound serialize(LevelSnapshot s) {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setInteger("blanks", s.blanksCount);
             return tag;
         }
 
-        private static LevelSnapshot deserialize(NBTTagCompound tag) {
+        public static LevelSnapshot deserialize(NBTTagCompound tag) {
             return new LevelSnapshot(tag.getInteger("blanks"));
         }
 
-        private static LevelSnapshot stub() {
+        public static LevelSnapshot stub() {
             return new LevelSnapshot(0);
         }
     }

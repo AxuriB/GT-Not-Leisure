@@ -117,6 +117,13 @@ public class PrimitiveBrickKilnRecipes implements IRecipePool {
             .eut(16)
             .addTo(PBKR);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.WroughtIron, 1))
+            .duration(200)
+            .eut(16)
+            .addTo(PBKR);
+
         if (Mods.Railcraft.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(CustomItemList.CokeOvenBrick.get(3))

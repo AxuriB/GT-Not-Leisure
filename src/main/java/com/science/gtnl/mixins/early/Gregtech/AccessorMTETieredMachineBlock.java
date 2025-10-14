@@ -1,6 +1,7 @@
 package com.science.gtnl.mixins.early.Gregtech;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -11,6 +12,7 @@ public interface AccessorMTETieredMachineBlock {
     @Accessor("mTier")
     byte getMachineTier();
 
+    @Mutable
     @Accessor("mTier")
     void setMachineTier(byte mTier);
 

@@ -68,5 +68,12 @@ public class GasCollectorRecipes implements IRecipePool {
             .duration(200)
             .eut(TierEU.RECIPE_LuV)
             .addTo(GCR);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GTUtility.getIntegratedCircuit(7), new ItemStack(ModBlocks.getBlock("Ne"), 0))
+            .fluidOutputs(Materials.NefariousGas.getFluid(5000))
+            .duration(200)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(GCR);
     }
 }

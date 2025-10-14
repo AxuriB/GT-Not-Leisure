@@ -7,6 +7,7 @@ import java.util.Objects;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
@@ -165,7 +166,7 @@ public class ContainerExtremeAnvil extends Container {
         if (input != null) {
             if (material != null) {
                 if (input.getItem() instanceof ItemEnchantedBook && material.getItem() instanceof ItemEnchantedBook) {
-                    resultStack = new ItemStack(net.minecraft.init.Items.enchanted_book);
+                    resultStack = new ItemStack(Items.enchanted_book);
                     resultStack = this.applyMergedEnchantments(resultStack, input, material);
                 } else if (material.getItem() instanceof ItemEnchantedBook) {
                     resultStack = input.copy();

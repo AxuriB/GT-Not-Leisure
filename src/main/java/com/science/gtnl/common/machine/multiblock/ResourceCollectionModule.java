@@ -83,11 +83,11 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
     public final ItemStack MiningDroneMkXIII = ItemList.MiningDroneUXV.get(16);
 
     public ResourceCollectionModule(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 14, 5, 1);
+        super(aID, aName, aNameRegional, 25, 5, 1);
     }
 
     public ResourceCollectionModule(String aName) {
-        super(aName, 14, 5, 1);
+        super(aName, 25, 5, 1);
     }
 
     @Override

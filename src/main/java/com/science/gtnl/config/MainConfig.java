@@ -128,9 +128,15 @@ public class MainConfig {
     public static int spiderTargetInterval = 20;
 
     // Effect
-    public static int aweEffectID = 110;
-    public static int perfectPhysiqueEffect = 111;
-    public static int shimmerEffect = 112;
+    public static int aweEffectID = 80;
+    public static int perfectPhysiqueEffect = 81;
+    public static int shimmerEffect = 82;
+    public static int ghostlyShapeEffect = 83;
+    public static int battleEffect = 84;
+
+    // Steam Rocket
+    public static int idSchematicRocketSteam = 114514;
+    public static final int NASA_WORKBENCH_STEAM_ROCKET = 114514;
 
     // Other
     public static boolean enableSaturationHeal = true;

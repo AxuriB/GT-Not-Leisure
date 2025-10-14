@@ -45,6 +45,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.misc.GTStructureChannels;
@@ -212,18 +213,18 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(2, 11)),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCAAdvancedEBFActive)
                     .extFacing()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()),
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(2, 11)),
                 TextureFactory.builder()
                     .addIcon(TexturesGtBlock.oMCAAdvancedEBF)
                     .extFacing()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureID()) };
+        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TAE.getIndexFromPage(2, 11)) };
     }
 
     @Override
@@ -289,10 +290,7 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
                 .hasWorkJustBeenEnabled()) {
                 if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
                     .hasWorkJustBeenEnabled()) {
-                    int baseAmount = (int) (10 * getInputVoltageTier() * getInputVoltageTier());
-                    if (mMultiTier == 4) {
-                        baseAmount *= 2;
-                    }
+                    int baseAmount = (int) (10 * Math.pow(GTUtility.getTier(lEUt), 2)) * mMultiTier;
                     if (!this.depleteInputFromRestrictedHatches(this.mFluidBlazeInputHatch, baseAmount)) {
                         this.causeMaintenanceIssue();
                         this.stopMachine(
