@@ -5,11 +5,14 @@ import static gregtech.api.enums.Mods.EnderIO;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.brandon3055.draconicevolution.common.ModItems;
 import com.kuba6000.mobsinfo.api.MobDrop;
@@ -29,6 +32,8 @@ public class ExtremeExtremeEntityCrusherRecipes {
     public RecipeMap<?> EEEC = RecipePool.ExtremeExtremeEntityCrusherRecipes;
 
     public static Set<String> registeredSpawnerTypes = new HashSet<>();
+
+    public static Random FIXED_RANDOM = new Random(1145141919810L);
 
     @SubscribeEvent
     public void onPostMobRegistration(PostMobRegistrationEvent event) {
@@ -51,10 +56,9 @@ public class ExtremeExtremeEntityCrusherRecipes {
         nbt.setString("mobType", mobType);
         spawner.setTagCompound(nbt);
 
-        List<ItemStack> outputs = new ArrayList<>();
-        List<Integer> chances = new ArrayList<>();
+        List<Pair<ItemStack, Integer>> merged = new ArrayList<>();
 
-        for (MobDrop drop : drops) {
+        outer: for (MobDrop drop : drops) {
             ItemStack output = drop.stack.copy();
             int chance = drop.chance;
 
@@ -62,8 +66,26 @@ public class ExtremeExtremeEntityCrusherRecipes {
                 chance = 10;
             }
 
-            outputs.add(output);
-            chances.add(chance);
+            if (chance == 0) {
+                chance = 100 + FIXED_RANDOM.nextInt(901);
+            }
+
+            for (Pair<ItemStack, Integer> pair : merged) {
+                if (pair.getRight() == chance && GTUtility.areStacksEqual(pair.getLeft(), output)) {
+                    pair.getLeft().stackSize += output.stackSize;
+                    continue outer;
+                }
+            }
+
+            merged.add(Pair.of(output, chance));
+        }
+
+        List<ItemStack> outputs = new ArrayList<>();
+        List<Integer> chances = new ArrayList<>();
+
+        for (Pair<ItemStack, Integer> pair : merged) {
+            outputs.add(pair.getLeft());
+            chances.add(pair.getRight());
         }
 
         GTValues.RA.stdBuilder()
@@ -74,6 +96,7 @@ public class ExtremeExtremeEntityCrusherRecipes {
                 chances.stream()
                     .mapToInt(i -> i)
                     .toArray())
+            .nbtSensitive()
             .duration(eecRecipe.mDuration)
             .eut(eecRecipe.mEUt)
             .addTo(EEEC);
