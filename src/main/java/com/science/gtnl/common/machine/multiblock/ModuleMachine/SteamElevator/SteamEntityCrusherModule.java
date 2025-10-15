@@ -43,7 +43,7 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
+    public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamEntityCrusherModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_00"))
@@ -62,7 +62,7 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
     }
 
     @Override
-    protected int getMachineEffectRange() {
+    public int getMachineEffectRange() {
         return 0;
     }
 

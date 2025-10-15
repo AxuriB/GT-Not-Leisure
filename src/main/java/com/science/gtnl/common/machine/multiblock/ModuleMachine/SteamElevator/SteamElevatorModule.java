@@ -31,15 +31,18 @@ import lombok.Setter;
 public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamElevatorModule>
     implements ISurvivalConstructable {
 
-    protected int mTier;
+    public int mTier;
     @Getter
     @Setter
-    protected long steamBufferSize;
-    protected boolean isConnected = false;
-    protected static final int CONFIG_WINDOW_ID = 10;
+    public long steamBufferSize;
+    public boolean isConnected = false;
+    public static final int CONFIG_WINDOW_ID = 11;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SEM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_elevator_module";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(SEM_STRUCTURE_FILE_PATH);
+    private static final String[][] shape = StructureUtils.readStructureFromFile(SEM_STRUCTURE_FILE_PATH);
+    private static final int HORIZONTAL_OFF_SET = 0;
+    private static final int VERTICAL_OFF_SET = 1;
+    private static final int DEPTH_OFF_SET = 0;
 
     public SteamElevatorModule(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional);
@@ -52,10 +55,6 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
         mTier = aTier;
         steamBufferSize = 640000 * (1L << (aTier));
     }
-
-    private static final int HORIZONTAL_OFF_SET = 0;
-    private static final int VERTICAL_OFF_SET = 1;
-    private static final int DEPTH_OFF_SET = 0;
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
@@ -76,7 +75,7 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
     }
 
     @Override
-    protected int getCasingTextureID() {
+    public int getCasingTextureID() {
         return StructureUtils.getTextureIndex(sBlockCasings2, 0);
     }
 
@@ -144,7 +143,7 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
+    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {

@@ -855,7 +855,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         return aSteam;
     }
 
-    private int getTotalSteamStoredOfAnyType() {
+    public int getTotalSteamStoredOfAnyType() {
         int aSteam = 0;
         for (FluidStack aFluid : this.getStoredSteamFluids()) {
             if (aFluid == null) continue;

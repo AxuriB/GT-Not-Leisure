@@ -43,7 +43,7 @@ public class SteamBeeBreedingModule extends SteamElevatorModule {
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
+    public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamBeeBreedingModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_00"))
@@ -87,7 +87,7 @@ public class SteamBeeBreedingModule extends SteamElevatorModule {
     }
 
     @Override
-    protected int getMachineEffectRange() {
+    public int getMachineEffectRange() {
         return 0;
     }
 }

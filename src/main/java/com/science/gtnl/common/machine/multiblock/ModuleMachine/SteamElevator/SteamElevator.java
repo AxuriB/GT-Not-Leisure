@@ -93,17 +93,17 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implements ISurvivalConstructable {
 
     public ArrayList<SteamElevatorModule> mModuleHatches = new ArrayList<>();
-    private boolean isLoadedChunk;
-    private boolean wirelessMode = false;
-    private String costingEUText = ZERO_STRING;
+    public boolean isLoadedChunk;
+    public boolean wirelessMode = false;
+    public String costingEUText = ZERO_STRING;
 
-    protected final int HORIZONTAL_OFF_SET = 17;
-    protected final int VERTICAL_OFF_SET = 39;
-    protected final int DEPTH_OFF_SET = 14;
+    private final int HORIZONTAL_OFF_SET = 17;
+    private final int VERTICAL_OFF_SET = 39;
+    private final int DEPTH_OFF_SET = 14;
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SE_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_elevator";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
+    private static final String[][] shape = StructureUtils.readStructureFromFile(SE_STRUCTURE_FILE_PATH);
 
     @Override
     public String getMachineType() {
@@ -227,7 +227,7 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
+    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     public boolean addModuleToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
@@ -434,7 +434,7 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
     }
 
     @Override
-    protected SoundResource getActivitySoundLoop() {
+    public SoundResource getActivitySoundLoop() {
         return SoundResource.TECTECH_MACHINES_FX_WHOOUM;
     }
 
@@ -463,7 +463,7 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
     }
 
     @Override
-    protected int getCasingTextureID() {
+    public int getCasingTextureID() {
         return StructureUtils.getTextureIndex(sBlockCasings2, 0);
     }
 
