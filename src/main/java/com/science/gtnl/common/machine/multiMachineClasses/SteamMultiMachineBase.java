@@ -112,23 +112,23 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> extends MTESteamMultiBase<T> {
 
-    private static final int OC_WINDOW_ID = 11;
-    protected double configSpeedBoost = 1;
-    protected int recipeOcCount = 0;
-    protected int tierAdvancedCasing = -1;
-    protected int tierBrickCasing = -1;
-    protected int tierPlatedCasing = -1;
-    protected int tierPipeCasing = -1;
-    protected int tierFireboxCasing = -1;
-    protected int tierMaterialBlock = -1;
-    protected int tierGearCasing = -1;
-    protected int tierFrameCasing = -1;
-    protected int tierIndustrialCasing = -1;
-    protected int tierMachineFrame = -1;
-    protected int tierMachineCasing = -1;
-    protected int tierMachine = 0;
-    protected int mCountCasing = 0;
-    protected boolean isBroken = true;
+    public static final int OC_WINDOW_ID = 11;
+    public double configSpeedBoost = 1;
+    public int recipeOcCount = 0;
+    public int tierAdvancedCasing = -1;
+    public int tierBrickCasing = -1;
+    public int tierPlatedCasing = -1;
+    public int tierPipeCasing = -1;
+    public int tierFireboxCasing = -1;
+    public int tierMaterialBlock = -1;
+    public int tierGearCasing = -1;
+    public int tierFrameCasing = -1;
+    public int tierIndustrialCasing = -1;
+    public int tierMachineFrame = -1;
+    public int tierMachineCasing = -1;
+    public int tierMachine = 0;
+    public int mCountCasing = 0;
+    public boolean isBroken = true;
     public ArrayList<CustomFluidHatch> mSteamBigInputFluids = new ArrayList<>();
     public ArrayList<CustomFluidHatch> mSteamWirelessInputFluids = new ArrayList<>();
     public long uiSteamStored = 0;
@@ -154,7 +154,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierAdvancedCasing(Block block, int meta) {
+    public static Integer getTierAdvancedCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == BWBlockCasings && 32066 == meta) return 1;
         if (block == BWBlockCasings && 32071 == meta) return 2;
@@ -162,7 +162,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierMachineCasing(Block block, int meta) {
+    public static Integer getTierMachineCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == sBlockCasings1 && 10 == meta) {
             return 1;
@@ -174,7 +174,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierPipeCasing(Block block, int meta) {
+    public static Integer getTierPipeCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == sBlockCasings2 && 12 == meta) return 1;
         if (block == sBlockCasings2 && 13 == meta) return 2;
@@ -182,7 +182,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierGearCasing(Block block, int meta) {
+    public static Integer getTierGearCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == sBlockCasings2 && 2 == meta) return 1;
         if (block == sBlockCasings2 && 3 == meta) return 2;
@@ -190,7 +190,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierMaterialBlockCasing(Block block, int meta) {
+    public static Integer getTierMaterialBlockCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == Blocks.iron_block) return 1;
         if (block == sBlockMetal6 && 13 == meta) return 2;
@@ -198,7 +198,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierFrameCasing(Block block, int meta) {
+    public static Integer getTierFrameCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == sBlockFrames && 300 == meta) return 1;
         if (block == sBlockFrames && 305 == meta) return 2;
@@ -206,7 +206,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierBrickCasing(Block block, int meta) {
+    public static Integer getTierBrickCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == BlockLoader.metaBlockColumn && 0 == meta) return 1;
         if (block == BlockLoader.metaBlockColumn && 1 == meta) return 2;
@@ -214,7 +214,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierPlatedCasing(Block block, int meta) {
+    public static Integer getTierPlatedCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == blockCustomMachineCasings && 0 == meta) return 1;
         if (block == sBlockCasings2 && 0 == meta) return 2;
@@ -222,7 +222,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierFireboxCasing(Block block, int meta) {
+    public static Integer getTierFireboxCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == sBlockCasings3 && 13 == meta) return 1;
         if (block == sBlockCasings3 && 14 == meta) return 2;
@@ -230,7 +230,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierIndustrialCasing(Block block, int meta) {
+    public static Integer getTierIndustrialCasing(Block block, int meta) {
         if (block == null) return null;
         if (block == BlockLoader.metaCasing02 && 1 == meta) return 1;
         if (block == BlockLoader.metaCasing02 && 2 == meta) return 2;
@@ -238,7 +238,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Nullable
-    protected static Integer getTierMachineFrame(Block block, int meta) {
+    public static Integer getTierMachineFrame(Block block, int meta) {
         if (block == null) return null;
         if (block == BlockLoader.metaBlockColumn && 4 == meta) return 1;
         if (block == BlockLoader.metaBlockColumn && 5 == meta) return 2;
@@ -270,7 +270,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         return false;
     }
 
-    protected void updateHatchTexture() {
+    public void updateHatchTexture() {
         for (MTEHatch h : mSteamInputs) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mSteamOutputs) h.updateTexture(getCasingTextureID());
         for (MTEHatch h : mSteamInputFluids) h.updateTexture(getCasingTextureID());
@@ -284,7 +284,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         for (IDualInputHatch h : mDualInputHatches) h.updateTexture(getCasingTextureID());
     }
 
-    protected int getCasingTextureID() {
+    public int getCasingTextureID() {
         if (tierAdvancedCasing == 2 || tierBrickCasing == 2
             || tierPlatedCasing == 2
             || tierIndustrialCasing == 2
@@ -301,7 +301,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
         return StructureUtils.getTextureIndex(sBlockCasings1, 10);
     }
 
-    protected boolean checkHatches() {
+    public boolean checkHatches() {
         return !mSteamInputFluids.isEmpty() || !mSteamBigInputFluids.isEmpty() || !mSteamWirelessInputFluids.isEmpty();
     }
 
@@ -460,12 +460,12 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @ApiStatus.OverrideOnly
-    protected ProcessingLogic createProcessingLogic() {
+    public ProcessingLogic createProcessingLogic() {
         return new GTNL_ProcessingLogic() {
 
             @Override
             @Nonnull
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            public GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(configSpeedBoost)
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier())
@@ -1145,7 +1145,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
+    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
         super.validateStructure(errors, context);
 
         if (mSteamInputFluids.isEmpty() && mSteamBigInputFluids.isEmpty() && mSteamWirelessInputFluids.isEmpty()) {
@@ -1188,7 +1188,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
 
     @Override
     @Nonnull
-    protected CheckRecipeResult doCheckRecipe() {
+    public CheckRecipeResult doCheckRecipe() {
         CheckRecipeResult result = CheckRecipeResultRegistry.NO_RECIPE;
 
         // check crafting input hatches first
