@@ -314,6 +314,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         super.onUnload();
     }
 
+    public void deactivateCoilLease() {
         if (coilLease != null) {
             GTCoilTracker.deactivate(coilLease);
             coilLease = null;
