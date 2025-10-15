@@ -91,10 +91,10 @@ public class MainConfig {
     public static boolean enableRenderInfinitySwordSpecial = true;
 
     // Chronarch's Clock
-    public static int chronarchsClockRadius = 6;
-    public static int chronarchsClockSpeedMultiplier = 1024;
-    public static int chronarchsClockDurationTicks = 600;
-    public static int chronarchsClockCooldown = 300;
+    public static int chronarchsClockRadius = 3;
+    public static int chronarchsClockSpeedMultiplier = 256;
+    public static int chronarchsClockDurationTicks = 200;
+    public static int chronarchsClockCooldown = 600;
 
     // Vein Mining Pickaxe
     public static int veinMiningPickaxeMaxRange = 32;

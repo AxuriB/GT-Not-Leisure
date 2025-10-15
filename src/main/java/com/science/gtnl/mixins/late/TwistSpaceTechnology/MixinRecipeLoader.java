@@ -18,4 +18,14 @@ public abstract class MixinRecipeLoader {
         System.out.println(
             "[GTNL] Detected TwistSpaceTechnology, intercept AdvCircuitAssemblyLine recipe loader to server start");
     }
+
+    @Redirect(
+        method = "loadRecipes",
+        at = @At(
+            value = "INVOKE",
+            target = "Lcom/Nxer/TwistSpaceTechnology/recipe/machineRecipe/expanded/AssemblyLineWithoutResearchRecipePool;loadRecipes()V"))
+    private static void redirectAssemblyLineWithoutResearchLoadRecipes() {
+        System.out.println(
+            "[GTNL] Detected TwistSpaceTechnology, intercept Assembly Line Without Research recipe loader to server start");
+    }
 }
