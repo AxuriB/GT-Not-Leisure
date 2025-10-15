@@ -79,7 +79,7 @@ public class PrimitiveBrickKiln extends SteamMultiMachineBase<PrimitiveBrickKiln
     }
 
     @Override
-    protected int getCasingTextureID() {
+    public int getCasingTextureID() {
         return StructureUtils.getTextureIndex(GregTechAPI.sBlockCasings4, 15);
     }
 

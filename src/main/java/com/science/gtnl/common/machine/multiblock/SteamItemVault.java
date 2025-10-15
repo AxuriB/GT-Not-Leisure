@@ -295,7 +295,7 @@ public class SteamItemVault extends SteamMultiMachineBase<SteamItemVault>
     }
 
     @Override
-    protected int getCasingTextureID() {
+    public int getCasingTextureID() {
         return GTUtility.getTextureId((byte) 116, (byte) 32);
     }
 
