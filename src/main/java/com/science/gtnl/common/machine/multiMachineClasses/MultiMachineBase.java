@@ -142,15 +142,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         }
     };
 
-    public void repairMachine() {
-        mHardHammer = true;
-        mSoftMallet = true;
-        mScrewdriver = true;
-        mCrowbar = true;
-        mSolderingTool = true;
-        mWrench = true;
-    }
-
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
@@ -323,7 +314,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         super.onUnload();
     }
 
-    private void deactivateCoilLease() {
         if (coilLease != null) {
             GTCoilTracker.deactivate(coilLease);
             coilLease = null;
@@ -1187,8 +1177,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
             }
         };
 
-        private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<MultiMachineBase<?>> adder;
+        public final List<Class<? extends IMetaTileEntity>> mteClasses;
+        public final IGTHatchAdder<MultiMachineBase<?>> adder;
 
         @SafeVarargs
         CustomHatchElement(IGTHatchAdder<MultiMachineBase<?>> adder, Class<? extends IMetaTileEntity>... mteClasses) {
