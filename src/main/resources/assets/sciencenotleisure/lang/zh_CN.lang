@@ -380,7 +380,8 @@ HumongousDualInputHatchMAX=巨型输入总成 (MAX)
 Button_Tooltip_HumongousDualInputHatch_00=将所有的已存储内容返回到面前容器
 
 DebugDataAccessHatch=Debug数据访问仓
-Tooltip_DebugDataAccessHatch_00=添加所有装配线配方的闪存
+Tooltip_DebugDataAccessHatch_00=多方块机器的数据访问接口
+Tooltip_DebugDataAccessHatch_01=添加所有装配线配方的闪存
 
 SuperDataAccessHatch=超级数据访问仓
 Tooltip_SuperDataAccessHatch_00=增加81个额外的格子以放置闪存

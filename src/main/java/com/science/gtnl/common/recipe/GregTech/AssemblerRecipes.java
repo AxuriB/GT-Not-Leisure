@@ -907,7 +907,7 @@ public class AssemblerRecipes implements IRecipePool {
             .itemOutputs(GTNLItemList.DualInputHatchLV.get(1))
             .specialValue(0)
             .duration(300)
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -921,7 +921,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(120)
+            .eut(TierEU.RECIPE_MV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -935,7 +935,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(480)
+            .eut(TierEU.RECIPE_HV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -949,7 +949,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(1920)
+            .eut(TierEU.RECIPE_EV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -963,7 +963,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(7680)
+            .eut(TierEU.RECIPE_IV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -977,7 +977,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(30720)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -991,7 +991,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(122880)
+            .eut(TierEU.RECIPE_ZPM)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -1005,7 +1005,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(491520)
+            .eut(TierEU.RECIPE_UV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -1019,7 +1019,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(1966080)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -1033,7 +1033,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(7864320)
+            .eut(TierEU.RECIPE_UEV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -1047,7 +1047,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(31457280)
+            .eut(TierEU.RECIPE_UIV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -1061,7 +1061,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(125829120)
+            .eut(TierEU.RECIPE_UMV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -1075,7 +1075,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(503316480)
+            .eut(TierEU.RECIPE_UXV)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -1090,7 +1090,7 @@ public class AssemblerRecipes implements IRecipePool {
             .fluidInputs(Materials.SolderingAlloy.getMolten(144))
             .specialValue(0)
             .duration(300)
-            .eut(2013265920)
+            .eut(TierEU.RECIPE_MAX)
             .addTo(As);
 
         GTValues.RA.stdBuilder()
@@ -2133,6 +2133,434 @@ public class AssemblerRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_LV)
             .addTo(As);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamCompactPipeCasing.get(4),
+                new ItemStack(Blocks.brick_block, 64),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 48),
+                GTNLItemList.HydraulicSteamJetSpewer.get(8),
+                GTNLItemList.PrecisionSteamMechanism.get(16))
+            .itemOutputs(GTNLItemList.SteamElevator.get(1))
+            .fluidInputs(MaterialPool.Stronze.getMolten(1296))
+            .duration(600)
+            .eut(30)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamCompactPipeCasing.get(4),
+                ItemList.Component_Grinder_Diamond.get(16),
+                GTNLItemList.HydraulicMotor.get(32),
+                GTNLItemList.HydraulicPiston.get(32),
+                GTNLItemList.HydraulicPump.get(32),
+                GTNLItemList.HydraulicConveyor.get(32))
+            .itemOutputs(GTNLItemList.SteamOreProcessorModule.get(1))
+            .fluidInputs(MaterialPool.Breel.getMolten(1296))
+            .duration(600)
+            .eut(30)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamCompactPipeCasing.get(1),
+                GTNLItemList.HydraulicSteamJetSpewer.get(4),
+                GTNLItemList.CompressedSteamTurbine.get(4),
+                GTNLItemList.HydraulicSteamReceiver.get(2),
+                GTNLItemList.PrecisionSteamMechanism.get(2),
+                GTModHandler.getModItem(Thaumcraft.ID, "ItemBaubleBlanks", 1, 1))
+            .itemOutputs(GTNLItemList.SteamFlightModule.get(1))
+            .duration(400)
+            .eut(100)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamCompactPipeCasing.get(1),
+                new ItemStack(Items.brewing_stand, 1),
+                GTNLItemList.HydraulicPump.get(4),
+                GTNLItemList.HydraulicSteamJetSpewer.get(8),
+                GTNLItemList.IronTurbine.get(8),
+                new ItemStack(Items.gunpowder, 64))
+            .itemOutputs(GTNLItemList.SteamBeaconModuleI.get(1))
+            .duration(400)
+            .eut(16)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamBeaconModuleI.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2),
+                GTNLItemList.HydraulicSteamReceiver.get(4),
+                GTNLItemList.HydraulicRegulator.get(8),
+                new ItemStack(Items.ender_pearl, 16),
+                GTNLItemList.SteelTurbine.get(8))
+            .fluidInputs(Materials.Tin.getMolten(1296))
+            .itemOutputs(GTNLItemList.SteamBeaconModuleII.get(1))
+            .duration(300)
+            .eut(28)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamBeaconModuleII.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
+                GTNLItemList.HydraulicVaporGenerator.get(4),
+                GTNLItemList.HydraulicRegulator.get(8),
+                GTNLItemList.CompressedSteamTurbine.get(8),
+                new ItemStack(Items.blaze_powder, 8))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1296))
+            .itemOutputs(GTNLItemList.SteamBeaconModuleIII.get(1))
+            .duration(200)
+            .eut(100)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Hatch_Void_Bus.get(1), ItemList.Hatch_Void.get(1))
+            .itemOutputs(GTNLItemList.VoidCover.get(1))
+            .fluidInputs(Materials.Tin.getMolten(144))
+            .duration(100)
+            .eut(TierEU.LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamCompactPipeCasing.get(4),
+                GTModHandler.getModItem(Forestry.ID, "alveary", 2, 0),
+                GTModHandler.getModItem(Forestry.ID, "alveary", 2, 2),
+                GTModHandler.getModItem(Forestry.ID, "alveary", 2, 6),
+                GTModHandler.getModItem(Forestry.ID, "royalJelly", 4),
+                GTModHandler.getModItem(Forestry.ID, "beeswax", 8),
+                GTModHandler.getModItem(Forestry.ID, "pollen", 2),
+                ItemList.IndustrialApiary_Upgrade_FLOWERING.get(2))
+            .fluidInputs(Materials.Honey.getFluid(10000L))
+            .itemOutputs(GTNLItemList.SteamBeeBreedingModule.get(1))
+            .duration(300)
+            .eut(TierEU.MV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamCompactPipeCasing.get(4),
+                GTModHandler.getModItem(Forestry.ID, "alveary", 2, 0),
+                ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(4),
+                ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(4),
+                ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(4))
+            .fluidInputs(Materials.Honey.getFluid(10000L))
+            .itemOutputs(GTNLItemList.SteamApiaryModule.get(1))
+            .duration(300)
+            .eut(TierEU.LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamCompactPipeCasing.get(4),
+                GTModHandler.getModItem(ExtraUtilities.ID, "spike_base_diamond", 9, 0),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 8),
+                GTNLItemList.HydraulicPiston.get(8),
+                GTNLItemList.HydraulicConveyor.get(8))
+            .fluidInputs(FluidRegistry.getFluidStack("xpjuice", 10000))
+            .itemOutputs(GTNLItemList.SteamEntityCrusherModule.get(1))
+            .duration(300)
+            .eut(TierEU.LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Bus_ME.get(1),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiPart", 1, 220),
+                ItemList.Conveyor_Module_EV.get(2),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 9, 27))
+            .itemOutputs(GTNLItemList.SuperInputBusME.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(576))
+            .duration(300)
+            .eut(TierEU.EV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SuperInputBusME.get(1),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockChest", 1),
+                ItemList.Conveyor_Module_ZPM.get(4),
+                ItemList.Emitter_ZPM.get(2),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 56))
+            .itemOutputs(GTNLItemList.AdvancedSuperInputBusME.get(1))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1296))
+            .duration(300)
+            .eut(TierEU.ZPM)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_HV.get(1),
+                GTModHandler.getModItem(AE2FluidCraft.ID, "fluid_interface", 1),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 30))
+            .itemOutputs(ItemList.Hatch_Input_ME.get(1))
+            .duration(300)
+            .eut(TierEU.HV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_ME.get(1),
+                GTModHandler.getModItem(AE2FluidCraft.ID, "part_fluid_storage_bus", 1),
+                ItemList.Electric_Pump_EV.get(2),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 9, 27))
+            .itemOutputs(GTNLItemList.SuperInputHatchME.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(576))
+            .duration(300)
+            .eut(TierEU.EV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SuperInputHatchME.get(1),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockChest", 2),
+                ItemList.Electric_Pump_ZPM.get(4),
+                ItemList.Sensor_ZPM.get(2),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 6, 56))
+            .itemOutputs(GTNLItemList.AdvancedSuperInputHatchME.get(1))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1296))
+            .duration(300)
+            .eut(TierEU.ZPM)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1L),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.StainlessSteel, 2L),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4L),
+                GTUtility.getIntegratedCircuit(3))
+            .itemOutputs(GTNLItemList.StainlessSteelGearBox.get(1))
+            .duration(100)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GregtechItemList.GT4_Crop_Harvester_LV.get(2),
+                new ItemStack(Blocks.dirt, 64),
+                GTModHandler.getModItem(IndustrialCraft2.ID, "blockCrop", 64),
+                GTModHandler.getModItem(Forestry.ID, "ffarm", 16, 4),
+                GTModHandler.getModItem(Forestry.ID, "ffarm", 16, 2),
+                GTModHandler.getModItem(Forestry.ID, "ffarm", 4, 5))
+            .itemOutputs(GTNLItemList.SteamGreenhouseModule.get(1))
+            .fluidInputs(FluidRegistry.getFluidStack("liquid_sunshine", 16000))
+            .duration(200)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_HV.get(1),
+                ItemList.Conveyor_Module_HV.get(4),
+                ItemList.Robot_Arm_HV.get(2),
+                MaterialPool.CompressedSteam.get(OrePrefixes.plateDense, 4),
+                MaterialPool.CompressedSteam.get(OrePrefixes.screw, 16),
+                ItemList.Hatch_Input_Bus_HV.get(1),
+                ItemList.Hatch_Output_Bus_HV.get(1))
+            .itemOutputs(GTNLItemList.VaultPortHatch.get(1))
+            .fluidInputs(MaterialPool.Stronze.getMolten(4608))
+            .duration(200)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.VibrationSafeCasing.get(16),
+                ItemList.Super_Chest_LV.get(8),
+                GTNLItemList.HydraulicSteamJetSpewer.get(4),
+                GTNLItemList.CompressedSteamTurbine.get(4),
+                MaterialPool.CompressedSteam.get(OrePrefixes.plate, 16),
+                ItemList.Cover_Screen.get(1))
+            .itemOutputs(GTNLItemList.SteamItemVault.get(1))
+            .fluidInputs(MaterialPool.Stronze.getMolten(9216))
+            .duration(600)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchLV.get(1),
+                ItemList.Super_Chest_LV.get(1),
+                ItemList.Super_Tank_LV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Steel, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchLV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchMV.get(1),
+                ItemList.Super_Chest_MV.get(1),
+                ItemList.Super_Tank_MV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Aluminium, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchMV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchHV.get(1),
+                ItemList.Super_Chest_HV.get(1),
+                ItemList.Super_Tank_HV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.StainlessSteel, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchHV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchEV.get(1),
+                ItemList.Super_Chest_EV.get(1),
+                ItemList.Super_Tank_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchEV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchIV.get(1),
+                ItemList.Super_Chest_IV.get(1),
+                ItemList.Super_Tank_IV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TungstenSteel, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchIV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchLuV.get(1),
+                ItemList.Quantum_Chest_LV.get(1),
+                ItemList.Quantum_Tank_LV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Iridium, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchLuV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchZPM.get(1),
+                ItemList.Quantum_Chest_MV.get(1),
+                ItemList.Quantum_Tank_MV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.NaquadahAlloy, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchZPM.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchUV.get(1),
+                ItemList.Quantum_Chest_HV.get(1),
+                ItemList.Quantum_Tank_HV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmium, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchUV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchUHV.get(1),
+                ItemList.Quantum_Chest_EV.get(1),
+                ItemList.Quantum_Tank_EV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchUHV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_UHV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchUEV.get(1),
+                ItemList.Quantum_Chest_IV.get(1),
+                ItemList.Quantum_Tank_IV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Bedrockium, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchUEV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchUIV.get(1),
+                ItemList.Quantum_Chest_IV.get(2),
+                ItemList.Quantum_Tank_IV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackPlutonium, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchUIV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_UIV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchUMV.get(1),
+                ItemList.Quantum_Chest_IV.get(4),
+                ItemList.Quantum_Tank_IV.get(4),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchUMV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_UMV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchUXV.get(1),
+                ItemList.Quantum_Chest_IV.get(8),
+                ItemList.Quantum_Tank_IV.get(8),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.MagMatter, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchUXV.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_UXV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.DualInputHatchMAX.get(1),
+                ItemList.Quantum_Chest_IV.get(16),
+                ItemList.Quantum_Tank_IV.get(16),
+                GTOreDictUnificator
+                    .get(OrePrefixes.plateDense, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 4L),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .itemOutputs(GTNLItemList.HumongousDualInputHatchMAX.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+            .duration(300)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(As);
+
         if (MainConfig.enableDeleteRecipe) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -2162,224 +2590,6 @@ public class AssemblerRecipes implements IRecipePool {
                 .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
                 .duration(300)
                 .eut(TierEU.RECIPE_ZPM)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(4),
-                    new ItemStack(Blocks.brick_block, 64),
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 48),
-                    GTNLItemList.HydraulicSteamJetSpewer.get(8),
-                    GTNLItemList.PrecisionSteamMechanism.get(16))
-                .itemOutputs(GTNLItemList.SteamElevator.get(1))
-                .fluidInputs(MaterialPool.Stronze.getMolten(1296))
-                .duration(600)
-                .eut(30)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(4),
-                    ItemList.Component_Grinder_Diamond.get(16),
-                    GTNLItemList.HydraulicMotor.get(32),
-                    GTNLItemList.HydraulicPiston.get(32),
-                    GTNLItemList.HydraulicPump.get(32),
-                    GTNLItemList.HydraulicConveyor.get(32))
-                .itemOutputs(GTNLItemList.SteamOreProcessorModule.get(1))
-                .fluidInputs(MaterialPool.Breel.getMolten(1296))
-                .duration(600)
-                .eut(30)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(1),
-                    GTNLItemList.HydraulicSteamJetSpewer.get(4),
-                    GTNLItemList.CompressedSteamTurbine.get(4),
-                    GTNLItemList.HydraulicSteamReceiver.get(2),
-                    GTNLItemList.PrecisionSteamMechanism.get(2),
-                    GTModHandler.getModItem(Thaumcraft.ID, "ItemBaubleBlanks", 1, 1))
-                .itemOutputs(GTNLItemList.SteamFlightModule.get(1))
-                .duration(400)
-                .eut(100)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(1),
-                    new ItemStack(Items.brewing_stand, 1),
-                    GTNLItemList.HydraulicPump.get(4),
-                    GTNLItemList.HydraulicSteamJetSpewer.get(8),
-                    GTNLItemList.IronTurbine.get(8),
-                    new ItemStack(Items.gunpowder, 64))
-                .itemOutputs(GTNLItemList.SteamBeaconModuleI.get(1))
-                .duration(400)
-                .eut(16)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamBeaconModuleI.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ULV, 2),
-                    GTNLItemList.HydraulicSteamReceiver.get(4),
-                    GTNLItemList.HydraulicRegulator.get(8),
-                    new ItemStack(Items.ender_pearl, 16),
-                    GTNLItemList.SteelTurbine.get(8))
-                .fluidInputs(Materials.Tin.getMolten(1296))
-                .itemOutputs(GTNLItemList.SteamBeaconModuleII.get(1))
-                .duration(300)
-                .eut(28)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamBeaconModuleII.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                    GTNLItemList.HydraulicVaporGenerator.get(4),
-                    GTNLItemList.HydraulicRegulator.get(8),
-                    GTNLItemList.CompressedSteamTurbine.get(8),
-                    new ItemStack(Items.blaze_powder, 8))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(1296))
-                .itemOutputs(GTNLItemList.SteamBeaconModuleIII.get(1))
-                .duration(200)
-                .eut(100)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hatch_Void_Bus.get(1), ItemList.Hatch_Void.get(1))
-                .itemOutputs(GTNLItemList.VoidCover.get(1))
-                .fluidInputs(Materials.Tin.getMolten(144))
-                .duration(100)
-                .eut(TierEU.LV)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(4),
-                    GTModHandler.getModItem(Forestry.ID, "alveary", 2, 0),
-                    GTModHandler.getModItem(Forestry.ID, "alveary", 2, 2),
-                    GTModHandler.getModItem(Forestry.ID, "alveary", 2, 6),
-                    GTModHandler.getModItem(Forestry.ID, "royalJelly", 4),
-                    GTModHandler.getModItem(Forestry.ID, "beeswax", 8),
-                    GTModHandler.getModItem(Forestry.ID, "pollen", 2),
-                    ItemList.IndustrialApiary_Upgrade_FLOWERING.get(2))
-                .fluidInputs(Materials.Honey.getFluid(10000L))
-                .itemOutputs(GTNLItemList.SteamBeeBreedingModule.get(1))
-                .duration(300)
-                .eut(TierEU.MV)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(4),
-                    GTModHandler.getModItem(Forestry.ID, "alveary", 2, 0),
-                    ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(4),
-                    ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(4),
-                    ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(4))
-                .fluidInputs(Materials.Honey.getFluid(10000L))
-                .itemOutputs(GTNLItemList.SteamApiaryModule.get(1))
-                .duration(300)
-                .eut(TierEU.LV)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(4),
-                    GTModHandler.getModItem(ExtraUtilities.ID, "spike_base_diamond", 9, 0),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 8),
-                    GTNLItemList.HydraulicPiston.get(8),
-                    GTNLItemList.HydraulicConveyor.get(8))
-                .fluidInputs(FluidRegistry.getFluidStack("xpjuice", 10000))
-                .itemOutputs(GTNLItemList.SteamEntityCrusherModule.get(1))
-                .duration(300)
-                .eut(TierEU.LV)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Hatch_Input_Bus_ME.get(1),
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiPart", 1, 220),
-                    ItemList.Conveyor_Module_EV.get(2),
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 9, 27))
-                .itemOutputs(GTNLItemList.SuperInputBusME.get(1))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(576))
-                .duration(300)
-                .eut(TierEU.EV)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SuperInputBusME.get(1),
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockChest", 1),
-                    ItemList.Conveyor_Module_ZPM.get(4),
-                    ItemList.Emitter_ZPM.get(2),
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 56))
-                .itemOutputs(GTNLItemList.AdvancedSuperInputBusME.get(1))
-                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1296))
-                .duration(300)
-                .eut(TierEU.ZPM)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Hatch_Input_HV.get(1),
-                    GTModHandler.getModItem(AE2FluidCraft.ID, "fluid_interface", 1),
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 30))
-                .itemOutputs(ItemList.Hatch_Input_ME.get(1))
-                .duration(300)
-                .eut(TierEU.HV)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Hatch_Input_ME.get(1),
-                    GTModHandler.getModItem(AE2FluidCraft.ID, "part_fluid_storage_bus", 1),
-                    ItemList.Electric_Pump_EV.get(2),
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 9, 27))
-                .itemOutputs(GTNLItemList.SuperInputHatchME.get(1))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(576))
-                .duration(300)
-                .eut(TierEU.EV)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SuperInputHatchME.get(1),
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockChest", 2),
-                    ItemList.Electric_Pump_ZPM.get(4),
-                    ItemList.Sensor_ZPM.get(2),
-                    GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 6, 56))
-                .itemOutputs(GTNLItemList.AdvancedSuperInputHatchME.get(1))
-                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1296))
-                .duration(300)
-                .eut(TierEU.ZPM)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.StainlessSteel, 2L),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4L),
-                    GTUtility.getIntegratedCircuit(3))
-                .itemOutputs(GTNLItemList.StainlessSteelGearBox.get(1))
-                .specialValue(0)
-                .duration(100)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GregtechItemList.GT4_Crop_Harvester_LV.get(2),
-                    new ItemStack(Blocks.dirt, 64),
-                    GTModHandler.getModItem(IndustrialCraft2.ID, "blockCrop", 64),
-                    GTModHandler.getModItem(Forestry.ID, "ffarm", 16, 4),
-                    GTModHandler.getModItem(Forestry.ID, "ffarm", 16, 2),
-                    GTModHandler.getModItem(Forestry.ID, "ffarm", 4, 5))
-                .itemOutputs(GTNLItemList.SteamGreenhouseModule.get(1))
-                .fluidInputs(FluidRegistry.getFluidStack("liquid_sunshine", 16000))
-                .specialValue(0)
-                .duration(200)
-                .eut(TierEU.RECIPE_LV)
                 .addTo(As);
         }
     }

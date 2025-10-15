@@ -11,6 +11,7 @@ import net.minecraft.village.MerchantRecipe;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.Nxer.TwistSpaceTechnology.recipe.machineRecipe.expanded.AssemblyLineWithoutResearchRecipePool;
 import com.Nxer.TwistSpaceTechnology.recipe.machineRecipe.expanded.CircuitAssemblyLineWithoutImprintRecipePool;
 import com.reavaritia.ReAvaItemList;
 import com.science.gtnl.Utils.enums.GTNLItemList;
@@ -241,6 +242,26 @@ public class RecipeLoader {
         }
 
         TCResearches.register();
+
+        for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
+            int duration = recipe.mDuration;
+
+            if (duration > 200000) {
+                duration /= 100;
+            } else if (duration > 40000) {
+                duration /= 10;
+            } else if (duration > 10000) {
+                duration /= 4;
+            } else if (duration > 4000) {
+                duration /= 2;
+            }
+
+            recipe.mDuration = Math.max(1, duration);
+        }
+
+        if (ModList.TwistSpaceTechnology.isModLoaded()) {
+            AssemblyLineWithoutResearchRecipePool.loadRecipes();
+        }
     }
 
     public static void loadVillageTrade() {

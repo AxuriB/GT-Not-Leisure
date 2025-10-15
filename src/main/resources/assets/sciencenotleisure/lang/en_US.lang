@@ -380,7 +380,8 @@ HumongousDualInputHatchMAX=Humongous Input Assembly (MAX)
 Button_Tooltip_HumongousDualInputHatch_00=Return all stored contents to the container in front
 
 DebugDataAccessHatch=Debug Data Access Hatch
-Tooltip_DebugDataAccessHatch_00=Adds all Assembly Line Recipes Data Sticks
+Tooltip_DebugDataAccessHatch_00=Data Access for Multiblocks
+Tooltip_DebugDataAccessHatch_01=Adds all Assembly Line Recipes Data Sticks
 
 SuperDataAccessHatch=Super Data Access Hatch
 Tooltip_SuperDataAccessHatch_00=Adds 81 extra slots for Data Sticks
