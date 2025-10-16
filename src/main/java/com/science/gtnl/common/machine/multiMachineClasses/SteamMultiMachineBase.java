@@ -70,7 +70,6 @@ import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.api.IConfigurationMaintenance;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.loader.BlockLoader;
@@ -84,7 +83,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
@@ -428,19 +426,6 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
                 if (isInTeam) {
                     teamUUID = SpaceProjectManager.getLeader(ownerUUID);
                     steamDisplay = getUserSteam(ownerUUID);
-                }
-            }
-            if (aTick % 20 == 0) {
-                boolean found = false;
-                for (MTEHatchMaintenance module : mMaintenanceHatches) {
-                    if (module instanceof IConfigurationMaintenance customMaintenanceHatch) {
-                        if (customMaintenanceHatch.isConfiguration())
-                            configSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
-                        found = true;
-                    }
-                }
-                if (!found) {
-                    configSpeedBoost = 1;
                 }
             }
             if (this.mUpdate == 1 || this.mStartUpCheck == 1) {

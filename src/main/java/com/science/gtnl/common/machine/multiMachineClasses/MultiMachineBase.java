@@ -46,7 +46,6 @@ import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.api.IConfigurationMaintenance;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
@@ -65,7 +64,6 @@ import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -153,21 +151,6 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aTick % 20 == 0) {
-                boolean found = false;
-                for (MTEHatchMaintenance module : mMaintenanceHatches) {
-                    if (module instanceof IConfigurationMaintenance customMaintenanceHatch) {
-                        if (customMaintenanceHatch.isConfiguration()) {
-                            mConfigSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
-                        }
-                        found = true;
-                    }
-                }
-                if (!found) {
-                    mConfigSpeedBoost = 1;
-                }
-            }
-
             mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
 
