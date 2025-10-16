@@ -177,6 +177,7 @@ public class RecipeUtil {
                 x.mDuration,
                 x.mEUt,
                 x.mSpecialValue);
+            newRecipe.isNBTSensitive = true;
             if (x.owners != null) {
                 newRecipe.owners = new ArrayList<>(x.owners);
             }

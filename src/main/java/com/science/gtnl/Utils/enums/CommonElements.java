@@ -1,6 +1,7 @@
 package com.science.gtnl.Utils.enums;
 
 import net.minecraft.block.BlockBeacon;
+import net.minecraft.block.BlockSponge;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityBeacon;
@@ -11,6 +12,10 @@ import org.jetbrains.annotations.Nullable;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.science.gtnl.Utils.item.ItemUtils;
+
+import gregtech.api.enums.Mods;
+import gregtech.api.util.GTModHandler;
 
 public enum CommonElements {
 
@@ -41,6 +46,48 @@ public enum CommonElements {
         @Override
         public boolean placeBlock(Object o, World world, int x, int y, int z, ItemStack trigger) {
             world.setBlock(x, y, z, Blocks.beacon, 0, 2);
+            if (check(o, world, x, y, z)) return true;
+            else return world.setBlockToAir(x, y, z);
+        }
+
+        @Override
+        public @Nullable BlocksToPlace getBlocksToPlace(Object o, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return cached;
+        }
+    }),
+
+    BlockSponge(new IStructureElement<>() {
+
+        private final BlocksToPlace cached = BlocksToPlace.create(Blocks.sponge, 0);
+
+        @Override
+        public boolean check(Object o, World world, int x, int y, int z) {
+            boolean isSponge = world.getBlock(x, y, z) instanceof BlockSponge;
+
+            if (!isSponge && Mods.EtFuturumRequiem.isModLoaded()) {
+                isSponge = world.getBlock(x, y, z)
+                    == ItemUtils.getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sponge", 1));
+            }
+
+            return isSponge;
+        }
+
+        @Override
+        public boolean couldBeValid(Object o, World world, int x, int y, int z, ItemStack trigger) {
+            // no side effect
+            return check(o, world, x, y, z);
+        }
+
+        @Override
+        public boolean spawnHint(Object o, World world, int x, int y, int z, ItemStack trigger) {
+            StructureLibAPI.hintParticle(world, x, y, z, Blocks.sponge, 0);
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(Object o, World world, int x, int y, int z, ItemStack trigger) {
+            world.setBlock(x, y, z, Blocks.sponge, 0, 2);
             if (check(o, world, x, y, z)) return true;
             else return world.setBlockToAir(x, y, z);
         }

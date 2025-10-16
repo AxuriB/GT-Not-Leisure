@@ -5,6 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTRecipeConstants.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,7 +38,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.enums.CommonElements;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -52,7 +55,6 @@ import bartworks.util.BioCulture;
 import bartworks.util.Coords;
 import bartworks.util.ResultWrongSievert;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
@@ -67,35 +69,37 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.recipe.Sievert;
 import gregtech.common.misc.GTStructureChannels;
 
 public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalConstructable {
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
-    private static final byte TIMERDIVIDER = 20;
+    public static final byte TIMERDIVIDER = 20;
 
-    private final HashSet<EntityPlayerMP> playerMPHashSet = new HashSet<>();
-    private final ArrayList<MTERadioHatch> mRadHatches = new ArrayList<>();
-    private int height = 1;
-    private Fluid mFluid = FluidRegistry.LAVA;
-    private BioCulture mCulture;
-    private ItemStack mStack;
-    private boolean needsVisualUpdate = true;
-    private int mSievert;
-    private int mNeededSievert;
-    private boolean isVisibleFluid = false;
+    public Sievert defaultSievertData = new Sievert(0, false);
+    public HashSet<EntityPlayerMP> playerMPHashSet = new HashSet<>();
+    public ArrayList<MTERadioHatch> mRadHatches = new ArrayList<>();
+    public int height = 1;
+    public Fluid mFluid = FluidRegistry.LAVA;
+    public BioCulture mCulture;
+    public ItemStack mStack;
+    public boolean needsVisualUpdate = true;
+    public int mSievert;
+    public int mNeededSievert;
+    public boolean isVisibleFluid = false;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String INCUBATOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/incubator";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(INCUBATOR_STRUCTURE_FILE_PATH);
-    protected final int HORIZONTAL_OFF_SET = 2;
-    protected final int VERTICAL_OFF_SET = 4;
-    protected final int DEPTH_OFF_SET = 0;
+    private static final String INCUBATOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/incubator";
+    private static final String[][] shape = StructureUtils.readStructureFromFile(INCUBATOR_STRUCTURE_FILE_PATH);
+    private final int HORIZONTAL_OFF_SET = 2;
+    private final int VERTICAL_OFF_SET = 4;
+    private final int DEPTH_OFF_SET = 0;
 
     public Incubator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -106,7 +110,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     }
 
     @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
+    public IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
     }
 
@@ -121,7 +125,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
+    public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("IncubatorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_00"))
@@ -167,15 +171,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
                             RadioHatchElement.RadioHatch)
                         .buildAndChain(),
                     onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
-            .addElement(
-                'D',
-                ofChain(
-                    Mods.EtFuturumRequiem.isModLoaded()
-                        ? ofBlockAnyMeta(
-                            ItemUtils
-                                .getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sponge", 1)),
-                            0)
-                        : ofBlockAnyMeta(Blocks.sponge, 0)))
+            .addElement('D', CommonElements.BlockSponge.get())
             .addElement('E', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
             .build();
     }
@@ -189,7 +185,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         return ret;
     }
 
-    private int getInputCapacity() {
+    public int getInputCapacity() {
         return this.mInputHatches.stream()
             .mapToInt(MTEHatchInput::getCapacity)
             .sum();
@@ -218,22 +214,25 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (!BWUtil.areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, Incubator.this.getControllerSlot()))
+            public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                Sievert data = recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, defaultSievertData);
+                int sievert = data.sievert;
+                boolean isExact = data.isExact;
+                int glass = recipe.getMetadataOrDefault(GLASS, 0);
+                if (!BWUtil.areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, getControllerSlot()))
                     return CheckRecipeResultRegistry.NO_RECIPE;
-                int[] conditions = Incubator.specialValueUnpack(recipe.mSpecialValue);
-                Incubator.this.mNeededSievert = conditions[3];
+                mNeededSievert = sievert;
 
-                if (Incubator.this.mGlassTier < conditions[0]) {
-                    return CheckRecipeResultRegistry.insufficientMachineTier(conditions[0]);
+                if (mGlassTier < glass) {
+                    return CheckRecipeResultRegistry.insufficientMachineTier(glass);
                 }
 
-                if (conditions[2] == 0) {
-                    if (Incubator.this.mSievert < Incubator.this.mNeededSievert) {
-                        return ResultWrongSievert.insufficientSievert(Incubator.this.mNeededSievert);
+                if (!isExact) {
+                    if (mSievert < mNeededSievert) {
+                        return ResultWrongSievert.insufficientSievert(mNeededSievert);
                     }
-                } else if (Incubator.this.mSievert != conditions[3]) {
-                    return ResultWrongSievert.wrongSievert(conditions[3]);
+                } else if (mSievert != sievert) {
+                    return ResultWrongSievert.wrongSievert(sievert);
                 }
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -241,7 +240,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
             @NotNull
             @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            public GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setEUtDiscount(getEUtDiscount())
                     .setDurationModifier(getDurationModifier());
@@ -249,7 +248,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
             @NotNull
             @Override
-            protected GTNL_ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
+            public GTNL_ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };
@@ -270,7 +269,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         return 4;
     }
 
-    protected GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {
+    public GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {
         if (recipe == null || fluidInputs == null) {
             return recipe;
         }
@@ -303,20 +302,31 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
         multiplier = (int) fluidAmount / (recipe.mFluidInputs[0].amount * 1001);
         multiplier = Math.max(Math.min(multiplier, getTrueParallel()), 1);
+        multiplier *= getExpectedMultiplier(recipe.getFluidOutput(0));
 
-        tRecipe.mFluidInputs[0].amount *= multiplier * 1001;
-        tRecipe.mFluidOutputs[0].amount *= multiplier * 1001;
+        tRecipe.mFluidInputs[0].amount *= multiplier;
+        tRecipe.mFluidOutputs[0].amount *= multiplier;
 
         return tRecipe;
     }
 
+    public int getExpectedMultiplier(@Nullable FluidStack recipeFluidOutput) {
+        FluidStack storedFluidOutputs = mOutputHatches.get(0)
+            .getFluid();
+        if (storedFluidOutputs == null) return 1001;
+        if (storedFluidOutputs.isFluidEqual(recipeFluidOutput)) {
+            return 1001;
+        }
+        return 1;
+    }
+
     @Override
-    protected void setupProcessingLogic(ProcessingLogic logic) {
+    public void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
         logic.setSpecialSlotItem(this.getControllerSlot());
     }
 
-    private boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity, int CasingIndex) {
+    public boolean addRadiationInputToMachineList(IGregTechTileEntity aTileEntity, int CasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
@@ -363,14 +373,14 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             && (!this.mEnergyHatches.isEmpty() || !this.mExoticEnergyHatches.isEmpty());
     }
 
-    private int reCalculateFluidAmmount() {
+    public int reCalculateFluidAmmount() {
         return this.getStoredFluids()
             .stream()
             .mapToInt(fluidStack -> fluidStack.amount)
             .sum();
     }
 
-    private int reCalculateHeight() {
+    public int reCalculateHeight() {
         return this.reCalculateFluidAmmount() > this.getCapacity() / 4 - 1
             ? this.reCalculateFluidAmmount() >= this.getCapacity() / 2 ? 3 : 2
             : 1;
@@ -490,7 +500,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         return false;
     }
 
-    private void sendAllRequiredRendererPackets() {
+    public void sendAllRequiredRendererPackets() {
         int height = this.reCalculateHeight();
         if (this.mFluid != null && height > 1 && this.reCalculateFluidAmmount() > 0) {
             for (int x = -1; x < 2; x++) for (int y = 2; y < height + 1; y++) // Y轴提高1格
@@ -498,7 +508,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         }
     }
 
-    private void sendPackagesOrRenewRenderer(int x, int y, int z, BioCulture lCulture) {
+    public void sendPackagesOrRenewRenderer(int x, int y, int z, BioCulture lCulture) {
         int xDir = this.getXDir();
         int zDir = this.getZDir();
 
@@ -581,7 +591,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         this.needsVisualUpdate = true;
     }
 
-    private void check_Chunk() {
+    public void check_Chunk() {
         World aWorld = this.getBaseMetaTileEntity()
             .getWorld();
         if (!aWorld.isRemote) {
@@ -608,7 +618,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         }
     }
 
-    private void placeFluid() {
+    public void placeFluid() {
         this.isVisibleFluid = true;
         int xDir = this.getXDir();
         int zDir = this.getZDir();
@@ -648,7 +658,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         }
     }
 
-    private void removeFluid(int xDir, int zDir) {
+    public void removeFluid(int xDir, int zDir) {
         this.isVisibleFluid = false;
 
         for (int x = -1; x < 2; x++) {
@@ -711,13 +721,13 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         super.onRemoval();
     }
 
-    private void sendRenderPackets() {
+    public void sendRenderPackets() {
         int xDir = this.getXDir();
         int zDir = this.getZDir();
         this.sendRenderPackets(xDir, zDir);
     }
 
-    private void sendRenderPackets(int xDir, int zDir) {
+    public void sendRenderPackets(int xDir, int zDir) {
         if (SideReference.Side.Server) {
             for (int x = -1; x < 2; x++) {
                 for (int y = 2; y < 4; y++) { // Y轴提高1格
@@ -750,12 +760,12 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         }
     }
 
-    private int getXDir() {
+    public int getXDir() {
         return this.getBaseMetaTileEntity()
             .getBackFacing().offsetX * 2;
     }
 
-    private int getZDir() {
+    public int getZDir() {
         return this.getBaseMetaTileEntity()
             .getBackFacing().offsetZ * 2;
     }
@@ -838,7 +848,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
         }
     }
 
-    private enum RadioHatchElement implements IHatchElement<Incubator> {
+    public enum RadioHatchElement implements IHatchElement<Incubator> {
 
         RadioHatch(Incubator::addRadiationInputToMachineList, MTERadioHatch.class) {
 
@@ -848,8 +858,8 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
             }
         };
 
-        private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<Incubator> adder;
+        public final List<Class<? extends IMetaTileEntity>> mteClasses;
+        public final IGTHatchAdder<Incubator> adder;
 
         @SafeVarargs
         RadioHatchElement(IGTHatchAdder<Incubator> adder, Class<? extends IMetaTileEntity>... mteClasses) {
