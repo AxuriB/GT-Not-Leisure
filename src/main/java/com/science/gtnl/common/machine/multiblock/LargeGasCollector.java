@@ -27,7 +27,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
@@ -225,7 +224,7 @@ public class LargeGasCollector extends MultiMachineBase<LargeGasCollector> imple
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeGasCollectorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeGasCollector_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeGasCollector_01"))

@@ -44,7 +44,6 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -109,7 +108,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("AdvancedInfiniteDrillerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_AdvancedInfiniteDriller_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_AdvancedInfiniteDriller_01"))

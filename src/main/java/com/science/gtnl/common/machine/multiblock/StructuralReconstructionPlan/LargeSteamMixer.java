@@ -22,7 +22,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.enums.Materials;
@@ -263,7 +262,7 @@ public class LargeSteamMixer extends SteamMultiMachineBase<LargeSteamMixer> impl
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamMixerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamMixer_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamMixer_01"))

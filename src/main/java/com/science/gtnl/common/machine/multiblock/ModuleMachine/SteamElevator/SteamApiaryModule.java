@@ -63,7 +63,6 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -205,7 +204,7 @@ public class SteamApiaryModule extends SteamElevatorModule {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamApiaryModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamApiaryModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamApiaryModule_01"))

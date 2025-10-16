@@ -65,7 +65,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.Util.EGTWUpgradeStorage;
@@ -348,7 +347,7 @@ public class EternalGregTechWorkshop extends MultiMachineBase<EternalGregTechWor
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("EternalGregTechWorkshopRecipeType"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))

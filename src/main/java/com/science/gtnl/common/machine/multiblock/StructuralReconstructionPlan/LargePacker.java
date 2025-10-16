@@ -25,7 +25,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import gregtech.api.enums.Textures;
@@ -99,7 +98,7 @@ public class LargePacker extends GTMMultiMachineBase<LargePacker> implements ISu
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargePackerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargePacker_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargePacker_01"))

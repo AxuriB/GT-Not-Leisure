@@ -13,8 +13,6 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
-
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -50,7 +48,7 @@ public class SteamFlightModule extends SteamElevatorModule {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamFlightModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamFlightModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamFlightModule_01"))

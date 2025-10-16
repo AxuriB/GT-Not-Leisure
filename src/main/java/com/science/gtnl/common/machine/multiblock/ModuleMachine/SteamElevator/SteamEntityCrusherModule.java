@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -45,7 +44,7 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamEntityCrusherModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_01"))

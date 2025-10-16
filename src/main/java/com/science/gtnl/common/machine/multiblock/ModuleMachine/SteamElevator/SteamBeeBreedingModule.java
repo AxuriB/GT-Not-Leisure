@@ -7,8 +7,6 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
-
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IBee;
 import forestry.plugins.PluginApiculture;
@@ -46,7 +44,7 @@ public class SteamBeeBreedingModule extends SteamElevatorModule {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamBeeBreedingModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_01"))

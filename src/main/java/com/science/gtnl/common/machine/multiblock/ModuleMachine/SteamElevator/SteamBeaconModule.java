@@ -38,7 +38,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.kentington.thaumichorizons.common.lib.potion.PotionVisRegen;
 import com.science.gtnl.Utils.enums.ModList;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GTUITextures;
@@ -239,7 +238,7 @@ public class SteamBeaconModule extends SteamElevatorModule {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamBeaconModuleRecipeType"));
         switch (mTier) {
             case 1:

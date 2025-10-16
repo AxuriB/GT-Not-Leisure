@@ -25,7 +25,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -70,7 +69,7 @@ public class EngravingLaserPlant extends WirelessEnergyMultiMachineBase<Engravin
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("EngravingLaserPlantRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EngravingLaserPlant_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EngravingLaserPlant_01"))

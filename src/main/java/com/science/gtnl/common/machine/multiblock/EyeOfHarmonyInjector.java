@@ -27,7 +27,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.loader.Loaders;
@@ -322,7 +321,7 @@ public class EyeOfHarmonyInjector extends TTMultiblockBase implements IConstruct
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("EyeOfHarmonyInjectorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EyeOfHarmonyInjector_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EyeOfHarmonyInjector_01"))

@@ -18,7 +18,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -100,7 +99,7 @@ public class PlatinumBasedTreatment extends MultiMachineBase<PlatinumBasedTreatm
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("PlatinumBasedTreatmentRecipes"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PlatinumBasedTreatment_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PlatinumBasedTreatment_01"))

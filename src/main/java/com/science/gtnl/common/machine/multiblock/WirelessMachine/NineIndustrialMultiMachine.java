@@ -44,7 +44,6 @@ import com.science.gtnl.Utils.machine.NineIndustrialMultiMachineManager;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -119,7 +118,7 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
             }
         }
 
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("NineIndustrialMultiMachineRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_NineIndustrialMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_NineIndustrialMultiMachine_01"))

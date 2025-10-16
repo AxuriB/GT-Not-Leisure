@@ -68,7 +68,6 @@ import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.RecipePool;
@@ -136,7 +135,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("GrandAssemblyLineRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GrandAssemblyLine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GrandAssemblyLine_01"))

@@ -17,7 +17,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import gregtech.api.enums.TAE;
@@ -82,7 +81,7 @@ public class LargeElectrolyzer extends GTMMultiMachineBase<LargeElectrolyzer> im
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeElectrolyzerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeElectrolyzer_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeElectrolyzer_01"))

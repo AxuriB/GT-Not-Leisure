@@ -20,7 +20,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -209,7 +208,7 @@ public class LargeSteamChemicalBath extends SteamMultiMachineBase<LargeSteamChem
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamChemicalBathRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamChemicalBath_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamChemicalBath_01"))

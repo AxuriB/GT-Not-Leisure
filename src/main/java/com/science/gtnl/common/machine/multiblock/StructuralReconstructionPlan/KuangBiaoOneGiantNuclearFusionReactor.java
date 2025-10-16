@@ -42,7 +42,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.api.IWirelessEnergy;
 import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
@@ -173,7 +172,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("KuangBiaoOneGiantNuclearFusionReactorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_00"))
             .addInfo(
@@ -759,7 +758,7 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
 
         @Override
         public MultiblockTooltipBuilder createTooltip() {
-            MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(StatCollector.translateToLocal("KuangBiaoOneGiantNuclearFusionReactorRecipeType"))
                 .addInfo(StatCollector.translateToLocal("Tooltip_KuangBiaoOneGiantNuclearFusionReactor_00"))
                 .addInfo(

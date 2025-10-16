@@ -34,7 +34,6 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
@@ -139,7 +138,7 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("PreciseAssemblerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PreciseAssembler_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_01"))

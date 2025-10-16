@@ -9,8 +9,6 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
-
 import gregtech.api.enums.HatchElement;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.util.HatchElementBuilder;
@@ -47,7 +45,7 @@ public abstract class MixinMTEIntegratedOreFactory {
      */
     @Overwrite
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("IntegratedOreFactoryRecipeType"))
             .addInfo("")
             .addInfo("")

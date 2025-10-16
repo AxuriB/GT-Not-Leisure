@@ -28,7 +28,6 @@ import com.science.gtnl.ScienceNotLeisure;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import bartworks.util.BWUtil;
@@ -106,7 +105,7 @@ public class Digester extends GTMMultiMachineBase<Digester> implements ISurvival
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("DigesterRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Digester_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Digester_01"))

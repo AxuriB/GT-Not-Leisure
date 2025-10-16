@@ -22,7 +22,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -103,7 +102,7 @@ public class LargeMaterialPress extends GTMMultiMachineBase<LargeMaterialPress> 
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeMaterialPressRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeMaterialPress_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_01"))

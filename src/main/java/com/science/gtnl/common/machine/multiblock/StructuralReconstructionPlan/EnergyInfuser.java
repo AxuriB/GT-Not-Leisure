@@ -30,7 +30,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.loader.BlockLoader;
 
 import cofh.api.energy.IEnergyContainerItem;
@@ -375,7 +374,7 @@ public class EnergyInfuser extends TTMultiblockBase implements IConstructable {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("EnergyInfuserRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EnergyInfuser_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EnergyInfuser_01"))

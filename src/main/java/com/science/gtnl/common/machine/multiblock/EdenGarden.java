@@ -54,7 +54,6 @@ import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDropTable;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseModes;
 import com.science.gtnl.Utils.machine.GreenHouseManager.buckets.GreenHouseIC2Bucket;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.api.IGreenHouse;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
@@ -224,7 +223,7 @@ public class EdenGarden extends MultiMachineBase<EdenGarden> implements IGreenHo
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("EdenGardenRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EdenGarden_01"))

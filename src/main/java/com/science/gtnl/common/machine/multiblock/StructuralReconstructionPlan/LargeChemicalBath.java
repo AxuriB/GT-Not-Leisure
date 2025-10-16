@@ -29,7 +29,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import cpw.mods.fml.relauncher.Side;
@@ -121,7 +120,7 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeChemicalBathRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeChemicalBath_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeChemicalBath_01"))
