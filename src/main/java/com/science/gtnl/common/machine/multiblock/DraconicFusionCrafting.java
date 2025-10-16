@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import gregtech.api.enums.Textures;
@@ -96,7 +97,7 @@ public class DraconicFusionCrafting extends GTMMultiMachineBase<DraconicFusionCr
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("DraconicFusionCraftingRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_DraconicFusionCrafting_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_DraconicFusionCrafting_01"))

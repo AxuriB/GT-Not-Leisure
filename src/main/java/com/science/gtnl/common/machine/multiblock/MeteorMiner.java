@@ -45,6 +45,7 @@ import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.common.render.tile.MeteorMinerRenderer;
@@ -290,7 +291,7 @@ public class MeteorMiner extends MultiMachineBase<MeteorMiner> implements ISurvi
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("MeteorMinerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_MeteorMiner_01"))

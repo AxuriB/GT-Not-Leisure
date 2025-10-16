@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -146,7 +147,7 @@ public class ETGWEyeOfHarmonyModule extends EternalGregTechWorkshopModule {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("ETGWEyeOfHarmonyModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ETGWEyeOfHarmonyModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ETGWEyeOfHarmonyModule_01"))

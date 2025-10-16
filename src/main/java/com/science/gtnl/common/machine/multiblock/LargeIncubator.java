@@ -34,6 +34,7 @@ import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
@@ -93,7 +94,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeIncubatorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeIncubator_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeIncubator_01"))

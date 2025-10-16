@@ -2,13 +2,10 @@ package com.science.gtnl.Utils.enums;
 
 import java.util.regex.Pattern;
 
-import com.science.gtnl.Utils.text.TranslationKeyExtension;
-import lombok.experimental.ExtensionMethod;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
-@ExtensionMethod(TranslationKeyExtension.class)
 public enum TranslationKey implements CharSequence {
 
     EXAMPLE_KEY("example.key", "This is the default translation: %s"),

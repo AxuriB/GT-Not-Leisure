@@ -42,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.BlockLoader;
@@ -570,7 +571,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("Tooltip_RealArtificialStar_MachineType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_RealArtificialStar_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_RealArtificialStar_01"))

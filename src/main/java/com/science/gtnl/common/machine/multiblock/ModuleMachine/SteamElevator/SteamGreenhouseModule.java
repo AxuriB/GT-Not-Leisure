@@ -42,6 +42,7 @@ import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDropTable;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseModes;
 import com.science.gtnl.Utils.machine.GreenHouseManager.buckets.GreenHouseIC2Bucket;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.api.IGreenHouse;
 
 import gregtech.api.gui.modularui.GTUITextures;
@@ -116,7 +117,7 @@ public class SteamGreenhouseModule extends SteamElevatorModule implements IGreen
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("SteamGreenhouseModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_01"))

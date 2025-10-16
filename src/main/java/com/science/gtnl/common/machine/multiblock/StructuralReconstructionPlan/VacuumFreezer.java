@@ -21,6 +21,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -105,7 +106,7 @@ public class VacuumFreezer extends MultiMachineBase<VacuumFreezer> implements IS
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("VacuumFreezerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_VacuumFreezer_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_VacuumFreezer_01"))

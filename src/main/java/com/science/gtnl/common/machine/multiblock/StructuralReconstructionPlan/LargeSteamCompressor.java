@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.enums.Textures;
@@ -263,7 +264,7 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamCompressorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_01"))

@@ -19,6 +19,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.loader.BlockLoader;
 
 import gregtech.api.enums.Textures;
@@ -101,7 +102,7 @@ public class Steamgate extends MTEEnhancedMultiBlockBase<Steamgate> implements I
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addInfo(StatCollector.translateToLocal("Tooltip_Steamgate_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Steamgate_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_Steamgate_02"))

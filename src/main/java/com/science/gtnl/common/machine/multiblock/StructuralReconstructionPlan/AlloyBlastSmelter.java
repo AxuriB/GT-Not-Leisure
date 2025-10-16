@@ -16,6 +16,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import bartworks.util.BWUtil;
@@ -83,7 +84,7 @@ public class AlloyBlastSmelter extends GTMMultiMachineBase<AlloyBlastSmelter> im
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("AlloyBlastSmelterRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_AlloyBlastSmelter_01"))

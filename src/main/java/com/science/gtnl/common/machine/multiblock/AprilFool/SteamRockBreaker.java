@@ -23,6 +23,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.common.machine.multiblock.LargeSteamFurnace;
 import com.science.gtnl.loader.RecipePool;
@@ -222,7 +223,7 @@ public class SteamRockBreaker extends SteamMultiMachineBase<SteamRockBreaker> im
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(getMachineType())
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamRockBreaker_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamRockBreaker_01"))

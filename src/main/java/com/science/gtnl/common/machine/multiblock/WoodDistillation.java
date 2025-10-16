@@ -22,6 +22,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
@@ -100,7 +101,7 @@ public class WoodDistillation extends GTMMultiMachineBase<WoodDistillation> impl
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("WoodDistillationRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WoodDistillation_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_02"))

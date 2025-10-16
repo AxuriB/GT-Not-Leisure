@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.science.gtnl.Utils.enums.HPCAModifier;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.packet.SyncHPCAVariablesPacket;
 import com.science.gtnl.common.render.tile.HighPerformanceComputationArrayRenderer;
 
@@ -363,7 +364,7 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("HighPerformanceComputationArrayRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_HighPerformanceComputationArray_00"))
 

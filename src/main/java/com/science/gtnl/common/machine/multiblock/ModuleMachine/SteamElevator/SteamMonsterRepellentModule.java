@@ -9,6 +9,8 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
+
 import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -44,7 +46,7 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("SteamMonsterRepellentModuleRecipeType"));
         switch (mTier) {
             case 1:

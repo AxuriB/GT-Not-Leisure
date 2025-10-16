@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
@@ -71,7 +72,7 @@ public class ColdIceFreezer extends MultiMachineBase<ColdIceFreezer> implements 
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("ColdIceFreezerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ColdIceFreezer_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ColdIceFreezer_01"))

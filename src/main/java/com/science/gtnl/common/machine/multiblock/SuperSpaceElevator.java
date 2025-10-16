@@ -53,6 +53,7 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -145,7 +146,7 @@ public class SuperSpaceElevator extends TTMultiblockBase
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("SuperSpaceElevatorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SuperSpaceElevator_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SuperSpaceElevator_01"))

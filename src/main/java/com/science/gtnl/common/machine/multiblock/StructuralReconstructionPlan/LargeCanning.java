@@ -29,6 +29,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -162,7 +163,7 @@ public class LargeCanning extends GTMMultiMachineBase<LargeCanning> implements I
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeCanningRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeCanning_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeCanning_01"))

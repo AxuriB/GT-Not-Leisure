@@ -21,6 +21,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
 import gregtech.api.enums.Materials;
@@ -87,7 +88,7 @@ public class BrickedBlastFurnace extends MultiMachineBase<BrickedBlastFurnace> i
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("BrickBlastFurnaceRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_BrickBlastFurnace_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_BrickBlastFurnace_01"))

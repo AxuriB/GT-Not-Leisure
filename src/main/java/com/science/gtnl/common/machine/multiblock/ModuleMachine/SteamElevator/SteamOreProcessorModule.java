@@ -22,6 +22,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -635,7 +636,7 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("SteamOreProcessorModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamOreProcessorModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamOreProcessorModule_01"))

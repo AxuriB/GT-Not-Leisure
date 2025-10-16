@@ -45,6 +45,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.api.IItemVault;
 import com.science.gtnl.common.machine.hatch.VaultPortHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
@@ -341,7 +342,7 @@ public class SingularityDataHub extends MultiMachineBase<SingularityDataHub>
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("SingularityDataHubRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SingularityDataHub_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SingularityDataHub_01"))

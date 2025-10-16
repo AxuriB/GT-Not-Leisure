@@ -19,6 +19,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -237,7 +238,7 @@ public class LargeSteamCrusher extends SteamMultiMachineBase<LargeSteamCrusher> 
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamCrusherRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCrusher_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCrusher_01"))

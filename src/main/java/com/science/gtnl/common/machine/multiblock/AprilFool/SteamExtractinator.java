@@ -17,6 +17,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
@@ -178,7 +179,7 @@ public class SteamExtractinator extends SteamMultiMachineBase<SteamExtractinator
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(getMachineType())
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamExtractinator_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamExtractinator_01"))

@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import gregtech.api.enums.TAE;
@@ -102,7 +103,7 @@ public class LargeCentrifuge extends GTMMultiMachineBase<LargeCentrifuge> implem
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeCentrifugeRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeCentrifuge_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_01"))

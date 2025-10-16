@@ -58,6 +58,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.enums.SteamTypes;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
@@ -125,7 +126,7 @@ public class SteamElevator extends SteamMultiMachineBase<SteamElevator> implemen
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(getMachineType())
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamElevator_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamElevator_01"))

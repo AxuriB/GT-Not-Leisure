@@ -27,6 +27,7 @@ import com.gtnewhorizons.modularui.api.widget.IWidgetBuilder;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -252,7 +253,7 @@ public class FOGExtractorModule extends MTEBaseModule {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("FOGExtractorModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_FOGExtractorModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_FOGExtractorModule_01"))

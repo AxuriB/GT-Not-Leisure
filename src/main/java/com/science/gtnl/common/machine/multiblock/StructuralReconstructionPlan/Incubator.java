@@ -39,6 +39,7 @@ import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
 import bartworks.API.SideReference;
@@ -122,7 +123,7 @@ public class Incubator extends MultiMachineBase<Incubator> implements ISurvivalC
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("IncubatorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_01"))

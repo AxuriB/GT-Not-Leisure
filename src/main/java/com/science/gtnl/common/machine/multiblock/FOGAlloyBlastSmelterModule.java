@@ -12,6 +12,8 @@ import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -168,7 +170,7 @@ public class FOGAlloyBlastSmelterModule extends MTEBaseModule {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("FOGAlloyBlastSmelterModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_FOGAlloyBlastSmelterModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_FOGAlloyBlastSmelterModule_01"))

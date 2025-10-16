@@ -34,6 +34,7 @@ import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.Utils.recipes.ResourceCollectionModuleTierKey;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.enums.ItemList;
@@ -344,7 +345,7 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("ResourceCollectionModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ResourceCollectionModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ResourceCollectionModule_01"))

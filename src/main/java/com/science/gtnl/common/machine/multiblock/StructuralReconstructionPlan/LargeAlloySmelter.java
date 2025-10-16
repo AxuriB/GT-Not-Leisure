@@ -17,6 +17,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.enums.TranslationKey;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 
 import gregtech.api.enums.HeatingCoilLevel;
@@ -29,7 +31,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
+import lombok.experimental.ExtensionMethod;
 
+@ExtensionMethod(MultiblockTooltipBuilderExtra.class)
 public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -82,8 +86,9 @@ public class LargeAlloySmelter extends GTMMultiMachineBase<LargeAlloySmelter> im
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeAlloySmelterRecipeType"))
+            .addInfo(TranslationKey.EXAMPLE_KEY)
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_02"))

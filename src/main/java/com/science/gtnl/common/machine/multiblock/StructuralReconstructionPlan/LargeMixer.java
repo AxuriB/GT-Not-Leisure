@@ -18,6 +18,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -84,7 +85,7 @@ public class LargeMixer extends GTMMultiMachineBase<LargeMixer> implements ISurv
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeMixerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeMixer_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeMixer_01"))

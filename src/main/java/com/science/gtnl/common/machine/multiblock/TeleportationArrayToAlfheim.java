@@ -37,6 +37,7 @@ import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.Utils.machine.PortalToAlfheimExplosion;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.common.material.MaterialPool;
@@ -271,7 +272,7 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("TeleportationArrayToAlfheimRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_TeleportationArrayToAlfheim_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_TeleportationArrayToAlfheim_01"))

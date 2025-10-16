@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -381,7 +382,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
             tt.addMachineType(StatCollector.translateToLocal("LargeBoilerRecipeType"))
                 .addSeparator()
                 .addInfo(StatCollector.translateToLocal("Tooltip_LargeBoilerBronze_00"))
@@ -465,7 +466,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
             tt.addMachineType(StatCollector.translateToLocal("LargeBoilerRecipeType"))
                 .addSeparator()
                 .addInfo(StatCollector.translateToLocal("Tooltip_LargeBoilerSteel_00"))
@@ -549,7 +550,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
             tt.addMachineType(StatCollector.translateToLocal("LargeBoilerRecipeType"))
                 .addSeparator()
                 .addInfo(StatCollector.translateToLocal("Tooltip_LargeBoilerTitanium_00"))
@@ -633,7 +634,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
             tt.addMachineType(StatCollector.translateToLocal("LargeBoilerRecipeType"))
                 .addSeparator()
                 .addInfo(StatCollector.translateToLocal("Tooltip_LargeBoilerTungstenSteel_00"))

@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.GregTechAPI;
@@ -79,7 +80,7 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("PrimitiveDistillationTowerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PrimitiveDistillationTower_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PrimitiveDistillationTower_01"))

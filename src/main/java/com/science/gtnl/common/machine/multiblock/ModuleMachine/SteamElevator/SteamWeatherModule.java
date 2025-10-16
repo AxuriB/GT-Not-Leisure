@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.loader.RecipePool;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -49,7 +50,7 @@ public class SteamWeatherModule extends SteamElevatorModule {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("SteamWeatherModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamWeatherModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamWeatherModule_01"))

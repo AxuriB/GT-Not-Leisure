@@ -18,6 +18,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 
 import gregtech.api.enums.Textures;
@@ -201,7 +202,7 @@ public class LargeSteamAlloySmelter extends SteamMultiMachineBase<LargeSteamAllo
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamAlloySmelterRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamAlloySmelter_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamAlloySmelter_01"))

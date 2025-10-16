@@ -15,6 +15,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
@@ -87,7 +88,7 @@ public class RareEarthCentrifugal extends MultiMachineBase<RareEarthCentrifugal>
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("RareEarthCentrifugalRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_04"))
             .addSeparator()

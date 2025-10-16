@@ -25,6 +25,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
 import com.science.gtnl.Utils.recipes.IsaMillTierKey;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 
@@ -72,7 +73,7 @@ public class IsaMill extends GTMMultiMachineBase<IsaMill> implements ISurvivalCo
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("IsaMillRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_IsaMill_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_IsaMill_01"))

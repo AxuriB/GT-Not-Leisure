@@ -26,6 +26,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.GTMMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -101,7 +102,7 @@ public class LargeArcSmelter extends GTMMultiMachineBase<LargeArcSmelter> implem
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeArcSmelterRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeArcSmelter_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeArcSmelter_01"))

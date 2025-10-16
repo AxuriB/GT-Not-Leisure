@@ -34,6 +34,7 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.api.IConfigurationMaintenance;
 import com.science.gtnl.loader.BlockLoader;
 import com.science.gtnl.loader.RecipePool;
@@ -82,7 +83,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeNaquadahReactorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeNaquadahReactor_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeNaquadahReactor_01"))

@@ -35,6 +35,7 @@ import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.Utils.machine.ProcessingArrayManager;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
 
 import gregtech.GTMod;
@@ -107,7 +108,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("ProcessingArrayRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ProcessingArray_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ProcessingArray_01"))

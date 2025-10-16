@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.WirelessEnergyMultiMachineBase;
 
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -43,7 +44,7 @@ public abstract class NanitesBaseModule<T extends NanitesBaseModule<T>> extends 
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("NanitesIntegratedProcessingCenterRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WirelessEnergyMultiMachine_01"))

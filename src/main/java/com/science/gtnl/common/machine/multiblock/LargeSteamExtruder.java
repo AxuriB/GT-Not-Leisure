@@ -22,6 +22,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
+import com.science.gtnl.Utils.text.MultiblockTooltipBuilderExtra;
 import com.science.gtnl.common.machine.multiMachineClasses.SteamMultiMachineBase;
 import com.science.gtnl.loader.BlockLoader;
 
@@ -252,7 +253,7 @@ public class LargeSteamExtruder extends SteamMultiMachineBase<LargeSteamExtruder
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamExtruderRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamExtruder_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamExtruder_01"))
