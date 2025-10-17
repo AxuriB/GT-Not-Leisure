@@ -255,7 +255,7 @@ public class HighPerformanceComputationArray extends TTMultiblockBase implements
                             int rackComputation = rack.tickComponents(1, 1) * 10;
                             if (rackComputation > 0) {
                                 int coolantUse = (int) (rackComputation * coolantFactor / 1000);
-                                boolean coolant = depleteInput(Materials.SuperCoolant.getFluid(coolantUse));
+                                boolean coolant = depleteInput(Materials.SuperCoolant.getFluid(coolantUse), false);
 
                                 rack.heat += coolant ? (int) (-20 * heatFactor) : (int) (100 * heatFactor);
                                 this.eAvailableData += (long) (rackComputation * computationFactor);

@@ -170,8 +170,8 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
         setCurrentParallelism(currentParallel);
 
         // Consume fluids
-        depleteInput(GTModHandler.getDistilledWater(currentParallel * 10L));
-        depleteInput(Materials.Lubricant.getFluid(currentParallel));
+        depleteInput(GTModHandler.getDistilledWater(currentParallel * 10L), false);
+        depleteInput(Materials.Lubricant.getFluid(currentParallel), false);
 
         // Consume items and generate outputs
         List<ItemStack> tOres = new ArrayList<>();
@@ -388,7 +388,7 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
                             .copy();
                         int tStored = getFluidAmount(tInputFluid);
                         int tWashed = Math.min(tStored / tInputFluid.amount, aStack.stackSize);
-                        depleteInput(new FluidStack(tInputFluid.getFluid(), tWashed * tInputFluid.amount));
+                        depleteInput(new FluidStack(tInputFluid.getFluid(), tWashed * tInputFluid.amount), false);
                         tProduct.addAll(getOutputStack(tRecipe, tWashed));
                         if (tWashed < aStack.stackSize) {
                             tProduct.add(GTUtility.copyAmountUnsafe(aStack.stackSize - tWashed, aStack));

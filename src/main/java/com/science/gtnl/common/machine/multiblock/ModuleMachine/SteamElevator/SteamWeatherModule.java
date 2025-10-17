@@ -130,7 +130,7 @@ public class SteamWeatherModule extends SteamElevatorModule {
                 }
                 for (FluidStack recipeFluid : recipe.mFluidInputs) {
                     if (recipeFluid != null) {
-                        if (!depleteInput(recipeFluid)) {
+                        if (!depleteInput(recipeFluid, false)) {
                             return CheckRecipeResultRegistry.NO_RECIPE;
                         }
                     }
