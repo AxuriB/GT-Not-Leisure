@@ -307,9 +307,9 @@ public class SteamGreenhouseModule extends SteamElevatorModule implements IGreen
         this.guiDropTracker = new GreenHouseDropTable();
 
         if (mode == GreenHouseModes.IC2) {
-            buckets.forEach(bucket -> bucket.addProgress(200, guiDropTracker));
+            buckets.forEach(bucket -> bucket.addProgress(10, guiDropTracker));
         } else {
-            buckets.forEach(bucket -> bucket.addProgress(100, guiDropTracker));
+            buckets.forEach(bucket -> bucket.addProgress(10, guiDropTracker));
         }
 
         guiDropTracker.addTo(dropTracker, 1);
