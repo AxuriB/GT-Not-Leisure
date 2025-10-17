@@ -300,7 +300,7 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
 
             @Override
             public double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
-                                            @Nonnull GTNL_OverclockCalculator calculator) {
+                @Nonnull GTNL_OverclockCalculator calculator) {
                 if (batchMode) {
                     return 1;
                 } else {

@@ -28,6 +28,7 @@ import gregtech.api.recipe.check.SingleRecipeCheck;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.VoidProtectionHelper;
 
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GTNL_ParallelHelper extends ParallelHelper {
@@ -502,7 +503,7 @@ public class GTNL_ParallelHelper extends ParallelHelper {
             if (machine == null) {
                 throw new IllegalStateException("Tried to calculate void protection, but machine is not set");
             }
-            GTNL_VoidProtectionHelper voidProtectionHelper = new GTNL_VoidProtectionHelper();
+            VoidProtectionHelper voidProtectionHelper = new VoidProtectionHelper();
             voidProtectionHelper.setMachine(machine)
                 .setItemOutputs(truncatedItemOutputs)
                 .setFluidOutputs(truncatedFluidOutputs)

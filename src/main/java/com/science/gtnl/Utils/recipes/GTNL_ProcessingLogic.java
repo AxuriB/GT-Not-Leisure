@@ -11,9 +11,10 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.science.gtnl.mixins.late.Gregtech.AccessorProcessingLogic;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.science.gtnl.mixins.late.Gregtech.AccessorProcessingLogic;
 
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
@@ -528,7 +529,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      */
     @Nonnull
     public CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
-                                         @Nonnull GTNL_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
+        @Nonnull GTNL_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
         } else {
@@ -566,7 +567,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      * Override to tweak final duration that will be set as a result of this logic class.
      */
     public double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
-                                    @Nonnull GTNL_OverclockCalculator calculator) {
+        @Nonnull GTNL_OverclockCalculator calculator) {
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }
 
