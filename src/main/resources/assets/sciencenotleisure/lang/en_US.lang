@@ -410,21 +410,21 @@ SteamTurbineMV=Advanced Steam Turbine
 SteamTurbineHV=Advanced Steam Turbine II
 Tooltip_SteamTurbine_00=Converts steam into EU
 Tooltip_SteamTurbine_01=Base efficiency: 2L steam/EU
-Tooltip_SteamTurbine_02=Fuel efficiency: %s%
+Tooltip_SteamTurbine_02=Fuel efficiency: %s%%
 Tooltip_SteamTurbine_03=Fluid capacity: %sL
 
 GasTurbineLV=Basic Gas Turbine
 GasTurbineMV=Advanced Gas Turbine
 GasTurbineHV=Advanced Gas Turbine II
 Tooltip_GasTurbine_00=Requires flammable Gasses
-Tooltip_GasTurbine_01=Fuel efficiency: %s%
+Tooltip_GasTurbine_01=Fuel efficiency: %s%%
 Tooltip_GasTurbine_02=Fluid capacity: %sL
 
 DieselGeneratorLV=Basic Combustion Generator
 DieselGeneratorMV=Advanced Combustion Generator
 DieselGeneratorHV=Advanced Combustion Generator II
 Tooltip_DieselGenerator_00=Requires liquid Fuel
-Tooltip_DieselGenerator_01=Fuel efficiency: %s%
+Tooltip_DieselGenerator_01=Fuel efficiency: %s%%
 Tooltip_DieselGenerator_02=Fluid capacity: %sL
 
 DebugResearchStation=Debug Research Station

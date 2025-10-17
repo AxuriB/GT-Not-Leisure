@@ -410,21 +410,21 @@ SteamTurbineMV=进阶蒸汽轮机
 SteamTurbineHV=进阶蒸汽轮机 II
 Tooltip_SteamTurbine_00=将蒸汽转换为EU
 Tooltip_SteamTurbine_01=基础效率：2L蒸汽/EU
-Tooltip_SteamTurbine_02=燃料效率：%s%
+Tooltip_SteamTurbine_02=燃料效率：%s%%
 Tooltip_SteamTurbine_03=流体容量：%sL
 
 GasTurbineLV=基础燃气轮机
 GasTurbineMV=进阶燃气轮机
 GasTurbineHV=进阶燃气轮机 II
 Tooltip_GasTurbine_00=需要可燃气体
-Tooltip_GasTurbine_01=燃料效率：%s%
+Tooltip_GasTurbine_01=燃料效率：%s%%
 Tooltip_GasTurbine_02=流体容量：%sL
 
 DieselGeneratorLV=基础内燃发电机
 DieselGeneratorMV=进阶内燃发电机
 DieselGeneratorHV=进阶内燃发电机 II
 Tooltip_DieselGenerator_00=需要液体燃料
-Tooltip_DieselGenerator_01=燃料效率：%s%
+Tooltip_DieselGenerator_01=燃料效率：%s%%
 Tooltip_DieselGenerator_02=流体容量：%sL
 
 DebugResearchStation=Debug研究站
