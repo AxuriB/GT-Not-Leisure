@@ -7,7 +7,6 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
-import static gtPlusPlus.core.block.ModBlocks.*;
 
 import javax.annotation.Nonnull;
 
@@ -227,7 +226,7 @@ public class RocketAssembler extends GTMMultiMachineBase<RocketAssembler>
 
             @Nonnull
             @Override
-            protected CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+            public CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
                 if (recipe.mSpecialItems == null) return super.validateAndCalculateRecipe(recipe);
                 if (recipe.mSpecialItems instanceof ItemStack itemStack) {
                     for (ItemStack item : getAllStoredInputs()) {

@@ -40,6 +40,7 @@ import com.science.gtnl.common.machine.hatch.EnergyTransferNode;
 import com.science.gtnl.common.machine.hatch.ExplosionDynamoHatch;
 import com.science.gtnl.common.machine.hatch.HumongousDualInputHatch;
 import com.science.gtnl.common.machine.hatch.HumongousNinefoldInputHatch;
+import com.science.gtnl.common.machine.hatch.HumongousOutputBus;
 import com.science.gtnl.common.machine.hatch.HumongousSolidifierHatch;
 import com.science.gtnl.common.machine.hatch.ManaDynamoHatch;
 import com.science.gtnl.common.machine.hatch.ManaEnergyHatch;
@@ -2206,6 +2207,118 @@ public class MachineLoader {
                 "ModFilteredInputBusME",
                 StatCollector.translateToLocal("ModFilteredInputBusME")));
         addItemTooltip(GTNLItemList.ModFilteredInputBusME.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusLV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_LV.ID,
+                "HumongousOutputBusLV",
+                StatCollector.translateToLocal("HumongousOutputBusLV"),
+                1));
+        addItemTooltip(GTNLItemList.HumongousOutputBusLV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusMV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_MV.ID,
+                "HumongousOutputBusMV",
+                StatCollector.translateToLocal("HumongousOutputBusMV"),
+                2));
+        addItemTooltip(GTNLItemList.HumongousOutputBusMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusHV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_HV.ID,
+                "HumongousOutputBusHV",
+                StatCollector.translateToLocal("HumongousOutputBusHV"),
+                3));
+        addItemTooltip(GTNLItemList.HumongousOutputBusHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusEV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_EV.ID,
+                "HumongousOutputBusEV",
+                StatCollector.translateToLocal("HumongousOutputBusEV"),
+                4));
+        addItemTooltip(GTNLItemList.HumongousOutputBusEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusIV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_IV.ID,
+                "HumongousOutputBusIV",
+                StatCollector.translateToLocal("HumongousOutputBusIV"),
+                5));
+        addItemTooltip(GTNLItemList.HumongousOutputBusIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusLuV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_LUV.ID,
+                "HumongousOutputBusLuV",
+                StatCollector.translateToLocal("HumongousOutputBusLuV"),
+                6));
+        addItemTooltip(GTNLItemList.HumongousOutputBusLuV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusZPM.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_ZPM.ID,
+                "HumongousOutputBusZPM",
+                StatCollector.translateToLocal("HumongousOutputBusZPM"),
+                7));
+        addItemTooltip(GTNLItemList.HumongousOutputBusZPM.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusUV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_UV.ID,
+                "HumongousOutputBusUV",
+                StatCollector.translateToLocal("HumongousOutputBusUV"),
+                8));
+        addItemTooltip(GTNLItemList.HumongousOutputBusUV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusUHV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_UHV.ID,
+                "HumongousOutputBusUHV",
+                StatCollector.translateToLocal("HumongousOutputBusUHV"),
+                9));
+        addItemTooltip(GTNLItemList.HumongousOutputBusUHV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusUEV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_UEV.ID,
+                "HumongousOutputBusUEV",
+                StatCollector.translateToLocal("HumongousOutputBusUEV"),
+                10));
+        addItemTooltip(GTNLItemList.HumongousOutputBusUEV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusUIV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_UIV.ID,
+                "HumongousOutputBusUIV",
+                StatCollector.translateToLocal("HumongousOutputBusUIV"),
+                11));
+        addItemTooltip(GTNLItemList.HumongousOutputBusUIV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusUMV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_UMV.ID,
+                "HumongousOutputBusUMV",
+                StatCollector.translateToLocal("HumongousOutputBusUMV"),
+                12));
+        addItemTooltip(GTNLItemList.HumongousOutputBusUMV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusUXV.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_UXV.ID,
+                "HumongousOutputBusUXV",
+                StatCollector.translateToLocal("HumongousOutputBusUXV"),
+                13));
+        addItemTooltip(GTNLItemList.HumongousOutputBusUXV.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.HumongousOutputBusMAX.set(
+            new HumongousOutputBus(
+                HUMONGOUS_OUTPUT_BUS_MAX.ID,
+                "HumongousOutputBusMAX",
+                StatCollector.translateToLocal("HumongousOutputBusMAX"),
+                14));
+        addItemTooltip(GTNLItemList.HumongousOutputBusMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     @Deprecated
