@@ -55,7 +55,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "nei";
     private static final String SCW_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_cactus_wonder";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(SCW_STRUCTURE_FILE_PATH);
+    private static final String[][] shape = StructureUtils.readStructureFromFile(SCW_STRUCTURE_FILE_PATH);
     private static final int HORIZONTAL_OFF_SET = 4;
     private static final int VERTICAL_OFF_SET = 8;
     private static final int DEPTH_OFF_SET = 2;
@@ -78,10 +78,10 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
         return StatCollector.translateToLocal("SteamCactusWonderRecipeType");
     }
 
-    private int currentSteam;
-    private ItemStack currentOffer;
-    private long fueledAmount = 0;
-    private static final ItemStack[] possibleInputs = { GregtechItemList.CactusCharcoal.get(1),
+    public int currentSteam;
+    public ItemStack currentOffer;
+    public long fueledAmount = 0;
+    public static final ItemStack[] possibleInputs = { GregtechItemList.CactusCharcoal.get(1),
         GregtechItemList.BlockCactusCharcoal.get(1), GregtechItemList.CompressedCactusCharcoal.get(1),
         GregtechItemList.DoubleCompressedCactusCharcoal.get(1), GregtechItemList.TripleCompressedCactusCharcoal.get(1),
         GregtechItemList.QuadrupleCompressedCactusCharcoal.get(1),
@@ -89,9 +89,9 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
         GregtechItemList.BlockCactusCoke.get(1), GregtechItemList.CompressedCactusCoke.get(1),
         GregtechItemList.DoubleCompressedCactusCoke.get(1), GregtechItemList.TripleCompressedCactusCoke.get(1),
         GregtechItemList.QuadrupleCompressedCactusCoke.get(1), GregtechItemList.QuintupleCompressedCactusCoke.get(1) };
-    private static final long[] totalValue = { 8_000L, 90_000L, 1_012_500L, 11_390_625L, 128_144_531L, 1_441_625_977L,
+    public static final long[] totalValue = { 8_000L, 90_000L, 1_012_500L, 11_390_625L, 128_144_531L, 1_441_625_977L,
         16_218_292_236L, 16_000L, 180_000L, 2_025_000L, 22_781_250L, 256_289_063L, 2_883_251_953L, 32_436_584_473L };
-    private static final int[] steamType = { 1, 1, 1, 2, 2, 3, 3, 1, 1, 1, 2, 2, 3, 3 };
+    public static final int[] steamType = { 1, 1, 1, 2, 2, 3, 3, 1, 1, 1, 2, 2, 3, 3 };
 
     public IStructureDefinition<SteamCactusWonder> getStructureDefinition() {
         return StructureDefinition.<SteamCactusWonder>builder()
@@ -174,7 +174,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
+    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -189,7 +189,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
 
     }
 
-    private void addFuel() {
+    public void addFuel() {
         ArrayList<ItemStack> storedInputs = getStoredInputs();
         for (ItemStack stack : storedInputs) {
             for (int i = 0; i < 14; i++) {
@@ -209,7 +209,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
         }
     }
 
-    private void outputSteam() {
+    public void outputSteam() {
         if (fueledAmount > 0) {
             if (currentSteam == 1) {
                 addOutput(Materials.Steam.getGas((int) Math.min(3200, fueledAmount)));
@@ -230,7 +230,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
+    public void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements
@@ -255,7 +255,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
+    public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamCactusWonder_00"))
@@ -289,7 +289,7 @@ public class SteamCactusWonder extends SteamMultiMachineBase<SteamCactusWonder> 
 
     @SideOnly(Side.CLIENT)
     @Override
-    protected SoundResource getActivitySoundLoop() {
+    public SoundResource getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_MACERATOR_OP;
     }
 

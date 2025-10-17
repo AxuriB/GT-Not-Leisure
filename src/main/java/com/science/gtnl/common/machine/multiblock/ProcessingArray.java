@@ -107,7 +107,7 @@ public class ProcessingArray extends MultiMachineBase<ProcessingArray> implement
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("ProcessingArrayRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ProcessingArray_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ProcessingArray_01"))

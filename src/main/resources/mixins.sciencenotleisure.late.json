@@ -33,6 +33,7 @@
     "Gregtech.MixinMTEBetterJukebox",
     "Gregtech.MixinMTEDigitalTankBase",
     "Gregtech.MixinMTETreeFarm",
+    "Gregtech.MixinMTELightningRod",
     "Gregtech.MixinMTEHatchDataAccess",
     "Gregtech.AssLineRemover.MixinGTMod",
     "Gregtech.AssLineRemover.MixinGTRecipeBuilder",

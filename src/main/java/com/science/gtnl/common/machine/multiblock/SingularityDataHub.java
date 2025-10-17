@@ -341,7 +341,7 @@ public class SingularityDataHub extends MultiMachineBase<SingularityDataHub>
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SingularityDataHubRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SingularityDataHub_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SingularityDataHub_01"))

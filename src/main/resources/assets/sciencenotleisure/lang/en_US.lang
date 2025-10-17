@@ -363,6 +363,25 @@ Tooltip_DualInputHatch_01=Item slot count:
 Tooltip_DualInputHatch_02_00=Fluid capacity: Total
 Tooltip_DualInputHatch_02_01=fluid slots, each
 
+HumongousOutputBusLV=Humongous Output Bus (LV)
+HumongousOutputBusMV=Humongous Output Bus (MV)
+HumongousOutputBusHV=Humongous Output Bus (HV)
+HumongousOutputBusEV=Humongous Output Bus (EV)
+HumongousOutputBusIV=Humongous Output Bus (IV)
+HumongousOutputBusLuV=Humongous Output Bus (LuV)
+HumongousOutputBusZPM=Humongous Output Bus (ZPM)
+HumongousOutputBusUV=Humongous Output Bus (UV)
+HumongousOutputBusUHV=Humongous Output Bus (UHV)
+HumongousOutputBusUEV=Humongous Output Bus (UEV)
+HumongousOutputBusUIV=Humongous Output Bus (UIV)
+HumongousOutputBusUMV=Humongous Output Bus (UMV)
+HumongousOutputBusUXV=Humongous Output Bus (UXV)
+HumongousOutputBusMAX=Humongous Output Bus (MAX)
+Tooltip_HumongousOutputBus_00=Item Output for Multiblocks
+Tooltip_HumongousOutputBus_01=Item slot count: 
+Tooltip_HumongousOutputBus_02=Left click with data stick to save filter config
+Tooltip_HumongousOutputBus_03=Right click with data stick to load filter config
+
 HumongousDualInputHatchLV=Humongous Input Assembly (LV)
 HumongousDualInputHatchMV=Humongous Input Assembly (MV)
 HumongousDualInputHatchHV=Humongous Input Assembly (HV)

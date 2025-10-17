@@ -79,7 +79,7 @@ public class PrimitiveDistillationTower extends SteamMultiMachineBase<PrimitiveD
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("PrimitiveDistillationTowerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PrimitiveDistillationTower_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PrimitiveDistillationTower_01"))

@@ -214,7 +214,7 @@ public class LargeSteamFormingPress extends SteamMultiMachineBase<LargeSteamForm
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamFormingPressRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamFormingPress_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamFormingPress_01"))

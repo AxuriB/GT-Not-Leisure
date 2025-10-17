@@ -116,7 +116,7 @@ public class SteamGreenhouseModule extends SteamElevatorModule implements IGreen
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamGreenhouseModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamGreenhouseModule_01"))
@@ -307,9 +307,9 @@ public class SteamGreenhouseModule extends SteamElevatorModule implements IGreen
         this.guiDropTracker = new GreenHouseDropTable();
 
         if (mode == GreenHouseModes.IC2) {
-            buckets.forEach(bucket -> bucket.addProgress(200, guiDropTracker));
+            buckets.forEach(bucket -> bucket.addProgress(10, guiDropTracker));
         } else {
-            buckets.forEach(bucket -> bucket.addProgress(100, guiDropTracker));
+            buckets.forEach(bucket -> bucket.addProgress(10, guiDropTracker));
         }
 
         guiDropTracker.addTo(dropTracker, 1);

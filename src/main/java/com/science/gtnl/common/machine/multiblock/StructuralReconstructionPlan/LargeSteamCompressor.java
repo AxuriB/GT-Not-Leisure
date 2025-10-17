@@ -263,7 +263,7 @@ public class LargeSteamCompressor extends SteamMultiMachineBase<LargeSteamCompre
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamCompressorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCompressor_01"))

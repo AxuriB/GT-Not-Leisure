@@ -256,7 +256,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("Tooltip_WhiteNightGenerator_MachineType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WhiteNightGenerator_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_WhiteNightGenerator_01"))

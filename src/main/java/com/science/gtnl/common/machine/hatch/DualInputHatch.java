@@ -41,6 +41,8 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
     public int mCapacityPer;
     public int itemSlotAmount;
 
+    public Inventory inventory;
+
     public static class Inventory implements IDualInputInventory {
 
         private final ItemStack[] itemInventory;
@@ -85,8 +87,6 @@ public class DualInputHatch extends MTEHatchInputBus implements IAddUIWidgets, I
             return true;
         }
     }
-
-    Inventory inventory;
 
     public DualInputHatch(int aID, String aName, String aNameRegional, int aTier) {
         super(

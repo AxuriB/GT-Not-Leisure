@@ -246,13 +246,13 @@ public class RecipeLoader {
         for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
             int duration = recipe.mDuration;
 
-            if (duration > 200000) {
+            if (duration >= 200000) {
                 duration /= 100;
-            } else if (duration > 40000) {
+            } else if (duration >= 40000) {
                 duration /= 10;
-            } else if (duration > 10000) {
+            } else if (duration >= 10000) {
                 duration /= 4;
-            } else if (duration > 4000) {
+            } else if (duration >= 4000) {
                 duration /= 2;
             }
 
@@ -275,7 +275,7 @@ public class RecipeLoader {
     }
 
     @SuppressWarnings("unchecked")
-    private static void registerTradeForVillager(int villagerId) {
+    public static void registerTradeForVillager(int villagerId) {
         VillagerRegistry.instance()
             .registerVillageTradeHandler(villagerId, (villager, recipeList, random) -> {
                 recipeList.add(
@@ -420,7 +420,7 @@ public class RecipeLoader {
             });
     }
 
-    private static void loadCircuitRelatedRecipes() {
+    public static void loadCircuitRelatedRecipes() {
         RecipeUtil.copyAllRecipes(RecipePool.ConvertToCircuitAssembler, RecipeMaps.circuitAssemblerRecipes);
 
         new CircuitAssemblyLineRecipes().loadRecipes();
@@ -430,7 +430,7 @@ public class RecipeLoader {
         }
     }
 
-    private static void registerBuffTargetChamberRecipe() {
+    public static void registerBuffTargetChamberRecipe() {
         Collection<GTRecipe> targetChamberRecipe = LanthanidesRecipeMaps.targetChamberRecipes.getAllRecipes();
         LanthanidesRecipeMaps.targetChamberRecipes.getBackend()
             .clearRecipes();

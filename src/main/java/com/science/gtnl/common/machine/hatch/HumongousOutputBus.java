@@ -1,123 +1,67 @@
 package com.science.gtnl.common.machine.hatch;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import static gregtech.api.util.GTUtility.*;
+import static gregtech.api.util.GTUtility.areStacksEqual;
+import static gregtech.api.util.GTUtility.isStackInvalid;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.science.gtnl.Utils.item.ItemUtils;
-import com.science.gtnl.api.mixinHelper.ISkipStackSizeCheck;
+import com.science.gtnl.api.IInfinitySlot;
 
 import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.util.GTUtility;
 
-public class HumongousDualInputHatch extends DualInputHatch implements ISkipStackSizeCheck {
+public class HumongousOutputBus extends MTEHatchOutputBus implements IAddGregtechLogo, IInfinitySlot {
 
-    public HumongousDualInputHatch(int id, String name, String nameRegional, int aTier) {
-        super(id, name, nameRegional, aTier);
-        this.mStoredFluid = new FluidStack[aTier];
-        this.fluidTanks = new FluidStackTank[aTier];
-        this.mCapacityPer = Integer.MAX_VALUE;
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_DualInputHatch_02_00")
-            + GTUtility.formatNumbers(aTier)
-            + StatCollector.translateToLocal("Tooltip_DualInputHatch_02_01")
-            + GTUtility.formatNumbers(mCapacityPer)
-            + "L";
+    public int itemSlotAmount;
 
-        for (int i = 0; i < aTier; i++) {
-            final int index = i;
-            this.fluidTanks[i] = new FluidStackTank(
-                () -> mStoredFluid[index],
-                fluid -> mStoredFluid[index] = fluid,
-                mCapacityPer);
-        }
-        this.inventory = new Inventory(mInventory, mStoredFluid);
-        this.disableSort = true;
+    public HumongousOutputBus(int aID, String aName, String aNameRegional, int aTier) {
+        super(
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { StatCollector.translateToLocal("Tooltip_HumongousOutputBus_00"), "",
+                StatCollector.translateToLocal("Tooltip_HumongousOutputBus_02"),
+                StatCollector.translateToLocal("Tooltip_HumongousOutputBus_03") },
+            aTier * aTier);
+        this.itemSlotAmount = aTier * aTier;
+        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_HumongousOutputBus_01") + itemSlotAmount;
     }
 
-    public HumongousDualInputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
-        this.mStoredFluid = new FluidStack[aTier];
-        this.fluidTanks = new FluidStackTank[aTier];
-        this.mCapacityPer = Integer.MAX_VALUE;
-        mDescriptionArray[2] = StatCollector.translateToLocal("Tooltip_DualInputHatch_02_00")
-            + GTUtility.formatNumbers(aTier)
-            + StatCollector.translateToLocal("Tooltip_DualInputHatch_02_01")
-            + GTUtility.formatNumbers(mCapacityPer)
-            + "L";
-
-        for (int i = 0; i < aTier; i++) {
-            final int index = i;
-            this.fluidTanks[i] = new FluidStackTank(
-                () -> mStoredFluid[index],
-                fluid -> mStoredFluid[index] = fluid,
-                mCapacityPer);
-        }
-        this.inventory = new Inventory(mInventory, mStoredFluid);
-        this.disableSort = true;
+    public HumongousOutputBus(String name, int aTier, String[] description, ITexture[][][] textures) {
+        super(name, aTier, aTier * aTier, description, textures);
+        this.itemSlotAmount = aTier * aTier;
+        mDescriptionArray[1] = StatCollector.translateToLocal("Tooltip_HumongousOutputBus_01") + itemSlotAmount;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new HumongousDualInputHatch(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return Integer.MAX_VALUE;
-    }
-
-    @Override
-    public void setItemNBT(NBTTagCompound aNBT) {
-        super.setItemNBT(aNBT);
-        if (mInventory != null && mInventory.length > 0) {
-            NBTTagList itemList = new NBTTagList();
-            for (short i = 0; i < mInventory.length; i++) {
-                ItemStack stack = mInventory[i];
-                if (stack != null && stack.stackSize > 0) {
-                    NBTTagCompound itemTag = new NBTTagCompound();
-                    writeItemStackToNBT(itemTag, stack, i);
-                    itemList.appendTag(itemTag);
-                }
-            }
-            aNBT.setTag("Inventory", itemList);
-        }
-
-        if (mStoredFluid != null && mStoredFluid.length > 0) {
-            for (short i = 0; i < mStoredFluid.length; i++) {
-                FluidStack fluid = mStoredFluid[i];
-                if (fluid != null && fluid.amount > 0) {
-                    NBTTagCompound fluidTag = new NBTTagCompound();
-                    fluid.writeToNBT(fluidTag);
-                    aNBT.setTag("mFluid" + i, fluidTag);
-                }
-            }
-        }
+        return new HumongousOutputBus(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -130,22 +74,11 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
                 ItemStack stack = mInventory[i];
                 if (stack != null && stack.stackSize > 0) {
                     NBTTagCompound itemTag = new NBTTagCompound();
-                    writeItemStackToNBT(itemTag, stack, i);
+                    HumongousDualInputHatch.writeItemStackToNBT(itemTag, stack, i);
                     itemList.appendTag(itemTag);
                 }
             }
             aNBT.setTag("Inventory", itemList);
-        }
-
-        if (mStoredFluid != null && mStoredFluid.length > 0) {
-            for (short i = 0; i < mStoredFluid.length; i++) {
-                FluidStack fluid = mStoredFluid[i];
-                if (fluid != null && fluid.amount > 0) {
-                    NBTTagCompound fluidTag = new NBTTagCompound();
-                    fluid.writeToNBT(fluidTag);
-                    aNBT.setTag("mFluid" + i, fluidTag);
-                }
-            }
         }
     }
 
@@ -159,87 +92,49 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
                 NBTTagCompound itemTag = itemList.getCompoundTagAt(i);
                 int slot = itemTag.getInteger("IntSlot");
                 if (slot >= 0 && slot < mInventory.length) {
-                    mInventory[slot] = readItemStackFromNBT(itemTag);
-                }
-            }
-        }
-
-        if (mStoredFluid != null && mStoredFluid.length > 0) {
-            for (short i = 0; i < mStoredFluid.length; i++) {
-                String key = "mFluid" + i;
-                if (aNBT.hasKey(key)) {
-                    mStoredFluid[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag(key));
+                    mInventory[slot] = HumongousDualInputHatch.readItemStackFromNBT(itemTag);
                 }
             }
         }
     }
 
-    public static void writeItemStackToNBT(NBTTagCompound tag, ItemStack stack, int slot) {
-        if (stack == null) return;
-        tag.setInteger("id", Item.getIdFromItem(stack.getItem()));
-        tag.setInteger("Damage", stack.getItemDamage());
-        tag.setInteger("Count", stack.stackSize);
-        tag.setInteger("IntSlot", slot);
+    @Override
+    public boolean storePartial(ItemStack stack, boolean simulate) {
+        markDirty();
 
-        if (stack.stackTagCompound != null) {
-            tag.setTag("tag", stack.stackTagCompound);
+        if (lockedItem != null && !lockedItem.isItemEqual(stack)) return false;
+
+        int invLength = mInventory.length;
+
+        for (int i = 0; i < invLength && stack.stackSize > 0; i++) {
+            @Nullable
+            ItemStack slot = mInventory[i];
+
+            // the slot has an item and the stacks can't be merged; ignore it
+            if (!isStackInvalid(slot) && !areStacksEqual(slot, stack)) continue;
+
+            int inSlot = slot == null ? 0 : slot.stackSize;
+
+            int toInsert = Math.min(Math.min(getInventoryStackLimit(), Integer.MAX_VALUE - inSlot), stack.stackSize);
+
+            if (toInsert == 0) continue;
+
+            if (!simulate) {
+                // if the slot is invalid create an empty stack in it
+                if (isStackInvalid(slot)) mInventory[i] = slot = stack.splitStack(0);
+
+                slot.stackSize += toInsert;
+            }
+
+            stack.stackSize -= toInsert;
         }
-    }
 
-    public static ItemStack readItemStackFromNBT(NBTTagCompound tag) {
-        if (!tag.hasKey("id") || !tag.hasKey("Count") || !tag.hasKey("Damage")) return null;
-
-        int id = tag.getInteger("id");
-        int meta = tag.getInteger("Damage");
-        long count = tag.getInteger("Count");
-
-        if (count <= 0) return null;
-
-        ItemStack stack = new ItemStack(Item.getItemById(id), Math.toIntExact(count), meta);
-
-        if (tag.hasKey("tag")) {
-            stack.stackTagCompound = tag.getCompoundTag("tag");
-        }
-        return stack;
+        return stack.stackSize == 0;
     }
 
     @Override
-    protected void fillStacksIntoFirstSlots() {
-        final int L = mInventory.length - 1;
-        HashMap<GTUtility.ItemId, Integer> slots = new HashMap<>(L);
-        HashMap<GTUtility.ItemId, ItemStack> stacks = new HashMap<>(L);
-        List<GTUtility.ItemId> order = new ArrayList<>(L);
-        List<Integer> validSlots = new ArrayList<>(L);
-        for (int i = 0; i < L; i++) {
-            if (!isValidSlot(i)) continue;
-            validSlots.add(i);
-            ItemStack s = mInventory[i];
-            if (s == null) continue;
-            GTUtility.ItemId sID = GTUtility.ItemId.createNoCopy(s);
-            slots.merge(sID, s.stackSize, Integer::sum);
-            if (!stacks.containsKey(sID)) stacks.put(sID, s);
-            order.add(sID);
-            mInventory[i] = null;
-        }
-        int slotindex = 0;
-        for (GTUtility.ItemId sID : order) {
-            int toSet = slots.get(sID);
-            if (toSet == 0) continue;
-            int slot = validSlots.get(slotindex);
-            slotindex++;
-            mInventory[slot] = stacks.get(sID)
-                .copy();
-            toSet = Math.toIntExact(toSet);
-            mInventory[slot].stackSize = toSet;
-            slots.merge(sID, toSet, (a, b) -> a - b);
-        }
-    }
-
-    @Override
-    public void onBlockDestroyed() {
-        Arrays.fill(mInventory, null);
-        Arrays.fill(mStoredFluid, null);
-        super.onBlockDestroyed();
+    public int getInventoryStackLimit() {
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -255,20 +150,14 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
         for (int row = 0; row < itemRows; row++) {
             for (int col = 0; col < itemColumns; col++) {
                 int slotIndex = row * itemColumns + col;
-                if (slotIndex < itemSlotAmount - 1) {
+                if (slotIndex <= itemSlotAmount) {
                     builder.widget(
                         SlotWidget.phantom(inventoryHandler, slotIndex)
                             .disableInteraction()
                             .setBackground(ModularUITextures.ITEM_SLOT)
-                            .setPos(centerX + col * 18 + 5, centerY + row * 18));
+                            .setPos(centerX + col * 18 + 14, centerY + row * 18));
                 }
             }
-        }
-
-        for (int i = 0; i < mTier; i++) {
-            builder.widget(
-                new FluidSlotWidget(fluidTanks[i]).setBackground(ModularUITextures.FLUID_SLOT)
-                    .setPos(centerX + 18 * itemColumns + 5, centerY + i * 18));
         }
 
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
@@ -282,7 +171,21 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
             .setSize(16, 16)
             .setPos(170 + 4 * (mTier - 1) + mTier / 2, 102 + 14 * (mTier - 1)));
 
+        builder.widget(
+            new PhantomItemButton(this).setPos(169 + 4 * (mTier - 1) + mTier / 2, 83 + 14 * (mTier - 1))
+                .setBackground(PhantomItemButton.FILTER_BACKGROUND));
+
         addGregTechLogo(builder);
+    }
+
+    @Override
+    public int getGUIWidth() {
+        return super.getGUIWidth() + 9 * (mTier - 1);
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return super.getGUIHeight() + 14 * (mTier - 1);
     }
 
     @Override
@@ -399,20 +302,6 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
                 if (stack.stackSize <= 0) mInventory[i] = null;
             }
         }
-
-        if (targetTile instanceof IFluidHandler fluidHandler) {
-            for (int i = 0; i < mStoredFluid.length; i++) {
-                FluidStack fluid = mStoredFluid[i];
-                if (fluid != null && fluid.amount > 0) {
-                    int filled = fluidHandler.fill(front.getOpposite(), fluid.copy(), true);
-                    if (filled > 0) {
-                        fluid.amount -= filled;
-                        if (fluid.amount <= 0) mStoredFluid[i] = null;
-                    }
-                }
-            }
-        }
-        updateSlots();
         base.markDirty();
     }
 }

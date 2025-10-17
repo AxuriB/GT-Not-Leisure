@@ -258,7 +258,7 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(StatCollector.translateToLocal("PhotovoltaicPowerStationRecipeType"))
                 .addInfo(StatCollector.translateToLocal("Tooltip_PhotovoltaicPowerStation_00"))
                 .addInfo(StatCollector.translateToLocal("Tooltip_PhotovoltaicPowerStation_01"))
@@ -321,7 +321,7 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(StatCollector.translateToLocal("PhotovoltaicPowerStationRecipeType"))
                 .addInfo(StatCollector.translateToLocal("Tooltip_PhotovoltaicPowerStation_00"))
                 .addInfo(StatCollector.translateToLocal("Tooltip_PhotovoltaicPowerStation_01"))
@@ -384,7 +384,7 @@ public abstract class PhotovoltaicPowerStation extends MultiMachineBase<Photovol
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(StatCollector.translateToLocal("PhotovoltaicPowerStationRecipeType"))
                 .addInfo(StatCollector.translateToLocal("Tooltip_PhotovoltaicPowerStation_00"))
                 .addInfo(StatCollector.translateToLocal("Tooltip_PhotovoltaicPowerStation_01"))

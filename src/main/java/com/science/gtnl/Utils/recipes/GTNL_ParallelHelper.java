@@ -12,11 +12,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.api.IConfigurationMaintenance;
 import com.science.gtnl.config.MainConfig;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -30,111 +33,111 @@ import gregtech.api.util.VoidProtectionHelper;
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 public class GTNL_ParallelHelper extends ParallelHelper {
 
-    protected static final double MAX_BATCH_MODE_TICK_TIME = 128;
+    public static final double MAX_BATCH_MODE_TICK_TIME = 128;
     /**
      * Machine used for calculation
      */
-    protected IVoidable machine;
+    public IVoidable machine;
     /**
      * Machine used for single recipe locking calculation
      */
-    protected IRecipeLockable singleRecipeMachine;
+    public IRecipeLockable singleRecipeMachine;
     /**
      * Is locked to a single recipe?
      */
-    protected boolean isRecipeLocked;
+    public boolean isRecipeLocked;
     /**
      * Recipe used when trying to calculate parallels
      */
-    protected GTRecipe recipe;
+    public GTRecipe recipe;
     /**
      * EUt available to the multiblock (This should be the total eut available)
      */
-    protected long availableEUt;
+    public long availableEUt;
     /**
      * The current parallel possible for the multiblock
      */
-    protected int currentParallel = 0;
+    public int currentParallel = 0;
     /**
      * The maximum possible parallel possible for the multiblock
      */
-    protected int maxParallel = 1;
+    public int maxParallel = 1;
     /**
      * The Batch Modifier applied when batch mode is enabled. 1 does nothing. 2 doubles max possible
      * parallel, but also duration
      */
-    protected int batchModifier = 1;
+    public int batchModifier = 1;
     /**
      * The inputs of the multiblock for the current recipe check
      */
-    protected ItemStack[] itemInputs;
+    public ItemStack[] itemInputs;
     /**
      * The outputs of the recipe with the applied parallel
      */
-    protected ItemStack[] itemOutputs;
+    public ItemStack[] itemOutputs;
     /**
      * The inputs of the multiblock for the current recipe check
      */
-    protected FluidStack[] fluidInputs;
+    public FluidStack[] fluidInputs;
     /**
      * The outputs of the recipe with the applied parallel
      */
-    protected FluidStack[] fluidOutputs;
+    public FluidStack[] fluidOutputs;
     /**
      * Does the multi have void protection enabled for items
      */
-    protected boolean protectExcessItem;
+    public boolean protectExcessItem;
     /**
      * Does the multi have void protection enabled for fluids
      */
-    protected boolean protectExcessFluid;
+    public boolean protectExcessFluid;
     /**
      * Should the Parallel Helper automatically consume for the multi
      */
-    protected boolean consume;
+    public boolean consume;
     /**
      * Is batch mode turned on?
      */
-    protected boolean batchMode;
+    public boolean batchMode;
     /**
      * Should the Parallel Helper automatically calculate the outputs of the recipe with current parallel?
      */
-    protected boolean calculateOutputs;
+    public boolean calculateOutputs;
     /**
      * Has the Parallel Helper been built?
      */
-    protected boolean built;
+    public boolean built;
     /**
      * What is the duration multiplier with batch mode enabled
      */
-    protected double durationMultiplier;
+    public double durationMultiplier;
     /**
      * Modifier which is applied on the recipe eut. Useful for GT++ machines
      */
-    protected double eutModifier = 1;
+    public double eutModifier = 1;
     /**
      * Multiplier that is applied on the output chances
      */
-    protected double chanceMultiplier = 1;
+    public double chanceMultiplier = 1;
     /**
      * Method for calculating max parallel from given inputs.
      */
-    protected MaxParallelCalculator maxParallelCalculator = GTRecipe::maxParallelCalculatedByInputs;
+    public ParallelHelper.MaxParallelCalculator maxParallelCalculator = GTRecipe::maxParallelCalculatedByInputs;
     /**
      * Method for consuming inputs after determining how many parallels it can execute.
      */
-    protected InputConsumer inputConsumer = GTRecipe::consumeInput;
+    public ParallelHelper.InputConsumer inputConsumer = GTRecipe::consumeInput;
 
     /**
      * Calculator to use for overclocking
      */
-    protected GTNL_OverclockCalculator calculator;
+    public GTNL_OverclockCalculator calculator;
     @Nonnull
-    protected CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
+    public CheckRecipeResult result = CheckRecipeResultRegistry.NONE;
 
-    protected Function<Integer, ItemStack[]> customItemOutputCalculation;
+    public Function<Integer, ItemStack[]> customItemOutputCalculation;
 
-    protected Function<Integer, FluidStack[]> customFluidOutputCalculation;
+    public Function<Integer, FluidStack[]> customFluidOutputCalculation;
 
     public GTNL_ParallelHelper() {}
 
@@ -305,7 +308,7 @@ public class GTNL_ParallelHelper extends ParallelHelper {
     /**
      * Sets method for calculating max parallel from given inputs.
      */
-    public GTNL_ParallelHelper setMaxParallelCalculator(MaxParallelCalculator maxParallelCalculator) {
+    public GTNL_ParallelHelper setMaxParallelCalculator(ParallelHelper.MaxParallelCalculator maxParallelCalculator) {
         this.maxParallelCalculator = maxParallelCalculator;
         return this;
     }
@@ -313,7 +316,7 @@ public class GTNL_ParallelHelper extends ParallelHelper {
     /**
      * Sets method for consuming inputs after determining how many parallels it can execute.
      */
-    public GTNL_ParallelHelper setInputConsumer(InputConsumer inputConsumer) {
+    public GTNL_ParallelHelper setInputConsumer(ParallelHelper.InputConsumer inputConsumer) {
         this.inputConsumer = inputConsumer;
         return this;
     }
@@ -402,7 +405,16 @@ public class GTNL_ParallelHelper extends ParallelHelper {
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
     @Override
-    protected void determineParallel() {
+    public void determineParallel() {
+        if (machine instanceof MTEMultiBlockBase multiBlockBase) {
+            for (MTEHatchMaintenance maintenance : multiBlockBase.mMaintenanceHatches) {
+                if (maintenance instanceof IConfigurationMaintenance customMaintenance
+                    && customMaintenance.isConfiguration()) {
+                    recipe.mDuration = recipe.mDuration * customMaintenance.getConfigTime() / 100;
+                }
+            }
+        }
+
         if (!ModList.Overpowered.isModLoaded() && MainConfig.enableRecipeOutputChance) {
             // Compute optional bonus based on machine and current EU/t
             OptionalDouble bonusOptional = ChanceBonusManager
@@ -569,7 +581,7 @@ public class GTNL_ParallelHelper extends ParallelHelper {
     }
 
     @Override
-    protected void copyInputs() {
+    public void copyInputs() {
         ItemStack[] itemInputsToUse;
         FluidStack[] fluidInputsToUse;
         itemInputsToUse = new ItemStack[itemInputs.length];
@@ -585,7 +597,7 @@ public class GTNL_ParallelHelper extends ParallelHelper {
     }
 
     @Override
-    protected void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
+    public void calculateItemOutputs(ItemStack[] truncatedItemOutputs) {
         if (customItemOutputCalculation != null) {
             itemOutputs = customItemOutputCalculation.apply(currentParallel);
             return;
@@ -607,7 +619,7 @@ public class GTNL_ParallelHelper extends ParallelHelper {
     }
 
     @Override
-    protected void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
+    public void calculateFluidOutputs(FluidStack[] truncatedFluidOutputs) {
         if (customFluidOutputCalculation != null) {
             fluidOutputs = customFluidOutputCalculation.apply(currentParallel);
             return;
@@ -679,17 +691,5 @@ public class GTNL_ParallelHelper extends ParallelHelper {
             }
             fluidList.add(GTUtility.copyAmount((int) amount, origin));
         }
-    }
-
-    @FunctionalInterface
-    public interface MaxParallelCalculator {
-
-        double calculate(GTRecipe recipe, int maxParallel, FluidStack[] fluids, ItemStack[] items);
-    }
-
-    @FunctionalInterface
-    public interface InputConsumer {
-
-        void consume(GTRecipe recipe, int amountMultiplier, FluidStack[] aFluidInputs, ItemStack[] aInputs);
     }
 }

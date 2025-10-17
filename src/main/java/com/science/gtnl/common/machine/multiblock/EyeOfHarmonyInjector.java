@@ -321,7 +321,7 @@ public class EyeOfHarmonyInjector extends TTMultiblockBase implements IConstruct
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("EyeOfHarmonyInjectorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EyeOfHarmonyInjector_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_EyeOfHarmonyInjector_01"))

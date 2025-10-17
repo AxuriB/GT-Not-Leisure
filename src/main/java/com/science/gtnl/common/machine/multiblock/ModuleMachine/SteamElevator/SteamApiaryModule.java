@@ -1,10 +1,12 @@
 package com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator;
 
 import static forestry.api.apiculture.BeeManager.beeRoot;
+import static gregtech.api.metatileentity.BaseTileEntity.*;
 import static gregtech.api.util.GTUtility.*;
 import static kubatech.api.gui.KubaTechUITextures.*;
 import static kubatech.api.utils.ItemUtils.readItemStackFromNBT;
 import static kubatech.api.utils.ItemUtils.writeItemStackToNBT;
+import static net.minecraft.util.StatCollector.*;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -34,8 +36,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
@@ -63,6 +67,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.EnumBeeType;
+import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.apiculture.IBeekeepingMode;
 import forestry.plugins.PluginApiculture;
 import gregtech.api.enums.GTValues;
@@ -199,7 +204,7 @@ public class SteamApiaryModule extends SteamElevatorModule {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamApiaryModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamApiaryModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamApiaryModule_01"))
@@ -289,6 +294,7 @@ public class SteamApiaryModule extends SteamElevatorModule {
 
         public ItemStack queenStack;
         public List<BeeDrop> drops = new ArrayList<>();
+        public List<BeeDrop> specialDrops = new ArrayList<>();
         public boolean isValid;
         public float beeSpeed;
         public float maxBeeCycles;
@@ -308,8 +314,11 @@ public class SteamApiaryModule extends SteamElevatorModule {
             queenStack = readItemStackFromNBT(tag.getCompoundTag("queenStack"));
             isValid = tag.getBoolean("isValid");
             drops = new ArrayList<>();
+            specialDrops = new ArrayList<>();
             for (int i = 0, isize = tag.getInteger("dropssize"); i < isize; i++)
                 drops.add(new BeeDrop(tag.getCompoundTag("drops" + i)));
+            for (int i = 0, isize = tag.getInteger("specialDropssize"); i < isize; i++)
+                specialDrops.add(new BeeDrop(tag.getCompoundTag("specialDrops" + i)));
             beeSpeed = tag.getFloat("beeSpeed");
             maxBeeCycles = tag.getFloat("maxBeeCycles");
         }
@@ -323,6 +332,11 @@ public class SteamApiaryModule extends SteamElevatorModule {
                 "drops" + i,
                 drops.get(i)
                     .toNBTTagCompound());
+            tag.setInteger("specialDropssize", specialDrops.size());
+            for (int i = 0; i < specialDrops.size(); i++) tag.setTag(
+                "specialDrops" + i,
+                specialDrops.get(i)
+                    .toNBTTagCompound());
             tag.setFloat("beeSpeed", beeSpeed);
             tag.setFloat("maxBeeCycles", maxBeeCycles);
             return tag;
@@ -331,6 +345,7 @@ public class SteamApiaryModule extends SteamElevatorModule {
         public void generate(World world, float t) {
             if (mode == null) mode = beeRoot.getBeekeepingMode(world);
             drops.clear();
+            specialDrops.clear();
             if (beeRoot.getType(this.queenStack) != EnumBeeType.QUEEN) return;
 
             var queen = beeRoot.getMember(this.queenStack);
@@ -338,16 +353,24 @@ public class SteamApiaryModule extends SteamElevatorModule {
 
             beeSpeed = genome.getSpeed();
 
+            IAlleleBeeSpecies primary = genome.getPrimary();
+
             genome.getPrimary()
                 .getProductChances()
                 .forEach((key, value) -> drops.add(new BeeDrop(key, value, beeSpeed, t)));
             genome.getSecondary()
                 .getProductChances()
                 .forEach((key, value) -> drops.add(new BeeDrop(key, value / 2f, beeSpeed, t)));
+            primary.getSpecialtyChances()
+                .forEach((key, value) -> specialDrops.add(new BeeDrop(key, value, beeSpeed, t)));
         }
 
         public List<ItemStack> getDrops(final SteamApiaryModule machine, final double timePassed) {
             drops.forEach(d -> {
+                machine.dropProgress.merge(d.id, d.getAmount(timePassed / 550d), Double::sum);
+                if (!dropstacks.containsKey(d.id)) dropstacks.put(d.id, d.stack);
+            });
+            specialDrops.forEach(d -> {
                 machine.dropProgress.merge(d.id, d.getAmount(timePassed / 550d), Double::sum);
                 if (!dropstacks.containsKey(d.id)) dropstacks.put(d.id, d.stack);
             });
@@ -536,6 +559,9 @@ public class SteamApiaryModule extends SteamElevatorModule {
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+
+        buildContext.addSyncedWindow(OC_WINDOW_ID, this::createRecipeOcCountWindow);
+
         isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
@@ -587,6 +613,24 @@ public class SteamApiaryModule extends SteamElevatorModule {
             configurationElements.setSpace(2)
                 .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
                 .setPos(getRecipeLockingButtonPos().add(18, 0)));
+
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                widget.getContext()
+                    .openSyncedWindow(OC_WINDOW_ID);
+            }
+        })
+            .setPlayClickSound(true)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                ret.add(GTUITextures.BUTTON_STANDARD);
+                ret.add(GTUITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                return ret.toArray(new IDrawable[0]);
+            })
+            .addTooltip(translateToLocal("Info_SteamMachine_00"))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setPos(174, 112)
+            .setSize(16, 16));
     }
 
     @Override

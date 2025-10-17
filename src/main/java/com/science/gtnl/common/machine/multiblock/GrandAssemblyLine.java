@@ -135,7 +135,7 @@ public class GrandAssemblyLine extends GTMMultiMachineBase<GrandAssemblyLine> im
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("GrandAssemblyLineRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GrandAssemblyLine_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GrandAssemblyLine_01"))

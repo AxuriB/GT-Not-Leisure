@@ -201,7 +201,7 @@ public class LargeSteamAlloySmelter extends SteamMultiMachineBase<LargeSteamAllo
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamAlloySmelterRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamAlloySmelter_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamAlloySmelter_01"))

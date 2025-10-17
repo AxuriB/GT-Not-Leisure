@@ -168,7 +168,7 @@ public class FOGAlloyBlastSmelterModule extends MTEBaseModule {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("FOGAlloyBlastSmelterModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_FOGAlloyBlastSmelterModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_FOGAlloyBlastSmelterModule_01"))

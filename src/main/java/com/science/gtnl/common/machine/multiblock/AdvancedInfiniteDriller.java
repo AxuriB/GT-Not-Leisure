@@ -108,7 +108,7 @@ public class AdvancedInfiniteDriller extends MultiMachineBase<AdvancedInfiniteDr
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("AdvancedInfiniteDrillerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_AdvancedInfiniteDriller_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_AdvancedInfiniteDriller_01"))
