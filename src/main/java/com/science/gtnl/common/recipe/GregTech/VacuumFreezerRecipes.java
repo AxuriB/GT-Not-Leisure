@@ -16,7 +16,7 @@ public class VacuumFreezerRecipes implements IRecipePool {
     public void loadRecipes() {
         GTValues.RA.stdBuilder()
             .fluidInputs(MaterialPool.EnderAir.getFluidOrGas(4000))
-            .fluidOutputs(MaterialPool.FluidEnderAir.getFluidOrGas(4000))
+            .fluidOutputs(MaterialPool.LiquidEnderAir.getFluidOrGas(4000))
             .specialValue(0)
             .duration(80)
             .eut(TierEU.RECIPE_HV)

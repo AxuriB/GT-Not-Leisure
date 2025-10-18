@@ -47,7 +47,7 @@ public class GasCollectorRecipes implements IRecipePool {
                 GTUtility.getIntegratedCircuit(4),
                 new ItemStack(ModBlocks.getBlock("ED"), 0),
                 ItemList.Machine_Multi_VacuumFreezer.get(0))
-            .fluidOutputs(MaterialPool.FluidEnderAir.getFluidOrGas(10000))
+            .fluidOutputs(MaterialPool.LiquidEnderAir.getFluidOrGas(10000))
             .duration(200)
             .eut(TierEU.RECIPE_IV)
             .addTo(GCR);

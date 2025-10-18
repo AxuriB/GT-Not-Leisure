@@ -1277,7 +1277,7 @@ Material.sandsluice.name=沙子泥浆
 Material.obsidiansluice.name=黑曜石泥浆
 Material.gemsluice.name=宝石泥浆
 Material.enderair.name=末地空气
-Material.fluidenderair.name=液态末地空气
+Material.liquidenderair.name=液态末地空气
 Material.periodicium=錭錤錶
 Material.stargate=星门
 
@@ -1402,7 +1402,7 @@ fluid.sandsluice.name=沙子泥浆
 fluid.obsidiansluice.name=黑曜石泥浆
 fluid.gemsluice.name=宝石泥浆
 fluid.enderair.name=末地空气
-fluid.fluidenderair.name=液态末地空气
+fluid.liquidenderair.name=液态末地空气
 fluid.periodicium=錭錤錶
 fluid.stargate=星门
 
@@ -1528,7 +1528,7 @@ fluid.molten.obsidiansluice.name=黑曜石泥浆
 fluid.molten.gemsluice.name=宝石泥浆
 fluid.molten.periodicium=錭錤錶
 fluid.molten.enderair.name=末地空气
-fluid.molten.fluidenderair.name=液态末地空气
+fluid.molten.Liduidenderair.name=液态末地空气
 fluid.molten.stargate=星门
 
 gt.blockmachines.wire.stargate.01.name=1x%material导线

@@ -137,7 +137,8 @@ public class LanguageLoader {
         addWerkstoffLocalization(MaterialPool.ObsidianSluice, "黑曜石泥浆");
         addWerkstoffLocalization(MaterialPool.GemSluice, "宝石泥浆");
         addWerkstoffLocalization(MaterialPool.EnderAir, "末地空气");
-        addWerkstoffLocalization(MaterialPool.FluidEnderAir, "液态末地空气");
+        addWerkstoffLocalization(MaterialPool.LiquidEnderAir, "液态末地空气");
+        addWerkstoffLocalization(MaterialPool.MixturePineoil, "松油混合物");
         addWerkstoffLocalization(MaterialPool.Periodicium, "錭錤錶");
         addWerkstoffLocalization(MaterialPool.Stargate, "星门");
 

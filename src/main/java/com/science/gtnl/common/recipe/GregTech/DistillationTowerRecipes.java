@@ -71,7 +71,7 @@ public class DistillationTowerRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.EnderPearl, 1))
-            .fluidInputs(MaterialPool.FluidEnderAir.getFluidOrGas(200000))
+            .fluidInputs(MaterialPool.LiquidEnderAir.getFluidOrGas(200000))
             .fluidOutputs(
                 Materials.NitrogenDioxide.getGas(120000),
                 Materials.Deuterium.getGas(40000),
