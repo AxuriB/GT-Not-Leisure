@@ -680,6 +680,9 @@ public class ItemLoader {
 
         GTNLItemList.ManaElectricProspectorTool
             .set(ElectricProspectorTool.initItem("Mana Electric Prospector Tool", 0, 25, 9999));
+
+        GTNLItemList.DebugElectricProspectorTool
+            .set(ElectricProspectorTool.initItem("Debug Electric Prospector Tool", 1, 50, Integer.MAX_VALUE));
     }
 
     public static void registry() {

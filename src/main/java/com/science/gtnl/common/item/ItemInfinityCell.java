@@ -95,12 +95,6 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
         itemStacks.add(ItemLoader.infinityDyeFluidCell);
     }
 
-    public static ItemStack getSubItem(StorageChannel s, String unlocalizedName, String textureName,
-        SubItem... subItems) {
-        var cell = getSubItem(s, textureName, subItems);
-        return setInfinityUnlocalizedName(cell, unlocalizedName);
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister register) {
@@ -131,8 +125,20 @@ public class ItemInfinityCell extends ItemCreativeStorageCell implements IStorag
         return getIcon(stack, 0);
     }
 
+    public static ItemStack getSubItem(StorageChannel s, String unlocalizedName, String textureName,
+        List<SubItem> subItemsList) {
+        var cell = getSubItem(s, textureName, subItemsList.toArray(new SubItem[0]));
+        return setInfinityUnlocalizedName(cell, unlocalizedName);
+    }
+
     public static ItemStack getSubItem(StorageChannel s, SubItem... subItems) {
         return getSubItem(s, null, subItems);
+    }
+
+    public static ItemStack getSubItem(StorageChannel s, String unlocalizedName, String textureName,
+        SubItem... subItems) {
+        var cell = getSubItem(s, textureName, subItems);
+        return setInfinityUnlocalizedName(cell, unlocalizedName);
     }
 
     public static ItemStack getSubItem(StorageChannel s, String textureName, SubItem... subItems) {

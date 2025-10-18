@@ -311,7 +311,7 @@ public class AnimatedText {
         animatedText(
             "茯角",
             1,
-            40,
+            100,
             RED + BOLD + UNDERLINE,
             BLUE + BOLD + UNDERLINE,
             RED + BOLD + UNDERLINE,

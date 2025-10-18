@@ -54,6 +54,7 @@ public class ExtremeExtremeEntityCrusherRecipes {
 
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setString("mobType", mobType);
+        nbt.setBoolean("eio.abstractMachine", true);
         spawner.setTagCompound(nbt);
 
         List<Pair<ItemStack, Integer>> merged = new ArrayList<>();
