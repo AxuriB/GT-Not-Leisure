@@ -65,6 +65,8 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -560,6 +562,10 @@ public class SteamApiaryModule extends SteamElevatorModule {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
 
         buildContext.addSyncedWindow(OC_WINDOW_ID, this::createRecipeOcCountWindow);
+        builder.widget(new FakeSyncWidget.LongSyncer(this::getTotalSteamCapacityLong, val -> uiSteamCapacity = val));
+        builder.widget(new FakeSyncWidget.LongSyncer(this::getLongTotalSteamStored, val -> uiSteamStored = val));
+        builder.widget(
+            new FakeSyncWidget.IntegerSyncer(this::getTotalSteamStoredOfAnyType, val -> uiSteamStoredOfAllTypes = val));
 
         isInInventory = !getBaseMetaTileEntity().isActive();
         builder.widget(
@@ -630,6 +636,35 @@ public class SteamApiaryModule extends SteamElevatorModule {
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 112)
             .setSize(16, 16));
+
+        builder.widget(
+            new DrawableWidget().setDrawable(this.tierMachine == 2 ? STEAM_GAUGE_STEEL_BG : STEAM_GAUGE_BG)
+                .dynamicTooltip(() -> {
+                    List<String> ret = new ArrayList<>();
+                    ret.add(
+                        StatCollector.translateToLocal("AllSteamCapacity") + uiSteamStored
+                            + "/"
+                            + uiSteamCapacity
+                            + "L");
+                    if (uiSteamStored == 0 && uiSteamStoredOfAllTypes != 0) {
+                        ret.add(EnumChatFormatting.RED + "Found steam of wrong type!");
+                    }
+                    return ret;
+                })
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setUpdateTooltipEveryTick(true)
+                .setSize(64, 42)
+                .setPos(-64, 100));
+
+        builder.widget(
+            new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
+                .setPos(-64 + 21, 100 + 21)
+                .setSize(18, 4));
+
+        builder.widget(
+            new ItemDrawable(GTNLItemList.FakeItemSiren.get(1)).asWidget()
+                .setPos(-64 + 21 - 7, 100 - 20)
+                .setEnabled(w -> uiSteamStored == 0));
     }
 
     @Override

@@ -5,6 +5,7 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.*;
 
 import java.util.Collection;
 
@@ -168,6 +169,16 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
             }
         }
         return true;
+    }
+
+    @Override
+    public long getTotalSteamCapacityLong() {
+        return maxEUStore();
+    }
+
+    @Override
+    public long getLongTotalSteamStored() {
+        return getEUVar();
     }
 
     @Override

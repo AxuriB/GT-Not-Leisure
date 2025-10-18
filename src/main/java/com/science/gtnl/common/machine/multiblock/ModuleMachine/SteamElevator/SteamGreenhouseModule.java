@@ -1,6 +1,7 @@
 package com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator;
 
 import static com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode.*;
+import static gregtech.api.metatileentity.BaseTileEntity.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -37,6 +39,8 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.gui.CircularGaugeDrawable;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDropTable;
 import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode;
@@ -351,6 +355,12 @@ public class SteamGreenhouseModule extends SteamElevatorModule implements IGreen
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         isInInventory = !getBaseMetaTileEntity().isActive();
+
+        builder.widget(new FakeSyncWidget.LongSyncer(this::getTotalSteamCapacityLong, val -> uiSteamCapacity = val));
+        builder.widget(new FakeSyncWidget.LongSyncer(this::getLongTotalSteamStored, val -> uiSteamStored = val));
+        builder.widget(
+            new FakeSyncWidget.IntegerSyncer(this::getTotalSteamStoredOfAnyType, val -> uiSteamStoredOfAllTypes = val));
+
         builder.widget(
             new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
                 .setPos(4, 4)
@@ -393,6 +403,35 @@ public class SteamGreenhouseModule extends SteamElevatorModule implements IGreen
             configurationElements.setSpace(2)
                 .setAlignment(MainAxisAlignment.SPACE_BETWEEN)
                 .setPos(getRecipeLockingButtonPos().add(18, 0)));
+
+        builder.widget(
+            new DrawableWidget().setDrawable(this.tierMachine == 2 ? STEAM_GAUGE_STEEL_BG : STEAM_GAUGE_BG)
+                .dynamicTooltip(() -> {
+                    List<String> ret = new ArrayList<>();
+                    ret.add(
+                        StatCollector.translateToLocal("AllSteamCapacity") + uiSteamStored
+                            + "/"
+                            + uiSteamCapacity
+                            + "L");
+                    if (uiSteamStored == 0 && uiSteamStoredOfAllTypes != 0) {
+                        ret.add(EnumChatFormatting.RED + "Found steam of wrong type!");
+                    }
+                    return ret;
+                })
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setUpdateTooltipEveryTick(true)
+                .setSize(64, 42)
+                .setPos(-64, 100));
+
+        builder.widget(
+            new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) uiSteamStored / uiSteamCapacity))
+                .setPos(-64 + 21, 100 + 21)
+                .setSize(18, 4));
+
+        builder.widget(
+            new ItemDrawable(GTNLItemList.FakeItemSiren.get(1)).asWidget()
+                .setPos(-64 + 21 - 7, 100 - 20)
+                .setEnabled(w -> uiSteamStored == 0));
     }
 
     @Override
