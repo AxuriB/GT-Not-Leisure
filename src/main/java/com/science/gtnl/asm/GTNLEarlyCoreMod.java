@@ -55,7 +55,7 @@ public class GTNLEarlyCoreMod implements IFMLLoadingPlugin, IEarlyMixinLoader, I
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] { "com.science.gtnl.asm.TickrateTransformer" };
+        return null;
     }
 
     @Override

@@ -26,7 +26,8 @@
     "Minecraft.MixinItem",
     "Minecraft.MixinPotionEffect",
     "Minecraft.MixinWorld",
-    "Minecraft.MixinWorldServer"
+    "Minecraft.MixinWorldServer",
+    "Minecraft.MixinMinecraftServer"
   ],
   "client": [
     "Minecraft.AccessorEntityRenderer",

@@ -3,6 +3,7 @@ package com.science.gtnl.mixins.early.SuperCreeper;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAICreeperSwell;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySpider;
@@ -240,12 +241,22 @@ public abstract class MixinEntityAICreeperSwell {
                 this.swellingCreeper.getNavigator()
                     .clearPathEntity();
             } else {
-                this.swellingCreeper.getNavigator()
-                    .tryMoveToXYZ(
-                        targetX,
-                        targetY,
-                        targetZ,
-                        Math.max(3, moveSpeed + (MainConfig.creeperSpeedBonusScale / customTarget.distance)));
+                if (swellingCreeper.ridingEntity != null
+                    && swellingCreeper.ridingEntity instanceof EntityLiving entityLiving) {
+                    entityLiving.getNavigator()
+                        .tryMoveToXYZ(
+                            targetX,
+                            targetY,
+                            targetZ,
+                            Math.max(2, moveSpeed + (MainConfig.creeperSpeedBonusScale / customTarget.distance)));
+                } else {
+                    this.swellingCreeper.getNavigator()
+                        .tryMoveToXYZ(
+                            targetX,
+                            targetY,
+                            targetZ,
+                            Math.max(2, moveSpeed + (MainConfig.creeperSpeedBonusScale / customTarget.distance)));
+                }
 
                 boolean canSeeTarget = true;
                 if (customTarget.isEntityTarget() && customTarget.entityTarget != null) {
