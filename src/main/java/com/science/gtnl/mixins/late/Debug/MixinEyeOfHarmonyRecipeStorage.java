@@ -36,7 +36,7 @@ public class MixinEyeOfHarmonyRecipeStorage {
         return originalMap.values();
     }
 
-    @Inject(method = "recipeLookUp", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "recipeLookUp", at = @At("HEAD"), cancellable = true)
     private void injectCustomRecipeLookup(ItemStack aStack, CallbackInfoReturnable<EyeOfHarmonyRecipe> cir) {
         String customKey = aStack.getUnlocalizedName() + "_" + aStack.getItemDamage();
 

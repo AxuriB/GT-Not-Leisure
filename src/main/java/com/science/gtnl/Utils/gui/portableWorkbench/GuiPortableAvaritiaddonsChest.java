@@ -45,5 +45,5 @@ public abstract class GuiPortableAvaritiaddonsChest extends GuiContainer {
     }
 
     @Nonnull
-    protected abstract String getContainerName();
+    public abstract String getContainerName();
 }

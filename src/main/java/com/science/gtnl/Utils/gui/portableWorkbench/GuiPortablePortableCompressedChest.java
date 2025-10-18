@@ -16,7 +16,8 @@ public class GuiPortablePortableCompressedChest extends GuiPortableAvaritiaddons
     }
 
     @Override
-    protected @NotNull String getContainerName() {
+    @NotNull
+    public String getContainerName() {
         return "container.CompressedChest";
     }
 }

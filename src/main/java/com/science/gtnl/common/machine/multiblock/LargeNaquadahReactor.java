@@ -62,12 +62,12 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
 
     public int tCountCasing;
     public double mConfigSpeedBoost = 1;
-    private boolean Oxygen = false;
-    private int multiplier = 1;
-    private long setEUt = 0;
+    public boolean useOxygen = false;
+    public int multiplier = 1;
+    public long setEUt = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String LNR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_naquadah_reactor";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(LNR_STRUCTURE_FILE_PATH);
+    private static final String LNR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_naquadah_reactor";
+    private static final String[][] shape = StructureUtils.readStructureFromFile(LNR_STRUCTURE_FILE_PATH);
     private final int HORIZONTAL_OFF_SET = 12;
     private final int VERTICAL_OFF_SET = 12;
     private final int DEPTH_OFF_SET = 0;
@@ -82,7 +82,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeNaquadahReactorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeNaquadahReactor_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeNaquadahReactor_01"))
@@ -162,7 +162,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
         boolean hydrogen = false;
         boolean oxygenPlasma = false;
         boolean nitrogenPlasma = false;
-        Oxygen = false;
+        useOxygen = false;
         setEUt = 524288;
         multiplier = 1;
 
@@ -189,7 +189,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
             if (fluid == Materials.Nitrogen.getPlasma(1)
                 .getFluid()) nitrogenPlasma = true;
             if (fluid == Materials.Oxygen.getGas(1)
-                .getFluid()) Oxygen = true;
+                .getFluid()) useOxygen = true;
         }
 
         if (fuelTierI == fuelTierII) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -250,7 +250,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
         mMaxProgresstime = (int) (baseTime * mConfigSpeedBoost);
         setEUt *= multiplier;
 
-        if (Oxygen) {
+        if (useOxygen) {
             mMaxProgresstime /= 16;
             setEUt *= 16;
         }
@@ -293,10 +293,9 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
             if (aTick % 20 == 0) {
                 boolean found = false;
                 for (MTEHatchMaintenance module : mMaintenanceHatches) {
-                    if (module instanceof IConfigurationMaintenance customMaintenanceHatch) {
-                        if (customMaintenanceHatch.isConfiguration()) {
-                            mConfigSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
-                        }
+                    if (module instanceof IConfigurationMaintenance customMaintenanceHatch
+                        && customMaintenanceHatch.isConfiguration()) {
+                        mConfigSpeedBoost = customMaintenanceHatch.getConfigTime() / 100d;
                         found = true;
                     }
                 }
@@ -313,7 +312,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
             startRecipeProcessing();
 
             boolean success = true;
-            if (Oxygen) {
+            if (useOxygen) {
                 success = drainFluid(Materials.Oxygen.getGas(1), 2000);
             }
 
@@ -424,7 +423,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setLong("SetEUt", setEUt);
-        aNBT.setBoolean("Oxygen", Oxygen);
+        aNBT.setBoolean("Oxygen", useOxygen);
         aNBT.setInteger("Multiplier", multiplier);
     }
 
@@ -432,7 +431,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         setEUt = aNBT.getLong("SetEUt");
-        Oxygen = aNBT.getBoolean("Oxygen");
+        useOxygen = aNBT.getBoolean("Oxygen");
         multiplier = aNBT.getInteger("Multiplier");
     }
 

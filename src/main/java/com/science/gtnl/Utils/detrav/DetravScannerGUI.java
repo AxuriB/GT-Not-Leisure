@@ -44,8 +44,8 @@ public class DetravScannerGUI extends GuiScreen {
         map.loadTexture(null);
     }
 
-    private long lastClickTime = 0;
-    private int lastClickX = -1, lastClickY = -1;
+    public long lastClickTime = 0;
+    public int lastClickX = -1, lastClickY = -1;
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int button) {

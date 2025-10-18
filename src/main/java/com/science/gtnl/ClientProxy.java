@@ -12,6 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.science.gtnl.Utils.SubscribeEventClientUtils;
 import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.Utils.enums.GuiType;
 import com.science.gtnl.Utils.gui.portableWorkbench.ContainerPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAnvil;

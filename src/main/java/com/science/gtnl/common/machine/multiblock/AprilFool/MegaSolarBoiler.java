@@ -57,7 +57,7 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String MSB_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/mega_solar_boiler";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(MSB_STRUCTURE_FILE_PATH);
+    private static final String[][] shape = StructureUtils.readStructureFromFile(MSB_STRUCTURE_FILE_PATH);
     private static final int HORIZONTAL_OFF_SET = 10;
     private static final int VERTICAL_OFF_SET = 4;
     private static final int DEPTH_OFF_SET = 1;
@@ -169,9 +169,9 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
+    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
-    private String state;
+    public String state;
 
     @Override
     public void runMachine(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
@@ -227,7 +227,7 @@ public class MegaSolarBoiler extends SteamMultiMachineBase<MegaSolarBoiler> impl
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
+    public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo(StatCollector.translateToLocal("Tooltip_MegaSolarBoiler_00"))

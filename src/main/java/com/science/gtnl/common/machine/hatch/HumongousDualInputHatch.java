@@ -174,7 +174,7 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
         }
     }
 
-    public void writeItemStackToNBT(NBTTagCompound tag, ItemStack stack, int slot) {
+    public static void writeItemStackToNBT(NBTTagCompound tag, ItemStack stack, int slot) {
         if (stack == null) return;
         tag.setInteger("id", Item.getIdFromItem(stack.getItem()));
         tag.setInteger("Damage", stack.getItemDamage());
@@ -186,7 +186,7 @@ public class HumongousDualInputHatch extends DualInputHatch implements ISkipStac
         }
     }
 
-    public ItemStack readItemStackFromNBT(NBTTagCompound tag) {
+    public static ItemStack readItemStackFromNBT(NBTTagCompound tag) {
         if (!tag.hasKey("id") || !tag.hasKey("Count") || !tag.hasKey("Damage")) return null;
 
         int id = tag.getInteger("id");

@@ -93,20 +93,20 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
 
     @Override
     public int getCasingTextureID() {
-        return (byte) TAE.GTPP_INDEX(11);
+        return TAE.GTPP_INDEX(11);
     }
 
     @Override
     public RecipeMap<?> getRecipeMap() {
         switch (machineMode) {
-            case MACHINEMODE_OREWASH -> {
-                return RecipeMaps.oreWasherRecipes;
-            }
             case MACHINEMODE_SIMPLEWASH -> {
                 return GTPPRecipeMaps.simpleWasherRecipes;
             }
-            default -> {
+            case MACHINEMODE_CHEMBATH -> {
                 return RecipeMaps.chemicalBathRecipes;
+            }
+            default -> {
+                return RecipeMaps.oreWasherRecipes;
             }
         }
     }
@@ -202,7 +202,7 @@ public class LargeChemicalBath extends GTMMultiMachineBase<LargeChemicalBath> im
     @Override
     public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
-        this.machineMode = (byte) ((this.machineMode + 1) % 2);
+        this.machineMode = (this.machineMode + 1) % 2;
         GTUtility
             .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("LargeChemicalBath_Mode_" + this.machineMode));
     }

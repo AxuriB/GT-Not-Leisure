@@ -251,7 +251,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("CheatOreProcessingFactoryRecipeType"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))

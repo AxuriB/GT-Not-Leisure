@@ -12,6 +12,7 @@ import bartworks.system.material.Werkstoff;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.recipe.DefaultOverlayHandler;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 
 @SuppressWarnings("unused")
@@ -46,6 +47,7 @@ public class NEIGTNLConfig implements IConfigureNEI {
         API.addRecipeCatalyst(GTNLItemList.PortableFurnace.get(1), "smelting");
         API.addRecipeCatalyst(GTNLItemList.PortableBasicWorkBench.get(1), "crafting");
         API.addRecipeCatalyst(GTNLItemList.PortableAdvancedWorkBench.get(1), "crafting");
+        API.addRecipeCatalyst(GTNLItemList.LootBagRedemption.get(1), Mods.EnhancedLootBags.ID);
 
         Werkstoff[] hiddenMaterials = { MaterialPool.Polyimide, MaterialPool.AcrylonitrileButadieneStyrene,
             MaterialPool.Polyetheretherketone, MaterialPool.HSLASteel, MaterialPool.Actinium,

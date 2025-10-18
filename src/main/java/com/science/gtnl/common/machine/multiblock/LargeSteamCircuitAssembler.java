@@ -202,7 +202,7 @@ public class LargeSteamCircuitAssembler extends SteamMultiMachineBase<LargeSteam
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamCircuitAssemblerRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCircuitAssembler_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamCircuitAssembler_01"))

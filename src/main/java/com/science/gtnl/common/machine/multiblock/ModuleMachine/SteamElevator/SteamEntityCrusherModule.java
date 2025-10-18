@@ -43,8 +43,8 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+    public MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamEntityCrusherModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_01"))
@@ -52,6 +52,7 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_04"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_05"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamEntityCrusherModule_06"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
@@ -61,7 +62,7 @@ public class SteamEntityCrusherModule extends SteamElevatorModule {
     }
 
     @Override
-    protected int getMachineEffectRange() {
+    public int getMachineEffectRange() {
         return 0;
     }
 

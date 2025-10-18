@@ -6,12 +6,15 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GTRecipeConstants.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -30,7 +33,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.Utils.enums.CommonElements;
 import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
 import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
 import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
@@ -41,7 +44,6 @@ import bartworks.common.tileentities.tiered.MTERadioHatch;
 import bartworks.util.BWUtil;
 import bartworks.util.BioCulture;
 import bartworks.util.ResultWrongSievert;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -53,30 +55,32 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.recipe.Sievert;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.register.LanthItemList;
 
 public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements ISurvivalConstructable {
 
-    private int itemQuantity;
-    private final ArrayList<MTERadioHatch> mRadHatches = new ArrayList<>();
-    private int height = 1;
-    private Fluid mFluid = FluidRegistry.LAVA;
-    private BioCulture mCulture;
-    private int mSievert;
-    private int mNeededSievert;
-    private boolean isVisibleFluid = false;
+    public int itemQuantity;
+    public ArrayList<MTERadioHatch> mRadHatches = new ArrayList<>();
+    public int height = 1;
+    public Fluid mFluid = FluidRegistry.LAVA;
+    public BioCulture mCulture;
+    public int mSievert;
+    public int mNeededSievert;
+    public boolean isVisibleFluid = false;
+    public Sievert defaultSievertData = new Sievert(0, false);
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    public static final String L_INCUBATOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_incubator";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(L_INCUBATOR_STRUCTURE_FILE_PATH);
-    protected final int HORIZONTAL_OFF_SET = 6;
-    protected final int VERTICAL_OFF_SET = 7;
-    protected final int DEPTH_OFF_SET = 0;
+    private static final String L_INCUBATOR_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/large_incubator";
+    private static final String[][] shape = StructureUtils.readStructureFromFile(L_INCUBATOR_STRUCTURE_FILE_PATH);
+    private final int HORIZONTAL_OFF_SET = 6;
+    private final int VERTICAL_OFF_SET = 7;
+    private final int DEPTH_OFF_SET = 0;
 
     public LargeIncubator(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -92,7 +96,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
+    public MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeIncubatorRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeIncubator_00"))
@@ -142,29 +146,12 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
                         .dot(1)
                         .build(),
                     onElementPass(e -> e.mCountCasing++, ofBlock(sBlockReinforced, 2))))
-            .addElement(
-                'F',
-                ofChain(
-                    Mods.EtFuturumRequiem.isModLoaded()
-                        ? ofBlockAnyMeta(
-                            ItemUtils
-                                .getBlockFromItemStack(GTModHandler.getModItem(Mods.EtFuturumRequiem.ID, "sponge", 1)),
-                            0)
-                        : ofBlockAnyMeta(Blocks.sponge, 0)))
+            .addElement('F', CommonElements.BlockSponge.get())
             .addElement('G', ofChain(isAir(), ofBlockAnyMeta(Blocks.flowing_water), ofBlockAnyMeta(Blocks.water)))
             .build();
     }
 
-    public static int[] specialValueUnpack(int aSpecialValue) {
-        int[] ret = new int[4];
-        ret[0] = aSpecialValue & 0xF; // = glass tier
-        ret[1] = aSpecialValue >>> 4 & 0b11; // = special value
-        ret[2] = aSpecialValue >>> 6 & 0b1; // boolean exact svt | 1 = true | 0 = false
-        ret[3] = aSpecialValue >>> 7 & Integer.MAX_VALUE; // = sievert
-        return ret;
-    }
-
-    private int getInputCapacity() {
+    public int getInputCapacity() {
         return this.mInputHatches.stream()
             .mapToInt(MTEHatchInput::getCapacity)
             .sum();
@@ -193,22 +180,19 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
             @NotNull
             @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                ItemStack specialItem = (ItemStack) recipe.mSpecialItems;
-
-                if (!BWUtil.areStacksEqualOrNull(specialItem, LargeIncubator.this.getControllerSlot())) {
+            public CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                Sievert data = recipe.getMetadataOrDefault(GTRecipeConstants.SIEVERT, defaultSievertData);
+                int sievert = data.sievert;
+                boolean isExact = data.isExact;
+                if (!BWUtil.areStacksEqualOrNull((ItemStack) recipe.mSpecialItems, getControllerSlot()))
                     return CheckRecipeResultRegistry.NO_RECIPE;
+                mNeededSievert = sievert;
+
+                if (mSievert < mNeededSievert) {
+                    return ResultWrongSievert.insufficientSievert(mNeededSievert);
                 }
 
-                int[] conditions = LargeIncubator.specialValueUnpack(recipe.mSpecialValue);
-                LargeIncubator.this.mNeededSievert = conditions[3];
-
-                if (LargeIncubator.this.mSievert < LargeIncubator.this.mNeededSievert) {
-                    return ResultWrongSievert.insufficientSievert(LargeIncubator.this.mNeededSievert);
-                }
-
-                itemQuantity = 1;
-                ItemStack controllerSlotItem = LargeIncubator.this.getControllerSlot();
+                ItemStack controllerSlotItem = getControllerSlot();
                 itemQuantity = controllerSlotItem != null ? controllerSlotItem.stackSize : 1;
 
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -216,7 +200,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
             @NotNull
             @Override
-            protected GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+            public GTNL_OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
                 return super.createOverclockCalculator(recipe).setExtraDurationModifier(mConfigSpeedBoost)
                     .setPerfectOC(getPerfectOC())
                     .setEUtDiscount(getEUtDiscount())
@@ -225,7 +209,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
             @NotNull
             @Override
-            protected GTNL_ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
+            public GTNL_ParallelHelper createParallelHelper(@NotNull GTRecipe recipe) {
                 return super.createParallelHelper(recipeWithMultiplier(recipe, inputFluids));
             }
         };
@@ -251,7 +235,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
         return 4 * itemQuantity + 2 * GTUtility.getTier(this.getMaxInputVoltage()) * mGlassTier;
     }
 
-    protected GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {
+    public GTRecipe recipeWithMultiplier(GTRecipe recipe, FluidStack[] fluidInputs) {
         if (recipe == null || fluidInputs == null) {
             return recipe;
         }
@@ -284,15 +268,26 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
 
         multiplier = (int) fluidAmount / (recipe.mFluidInputs[0].amount * 1001);
         multiplier = Math.max(Math.min(multiplier, getTrueParallel()), 1);
+        multiplier *= getExpectedMultiplier(recipe.getFluidOutput(0));
 
-        tRecipe.mFluidInputs[0].amount *= multiplier * 1001;
-        tRecipe.mFluidOutputs[0].amount *= multiplier * 1001;
+        tRecipe.mFluidInputs[0].amount *= multiplier;
+        tRecipe.mFluidOutputs[0].amount *= multiplier;
 
         return tRecipe;
     }
 
+    public int getExpectedMultiplier(@Nullable FluidStack recipeFluidOutput) {
+        FluidStack storedFluidOutputs = mOutputHatches.get(0)
+            .getFluid();
+        if (storedFluidOutputs == null) return 1001;
+        if (storedFluidOutputs.isFluidEqual(recipeFluidOutput)) {
+            return 1001;
+        }
+        return 1;
+    }
+
     @Override
-    protected void setupProcessingLogic(ProcessingLogic logic) {
+    public void setupProcessingLogic(ProcessingLogic logic) {
         super.setupProcessingLogic(logic);
         logic.setSpecialSlotItem(this.getControllerSlot());
     }
@@ -328,7 +323,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             "G",
             Blocks.water);
         setupParameters();
-        return mCountCasing < 19;
+        return mCountCasing > 19;
     }
 
     @Override
@@ -345,14 +340,14 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
         this.mRadHatches.clear();
     }
 
-    private int reCalculateFluidAmmount() {
+    public int reCalculateFluidAmmount() {
         return this.getStoredFluids()
             .stream()
             .mapToInt(fluidStack -> fluidStack.amount)
             .sum();
     }
 
-    private void reCalculateHeight() {
+    public void reCalculateHeight() {
         if (this.reCalculateFluidAmmount() > this.getCapacity() / 4 - 1) {
             this.reCalculateFluidAmmount();
             this.getCapacity();
@@ -472,7 +467,7 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
         return false;
     }
 
-    private enum RadioHatchElement implements IHatchElement<LargeIncubator> {
+    public enum RadioHatchElement implements IHatchElement<LargeIncubator> {
 
         RadioHatch(LargeIncubator::addRadiationInputToMachineList, MTERadioHatch.class) {
 
@@ -482,8 +477,8 @@ public class LargeIncubator extends MultiMachineBase<LargeIncubator> implements 
             }
         };
 
-        private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<LargeIncubator> adder;
+        public final List<Class<? extends IMetaTileEntity>> mteClasses;
+        public final IGTHatchAdder<LargeIncubator> adder;
 
         @SafeVarargs
         RadioHatchElement(IGTHatchAdder<LargeIncubator> adder, Class<? extends IMetaTileEntity>... mteClasses) {

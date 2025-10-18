@@ -43,13 +43,15 @@ public class SteamBeeBreedingModule extends SteamElevatorModule {
     }
 
     @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+    public MultiblockTooltipBuilder createTooltip() {
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamBeeBreedingModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_03"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_04"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeeBreedingModule_05"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
@@ -85,7 +87,7 @@ public class SteamBeeBreedingModule extends SteamElevatorModule {
     }
 
     @Override
-    protected int getMachineEffectRange() {
+    public int getMachineEffectRange() {
         return 0;
     }
 }

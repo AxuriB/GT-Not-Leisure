@@ -311,7 +311,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("BloodSoulSacrificialArrayRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_BloodSoulSacrificialArray_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_BloodSoulSacrificialArray_01"))
@@ -411,7 +411,7 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
 
             @Nonnull
             @Override
-            protected CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+            public CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
                 CheckRecipeResult result = validateRecipe(recipe);
                 if (!result.wasSuccessful()) {
                     return CalculationResult.ofFailure(result);

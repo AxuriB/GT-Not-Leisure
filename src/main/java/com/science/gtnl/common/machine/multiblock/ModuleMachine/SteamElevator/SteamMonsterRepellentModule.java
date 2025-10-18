@@ -44,7 +44,7 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamMonsterRepellentModuleRecipeType"));
         switch (mTier) {
             case 1:

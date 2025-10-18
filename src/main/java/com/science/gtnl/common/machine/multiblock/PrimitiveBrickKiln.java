@@ -79,7 +79,7 @@ public class PrimitiveBrickKiln extends SteamMultiMachineBase<PrimitiveBrickKiln
     }
 
     @Override
-    protected int getCasingTextureID() {
+    public int getCasingTextureID() {
         return StructureUtils.getTextureIndex(GregTechAPI.sBlockCasings4, 15);
     }
 
@@ -218,7 +218,7 @@ public class PrimitiveBrickKiln extends SteamMultiMachineBase<PrimitiveBrickKiln
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("PrimitiveBrickKilnRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PrimitiveBrickKiln_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PrimitiveBrickKiln_01"))

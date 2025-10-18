@@ -271,7 +271,7 @@ public class LargeSteamLathe extends SteamMultiMachineBase<LargeSteamLathe> impl
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("LargeSteamLatheRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamLathe_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_LargeSteamLathe_01"))

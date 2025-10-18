@@ -45,7 +45,7 @@ public abstract class MixinMTEIntegratedOreFactory {
      */
     @Overwrite
     protected MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("IntegratedOreFactoryRecipeType"))
             .addInfo("")
             .addInfo("")

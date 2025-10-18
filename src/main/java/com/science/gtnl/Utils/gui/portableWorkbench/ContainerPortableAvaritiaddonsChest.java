@@ -9,6 +9,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.bogosorter.api.IPosSetter;
 import com.cleanroommc.bogosorter.api.ISortableContainer;
 import com.cleanroommc.bogosorter.api.ISortingContextBuilder;
@@ -19,30 +21,22 @@ import cpw.mods.fml.common.Optional;
 @Optional.Interface(iface = "com.cleanroommc.bogosorter.api.ISortableContainer", modid = "bogosorter")
 public class ContainerPortableAvaritiaddonsChest extends Container implements ISortableContainer {
 
-    protected final PortableItem.PortableType type;
+    public final PortableItem.PortableType type;
     public IInventory chestInventory;
     public ItemStack itemStack;
-    protected final String portableID;
+    public final String portableID;
+    public boolean isInfinity;
 
-    public ContainerPortableAvaritiaddonsChest(ItemStack stack, InventoryPlayer playerInv) {
+    public ContainerPortableAvaritiaddonsChest(ItemStack stack, InventoryPlayer playerInv, boolean isInfinity) {
         type = PortableItem.getPortableType(stack);
         chestInventory = type.getInventory(stack);
         itemStack = stack;
+        this.isInfinity = isInfinity;
 
         this.portableID = PortableItem.ensurePortableID(stack);
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 27; x++) {
-                addSlotToContainer(new Slot(chestInventory, y * 27 + x, 8 + (18 * x), 18 + (18 * y)) {
-
-                    @Override
-                    public boolean isItemValid(ItemStack stack) {
-                        if (stack != null && stack.getItem() instanceof PortableItem
-                            && (stack.getItemDamage() >= 6 && stack.getItemDamage() <= 17)) {
-                            return false;
-                        }
-                        return super.isItemValid(stack);
-                    }
-                });
+                addSlotToContainer(getSlot(isInfinity, y, x));
             }
         }
 
@@ -54,6 +48,34 @@ public class ContainerPortableAvaritiaddonsChest extends Container implements IS
 
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(playerInv, i, 170 + (18 * i), 252));
+        }
+    }
+
+    public @NotNull Slot getSlot(boolean isInfinity, int y, int x) {
+        if (isInfinity) {
+            return new SlotInfinity(chestInventory, y * 27 + x, 8 + (18 * x), 18 + (18 * y)) {
+
+                @Override
+                public boolean isItemValid(ItemStack stack) {
+                    if (stack != null && stack.getItem() instanceof PortableItem
+                        && (stack.getItemDamage() >= 6 && stack.getItemDamage() <= 17)) {
+                        return false;
+                    }
+                    return super.isItemValid(stack);
+                }
+            };
+        } else {
+            return new Slot(chestInventory, y * 27 + x, 8 + (18 * x), 18 + (18 * y)) {
+
+                @Override
+                public boolean isItemValid(ItemStack stack) {
+                    if (stack != null && stack.getItem() instanceof PortableItem
+                        && (stack.getItemDamage() >= 6 && stack.getItemDamage() <= 17)) {
+                        return false;
+                    }
+                    return super.isItemValid(stack);
+                }
+            };
         }
     }
 

@@ -17,8 +17,8 @@ def replace_text_in_java_files(root_folder, old_text, new_text):
 if __name__ == "__main__":
     target_folder = "E:/Github/GT-Not-Leisure/src/main/java/com"
 
-    text_to_replace = """(mParallelTier / 200.0)"""
+    text_to_replace = """final MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();"""
 
-    replacement_text = """(Math.max(0, mParallelTier - 1) / 50.0)"""
+    replacement_text = """MultiblockTooltipBuilderExtra tt = new MultiblockTooltipBuilderExtra();"""
 
     replace_text_in_java_files(target_folder, text_to_replace, replacement_text)

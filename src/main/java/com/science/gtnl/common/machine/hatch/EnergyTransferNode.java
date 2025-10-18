@@ -93,8 +93,9 @@ public class EnergyTransferNode extends MTETieredMachineBlock implements IConnec
                 TextureFactory
                     .of(OVERLAY_ENERGY_TRANSFER_NODE_ACTIVE, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
         } else {
-            return new ITexture[] { TextureFactory.of(OVERLAY_ENERGY_TRANSFER_NODE), TextureFactory
-                .of(OVERLAY_ENERGY_TRANSFER_NODE_ACTIVE, Dyes.getModulation(colorIndex, MACHINE_METAL.getRGBA())) };
+            return new ITexture[] { TextureFactory.of(OVERLAY_ENERGY_TRANSFER_NODE),
+                getBaseMetaTileEntity().isAllowedToWork() ? Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier]
+                    : Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier] };
         }
     }
 

@@ -27,12 +27,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import com.cleanroommc.modularui.utils.item.InvWrapper;
-import com.science.gtnl.GuiType;
 import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.Utils.enums.GuiType;
 import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableChest;
 import com.science.gtnl.Utils.gui.portableWorkbench.InventoryInfinityChest;
 import com.science.gtnl.client.GTNLCreativeTabs;
 
+import appeng.api.config.Actionable;
+import appeng.api.networking.security.PlayerSource;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.tile.misc.TileInterface;
+import appeng.util.item.AEItemStack;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import lombok.val;
 
@@ -61,14 +67,17 @@ public class PortableItem extends Item {
         }
     }
 
-    //TODO:对ME接口特判，直接进入AE网络而不是缓冲区
-    private boolean tryMoveItems(World world, int x, int y, int z, ItemStack stack, EntityPlayer player) {
+    public boolean tryMoveItems(World world, int x, int y, int z, ItemStack stack, EntityPlayer player) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof IInventory inventory) {
             val type = getPortableType(stack);
             val bagIInv = type.getInventory(stack);
             if (bagIInv == null) return false;
             val bagInv = new InvWrapper(bagIInv);
+            if (tryMoveItemsToAE(te, bagInv, player)) {
+                type.saveInventory(stack, bagIInv);
+                return true;
+            }
             val inv = new InvWrapper(inventory);
 
             for (int slot = 0; slot < bagInv.getSlots(); slot++) {
@@ -87,6 +96,30 @@ public class PortableItem extends Item {
             return true;
         }
         return false;
+    }
+
+    public boolean tryMoveItemsToAE(TileEntity te, InvWrapper bagInv, EntityPlayer player) {
+        if (!(te instanceof TileInterface ae)) return false;
+        val node = ae.getActionableNode();
+        if (node == null) return false;
+        val grid = node.getGrid();
+        if (grid == null) return false;
+        IStorageGrid storageGrid = grid.getCache(IStorageGrid.class);
+        if (storageGrid == null) return false;
+        val s = storageGrid.getItemInventory();
+        val source = new PlayerSource(player, ae);
+        for (int slot = 0; slot < bagInv.getSlots(); slot++) {
+            val item = bagInv.getStackInSlot(slot);
+            if (item == null) continue;
+            IAEItemStack aeItem = AEItemStack.create(item);
+            aeItem = s.injectItems(aeItem, Actionable.MODULATE, source);
+            if (aeItem == null) {
+                bagInv.setStackInSlot(slot, null);
+            } else if (bagInv.getStackInSlot(slot).stackSize != aeItem.getStackSize()) {
+                bagInv.getStackInSlot(slot).stackSize = (int) aeItem.getStackSize();
+            }
+        }
+        return true;
     }
 
     @Override
@@ -268,7 +301,7 @@ public class PortableItem extends Item {
         void save(@Nonnull ItemStack stack, @Nonnull IInventory inv);
     }
 
-    protected static IInventory getInventory(ItemStack stack, int size) {
+    public static IInventory getInventory(ItemStack stack, int size) {
         InventoryBasic inv = new InventoryBasic("PortableAdvancedWorkbench", false, size);
 
         if (stack.hasTagCompound()) {
@@ -286,7 +319,7 @@ public class PortableItem extends Item {
         return inv;
     }
 
-    protected static InventoryInfinityChest getInfinityInventory(@Nonnull ItemStack stack) {
+    public static InventoryInfinityChest getInfinityInventory(@Nonnull ItemStack stack) {
         InventoryInfinityChest inv = new InventoryInfinityChest(
             getPortableType(stack) == PortableType.INFINITYCHEST ? Integer.MAX_VALUE : 64);
         if (!stack.hasTagCompound()) return inv;
@@ -311,7 +344,7 @@ public class PortableItem extends Item {
         return inv;
     }
 
-    protected static IInventory getFurnaceInventory(ItemStack stack) {
+    public static IInventory getFurnaceInventory(ItemStack stack) {
         InventoryBasic inv = new InventoryBasic("PortableFurnace", false, 3);
 
         if (stack.hasTagCompound()) {
@@ -329,7 +362,7 @@ public class PortableItem extends Item {
         return inv;
     }
 
-    protected static final PortableInventorySave saveInventory = (stack, inv) -> {
+    public static final PortableInventorySave saveInventory = (stack, inv) -> {
         NBTTagList list = new NBTTagList();
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack s = inv.getStackInSlot(i);
@@ -348,7 +381,7 @@ public class PortableItem extends Item {
             .setTag("Items", list);
     };
 
-    protected static final PortableInventorySave saveInfinityInventory = (stack, inv) -> {
+    public static final PortableInventorySave saveInfinityInventory = (stack, inv) -> {
         NBTTagList list = new NBTTagList();
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack slotStack = inv.getStackInSlot(i);
@@ -371,7 +404,7 @@ public class PortableItem extends Item {
             .setTag("Contents", list);
     };
 
-    protected static final PortableInventorySave saveFurnaceInventory = (stack, inv) -> {
+    public static final PortableInventorySave saveFurnaceInventory = (stack, inv) -> {
         NBTTagList list = new NBTTagList();
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack s = inv.getStackInSlot(i);

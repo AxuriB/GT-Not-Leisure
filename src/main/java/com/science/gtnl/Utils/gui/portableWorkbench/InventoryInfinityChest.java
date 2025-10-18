@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
-public final class InventoryInfinityChest implements IInventory {
+public class InventoryInfinityChest implements IInventory {
 
     private final int maxStackSize;
     public final ItemStack[] contents = new ItemStack[243];

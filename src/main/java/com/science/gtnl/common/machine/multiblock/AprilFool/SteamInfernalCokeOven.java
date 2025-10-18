@@ -42,12 +42,12 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SICO = RESOURCE_ROOT_ID + ":" + "multiblock/steam_infernal_coke_oven";
-    public static final String[][] shape = StructureUtils.readStructureFromFile(SICO);
+    private static final String[][] shape = StructureUtils.readStructureFromFile(SICO);
     private static final int HORIZONTAL_OFF_SET = 2;
     private static final int VERTICAL_OFF_SET = 3;
     private static final int DEPTH_OFF_SET = 0;
-    private float speedup = 1;
-    private int runningTickCounter = 0;
+    public float speedup = 1;
+    public int runningTickCounter = 0;
 
     public SteamInfernalCokeOven(String aName) {
         super(aName);
@@ -155,7 +155,7 @@ public class SteamInfernalCokeOven extends SteamMultiMachineBase<SteamInfernalCo
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
+    public void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {}
 
     @Override
     public int clampRecipeOcCount(int value) {

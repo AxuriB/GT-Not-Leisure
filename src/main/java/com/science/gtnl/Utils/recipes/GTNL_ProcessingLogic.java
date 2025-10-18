@@ -14,6 +14,8 @@ import javax.annotation.Nullable;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.science.gtnl.mixins.late.Gregtech.AccessorProcessingLogic;
+
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.logic.ProcessingLogic;
@@ -82,6 +84,40 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
     public Map<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
 
     public GTNL_ProcessingLogic() {}
+
+    public GTNL_ProcessingLogic(ProcessingLogic logic) {
+        AccessorProcessingLogic processingLogic = (AccessorProcessingLogic) logic;
+
+        this.machine = processingLogic.getMachine();
+        this.recipeLockableMachine = processingLogic.getRecipeLockableMachine();
+        this.isRecipeLocked = processingLogic.getIsRecipeLocked();
+        this.inputItems = processingLogic.getInputItems();
+        this.inputFluids = processingLogic.getInputFluids();
+        this.specialSlotItem = processingLogic.getSpecialSlotItem();
+        this.maxParallel = processingLogic.getMaxParallel();
+        this.maxParallelSupplier = processingLogic.getMaxParallelSupplier();
+        this.batchSize = processingLogic.getBatchSize();
+        this.recipeMapSupplier = processingLogic.getRecipeMapSupplier();
+        this.euModifier = processingLogic.getEuModifier();
+        this.speedBoost = processingLogic.getSpeedBoost();
+        this.availableVoltage = processingLogic.getAvailableVoltage();
+        this.availableAmperage = processingLogic.getAvailableAmperage();
+        this.maxTierSkips = processingLogic.getMaxTierSkips();
+        this.protectItems = processingLogic.getProtectItems();
+        this.protectFluids = processingLogic.getProtectFluids();
+        this.overClockTimeReduction = processingLogic.getOverClockTimeReduction();
+        this.overClockPowerIncrease = processingLogic.getOverClockPowerIncrease();
+        this.amperageOC = processingLogic.getAmperageOC();
+
+        this.outputItems = processingLogic.getOutputItems();
+        this.outputFluids = processingLogic.getOutputFluids();
+        this.calculatedEut = processingLogic.getCalculatedEut();
+        this.duration = processingLogic.getDuration();
+        this.calculatedParallels = processingLogic.getCalculatedParallels();
+
+        this.lastRecipeMap = processingLogic.getLastRecipeMap();
+        this.lastRecipe = processingLogic.getLastRecipe();
+    }
 
     // region Setters
 
@@ -468,7 +504,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      * @param recipe The recipe which will be checked and processed
      */
     @Nonnull
-    protected CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
+    public CalculationResult validateAndCalculateRecipe(@Nonnull GTRecipe recipe) {
         CheckRecipeResult result = validateRecipe(recipe);
         if (!result.wasSuccessful()) {
             return CalculationResult.ofFailure(result);
@@ -492,7 +528,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      * At this point, inputs have been already consumed.
      */
     @Nonnull
-    protected CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
+    public CheckRecipeResult applyRecipe(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
         @Nonnull GTNL_OverclockCalculator calculator, @Nonnull CheckRecipeResult result) {
         if (recipe.mCanBeBuffered) {
             lastRecipe = recipe;
@@ -530,7 +566,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
     /**
      * Override to tweak final duration that will be set as a result of this logic class.
      */
-    protected double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
+    public double calculateDuration(@Nonnull GTRecipe recipe, @Nonnull GTNL_ParallelHelper helper,
         @Nonnull GTNL_OverclockCalculator calculator) {
         return calculator.getDuration() * helper.getDurationMultiplierDouble();
     }
@@ -662,7 +698,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
      * {@link #checkRecipeResult} being successful, when duration or power is overflowed. Being failure means
      * recipe cannot meet requirements and recipe search should be continued if possible.
      */
-    protected final static class CalculationResult {
+    public static class CalculationResult {
 
         public final boolean successfullyConsumedInputs;
         public final CheckRecipeResult checkRecipeResult;

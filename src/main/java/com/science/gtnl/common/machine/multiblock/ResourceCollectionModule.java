@@ -344,7 +344,7 @@ public class ResourceCollectionModule extends TileEntityModuleBase {
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("ResourceCollectionModuleRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ResourceCollectionModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_ResourceCollectionModule_01"))

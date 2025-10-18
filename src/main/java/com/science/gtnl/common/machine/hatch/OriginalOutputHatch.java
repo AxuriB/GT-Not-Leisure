@@ -1,13 +1,12 @@
 package com.science.gtnl.common.machine.hatch;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.util.GTUtility;
 
 public class OriginalOutputHatch extends MTEHatchOutput {
 
@@ -25,19 +24,18 @@ public class OriginalOutputHatch extends MTEHatchOutput {
     }
 
     @Override
+    public String[] getDescription() {
+        return new String[] { StatCollector.translateToLocal("Tooltip_OriginalOutputHatch_00"),
+            StatCollector
+                .translateToLocalFormatted("Tooltip_OriginalOutputHatch_01", GTUtility.formatNumbers(getCapacity())),
+            StatCollector.translateToLocal("Tooltip_OriginalOutputHatch_02"),
+            StatCollector.translateToLocal("Tooltip_OriginalOutputHatch_03"),
+            StatCollector.translateToLocal("Tooltip_OriginalOutputHatch_04") };
+    }
+
+    @Override
     public boolean doesFillContainers() {
         return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return null;
     }
 
     @Override

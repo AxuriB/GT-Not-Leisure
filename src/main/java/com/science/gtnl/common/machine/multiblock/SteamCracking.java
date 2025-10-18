@@ -213,7 +213,7 @@ public class SteamCracking extends SteamMultiMachineBase<SteamCracking> implemen
 
     @Override
     public MultiblockTooltipBuilder createTooltip() {
-        final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamCrackingRecipeType"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamCracking_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamCracking_01"))

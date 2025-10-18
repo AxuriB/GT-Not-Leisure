@@ -32,8 +32,8 @@ public class RecipeBuilder {
     public int duration = 0;
     public int specialValue = 0;
     @Nullable
-    protected IRecipeMetadataStorage metadataStorage;
-    protected boolean skip = false;
+    public IRecipeMetadataStorage metadataStorage;
+    public boolean skip = false;
 
     public RecipeBuilder() {}
 
@@ -104,16 +104,13 @@ public class RecipeBuilder {
         return this;
     }
 
-    private static ItemStack[] fix(ItemStack[] inputs, boolean aUnsafe) {
+    public static ItemStack[] fix(ItemStack[] inputs, boolean aUnsafe) {
         return GTOreDictUnificator
             .setStackArray(true, aUnsafe, ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new));
     }
 
-    public RecipeBuilder noOptimize() {
-        return this;
-    }
-
     public RecipeBuilder addTo(RecipeMap<?> recipeMap) {
+
         GTRecipe tempRecipe = new GTRecipe(
             false,
             inputItems,

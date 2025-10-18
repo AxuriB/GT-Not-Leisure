@@ -381,7 +381,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(StatCollector.translateToLocal("LargeBoilerRecipeType"))
                 .addSeparator()
                 .addInfo(StatCollector.translateToLocal("Tooltip_LargeBoilerBronze_00"))
@@ -465,7 +465,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(StatCollector.translateToLocal("LargeBoilerRecipeType"))
                 .addSeparator()
                 .addInfo(StatCollector.translateToLocal("Tooltip_LargeBoilerSteel_00"))
@@ -549,7 +549,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(StatCollector.translateToLocal("LargeBoilerRecipeType"))
                 .addSeparator()
                 .addInfo(StatCollector.translateToLocal("Tooltip_LargeBoilerTitanium_00"))
@@ -633,7 +633,7 @@ public abstract class LargeBoiler extends MTEEnhancedMultiBlockBase<LargeBoiler>
 
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
-            final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+            MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
             tt.addMachineType(StatCollector.translateToLocal("LargeBoilerRecipeType"))
                 .addSeparator()
                 .addInfo(StatCollector.translateToLocal("Tooltip_LargeBoilerTungstenSteel_00"))
