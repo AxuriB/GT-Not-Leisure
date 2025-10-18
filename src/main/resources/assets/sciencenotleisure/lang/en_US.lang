@@ -1209,6 +1209,7 @@ bw.werkstoff.25118.name=Obsidian Sluice
 bw.werkstoff.25119.name=Gem Sluice
 bw.werkstoff.25120.name=Ender Air
 bw.werkstoff.25121.name=Fluid Ender Air
+bw.werkstoff.25122.name=Pineoil Mixture
 bw.werkstoff.25200.name=Periodicium
 bw.werkstoff.25201.name=Stargate
 
@@ -1333,7 +1334,7 @@ Material.obsidiansluice.name=Obsidian Sluice
 Material.gemsluice.name=Gem Sluice
 Material.periodicium=Periodicium
 Material.enderair.name=Ender Air
-Material.fluidenderair.name=Fluid Ender Air
+Material.liquidenderair.name=Liquid Ender Air
 Material.stargate=Stargate
 
 fluid.hexanitrohexaazaisowurtzitane=Hexanitrohexaazaisowurtzitane
@@ -1457,7 +1458,7 @@ fluid.sandsluice.name=Sand Sluice
 fluid.obsidiansluice.name=Obsidian Sluice
 fluid.gemsluice.name=Gem Sluice
 fluid.enderair.name=Ender Air
-fluid.fluidenderair.name=Fluid Ender Air
+fluid.liquidenderair.name=Liquid Ender Air
 fluid.periodicium=Periodicium
 fluid.stargate=Stargate
 
@@ -1582,7 +1583,7 @@ fluid.molten.sandsluice.name=Sand Sluice
 fluid.molten.obsidiansluice.name=Obsidian Sluice
 fluid.molten.gemsluice.name=Gem Sluice
 fluid.molten.enderair.name=Ender Air
-fluid.molten.fluidenderair.name=Fluid Ender Air
+fluid.molten.liquidenderair.name=Liquid Ender Air
 fluid.molten.periodicium=Periodicium
 fluid.molten.stargate=Stargate
 
