@@ -47,15 +47,9 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamMonsterRepellentModuleRecipeType"));
         switch (mTier) {
-            case 1:
-                tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModuleI_00"));
-                break;
-            case 2:
-                tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModuleII_00"));
-                break;
-            case 3:
-                tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModuleIII_00"));
-                break;
+            case 1 -> tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModuleI_00"));
+            case 2 -> tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModuleII_00"));
+            case 3 -> tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModuleIII_00"));
         }
         tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModule_01"))
@@ -128,7 +122,7 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
     }
 
     @Override
-    protected int getMachineEffectRange() {
+    public int getMachineEffectRange() {
         return mRange;
     }
 }

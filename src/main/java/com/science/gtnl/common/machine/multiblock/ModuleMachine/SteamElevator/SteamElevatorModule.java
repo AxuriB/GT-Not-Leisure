@@ -36,7 +36,6 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
     @Setter
     public long steamBufferSize;
     public boolean isConnected = false;
-    public static final int CONFIG_WINDOW_ID = 11;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final String SEM_STRUCTURE_FILE_PATH = RESOURCE_ROOT_ID + ":" + "multiblock/steam_elevator_module";
     private static final String[][] shape = StructureUtils.readStructureFromFile(SEM_STRUCTURE_FILE_PATH);
@@ -208,6 +207,8 @@ public abstract class SteamElevatorModule extends SteamMultiMachineBase<SteamEle
         isConnected = false;
     }
 
-    protected abstract int getMachineEffectRange();
+    public int getMachineEffectRange() {
+        return 0;
+    };
 
 }

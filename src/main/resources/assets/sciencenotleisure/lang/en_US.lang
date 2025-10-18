@@ -1848,6 +1848,19 @@ Tooltip_SteamGreenhouseModule_03=Consumes 16,000L of water per crop
 Tooltip_SteamGreenhouseModule_04=Fixed operation time of 60 seconds
 Tooltip_SteamGreenhouseModule_05=Cannot be overclocked
 
+NameSteamOilDrillModuleI=Steam Oil Drill Module I
+NameSteamOilDrillModuleII=Steam Oil Drill Module II
+NameSteamOilDrillModuleIII=Steam Oil Drill Module III
+SteamOilDrillModuleRecipeType=Pump
+Tooltip_SteamOilDrillModuleI_00=§a§lMolditary Invasion!
+Tooltip_SteamOilDrillModuleII_00=§a§lTwenty Thousand Leagues Beneath the Earth
+Tooltip_SteamOilDrillModuleIII_00=§a§lKnows the sky and under the ground
+Tooltip_SteamOilDrillModule_00=Adds fluid drill module to the Steam Stairway
+Tooltip_SteamOilDrillModule_01=Extracts all underground fluid types in the current dimension.
+Tooltip_SteamOilDrillModule_02=Randomly selects up to %s types of fluids.
+Tooltip_SteamOilDrillModule_03=Each extraction may yield %s~%sL.
+Tooltip_SteamOilDrillModule_04=Base cycle time: %s ticks
+
 NameSteamApiaryModule=Steam-Powered Apiary Module
 SteamApiaryModuleRecipeType=Pneumatic Beehive
 Tooltip_SteamApiaryModule_00=§a§lHigh pressure makes the bees work §0§mharder§a§l and more efficiently.

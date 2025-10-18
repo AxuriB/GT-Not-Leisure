@@ -75,11 +75,6 @@ public class SteamGreenhouseModule extends SteamElevatorModule implements IGreen
     public boolean useNoHumidity = false;
 
     @Override
-    protected int getMachineEffectRange() {
-        return 0;
-    }
-
-    @Override
     public ArrayList<MTEHatchOutputBus> getOutputBus() {
         return mOutputBusses;
     }

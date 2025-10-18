@@ -132,6 +132,7 @@ import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.St
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamFlightModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamGreenhouseModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamMonsterRepellentModule;
+import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamOilDrillModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamOreProcessorModule;
 import com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator.SteamWeatherModule;
 import com.science.gtnl.common.machine.multiblock.OreExtractionModule;
@@ -1402,6 +1403,30 @@ public class MachineLoader {
                 "NameRocketAssembler",
                 StatCollector.translateToLocal("NameRocketAssembler")));
         addItemTooltip(GTNLItemList.RocketAssembler.get(1), AnimatedText.SNL_QYZG);
+
+        GTNLItemList.SteamOilDrillModuleI.set(
+            new SteamOilDrillModule(
+                STEAM_OIL_DRILL_MODULE_I.ID,
+                "NameSteamOilDrillModuleI",
+                StatCollector.translateToLocal("NameSteamOilDrillModuleI"),
+                2));
+        addItemTooltip(GTNLItemList.SteamOilDrillModuleI.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamOilDrillModuleII.set(
+            new SteamOilDrillModule(
+                STEAM_OIL_DRILL_MODULE_II.ID,
+                "NameSteamOilDrillModuleII",
+                StatCollector.translateToLocal("NameSteamOilDrillModuleII"),
+                3));
+        addItemTooltip(GTNLItemList.SteamOilDrillModuleII.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SteamOilDrillModuleIII.set(
+            new SteamOilDrillModule(
+                STEAM_OIL_DRILL_MODULE_III.ID,
+                "NameSteamOilDrillModuleIII",
+                StatCollector.translateToLocal("NameSteamOilDrillModuleIII"),
+                4));
+        addItemTooltip(GTNLItemList.SteamOilDrillModuleIII.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         // Special Machine
         GTNLItemList.CheatOreProcessingFactory.set(

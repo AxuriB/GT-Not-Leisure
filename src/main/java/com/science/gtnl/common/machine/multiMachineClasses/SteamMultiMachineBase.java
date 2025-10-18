@@ -1443,7 +1443,7 @@ public abstract class SteamMultiMachineBase<T extends SteamMultiMachineBase<T>> 
             .setSize(12, 12);
     }
 
-    public ModularWindow createRecipeOcCountWindow(final EntityPlayer player) {
+    public ModularWindow createRecipeOcCountWindow(EntityPlayer player) {
         final int WIDTH = 158;
         final int HEIGHT = 52;
         final int PARENT_WIDTH = getGUIWidth();

@@ -1848,6 +1848,19 @@ Tooltip_SteamGreenhouseModule_03=每株作物消耗16000L水
 Tooltip_SteamGreenhouseModule_04=运行时间固定为60秒
 Tooltip_SteamGreenhouseModule_05=无法超频
 
+NameSteamOilDrillModuleI=蒸汽流体钻机模块 I
+NameSteamOilDrillModuleII=蒸汽流体钻机模块 II
+NameSteamOilDrillModuleIII=蒸汽流体钻机模块 III
+SteamOilDrillModuleRecipeType=泵
+Tooltip_SteamOilDrillModuleI_00=§a§l霉菌来袭！
+Tooltip_SteamOilDrillModuleII_00=§a§l地底两万里
+Tooltip_SteamOilDrillModuleIII_00=§a§l上知天文，下至地里
+Tooltip_SteamOilDrillModule_00=将流体钻机功能添加到蒸汽楼梯
+Tooltip_SteamOilDrillModule_01=开采当前维度的所有地下流体类型
+Tooltip_SteamOilDrillModule_02=随机抽取最多%s种流体
+Tooltip_SteamOilDrillModule_03=每次可能抽取%s~%sL
+Tooltip_SteamOilDrillModule_04=基础工作周期：%st
+
 NameSteamApiaryModule=蒸汽蜜蜂养殖模块
 SteamApiaryModuleRecipeType=气动蜂箱
 Tooltip_SteamApiaryModule_00=§a§l高压力让蜜蜂工作§0§m内卷§a§l更卖力.

@@ -1,17 +1,11 @@
 package com.science.gtnl.common.machine.multiblock.ModuleMachine.SteamElevator;
 
-import static gregtech.api.enums.GTValues.V;
-import static mods.railcraft.common.util.inventory.InvTools.isItemEqualIgnoreNBT;
+import javax.annotation.Nonnull;
 
-import java.util.List;
-
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.science.gtnl.loader.RecipePool;
+import com.science.gtnl.mixins.late.Gregtech.AccessorProcessingLogic;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -19,7 +13,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class SteamWeatherModule extends SteamElevatorModule {
@@ -67,121 +60,69 @@ public class SteamWeatherModule extends SteamElevatorModule {
         return RecipePool.SteamWeatherModuleFakeRecipes;
     }
 
+    @Nonnull
     @Override
-    @NotNull
     public CheckRecipeResult checkProcessing() {
-        List<ItemStack> inputStacks = getStoredInputs();
-        List<FluidStack> inputFluids = getStoredFluids();
-
-        for (GTRecipe recipe : RecipePool.SteamWeatherModuleFakeRecipes.getAllRecipes()) {
-            ItemStack[] recipeItems = recipe.mInputs.clone();
-            FluidStack[] recipeFluids = recipe.mFluidInputs.clone();
-            int specialValue = recipe.mSpecialValue;
-            boolean matched = true;
-
-            for (ItemStack recipeStack : recipeItems) {
-                if (recipeStack == null) continue;
-
-                boolean foundMatch = false;
-                for (ItemStack inputStack : inputStacks) {
-                    if (inputStack == null) continue;
-
-                    if (isItemEqualIgnoreNBT(inputStack, recipeStack)
-                        && inputStack.stackSize >= recipeStack.stackSize) {
-                        foundMatch = true;
-                        break;
-                    }
-                }
-
-                if (!foundMatch) {
-                    matched = false;
-                    break;
-                }
-            }
-
-            if (matched) {
-                for (FluidStack recipeFluid : recipeFluids) {
-                    if (recipeFluid == null) continue;
-
-                    boolean foundFluid = false;
-                    for (FluidStack inputFluid : inputFluids) {
-                        if (inputFluid == null) continue;
-
-                        if (inputFluid.isFluidEqual(recipeFluid) && inputFluid.amount >= recipeFluid.amount) {
-                            foundFluid = true;
-                            break;
-                        }
-                    }
-
-                    if (!foundFluid) {
-                        matched = false;
-                        break;
-                    }
-                }
-            }
-
-            if (matched) {
-                for (ItemStack recipeStack : recipe.mInputs) {
-                    if (recipeStack != null) {
-                        if (!depleteInput(recipeStack)) {
-                            return CheckRecipeResultRegistry.NO_RECIPE;
-                        }
-                    }
-                }
-                for (FluidStack recipeFluid : recipe.mFluidInputs) {
-                    if (recipeFluid != null) {
-                        if (!depleteInput(recipeFluid, false)) {
-                            return CheckRecipeResultRegistry.NO_RECIPE;
-                        }
-                    }
-                }
-
-                switch (specialValue) {
-                    case 1:
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setRaining(false);
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setThundering(false);
-                        break;
-                    case 2:
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setRaining(true);
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setRainTime(72000);
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setThundering(false);
-                        break;
-                    case 3:
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setRaining(true);
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setRainTime(72000);
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setThundering(true);
-                        getBaseMetaTileEntity().getWorld()
-                            .getWorldInfo()
-                            .setThunderTime(72000);
-                        break;
-                }
-                lEUt = V[3];
-                mMaxProgresstime = 128;
-                return CheckRecipeResultRegistry.SUCCESSFUL;
-            }
+        // If no logic is found, try legacy checkRecipe
+        if (processingLogic == null) {
+            return checkRecipe(mInventory[1]) ? CheckRecipeResultRegistry.SUCCESSFUL
+                : CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        return CheckRecipeResultRegistry.NO_RECIPE;
-    }
+        setupProcessingLogic(processingLogic);
 
-    @Override
-    protected int getMachineEffectRange() {
-        return 64 * recipeOcCount;
+        CheckRecipeResult result = doCheckRecipe();
+        result = postCheckRecipe(result, processingLogic);
+        // inputs are consumed at this point
+        updateSlots();
+        if (!result.wasSuccessful()) return result;
+
+        mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+        mEfficiencyIncrease = 10000;
+        mMaxProgresstime = processingLogic.getDuration();
+        setEnergyUsage(processingLogic);
+
+        mOutputItems = processingLogic.getOutputItems();
+        mOutputFluids = processingLogic.getOutputFluids();
+
+        int specialValue = ((AccessorProcessingLogic) processingLogic).getLastRecipe().mSpecialValue;
+
+        switch (specialValue) {
+            case 1:
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setRaining(false);
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setThundering(false);
+                break;
+            case 2:
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setRaining(true);
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setRainTime(72000);
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setThundering(false);
+                break;
+            case 3:
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setRaining(true);
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setRainTime(72000);
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setThundering(true);
+                getBaseMetaTileEntity().getWorld()
+                    .getWorldInfo()
+                    .setThunderTime(72000);
+                break;
+        }
+
+        return result;
     }
 }

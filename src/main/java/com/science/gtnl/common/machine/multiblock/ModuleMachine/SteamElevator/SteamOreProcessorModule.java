@@ -629,11 +629,6 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
     }
 
     @Override
-    protected int getMachineEffectRange() {
-        return 0;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamOreProcessorModuleRecipeType"))

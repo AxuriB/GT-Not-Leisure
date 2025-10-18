@@ -86,6 +86,8 @@ public class SteamBeaconModule extends SteamElevatorModule {
     private final ItemStackHandler inputSlotHandler = new ItemStackHandler(1);
     private ItemStack storedWindowItems;
 
+    public static final int CONFIG_WINDOW_ID = 12;
+
     public SteamBeaconModule(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
@@ -241,15 +243,9 @@ public class SteamBeaconModule extends SteamElevatorModule {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(StatCollector.translateToLocal("SteamBeaconModuleRecipeType"));
         switch (mTier) {
-            case 1:
-                tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamBeaconModuleI_00"));
-                break;
-            case 2:
-                tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamBeaconModuleII_00"));
-                break;
-            case 3:
-                tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamBeaconModuleIII_00"));
-                break;
+            case 1 -> tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamBeaconModuleI_00"));
+            case 2 -> tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamBeaconModuleII_00"));
+            case 3 -> tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamBeaconModuleIII_00"));
         }
         tt.addInfo(StatCollector.translateToLocal("Tooltip_SteamBeaconModule_00"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamBeaconModule_01"))
@@ -630,7 +626,7 @@ public class SteamBeaconModule extends SteamElevatorModule {
     }
 
     @Override
-    protected int getMachineEffectRange() {
+    public int getMachineEffectRange() {
         return switch (mTier) {
             case 1 -> 64;
             case 2 -> 128;

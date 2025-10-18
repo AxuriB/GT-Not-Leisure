@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.gtnewhorizons.modularui.api.math.Size;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
@@ -87,7 +89,7 @@ import kubatech.api.DynamicInventory;
 
 public class SteamApiaryModule extends SteamElevatorModule {
 
-    public int mMaxSlots = (int) (8 * Math.pow(2, Math.min(4, recipeOcCount)));
+    public int mMaxSlots = 8;
     public final ArrayList<BeeSimulator> mStorage = new ArrayList<>();
     public static final int CONFIGURATION_WINDOW_ID = 10;
 
@@ -147,6 +149,7 @@ public class SteamApiaryModule extends SteamElevatorModule {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setInteger("mMaxSlots", mMaxSlots);
         aNBT.setInteger("mPrimaryMode", mPrimaryMode);
         aNBT.setInteger("mStorageSize", mStorage.size());
         for (int i = 0; i < mStorage.size(); i++) aNBT.setTag(
@@ -158,6 +161,7 @@ public class SteamApiaryModule extends SteamElevatorModule {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        mMaxSlots = aNBT.getInteger("mMaxSlots");
         mPrimaryMode = aNBT.getInteger("mPrimaryMode");
         for (int i = 0, isize = aNBT.getInteger("mStorageSize"); i < isize; i++)
             mStorage.add(new SteamApiaryModule.BeeSimulator(aNBT.getCompoundTag("mStorage." + i)));
@@ -190,11 +194,6 @@ public class SteamApiaryModule extends SteamElevatorModule {
         infos.forEach((key, value) -> info.add("x" + value + ": " + key));
 
         return info.toArray(new String[0]);
-    }
-
-    @Override
-    protected int getMachineEffectRange() {
-        return 0;
     }
 
     @Override
@@ -631,6 +630,48 @@ public class SteamApiaryModule extends SteamElevatorModule {
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(174, 112)
             .setSize(16, 16));
+    }
+
+    @Override
+    public ModularWindow createRecipeOcCountWindow(EntityPlayer player) {
+        final int WIDTH = 158;
+        final int HEIGHT = 52;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
+        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
+        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
+        builder.setGuiTint(getGUIColorization());
+        builder.setDraggable(true);
+        builder.setPos(
+            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
+                .add(
+                    Alignment.BottomRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
+                        .add(WIDTH - 3, 0)
+                        .subtract(0, 10)));
+        builder.widget(
+                TextWidget.localised("Info_SteamMachine_00")
+                    .setPos(3, 4)
+                    .setSize(150, 20))
+            .widget(
+                new NumericWidget().setSetter(val -> recipeOcCount = clampRecipeOcCount((int) val))
+                    .setGetter(() -> {
+                        mMaxSlots = (int) (8 * Math.pow(2, Math.min(4, recipeOcCount)));
+                       return clampRecipeOcCount(recipeOcCount);
+                    })
+                    .setBounds(0, Integer.MAX_VALUE)
+                    .setDefaultValue(0)
+                    .setScrollValues(1, 4, 64)
+                    .setTextAlignment(Alignment.Center)
+                    .setTextColor(Color.WHITE.normal)
+                    .setSize(150, 18)
+                    .setPos(4, 25)
+                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD)
+                    .attachSyncer(
+                        new FakeSyncWidget.IntegerSyncer(
+                            () -> clampRecipeOcCount(recipeOcCount),
+                            (val) -> recipeOcCount = clampRecipeOcCount(val)),
+                        builder));
+        return builder.build();
     }
 
     @Override

@@ -104,7 +104,7 @@ public class SteamFlightModule extends SteamElevatorModule {
     }
 
     @Override
-    protected int getMachineEffectRange() {
+    public int getMachineEffectRange() {
         return 64 * Math.max(recipeOcCount, 1);
     }
 }
