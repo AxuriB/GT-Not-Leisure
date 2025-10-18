@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
@@ -45,6 +43,7 @@ import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.MainAxisAlignment;
+import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -65,6 +64,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -649,14 +649,14 @@ public class SteamApiaryModule extends SteamElevatorModule {
                         .add(WIDTH - 3, 0)
                         .subtract(0, 10)));
         builder.widget(
-                TextWidget.localised("Info_SteamMachine_00")
-                    .setPos(3, 4)
-                    .setSize(150, 20))
+            TextWidget.localised("Info_SteamMachine_00")
+                .setPos(3, 4)
+                .setSize(150, 20))
             .widget(
                 new NumericWidget().setSetter(val -> recipeOcCount = clampRecipeOcCount((int) val))
                     .setGetter(() -> {
                         mMaxSlots = (int) (8 * Math.pow(2, Math.min(4, recipeOcCount)));
-                       return clampRecipeOcCount(recipeOcCount);
+                        return clampRecipeOcCount(recipeOcCount);
                     })
                     .setBounds(0, Integer.MAX_VALUE)
                     .setDefaultValue(0)

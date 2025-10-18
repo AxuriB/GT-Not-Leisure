@@ -53,8 +53,8 @@ public class SteamOilDrillModule extends SteamElevatorModule {
             .addInfo(
                 StatCollector.translateToLocalFormatted(
                     "Tooltip_SteamOilDrillModule_03",
-                    (int)(500d * Math.pow(2, mTier - 2)),
-                    (int)  (2500d * Math.pow(2, mTier - 2))))
+                    (int) (500d * Math.pow(2, mTier - 2)),
+                    (int) (2500d * Math.pow(2, mTier - 2))))
             .addInfo(StatCollector.translateToLocalFormatted("Tooltip_SteamOilDrillModule_04", 1200 / (mTier - 1)))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
