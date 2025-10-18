@@ -24,12 +24,12 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
 
     public SteamMonsterRepellentModule(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
-        mRange = (int) Math.pow(2, 6 + aTier);
+        mRange = (int) Math.pow(2, 5 + aTier);
     }
 
     public SteamMonsterRepellentModule(String aName, int aTier) {
         super(aName, aTier);
-        mRange = (int) Math.pow(2, 6 + aTier);
+        mRange = (int) Math.pow(2, 5 + aTier);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SteamMonsterRepellentModule extends SteamElevatorModule {
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModule_01"))
             .addInfo(StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModule_02"))
             .addInfo(
-                StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModule_03") + (int) Math.pow(2, 6 + mTier))
+                StatCollector.translateToLocal("Tooltip_SteamMonsterRepellentModule_03") + (int) Math.pow(2, 5 + mTier))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
