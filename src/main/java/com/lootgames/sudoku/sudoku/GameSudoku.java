@@ -106,7 +106,7 @@ public class GameSudoku extends BoardLootGame<GameSudoku> {
             (WorldServer) getWorld(),
             this,
             getGameCenter(),
-            currentLevel - 1,
+            currentLevel,
             LGConfigs.REWARDS.rewardsMinesweeper);
     }
 

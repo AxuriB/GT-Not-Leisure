@@ -210,8 +210,7 @@ public class RecipeLoader {
             PortalToAlfheimOreRecipes.addManaInfusionOreRecipes(stone);
         }
 
-        RecipeUtil
-            .generateRecipesNotUsingCells(BartWorksRecipeMaps.bioLabRecipes, RecipePool.LargeBioLabRecipes, true, 1.1);
+        RecipeUtil.generateRecipesBioLab(BartWorksRecipeMaps.bioLabRecipes, RecipePool.LargeBioLabRecipes, true, 1.1);
 
         for (RecipeMap<?> map : new RecipeMap<?>[] { RecipeMaps.transcendentPlasmaMixerRecipes,
             RecipeMaps.fusionRecipes }) {

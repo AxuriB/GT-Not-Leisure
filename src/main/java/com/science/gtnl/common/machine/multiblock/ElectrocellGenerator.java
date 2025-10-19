@@ -12,7 +12,9 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,6 +48,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator> implements ISurvivalConstructable {
 
@@ -58,6 +61,8 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
     public double generatorValue = 1;
     public FluidStack matchedFluid;
     public FluidStack outputFluid;
+    public static final Random random = new Random();
+    public long lastEUt;
 
     public static final double[] FLUID_MULTIPLIERS = { 1.0, 1.8, 2.5, 3.5 };
 
@@ -182,11 +187,38 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
     }
 
     @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (!aBaseMetaTileEntity.isServerSide()) return;
+        if (mMaxProgresstime > 0 && aTick % 20 == 0) {
+            FluidStack matchedFluidExtra = matchedFluid.copy();
+            matchedFluidExtra.amount = (int) (matchedFluidExtra.amount * generatorValue);
+            if (depleteInput(matchedFluidExtra)) {
+                FluidStack outputFluidExtra = outputFluid.copy();
+                outputFluidExtra.amount = (int) (outputFluidExtra.amount * generatorValue);
+                addOutput(outputFluidExtra);
+                lEUt = (long) (lastEUt * generatorValue);
+            } else if (depleteInput(matchedFluid)) {
+                addOutput(outputFluid);
+                lEUt = lastEUt;
+            } else {
+                lEUt -= (long) (1000 / generatorValue);
+            }
+        }
+        if (lEUt <= 0) {
+            stopMachine(ShutDownReasonRegistry.NONE);
+        }
+    }
+
+    @NotNull
+    @Override
+    public CheckRecipeResult checkProcessing() {
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
         generatorValue = 1;
+        lastEUt = 0;
         matchedFluid = null;
+        outputFluid = null;
 
         Pair<ItemStack, ItemStack> inputItems = getStoredInputsItems();
         ItemStack leftItem = inputItems.getLeft();
@@ -217,7 +249,21 @@ public class ElectrocellGenerator extends MultiMachineBase<ElectrocellGenerator>
                             generatorValue = recipe.mSpecialValue / 100D * multiplier;
                             lEUt = Objects
                                 .requireNonNull(recipe.getMetadata(ElectrocellGeneratorSpecialValue.INSTANCE));
+                            lastEUt = lEUt;
                             outputFluid = recipe.mFluidOutputs[0];
+
+                            List<ItemStack> outputList = new ArrayList<>();
+
+                            for (int i = 0; i < recipe.mOutputs.length; i++) {
+                                int chance = i < recipe.mChances.length ? recipe.mChances[i] : 10000;
+
+                                if (random.nextInt(10000) < chance) {
+                                    outputList.add(recipe.mOutputs[i]);
+                                }
+                            }
+
+                            mOutputItems = outputList.toArray(new ItemStack[0]);
+
                             return CheckRecipeResultRegistry.SUCCESSFUL;
                         }
                     }
