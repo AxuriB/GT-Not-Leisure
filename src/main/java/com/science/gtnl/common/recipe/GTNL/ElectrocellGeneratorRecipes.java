@@ -41,8 +41,7 @@ public class ElectrocellGeneratorRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Carbon, 3),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 4))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Galena, 3))
-            .fluidInputs(
-                Materials.SulfuricAcid.getFluid(6000))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(6000))
             .fluidOutputs(Materials.Hydrogen.getGas(6000))
             .outputChances(7500)
             .eut(0)
@@ -52,5 +51,3 @@ public class ElectrocellGeneratorRecipes implements IRecipePool {
             .addTo(EGR);
     }
 }
-
-
