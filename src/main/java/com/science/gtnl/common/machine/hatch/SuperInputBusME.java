@@ -10,16 +10,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
@@ -39,9 +34,10 @@ import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
-import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.mixins.late.Gregtech.AccessorCommonMetaTileEntity;
+import com.science.gtnl.mixins.late.Gregtech.AccessorMetaTileEntity;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
@@ -57,7 +53,6 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
-import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.IDataCopyable;
@@ -76,29 +71,24 @@ import gregtech.common.gui.modularui.widget.AESlotWidget;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class SuperInputBusME extends MTEHatchInputBusME implements IConfigurationCircuitSupport,
     IRecipeProcessingAwareHatch, IAddGregtechLogo, IAddUIWidgets, IPowerChannelState, ISmartInputHatch, IDataCopyable {
 
-    protected static int SIDE_SLOT_COUNT = 100;
-    protected static int ALL_SLOT_COUNT = SIDE_SLOT_COUNT * 2 + 1 + 9 * 9;
-    public static final String COPIED_DATA_IDENTIFIER = "stockingBus";
-    protected ItemStack[] shadowInventory = new ItemStack[SIDE_SLOT_COUNT];
-    protected int[] savedStackSizes = new int[SIDE_SLOT_COUNT];
-    protected boolean autoPullAvailable;
-    protected static final int CONFIG_WINDOW_ID = 10;
-    protected static final int MANUAL_SLOT_WINDOW = 11;
+    public static int SIDE_SLOT_COUNT = 100;
+    public static int ALL_SLOT_COUNT = SIDE_SLOT_COUNT * 2 + 1 + 9 * 9;
+    public ItemStack[] shadowInventory = new ItemStack[SIDE_SLOT_COUNT];
+    public int[] savedStackSizes = new int[SIDE_SLOT_COUNT];
+    public static final int CONFIG_WINDOW_ID = 10;
+    public static final int MANUAL_SLOT_WINDOW = 11;
 
     public SuperInputBusME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(aID, autoPullAvailable, aName, aNameRegional);
-        this.autoPullAvailable = autoPullAvailable;
-        Utils.setFinalFieldRecursive(this, "mInventory", new ItemStack[ALL_SLOT_COUNT]);
-        Utils.setFinalFieldRecursive(this, "inventoryHandler", new ItemStackHandler(mInventory) {
+        ((AccessorCommonMetaTileEntity) this).setInventory(new ItemStack[ALL_SLOT_COUNT]);
+        ((AccessorMetaTileEntity) this).setInventoryHandler(new ItemStackHandler(mInventory) {
 
             @Override
-            protected void onContentsChanged(int slot) {
+            public void onContentsChanged(int slot) {
                 SuperInputBusME.this.onContentsChanged(slot);
             }
         });
@@ -108,15 +98,14 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     public SuperInputBusME(String aName, boolean autoPullAvailable, int aTier, String[] aDescription,
         ITexture[][][] aTextures) {
         super(aName, autoPullAvailable, aTier, aDescription, aTextures);
-        Utils.setFinalFieldRecursive(this, "mInventory", new ItemStack[ALL_SLOT_COUNT]);
-        Utils.setFinalFieldRecursive(this, "inventoryHandler", new ItemStackHandler(mInventory) {
+        ((AccessorCommonMetaTileEntity) this).setInventory(new ItemStack[ALL_SLOT_COUNT]);
+        ((AccessorMetaTileEntity) this).setInventoryHandler(new ItemStackHandler(mInventory) {
 
             @Override
-            protected void onContentsChanged(int slot) {
+            public void onContentsChanged(int slot) {
                 SuperInputBusME.this.onContentsChanged(slot);
             }
         });
-        this.autoPullAvailable = autoPullAvailable;
         disableSort = true;
     }
 
@@ -152,7 +141,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    protected void setAutoPullItemList(boolean pullItemList) {
+    public void setAutoPullItemList(boolean pullItemList) {
         if (!autoPullAvailable) {
             return;
         }
@@ -191,94 +180,12 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    public String[] getInfoData() {
-        return new String[] { (getProxy() != null && getProxy().isActive())
-            ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-            : StatCollector
-                .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        if (!autoPullAvailable) {
-            return;
-        }
-
-        setAutoPullItemList(!autoPullItemList);
-        aPlayer.addChatMessage(
-            new ChatComponentTranslation(
-                "GT5U.machines.stocking_bus.auto_pull_toggle." + (autoPullItemList ? "enabled" : "disabled")));
-    }
-
-    @Override
     public void updateSlots() {
         for (int i = 201; i < ALL_SLOT_COUNT; i++) {
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
                 mInventory[i] = null;
             }
         }
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        if (!(aPlayer instanceof EntityPlayerMP))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-
-        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) return false;
-
-        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
-        return true;
-    }
-
-    @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) return;
-
-        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
-
-        dataStick.stackTagCompound = getCopiedData(aPlayer);
-        dataStick.setStackDisplayName("Stocking Input Bus Configuration");
-        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
-    }
-
-    @Override
-    public String getCopiedDataIdentifier(EntityPlayer player) {
-        return COPIED_DATA_IDENTIFIER;
-    }
-
-    @Override
-    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
-        ItemStack circuit = GTUtility.loadItem(nbt, "circuit");
-        if (GTUtility.isStackInvalid(circuit)) circuit = null;
-
-        if (autoPullAvailable) {
-            setAutoPullItemList(nbt.getBoolean("autoPull"));
-            minAutoPullStackSize = nbt.getInteger("minStackSize");
-            // Data sticks created before refreshTime was implemented should not cause stocking buses to
-            // spam divide by zero errors
-            if (nbt.hasKey("refreshTime")) {
-                autoPullRefreshTime = nbt.getInteger("refreshTime");
-            }
-            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
-        }
-
-        additionalConnection = nbt.getBoolean("additionalConnection");
-        if (!autoPullItemList) {
-            NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
-            for (int i = 0; i < stockingItems.tagCount(); i++) {
-                this.mInventory[i] = GTUtility.loadItem(stockingItems.getCompoundTagAt(i));
-            }
-        }
-        setInventorySlotContents(getCircuitSlot(), circuit);
-        updateValidGridProxySides();
-        return true;
     }
 
     @Override
@@ -321,16 +228,6 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     @Override
     public boolean setStackToZeroInsteadOfNull(int aIndex) {
         return aIndex < 201 || aIndex >= ALL_SLOT_COUNT;
-    }
-
-    @Override
-    public boolean justUpdated() {
-        if (expediteRecipeCheck && isAllowedToWork()) {
-            boolean ret = justHadNewItems;
-            justHadNewItems = false;
-            return ret;
-        }
-        return false;
     }
 
     @Override
@@ -387,7 +284,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    protected BaseActionSource getRequestSource() {
+    public BaseActionSource getRequestSource() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
@@ -400,13 +297,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    public void startRecipeProcessing() {
-        processingRecipe = true;
-        updateAllInformationSlots();
-    }
-
-    @Override
-    protected void refreshItemList() {
+    public void refreshItemList() {
         if (!isActive()) return;
         AENetworkProxy proxy = getProxy();
         try {
@@ -437,7 +328,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    protected void updateAllInformationSlots() {
+    public void updateAllInformationSlots() {
         for (int index = 0; index < SIDE_SLOT_COUNT; index++) {
             updateInformationSlot(index, mInventory[index]);
         }
@@ -544,43 +435,6 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         return shadowInventory.length;
     }
 
-    /**
-     * Gets the first non-null shadow item stack.
-     *
-     * @return The first shadow item stack, or null if this doesn't exist.
-     */
-    @Override
-    public ItemStack getFirstShadowItemStack() {
-        return getFirstShadowItemStack(false);
-    }
-
-    /**
-     * Gets the first non-null shadow item stack.
-     *
-     * @param hasToMatchGhost Whether the first item stack returned has to match the first non-null ghost stack
-     * @return The first shadow item stack, or null if this doesn't exist.
-     */
-    @Override
-    public ItemStack getFirstShadowItemStack(boolean hasToMatchGhost) {
-        ItemStack itemStack;
-        ItemStack lockedSlot = null;
-        if (hasToMatchGhost) {
-            byte slotToCheck = 0;
-            do {
-                lockedSlot = mInventory[slotToCheck];
-                slotToCheck++;
-            } while (lockedSlot == null && slotToCheck < getSizeInventory());
-            if (lockedSlot == null) return null;
-        }
-        byte slotToCheck = 0;
-        do {
-            itemStack = getShadowItemStack(slotToCheck);
-            slotToCheck++;
-        } while ((itemStack == null || !(hasToMatchGhost && lockedSlot.getItem() == itemStack.getItem()))
-            && slotToCheck < getSizeInventory());
-        return itemStack;
-    }
-
     @Override
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
@@ -636,7 +490,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
             .widgetCreator(slot -> (SlotWidget) new SlotWidget(slot) {
 
                 @Override
-                protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
+                public void phantomClick(ClickData clickData, ItemStack cursorStack) {
                     if (clickData.mouseButton != 0 || !getMcSlot().isEnabled()) return;
                     final int aSlotIndex = getMcSlot().getSlotIndex();
                     if (cursorStack == null) {
@@ -674,7 +528,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
                     }
                 }
 
-                private boolean containsSuchStack(ItemStack tStack) {
+                public boolean containsSuchStack(ItemStack tStack) {
                     for (int i = 0; i < 100; ++i) {
                         if (GTUtility.areStacksEqual(mInventory[i], tStack, false)) return true;
                     }
@@ -763,7 +617,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         addGregTechLogo(builder);
     }
 
-    protected ModularWindow createSlotManualWindow(final EntityPlayer player) {
+    public ModularWindow createSlotManualWindow(final EntityPlayer player) {
         final int WIDTH = 176;
         final int HEIGHT = 86;
         final int PARENT_WIDTH = getGUIWidth();
@@ -792,7 +646,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
-    protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
+    public ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
         final int HEIGHT = 115;
         final int PARENT_WIDTH = getGUIWidth();
@@ -858,42 +712,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
                 .setPos(367, 81));
     }
 
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        if (!autoPullAvailable) {
-            super.getWailaBody(itemStack, currenttip, accessor, config);
-            return;
-        }
-
-        NBTTagCompound tag = accessor.getNBTData();
-        boolean autopull = tag.getBoolean("autoPull");
-        int minSize = tag.getInteger("minStackSize");
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
-        if (autopull) {
-            currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.stocking_bus.min_stack_size",
-                    GTUtility.formatNumbers(minSize)));
-        }
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        if (!autoPullAvailable) {
-            super.getWailaNBTData(player, tile, tag, world, x, y, z);
-            return;
-        }
-
-        tag.setBoolean("autoPull", autoPullItemList);
-        tag.setInteger("minStackSize", minAutoPullStackSize);
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-    }
-
-    protected static String[] getDescriptionArray(boolean autoPullAvailable) {
+    public static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_00"));
         strings.add(

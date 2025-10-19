@@ -3,8 +3,6 @@ package com.science.gtnl.Utils;
 import static com.science.gtnl.config.MainConfig.targetBlockSpecs;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -302,53 +300,6 @@ public class Utils {
         }
         if (list.isEmpty()) return new Object[0];
         return list.toArray(new Object[0]);
-    }
-
-    public static void setFinalField(Object target, String fieldName, Object newValue) {
-        try {
-            Field field = target.getClass()
-                .getSuperclass()
-                .getDeclaredField(fieldName);
-            field.setAccessible(true);
-
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-            field.set(target, newValue);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to set final field: " + fieldName, e);
-        }
-    }
-
-    public static void setFinalFieldRecursive(Object target, String fieldName, Object newValue) {
-        try {
-            Class<?> clazz = target.getClass();
-            Field field = null;
-
-            while (clazz != null) {
-                try {
-                    field = clazz.getDeclaredField(fieldName);
-                    break;
-                } catch (NoSuchFieldException e) {
-                    clazz = clazz.getSuperclass();
-                }
-            }
-
-            if (field == null) {
-                throw new NoSuchFieldException(fieldName);
-            }
-
-            field.setAccessible(true);
-
-            Field modifiersField = Field.class.getDeclaredField("modifiers");
-            modifiersField.setAccessible(true);
-            modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-            field.set(target, newValue);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to set final field: " + fieldName, e);
-        }
     }
 
     public static <T extends Collection<E>, E extends MetaTileEntity> T filterValidMTEs(T metaTileEntities) {

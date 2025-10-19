@@ -13,15 +13,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -62,7 +59,6 @@ import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEFluidStack;
-import gregtech.api.enums.ItemList;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
@@ -80,33 +76,29 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
     IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
 
-    private static final int SLOT_COUNT = 100;
+    public static int SLOT_COUNT = 100;
 
-    protected FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
-    protected FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
+    public FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
+    public FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
 
     // these two fields should ALWAYS be mutated simultaneously
     // in most cases, you should call setSavedFluid() instead of trying to write to the array directly
     // a desync of these two fields can lead to catastrophe
-    protected FluidStack[] shadowStoredFluids = new FluidStack[SLOT_COUNT];
-    protected final int[] savedStackSizes = new int[SLOT_COUNT];
+    public FluidStack[] shadowStoredFluids = new FluidStack[SLOT_COUNT];
+    public int[] savedStackSizes = new int[SLOT_COUNT];
 
-    protected boolean additionalConnection = false;
+    public boolean additionalConnection = false;
 
-    protected final boolean autoPullAvailable;
-    protected int autoPullRefreshTime = 100;
-    protected boolean justHadNewFluids = false;
-    protected boolean expediteRecipeCheck = false;
+    public boolean autoPullAvailable;
+    public int autoPullRefreshTime = 100;
+    public boolean justHadNewFluids = false;
+    public boolean expediteRecipeCheck = false;
 
-    protected static final int CONFIG_WINDOW_ID = 10;
-
-    protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
+    public static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
 
     public SuperInputHatchME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
         super(aID, autoPullAvailable, aName, aNameRegional);
@@ -142,7 +134,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
-    private void refreshFluidList() {
+    public void refreshFluidList() {
         AENetworkProxy proxy = getProxy();
         if (proxy == null || !proxy.isActive()) {
             return;
@@ -177,7 +169,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
     }
 
     @Override
-    protected void setSavedFluid(int i, FluidStack stack) {
+    public void setSavedFluid(int i, FluidStack stack) {
         shadowStoredFluids[i] = stack;
         savedStackSizes[i] = stack == null ? 0 : stack.amount;
     }
@@ -354,7 +346,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         return getProxy() != null && getProxy().isActive();
     }
 
-    private void setAutoPullFluidList(boolean pullFluidList) {
+    public void setAutoPullFluidList(boolean pullFluidList) {
         if (!autoPullAvailable) {
             return;
         }
@@ -373,7 +365,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         return expediteRecipeCheck;
     }
 
-    private void updateAllInformationSlots() {
+    public void updateAllInformationSlots() {
         for (int index = 0; index < SLOT_COUNT; index++) {
             updateInformationSlot(index);
         }
@@ -421,7 +413,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         } catch (final GridAccessException ignored) {}
     }
 
-    private BaseActionSource getRequestSource() {
+    public BaseActionSource getRequestSource() {
         if (requestSource == null) requestSource = new MachineSource((IActionHost) getBaseMetaTileEntity());
         return requestSource;
     }
@@ -613,6 +605,9 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
             }
         }
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
         return true;
     }
 
@@ -638,33 +633,6 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
             tag.setTag("fluidsToStock", stockingFluids);
         }
         return tag;
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
-        float aX, float aY, float aZ) {
-        if (!(aPlayer instanceof EntityPlayerMP))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
-
-        if (!pasteCopiedData(aPlayer, dataStick.stackTagCompound)) return false;
-
-        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.loaded"));
-        return true;
-    }
-
-    @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) return;
-
-        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
-
-        dataStick.stackTagCompound = getCopiedData(aPlayer);
-        dataStick.setStackDisplayName("Stocking Input Hatch Configuration");
-        aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
     }
 
     @Override
@@ -698,7 +666,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
             .widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
 
                 @Override
-                protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
+                public void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
                     if (clickData.mouseButton != 0 || autoPullFluidList) return;
 
                     FluidStack heldFluid = getFluidForPhantomItem(cursorStack);
@@ -715,7 +683,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
                 }
 
                 @Override
-                protected void tryScrollPhantom(int direction) {}
+                public void tryScrollPhantom(int direction) {}
 
                 @Override
                 public IDrawable[] getBackground() {
@@ -760,10 +728,10 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
             .widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
 
                 @Override
-                protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
+                public void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
 
                 @Override
-                protected void tryScrollPhantom(int direction) {}
+                public void tryScrollPhantom(int direction) {}
 
                 @Override
                 public void buildTooltip(List<Text> tooltip) {
@@ -844,7 +812,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         addGregTechLogo(builder);
     }
 
-    private FluidStackTank createTankForFluidStack(FluidStack[] fluidStacks, int slotIndex, int capacity) {
+    public FluidStackTank createTankForFluidStack(FluidStack[] fluidStacks, int slotIndex, int capacity) {
         return new FluidStackTank(() -> fluidStacks[slotIndex], (stack) -> {
             if (getBaseMetaTileEntity().isServerSide()) {
                 return;
@@ -855,7 +823,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
     }
 
     @Override
-    protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
+    public ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
         final int HEIGHT = 115;
         final int PARENT_WIDTH = getGUIWidth();
@@ -921,42 +889,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
                 .setPos(367, 81));
     }
 
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        if (!autoPullAvailable) {
-            super.getWailaBody(itemStack, currenttip, accessor, config);
-            return;
-        }
-
-        NBTTagCompound tag = accessor.getNBTData();
-        boolean autopull = tag.getBoolean("autoPull");
-        int minSize = tag.getInteger("minAmount");
-        currenttip.add(
-            StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
-        if (autopull) {
-            currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.stocking_hatch.min_amount",
-                    GTUtility.formatNumbers(minSize)));
-        }
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        if (!autoPullAvailable) {
-            super.getWailaNBTData(player, tile, tag, world, x, y, z);
-            return;
-        }
-
-        tag.setBoolean("autoPull", autoPullFluidList);
-        tag.setInteger("minAmount", minAutoPullAmount);
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-    }
-
-    private static String[] getDescriptionArray(boolean autoPullAvailable) {
+    public static String[] getDescriptionArray(boolean autoPullAvailable) {
         List<String> strings = new ArrayList<>(8);
         strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_00"));
         strings.add(
