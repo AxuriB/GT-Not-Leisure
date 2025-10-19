@@ -68,7 +68,7 @@ public class SteamFlightModule extends SteamElevatorModule {
     public CheckRecipeResult checkProcessing() {
         this.lEUt = mTier * V[5] * Math.max(recipeOcCount, 1);
         this.mEfficiency = 10000;
-        this.mMaxProgresstime = 1000;
+        this.mMaxProgresstime = 800;
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
