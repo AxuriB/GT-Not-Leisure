@@ -148,7 +148,14 @@ public class CompoundExtremeCoolingUnit extends WirelessEnergyMultiMachineBase<C
             .addElement(
                 'N',
                 buildHatchAdder(CompoundExtremeCoolingUnit.class)
-                    .atLeast(Maintenance, InputBus, OutputBus, InputHatch, Energy.or(ExoticEnergy), ParallelCon)
+                    .atLeast(
+                        Maintenance,
+                        InputBus,
+                        OutputBus,
+                        InputHatch,
+                        OutputHatch,
+                        Energy.or(ExoticEnergy),
+                        ParallelCon)
                     .casingIndex(getCasingTextureID())
                     .dot(1)
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasings2, 1))))
