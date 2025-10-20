@@ -2033,9 +2033,8 @@ LargeNaquadahReactor.Generates.0=Power Output:
 LargeNaquadahReactor.Generates.1=Oxygen Boost:
 Tooltip_LargeNaquadahReactor_00=Fixed parallelism of 4
 Tooltip_LargeNaquadahReactor_01=Can input oxygen at the start of the recipe
-Tooltip_LargeNaquadahReactor_02=This will make time 16 times shorter and power 16 times greater
+Tooltip_LargeNaquadahReactor_02=This will make time 16 times shorter and power 32 times greater
 Tooltip_LargeNaquadahReactor_03=The cost is 2000L of oxygen consumed per second
-Tooltip_LargeNaquadahReactor_04=Can only be used when hydrogen is not being input!
 Tooltip_LargeNaquadahReactor_Casing=Any radioactive Naquadah alloy machine block
 
 NameGrandAssemblyLine=Grand Assembly Line

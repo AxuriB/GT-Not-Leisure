@@ -21,7 +21,6 @@ public class NaquadahReactorRecipes implements IRecipePool {
             .duration(875)
             .eut(0)
             .specialValue(524288)
-            .fake()
             .addTo(NRR);
 
         GTValues.RA.stdBuilder()
@@ -30,7 +29,6 @@ public class NaquadahReactorRecipes implements IRecipePool {
             .duration(14000)
             .eut(0)
             .specialValue(524288)
-            .fake()
             .addTo(NRR);
 
         GTValues.RA.stdBuilder()
@@ -39,7 +37,6 @@ public class NaquadahReactorRecipes implements IRecipePool {
             .duration(1250)
             .eut(0)
             .specialValue(524288)
-            .fake()
             .addTo(NRR);
 
         GTValues.RA.stdBuilder()
@@ -48,7 +45,6 @@ public class NaquadahReactorRecipes implements IRecipePool {
             .duration(20000)
             .eut(0)
             .specialValue(524288)
-            .fake()
             .addTo(NRR);
 
     }
