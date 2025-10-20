@@ -147,19 +147,21 @@ public class CommandSteamNetwork extends CommandBase {
             }
             case "join" -> {
 
-                // Usage is /gt global_energy_join username_of_you username_to_join
+                // Usage: /gt global_energy_join username_of_you username_to_join
 
-                String usernameSubject = strings[1];
-                String usernameTeam = strings[2];
+                String usernameSubject;
+                String usernameTeam;
 
-                if (usernameSubject != null && usernameTeam != null) {
-                    if (!hasPermission(sender, 2)) {
-                        sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
-                        break;
-                    }
-                } else if (usernameTeam == null) {
+                if (strings.length == 3) {
+                    usernameSubject = strings[1];
+                    usernameTeam = strings[2];
+                } else if (strings.length == 2) {
                     usernameTeam = strings[1];
                     usernameSubject = sender.getCommandSenderName();
+                } else {
+                    sender
+                        .addChatMessage(new ChatComponentText("Usage: /steam_network join <your_name> <target_name>"));
+                    break;
                 }
 
                 String formattedUsernameSubject = EnumChatFormatting.BLUE + usernameSubject + EnumChatFormatting.RESET;
@@ -168,8 +170,18 @@ public class CommandSteamNetwork extends CommandBase {
                 UUID uuidSubject = SpaceProjectManager.getPlayerUUIDFromName(usernameSubject);
                 UUID uuidTeam = SpaceProjectManager.getLeader(SpaceProjectManager.getPlayerUUIDFromName(usernameTeam));
 
+                UUID uuidSender = SpaceProjectManager.getPlayerUUIDFromName(sender.getCommandSenderName());
+                UUID uuidSenderLeader = SpaceProjectManager.getLeader(uuidSender);
+
+                boolean senderIsLeaderOfTeam = uuidSenderLeader.equals(uuidTeam);
+
+                if (!senderIsLeaderOfTeam && !hasPermission(sender, 2)) {
+                    sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                    break;
+                }
+
                 if (uuidSubject.equals(uuidTeam)) {
-                    // leave team
+                    // Leave team
                     SpaceProjectManager.putInTeam(uuidSubject, uuidSubject);
                     sender.addChatMessage(
                         new ChatComponentText(
@@ -177,14 +189,14 @@ public class CommandSteamNetwork extends CommandBase {
                     break;
                 }
 
-                // join other's team
-
+                // Already in same team
                 if (SpaceProjectManager.getLeader(uuidSubject)
                     .equals(SpaceProjectManager.getLeader(uuidTeam))) {
                     sender.addChatMessage(new ChatComponentText("They are already in the same network!"));
                     break;
                 }
 
+                // Join other's team
                 SpaceProjectManager.putInTeam(uuidSubject, uuidTeam);
 
                 sender.addChatMessage(
@@ -197,7 +209,6 @@ public class CommandSteamNetwork extends CommandBase {
                             + " "
                             + formattedUsernameSubject
                             + "."));
-
             }
             case "display" -> {
 

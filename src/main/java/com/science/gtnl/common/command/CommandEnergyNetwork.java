@@ -170,7 +170,6 @@ public class CommandEnergyNetwork extends CommandBase {
                             EU_string_formatted)));
                 break;
             }
-
             case "join": {
                 if (args.length != 3) {
                     throw new WrongUsageException("/energy_network join <user joining> <user to join>");
@@ -179,15 +178,14 @@ public class CommandEnergyNetwork extends CommandBase {
                 String usernameSubject = args[1];
                 String usernameTeam = args[2];
 
-                if (usernameSubject != null && usernameTeam != null) {
-                    if (!hasPermission(sender, 2)) {
-                        sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
-                        break;
-                    }
-                } else if (usernameTeam == null) {
-                    usernameTeam = args[1];
-                    usernameSubject = sender.getCommandSenderName();
+                if (usernameSubject == null || usernameTeam == null) {
+                    sendChatMessage(
+                        sender,
+                        EnumChatFormatting.RED
+                            + "Invalid arguments. Usage: /energy_network join <user joining> <user to join>");
+                    break;
                 }
+
                 UUID uuidSubject = SpaceProjectManager.getPlayerUUIDFromName(usernameSubject);
                 UUID uuidTeam = SpaceProjectManager.getPlayerUUIDFromName(usernameTeam);
 
@@ -198,6 +196,17 @@ public class CommandEnergyNetwork extends CommandBase {
                 if (uuidTeam == null) {
                     sendChatMessage(sender, EnumChatFormatting.RED + "User not found: " + usernameTeam);
                     return;
+                }
+
+                UUID uuidSender = SpaceProjectManager.getPlayerUUIDFromName(sender.getCommandSenderName());
+                UUID uuidSenderLeader = SpaceProjectManager.getLeader(uuidSender);
+                UUID targetTeamLeader = SpaceProjectManager.getLeader(uuidTeam);
+
+                boolean senderIsLeaderOfTargetTeam = uuidSenderLeader.equals(targetTeamLeader);
+
+                if (!senderIsLeaderOfTargetTeam && !hasPermission(sender, 2)) {
+                    sender.addChatMessage(new ChatComponentTranslation("commands.error.perm"));
+                    break;
                 }
 
                 String formattedUsernameSubject = EnumChatFormatting.BLUE + usernameSubject + EnumChatFormatting.RESET;
@@ -235,7 +244,6 @@ public class CommandEnergyNetwork extends CommandBase {
                             usernameSubject)));
                 break;
             }
-
             case "display": {
                 if (args.length != 2) {
                     throw new WrongUsageException("/energy_network display <username>");
