@@ -24,12 +24,10 @@ public abstract class MetaItemBlockBase extends ItemBlock {
         return field_150939_a;
     }
 
-    // region Abstract
     public abstract boolean canCreatureSpawn();
 
     @SideOnly(Side.CLIENT)
     public abstract String[] getTooltips(int meta);
-    // endregion
 
     @Override
     public String getUnlocalizedName(ItemStack aStack) {

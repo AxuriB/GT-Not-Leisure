@@ -14,7 +14,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import com.science.gtnl.client.GTNLCreativeTabs;
@@ -27,8 +26,9 @@ import lombok.Setter;
 @Setter
 public class MetaBlockGlow extends Block {
 
-    // region Constructors
-    protected MetaBlockGlow(Material materialIn) {
+    public String unlocalizedName;
+
+    public MetaBlockGlow(Material materialIn) {
         super(materialIn);
     }
 
@@ -43,31 +43,13 @@ public class MetaBlockGlow extends Block {
     public MetaBlockGlow(String unlocalizedName) {
         this();
         this.unlocalizedName = unlocalizedName;
-        StatCollector.translateToLocal("MetaBlockGlow." + unlocalizedName + ".name");
     }
-
-    // endregion
-    // -----------------------
-    // region member variables
-
-    public String unlocalizedName;
-
-    // endregion
-    // -----------------------
-    // region getters
 
     @Override
     public String getUnlocalizedName() {
-        return this.unlocalizedName;
+        return "tile." + this.unlocalizedName;
     }
 
-    // endregion
-    // -----------------------
-    // region setters
-
-    // endregion
-    // -----------------------
-    // region Overrides
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
@@ -114,5 +96,4 @@ public class MetaBlockGlow extends Block {
         return false;
     }
 
-    // endregion
 }

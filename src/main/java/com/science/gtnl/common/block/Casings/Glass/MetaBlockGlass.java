@@ -15,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import com.science.gtnl.client.GTNLCreativeTabs;
@@ -28,8 +27,9 @@ import lombok.Setter;
 @Setter
 public class MetaBlockGlass extends Block {
 
-    // region Constructors
-    protected MetaBlockGlass(Material materialIn) {
+    public String unlocalizedName;
+
+    public MetaBlockGlass(Material materialIn) {
         super(materialIn);
     }
 
@@ -44,31 +44,13 @@ public class MetaBlockGlass extends Block {
     public MetaBlockGlass(String unlocalizedName) {
         this();
         this.unlocalizedName = unlocalizedName;
-        StatCollector.translateToLocal("MetaBlockGlass." + unlocalizedName + ".name");
     }
-
-    // endregion
-    // -----------------------
-    // region member variables
-
-    public String unlocalizedName;
-
-    // endregion
-    // -----------------------
-    // region getters
 
     @Override
     public String getUnlocalizedName() {
-        return this.unlocalizedName;
+        return "tile." + this.unlocalizedName;
     }
 
-    // endregion
-    // -----------------------
-    // region setters
-
-    // endregion
-    // -----------------------
-    // region Overrides
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
@@ -154,6 +136,4 @@ public class MetaBlockGlass extends Block {
     public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
         return false;
     }
-
-    // endregion
 }

@@ -23,15 +23,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBlockGlass extends ItemBlock {
 
-    // region statics
-
     public static final Map<Integer, String[]> MetaBlockTooltipsMap = new HashMap<>();
-    // public static final Map<Integer, ItemStack> MetaBlockMap01 = new HashMap<>();
     public static final Set<Integer> MetaBlockSet = new HashSet<>();
-
-    // endregion
-    // -----------------------
-    // region Constructors
 
     public ItemBlockGlass(Block aBlock) {
         super(aBlock);
@@ -39,10 +32,6 @@ public class ItemBlockGlass extends ItemBlock {
         setMaxDamage(0);
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
     }
-
-    // endregion
-    // -----------------------
-    // region MetaBlock Generators
 
     public static ItemStack initMetaBlockGlass(int Meta) {
         return initMetaItemStack(Meta, BlockLoader.metaBlockGlass, MetaBlockSet);
@@ -75,6 +64,4 @@ public class ItemBlockGlass extends ItemBlock {
     public int getMetadata(int aMeta) {
         return aMeta;
     }
-
-    // endregion
 }

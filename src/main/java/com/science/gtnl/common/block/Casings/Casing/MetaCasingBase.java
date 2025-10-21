@@ -38,49 +38,15 @@ public abstract class MetaCasingBase extends Block implements IMetaBlock {
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
     }
 
-    // region Abstract
-
-    /**
-     * Determines if a specified mob type can spawn on this block, returning false will
-     * prevent any mob from spawning on the block.
-     *
-     * @param type  The Mob Category Type
-     * @param world The current world
-     * @param x     The X Position
-     * @param y     The Y Position
-     * @param z     The Z Position
-     * @return True to allow a mob of the specified category to spawn, false to prevent it.
-     */
     @Override
     public abstract boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z);
 
-    /**
-     * Used during tree growth to determine if newly generated leaves can replace this block.
-     *
-     * @param world The current world
-     * @param x     X Position
-     * @param y     Y Position
-     * @param z     Z Position
-     * @return true if this block can be replaced by growing leaves.
-     */
     @Override
     public abstract boolean canBeReplacedByLeaves(IBlockAccess world, int x, int y, int z);
 
-    /**
-     * Return true if the block is a normal, solid cube. This
-     * determines indirect power state, entity ejection from blocks, and a few
-     * others.
-     *
-     * @param world The current world
-     * @param x     X Position
-     * @param y     Y position
-     * @param z     Z position
-     * @return True if the block is a full cube
-     */
     @Override
     public abstract boolean isNormalCube(IBlockAccess world, int x, int y, int z);
 
-    // endregion
     @Override
     public Set<Integer> getUsedMetaSet() {
         return usedMetaSet;
@@ -98,7 +64,7 @@ public abstract class MetaCasingBase extends Block implements IMetaBlock {
 
     @Override
     public String getUnlocalizedName() {
-        return unlocalizedName;
+        return "tile." + this.unlocalizedName;
     }
 
     @Override

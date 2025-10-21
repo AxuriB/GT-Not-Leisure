@@ -16,7 +16,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import com.science.gtnl.client.GTNLCreativeTabs;
@@ -41,7 +40,6 @@ public class MetaBlockColumn extends Block {
     public MetaBlockColumn(String unlocalizedName) {
         this();
         this.setBlockName(unlocalizedName);
-        StatCollector.translateToLocal("MetaBlockColumn." + unlocalizedName + ".name");
     }
 
     @SideOnly(Side.CLIENT)
@@ -49,11 +47,9 @@ public class MetaBlockColumn extends Block {
     public IIcon getIcon(int side, int meta) {
         IIcon[] textures = this.TextureMap.get(meta);
         if (textures == null) {
-            textures = this.TextureMap.get(0); // 如果没有找到对应的 meta，默认返回 meta 为 0 的纹理
+            textures = this.TextureMap.get(0);
         }
-        return side == 1 ? textures[1] // 顶部纹理
-            : (side == 0 ? textures[2] // 底部纹理
-                : textures[0]); // 侧面纹理
+        return side == 1 ? textures[1] : (side == 0 ? textures[2] : textures[0]);
     }
 
     @SideOnly(Side.CLIENT)

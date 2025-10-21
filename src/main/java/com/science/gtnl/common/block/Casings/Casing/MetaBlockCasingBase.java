@@ -30,14 +30,10 @@ public abstract class MetaBlockCasingBase extends MetaCasingBase implements ICas
         GregTechAPI.registerMachineBlock(this, -1);
     }
 
-    // region Texture
     @Override
     public int getTextureIndex(int aMeta) {
         return getTextureId(getTexturePageIndex(), getTextureIndexInPage(aMeta));
     }
-    // endregion
-
-    // region General
 
     @Override
     public String getHarvestTool(int aMeta) {

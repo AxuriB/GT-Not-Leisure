@@ -2,8 +2,8 @@ package com.science.gtnl.common.block.Casings.Casing;
 
 public class MetaCasing extends MetaBlockCasingBase {
 
-    public final byte texturePageIndex;
-    public final byte textureIdOffsite;
+    public byte texturePageIndex;
+    public byte textureIdOffsite;
 
     public MetaCasing(String unlocalizedName, byte textureIdOffsite) {
         this(unlocalizedName, textureIdOffsite, TEXTURE_PAGE_INDEX);
@@ -17,15 +17,6 @@ public class MetaCasing extends MetaBlockCasingBase {
         this.textureIdOffsite = textureIdOffsite;
     }
 
-    /**
-     * Used to provide
-     *
-     * <pre>
-     * {@code casingIndex}
-     * </pre>
-     *
-     * at Structure defining.
-     */
     @Override
     public int getTextureIndex(int aMeta) {
         return super.getTextureIndex(aMeta);
