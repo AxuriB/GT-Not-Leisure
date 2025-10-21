@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.Utils.metaItemEqual;
 import static com.science.gtnl.Utils.Utils.setStackSize;
-import static com.science.gtnl.common.machine.OreProcessing.OP_Values.*;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.*;
@@ -138,12 +137,9 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
             if (hasNotFound) {
                 if (Objects.equals(items.getUnlocalizedName(), "gt.blockores")) {
                     ScienceNotLeisure.LOG.info("OP system recipe has not write this material's: {}", items);
-                    outputs.add(items.copy());
-                    items.stackSize = 0;
-                } else if (moveUnprocessedItemsToOutputs) {
-                    outputs.add(items.copy());
-                    items.stackSize = 0;
                 }
+                outputs.add(items.copy());
+                items.stackSize = 0;
             }
         }
         if (outputs.isEmpty()) return CheckRecipeResultRegistry.NO_RECIPE;
@@ -168,7 +164,7 @@ public class CheatOreProcessingFactory extends MultiMachineBase<CheatOreProcessi
 
         mEfficiency = 10000;
         mEfficiencyIncrease = 10000;
-        mMaxProgresstime = OreProcessRecipeDuration;
+        mMaxProgresstime = 1;
 
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }

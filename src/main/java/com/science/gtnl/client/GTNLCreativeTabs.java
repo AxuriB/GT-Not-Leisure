@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SuppressWarnings("unused")
-public final class GTNLCreativeTabs {
+public class GTNLCreativeTabs {
 
     public static CreativeTabs GTNotLeisureItem = new CreativeTabs("GTNotLeisureItem") {
 

@@ -1,7 +1,5 @@
 package com.science.gtnl.common.machine.OreProcessing;
 
-import static com.science.gtnl.common.machine.OreProcessing.OP_Values.OreProcessRecipeDuration;
-import static com.science.gtnl.common.machine.OreProcessing.OP_Values.OreProcessRecipeEUt;
 import static gtPlusPlus.core.material.MaterialMisc.*;
 import static gtPlusPlus.core.material.MaterialsAlloy.KOBOLDITE;
 
@@ -16,7 +14,7 @@ import gregtech.api.enums.GTValues;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialsOres;
 
-public class OP_GTPP_OreHandler {
+public class GTPPOreHandler {
 
     public Set<Material> addSpecials(Set<Material> set) {
         set.add(RARE_EARTH_LOW);
@@ -35,8 +33,7 @@ public class OP_GTPP_OreHandler {
                 if (!(object instanceof Material)) continue;
                 gtppOres.add((Material) object);
             } catch (IllegalAccessException e) {
-                ScienceNotLeisure.LOG
-                    .info("Catch an IllegalAccessException in OP_GTPP_OreHandler.processGTPPOreRecipes");
+                ScienceNotLeisure.LOG.info("Catch an IllegalAccessException in GTPPOreHandler.processGTPPOreRecipes");
             }
         }
         return gtppOres;
@@ -47,8 +44,8 @@ public class OP_GTPP_OreHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(ore.getOre(1))
                 .itemOutputs(ore.getDust(Integer.MAX_VALUE))
-                .eut(OreProcessRecipeEUt)
-                .duration(OreProcessRecipeDuration)
+                .eut(0)
+                .duration(1)
                 .addTo(RecipePool.CheatOreProcessingRecipes);
         }
     }
@@ -58,8 +55,8 @@ public class OP_GTPP_OreHandler {
             GTValues.RA.stdBuilder()
                 .itemInputs(ore.getRawOre(1))
                 .itemOutputs(ore.getDust(Integer.MAX_VALUE))
-                .eut(OreProcessRecipeEUt)
-                .duration(OreProcessRecipeDuration)
+                .eut(0)
+                .duration(1)
                 .addTo(RecipePool.CheatOreProcessingRecipes);
         }
     }

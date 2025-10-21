@@ -1,8 +1,6 @@
 package com.science.gtnl.common.machine.OreProcessing;
 
 import static com.science.gtnl.Utils.Utils.setStackSize;
-import static com.science.gtnl.common.machine.OreProcessing.OP_Values.OreProcessRecipeDuration;
-import static com.science.gtnl.common.machine.OreProcessing.OP_Values.OreProcessRecipeEUt;
 import static gregtech.api.enums.OrePrefixes.*;
 
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import com.science.gtnl.loader.RecipePool;
 import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.GTValues;
 
-public class OP_Bartworks_OreHandler {
+public class BartworksOreHandler {
 
     public void processBWOreRecipes() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
@@ -76,16 +74,16 @@ public class OP_Bartworks_OreHandler {
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(rawOre, 1))
                     .itemOutputs(rawOreOutputs.toArray(new ItemStack[] {}))
-                    .eut(OreProcessRecipeEUt)
-                    .duration(OreProcessRecipeDuration)
+                    .eut(0)
+                    .duration(1)
                     .addTo(RecipePool.CheatOreProcessingRecipes);
             }
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ore, 1))
                 .itemOutputs(outputs.toArray(new ItemStack[] {}))
-                .eut(OreProcessRecipeEUt)
-                .duration(OreProcessRecipeDuration)
+                .eut(0)
+                .duration(1)
                 .addTo(RecipePool.CheatOreProcessingRecipes);
         }
     }

@@ -69,7 +69,7 @@ public abstract class MetaCasingBase extends Block implements IMetaBlock {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return getIconMap().get(meta);
+        return iconMap.get(meta);
     }
 
     @Override
@@ -77,10 +77,10 @@ public abstract class MetaCasingBase extends Block implements IMetaBlock {
     public void registerBlockIcons(IIconRegister reg) {
         Map<Integer, IIcon> iconMap;
         Set<Integer> usedMetaSet;
-        if ((iconMap = getIconMap()) == null || (usedMetaSet = getUsedMetaSet()) == null) {
-            throw new NullPointerException("Null in " + this.getUnlocalizedName());
+        if ((iconMap = this.iconMap) == null || (usedMetaSet = this.usedMetaSet) == null) {
+            throw new NullPointerException("Null in " + this.unlocalizedName);
         }
-        String root = RESOURCE_ROOT_ID + ":" + getUnlocalizedName() + "/";
+        String root = RESOURCE_ROOT_ID + ":" + this.unlocalizedName + "/";
         this.blockIcon = reg.registerIcon(root + "0");
         for (int Meta : usedMetaSet) {
             iconMap.put(Meta, reg.registerIcon(root + Meta));
@@ -91,8 +91,8 @@ public abstract class MetaCasingBase extends Block implements IMetaBlock {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> list) {
         Set<Integer> usedMetaSet;
-        if ((usedMetaSet = getUsedMetaSet()) == null) {
-            throw new NullPointerException("Null in " + this.getUnlocalizedName());
+        if ((usedMetaSet = this.usedMetaSet) == null) {
+            throw new NullPointerException("Null in " + this.unlocalizedName);
         }
         for (int Meta : usedMetaSet) {
             list.add(new ItemStack(aItem, 1, Meta));

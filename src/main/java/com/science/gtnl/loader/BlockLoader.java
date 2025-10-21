@@ -16,7 +16,6 @@ import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.block.Casings.Base.ItemBlockBase;
 import com.science.gtnl.common.block.Casings.Base.MetaBlockBase;
-import com.science.gtnl.common.block.Casings.Casing.MetaBlockConstructors;
 import com.science.gtnl.common.block.Casings.Casing.MetaCasing;
 import com.science.gtnl.common.block.Casings.Casing.MetaItemBlockCasing;
 import com.science.gtnl.common.block.Casings.Column.ItemBlockColumn;
@@ -462,53 +461,46 @@ public class BlockLoader {
         GTNLItemList.BronzeMachineFrame.set(ItemBlockColumn.initMetaBlock(4));
         GTNLItemList.SteelMachineFrame.set(ItemBlockColumn.initMetaBlock(5));
 
-        GTNLItemList.TestCasing.set(MetaBlockConstructors.initMetaBlockCasing(0, BlockLoader.metaCasing));
-        GTNLItemList.SteamAssemblyCasing.set(MetaBlockConstructors.initMetaBlockCasing(1, BlockLoader.metaCasing));
-        GTNLItemList.HeatVent.set(MetaBlockConstructors.initMetaBlockCasing(2, BlockLoader.metaCasing));
-        GTNLItemList.SlicingBlades.set(MetaBlockConstructors.initMetaBlockCasing(3, BlockLoader.metaCasing));
-        GTNLItemList.NeutroniumPipeCasing.set(MetaBlockConstructors.initMetaBlockCasing(4, BlockLoader.metaCasing));
-        GTNLItemList.NeutroniumGearbox.set(MetaBlockConstructors.initMetaBlockCasing(5, BlockLoader.metaCasing));
-        GTNLItemList.Laser_Cooling_Casing.set(MetaBlockConstructors.initMetaBlockCasing(6, BlockLoader.metaCasing));
+        GTNLItemList.TestCasing.set(MetaItemBlockCasing.initMetaBlockCasing(0, BlockLoader.metaCasing));
+        GTNLItemList.SteamAssemblyCasing.set(MetaItemBlockCasing.initMetaBlockCasing(1, BlockLoader.metaCasing));
+        GTNLItemList.HeatVent.set(MetaItemBlockCasing.initMetaBlockCasing(2, BlockLoader.metaCasing));
+        GTNLItemList.SlicingBlades.set(MetaItemBlockCasing.initMetaBlockCasing(3, BlockLoader.metaCasing));
+        GTNLItemList.NeutroniumPipeCasing.set(MetaItemBlockCasing.initMetaBlockCasing(4, BlockLoader.metaCasing));
+        GTNLItemList.NeutroniumGearbox.set(MetaItemBlockCasing.initMetaBlockCasing(5, BlockLoader.metaCasing));
+        GTNLItemList.Laser_Cooling_Casing.set(MetaItemBlockCasing.initMetaBlockCasing(6, BlockLoader.metaCasing));
         GTNLItemList.Antifreeze_Heatproof_Machine_Casing
-            .set(MetaBlockConstructors.initMetaBlockCasing(7, BlockLoader.metaCasing));
-        GTNLItemList.MolybdenumDisilicideCoil.set(MetaBlockConstructors.initMetaBlockCasing(8, BlockLoader.metaCasing));
-        GTNLItemList.EnergeticPhotovoltaicBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing(9, BlockLoader.metaCasing));
-        GTNLItemList.AdvancedPhotovoltaicBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing(10, BlockLoader.metaCasing));
-        GTNLItemList.VibrantPhotovoltaicBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing(11, BlockLoader.metaCasing));
-        GTNLItemList.TungstensteelGearbox.set(MetaBlockConstructors.initMetaBlockCasing(12, BlockLoader.metaCasing));
-        GTNLItemList.DimensionallyStableCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing(13, BlockLoader.metaCasing));
-        GTNLItemList.PressureBalancedCasing.set(MetaBlockConstructors.initMetaBlockCasing(14, BlockLoader.metaCasing));
-        GTNLItemList.ABSUltraSolidCasing.set(MetaBlockConstructors.initMetaBlockCasing(15, BlockLoader.metaCasing));
+            .set(MetaItemBlockCasing.initMetaBlockCasing(7, BlockLoader.metaCasing));
+        GTNLItemList.MolybdenumDisilicideCoil.set(MetaItemBlockCasing.initMetaBlockCasing(8, BlockLoader.metaCasing));
+        GTNLItemList.EnergeticPhotovoltaicBlock.set(MetaItemBlockCasing.initMetaBlockCasing(9, BlockLoader.metaCasing));
+        GTNLItemList.AdvancedPhotovoltaicBlock.set(MetaItemBlockCasing.initMetaBlockCasing(10, BlockLoader.metaCasing));
+        GTNLItemList.VibrantPhotovoltaicBlock.set(MetaItemBlockCasing.initMetaBlockCasing(11, BlockLoader.metaCasing));
+        GTNLItemList.TungstensteelGearbox.set(MetaItemBlockCasing.initMetaBlockCasing(12, BlockLoader.metaCasing));
+        GTNLItemList.DimensionallyStableCasing.set(MetaItemBlockCasing.initMetaBlockCasing(13, BlockLoader.metaCasing));
+        GTNLItemList.PressureBalancedCasing.set(MetaItemBlockCasing.initMetaBlockCasing(14, BlockLoader.metaCasing));
+        GTNLItemList.ABSUltraSolidCasing.set(MetaItemBlockCasing.initMetaBlockCasing(15, BlockLoader.metaCasing));
         GTNLItemList.GravitationalFocusingLensBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing(16, BlockLoader.metaCasing));
+            .set(MetaItemBlockCasing.initMetaBlockCasing(16, BlockLoader.metaCasing));
         GTNLItemList.GaiaStabilizedForceFieldCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing(17, BlockLoader.metaCasing));
-        GTNLItemList.HyperCore.set(MetaBlockConstructors.initMetaBlockCasing(18, BlockLoader.metaCasing));
-        GTNLItemList.ChemicallyResistantCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing(19, BlockLoader.metaCasing));
-        GTNLItemList.UltraPoweredCasing.set(MetaBlockConstructors.initMetaBlockCasing(20, BlockLoader.metaCasing));
-        GTNLItemList.SteamgateRingBlock.set(MetaBlockConstructors.initMetaBlockCasing(21, BlockLoader.metaCasing));
-        GTNLItemList.SteamgateChevronBlock.set(MetaBlockConstructors.initMetaBlockCasing(22, BlockLoader.metaCasing));
-        GTNLItemList.IronReinforcedWood.set(MetaBlockConstructors.initMetaBlockCasing(23, BlockLoader.metaCasing));
-        GTNLItemList.BronzeReinforcedWood.set(MetaBlockConstructors.initMetaBlockCasing(24, BlockLoader.metaCasing));
-        GTNLItemList.SteelReinforcedWood.set(MetaBlockConstructors.initMetaBlockCasing(25, BlockLoader.metaCasing));
-        GTNLItemList.BreelPipeCasing.set(MetaBlockConstructors.initMetaBlockCasing(26, BlockLoader.metaCasing));
-        GTNLItemList.StronzeWrappedCasing.set(MetaBlockConstructors.initMetaBlockCasing(27, BlockLoader.metaCasing));
-        GTNLItemList.HydraulicAssemblingCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing(28, BlockLoader.metaCasing));
-        GTNLItemList.HyperPressureBreelCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing(29, BlockLoader.metaCasing));
-        GTNLItemList.BreelPlatedCasing.set(MetaBlockConstructors.initMetaBlockCasing(30, BlockLoader.metaCasing));
-        GTNLItemList.SteamCompactPipeCasing.set(MetaBlockConstructors.initMetaBlockCasing(31, BlockLoader.metaCasing));
-        GTNLItemList.VibrationSafeCasing.set(MetaBlockConstructors.initMetaBlockCasing(0, BlockLoader.metaCasing02));
-        GTNLItemList.IndustrialSteamCasing.set(MetaBlockConstructors.initMetaBlockCasing(1, BlockLoader.metaCasing02));
+            .set(MetaItemBlockCasing.initMetaBlockCasing(17, BlockLoader.metaCasing));
+        GTNLItemList.HyperCore.set(MetaItemBlockCasing.initMetaBlockCasing(18, BlockLoader.metaCasing));
+        GTNLItemList.ChemicallyResistantCasing.set(MetaItemBlockCasing.initMetaBlockCasing(19, BlockLoader.metaCasing));
+        GTNLItemList.UltraPoweredCasing.set(MetaItemBlockCasing.initMetaBlockCasing(20, BlockLoader.metaCasing));
+        GTNLItemList.SteamgateRingBlock.set(MetaItemBlockCasing.initMetaBlockCasing(21, BlockLoader.metaCasing));
+        GTNLItemList.SteamgateChevronBlock.set(MetaItemBlockCasing.initMetaBlockCasing(22, BlockLoader.metaCasing));
+        GTNLItemList.IronReinforcedWood.set(MetaItemBlockCasing.initMetaBlockCasing(23, BlockLoader.metaCasing));
+        GTNLItemList.BronzeReinforcedWood.set(MetaItemBlockCasing.initMetaBlockCasing(24, BlockLoader.metaCasing));
+        GTNLItemList.SteelReinforcedWood.set(MetaItemBlockCasing.initMetaBlockCasing(25, BlockLoader.metaCasing));
+        GTNLItemList.BreelPipeCasing.set(MetaItemBlockCasing.initMetaBlockCasing(26, BlockLoader.metaCasing));
+        GTNLItemList.StronzeWrappedCasing.set(MetaItemBlockCasing.initMetaBlockCasing(27, BlockLoader.metaCasing));
+        GTNLItemList.HydraulicAssemblingCasing.set(MetaItemBlockCasing.initMetaBlockCasing(28, BlockLoader.metaCasing));
+        GTNLItemList.HyperPressureBreelCasing.set(MetaItemBlockCasing.initMetaBlockCasing(29, BlockLoader.metaCasing));
+        GTNLItemList.BreelPlatedCasing.set(MetaItemBlockCasing.initMetaBlockCasing(30, BlockLoader.metaCasing));
+        GTNLItemList.SteamCompactPipeCasing.set(MetaItemBlockCasing.initMetaBlockCasing(31, BlockLoader.metaCasing));
+        GTNLItemList.VibrationSafeCasing.set(MetaItemBlockCasing.initMetaBlockCasing(0, BlockLoader.metaCasing02));
+        GTNLItemList.IndustrialSteamCasing.set(MetaItemBlockCasing.initMetaBlockCasing(1, BlockLoader.metaCasing02));
         GTNLItemList.AdvancedIndustrialSteamCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing(2, BlockLoader.metaCasing02));
-        GTNLItemList.StainlessSteelGearBox.set(MetaBlockConstructors.initMetaBlockCasing(3, BlockLoader.metaCasing02));
+            .set(MetaItemBlockCasing.initMetaBlockCasing(2, BlockLoader.metaCasing02));
+        GTNLItemList.StainlessSteelGearBox.set(MetaItemBlockCasing.initMetaBlockCasing(3, BlockLoader.metaCasing02));
     }
 
     public static void registry() {

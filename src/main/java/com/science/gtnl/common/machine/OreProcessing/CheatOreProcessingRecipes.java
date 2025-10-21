@@ -2,7 +2,6 @@ package com.science.gtnl.common.machine.OreProcessing;
 
 import static com.science.gtnl.Utils.Utils.copyAmount;
 import static com.science.gtnl.Utils.Utils.setStackSize;
-import static com.science.gtnl.common.machine.OreProcessing.OP_Values.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,11 +62,9 @@ public class CheatOreProcessingRecipes implements IRecipePool {
     }
 
     public ItemStack getDustStack(Materials material, int amount) {
-        if (SpecialProcessingLineMaterialInstead) {
-            ItemStack t = processingLineMaterials.get(material);
-            if (t != null) {
-                return copyAmount(Integer.MAX_VALUE, t);
-            }
+        ItemStack t = processingLineMaterials.get(material);
+        if (t != null) {
+            return copyAmount(Integer.MAX_VALUE, t);
         }
         return setStackSize(GTOreDictUnificator.get(OrePrefixes.dust, material, 1), amount);
     }
@@ -101,9 +98,9 @@ public class CheatOreProcessingRecipes implements IRecipePool {
         }
 
         processSpecialOreRecipe();
-        new OP_GTPP_OreHandler().processGTPPOreRecipes();
-        new OP_GTPP_OreHandler().processGTPPRawOreRecipes();
-        new OP_Bartworks_OreHandler().processBWOreRecipes();
+        new GTPPOreHandler().processGTPPOreRecipes();
+        new GTPPOreHandler().processGTPPRawOreRecipes();
+        new BartworksOreHandler().processBWOreRecipes();
 
     }
 
@@ -315,9 +312,8 @@ public class CheatOreProcessingRecipes implements IRecipePool {
         GTValues.RA.stdBuilder()
             .itemInputs(input)
             .itemOutputs(output)
-
-            .eut(OreProcessRecipeEUt)
-            .duration(OreProcessRecipeDuration)
+            .eut(0)
+            .duration(1)
             .addTo(RecipePool.CheatOreProcessingRecipes);
     }
 
