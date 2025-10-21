@@ -11,6 +11,8 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
+import com.science.gtnl.loader.BlockLoader;
+
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -78,7 +80,24 @@ public class MissingMappingsHandler {
         .remapBlock("ScienceNotLeisure:StargateTier9", GameRegistry.findBlock(ScienceNotLeisure.ID, "StargateTier9"))
         .remapBlock("ScienceNotLeisure:Stargate Coil Compressed", GameRegistry.findBlock(ScienceNotLeisure.ID, "StargateCoilCompressed"))
 
-        // Item remappings
+        .remapBlock("sciencenotleisure:StargateTier0", BlockLoader.compressedStargateTier0)
+        .remapBlock("sciencenotleisure:StargateTier1", BlockLoader.compressedStargateTier1)
+        .remapBlock("sciencenotleisure:StargateTier2", BlockLoader.compressedStargateTier2)
+        .remapBlock("sciencenotleisure:StargateTier3", BlockLoader.compressedStargateTier3)
+        .remapBlock("sciencenotleisure:StargateTier4", BlockLoader.compressedStargateTier4)
+        .remapBlock("sciencenotleisure:StargateTier5", BlockLoader.compressedStargateTier5)
+        .remapBlock("sciencenotleisure:StargateTier6", BlockLoader.compressedStargateTier6)
+        .remapBlock("sciencenotleisure:StargateTier7", BlockLoader.compressedStargateTier7)
+        .remapBlock("sciencenotleisure:StargateTier8", BlockLoader.compressedStargateTier8)
+        .remapBlock("sciencenotleisure:StargateTier9", BlockLoader.compressedStargateTier9)
+
+        .remapBlock("sciencenotleisure:MetaBlockGlow", BlockLoader.metaBlockGlow)
+        .remapBlock("sciencenotleisure:MetaBlockGlass", BlockLoader.metaBlockGlass)
+        .remapBlock("sciencenotleisure:MetaBlock", BlockLoader.metaBlock)
+        .remapBlock("sciencenotleisure:MetaBlockCasing02", BlockLoader.metaCasing02)
+        .remapBlock("sciencenotleisure:MetaBlockCasing", BlockLoader.metaCasing)
+
+         // Item remappings
         .remapItem("ScienceNotLeisure:RecordSus", GameRegistry.findItem(ScienceNotLeisure.ID, "RecordSus"))
         .remapItem("ScienceNotLeisure:RecordNewHorizons", GameRegistry.findItem(ScienceNotLeisure.ID, "RecordNewHorizons"))
         .remapItem("ScienceNotLeisure:FakeItemSiren", GameRegistry.findItem(ScienceNotLeisure.ID, "FakeItemSiren"))
