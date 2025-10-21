@@ -115,6 +115,11 @@ public abstract class KuangBiaoOneGiantNuclearFusionReactor
     }
 
     @Override
+    public boolean checkEnergyHatch() {
+        return true;
+    }
+
+    @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
         if (mMaxProgresstime <= 0 || !enableRender) return;
         KuangBiaoOneGiantNuclearFusionReactorRenderer.renderTileEntityAt(this, x, y, z, timeSinceLastTick);
