@@ -2,8 +2,9 @@ package com.science.gtnl.common.recipe.GTNL;
 
 import static com.science.gtnl.Utils.enums.GTNLItemList.*;
 import static com.science.gtnl.Utils.enums.ModList.TwistSpaceTechnology;
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static com.science.gtnl.config.MainConfig.*;
+
+import net.minecraft.util.StatCollector;
 
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.loader.RecipePool;
@@ -49,9 +50,7 @@ public class RealArtificialStarRecipes implements IRecipePool {
                 .itemOutputs(
                     GTModHandler.getModItem(TwistSpaceTechnology.ID, "MetaItem01", 1, 17)
                         .setStackDisplayName(
-                            texter(
-                                "Chance to recover some raw materials. Probability is affected by module tier.",
-                                "NEI.RealAntimatterFuelRodGeneratingRecipe.01")))
+                            StatCollector.translateToLocal("NEI.RealAntimatterFuelRodGeneratingRecipe.01")))
                 .specialValue(1024)
                 .eut(0)
                 .duration(0)
@@ -63,9 +62,7 @@ public class RealArtificialStarRecipes implements IRecipePool {
                 .itemOutputs(
                     GTModHandler.getModItem(TwistSpaceTechnology.ID, "MetaItem01", 1, 17)
                         .setStackDisplayName(
-                            texter(
-                                "Chance to recover some raw materials. Probability is affected by module tier.",
-                                "NEI.RealAntimatterFuelRodGeneratingRecipe.01")))
+                            StatCollector.translateToLocal("NEI.RealAntimatterFuelRodGeneratingRecipe.01")))
                 .specialValue(32768)
                 .eut(0)
                 .duration(0)

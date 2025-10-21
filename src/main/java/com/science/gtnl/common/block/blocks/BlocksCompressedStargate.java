@@ -1,4 +1,4 @@
-package com.science.gtnl.common.block.Casings.Special;
+package com.science.gtnl.common.block.blocks;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 
@@ -16,18 +16,18 @@ import com.science.gtnl.client.GTNLCreativeTabs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlocksStargate extends Block {
+public class BlocksCompressedStargate extends Block {
 
     public String[] TextureName;
     public IIcon[] Texture;
 
-    public BlocksStargate(int Tier) {
+    public BlocksCompressedStargate(int aTier) {
         super(Material.iron);
         this.setHardness(1.0F);
         this.setResistance(6000000.0F);
-        this.setBlockName("Stargate" + Tier);
-        this.setBlockTextureName(RESOURCE_ROOT_ID + ":" + "Stargate/" + "Stargate");
-        this.TextureName = new String[] { "Front", "Side", "Bottom", "Compressed_" + Tier };
+        this.setBlockName("CompressedStargateTier" + aTier);
+        this.setBlockTextureName(RESOURCE_ROOT_ID + ":" + "CompressedStargate/");
+        this.TextureName = new String[] { "Front", "Side", "Bottom", "Top_" + aTier };
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
     }
 
@@ -59,7 +59,7 @@ public class BlocksStargate extends Block {
         this.Texture = new IIcon[TextureName.length];
 
         for (int i = 0; i < this.Texture.length; ++i) {
-            this.Texture[i] = reg.registerIcon(this.getTextureName() + "_" + TextureName[i]);
+            this.Texture[i] = reg.registerIcon(this.getTextureName() + TextureName[i]);
         }
     }
 }

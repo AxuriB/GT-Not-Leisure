@@ -25,7 +25,7 @@ import fox.spiteful.avaritia.render.IHaloRenderItem;
 
 /**
  * An ItemStack Generator used Meta Item System.
- * <li>Use {@link MetaItemAdder#initItem(String, int)} to create your Item at ItemList01.
+ * <li>Use {@link #initItem(int)} to create your Item at ItemList01.
  *
  */
 public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
@@ -42,22 +42,21 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
     /**
      * Create the basic item MetaItem.
      */
-    public MetaItemAdder(String aName, String aMetaName, CreativeTabs aCreativeTabs) {
-        super(aName, aMetaName, aCreativeTabs);
-        this.unlocalizedName = aMetaName;
+    public MetaItemAdder(String aName, CreativeTabs aCreativeTabs) {
+        super(aName, aCreativeTabs);
+        this.unlocalizedName = aName;
     }
 
     /**
      * The method about creating Items with ItemStack form by Meta Item System.
      * Use this method to create Items at ReAvaItemList.
      *
-     * @param aName The name of your creating item.
      * @param aMeta The MetaValue of your creating item.
      * @return Return the Item with ItemStack form you create.
      */
-    public static ItemStack initItem(String aName, int aMeta) {
+    public static ItemStack initItem(int aMeta) {
 
-        return MetaItemStackUtils.initMetaItemStack(aName, aMeta, ItemLoader.metaItem, MetaSet);
+        return MetaItemStackUtils.initMetaItemStack(aMeta, ItemLoader.metaItem, MetaSet);
 
     }
 
@@ -67,7 +66,7 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
             MetaItemStackUtils.metaItemStackTooltipsAdd(MetaItemTooltipsMap, aMeta, tooltips);
         }
 
-        return initItem(aName, aMeta);
+        return initItem(aMeta);
 
     }
 

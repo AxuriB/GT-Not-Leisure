@@ -7,8 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
-import com.science.gtnl.Utils.text.TextUtils;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,17 +18,17 @@ public class ItemAdder_Basic extends Item {
 
     public String unlocalizedName;
 
-    public ItemAdder_Basic(String Name, String MetaName, CreativeTabs aCreativeTabs/* , String aIconPath */) {
+    public ItemAdder_Basic(String aName, CreativeTabs aCreativeTabs) {
         super();
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
         this.setCreativeTab(aCreativeTabs);
-        this.unlocalizedName = MetaName;
-        TextUtils.texter(Name, this.unlocalizedName + ".name");
+        this.unlocalizedName = aName;
+        StatCollector.translateToLocal(this.unlocalizedName + ".name");
     }
 
-    public static String generateUnlocalizedName(String MetaName) {
-        return "item." + MetaName;
+    public static String generateUnlocalizedName(String metaName) {
+        return "item." + metaName + ".name";
     }
 
     @Override

@@ -23,7 +23,7 @@ public class MeteorsRecipes implements IRecipePool {
     @Override
     public void loadRecipes() {
         MeteorRegistry.registerMeteor(
-            GTNLItemList.StargateTier9.get(1),
+            GTNLItemList.CompressedStargateTier9.get(1),
             new String[] { "SGCraft:stargateBase:0:10", "SGCraft:stargateRing:0:10", "SGCraft:stargateRing:1:10",
                 "bartworks:bw.werkstoffblocks.01:25201:10", "SGCraft:ocInterface:0:10", "SGCraft:rfPowerUnit:0:10",
                 "gregtech:gt.blockmachines:21113:10", "gregtech:gt.blockmachines:21008:10",

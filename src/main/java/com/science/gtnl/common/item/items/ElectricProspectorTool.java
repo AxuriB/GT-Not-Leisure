@@ -81,10 +81,9 @@ public class ElectricProspectorTool extends Item {
         this.setMaxDamage(1);
     }
 
-    public static ItemStack initItem(String aName, int aMeta, int aRange, long maxDamage) {
+    public static ItemStack initItem(int aMeta, int aRange, long maxDamage) {
         mRangeMap.put(aMeta, Pair.of(aRange, maxDamage));
-        ItemStack stack = MetaItemStackUtils
-            .initMetaItemStack(aName, aMeta, ItemLoader.electricProspectorTool, metaSet);
+        ItemStack stack = MetaItemStackUtils.initMetaItemStack(aMeta, ItemLoader.electricProspectorTool, metaSet);
         setToolMaxDamage(stack, maxDamage);
         if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
         stack.stackTagCompound.setInteger("toolMeta", aMeta);

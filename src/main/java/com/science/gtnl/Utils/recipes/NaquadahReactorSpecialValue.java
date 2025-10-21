@@ -1,9 +1,9 @@
 package com.science.gtnl.Utils.recipes;
 
-import static com.science.gtnl.Utils.text.TextUtils.texter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.util.StatCollector;
 
 import gregtech.nei.RecipeDisplayInfo;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
@@ -16,7 +16,7 @@ public class NaquadahReactorSpecialValue implements INEISpecialInfoFormatter {
     public List<String> format(RecipeDisplayInfo recipeInfo) {
         List<String> msgs = new ArrayList<>();
         msgs.add(
-            texter("Production power: ", "NEI.NaquadahReactorRecipes.specialValue") + recipeInfo.recipe.mSpecialValue
+            StatCollector.translateToLocal("NEI.NaquadahReactorRecipes.specialValue") + recipeInfo.recipe.mSpecialValue
                 + " EU/t");
         return msgs;
     }

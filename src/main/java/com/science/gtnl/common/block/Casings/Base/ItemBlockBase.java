@@ -44,15 +44,15 @@ public class ItemBlockBase extends ItemBlock {
     // -----------------------
     // region MetaBlock Generators
 
-    public static ItemStack initMetaBlock(String i18nName, int Meta) {
-        return initMetaItemStack(i18nName, Meta, BlockLoader.metaBlock, MetaBlockSet);
+    public static ItemStack initMetaBlock(int Meta) {
+        return initMetaItemStack(Meta, BlockLoader.metaBlock, MetaBlockSet);
     }
 
-    public static ItemStack initMetaBlock(String i18nName, int Meta, String[] tooltips) {
+    public static ItemStack initMetaBlock(int Meta, String[] tooltips) {
         if (tooltips != null) {
             metaItemStackTooltipsAdd(MetaBlockTooltipsMap, Meta, tooltips);
         }
-        return initMetaBlock(i18nName, Meta);
+        return initMetaBlock(Meta);
     }
 
     @SideOnly(Side.CLIENT)

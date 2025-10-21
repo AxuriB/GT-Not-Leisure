@@ -5,6 +5,7 @@ import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -24,8 +25,6 @@ import com.science.gtnl.common.block.Casings.Glass.ItemBlockGlass;
 import com.science.gtnl.common.block.Casings.Glass.MetaBlockGlass;
 import com.science.gtnl.common.block.Casings.Glow.ItemBlockGlow;
 import com.science.gtnl.common.block.Casings.Glow.MetaBlockGlow;
-import com.science.gtnl.common.block.Casings.Special.BlocksStargate;
-import com.science.gtnl.common.block.Casings.Special.StargateMetaBlockBase;
 import com.science.gtnl.common.block.blocks.BlockArtificialStarRender;
 import com.science.gtnl.common.block.blocks.BlockCardboardBox;
 import com.science.gtnl.common.block.blocks.BlockEternalGregTechWorkshopRender;
@@ -36,6 +35,7 @@ import com.science.gtnl.common.block.blocks.BlockPlayerDoll;
 import com.science.gtnl.common.block.blocks.BlockPlayerLeash;
 import com.science.gtnl.common.block.blocks.BlockShimmerFluid;
 import com.science.gtnl.common.block.blocks.BlockWaterCandle;
+import com.science.gtnl.common.block.blocks.BlocksCompressedStargate;
 import com.science.gtnl.common.block.blocks.tile.TileEntityArtificialStar;
 import com.science.gtnl.common.block.blocks.tile.TileEntityCardboardBox;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
@@ -48,10 +48,10 @@ import com.science.gtnl.common.item.items.SaplingBrickuoia;
 import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GTRecipeBuilder;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
 
 public class BlockLoader {
 
+    public static Block SaplingBrickuoia;
     public static Block cardboardBox;
     public static Block blockArtificialStarRender;
     public static Block laserBeacon;
@@ -60,48 +60,54 @@ public class BlockLoader {
     public static Block blockPlayerLeash;
     public static Block blockNanoPhagocytosisPlantRender;
     public static Block blockEternalGregTechWorkshopRender;
-    public static final Block metaBlock = new MetaBlockBase("MetaBlock", "MetaBlock");
-    public static final Block metaBlockGlow = new MetaBlockGlow("MetaBlockGlow", "MetaBlockGlow");
-    public static final Block metaBlockGlass = new MetaBlockGlass("MetaBlockGlass", "MetaBlockGlass");
-    public static final Block metaBlockColumn = new MetaBlockColumn("MetaBlockColumn", "MetaBlockColumn");
-    public static final MetaCasing metaCasing = new MetaCasing("MetaCasing", (byte) 0);
-    public static final MetaCasing metaCasing02 = new MetaCasing("MetaCasing02", (byte) 32);
-    public static Block stargateTier0 = new BlocksStargate(0);
-    public static Block stargateTier1 = new BlocksStargate(1);
-    public static Block stargateTier2 = new BlocksStargate(2);
-    public static Block stargateTier3 = new BlocksStargate(3);
-    public static Block stargateTier4 = new BlocksStargate(4);
-    public static Block stargateTier5 = new BlocksStargate(5);
-    public static Block stargateTier6 = new BlocksStargate(6);
-    public static Block stargateTier7 = new BlocksStargate(7);
-    public static Block stargateTier8 = new BlocksStargate(8);
-    public static Block stargateTier9 = new BlocksStargate(9);
-    public static Block stargateCoilCompressed = new StargateMetaBlockBase(
-        "Stargate_Coil_Compressed",
-        new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" });
-    public static BlockHoneyFluid honeyFluidBlock;
+
+    public static BlockFluidBase honeyFluidBlock;
     public static Fluid honeyFluid;
-    public static BlockShimmerFluid shimmerFluidBlock;
+    public static BlockFluidBase shimmerFluidBlock;
     public static Fluid shimmerFluid;
+
+    public static Block compressedStargateTier0 = new BlocksCompressedStargate(0);
+    public static Block compressedStargateTier1 = new BlocksCompressedStargate(1);
+    public static Block compressedStargateTier2 = new BlocksCompressedStargate(2);
+    public static Block compressedStargateTier3 = new BlocksCompressedStargate(3);
+    public static Block compressedStargateTier4 = new BlocksCompressedStargate(4);
+    public static Block compressedStargateTier5 = new BlocksCompressedStargate(5);
+    public static Block compressedStargateTier6 = new BlocksCompressedStargate(6);
+    public static Block compressedStargateTier7 = new BlocksCompressedStargate(7);
+    public static Block compressedStargateTier8 = new BlocksCompressedStargate(8);
+    public static Block compressedStargateTier9 = new BlocksCompressedStargate(9);
+
+    public static Block metaBlock = new MetaBlockBase("MetaBlock");
+    public static Block metaBlockGlow = new MetaBlockGlow("MetaBlockGlow");
+    public static Block metaBlockGlass = new MetaBlockGlass("MetaBlockGlass");
+    public static Block metaBlockColumn = new MetaBlockColumn("MetaBlockColumn");
+    public static MetaCasing metaCasing = new MetaCasing("MetaCasing", (byte) 0);
+    public static MetaCasing metaCasing02 = new MetaCasing("MetaCasing02", (byte) 32);
 
     public static void registryBlocks() {
 
-        cardboardBox = new BlockCardboardBox();
-        laserBeacon = new BlockLaserBeacon();
-        playerDoll = new BlockPlayerDoll();
-        waterCandle = new BlockWaterCandle();
         blockPlayerLeash = new BlockPlayerLeash();
-        blockArtificialStarRender = new BlockArtificialStarRender();
-        blockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
-        blockEternalGregTechWorkshopRender = new BlockEternalGregTechWorkshopRender();
 
+        cardboardBox = new BlockCardboardBox();
         GameRegistry.registerTileEntity(TileEntityCardboardBox.class, "CardboardBoxTileEntity");
+
+        blockEternalGregTechWorkshopRender = new BlockEternalGregTechWorkshopRender();
         GameRegistry
             .registerTileEntity(TileEntityEternalGregTechWorkshop.class, "EternalGregTechWorkshopRenderTileEntity");
+
+        blockNanoPhagocytosisPlantRender = new BlockNanoPhagocytosisPlantRender();
         GameRegistry.registerTileEntity(TileEntityNanoPhagocytosisPlant.class, "NanoPhagocytosisPlantRenderTileEntity");
+
+        blockArtificialStarRender = new BlockArtificialStarRender();
         GameRegistry.registerTileEntity(TileEntityArtificialStar.class, "ArtificialStarRenderTileEntity");
+
+        playerDoll = new BlockPlayerDoll();
         GameRegistry.registerTileEntity(TileEntityPlayerDoll.class, "PlayerDollTileEntity");
+
+        laserBeacon = new BlockLaserBeacon();
         GameRegistry.registerTileEntity(TileEntityLaserBeacon.class, "LaserBeaconTileEntity");
+
+        waterCandle = new BlockWaterCandle();
         GameRegistry.registerTileEntity(TileEntityWaterCandle.class, "WaterCandleTileEntity");
 
         GameRegistry
@@ -127,28 +133,35 @@ public class BlockLoader {
             MetaItemBlockCasing.class,
             BlockLoader.metaCasing02.getUnlocalizedName());
 
-        GameRegistry.registerBlock(BlockLoader.stargateTier0, "StargateTier0");
-        GTNLItemList.StargateTier0.set(new ItemStack(BlockLoader.stargateTier0));
-        GameRegistry.registerBlock(BlockLoader.stargateTier1, "StargateTier1");
-        GTNLItemList.StargateTier1.set(new ItemStack(BlockLoader.stargateTier1));
-        GameRegistry.registerBlock(BlockLoader.stargateTier2, "StargateTier2");
-        GTNLItemList.StargateTier2.set(new ItemStack(BlockLoader.stargateTier2));
-        GameRegistry.registerBlock(BlockLoader.stargateTier3, "StargateTier3");
-        GTNLItemList.StargateTier3.set(new ItemStack(BlockLoader.stargateTier3));
-        GameRegistry.registerBlock(BlockLoader.stargateTier4, "StargateTier4");
-        GTNLItemList.StargateTier4.set(new ItemStack(BlockLoader.stargateTier4));
-        GameRegistry.registerBlock(BlockLoader.stargateTier5, "StargateTier5");
-        GTNLItemList.StargateTier5.set(new ItemStack(BlockLoader.stargateTier5));
-        GameRegistry.registerBlock(BlockLoader.stargateTier6, "StargateTier6");
-        GTNLItemList.StargateTier6.set(new ItemStack(BlockLoader.stargateTier6));
-        GameRegistry.registerBlock(BlockLoader.stargateTier7, "StargateTier7");
-        GTNLItemList.StargateTier7.set(new ItemStack(BlockLoader.stargateTier7));
-        GameRegistry.registerBlock(BlockLoader.stargateTier8, "StargateTier8");
-        GTNLItemList.StargateTier8.set(new ItemStack(BlockLoader.stargateTier8));
-        GameRegistry.registerBlock(BlockLoader.stargateTier9, "StargateTier9");
-        GTNLItemList.StargateTier9.set(new ItemStack(BlockLoader.stargateTier9));
-        GameRegistry.registerBlock(BlockLoader.stargateCoilCompressed, ItemBlockMeta.class, "StargateCoilCompressed");
-        GTNLItemList.Stargate_Coil_Compressed.set(new ItemStack(BlockLoader.stargateCoilCompressed));
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier0, "CompressedStargateTier0");
+        GTNLItemList.CompressedStargateTier0.set(new ItemStack(BlockLoader.compressedStargateTier0));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier1, "CompressedStargateTier1");
+        GTNLItemList.CompressedStargateTier1.set(new ItemStack(BlockLoader.compressedStargateTier1));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier2, "CompressedStargateTier2");
+        GTNLItemList.CompressedStargateTier2.set(new ItemStack(BlockLoader.compressedStargateTier2));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier3, "CompressedStargateTier3");
+        GTNLItemList.CompressedStargateTier3.set(new ItemStack(BlockLoader.compressedStargateTier3));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier4, "CompressedStargateTier4");
+        GTNLItemList.CompressedStargateTier4.set(new ItemStack(BlockLoader.compressedStargateTier4));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier5, "CompressedStargateTier5");
+        GTNLItemList.CompressedStargateTier5.set(new ItemStack(BlockLoader.compressedStargateTier5));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier6, "CompressedStargateTier6");
+        GTNLItemList.CompressedStargateTier6.set(new ItemStack(BlockLoader.compressedStargateTier6));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier7, "CompressedStargateTier7");
+        GTNLItemList.CompressedStargateTier7.set(new ItemStack(BlockLoader.compressedStargateTier7));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier8, "CompressedStargateTier8");
+        GTNLItemList.CompressedStargateTier8.set(new ItemStack(BlockLoader.compressedStargateTier8));
+
+        GameRegistry.registerBlock(BlockLoader.compressedStargateTier9, "CompressedStargateTier9");
+        GTNLItemList.CompressedStargateTier9.set(new ItemStack(BlockLoader.compressedStargateTier9));
 
         honeyFluid = new Fluid("honey").setViscosity(6000)
             .setDensity(1500);
@@ -175,12 +188,10 @@ public class BlockLoader {
 
     public static void registryBlockContainers() {
 
-        GTNLItemList.TestMetaBlock01_0.set(ItemBlockBase.initMetaBlock("TestMetaBlock01_0", 0));
+        GTNLItemList.TestMetaBlock01_0.set(ItemBlockBase.initMetaBlock(0));
         GTNLItemList.NewHorizonsCoil.set(
-            ItemBlockBase.initMetaBlock(
-                "NewHorizonsCoil",
-                1,
-                new String[] { RESET + StatCollector.translateToLocal("gt.coilheattooltip") }));
+            ItemBlockBase
+                .initMetaBlock(1, new String[] { RESET + StatCollector.translateToLocal("gt.coilheattooltip") }));
         AnimatedTooltipHandler.addItemTooltip(
             GTNLItemList.NewHorizonsCoil.get(1),
             AnimatedTooltipHandler.animatedText(
@@ -248,375 +259,262 @@ public class BlockLoader {
                 YELLOW,
                 GREEN));
 
-        GTNLItemList.StargateCoil.set(ItemBlockBase.initMetaBlock("StargateCoil", 2));
+        GTNLItemList.StargateCoil.set(ItemBlockBase.initMetaBlock(2));
         GTNLItemList.BlackLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Black Lamp Off",
-                3,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(3, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.BlackLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Black Lamp Off Borderless",
                 4,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.PinkLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Pink Lamp Off",
-                5,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(5, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.PinkLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Pink Lamp Off Borderless",
                 6,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.RedLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Red Lamp Off",
-                7,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(7, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.RedLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Red Lamp Off Borderless",
                 8,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.OrangeLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Orange Lamp Off",
-                9,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(9, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.OrangeLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Orange Lamp Off Borderless",
                 10,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.YellowLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Yellow Lamp Off",
-                11,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(11, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.YellowLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Yellow Lamp Off Borderless",
                 12,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.GreenLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Green Lamp Off",
-                13,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(13, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.GreenLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Green Lamp Off Borderless",
                 14,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.LimeLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Lime Lamp Off",
-                15,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(15, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.LimeLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Lime Lamp Off Borderless",
                 16,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.BlueLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Blue Lamp Off",
-                17,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(17, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.BlueLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Blue Lamp Off Borderless",
                 18,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.LightBlueLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "LightBlue Lamp Off",
-                19,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(19, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.LightBlueLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "LightBlue Lamp Off Borderless",
                 20,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.CyanLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Cyan Lamp Off",
-                21,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(21, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.CyanLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Cyan Lamp Off Borderless",
                 22,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.BrownLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Brown Lamp Off",
-                23,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(23, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.BrownLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Brown Lamp Off Borderless",
                 24,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.MagentaLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Magenta Lamp Off",
-                25,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(25, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.MagentaLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Magenta Lamp Off Borderless",
                 26,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.PurpleLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Purple Lamp Off",
-                27,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(27, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.PurpleLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Purple Lamp Off Borderless",
                 28,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.GrayLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "Gray Lamp Off",
-                29,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(29, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.GrayLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "Gray Lamp Off Borderless",
                 30,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.LightGrayLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "LightGray Lamp Off",
-                31,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(31, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.LightGrayLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "LightGray Lamp Off Borderless",
                 32,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
         GTNLItemList.WhiteLampOff.set(
-            ItemBlockBase.initMetaBlock(
-                "White Lamp Off",
-                33,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
+            ItemBlockBase.initMetaBlock(33, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow") }));
         GTNLItemList.WhiteLampOffBorderless.set(
             ItemBlockBase.initMetaBlock(
-                "White Lamp Off Borderless",
                 34,
                 new String[] { StatCollector.translateToLocal("Tooltip_Lamp_NoGlow"),
                     StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.BlazeCubeBlock.set(ItemBlockBase.initMetaBlock("BlazeCubeBlock", 35));
+        GTNLItemList.BlazeCubeBlock.set(ItemBlockBase.initMetaBlock(35));
+        GTNLItemList.CompressedStargateCoil.set(ItemBlockBase.initMetaBlock(36));
+        GTNLItemList.CompressedStargateCoil1.set(ItemBlockBase.initMetaBlock(37));
+        GTNLItemList.CompressedStargateCoil2.set(ItemBlockBase.initMetaBlock(38));
+        GTNLItemList.CompressedStargateCoil3.set(ItemBlockBase.initMetaBlock(39));
+        GTNLItemList.CompressedStargateCoil4.set(ItemBlockBase.initMetaBlock(40));
+        GTNLItemList.CompressedStargateCoil5.set(ItemBlockBase.initMetaBlock(41));
+        GTNLItemList.CompressedStargateCoil6.set(ItemBlockBase.initMetaBlock(42));
+        GTNLItemList.CompressedStargateCoil7.set(ItemBlockBase.initMetaBlock(43));
+        GTNLItemList.CompressedStargateCoil8.set(ItemBlockBase.initMetaBlock(44));
+        GTNLItemList.CompressedStargateCoil9.set(ItemBlockBase.initMetaBlock(45));
 
-        GTNLItemList.FortifyGlowstone.set(ItemBlockGlow.initMetaBlockGlow("Fortify_Glowstone", 0));
-        GTNLItemList.BlackLamp.set(ItemBlockGlow.initMetaBlockGlow("Black Lamp", 1));
+        GTNLItemList.FortifyGlowstone.set(ItemBlockGlow.initMetaBlockGlow(0));
+        GTNLItemList.BlackLamp.set(ItemBlockGlow.initMetaBlockGlow(1));
         GTNLItemList.BlackLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Black Lamp Borderless",
-                2,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.PinkLamp.set(ItemBlockGlow.initMetaBlockGlow("Pink Lamp", 3));
+            ItemBlockGlow
+                .initMetaBlockGlow(2, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.PinkLamp.set(ItemBlockGlow.initMetaBlockGlow(3));
         GTNLItemList.PinkLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Pink Lamp Borderless",
-                4,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.RedLamp.set(ItemBlockGlow.initMetaBlockGlow("Red Lamp", 5));
+            ItemBlockGlow
+                .initMetaBlockGlow(4, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.RedLamp.set(ItemBlockGlow.initMetaBlockGlow(5));
         GTNLItemList.RedLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Red Lamp Borderless",
-                6,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.OrangeLamp.set(ItemBlockGlow.initMetaBlockGlow("Orange Lamp", 7));
+            ItemBlockGlow
+                .initMetaBlockGlow(6, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.OrangeLamp.set(ItemBlockGlow.initMetaBlockGlow(7));
         GTNLItemList.OrangeLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Orange Lamp Borderless",
-                8,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.YellowLamp.set(ItemBlockGlow.initMetaBlockGlow("Yellow Lamp", 9));
+            ItemBlockGlow
+                .initMetaBlockGlow(8, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.YellowLamp.set(ItemBlockGlow.initMetaBlockGlow(9));
         GTNLItemList.YellowLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Yellow Lamp Borderless",
-                10,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.GreenLamp.set(ItemBlockGlow.initMetaBlockGlow("Green Lamp", 11));
+            ItemBlockGlow
+                .initMetaBlockGlow(10, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.GreenLamp.set(ItemBlockGlow.initMetaBlockGlow(11));
         GTNLItemList.GreenLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Green Lamp Borderless",
-                12,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.LimeLamp.set(ItemBlockGlow.initMetaBlockGlow("Lime Lamp", 13));
+            ItemBlockGlow
+                .initMetaBlockGlow(12, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.LimeLamp.set(ItemBlockGlow.initMetaBlockGlow(13));
         GTNLItemList.LimeLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Lime Lamp Borderless",
-                14,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.BlueLamp.set(ItemBlockGlow.initMetaBlockGlow("Blue Lamp", 15));
+            ItemBlockGlow
+                .initMetaBlockGlow(14, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.BlueLamp.set(ItemBlockGlow.initMetaBlockGlow(15));
         GTNLItemList.BlueLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Blue Lamp Borderless",
-                16,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.LightBlueLamp.set(ItemBlockGlow.initMetaBlockGlow("LightBlue Lamp", 17));
+            ItemBlockGlow
+                .initMetaBlockGlow(16, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.LightBlueLamp.set(ItemBlockGlow.initMetaBlockGlow(17));
         GTNLItemList.LightBlueLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "LightBlue Lamp Borderless",
-                18,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.CyanLamp.set(ItemBlockGlow.initMetaBlockGlow("Cyan Lamp", 19));
+            ItemBlockGlow
+                .initMetaBlockGlow(18, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.CyanLamp.set(ItemBlockGlow.initMetaBlockGlow(19));
         GTNLItemList.CyanLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Cyan Lamp Borderless",
-                20,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.BrownLamp.set(ItemBlockGlow.initMetaBlockGlow("Brown Lamp", 21));
+            ItemBlockGlow
+                .initMetaBlockGlow(20, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.BrownLamp.set(ItemBlockGlow.initMetaBlockGlow(21));
         GTNLItemList.BrownLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Brown Lamp Borderless",
-                22,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.MagentaLamp.set(ItemBlockGlow.initMetaBlockGlow("Magenta Lamp", 23));
+            ItemBlockGlow
+                .initMetaBlockGlow(22, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.MagentaLamp.set(ItemBlockGlow.initMetaBlockGlow(23));
         GTNLItemList.MagentaLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Magenta Lamp Borderless",
-                24,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.PurpleLamp.set(ItemBlockGlow.initMetaBlockGlow("Purple Lamp", 25));
+            ItemBlockGlow
+                .initMetaBlockGlow(24, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.PurpleLamp.set(ItemBlockGlow.initMetaBlockGlow(25));
         GTNLItemList.PurpleLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Purple Lamp Borderless",
-                26,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.GrayLamp.set(ItemBlockGlow.initMetaBlockGlow("Gray Lamp", 27));
+            ItemBlockGlow
+                .initMetaBlockGlow(26, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.GrayLamp.set(ItemBlockGlow.initMetaBlockGlow(27));
         GTNLItemList.GrayLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "Gray Lamp Borderless",
-                28,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.LightGrayLamp.set(ItemBlockGlow.initMetaBlockGlow("LightGray Lamp", 29));
+            ItemBlockGlow
+                .initMetaBlockGlow(28, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.LightGrayLamp.set(ItemBlockGlow.initMetaBlockGlow(29));
         GTNLItemList.LightGrayLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "LightGray Lamp Borderless",
-                30,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
-        GTNLItemList.WhiteLamp.set(ItemBlockGlow.initMetaBlockGlow("White Lamp", 31));
+            ItemBlockGlow
+                .initMetaBlockGlow(30, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+        GTNLItemList.WhiteLamp.set(ItemBlockGlow.initMetaBlockGlow(31));
         GTNLItemList.WhiteLampBorderless.set(
-            ItemBlockGlow.initMetaBlockGlow(
-                "White Lamp Borderless",
-                32,
-                new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
+            ItemBlockGlow
+                .initMetaBlockGlow(32, new String[] { StatCollector.translateToLocal("Tooltip_Lamp_Borderless") }));
 
-        GTNLItemList.GaiaGlass.set(ItemBlockGlass.initMetaBlockGlass("Gaia Glass", 0));
-        GTNLItemList.TerraGlass.set(ItemBlockGlass.initMetaBlockGlass("Terra Glass", 1));
-        GTNLItemList.FusionGlass.set(ItemBlockGlass.initMetaBlockGlass("Fusion Glass", 2));
-        GTNLItemList.ConcentratingSieveMesh.set(ItemBlockGlass.initMetaBlockGlass("Concentrating Sieve Mesh", 3));
+        GTNLItemList.GaiaGlass.set(ItemBlockGlass.initMetaBlockGlass(0));
+        GTNLItemList.TerraGlass.set(ItemBlockGlass.initMetaBlockGlass(1));
+        GTNLItemList.FusionGlass.set(ItemBlockGlass.initMetaBlockGlass(2));
+        GTNLItemList.ConcentratingSieveMesh.set(ItemBlockGlass.initMetaBlockGlass(3));
 
-        GTNLItemList.BronzeBrickCasing.set(ItemBlockColumn.initMetaBlock("Bronze Brick Casing", 0));
-        GTNLItemList.SteelBrickCasing.set(ItemBlockColumn.initMetaBlock("Steel Brick Casing", 1));
-        GTNLItemList.CrushingWheels.set(ItemBlockColumn.initMetaBlock("Crushing Wheels", 2));
-        GTNLItemList.SolarBoilingCell.set(ItemBlockColumn.initMetaBlock("Solar Boiling Cell", 3));
-        GTNLItemList.BronzeMachineFrame.set(ItemBlockColumn.initMetaBlock("Bronze Machine Frame", 4));
-        GTNLItemList.SteelMachineFrame.set(ItemBlockColumn.initMetaBlock("Steel Machine Frame", 5));
+        GTNLItemList.BronzeBrickCasing.set(ItemBlockColumn.initMetaBlock(0));
+        GTNLItemList.SteelBrickCasing.set(ItemBlockColumn.initMetaBlock(1));
+        GTNLItemList.CrushingWheels.set(ItemBlockColumn.initMetaBlock(2));
+        GTNLItemList.SolarBoilingCell.set(ItemBlockColumn.initMetaBlock(3));
+        GTNLItemList.BronzeMachineFrame.set(ItemBlockColumn.initMetaBlock(4));
+        GTNLItemList.SteelMachineFrame.set(ItemBlockColumn.initMetaBlock(5));
 
-        GTNLItemList.TestCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Test Casing", 0, BlockLoader.metaCasing));
-        GTNLItemList.SteamAssemblyCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Steam Assembly Casing", 1, BlockLoader.metaCasing));
-        GTNLItemList.HeatVent.set(MetaBlockConstructors.initMetaBlockCasing("Heat Vent", 2, BlockLoader.metaCasing));
-        GTNLItemList.SlicingBlades
-            .set(MetaBlockConstructors.initMetaBlockCasing("Slicing Blades", 3, BlockLoader.metaCasing));
-        GTNLItemList.NeutroniumPipeCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Neutronium Pipe Casing", 4, BlockLoader.metaCasing));
-        GTNLItemList.NeutroniumGearbox
-            .set(MetaBlockConstructors.initMetaBlockCasing("Neutronium Gear Box Casing", 5, BlockLoader.metaCasing));
-        GTNLItemList.Laser_Cooling_Casing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Laser Cooling Casing", 6, BlockLoader.metaCasing));
-        GTNLItemList.Antifreeze_Heatproof_Machine_Casing.set(
-            MetaBlockConstructors
-                .initMetaBlockCasing("Antifreeze Heatproof Machine Casing", 7, BlockLoader.metaCasing));
-        GTNLItemList.MolybdenumDisilicideCoil
-            .set(MetaBlockConstructors.initMetaBlockCasing("Molybdenum Disilicide Coil", 8, BlockLoader.metaCasing));
+        GTNLItemList.TestCasing.set(MetaBlockConstructors.initMetaBlockCasing(0, BlockLoader.metaCasing));
+        GTNLItemList.SteamAssemblyCasing.set(MetaBlockConstructors.initMetaBlockCasing(1, BlockLoader.metaCasing));
+        GTNLItemList.HeatVent.set(MetaBlockConstructors.initMetaBlockCasing(2, BlockLoader.metaCasing));
+        GTNLItemList.SlicingBlades.set(MetaBlockConstructors.initMetaBlockCasing(3, BlockLoader.metaCasing));
+        GTNLItemList.NeutroniumPipeCasing.set(MetaBlockConstructors.initMetaBlockCasing(4, BlockLoader.metaCasing));
+        GTNLItemList.NeutroniumGearbox.set(MetaBlockConstructors.initMetaBlockCasing(5, BlockLoader.metaCasing));
+        GTNLItemList.Laser_Cooling_Casing.set(MetaBlockConstructors.initMetaBlockCasing(6, BlockLoader.metaCasing));
+        GTNLItemList.Antifreeze_Heatproof_Machine_Casing
+            .set(MetaBlockConstructors.initMetaBlockCasing(7, BlockLoader.metaCasing));
+        GTNLItemList.MolybdenumDisilicideCoil.set(MetaBlockConstructors.initMetaBlockCasing(8, BlockLoader.metaCasing));
         GTNLItemList.EnergeticPhotovoltaicBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing("Energetic Photovoltaic Block", 9, BlockLoader.metaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing(9, BlockLoader.metaCasing));
         GTNLItemList.AdvancedPhotovoltaicBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing("Advanced Photovoltaic Block", 10, BlockLoader.metaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing(10, BlockLoader.metaCasing));
         GTNLItemList.VibrantPhotovoltaicBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing("Vibrant Photovoltaic Block", 11, BlockLoader.metaCasing));
-        GTNLItemList.TungstensteelGearbox.set(
-            MetaBlockConstructors.initMetaBlockCasing("Tungstensteel Gear Box Casing", 12, BlockLoader.metaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing(11, BlockLoader.metaCasing));
+        GTNLItemList.TungstensteelGearbox.set(MetaBlockConstructors.initMetaBlockCasing(12, BlockLoader.metaCasing));
         GTNLItemList.DimensionallyStableCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Dimensionally Stable Casing", 13, BlockLoader.metaCasing));
-        GTNLItemList.PressureBalancedCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Pressure Balanced Casing", 14, BlockLoader.metaCasing));
-        GTNLItemList.ABSUltraSolidCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("ABS Ultra-Solid Casing", 15, BlockLoader.metaCasing));
-        GTNLItemList.GravitationalFocusingLensBlock.set(
-            MetaBlockConstructors.initMetaBlockCasing("Gravitational Focusing Lens Block", 16, BlockLoader.metaCasing));
-        GTNLItemList.GaiaStabilizedForceFieldCasing.set(
-            MetaBlockConstructors
-                .initMetaBlockCasing("Gaia Stabilized Force Field Casing", 17, BlockLoader.metaCasing));
-        GTNLItemList.HyperCore.set(MetaBlockConstructors.initMetaBlockCasing("Hyper Core", 18, BlockLoader.metaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing(13, BlockLoader.metaCasing));
+        GTNLItemList.PressureBalancedCasing.set(MetaBlockConstructors.initMetaBlockCasing(14, BlockLoader.metaCasing));
+        GTNLItemList.ABSUltraSolidCasing.set(MetaBlockConstructors.initMetaBlockCasing(15, BlockLoader.metaCasing));
+        GTNLItemList.GravitationalFocusingLensBlock
+            .set(MetaBlockConstructors.initMetaBlockCasing(16, BlockLoader.metaCasing));
+        GTNLItemList.GaiaStabilizedForceFieldCasing
+            .set(MetaBlockConstructors.initMetaBlockCasing(17, BlockLoader.metaCasing));
+        GTNLItemList.HyperCore.set(MetaBlockConstructors.initMetaBlockCasing(18, BlockLoader.metaCasing));
         GTNLItemList.ChemicallyResistantCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Chemically Resistant Casing", 19, BlockLoader.metaCasing));
-        GTNLItemList.UltraPoweredCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Ultra Powered Casing", 20, BlockLoader.metaCasing));
-        GTNLItemList.SteamgateRingBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing("Steamgate Ring Block", 21, BlockLoader.metaCasing));
-        GTNLItemList.SteamgateChevronBlock
-            .set(MetaBlockConstructors.initMetaBlockCasing("Steamgate Chevron Block", 22, BlockLoader.metaCasing));
-        GTNLItemList.IronReinforcedWood
-            .set(MetaBlockConstructors.initMetaBlockCasing("Iron Reinforced Wood", 23, BlockLoader.metaCasing));
-        GTNLItemList.BronzeReinforcedWood
-            .set(MetaBlockConstructors.initMetaBlockCasing("Bronze Reinforced Wood", 24, BlockLoader.metaCasing));
-        GTNLItemList.SteelReinforcedWood
-            .set(MetaBlockConstructors.initMetaBlockCasing("Steel Reinforced Wood", 25, BlockLoader.metaCasing));
-        GTNLItemList.BreelPipeCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Breel Pipe Casing", 26, BlockLoader.metaCasing));
-        GTNLItemList.StronzeWrappedCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Stronze-Wrapped Casing", 27, BlockLoader.metaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing(19, BlockLoader.metaCasing));
+        GTNLItemList.UltraPoweredCasing.set(MetaBlockConstructors.initMetaBlockCasing(20, BlockLoader.metaCasing));
+        GTNLItemList.SteamgateRingBlock.set(MetaBlockConstructors.initMetaBlockCasing(21, BlockLoader.metaCasing));
+        GTNLItemList.SteamgateChevronBlock.set(MetaBlockConstructors.initMetaBlockCasing(22, BlockLoader.metaCasing));
+        GTNLItemList.IronReinforcedWood.set(MetaBlockConstructors.initMetaBlockCasing(23, BlockLoader.metaCasing));
+        GTNLItemList.BronzeReinforcedWood.set(MetaBlockConstructors.initMetaBlockCasing(24, BlockLoader.metaCasing));
+        GTNLItemList.SteelReinforcedWood.set(MetaBlockConstructors.initMetaBlockCasing(25, BlockLoader.metaCasing));
+        GTNLItemList.BreelPipeCasing.set(MetaBlockConstructors.initMetaBlockCasing(26, BlockLoader.metaCasing));
+        GTNLItemList.StronzeWrappedCasing.set(MetaBlockConstructors.initMetaBlockCasing(27, BlockLoader.metaCasing));
         GTNLItemList.HydraulicAssemblingCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Hydraulic Assembling Casing", 28, BlockLoader.metaCasing));
+            .set(MetaBlockConstructors.initMetaBlockCasing(28, BlockLoader.metaCasing));
         GTNLItemList.HyperPressureBreelCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Hyper Pressure Breel Casing", 29, BlockLoader.metaCasing));
-        GTNLItemList.BreelPlatedCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Breel-Plated Casing", 30, BlockLoader.metaCasing));
-        GTNLItemList.SteamCompactPipeCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Steam Compact Pipe Casing", 31, BlockLoader.metaCasing));
-        GTNLItemList.VibrationSafeCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Vibration-Safe Casing", 0, BlockLoader.metaCasing02));
-        GTNLItemList.IndustrialSteamCasing
-            .set(MetaBlockConstructors.initMetaBlockCasing("Industrial Steam Casing", 1, BlockLoader.metaCasing02));
-        GTNLItemList.AdvancedIndustrialSteamCasing.set(
-            MetaBlockConstructors.initMetaBlockCasing("Advanced Industrial Steam Casing", 2, BlockLoader.metaCasing02));
-        GTNLItemList.StainlessSteelGearBox
-            .set(MetaBlockConstructors.initMetaBlockCasing("Stainless Steel Gear Box", 3, BlockLoader.metaCasing02));
+            .set(MetaBlockConstructors.initMetaBlockCasing(29, BlockLoader.metaCasing));
+        GTNLItemList.BreelPlatedCasing.set(MetaBlockConstructors.initMetaBlockCasing(30, BlockLoader.metaCasing));
+        GTNLItemList.SteamCompactPipeCasing.set(MetaBlockConstructors.initMetaBlockCasing(31, BlockLoader.metaCasing));
+        GTNLItemList.VibrationSafeCasing.set(MetaBlockConstructors.initMetaBlockCasing(0, BlockLoader.metaCasing02));
+        GTNLItemList.IndustrialSteamCasing.set(MetaBlockConstructors.initMetaBlockCasing(1, BlockLoader.metaCasing02));
+        GTNLItemList.AdvancedIndustrialSteamCasing
+            .set(MetaBlockConstructors.initMetaBlockCasing(2, BlockLoader.metaCasing02));
+        GTNLItemList.StainlessSteelGearBox.set(MetaBlockConstructors.initMetaBlockCasing(3, BlockLoader.metaCasing02));
     }
 
     public static void registry() {
         registryBlocks();
         registryBlockContainers();
     }
-
-    public static Block SaplingBrickuoia;
 
     public static void registerTreeBrickuoia() {
         SaplingBrickuoia = new SaplingBrickuoia();

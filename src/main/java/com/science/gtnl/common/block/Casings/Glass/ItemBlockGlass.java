@@ -44,15 +44,15 @@ public class ItemBlockGlass extends ItemBlock {
     // -----------------------
     // region MetaBlock Generators
 
-    public static ItemStack initMetaBlockGlass(String i18nName, int Meta) {
-        return initMetaItemStack(i18nName, Meta, BlockLoader.metaBlockGlass, MetaBlockSet);
+    public static ItemStack initMetaBlockGlass(int Meta) {
+        return initMetaItemStack(Meta, BlockLoader.metaBlockGlass, MetaBlockSet);
     }
 
     public static ItemStack initMetaBlockGlass(String i18nName, int Meta, String[] tooltips) {
         if (tooltips != null) {
             metaItemStackTooltipsAdd(MetaBlockTooltipsMap, Meta, tooltips);
         }
-        return initMetaBlockGlass(i18nName, Meta);
+        return initMetaBlockGlass(Meta);
     }
 
     @SideOnly(Side.CLIENT)

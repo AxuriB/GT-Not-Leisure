@@ -1,8 +1,9 @@
 package com.science.gtnl.common.recipe.GTNL;
 
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.util.GTModHandler.getModItem;
+
+import net.minecraft.util.StatCollector;
 
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.loader.RecipePool;
@@ -25,7 +26,7 @@ public class MatterFabricatorRecipes implements IRecipePool {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(1),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L)
-                    .setStackDisplayName(texter("Any Materials ingot", "NEI.MatterFabricatorRecipes.01")))
+                    .setStackDisplayName(StatCollector.translateToLocal("NEI.MatterFabricatorRecipes.01")))
             .itemOutputs(
                 GTUtility.copyAmountUnsafe(640, getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 6)))
             .eut(120)
@@ -37,7 +38,7 @@ public class MatterFabricatorRecipes implements IRecipePool {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L)
-                    .setStackDisplayName(texter("Any Materials ingot", "NEI.MatterFabricatorRecipes.01")))
+                    .setStackDisplayName(StatCollector.translateToLocal("NEI.MatterFabricatorRecipes.01")))
             .fluidOutputs(Materials.UUAmplifier.getFluid(100000))
             .eut(120)
             .duration(200)
@@ -48,7 +49,7 @@ public class MatterFabricatorRecipes implements IRecipePool {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(1),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L)
-                    .setStackDisplayName(texter("Any Materials gem", "NEI.MatterFabricatorRecipes.02")))
+                    .setStackDisplayName(StatCollector.translateToLocal("NEI.MatterFabricatorRecipes.02")))
             .itemOutputs(
                 GTUtility.copyAmountUnsafe(640, getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 6)))
             .eut(120)
@@ -60,7 +61,7 @@ public class MatterFabricatorRecipes implements IRecipePool {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L)
-                    .setStackDisplayName(texter("Any Materials gem", "NEI.MatterFabricatorRecipes.02")))
+                    .setStackDisplayName(StatCollector.translateToLocal("NEI.MatterFabricatorRecipes.02")))
             .fluidOutputs(Materials.UUAmplifier.getFluid(100000))
             .eut(120)
             .duration(200)
@@ -71,7 +72,7 @@ public class MatterFabricatorRecipes implements IRecipePool {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(1),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L)
-                    .setStackDisplayName(texter("Any Materials gem", "NEI.MatterFabricatorRecipes.03")))
+                    .setStackDisplayName(StatCollector.translateToLocal("NEI.MatterFabricatorRecipes.03")))
             .itemOutputs(
                 GTUtility.copyAmountUnsafe(640 * 9, getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 6)))
             .eut(120)
@@ -83,7 +84,7 @@ public class MatterFabricatorRecipes implements IRecipePool {
             .itemInputs(
                 GTUtility.getIntegratedCircuit(2),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L)
-                    .setStackDisplayName(texter("Any Materials gem", "NEI.MatterFabricatorRecipes.03")))
+                    .setStackDisplayName(StatCollector.translateToLocal("NEI.MatterFabricatorRecipes.03")))
             .fluidOutputs(Materials.UUAmplifier.getFluid(900000))
             .eut(120)
             .duration(200)

@@ -1,13 +1,13 @@
 package com.science.gtnl.common.recipe.GTNL;
 
 import static com.dreammaster.scripts.IScriptLoader.missing;
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IRecipePool;
@@ -34,7 +34,7 @@ public class PortalToAlfheimRecipes implements IRecipePool {
                 GTUtility.copyAmountUnsafe(
                     2147483647,
                     getModItem(IndustrialCraft2.ID, "blockNuke", 1)
-                        .setStackDisplayName(texter("Elves don't like bread.", "PTARRecipes.1"))))
+                        .setStackDisplayName(StatCollector.translateToLocal("PTARRecipes.1"))))
             .duration(1200)
             .eut(0)
             .addTo(PTAR);

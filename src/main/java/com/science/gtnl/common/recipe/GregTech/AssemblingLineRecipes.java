@@ -4,7 +4,6 @@ import static bartworks.common.loaders.ItemRegistry.*;
 import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_LuV;
 import static gregtech.api.enums.Mods.*;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.*;
 
@@ -1061,7 +1060,7 @@ public class AssemblingLineRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 32),
                 ItemList.Field_Generator_UEV.get(32), new Object[] { OrePrefixes.circuit.get(Materials.UHV), 64 },
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 32 }, ItemList.Circuit_Chip_QPIC.get(64),
-                getModItem(GalacticraftAmunRa.ID, "item.baseItem", 64, 15),
+                GTModHandler.getModItem(GalacticraftAmunRa.ID, "item.baseItem", 64, 15),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 64),
                 ItemList.SpaceElevatorBaseCasing.get(64) },
             new FluidStack[] { MaterialPool.SuperMutatedLivingSolder.getFluidOrGas(4000),
@@ -1072,11 +1071,11 @@ public class AssemblingLineRecipes implements IRecipePool {
             (int) TierEU.RECIPE_UEV);
 
         GTValues.RA.stdBuilder()
-            .metadata(RESEARCH_ITEM, getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
+            .metadata(RESEARCH_ITEM, GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1, 47))
             .metadata(SCANNING, new Scanning(30 * MINUTES, TierEU.RECIPE_IV))
             .itemInputs(
                 CustomItemList.Machine_Multi_Transformer.get(1),
-                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 47),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 47),
                 ItemList.Field_Generator_LuV.get(2),
                 ItemList.Emitter_LuV.get(4),
                 ItemList.Casing_Fusion_Coil.get(4),

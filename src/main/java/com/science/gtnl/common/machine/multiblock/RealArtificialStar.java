@@ -5,7 +5,6 @@ import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.Utils.Utils.copyAmount;
 import static com.science.gtnl.Utils.enums.GTNLItemList.StellarConstructionFrameMaterial;
 import static com.science.gtnl.Utils.enums.ModList.TwistSpaceTechnology;
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
@@ -118,7 +117,7 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("isActive")) {
             currentTip.add(
-                EnumChatFormatting.AQUA + texter("Current Generating : ", "Info_RealArtificialStar_00")
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("Info_RealArtificialStar_00")
                     + EnumChatFormatting.GOLD
                     + tag.getLong("currentOutputEU")
                     + EnumChatFormatting.RED
@@ -151,36 +150,30 @@ public class RealArtificialStar extends MultiMachineBase<RealArtificialStar> {
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 6];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = EnumChatFormatting.GOLD
-            + texter("Reward for continuous operation", "Info_RealArtificialStar_01")
+        ret[origin.length] = EnumChatFormatting.GOLD + StatCollector.translateToLocal("Info_RealArtificialStar_01")
             + EnumChatFormatting.RESET
             + ": "
             + EnumChatFormatting.GREEN
             + (rewardContinuous + 100)
             + "%";
-        ret[origin.length + 1] = EnumChatFormatting.GOLD + texter("Generating Multiplier", "Info_RealArtificialStar_02")
+        ret[origin.length + 1] = EnumChatFormatting.GOLD + StatCollector.translateToLocal("Info_RealArtificialStar_02")
             + EnumChatFormatting.RESET
             + ": "
             + EnumChatFormatting.GREEN
             + outputMultiplier;
-        ret[origin.length + 2] = EnumChatFormatting.GOLD + texter("Dimension Field Tier", "Info_RealArtificialStar_03")
+        ret[origin.length + 2] = EnumChatFormatting.GOLD + StatCollector.translateToLocal("Info_RealArtificialStar_03")
             + EnumChatFormatting.RESET
             + ": "
             + EnumChatFormatting.YELLOW
             + tierDimensionField;
-        ret[origin.length + 3] = EnumChatFormatting.GOLD + texter("Time Field Tier", "Info_RealArtificialStar_04")
-            + EnumChatFormatting.RESET
-            + ": "
-            + EnumChatFormatting.YELLOW
-            + tierTimeField;
-        ret[origin.length + 4] = EnumChatFormatting.GOLD
-            + texter("Stabilisation Field Tier", "Info_RealArtificialStar_05")
+        ret[origin.length + 3] = EnumChatFormatting.GOLD + StatCollector.translateToLocal(
+            "Info_RealArtificialStar_04") + EnumChatFormatting.RESET + ": " + EnumChatFormatting.YELLOW + tierTimeField;
+        ret[origin.length + 4] = EnumChatFormatting.GOLD + StatCollector.translateToLocal("Info_RealArtificialStar_05")
             + EnumChatFormatting.RESET
             + ": "
             + EnumChatFormatting.YELLOW
             + tierStabilisationField;
-        ret[origin.length + 5] = EnumChatFormatting.GOLD
-            + texter("Recover material chance", "Info_RealArtificialStar_06")
+        ret[origin.length + 5] = EnumChatFormatting.GOLD + StatCollector.translateToLocal("Info_RealArtificialStar_06")
             + EnumChatFormatting.RESET
             + ": "
             + EnumChatFormatting.AQUA

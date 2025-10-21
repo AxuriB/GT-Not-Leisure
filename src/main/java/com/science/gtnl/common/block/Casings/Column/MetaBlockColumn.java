@@ -1,7 +1,6 @@
 package com.science.gtnl.common.block.Casings.Column;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static com.science.gtnl.common.block.Casings.Column.ItemBlockColumn.MetaBlockSet;
 
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import com.science.gtnl.client.GTNLCreativeTabs;
@@ -38,10 +38,10 @@ public class MetaBlockColumn extends Block {
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
     }
 
-    public MetaBlockColumn(String unlocalizedName, String localName) {
+    public MetaBlockColumn(String unlocalizedName) {
         this();
         this.setBlockName(unlocalizedName);
-        texter(localName, "MetaBlockColumn." + unlocalizedName + ".name");
+        StatCollector.translateToLocal("MetaBlockColumn." + unlocalizedName + ".name");
     }
 
     @SideOnly(Side.CLIENT)

@@ -194,7 +194,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier0.get(1),
+                GTNLItemList.CompressedStargateTier0.get(1),
                 "AAAABAAAA",
                 "ACDEFGHIA",
                 "AJKLKLKMA",
@@ -289,7 +289,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier1.get(1),
+                GTNLItemList.CompressedStargateTier1.get(1),
                 "ABCDEFGHI",
                 "JKLMNOLPQ",
                 "RLyTyTyLU",
@@ -336,7 +336,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'R',
                 GregtechItemList.Large_Gas_Turbine.get(1),
                 'S',
-                GTNLItemList.StargateTier0.get(1),
+                GTNLItemList.CompressedStargateTier0.get(1),
                 'T',
                 GTModHandler.getModItem(SGCraft.ID, "stargateRing", 1, 0, missing),
                 'U',
@@ -424,7 +424,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier2.get(1),
+                GTNLItemList.CompressedStargateTier2.get(1),
                 "ABCDEFGHI",
                 "JKLMNOPQR",
                 "ST~V~V~WX",
@@ -475,7 +475,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'T',
                 plasmaZirconiumPacket,
                 'U',
-                GTNLItemList.StargateTier1.get(1),
+                GTNLItemList.CompressedStargateTier1.get(1),
                 'V',
                 GTModHandler.getModItem(SGCraft.ID, "stargateRing", 1, 0, missing),
                 'W',
@@ -573,7 +573,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier3.get(1),
+                GTNLItemList.CompressedStargateTier3.get(1),
                 "ABCDEFGHI",
                 "JKLMNOPQR",
                 "ST~V~V~WX",
@@ -624,7 +624,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'T',
                 Particle.getBaseParticle(Particle.TOP),
                 'U',
-                GTNLItemList.StargateTier2.get(1),
+                GTNLItemList.CompressedStargateTier2.get(1),
                 'V',
                 GTModHandler.getModItem(SGCraft.ID, "stargateRing", 1, 0, missing),
                 'W',
@@ -723,7 +723,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier4.get(1),
+                GTNLItemList.CompressedStargateTier4.get(1),
                 "ABCDEFGHI",
                 "JKKLMNOOP",
                 "QRSTSTSUV",
@@ -814,7 +814,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'd',
                 GregtechItemList.RawIntelligenceCatalyst.get(1),
                 'e',
-                GTNLItemList.StargateTier3.get(1),
+                GTNLItemList.CompressedStargateTier3.get(1),
                 'f',
                 GregtechItemList.SimpleNaquadahCatalyst.get(1),
                 'g',
@@ -838,7 +838,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier5.get(1),
+                GTNLItemList.CompressedStargateTier5.get(1),
                 "ABCDEFGHI",
                 "JKLMNOPQR",
                 "STUVWXYZ0",
@@ -944,7 +944,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'h',
                 GTModHandler.getModItem(UniversalSingularities.ID, "universal.general.singularity", 1, 22, missing),
                 'i',
-                GTNLItemList.StargateTier4.get(1),
+                GTNLItemList.CompressedStargateTier4.get(1),
                 'j',
                 GTModHandler.getModItem(Avaritia.ID, "Singularity", 1, 7, missing),
                 'k',
@@ -1010,7 +1010,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier6.get(1),
+                GTNLItemList.CompressedStargateTier6.get(1),
                 "AAAAAAAAA",
                 "BCDEFGHIJ",
                 "KLMNMNMOP",
@@ -1105,7 +1105,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'c',
                 GTModHandler.getModItem(Witchery.ID, "ingredient", 1, 96, missing),
                 'd',
-                GTNLItemList.StargateTier5.get(1),
+                GTNLItemList.CompressedStargateTier5.get(1),
                 'e',
                 ItemUtils.createSpecialFlower("asgardandelion"),
                 'f',
@@ -1133,7 +1133,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier7.get(1),
+                GTNLItemList.CompressedStargateTier7.get(1),
                 "ABCDEFGHI",
                 "JKLMNOPQR",
                 "STUVWXYZ0",
@@ -1232,7 +1232,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'h',
                 ItemList.Circuit_Chip_CrystalSoC2.get(1),
                 'i',
-                GTNLItemList.StargateTier6.get(1),
+                GTNLItemList.CompressedStargateTier6.get(1),
                 'j',
                 NHItemList.QuantumCircuit.getIS(1),
                 'k',
@@ -1296,7 +1296,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier8.get(1),
+                GTNLItemList.CompressedStargateTier8.get(1),
                 "ABCDEFGHI",
                 "JKLMNOPQR",
                 "STUVWXYZ0",
@@ -1395,7 +1395,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'h',
                 ItemList.ResearchCompleter.get(1),
                 'i',
-                GTNLItemList.StargateTier7.get(1),
+                GTNLItemList.CompressedStargateTier7.get(1),
                 'j',
                 ItemList.Ore_Processor.get(1),
                 'k',
@@ -1459,7 +1459,7 @@ public class ScriptAvaritia implements IScriptLoader {
 
         ExtremeCraftingManager.getInstance()
             .addExtremeShapedOreRecipe(
-                GTNLItemList.StargateTier9.get(1),
+                GTNLItemList.CompressedStargateTier9.get(1),
                 "ABCDEFGHI",
                 "JKLMNOPQR",
                 "STUVWXYZ0",
@@ -1558,7 +1558,7 @@ public class ScriptAvaritia implements IScriptLoader {
                 'h',
                 ItemList.Machine_Multi_Cleanroom.get(1),
                 'i',
-                GTNLItemList.StargateTier8.get(1),
+                GTNLItemList.CompressedStargateTier8.get(1),
                 'j',
                 ItemList.Quantum_Tank_IV.get(1),
                 'k',

@@ -1,7 +1,6 @@
 package com.science.gtnl.common.block.Casings.Glow;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static com.science.gtnl.common.block.Casings.Glow.ItemBlockGlow.MetaBlockSet;
 
 import java.util.List;
@@ -15,6 +14,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 
 import com.science.gtnl.client.GTNLCreativeTabs;
@@ -40,10 +40,10 @@ public class MetaBlockGlow extends Block {
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureBlock);
     }
 
-    public MetaBlockGlow(String unlocalizedName, String localName) {
+    public MetaBlockGlow(String unlocalizedName) {
         this();
         this.unlocalizedName = unlocalizedName;
-        texter(localName, "MetaBlockGlow." + unlocalizedName + ".name");
+        StatCollector.translateToLocal("MetaBlockGlow." + unlocalizedName + ".name");
     }
 
     // endregion

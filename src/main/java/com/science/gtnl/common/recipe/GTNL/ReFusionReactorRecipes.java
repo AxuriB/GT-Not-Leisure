@@ -1,8 +1,9 @@
 package com.science.gtnl.common.recipe.GTNL;
 
 import static com.science.gtnl.Utils.enums.GTNLItemList.TrollFace;
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static gregtech.api.util.GTModHandler.getModItem;
+
+import net.minecraft.util.StatCollector;
 
 import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.loader.RecipePool;
@@ -22,7 +23,7 @@ public class ReFusionReactorRecipes implements IRecipePool {
             .itemInputs(GTUtility.copyAmountUnsafe(2147483647, getModItem("gregtech", "gt.metaitem.01", 1, 2299)))
             .itemOutputs(
                 TrollFace.get(1)
-                    .setStackDisplayName(texter("It's just out of reach, isn't it?", "RFRRRecipes.1")))
+                    .setStackDisplayName(StatCollector.translateToLocal("RFRRRecipes.1")))
             .fluidOutputs(
                 MaterialsUEVplus.MagMatter.getMolten(Integer.MAX_VALUE),
                 MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(Integer.MAX_VALUE),

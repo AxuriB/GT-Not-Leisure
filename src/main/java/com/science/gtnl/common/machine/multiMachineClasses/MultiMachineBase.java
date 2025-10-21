@@ -1,7 +1,6 @@
 package com.science.gtnl.common.machine.multiMachineClasses;
 
 import static com.science.gtnl.Utils.Utils.filterValidMTEs;
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -712,15 +711,13 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 3];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = EnumChatFormatting.AQUA + texter("Parallels", "MachineInfoData.Parallels")
+        ret[origin.length] = EnumChatFormatting.AQUA + StatCollector.translateToLocal("MachineInfoData.Parallels")
             + ": "
             + EnumChatFormatting.GOLD
             + this.getTrueParallel();
-        ret[origin.length + 1] = EnumChatFormatting.AQUA + texter("Speed multiplier", "MachineInfoData.SpeedMultiplier")
-            + ": "
-            + EnumChatFormatting.GOLD
-            + dSpeed;
-        ret[origin.length + 2] = EnumChatFormatting.AQUA + texter("EU Modifier", "MachineInfoData.EuModifier")
+        ret[origin.length + 1] = EnumChatFormatting.AQUA + StatCollector
+            .translateToLocal("MachineInfoData.SpeedMultiplier") + ": " + EnumChatFormatting.GOLD + dSpeed;
+        ret[origin.length + 2] = EnumChatFormatting.AQUA + StatCollector.translateToLocal("MachineInfoData.EuModifier")
             + ": "
             + EnumChatFormatting.GOLD
             + dEUMod;

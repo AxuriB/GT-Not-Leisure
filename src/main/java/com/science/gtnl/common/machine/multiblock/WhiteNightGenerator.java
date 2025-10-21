@@ -2,7 +2,6 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.text.TextUtils.texter;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Mods.EternalSingularity;
@@ -85,7 +84,7 @@ public class WhiteNightGenerator extends MultiMachineBase<WhiteNightGenerator> {
         final NBTTagCompound tag = accessor.getNBTData();
         if (tag.getBoolean("isActive")) {
             currentTip.add(
-                EnumChatFormatting.AQUA + texter("Current Generating : ", "Info_RealArtificialStar_00")
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("Info_RealArtificialStar_00")
                     + EnumChatFormatting.GOLD
                     + tag.getLong("currentOutputEU")
                     + EnumChatFormatting.RED

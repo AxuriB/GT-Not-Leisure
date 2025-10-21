@@ -52,6 +52,9 @@ public class MissingMappingsHandler {
         .remapBlock("ScienceNotLeisure:MetaCasing", GameRegistry.findBlock(ScienceNotLeisure.ID, "MetaCasing"))
         .remapBlock("ScienceNotLeisure:MetaCasing02", GameRegistry.findBlock(ScienceNotLeisure.ID, "MetaCasing02"))
 
+
+        .remapBlock("sciencenotleisure:Stargate_Coil_Compressed", GameRegistry.findBlock(ScienceNotLeisure.ID, "StargateCoilCompressed"))
+
         .remapBlock("ScienceNotLeisure:Stargate0", GameRegistry.findBlock(ScienceNotLeisure.ID, "Stargate0"))
         .remapBlock("ScienceNotLeisure:Stargate1", GameRegistry.findBlock(ScienceNotLeisure.ID, "Stargate1"))
         .remapBlock("ScienceNotLeisure:Stargate2", GameRegistry.findBlock(ScienceNotLeisure.ID, "Stargate2"))

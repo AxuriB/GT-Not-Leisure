@@ -148,18 +148,6 @@ public class LanguageLoader {
     }
 
     public static void writePlaceholderStrings() {
-        addStringLocalization("Interaction_DESCRIPTION_Index_700", "需要铝研磨球");
-        addStringLocalization("Interaction_DESCRIPTION_Index_701", "需要皂石研磨球");
-        addStringLocalization("Interaction_DESCRIPTION_Index_702", "需要采矿无人机MK-VIII x 16");
-        addStringLocalization("Interaction_DESCRIPTION_Index_703", "需要采矿无人机MK-IX x 16");
-        addStringLocalization("Interaction_DESCRIPTION_Index_704", "需要采矿无人机MK-X x 16");
-        addStringLocalization("Interaction_DESCRIPTION_Index_705", "需要采矿无人机MK-XI x 16");
-        addStringLocalization("Interaction_DESCRIPTION_Index_706", "需要采矿无人机MK-XII x 16");
-        addStringLocalization("Interaction_DESCRIPTION_Index_707", "需要采矿无人机MK-XIII x 16");
-        addStringLocalization("Interaction_DESCRIPTION_Index_708", "需要压缩超高压聚变反应堆");
-        addStringLocalization("Interaction_DESCRIPTION_Index_709", "需要无菌环境");
-        addStringLocalization("Interaction_DESCRIPTION_Index_710", "需要绝对洁净环境");
-        addStringLocalization("GT5U.gui.text.no_mining_drone", "§7未找到采矿无人机");
         addStringLocalization("bw.itemtype.plateSuperdense", "超致密%material板");
         addStringLocalization("bw.itemtype.nanite", "%material纳米蜂群");
     }
