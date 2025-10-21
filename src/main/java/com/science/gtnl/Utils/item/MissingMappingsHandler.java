@@ -94,8 +94,8 @@ public class MissingMappingsHandler {
         .remapBlock("sciencenotleisure:MetaBlockGlow", BlockLoader.metaBlockGlow)
         .remapBlock("sciencenotleisure:MetaBlockGlass", BlockLoader.metaBlockGlass)
         .remapBlock("sciencenotleisure:MetaBlock", BlockLoader.metaBlock)
-        .remapBlock("sciencenotleisure:MetaBlockCasing02", BlockLoader.metaCasing02)
-        .remapBlock("sciencenotleisure:MetaBlockCasing", BlockLoader.metaCasing)
+        .remapBlock("sciencenotleisure:MetaCasing02", BlockLoader.metaCasing02)
+        .remapBlock("sciencenotleisure:MetaCasing", BlockLoader.metaCasing)
 
          // Item remappings
         .remapItem("ScienceNotLeisure:RecordSus", GameRegistry.findItem(ScienceNotLeisure.ID, "RecordSus"))
