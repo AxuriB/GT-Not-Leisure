@@ -23,7 +23,7 @@ public class GTNL_OverclockCalculator extends OverclockCalculator {
     /** The parallel the machine has when trying to overclock */
     protected int parallel = 1;
     /** The max amount of tiers above the machine voltage a recipe is valid */
-    protected int maxTierSkip = 1;
+    protected int maxTierSkip = Integer.MAX_VALUE;
 
     // Modifiers
     /** Energy modifier that is applied at the start of calculating overclocks, like GT++ machines */
