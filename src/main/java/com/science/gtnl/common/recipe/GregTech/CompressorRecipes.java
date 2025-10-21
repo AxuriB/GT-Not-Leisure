@@ -1,8 +1,6 @@
 package com.science.gtnl.common.recipe.GregTech;
 
-import static com.science.gtnl.Utils.enums.ModList.ScienceNotLeisure;
 import static gregtech.api.enums.Mods.*;
-import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Blocks;
@@ -32,7 +30,7 @@ public class CompressorRecipes implements IRecipePool {
     @Override
     public void loadRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputsUnsafe(GTUtility.copyAmountUnsafe(7296, getModItem(ScienceNotLeisure.ID, "StargateTier9", 1, 0)))
+            .itemInputsUnsafe(GTNLItemList.CompressedStargateTier9.get(7296))
             .itemOutputs(GTNLItemList.StargateSingularity.get(1))
             .duration(120 * SECONDS)
             .eut(TierEU.RECIPE_MAX)

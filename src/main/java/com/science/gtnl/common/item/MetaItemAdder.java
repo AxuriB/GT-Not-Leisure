@@ -72,12 +72,12 @@ public class MetaItemAdder extends ItemAdder_Basic implements IHaloRenderItem {
 
     @Override
     public String getUnlocalizedName(ItemStack aItemStack) {
-        return this.unlocalizedName + "." + aItemStack.getItemDamage();
+        return "item." + this.unlocalizedName + "." + aItemStack.getItemDamage();
     }
 
     @Override
     public String getUnlocalizedName() {
-        return this.unlocalizedName;
+        return "item." + this.unlocalizedName;
     }
 
     @Override
