@@ -195,7 +195,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
         List<FluidStack> tFluids = getStoredFluids();
         for (FluidStack fs : tFluids) {
             if (GTUtility.areFluidsEqual(fs, Materials.Oxygen.getGas(1))) {
-                mMaxProgresstime /= 16;
+                mMaxProgresstime /= 20;
                 lEUt *= 32;
                 useOxygen = true;
                 break;
@@ -235,7 +235,7 @@ public class LargeNaquadahReactor extends TTMultiblockBase implements IConstruct
         if (useOxygen && (this.mProgresstime + 1) % 20 == 0 && this.mProgresstime > 0) {
             startRecipeProcessing();
 
-            if (!depleteInput(Materials.Oxygen.getGas(2000))) {
+            if (!depleteInput(Materials.Oxygen.getGas(2500))) {
                 stopMachine(ShutDownReasonRegistry.NONE);
                 endRecipeProcessing();
                 return false;

@@ -1533,8 +1533,8 @@ LargeNaquadahReactor.Generates.0=产能功率：
 LargeNaquadahReactor.Generates.1=使用氧气加速：
 Tooltip_LargeNaquadahReactor_00=固定并行为4
 Tooltip_LargeNaquadahReactor_01=可以在配方开始的时候输入氧气
-Tooltip_LargeNaquadahReactor_02=这会让时间减少16倍，功率翻32倍
-Tooltip_LargeNaquadahReactor_03=代价是每秒会消耗2000L的氧气
+Tooltip_LargeNaquadahReactor_02=这会让时间减少20倍，功率翻32倍
+Tooltip_LargeNaquadahReactor_03=代价是每秒会消耗2500L的氧气
 Tooltip_LargeNaquadahReactor_Casing=任意放射硅岩合金机械方块
 
 NameGrandAssemblyLine=大型装配线
