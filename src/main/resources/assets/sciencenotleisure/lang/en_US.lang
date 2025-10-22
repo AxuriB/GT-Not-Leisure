@@ -2711,15 +2711,15 @@ Tooltip_ShallowChemicalCoupling_02=Recipe time & energy multiply by 85% per coil
 Tooltip_ShallowChemicalCoupling_03=Energy hatch limited by glass tier, UEV Glass unlocks all
 Tooltip_ShallowChemicalCoupling_Casing_00=Any Chemical Protection Machine Block
 
-NameAdvancedCircuitAssemblyLine=Advanced Circuit Assembly Line
-AdvancedCircuitAssemblyLineRecipes=Advanced Circuit Assembly Line
+NameCircuitComponentAssemblyLine=Circuit Component Assembly Line
+CircuitComponentAssemblyLineRecipes=Circuit Component Assembly Line
 gtnl.recipe.CircuitNanitesDataRecipes=Circuit Component Assembly Line Nanites Coefficient
-gtnl.recipe.AdvancedCircuitAssemblyLineRecipes=Advanced Circuit Assembly Line
-Tooltip_AdvancedCircuitAssemblyLine_00=§c§oOutperforming BartWork's Circuit Assemblers
-Tooltip_AdvancedCircuitAssemblyLine_01=§c§oAssembling Circuits at Unimaginable Speeds
-Tooltip_AdvancedCircuitAssemblyLine_02=Progressive Runtime Acceleration Scaling to §b10x Maximum Velocity
-Tooltip_AdvancedCircuitAssemblyLine_03=Base EU/t Reduction: 80% | Formula: 0.8 - (Parallel Tier / 36)
-Tooltip_AdvancedCircuitAssemblyLine_Casing_00=Any advanced electronic computing machinery block
+gtnl.recipe.CircuitComponentAssemblyLineRecipes=Circuit Component Assembly Line
+Tooltip_CircuitComponentAssemblyLine_00=§c§oOutperforming BartWork's Circuit Assemblers
+Tooltip_CircuitComponentAssemblyLine_01=§c§oAssembling Circuits at Unimaginable Speeds
+Tooltip_CircuitComponentAssemblyLine_02=Progressive Runtime Acceleration Scaling to §b10x Maximum Velocity
+Tooltip_CircuitComponentAssemblyLine_03=Base EU/t Reduction: 80% | Formula: 0.8 - (Parallel Tier / 36)
+Tooltip_CircuitComponentAssemblyLine_Casing_00=Any advanced electronic computing machinery block
 
 NameWhiteNightGenerator=White Night Generator
 Tooltip_WhiteNightGenerator_MachineType=§d§lViolet Baptism

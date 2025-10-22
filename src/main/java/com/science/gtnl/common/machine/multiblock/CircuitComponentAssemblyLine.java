@@ -24,7 +24,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.science.gtnl.common.machine.multiMachineBase.GTMMultiMachineBase;
+import com.science.gtnl.common.machine.multiMachineBase.WirelessEnergyMultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
 import com.science.gtnl.utils.StructureUtils;
 
@@ -40,7 +40,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import tectech.thing.block.BlockQuantumGlass;
 import tectech.thing.casing.BlockGTCasingsTT;
 
-public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCircuitAssemblyLine>
+public class CircuitComponentAssemblyLine extends WirelessEnergyMultiMachineBase<CircuitComponentAssemblyLine>
     implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -54,22 +54,22 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     public int casingTier;
     private int runningTickCounter = 0;
 
-    public AdvancedCircuitAssemblyLine(int aID, String aName, String aNameRegional) {
+    public CircuitComponentAssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public AdvancedCircuitAssemblyLine(String aName) {
+    public CircuitComponentAssemblyLine(String aName) {
         super(aName);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new AdvancedCircuitAssemblyLine(this.mName);
+        return new CircuitComponentAssemblyLine(this.mName);
     }
 
     @Override
-    public IStructureDefinition<AdvancedCircuitAssemblyLine> getStructureDefinition() {
-        return StructureDefinition.<AdvancedCircuitAssemblyLine>builder()
+    public IStructureDefinition<CircuitComponentAssemblyLine> getStructureDefinition() {
+        return StructureDefinition.<CircuitComponentAssemblyLine>builder()
             .addShape(STRUCTURE_PIECE_MAIN, transpose(shape))
             .addElement('A', ofBlock(FRF_Coil_1, 0))
             .addElement(
@@ -88,7 +88,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
             .addElement('F', ofBlock(sBlockCasingsTT, 2))
             .addElement(
                 'G',
-                buildHatchAdder(AdvancedCircuitAssemblyLine.class).casingIndex(getCasingTextureID())
+                buildHatchAdder(CircuitComponentAssemblyLine.class).casingIndex(getCasingTextureID())
                     .dot(1)
                     .atLeast(Maintenance, InputHatch, InputBus, OutputBus, Maintenance, Energy.or(ExoticEnergy))
                     .buildAndChain(onElementPass(x -> ++x.mCountCasing, ofBlock(sBlockCasingsTT, 3))))
@@ -102,11 +102,11 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(StatCollector.translateToLocal("AdvancedCircuitAssemblyLineRecipes"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_00"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_01"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_02"))
-            .addInfo(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_03"))
+        tt.addMachineType(StatCollector.translateToLocal("CircuitComponentAssemblyLineRecipes"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_00"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_01"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_02"))
+            .addInfo(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_02"))
             .addInfo(StatCollector.translateToLocal("Tooltip_GTMMultiMachine_03"))
             .addInfo(StatCollector.translateToLocal("Tooltip_PerfectOverclock"))
@@ -115,18 +115,13 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
             .addInfo(StatCollector.translateToLocal("StructureTooComplex"))
             .addInfo(StatCollector.translateToLocal("BLUE_PRINT_INFO"))
             .beginStructureBlock(32, 5, 5, true)
-            .addInputHatch(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_Casing_00"))
-            .addInputBus(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_Casing_00"))
-            .addOutputBus(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_Casing_00"))
-            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_Casing_00"))
-            .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_AdvancedCircuitAssemblyLine_Casing_00"))
+            .addInputHatch(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_Casing_00"))
+            .addInputBus(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_Casing_00"))
+            .addOutputBus(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_Casing_00"))
+            .addEnergyHatch(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_Casing_00"))
+            .addMaintenanceHatch(StatCollector.translateToLocal("Tooltip_CircuitComponentAssemblyLine_Casing_00"))
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public boolean getPerfectOC() {
-        return true;
     }
 
     @Override
@@ -252,7 +247,7 @@ public class AdvancedCircuitAssemblyLine extends GTMMultiMachineBase<AdvancedCir
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return RecipePool.AdvancedCircuitAssemblyLineRecipes;
+        return RecipePool.CircuitComponentAssemblyLineRecipes;
     }
 
 }

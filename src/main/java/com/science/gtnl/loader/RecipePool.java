@@ -382,8 +382,8 @@ public class RecipePool {
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .build();
 
-    public static RecipeMap<RecipeMapBackend> AdvancedCircuitAssemblyLineRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.AdvancedCircuitAssemblyLineRecipes")
+    public static RecipeMap<RecipeMapBackend> CircuitComponentAssemblyLineRecipes = RecipeMapBuilder
+        .of("gtnl.recipe.CircuitComponentAssemblyLineRecipes")
         .maxIO(12, 1, 12, 0)
         .neiTransferRect(70, 15, 18, 54)
         .neiSpecialInfoFormatter(
@@ -395,7 +395,7 @@ public class RecipePool {
         .addSpecialTexture(70, 11, 72, 40, GGUITextures.PICTURE_COMPONENT_ASSLINE)
         .frontend(ComponentAssemblyLineFrontend::new)
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(GTNLItemList.AdvancedCircuitAssemblyLine.get(1))
+            builder -> builder.setDisplayStack(GTNLItemList.CircuitComponentAssemblyLine.get(1))
                 .setMaxRecipesPerPage(1))
         .build();
 
@@ -618,7 +618,7 @@ public class RecipePool {
             }
         })
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(GTNLItemList.AdvancedCircuitAssemblyLine.get(1))
+            builder -> builder.setDisplayStack(GTNLItemList.CircuitComponentAssemblyLine.get(1))
                 .setMaxRecipesPerPage(1))
         .build();
 }

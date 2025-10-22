@@ -475,7 +475,7 @@ public enum GTNLItemList implements IItemContainer {
     SteamGateAssembler,
     Steamgate,
     AdvancedInfiniteDriller,
-    AdvancedCircuitAssemblyLine,
+    CircuitComponentAssemblyLine,
     PlatinumBasedTreatment,
     CrackerHub,
     LargeSteamFormingPress,

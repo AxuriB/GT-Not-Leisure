@@ -2711,15 +2711,15 @@ Tooltip_ShallowChemicalCoupling_02=线圈等级每提高一级，配方时间和
 Tooltip_ShallowChemicalCoupling_03=玻璃等级限制了能源仓等级，UHV玻璃解锁所有等级
 Tooltip_ShallowChemicalCoupling_Casing_00=任意化学防护机械方块
 
-NameAdvancedCircuitAssemblyLine=电路部件装配线
-AdvancedCircuitAssemblyLineRecipes=电路装配线
+NameCircuitComponentAssemblyLine=电路部件装配线
+CircuitComponentAssemblyLineRecipes=电路部件装配线
 gtnl.recipe.CircuitNanitesDataRecipes=电路部件装配线蜂群系数
-gtnl.recipe.AdvancedCircuitAssemblyLineRecipes=电路装配线
-Tooltip_AdvancedCircuitAssemblyLine_00=§c§o完全超越BartWork的电路装配线
-Tooltip_AdvancedCircuitAssemblyLine_01=§c§o以超乎想象的速度组装你的电路
-Tooltip_AdvancedCircuitAssemblyLine_02=运行时速度逐渐提升，最高可达§b十倍速度
-Tooltip_AdvancedCircuitAssemblyLine_03=拥有基础80%的EU/t能耗减免，能耗减免率计算公式为：0.8 - (并行层级 / 36)
-Tooltip_AdvancedCircuitAssemblyLine_Casing_00=任意进阶电子计算机械方块
+gtnl.recipe.CircuitComponentAssemblyLineRecipes=电路部件装配线
+Tooltip_CircuitComponentAssemblyLine_00=§c§o完全超越BartWork的电路装配线
+Tooltip_CircuitComponentAssemblyLine_01=§c§o以超乎想象的速度组装你的电路
+Tooltip_CircuitComponentAssemblyLine_02=运行时速度逐渐提升，最高可达§b十倍速度
+Tooltip_CircuitComponentAssemblyLine_03=拥有基础80%的EU/t能耗减免，能耗减免率计算公式为：0.8 - (并行层级 / 36)
+Tooltip_CircuitComponentAssemblyLine_Casing_00=任意进阶电子计算机械方块
 
 NameWhiteNightGenerator=白夜发电机
 Tooltip_WhiteNightGenerator_MachineType=§d§l紫罗兰的洗礼

@@ -1025,7 +1025,7 @@ public class AssemblingLineRecipes implements IRecipePool {
                 ItemList.Sensor_UHV.get(32) },
             new FluidStack[] { Materials.Grade6PurifiedWater.getFluid(64000),
                 MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(32000), Materials.CosmicNeutronium.getMolten(2304) },
-            GTNLItemList.AdvancedCircuitAssemblyLine.get(1),
+            GTNLItemList.CircuitComponentAssemblyLine.get(1),
             4800,
             (int) TierEU.RECIPE_UHV);
 

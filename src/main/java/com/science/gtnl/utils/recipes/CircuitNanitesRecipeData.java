@@ -124,7 +124,7 @@ public class CircuitNanitesRecipeData implements Comparable<CircuitNanitesRecipe
 
     @Override
     public int compareTo(CircuitNanitesRecipeData other) {
-        return Double.compare(this.speedBoost, other.speedBoost);
+        return Integer.compare(this.parallelCount, other.parallelCount);
     }
 
     public static double randomDoubleInRange(Random random, double min, double max) {

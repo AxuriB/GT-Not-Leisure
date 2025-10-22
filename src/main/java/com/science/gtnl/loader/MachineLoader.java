@@ -57,11 +57,11 @@ import com.science.gtnl.common.machine.hatch.TapDynamoHatch;
 import com.science.gtnl.common.machine.hatch.VaultPortHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
-import com.science.gtnl.common.machine.multiblock.AdvancedCircuitAssemblyLine;
 import com.science.gtnl.common.machine.multiblock.AdvancedInfiniteDriller;
 import com.science.gtnl.common.machine.multiblock.BloodSoulSacrificialArray;
 import com.science.gtnl.common.machine.multiblock.BrickedBlastFurnace;
 import com.science.gtnl.common.machine.multiblock.CheatOreProcessingFactory;
+import com.science.gtnl.common.machine.multiblock.CircuitComponentAssemblyLine;
 import com.science.gtnl.common.machine.multiblock.ComponentAssembler;
 import com.science.gtnl.common.machine.multiblock.DecayHastener;
 import com.science.gtnl.common.machine.multiblock.Desulfurizer;
@@ -1049,12 +1049,12 @@ public class MachineLoader {
                 StatCollector.translateToLocal("NameIntegratedAssemblyFacility")));
         addItemTooltip(GTNLItemList.IntegratedAssemblyFacility.get(1), AnimatedText.SNL_QYZG);
 
-        GTNLItemList.AdvancedCircuitAssemblyLine.set(
-            new AdvancedCircuitAssemblyLine(
-                ADVANCED_CIRCUIT_ASSEMBLY_LINE.ID,
-                "AdvancedCircuitAssemblyLine",
-                StatCollector.translateToLocal("NameAdvancedCircuitAssemblyLine")));
-        addItemTooltip(GTNLItemList.AdvancedCircuitAssemblyLine.get(1), AnimatedText.SNL_SCCR);
+        GTNLItemList.CircuitComponentAssemblyLine.set(
+            new CircuitComponentAssemblyLine(
+                CIRCUIT_COMPONENT_ASSEMBLY_LINE.ID,
+                "CircuitComponentAssemblyLine",
+                StatCollector.translateToLocal("NameCircuitComponentAssemblyLine")));
+        addItemTooltip(GTNLItemList.CircuitComponentAssemblyLine.get(1), AnimatedText.SNL_SCCR);
 
         GTNLItemList.NanoPhagocytosisPlant.set(
             new NanoPhagocytosisPlant(
