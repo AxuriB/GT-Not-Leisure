@@ -21,9 +21,12 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.science.gtnl.utils.recipes.GTNL_OverclockCalculator;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMaps;
@@ -49,7 +52,6 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
     public static IntOpenHashSet isOre = new IntOpenHashSet();
     public static boolean isInit = false;
     public ItemStack[] midProduct;
-    public int mMode = 0;
     public boolean mVoidStone = false;
     @Getter
     @Setter
@@ -197,7 +199,7 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
             }
         }
         midProduct = tOres.toArray(new ItemStack[0]);
-        switch (mMode) {
+        switch (machineMode) {
             case 0 -> {
                 doMac(isOre);
                 doWash(isCrushedOre);
@@ -471,23 +473,54 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mMode = aNBT.getInteger("mMode");
+        super.loadNBTData(aNBT);
         mVoidStone = aNBT.getBoolean("mVoidStone");
         currentParallelism = aNBT.getInteger("currentParallelism");
-        super.loadNBTData(aNBT);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mMode", mMode);
+        super.saveNBTData(aNBT);
         aNBT.setBoolean("mVoidStone", mVoidStone);
         aNBT.setInteger("currentParallelism", currentParallelism);
-        super.saveNBTData(aNBT);
     }
 
     @Override
-    public final void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
+    public boolean supportsMachineModeSwitch() {
+        return true;
+    }
+
+    @Override
+    public String getMachineModeName() {
+        List<String> des = getDisplayMode(machineMode);
+        return String.join("\n", des);
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        setMachineModeIcons();
+        builder.widget(createModeSwitchButton(builder));
+    }
+
+    @Override
+    public void setMachineModeIcons() {
+        machineModeIcons.clear();
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_METAL);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_BENDING);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);
+        machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
+    }
+
+    @Override
+    public int nextMachineMode() {
+        return machineMode = (machineMode + 1) % 6;
+    }
+
+    @Override
+    public void onModeChangeByScrewdriver(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             mVoidStone = !mVoidStone;
             GTUtility.sendChatToPlayer(
@@ -495,8 +528,8 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
                 StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", mVoidStone));
             return;
         }
-        mMode = (mMode + 1) % 6;
-        List<String> des = getDisplayMode(mMode);
+        machineMode = (machineMode + 1) % 6;
+        List<String> des = getDisplayMode(machineMode);
         GTUtility.sendChatToPlayer(aPlayer, String.join("", des));
     }
 
@@ -514,7 +547,7 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
         String arrow = " " + aqua + "-> ";
 
         List<String> des = new ArrayList<>();
-        des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1") + " ");
+        des.add(StatCollector.translateToLocalFormatted("GT5U.multiblock.runningMode") + " ");
 
         switch (mode) {
             case 0 -> {
@@ -580,7 +613,7 @@ public class SteamOreProcessorModule extends SteamElevatorModule {
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mMode", mMode);
+        tag.setInteger("mMode", machineMode);
         tag.setBoolean("mVoidStone", mVoidStone);
         tag.setInteger("currentParallelism", currentParallelism);
     }

@@ -189,7 +189,6 @@ public class SuperconductingElectromagnetism extends WirelessEnergyMultiMachineB
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mode", machineMode);
         aNBT.setInteger("mGlassTier", mGlassTier);
     }
 
@@ -197,7 +196,6 @@ public class SuperconductingElectromagnetism extends WirelessEnergyMultiMachineB
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mGlassTier = aNBT.getInteger("mGlassTier");
-        machineMode = aNBT.getInteger("mode");
     }
 
     @Override

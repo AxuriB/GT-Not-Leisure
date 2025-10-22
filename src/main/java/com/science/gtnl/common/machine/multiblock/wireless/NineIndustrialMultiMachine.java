@@ -18,19 +18,14 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -63,8 +58,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<NineIndustrialMultiMachine> {
 
@@ -338,41 +331,6 @@ public class NineIndustrialMultiMachine extends WirelessEnergyMultiMachineBase<N
             .translateToLocal(NineIndustrialMultiMachineManager.getModeLocalization(machineMode));
         mInfo.add(mode);
         return mInfo.toArray(new String[0]);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mInternalMode", machineMode);
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("mInternalMode")) {
-            machineMode = aNBT.getInteger("mInternalMode");
-        }
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currentTip, accessor, config);
-        final NBTTagCompound tag = accessor.getNBTData();
-        if (tag.hasKey("mode")) {
-            currentTip.add(
-                StatCollector.translateToLocal("GT5U.machines.oreprocessor1") + " "
-                    + EnumChatFormatting.WHITE
-                    + StatCollector.translateToLocal("NineIndustrialMultiMachine_Mode_" + tag.getInteger("mode"))
-                    + EnumChatFormatting.RESET);
-        }
     }
 
     @Override

@@ -14,12 +14,8 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -218,21 +214,6 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        if (aNBT.hasKey("Mode")) {
-            machineMode = aNBT.getBoolean("Mode") ? ShapedArcaneCrafting : InfusionCrafting;
-        }
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("mode", machineMode);
-    }
-
-    @Override
     public boolean supportsMachineModeSwitch() {
         return true;
     }
@@ -244,6 +225,7 @@ public class IndustrialArcaneAssembler extends MultiMachineBase<IndustrialArcane
         builder.widget(createModeSwitchButton(builder));
     }
 
+    @Override
     public void setMachineModeIcons() {
         machineModeIcons.clear();
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_LPF_FLUID);

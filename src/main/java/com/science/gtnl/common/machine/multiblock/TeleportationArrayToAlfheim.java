@@ -424,18 +424,6 @@ public class TeleportationArrayToAlfheim extends MultiMachineBase<TeleportationA
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setInteger("mode", machineMode);
-    }
-
-    @Override
-    public void loadNBTData(final NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        machineMode = aNBT.getInteger("mode");
-    }
-
-    @Override
     public String getMachineModeName() {
         return StatCollector.translateToLocal("TeleportationArrayToAlfheim_Mode_" + machineMode);
     }

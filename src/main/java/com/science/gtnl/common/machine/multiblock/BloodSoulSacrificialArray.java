@@ -263,14 +263,12 @@ public class BloodSoulSacrificialArray extends GTMMultiMachineBase<BloodSoulSacr
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mode", machineMode);
         aNBT.setInteger("lp", currentEssence);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        machineMode = aNBT.getInteger("mode");
         currentEssence = aNBT.getInteger("lp");
     }
 
