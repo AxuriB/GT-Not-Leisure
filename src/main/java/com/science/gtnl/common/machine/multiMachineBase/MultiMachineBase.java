@@ -687,8 +687,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         return hatchColors;
     }
 
-    protected boolean depleteInputFromRestrictedHatches(Collection<CustomFluidHatch> aHatches, int aAmount) {
-        for (final CustomFluidHatch tHatch : validMTEList(aHatches)) {
+    public boolean depleteInputFromRestrictedHatches(Collection<CustomFluidHatch> aHatches, int aAmount) {
+        for (CustomFluidHatch tHatch : validMTEList(aHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid == null || tLiquid.amount < aAmount) {
                 continue;
