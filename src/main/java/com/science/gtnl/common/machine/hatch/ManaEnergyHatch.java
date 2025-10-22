@@ -91,7 +91,7 @@ public class ManaEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets {
         long euToConvert = manaToAdd * EU_TO_MANA_RATE;
 
         aBaseMetaTileEntity.increaseStoredEnergyUnits(-euToConvert, true);
-        fill(createFluidStack((int)manaToAdd), true);
+        fill(createFluidStack((int) manaToAdd), true);
     }
 
     private FluidStack createFluidStack(int amount) {
