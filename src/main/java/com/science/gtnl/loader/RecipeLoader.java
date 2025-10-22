@@ -165,7 +165,9 @@ public class RecipeLoader {
         CrackRecipeAdder.reAddBlastRecipe(MaterialPool.HSLASteel, 1000, 480, 1711, true);
         CrackRecipeAdder.reAddBlastRecipe(MaterialPool.Germaniumtungstennitride, 800, 30720, 8200, true);
 
-        registerBuffTargetChamberRecipe();
+        if (MainConfig.enableChamberRecipesBuff) {
+            registerBuffTargetChamberRecipe();
+        }
 
         IRecipePool[] recipePools = new IRecipePool[] { new TCRecipePool(), new ChemicalRecipes(),
             new ElectrolyzerRecipes(), new MixerRecipes(), new multiDehydratorRecipes(), new AssemblerRecipes(),
@@ -211,6 +213,7 @@ public class RecipeLoader {
         }
 
         RecipeUtil.generateRecipesBioLab(BartWorksRecipeMaps.bioLabRecipes, RecipePool.LargeBioLabRecipes, true, 1.1);
+        TCResearches.register();
 
         for (RecipeMap<?> map : new RecipeMap<?>[] { RecipeMaps.transcendentPlasmaMixerRecipes,
             RecipeMaps.fusionRecipes }) {
@@ -240,22 +243,22 @@ public class RecipeLoader {
             }
         }
 
-        TCResearches.register();
+        if (MainConfig.enableAssemblingLineRecipesTimeChange) {
+            for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
+                int duration = recipe.mDuration;
 
-        for (GTRecipe.RecipeAssemblyLine recipe : GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes) {
-            int duration = recipe.mDuration;
+                if (duration >= 200000) {
+                    duration /= 100;
+                } else if (duration >= 40000) {
+                    duration /= 10;
+                } else if (duration >= 10000) {
+                    duration /= 4;
+                } else if (duration >= 4000) {
+                    duration /= 2;
+                }
 
-            if (duration >= 200000) {
-                duration /= 100;
-            } else if (duration >= 40000) {
-                duration /= 10;
-            } else if (duration >= 10000) {
-                duration /= 4;
-            } else if (duration >= 4000) {
-                duration /= 2;
+                recipe.mDuration = Math.max(1, duration);
             }
-
-            recipe.mDuration = Math.max(1, duration);
         }
 
         if (ModList.TwistSpaceTechnology.isModLoaded()) {

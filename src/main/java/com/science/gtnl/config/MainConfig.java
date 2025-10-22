@@ -71,6 +71,8 @@ public class MainConfig {
     public static boolean enableDeleteRecipe = true;
     public static boolean enableShowDelRecipeTitle = true;
     public static boolean enableSomethingRecipe = true;
+    public static boolean enableAssemblingLineRecipesTimeChange = true;
+    public static boolean enableChamberRecipesBuff = true;
 
     // Tickrate
     public static float defaultTickrate = 20.0f;
@@ -300,6 +302,18 @@ public class MainConfig {
         enableSomethingRecipe = config
             .get(CATEGORY_RECIPE, "enableSomethingRecipe", enableSomethingRecipe, "Enable Something Cheap Recipe")
             .getBoolean(enableSomethingRecipe);
+
+        enableAssemblingLineRecipesTimeChange = config
+            .get(
+                CATEGORY_RECIPE,
+                "enableAssemblingLineRecipesTimeChange",
+                enableAssemblingLineRecipesTimeChange,
+                "Significantly reduce the time required for crafting recipes")
+            .getBoolean(enableAssemblingLineRecipesTimeChange);
+
+        enableChamberRecipesBuff = config
+            .get(CATEGORY_RECIPE, "enableChamberRecipesBuff", enableChamberRecipesBuff, "Buff all chamber recipes")
+            .getBoolean(enableChamberRecipesBuff);
 
         enableShowDelRecipeTitle = config
             .get(
