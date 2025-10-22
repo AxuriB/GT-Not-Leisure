@@ -1,6 +1,6 @@
 package com.science.gtnl.mixins.late.Gregtech;
 
-import static com.science.gtnl.Utils.gui.recipe.RocketAssemblerFrontend.*;
+import static com.science.gtnl.utils.gui.recipe.RocketAssemblerFrontend.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.science.gtnl.Utils.gui.recipe.RocketAssemblerFrontend;
 import com.science.gtnl.loader.RecipePool;
+import com.science.gtnl.utils.gui.recipe.RocketAssemblerFrontend;
 
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.api.util.GTRecipe;

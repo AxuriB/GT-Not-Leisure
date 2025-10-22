@@ -1,10 +1,10 @@
 package com.science.gtnl.loader;
 
-import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.common.entity.EntityArrowCustom;
 import com.science.gtnl.common.entity.EntityPlayerLeashKnot;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
 import com.science.gtnl.common.entity.EntitySteamRocket;
+import com.science.gtnl.utils.enums.ModList;
 
 import Forge.NullPointerException;
 import cpw.mods.fml.common.registry.EntityRegistry;

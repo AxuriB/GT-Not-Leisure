@@ -1,6 +1,5 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static gregtech.api.util.GTUtility.*;
 import static gregtech.api.util.GTUtility.areStacksEqual;
 import static gregtech.api.util.GTUtility.isStackInvalid;
 
@@ -23,8 +22,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IInfinitySlot;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.PhantomItemButton;

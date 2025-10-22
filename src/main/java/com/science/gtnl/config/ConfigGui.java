@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 
-import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.utils.enums.ModList;
 
 import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.IConfigElement;

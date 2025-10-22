@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.glodblock.github.util.Util;
-import com.science.gtnl.Utils.RCWirelessTerminalGuiObject;
+import com.science.gtnl.utils.RCWirelessTerminalGuiObject;
 
 import appeng.api.features.IWirelessTermHandler;
 import appeng.api.implementations.tiles.IWirelessAccessPoint;

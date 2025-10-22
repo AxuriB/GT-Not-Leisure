@@ -2,8 +2,8 @@ package com.science.gtnl.common.machine.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_LARGE_GAS_COLLECTOR;
-import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_LARGE_GAS_COLLECTOR_ACTIVE;
+import static com.science.gtnl.utils.enums.BlockIcons.OVERLAY_FRONT_LARGE_GAS_COLLECTOR;
+import static com.science.gtnl.utils.enums.BlockIcons.OVERLAY_FRONT_LARGE_GAS_COLLECTOR_ACTIVE;
 import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -26,10 +26,10 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.science.gtnl.Utils.StructureUtils;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
-import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
+import com.science.gtnl.common.machine.multiMachineBase.MultiMachineBase;
 import com.science.gtnl.loader.RecipePool;
+import com.science.gtnl.utils.StructureUtils;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;

@@ -1,6 +1,6 @@
 package com.science.gtnl.common.block.blocks;
 
-import static com.science.gtnl.Utils.enums.BlockIcons.LASER_BEACON_TOP;
+import static com.science.gtnl.utils.enums.BlockIcons.LASER_BEACON_TOP;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -11,10 +11,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
-import com.science.gtnl.common.block.blocks.Item.ItemBlockLaserBeacon;
+import com.science.gtnl.common.block.blocks.item.ItemBlockLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;

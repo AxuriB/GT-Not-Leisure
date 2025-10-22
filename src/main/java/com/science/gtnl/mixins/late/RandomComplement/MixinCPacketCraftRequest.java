@@ -13,7 +13,7 @@ import com.glodblock.github.inventory.InventoryHandler;
 import com.glodblock.github.inventory.gui.GuiType;
 import com.glodblock.github.network.CPacketCraftRequest;
 import com.glodblock.github.util.BlockPos;
-import com.science.gtnl.Utils.RCAEBaseContainer;
+import com.science.gtnl.utils.RCAEBaseContainer;
 
 @Mixin(value = CPacketCraftRequest.Handler.class, remap = false)
 public class MixinCPacketCraftRequest {

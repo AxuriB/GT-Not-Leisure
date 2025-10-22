@@ -16,10 +16,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
-import com.science.gtnl.common.block.blocks.Item.ItemBlockPlayerDoll;
+import com.science.gtnl.common.block.blocks.item.ItemBlockPlayerDoll;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -163,7 +163,7 @@ public class BlockPlayerDoll extends BlockContainer {
             if (tileEntityPlayerDoll.hasCapeHttp()) {
                 nbt.setString("CapeHttp", tileEntityPlayerDoll.getCapeHttp());
             }
-            nbt.setBoolean("enableElytra", tileEntityPlayerDoll.getEnableElytra());
+            nbt.setBoolean("enableElytra", tileEntityPlayerDoll.isEnableElytra());
 
             if (!nbt.hasNoTags()) {
                 drop.setTagCompound(nbt);

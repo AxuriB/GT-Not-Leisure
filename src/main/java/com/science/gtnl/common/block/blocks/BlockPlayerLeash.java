@@ -7,10 +7,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
-import com.science.gtnl.common.block.blocks.Item.ItemBlockPlayerLeash;
+import com.science.gtnl.common.block.blocks.item.ItemBlockPlayerLeash;
 import com.science.gtnl.common.entity.EntityPlayerLeashKnot;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 

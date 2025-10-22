@@ -3,12 +3,12 @@ package com.reavaritia.common.block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-import com.reavaritia.common.block.ExtremeAnvil.ContainerExtremeAnvil;
-import com.reavaritia.common.block.ExtremeAnvil.ExtremeAnvilGUI;
-import com.reavaritia.common.block.ExtremeAnvil.TileEntityExtremeAnvil;
-import com.reavaritia.common.block.NeutronCollector.ContainerNeutronItem;
-import com.reavaritia.common.block.NeutronCollector.NeutronCollectorGUI;
-import com.reavaritia.common.block.NeutronCollector.TileEntityNeutronCollector;
+import com.reavaritia.common.block.extremeAnvil.ContainerExtremeAnvil;
+import com.reavaritia.common.block.extremeAnvil.ExtremeAnvilGUI;
+import com.reavaritia.common.block.extremeAnvil.TileEntityExtremeAnvil;
+import com.reavaritia.common.block.neutronCollector.ContainerNeutronItem;
+import com.reavaritia.common.block.neutronCollector.NeutronCollectorGUI;
+import com.reavaritia.common.block.neutronCollector.TileEntityNeutronCollector;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 

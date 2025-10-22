@@ -19,9 +19,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 import com.reavaritia.common.SubtitleDisplay;
-import com.science.gtnl.Utils.TeleporterUtils;
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.utils.TeleporterUtils;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

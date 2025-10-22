@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import com.reavaritia.ReAvaCreativeTabs;
 import com.reavaritia.ReAvaItemList;
 import com.reavaritia.common.entity.EntityBlazeFireball;
-import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.utils.enums.ModList;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;

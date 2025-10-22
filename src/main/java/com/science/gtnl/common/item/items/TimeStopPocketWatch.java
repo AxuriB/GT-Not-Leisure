@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 
 import com.reavaritia.common.render.CustomEntityRenderer;
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.TimeStopManager;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

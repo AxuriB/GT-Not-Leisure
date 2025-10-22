@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.dreammaster.scripts.IScriptLoader;
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.common.recipe.GregTech.ScriptAvaritia;
+import com.science.gtnl.common.recipe.gregtech.ScriptAvaritia;
 
 public class ScriptLoader {
 

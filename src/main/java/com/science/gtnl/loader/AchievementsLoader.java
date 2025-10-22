@@ -5,7 +5,7 @@ import net.minecraftforge.common.AchievementPage;
 
 import com.dreammaster.gthandler.CustomItemList;
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 public class AchievementsLoader {
 

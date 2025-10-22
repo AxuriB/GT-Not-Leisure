@@ -16,7 +16,7 @@ import com.lootgames.sudoku.packet.SPSudokuResetNumber;
 import com.lootgames.sudoku.packet.SPSudokuSpawnLevelBeatParticles;
 import com.lootgames.sudoku.sudoku.GameSudoku;
 import com.lootgames.sudoku.sudoku.SudokuOverlayHandler;
-import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.utils.enums.ModList;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;

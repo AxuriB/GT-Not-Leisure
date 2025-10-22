@@ -28,9 +28,9 @@ import com.reavaritia.ReAvaCreativeTabs;
 import com.reavaritia.ReAvaItemList;
 import com.reavaritia.common.SubtitleDisplay;
 import com.reavaritia.common.entity.EntityChronarchClock;
-import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.utils.enums.ModList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

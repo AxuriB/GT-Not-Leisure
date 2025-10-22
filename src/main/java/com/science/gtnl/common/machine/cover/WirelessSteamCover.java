@@ -9,10 +9,10 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.science.gtnl.Utils.enums.SteamTypes;
-import com.science.gtnl.Utils.gui.WirelessSteamCoverGui;
-import com.science.gtnl.Utils.gui.WirelessSteamCoverUIFactory;
-import com.science.gtnl.Utils.steam.SteamWirelessNetworkManager;
+import com.science.gtnl.utils.enums.SteamTypes;
+import com.science.gtnl.utils.gui.WirelessSteamCoverGui;
+import com.science.gtnl.utils.gui.WirelessSteamCoverUIFactory;
+import com.science.gtnl.utils.steam.SteamWirelessNetworkManager;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;

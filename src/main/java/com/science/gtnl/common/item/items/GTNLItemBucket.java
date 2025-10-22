@@ -12,8 +12,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.science.gtnl.Utils.BucketHandler;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.utils.BucketHandler;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 

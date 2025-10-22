@@ -6,7 +6,6 @@ import static gregtech.api.GregTechAPI.*;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.util.GTRecipeConstants.*;
 import static gregtech.api.util.GTStructureUtility.*;
 
 import java.util.ArrayList;
@@ -32,12 +31,12 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.enums.CommonElements;
-import com.science.gtnl.Utils.recipes.GTNL_OverclockCalculator;
-import com.science.gtnl.Utils.recipes.GTNL_ParallelHelper;
-import com.science.gtnl.Utils.recipes.GTNL_ProcessingLogic;
-import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
+import com.science.gtnl.common.machine.multiMachineBase.MultiMachineBase;
+import com.science.gtnl.utils.StructureUtils;
+import com.science.gtnl.utils.enums.CommonElements;
+import com.science.gtnl.utils.recipes.GTNL_OverclockCalculator;
+import com.science.gtnl.utils.recipes.GTNL_ParallelHelper;
+import com.science.gtnl.utils.recipes.GTNL_ProcessingLogic;
 
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.tileentities.tiered.MTERadioHatch;

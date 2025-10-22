@@ -1,6 +1,6 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_DUAL_HATCH;
+import static com.science.gtnl.utils.enums.BlockIcons.OVERLAY_FRONT_DUAL_HATCH;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -21,7 +21,7 @@ import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;

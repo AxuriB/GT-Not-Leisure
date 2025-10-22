@@ -2,7 +2,7 @@ package com.science.gtnl.common.item.items;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
 import static com.science.gtnl.ScienceNotLeisure.network;
-import static com.science.gtnl.Utils.item.ItemUtils.*;
+import static com.science.gtnl.utils.item.ItemUtils.*;
 import static gregtech.api.enums.Mods.VisualProspecting;
 
 import java.util.ArrayList;
@@ -35,12 +35,12 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.science.gtnl.Utils.item.MetaItemStackUtils;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.ItemStaticDataClientOnly;
 import com.science.gtnl.common.packet.ProspectingPacket;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.ItemLoader;
+import com.science.gtnl.utils.item.MetaItemStackUtils;
 import com.sinthoras.visualprospecting.VisualProspecting_API;
 
 import bartworks.system.material.Werkstoff;

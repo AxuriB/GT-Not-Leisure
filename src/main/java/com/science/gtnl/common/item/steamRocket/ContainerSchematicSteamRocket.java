@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import com.dreammaster.gthandler.CustomItemList;
 import com.science.gtnl.common.material.MaterialPool;
-import com.science.gtnl.common.recipe.GTNL.RocketAssemblerRecipes;
+import com.science.gtnl.common.recipe.gtnl.RocketAssemblerRecipes;
 
 import galaxyspace.core.inventory.InventorySchematic;
 import galaxyspace.core.inventory.container.rocket.ContainerSchematic;

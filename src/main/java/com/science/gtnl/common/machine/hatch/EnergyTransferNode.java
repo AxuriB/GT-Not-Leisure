@@ -1,6 +1,6 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.Utils.enums.BlockIcons.*;
+import static com.science.gtnl.utils.enums.BlockIcons.*;
 import static gregtech.api.enums.Dyes.*;
 
 import java.util.List;

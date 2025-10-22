@@ -1,8 +1,8 @@
 package com.science.gtnl.loader;
 
 import static com.science.gtnl.ScienceNotLeisure.RESOURCE_ROOT_ID;
-import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;
 import static com.science.gtnl.common.item.items.SuspiciousStew.*;
+import static com.science.gtnl.utils.text.AnimatedTooltipHandler.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -13,25 +13,15 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.item.ItemDebug;
 import com.science.gtnl.common.item.ItemInfinityCell;
 import com.science.gtnl.common.item.ItemInfinityItem;
 import com.science.gtnl.common.item.ItemRecord;
 import com.science.gtnl.common.item.MetaItemAdder;
-import com.science.gtnl.common.item.items.Bauble.LuckyHorseshoe;
-import com.science.gtnl.common.item.items.Bauble.PhysicsCape;
-import com.science.gtnl.common.item.items.Bauble.RejectionRing;
-import com.science.gtnl.common.item.items.Bauble.RoyalGel;
-import com.science.gtnl.common.item.items.Bauble.SatietyRing;
-import com.science.gtnl.common.item.items.Bauble.SuperReachRing;
 import com.science.gtnl.common.item.items.CircuitIntegratedPlus;
 import com.science.gtnl.common.item.items.ElectricProspectorTool;
 import com.science.gtnl.common.item.items.FakeItemSiren;
-import com.science.gtnl.common.item.items.FuelRod.FuelRod;
-import com.science.gtnl.common.item.items.FuelRod.FuelRodDepleted;
 import com.science.gtnl.common.item.items.GTNLItemBucket;
 import com.science.gtnl.common.item.items.KFCFamily;
 import com.science.gtnl.common.item.items.NetherTeleporter;
@@ -46,6 +36,16 @@ import com.science.gtnl.common.item.items.TimeStopPocketWatch;
 import com.science.gtnl.common.item.items.TwilightSword;
 import com.science.gtnl.common.item.items.VeinMiningPickaxe;
 import com.science.gtnl.common.item.items.WirelessUpgradeChip;
+import com.science.gtnl.common.item.items.bauble.LuckyHorseshoe;
+import com.science.gtnl.common.item.items.bauble.PhysicsCape;
+import com.science.gtnl.common.item.items.bauble.RejectionRing;
+import com.science.gtnl.common.item.items.bauble.RoyalGel;
+import com.science.gtnl.common.item.items.bauble.SatietyRing;
+import com.science.gtnl.common.item.items.bauble.SuperReachRing;
+import com.science.gtnl.common.item.items.fuelRod.FuelRod;
+import com.science.gtnl.common.item.items.fuelRod.FuelRodDepleted;
+import com.science.gtnl.utils.enums.GTNLItemList;
+import com.science.gtnl.utils.text.AnimatedTooltipHandler;
 
 import appeng.api.storage.StorageChannel;
 import cpw.mods.fml.common.registry.GameRegistry;

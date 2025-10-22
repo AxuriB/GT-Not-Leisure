@@ -2,7 +2,7 @@ package com.science.gtnl.common.item.items;
 
 import net.minecraftforge.fluids.Fluid;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;

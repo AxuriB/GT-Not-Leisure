@@ -51,8 +51,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.reavaritia.common.render.CustomEntityRenderer;
-import com.science.gtnl.Utils.ClientUtils;
 import com.science.gtnl.common.item.TimeStopManager;
+import com.science.gtnl.utils.ClientUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 

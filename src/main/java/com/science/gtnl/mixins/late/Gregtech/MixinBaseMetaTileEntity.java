@@ -7,9 +7,9 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import com.science.gtnl.api.ITileEntityTickAcceleration;
 import com.science.gtnl.common.machine.multiblock.MeteorMiner;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.KuangBiaoOneGiantNuclearFusionReactor;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.RocketAssembler;
+import com.science.gtnl.common.machine.multiblock.structuralReconstructionPlan.HighPerformanceComputationArray;
+import com.science.gtnl.common.machine.multiblock.structuralReconstructionPlan.KuangBiaoOneGiantNuclearFusionReactor;
+import com.science.gtnl.common.machine.multiblock.structuralReconstructionPlan.RocketAssembler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

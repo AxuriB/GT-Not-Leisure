@@ -6,10 +6,10 @@ import java.util.List;
 import net.minecraft.tileentity.TileEntity;
 
 import com.github.bsideup.jabel.Desugar;
-import com.science.gtnl.Utils.text.CardboardBoxWailaDataProvider;
-import com.science.gtnl.Utils.text.PlayerDollWailaDataProvider;
 import com.science.gtnl.common.block.blocks.tile.TileEntityCardboardBox;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
+import com.science.gtnl.utils.text.CardboardBoxWailaDataProvider;
+import com.science.gtnl.utils.text.PlayerDollWailaDataProvider;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.Mods;

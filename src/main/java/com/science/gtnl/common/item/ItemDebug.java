@@ -10,8 +10,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.SimpleItem;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.utils.SimpleItem;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import fox.spiteful.avaritia.tile.TileEntityDireCrafting;

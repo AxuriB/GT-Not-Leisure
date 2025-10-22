@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.mojang.authlib.GameProfile;
-import com.science.gtnl.Utils.PlayerHealData;
+import com.science.gtnl.utils.PlayerHealData;
 
 @Mixin(EntityPlayerMP.class)
 public abstract class MixinEntityPlayerMP extends EntityPlayer {

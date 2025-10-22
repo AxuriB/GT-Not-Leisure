@@ -1,6 +1,6 @@
 package com.science.gtnl.common.render.tile;
 
-import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_INDICATOR;
+import static com.science.gtnl.utils.enums.BlockIcons.OVERLAY_FRONT_INDICATOR;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -9,8 +9,8 @@ import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
-import com.science.gtnl.Utils.enums.HPCAModifier;
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.HighPerformanceComputationArray;
+import com.science.gtnl.common.machine.multiblock.structuralReconstructionPlan.HighPerformanceComputationArray;
+import com.science.gtnl.utils.enums.HPCAModifier;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

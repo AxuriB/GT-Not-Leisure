@@ -16,7 +16,7 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import ggfab.GGItemList;
 import gregtech.api.enums.ItemList;

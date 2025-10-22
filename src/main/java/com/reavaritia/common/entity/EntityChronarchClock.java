@@ -7,8 +7,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.api.ITileEntityTickAcceleration;
+import com.science.gtnl.utils.enums.ModList;
 
 public class EntityChronarchClock extends Entity {
 

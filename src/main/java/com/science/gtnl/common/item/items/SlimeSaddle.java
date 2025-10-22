@@ -7,9 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.entity.EntitySaddleSlime;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 public class SlimeSaddle extends Item {
 

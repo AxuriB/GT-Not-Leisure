@@ -3,7 +3,7 @@ package com.science.gtnl.common.block.blocks.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-import com.science.gtnl.Utils.CardboardBoxUtils;
+import com.science.gtnl.utils.CardboardBoxUtils;
 
 public class TileEntityCardboardBox extends TileEntity {
 

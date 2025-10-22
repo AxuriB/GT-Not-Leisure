@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.science.gtnl.Utils.recipes.EyeOfHarmonyRecipeFactory;
-import com.science.gtnl.common.recipe.GregTech.EyeOfHarmonyRecipes;
+import com.science.gtnl.common.recipe.gregtech.EyeOfHarmonyRecipes;
+import com.science.gtnl.utils.recipes.EyeOfHarmonyRecipeFactory;
 
 import tectech.recipe.EyeOfHarmonyRecipe;
 import tectech.recipe.EyeOfHarmonyRecipeStorage;

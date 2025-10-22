@@ -1,6 +1,6 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.Utils.enums.BlockIcons.OVERLAY_FRONT_FULLAUTOMAINTENANCE;
+import static com.science.gtnl.utils.enums.BlockIcons.OVERLAY_FRONT_FULLAUTOMAINTENANCE;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,8 +14,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
-import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.api.IConfigurationMaintenance;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.gui.modularui.GTUITextures;

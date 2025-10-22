@@ -1,12 +1,12 @@
 package com.science.gtnl.client.nei;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.enums.ModList;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
-import com.science.gtnl.Utils.gui.portableWorkbench.GuiPortableFurnace;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.loader.RecipePool;
+import com.science.gtnl.utils.enums.GTNLItemList;
+import com.science.gtnl.utils.enums.ModList;
+import com.science.gtnl.utils.gui.portableWorkbench.GuiPortableAdvancedWorkbench;
+import com.science.gtnl.utils.gui.portableWorkbench.GuiPortableBasicWorkbench;
+import com.science.gtnl.utils.gui.portableWorkbench.GuiPortableFurnace;
 
 import bartworks.system.material.Werkstoff;
 import codechicken.nei.api.API;

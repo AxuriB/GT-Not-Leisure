@@ -29,10 +29,10 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
 import com.reavaritia.common.playSound;
-import com.science.gtnl.Utils.Utils;
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.common.entity.EntityArrowCustom;
+import com.science.gtnl.utils.Utils;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;

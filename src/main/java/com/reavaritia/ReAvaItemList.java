@@ -1,6 +1,6 @@
 package com.reavaritia;
 
-import static com.science.gtnl.Utils.enums.GTNLItemList.TestMetaBlock01_0;
+import static com.science.gtnl.utils.enums.GTNLItemList.TestMetaBlock01_0;
 import static gregtech.api.enums.GTValues.NI;
 
 import java.util.Locale;
@@ -9,8 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.client.GTNLCreativeTabs;
+import com.science.gtnl.utils.Utils;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IItemContainer;

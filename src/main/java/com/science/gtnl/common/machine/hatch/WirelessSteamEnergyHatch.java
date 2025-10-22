@@ -1,7 +1,7 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.addSteamToGlobalSteamMap;
-import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.getUserSteam;
+import static com.science.gtnl.utils.steam.SteamWirelessNetworkManager.addSteamToGlobalSteamMap;
+import static com.science.gtnl.utils.steam.SteamWirelessNetworkManager.getUserSteam;
 import static gregtech.common.misc.WirelessNetworkManager.*;
 
 import java.math.BigInteger;
@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;

@@ -1,7 +1,7 @@
 package com.science.gtnl.common.item.items;
 
 import static com.science.gtnl.ScienceNotLeisure.*;
-import static com.science.gtnl.Utils.item.ItemUtils.*;
+import static com.science.gtnl.utils.item.ItemUtils.*;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -39,10 +39,10 @@ import com.github.bsideup.jabel.Desugar;
 import com.reavaritia.common.SubtitleDisplay;
 import com.reavaritia.common.item.ItemStackWrapper;
 import com.reavaritia.common.item.ToolHelper;
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.client.GTNLCreativeTabs;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.ItemLoader;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

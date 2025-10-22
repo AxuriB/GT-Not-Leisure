@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.gtnhlib.util.ServerThreadUtil;
-import com.science.gtnl.Utils.MEHandler;
+import com.science.gtnl.utils.MEHandler;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.SecurityPermissions;

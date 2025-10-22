@@ -5,10 +5,10 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.reavaritia.common.ItemLoader;
 import com.reavaritia.common.SubscribeEventClientUtils;
-import com.reavaritia.common.block.ExtremeAnvil.EntityExtremeAnvil;
-import com.reavaritia.common.block.ExtremeAnvil.RenderExtremeAnvil;
-import com.reavaritia.common.block.ExtremeAnvil.RenderFallingBlockExtremeAnvil;
-import com.reavaritia.common.block.ExtremeAnvil.TileEntityExtremeAnvil;
+import com.reavaritia.common.block.extremeAnvil.EntityExtremeAnvil;
+import com.reavaritia.common.block.extremeAnvil.RenderExtremeAnvil;
+import com.reavaritia.common.block.extremeAnvil.RenderFallingBlockExtremeAnvil;
+import com.reavaritia.common.block.extremeAnvil.TileEntityExtremeAnvil;
 import com.reavaritia.common.entity.EntityChronarchClock;
 import com.reavaritia.common.render.RenderChronarchClock;
 

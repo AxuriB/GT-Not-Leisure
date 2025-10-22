@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.science.gtnl.Utils.RCAEBaseContainer;
+import com.science.gtnl.utils.RCAEBaseContainer;
 
 import appeng.container.implementations.ContainerCraftConfirm;
 

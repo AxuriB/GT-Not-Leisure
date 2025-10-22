@@ -10,9 +10,9 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.utils.enums.ModList;
 
 public class CommandReloadConfig extends CommandBase {
 

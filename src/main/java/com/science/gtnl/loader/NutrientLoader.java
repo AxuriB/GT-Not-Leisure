@@ -1,6 +1,6 @@
 package com.science.gtnl.loader;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import ca.wescook.nutrition.nutrients.Nutrient;
 import ca.wescook.nutrition.nutrients.NutrientList;

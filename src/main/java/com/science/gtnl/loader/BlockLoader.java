@@ -1,6 +1,6 @@
 package com.science.gtnl.loader;
 
-import static com.science.gtnl.Utils.text.AnimatedTooltipHandler.*;
+import static com.science.gtnl.utils.text.AnimatedTooltipHandler.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -10,20 +10,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.text.AnimatedText;
-import com.science.gtnl.Utils.text.AnimatedTooltipHandler;
 import com.science.gtnl.client.GTNLCreativeTabs;
-import com.science.gtnl.common.block.Casings.Base.ItemBlockBase;
-import com.science.gtnl.common.block.Casings.Base.MetaBlockBase;
-import com.science.gtnl.common.block.Casings.Casing.MetaCasing;
-import com.science.gtnl.common.block.Casings.Casing.MetaItemBlockCasing;
-import com.science.gtnl.common.block.Casings.Column.ItemBlockColumn;
-import com.science.gtnl.common.block.Casings.Column.MetaBlockColumn;
-import com.science.gtnl.common.block.Casings.Glass.ItemBlockGlass;
-import com.science.gtnl.common.block.Casings.Glass.MetaBlockGlass;
-import com.science.gtnl.common.block.Casings.Glow.ItemBlockGlow;
-import com.science.gtnl.common.block.Casings.Glow.MetaBlockGlow;
 import com.science.gtnl.common.block.blocks.BlockArtificialStarRender;
 import com.science.gtnl.common.block.blocks.BlockCardboardBox;
 import com.science.gtnl.common.block.blocks.BlockEternalGregTechWorkshopRender;
@@ -42,7 +29,20 @@ import com.science.gtnl.common.block.blocks.tile.TileEntityLaserBeacon;
 import com.science.gtnl.common.block.blocks.tile.TileEntityNanoPhagocytosisPlant;
 import com.science.gtnl.common.block.blocks.tile.TileEntityPlayerDoll;
 import com.science.gtnl.common.block.blocks.tile.TileEntityWaterCandle;
+import com.science.gtnl.common.block.casings.base.ItemBlockBase;
+import com.science.gtnl.common.block.casings.base.MetaBlockBase;
+import com.science.gtnl.common.block.casings.casing.MetaCasing;
+import com.science.gtnl.common.block.casings.casing.MetaItemBlockCasing;
+import com.science.gtnl.common.block.casings.column.ItemBlockColumn;
+import com.science.gtnl.common.block.casings.column.MetaBlockColumn;
+import com.science.gtnl.common.block.casings.glass.ItemBlockGlass;
+import com.science.gtnl.common.block.casings.glass.MetaBlockGlass;
+import com.science.gtnl.common.block.casings.glow.ItemBlockGlow;
+import com.science.gtnl.common.block.casings.glow.MetaBlockGlow;
 import com.science.gtnl.common.item.items.SaplingBrickuoia;
+import com.science.gtnl.utils.enums.GTNLItemList;
+import com.science.gtnl.utils.text.AnimatedText;
+import com.science.gtnl.utils.text.AnimatedTooltipHandler;
 
 import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;

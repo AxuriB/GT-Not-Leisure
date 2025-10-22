@@ -28,9 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.science.gtnl.Utils.StructureUtils;
-import com.science.gtnl.Utils.Utils;
-import com.science.gtnl.common.machine.multiMachineClasses.MultiMachineBase;
+import com.science.gtnl.common.machine.multiMachineBase.MultiMachineBase;
+import com.science.gtnl.utils.StructureUtils;
+import com.science.gtnl.utils.Utils;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;

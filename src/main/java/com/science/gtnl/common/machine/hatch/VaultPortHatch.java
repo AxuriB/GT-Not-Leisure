@@ -1,6 +1,6 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.Utils.enums.BlockIcons.*;
+import static com.science.gtnl.utils.enums.BlockIcons.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,8 +10,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.science.gtnl.Utils.enums.GTNLItemList;
 import com.science.gtnl.api.IItemVault;
+import com.science.gtnl.utils.enums.GTNLItemList;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;

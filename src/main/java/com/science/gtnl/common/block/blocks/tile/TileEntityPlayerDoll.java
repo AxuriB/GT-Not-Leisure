@@ -8,17 +8,23 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class TileEntityPlayerDoll extends TileEntity {
 
     @Getter
     public String skullOwner;
+    @Setter
     @Getter
     public String ownerUUID;
+    @Setter
     @Getter
     public String skinHttp;
+    @Setter
     @Getter
     public String capeHttp;
+    @Setter
+    @Getter
     public boolean enableElytra;
 
     @Override
@@ -98,35 +104,12 @@ public class TileEntityPlayerDoll extends TileEntity {
         return ownerUUID != null && !ownerUUID.isEmpty();
     }
 
-    public void setOwnerUUID(String uuid) {
-        this.ownerUUID = uuid;
-        this.markDirty();
-    }
-
     public boolean hasSkinHttp() {
         return skinHttp != null && !skinHttp.isEmpty();
-    }
-
-    public void setSkinHttp(String skinHttp) {
-        this.skinHttp = skinHttp;
-        this.markDirty();
     }
 
     public boolean hasCapeHttp() {
         return capeHttp != null && !capeHttp.isEmpty();
     }
 
-    public void setCapeHttp(String capeHttp) {
-        this.capeHttp = capeHttp;
-        this.markDirty();
-    }
-
-    public boolean getEnableElytra() {
-        return enableElytra;
-    }
-
-    public void setEnableElytra(boolean enableElytra) {
-        this.enableElytra = enableElytra;
-        this.markDirty();
-    }
 }

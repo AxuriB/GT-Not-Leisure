@@ -16,8 +16,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import com.science.gtnl.Utils.item.MetaItemStackUtils;
 import com.science.gtnl.loader.ItemLoader;
+import com.science.gtnl.utils.item.MetaItemStackUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

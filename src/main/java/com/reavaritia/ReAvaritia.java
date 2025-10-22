@@ -10,12 +10,12 @@ import org.apache.logging.log4j.Logger;
 import com.reavaritia.common.ItemLoader;
 import com.reavaritia.common.SubscribeEventUtils;
 import com.reavaritia.common.block.BlockRegister;
-import com.reavaritia.common.block.ExtremeAnvil.EntityExtremeAnvil;
-import com.reavaritia.common.block.ExtremeAnvil.ExtremeAnvilPacket;
 import com.reavaritia.common.block.GuiHandler;
+import com.reavaritia.common.block.extremeAnvil.EntityExtremeAnvil;
+import com.reavaritia.common.block.extremeAnvil.ExtremeAnvilPacket;
 import com.reavaritia.common.item.BlazeSword;
 import com.reavaritia.common.item.ChronarchsClock;
-import com.science.gtnl.Utils.enums.ModList;
+import com.science.gtnl.utils.enums.ModList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;

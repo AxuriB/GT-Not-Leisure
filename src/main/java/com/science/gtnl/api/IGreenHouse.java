@@ -22,11 +22,11 @@ import com.gtnewhorizons.modularui.common.widget.Column;
 import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseBucket;
-import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseDynamicInventory;
-import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseMode;
-import com.science.gtnl.Utils.machine.GreenHouseManager.GreenHouseModes;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.utils.machine.greenHouseManager.GreenHouseBucket;
+import com.science.gtnl.utils.machine.greenHouseManager.GreenHouseDynamicInventory;
+import com.science.gtnl.utils.machine.greenHouseManager.GreenHouseMode;
+import com.science.gtnl.utils.machine.greenHouseManager.GreenHouseModes;
 
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

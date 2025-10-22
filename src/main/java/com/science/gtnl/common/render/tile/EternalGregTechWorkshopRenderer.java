@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
 import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
 import com.science.gtnl.common.block.blocks.tile.TileEntityEternalGregTechWorkshop;
-import com.science.gtnl.common.machine.multiblock.ModuleMachine.EternalGregTechWorkshop.EternalGregTechWorkshop;
+import com.science.gtnl.common.machine.multiblock.module.eternalGregTechWorkshop.EternalGregTechWorkshop;
 import com.science.gtnl.config.MainConfig;
 
 import goodgenerator.loader.Loaders;

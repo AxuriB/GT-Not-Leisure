@@ -1,7 +1,5 @@
 package com.science.gtnl.common.render.tile;
 
-import static com.science.gtnl.ScienceNotLeisure.*;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
@@ -10,7 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import com.science.gtnl.common.machine.multiblock.StructuralReconstructionPlan.RocketAssembler;
+import com.science.gtnl.common.machine.multiblock.structuralReconstructionPlan.RocketAssembler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

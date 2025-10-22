@@ -6,10 +6,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.science.gtnl.Utils.recipes.RecipeUtil;
-import com.science.gtnl.Utils.recipes.RemoveRecipes;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.RecipePool;
+import com.science.gtnl.utils.recipes.RecipeUtil;
+import com.science.gtnl.utils.recipes.RemoveRecipes;
 
 import bartworks.MainMod;
 import gregtech.api.recipe.RecipeMaps;

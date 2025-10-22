@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.enums.ModList;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.utils.enums.ModList;
 
 import io.github.tox1cozz.mixinbooterlegacy.ILateMixinLoader;
 import io.github.tox1cozz.mixinbooterlegacy.LateMixin;

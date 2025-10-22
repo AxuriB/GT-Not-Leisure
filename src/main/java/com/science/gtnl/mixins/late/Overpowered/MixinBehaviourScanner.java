@@ -15,9 +15,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.science.gtnl.Utils.enums.ModList;
-import com.science.gtnl.Utils.recipes.ChanceBonusManager;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.utils.enums.ModList;
+import com.science.gtnl.utils.recipes.ChanceBonusManager;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.items.MetaBaseItem;

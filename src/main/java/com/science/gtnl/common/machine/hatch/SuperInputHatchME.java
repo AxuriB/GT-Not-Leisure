@@ -41,8 +41,8 @@ import com.gtnewhorizons.modularui.common.widget.Scrollable;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
-import com.science.gtnl.Utils.enums.GTNLItemList;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.utils.enums.GTNLItemList;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;

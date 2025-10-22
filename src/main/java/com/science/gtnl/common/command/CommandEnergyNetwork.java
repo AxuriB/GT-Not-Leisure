@@ -1,6 +1,6 @@
 package com.science.gtnl.common.command;
 
-import static com.science.gtnl.Utils.Utils.hasPermission;
+import static com.science.gtnl.utils.Utils.hasPermission;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static gregtech.common.misc.WirelessNetworkManager.setUserEU;

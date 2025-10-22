@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.science.gtnl.Utils.Utils;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.utils.Utils;
 
 @Mixin(EntityAICreeperSwell.class)
 public abstract class MixinEntityAICreeperSwell {

@@ -1,6 +1,6 @@
 package com.science.gtnl.common.machine.hatch;
 
-import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.*;
+import static com.science.gtnl.utils.steam.SteamWirelessNetworkManager.*;
 import static gregtech.common.misc.WirelessNetworkManager.*;
 
 import java.math.BigInteger;
@@ -26,10 +26,10 @@ import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.science.gtnl.Utils.enums.SteamTypes;
-import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.mixins.late.Gregtech.AccessorMTEHatch;
+import com.science.gtnl.utils.enums.SteamTypes;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;

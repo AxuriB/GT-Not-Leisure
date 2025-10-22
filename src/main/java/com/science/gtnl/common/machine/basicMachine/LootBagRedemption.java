@@ -10,9 +10,9 @@ import net.minecraft.util.StatCollector;
 import com.dreammaster.gthandler.CustomItemList;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.science.gtnl.Utils.enums.BlockIcons;
-import com.science.gtnl.Utils.item.ItemUtils;
 import com.science.gtnl.mixins.late.EnhancedLootBags.AccessorItemLootBag;
+import com.science.gtnl.utils.enums.BlockIcons;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import eu.usrv.enhancedlootbags.core.LootGroupsHandler;
 import eu.usrv.enhancedlootbags.core.items.ItemLootBag;

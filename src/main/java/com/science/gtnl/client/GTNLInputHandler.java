@@ -19,8 +19,8 @@ import com.cleanroommc.modularui.api.event.MouseInputEvent;
 import com.glodblock.github.client.gui.GuiItemMonitor;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.ClientUtils;
 import com.science.gtnl.common.packet.KeyBindingHandler;
+import com.science.gtnl.utils.ClientUtils;
 
 import appeng.client.gui.implementations.GuiMEMonitorable;
 import appeng.container.implementations.ContainerCraftAmount;

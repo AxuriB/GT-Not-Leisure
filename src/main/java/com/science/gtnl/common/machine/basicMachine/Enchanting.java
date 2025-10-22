@@ -5,8 +5,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.science.gtnl.Utils.enums.BlockIcons;
-import com.science.gtnl.Utils.item.ItemUtils;
+import com.science.gtnl.utils.enums.BlockIcons;
+import com.science.gtnl.utils.item.ItemUtils;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;

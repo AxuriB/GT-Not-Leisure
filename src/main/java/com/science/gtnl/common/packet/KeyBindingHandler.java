@@ -21,9 +21,9 @@ import com.glodblock.github.inventory.item.IWirelessTerminal;
 import com.glodblock.github.util.BlockPos;
 import com.glodblock.github.util.Util;
 import com.gtnewhorizon.gtnhlib.util.ServerThreadUtil;
-import com.science.gtnl.Utils.MEHandler;
-import com.science.gtnl.Utils.RCAEBaseContainer;
-import com.science.gtnl.Utils.Utils;
+import com.science.gtnl.utils.MEHandler;
+import com.science.gtnl.utils.RCAEBaseContainer;
+import com.science.gtnl.utils.Utils;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;

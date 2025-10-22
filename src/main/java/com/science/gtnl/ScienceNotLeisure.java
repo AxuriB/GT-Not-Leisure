@@ -6,8 +6,6 @@ import static com.science.gtnl.ScienceNotLeisure.MODNAME;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.science.gtnl.Utils.enums.ModList;
-import com.science.gtnl.Utils.item.MissingMappingsHandler;
 import com.science.gtnl.common.command.CommandEnergyNetwork;
 import com.science.gtnl.common.command.CommandPlaySound;
 import com.science.gtnl.common.command.CommandReloadConfig;
@@ -16,6 +14,8 @@ import com.science.gtnl.common.command.CommandSudo;
 import com.science.gtnl.common.command.CommandTickrate;
 import com.science.gtnl.common.command.CommandTitle;
 import com.science.gtnl.loader.MaterialLoader;
+import com.science.gtnl.utils.enums.ModList;
+import com.science.gtnl.utils.item.MissingMappingsHandler;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;

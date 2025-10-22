@@ -3,8 +3,8 @@ package com.science.gtnl.common.packet;
 import net.minecraft.inventory.ContainerPlayer;
 
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.RCAEBaseContainer;
 import com.science.gtnl.client.GTNLInputHandler;
+import com.science.gtnl.utils.RCAEBaseContainer;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

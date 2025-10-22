@@ -9,8 +9,8 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.base.Objects;
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.Utils.detrav.DetravMapTexture;
-import com.science.gtnl.Utils.detrav.DetravScannerGUI;
+import com.science.gtnl.utils.detrav.DetravMapTexture;
+import com.science.gtnl.utils.detrav.DetravScannerGUI;
 
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

@@ -3,8 +3,8 @@ package com.science.gtnl.common.effect.effects;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import com.science.gtnl.Utils.ExtraSpawnerAnimals;
 import com.science.gtnl.common.effect.EffectBase;
+import com.science.gtnl.utils.ExtraSpawnerAnimals;
 
 public class BattleEffect extends EffectBase {
 

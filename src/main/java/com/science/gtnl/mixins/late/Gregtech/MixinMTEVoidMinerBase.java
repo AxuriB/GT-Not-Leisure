@@ -22,9 +22,9 @@ import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.science.gtnl.Utils.enums.ModList;
-import com.science.gtnl.Utils.machine.VMTweakHelper;
 import com.science.gtnl.config.MainConfig;
+import com.science.gtnl.utils.enums.ModList;
+import com.science.gtnl.utils.machine.VMTweakHelper;
 
 import bwcrossmod.galacticgreg.MTEVoidMinerBase;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;

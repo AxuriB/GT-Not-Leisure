@@ -1,7 +1,7 @@
 package com.science.gtnl.common.command;
 
-import static com.science.gtnl.Utils.Utils.hasPermission;
-import static com.science.gtnl.Utils.steam.SteamWirelessNetworkManager.*;
+import static com.science.gtnl.utils.Utils.hasPermission;
+import static com.science.gtnl.utils.steam.SteamWirelessNetworkManager.*;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

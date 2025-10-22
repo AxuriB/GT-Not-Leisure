@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.reavaritia.ReAvaItemList;
-import com.reavaritia.common.block.ExtremeAnvil.BlockExtremeAnvil;
-import com.reavaritia.common.block.NeutronCollector.ItemBlockNeutronCollector;
-import com.reavaritia.common.block.NeutronCollector.NeutronCollector;
-import com.reavaritia.common.block.NeutronCollector.TileEntityNeutronCollector;
+import com.reavaritia.common.block.extremeAnvil.BlockExtremeAnvil;
+import com.reavaritia.common.block.neutronCollector.ItemBlockNeutronCollector;
+import com.reavaritia.common.block.neutronCollector.NeutronCollector;
+import com.reavaritia.common.block.neutronCollector.TileEntityNeutronCollector;
 import com.science.gtnl.config.MainConfig;
 
 import cpw.mods.fml.common.registry.GameRegistry;
