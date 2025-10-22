@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +19,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
@@ -40,24 +38,25 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.WorldEvent;
 
-import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import com.science.gtnl.api.TickrateAPI;
 import com.science.gtnl.asm.GTNLEarlyCoreMod;
 import com.science.gtnl.common.command.CommandTickrate;
 import com.science.gtnl.common.item.TimeStopManager;
 import com.science.gtnl.common.machine.hatch.ExplosionDynamoHatch;
-import com.science.gtnl.common.packet.ConfigSyncPacket;
 import com.science.gtnl.common.packet.SoundPacket;
+import com.science.gtnl.common.packet.SyncConfigPacket;
+import com.science.gtnl.common.packet.SyncRecipePacket;
 import com.science.gtnl.common.packet.TitlePacket;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.loader.AchievementsLoader;
+import com.science.gtnl.loader.RecipeLoader;
+import com.science.gtnl.loader.RecipePool;
 import com.science.gtnl.mixins.early.Minecraft.AccessorFoodStats;
 import com.science.gtnl.utils.enums.GTNLItemList;
 import com.science.gtnl.utils.enums.ModList;
 import com.science.gtnl.utils.gui.recipe.ElectrocellGeneratorFrontend;
 import com.science.gtnl.utils.gui.recipe.RocketAssemblerFrontend;
-import com.science.gtnl.utils.machine.CircuitMaterialHelper;
-import com.science.gtnl.utils.text.AnimatedTooltipHandler;
+import com.science.gtnl.utils.recipes.CircuitNanitesRecipeData;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -85,14 +84,16 @@ public class SubscribeEventUtils {
     public static final DamageSource CRUSHING_DAMAGE = new DamageSource("damage.gtnl.crushing")
         .setDamageBypassesArmor();
 
+    public static boolean circuitNanitesDataLoad = false;
+
     // Player
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.player instanceof EntityPlayerMP player) {
             player.triggerAchievement(AchievementsLoader.welcome);
-            // construct message from current server config
-            ConfigSyncPacket msg = new ConfigSyncPacket();// or pass static values
-            network.sendTo(msg, player);
+            network.sendTo(new SyncConfigPacket(), player);
+            network.sendTo(new SoundPacket(true), player);
+            network.sendTo(new SyncRecipePacket(player.worldObj.getSeed()), player);
 
             SchematicRegistry
                 .addUnlockedPage(player, SchematicRegistry.getMatchingRecipeForID(MainConfig.idSchematicRocketSteam));
@@ -162,8 +163,6 @@ public class SubscribeEventUtils {
                     new ChatComponentTranslation("Welcome_GTNL_Debug")
                         .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             }
-
-            network.sendTo(new SoundPacket(true), player);
 
             float tickrate = MainConfig.defaultTickrate;
             try {
@@ -243,8 +242,8 @@ public class SubscribeEventUtils {
 
     @SubscribeEvent
     public void chat(ClientChatReceivedEvent event) {
-        if (event.message instanceof ChatComponentTranslation t) {
-            if (t.getKey()
+        if (event.message instanceof ChatComponentTranslation chat) {
+            if (chat.getKey()
                 .equals("GTNLEarlyCoreMod.show.clientside")) {
                 event.message = new ChatComponentText("");
                 event.message.appendSibling(CommandTickrate.c("Your Current Client Tickrate: ", 'f', 'l'));
@@ -286,66 +285,29 @@ public class SubscribeEventUtils {
         }
     }
 
-    // Item
-    public static final Map<ItemStack, Supplier<String>> tooltipCache = new ItemStackMap<>(false);
-    public static boolean circuitMaterialLoad = false;
-
     // World
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
         World world = event.world;
-        if (!circuitMaterialLoad) {
-            CircuitMaterialHelper.init();
-            CircuitMaterialHelper.worldSeed = world.getSeed();
-            CircuitMaterialHelper
-                .applyRandomizedParams(CircuitMaterialHelper.materialParameterList, CircuitMaterialHelper.worldSeed);
-
-            for (CircuitMaterialHelper.ItemStackData data : CircuitMaterialHelper.materialParameterList) {
-                Supplier<String> tooltip1 = AnimatedTooltipHandler.translatedText("test00", data.euModifier);
-                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip1);
-                tooltipCache.put(data.stack, tooltip1);
-                Supplier<String> tooltip2 = AnimatedTooltipHandler.translatedText("test01", data.speedBoost);
-                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip2);
-                tooltipCache.put(data.stack, tooltip2);
-                Supplier<String> tooltip3 = AnimatedTooltipHandler.translatedText("test02", data.successChance);
-                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip3);
-                tooltipCache.put(data.stack, tooltip3);
-                Supplier<String> tooltip4 = AnimatedTooltipHandler.translatedText("test03", data.failedChance);
-                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip4);
-                tooltipCache.put(data.stack, tooltip4);
-                Supplier<String> tooltip5 = AnimatedTooltipHandler.translatedText("test04", data.parallelCount);
-                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip5);
-                tooltipCache.put(data.stack, tooltip5);
-                Supplier<String> tooltip6 = AnimatedTooltipHandler.translatedText("test05", data.outputMultiplier);
-                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip6);
-                tooltipCache.put(data.stack, tooltip6);
-                Supplier<String> tooltip7 = AnimatedTooltipHandler.translatedText("test06", data.maxTierSkips);
-                AnimatedTooltipHandler.addItemTooltipShift(data.stack, tooltip7);
-                tooltipCache.put(data.stack, tooltip7);
-            }
-            circuitMaterialLoad = true;
+        if (world.isRemote) return;
+        if (!circuitNanitesDataLoad) {
+            RecipeLoader.loadCircuitNanitesData(world.getSeed());
+            circuitNanitesDataLoad = true;
         }
 
-        if (!world.isRemote) {
-            GameRules rules = world.getGameRules();
-            if (!rules.hasRule("doWeatherCycle")) {
-                rules.setOrCreateGameRule("doWeatherCycle", "true");
-            }
-            if (event.world.provider.dimensionId == 0) {
-                loadInstance(event.world);
-            }
+        GameRules rules = world.getGameRules();
+        if (!rules.hasRule("doWeatherCycle")) {
+            rules.setOrCreateGameRule("doWeatherCycle", "true");
+        }
+        if (event.world.provider.dimensionId == 0) {
+            loadInstance(event.world);
         }
     }
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
-        for (Map.Entry<ItemStack, Supplier<String>> entry : tooltipCache.entrySet()) {
-            AnimatedTooltipHandler.clearItemTooltipsShift(entry.getKey());
-        }
-        tooltipCache.clear();
-        CircuitMaterialHelper.materialParameterList.clear();
-        circuitMaterialLoad = false;
         offlineMode = false;
+        circuitNanitesDataLoad = false;
         BLACKLISTED_UUIDS.clear();
         BLACKLISTED_NAMES.clear();
         BLACKLISTED_SKIN_URLS.clear();
@@ -353,6 +315,9 @@ public class SubscribeEventUtils {
         UUID_CACHE.clear();
         ElectrocellGeneratorFrontend.initializedRecipes.clear();
         RocketAssemblerFrontend.initializedRecipes.clear();
+        CircuitNanitesRecipeData.recipeDataMap.clear();
+        RecipePool.CircuitNanitesDataRecipes.getBackend()
+            .clearRecipes();
     }
 
     @SubscribeEvent

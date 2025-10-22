@@ -11,7 +11,7 @@ public class NetWorkHandler {
         network.registerMessage(SoundPacket.Handler.class, SoundPacket.class, i++, Side.CLIENT);
         network.registerMessage(TitlePacket.Handler.class, TitlePacket.class, i++, Side.CLIENT);
         network.registerMessage(TickratePacket.Handler.class, TickratePacket.class, i++, Side.CLIENT);
-        network.registerMessage(ConfigSyncPacket.Handler.class, ConfigSyncPacket.class, i++, Side.CLIENT);
+        network.registerMessage(SyncConfigPacket.Handler.class, SyncConfigPacket.class, i++, Side.CLIENT);
         network.registerMessage(ProspectingPacket.Handler.class, ProspectingPacket.class, i++, Side.CLIENT);
         network.registerMessage(TileEntityNBTPacket.Handler.class, TileEntityNBTPacket.class, i++, Side.CLIENT);
         network.registerMessage(SyncHPCAVariablesPacket.Handler.class, SyncHPCAVariablesPacket.class, i++, Side.CLIENT);
@@ -38,5 +38,6 @@ public class NetWorkHandler {
             i++,
             Side.CLIENT);
         network.registerMessage(StatusMessage.class, StatusMessage.class, i++, Side.CLIENT);
+        network.registerMessage(SyncRecipePacket.Handler.class, SyncRecipePacket.class, i++, Side.CLIENT);
     }
 }

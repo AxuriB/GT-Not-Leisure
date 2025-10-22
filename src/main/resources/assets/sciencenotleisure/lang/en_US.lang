@@ -2713,6 +2713,7 @@ Tooltip_ShallowChemicalCoupling_Casing_00=Any Chemical Protection Machine Block
 
 NameAdvancedCircuitAssemblyLine=Advanced Circuit Assembly Line
 AdvancedCircuitAssemblyLineRecipes=Advanced Circuit Assembly Line
+gtnl.recipe.CircuitNanitesDataRecipes=Circuit Component Assembly Line Nanites Coefficient
 gtnl.recipe.AdvancedCircuitAssemblyLineRecipes=Advanced Circuit Assembly Line
 Tooltip_AdvancedCircuitAssemblyLine_00=§c§oOutperforming BartWork's Circuit Assemblers
 Tooltip_AdvancedCircuitAssemblyLine_01=§c§oAssembling Circuits at Unimaginable Speeds

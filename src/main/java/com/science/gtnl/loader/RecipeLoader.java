@@ -64,6 +64,7 @@ import com.science.gtnl.common.recipe.gtnl.AlchemicChemistrySetRecipes;
 import com.science.gtnl.common.recipe.gtnl.BloodDemonInjectionRecipes;
 import com.science.gtnl.common.recipe.gtnl.CactusWonderFakeRecipes;
 import com.science.gtnl.common.recipe.gtnl.CellRegulatorRecipes;
+import com.science.gtnl.common.recipe.gtnl.CircuitNanitesDataRecipes;
 import com.science.gtnl.common.recipe.gtnl.DecayHastenerRecipes;
 import com.science.gtnl.common.recipe.gtnl.DesulfurizerRecipes;
 import com.science.gtnl.common.recipe.gtnl.ElectrocellGeneratorRecipes;
@@ -135,7 +136,7 @@ import tectech.thing.CustomItemList;
 
 public class RecipeLoader {
 
-    private static boolean recipesAdded;
+    public static boolean recipesAdded;
 
     public static void loadRecipesServerStart() {
         if (!recipesAdded) {
@@ -146,6 +147,10 @@ public class RecipeLoader {
         }
         loadCircuitRelatedRecipes();
         recipesAdded = true;
+    }
+
+    public static void loadCircuitNanitesData(long worldSeed) {
+        new CircuitNanitesDataRecipes(worldSeed).loadRecipes();
     }
 
     public static void loadNewRemoveRecipes() {
