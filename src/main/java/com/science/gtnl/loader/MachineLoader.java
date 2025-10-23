@@ -49,6 +49,7 @@ import com.science.gtnl.common.machine.hatch.ParallelControllerHatch;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputHatchME;
 import com.science.gtnl.common.machine.hatch.SuperCraftingInputProxy;
 import com.science.gtnl.common.machine.hatch.SuperDataAccessHatch;
+import com.science.gtnl.common.machine.hatch.SuperDualInputHatchME;
 import com.science.gtnl.common.machine.hatch.SuperInputBusME;
 import com.science.gtnl.common.machine.hatch.SuperInputHatchME;
 import com.science.gtnl.common.machine.hatch.SuperVoidBus;
@@ -2344,6 +2345,24 @@ public class MachineLoader {
                 StatCollector.translateToLocal("HumongousOutputBusMAX"),
                 14));
         addItemTooltip(GTNLItemList.HumongousOutputBusMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.SuperDualInputHatchME.set(
+            new SuperDualInputHatchME(
+                SUPER_DUAL_INPUT_HATCH_ME.ID,
+                "SuperDualInputHatchME",
+                StatCollector.translateToLocal("SuperDualInputHatchME"),
+                9,
+                false));
+        addItemTooltip(GTNLItemList.SuperDualInputHatchME.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.AdvancedSuperDualInputHatchME.set(
+            new SuperDualInputHatchME(
+                ADVANCED_SUPER_DUAL_INPUT_HATCH_ME.ID,
+                "AdvancedSuperDualInputHatchME",
+                StatCollector.translateToLocal("AdvancedSuperDualInputHatchME"),
+                10,
+                true));
+        addItemTooltip(GTNLItemList.AdvancedSuperDualInputHatchME.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     @Deprecated

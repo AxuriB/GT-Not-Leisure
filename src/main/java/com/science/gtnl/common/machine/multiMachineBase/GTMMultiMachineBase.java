@@ -112,8 +112,8 @@ public abstract class GTMMultiMachineBase<T extends GTMMultiMachineBase<T>> exte
     public CheckRecipeResult checkProcessing() {
         mParallelTier = 0;
         ItemStack controllerItem = getControllerSlot();
-        int ParallelTierItem = getParallelTier(controllerItem);
-        mParallelTier = Math.max(mParallelTier, ParallelTierItem);
+        int parallelTierItem = getParallelTier(controllerItem);
+        mParallelTier = Math.max(mParallelTier, parallelTierItem);
         return super.checkProcessing();
     }
 

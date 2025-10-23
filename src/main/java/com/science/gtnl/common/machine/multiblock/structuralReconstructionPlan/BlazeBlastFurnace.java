@@ -281,6 +281,11 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
     }
 
     @Override
+    public int getMaxTierSkip() {
+        return 0;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.mStartUpCheck < 0) {

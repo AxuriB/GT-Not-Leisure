@@ -111,7 +111,24 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
 
     @Override
     public String[] getDescription() {
-        return getDescriptionArray(autoPullAvailable);
+        List<String> strings = new ArrayList<>(8);
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_00"));
+        strings.add(
+            StatCollector.translateToLocal("Tooltip_SuperInputBusME_01") + TIER_COLORS[autoPullAvailable ? 7 : 4]
+                + VN[autoPullAvailable ? 7 : 4]);
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_02"));
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_03"));
+
+        if (autoPullAvailable) {
+            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputBusME_00"));
+            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputBusME_01"));
+            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputBusME_02"));
+            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputBusME_03"));
+        }
+
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_04"));
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_05"));
+        return strings.toArray(new String[0]);
     }
 
     @Override
@@ -189,6 +206,39 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
     }
 
     @Override
+    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
+        if (nbt == null || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        ItemStack circuit = GTUtility.loadItem(nbt, "circuit");
+        if (GTUtility.isStackInvalid(circuit)) circuit = null;
+
+        if (autoPullAvailable) {
+            setAutoPullItemList(nbt.getBoolean("autoPull"));
+            minAutoPullStackSize = nbt.getInteger("minStackSize");
+            // Data sticks created before refreshTime was implemented should not cause stocking buses to
+            // spam divide by zero errors
+            if (nbt.hasKey("refreshTime")) {
+                autoPullRefreshTime = nbt.getInteger("refreshTime");
+            }
+            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
+        }
+
+        additionalConnection = nbt.getBoolean("additionalConnection");
+        if (!autoPullItemList) {
+            NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
+            for (int i = 0; i < stockingItems.tagCount(); i++) {
+                this.mInventory[i] = GTUtility.loadItem(stockingItems.getCompoundTagAt(i));
+            }
+        }
+        setInventorySlotContents(getCircuitSlot(), circuit);
+        updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
+        return true;
+    }
+
+    @Override
     public NBTTagCompound getCopiedData(EntityPlayer player) {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", COPIED_DATA_IDENTIFIER);
@@ -198,6 +248,7 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
+        tag.setByte("color", this.getColor());
 
         NBTTagList stockingItems = new NBTTagList();
 
@@ -710,26 +761,5 @@ public class SuperInputBusME extends MTEHatchInputBusME implements IConfiguratio
             new DrawableWidget().setDrawable(ItemUtils.PICTURE_GTNL_LOGO)
                 .setSize(18, 18)
                 .setPos(367, 81));
-    }
-
-    public static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(8);
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_00"));
-        strings.add(
-            StatCollector.translateToLocal("Tooltip_SuperInputBusME_01") + TIER_COLORS[autoPullAvailable ? 7 : 4]
-                + VN[autoPullAvailable ? 7 : 4]);
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_02"));
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_03"));
-
-        if (autoPullAvailable) {
-            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputBusME_00"));
-            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputBusME_01"));
-            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputBusME_02"));
-            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputBusME_03"));
-        }
-
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_04"));
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputBusME_05"));
-        return strings.toArray(new String[0]);
     }
 }

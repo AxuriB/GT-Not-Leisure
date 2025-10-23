@@ -119,7 +119,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     public HeatingCoilLevel mCoilLevel = HeatingCoilLevel.None;
     public int mHeatingCapacity = 0;
 
-    public static final Map<ItemStack, Integer> PARALLEL_TIERS = new HashMap<>() {
+    public static Map<ItemStack, Integer> PARALLEL_TIERS = new HashMap<>() {
 
         {
             put(GTNLItemList.LVParallelControllerCore.get(1), 1);

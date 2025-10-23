@@ -539,6 +539,8 @@ public enum GTNLItemList implements IItemContainer {
     FOGExtractorModule,
     RocketAssembler,
 
+    AdvancedSuperDualInputHatchME,
+    SuperDualInputHatchME,
     HumongousOutputBusLV,
     HumongousOutputBusMV,
     HumongousOutputBusHV,

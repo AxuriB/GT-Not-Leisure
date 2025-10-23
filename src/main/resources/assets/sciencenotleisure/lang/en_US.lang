@@ -149,6 +149,22 @@ Info_OredictInputBusME_Oredict_Unset=§7Unset§r
 Info_OredictInputBusME_Online=§aThe bus is online§r
 Info_OredictInputBusME_Offline=§cThe bus is offline: %s§r
 
+SuperDualInputHatchME=Super Stocking Input Assembly (ME)
+AdvancedSuperDualInputHatchME=Advanced Super Stocking Input Assembly (ME)
+Tooltip_SuperDualInputHatchME_00=Advanced item and fluid input for Multiblocks
+Tooltip_SuperDualInputHatchME_01=Hatch Tier: 
+Tooltip_SuperDualInputHatchME_02=etrieves directly from ME
+Tooltip_SuperDualInputHatchME_03=Keeps 100 item and fluid types in stock
+Tooltip_SuperDualInputHatchME_04=Change ME connection behavior by right-clicking with wire cutter
+Tooltip_SuperDualInputHatchME_05=Configuration data can be copy+pasted using a data stick
+Tooltip_AdvancedSuperDualInputHatchME_00=Auto-Pull from ME mode will automatically stock the first 100 items and fluids in the ME system, updated every 5 seconds.
+Tooltip_AdvancedSuperDualInputHatchME_01=Toggle by right-clicking with screwdriver, or use the GUI.
+Tooltip_AdvancedSuperDualInputHatchME_02=Use the GUI to limit the minimum stack size for Auto-Pulling and enable fast recipe checks.
+Tooltip_AdvancedSuperDualInputHatchME_03=WARNING: Fast recipe checks can be laggy. Use with caution.
+Info_AdvancedSuperDualInputHatchME_ExceedIntMax=The pulled amount exceeds the integer limit. Check the tooltip for the actual amount!
+Info_AdvancedSuperDualInputHatchME_IntMax=Maximum pull amount (unit: Int.MAX)
+Info_AdvancedSuperDualInputHatchME_IntMaxTooltip=Sets the maximum amount that can be pulled. The higher the number, the greater the lag. Please use with caution.
+
 SuperInputBusME=Super Stocking Input Bus (ME)
 AdvancedSuperInputBusME=Advanced Super Stocking Input Bus (ME)
 Tooltip_SuperInputBusME_00=Advanced item input for Multiblocks
