@@ -191,8 +191,209 @@ Tooltip_AdvancedSuperInputHatchME_01=Toggle by right-clicking with screwdriver, 
 Tooltip_AdvancedSuperInputHatchME_02=Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.
 Tooltip_AdvancedSuperInputHatchME_03=WARNING: Fast recipe checks can be laggy. Use with caution.
 
+EnergyHatchMAX=MAX Energy Hatch
+Tooltip_EnergyHatch_00=Energy Injector for Multiblocks
+Tooltip_EnergyHatch_01=Accepts up to 2 Amps
+
+EnergyHatchLV4A=LV 4A Energy Hatch
+EnergyHatchLV16A=LV 16A Energy Hatch
+EnergyHatchLV64A=LV 64A Energy Hatch
+
+EnergyHatchMV4A=MV 4A Energy Hatch
+EnergyHatchMV16A=MV 16A Energy Hatch
+EnergyHatchMV64A=MV 64A Energy Hatch
+
+EnergyHatchHV4A=HV 4A Energy Hatch
+EnergyHatchHV16A=HV 16A Energy Hatch
+EnergyHatchHV64A=HV 64A Energy Hatch
+
+EnergyHatchMAX4A=MAX 4A Energy Hatch
+EnergyHatchMAX16A=MAX 16A Energy Hatch
+EnergyHatchMAX64A=MAX 64A Energy Hatch
+
+LaserEnergyHatchIV4194304A=IV 4,194,304A/t Laser Target Hatch
+LaserEnergyHatchIV16777216A=IV 16,777,216A/t Laser Target Hatch
+
+LaserEnergyHatchLuV4194304A=LuV 4,194,304A/t Laser Target Hatch
+LaserEnergyHatchLuV16777216A=LuV 16,777,216A/t Laser Target Hatch
+
+LaserEnergyHatchZPM4194304A=ZPM 4,194,304A/t Laser Target Hatch
+LaserEnergyHatchZPM16777216A=ZPM 16,777,216A/t Laser Target Hatch
+
+LaserEnergyHatchUV4194304A=UV 4,194,304A/t Laser Target Hatch
+LaserEnergyHatchUV16777216A=UV 16,777,216A/t Laser Target Hatch
+
+LaserEnergyHatchUHV4194304A=UHV 4,194,304A/t Laser Target Hatch
+LaserEnergyHatchUHV16777216A=UHV 16,777,216A/t Laser Target Hatch
+
+LaserEnergyHatchUEV4194304A=UEV 4,194,304A/t Laser Target Hatch
+LaserEnergyHatchUEV16777216A=UEV 16,777,216A/t Laser Target Hatch
+
+LaserEnergyHatchUIV4194304A=UIV 4,194,304A/t Laser Target Hatch
+LaserEnergyHatchUIV16777216A=UIV 16,777,216A/t Laser Target Hatch
+
+LaserEnergyHatchUMV16777216A=UMV 16,777,216A/t Laser Target Hatch
+
+LaserEnergyHatchMAX256A=MAX 256A/t Laser Target Hatch
+LaserEnergyHatchMAX1024A=MAX 1,024A/t Laser Target Hatch
+LaserEnergyHatchMAX4096A=MAX 4,096A/t Laser Target Hatch
+LaserEnergyHatchMAX16384A=MAX 16,384A/t Laser Target Hatch
+LaserEnergyHatchMAX65536A=MAX 65,536A/t Laser Target Hatch
+LaserEnergyHatchMAX262144A=MAX 262,144A/t Laser Target Hatch
+LaserEnergyHatchMAX1048576A=MAX 1,048,576A/t Laser Target Hatch
+LaserEnergyHatchMAX4194304A=MAX 4,194,304A/t Laser Target Hatch
+LaserEnergyHatchMAX16777216A=MAX 16,777,216A/t Laser Target Hatch
+
+LaserDynamoHatchIV4194304A=IV 4,194,304A/t Laser Source Hatch
+LaserDynamoHatchIV16777216A=IV 16,777,216A/t Laser Source Hatch
+
+LaserDynamoHatchLuV4194304A=LuV 4,194,304A/t Laser Source Hatch
+LaserDynamoHatchLuV16777216A=LuV 16,777,216A/t Laser Source Hatch
+
+LaserDynamoHatchZPM4194304A=ZPM 4,194,304A/t Laser Source Hatch
+LaserDynamoHatchZPM16777216A=ZPM 16,777,216A/t Laser Source Hatch
+
+LaserDynamoHatchUV4194304A=UV 4,194,304A/t Laser Source Hatch
+LaserDynamoHatchUV16777216A=UV 16,777,216A/t Laser Source Hatch
+
+LaserDynamoHatchUHV4194304A=UHV 4,194,304A/t Laser Source Hatch
+LaserDynamoHatchUHV16777216A=UHV 16,777,216A/t Laser Source Hatch
+
+LaserDynamoHatchUEV4194304A=UEV 4,194,304A/t Laser Source Hatch
+LaserDynamoHatchUEV16777216A=UEV 16,777,216A/t Laser Source Hatch
+
+LaserDynamoHatchUIV4194304A=UIV 4,194,304A/t Laser Source Hatch
+LaserDynamoHatchUIV16777216A=UIV 16,777,216A/t Laser Source Hatch
+
+LaserDynamoHatchUMV16777216A=UMV 16,777,216A/t Laser Source Hatch
+
+LaserDynamoHatchMAX256A=MAX 256A/t Laser Source Hatch
+LaserDynamoHatchMAX1024A=MAX 1,024A/t Laser Source Hatch
+LaserDynamoHatchMAX4096A=MAX 4,096A/t Laser Source Hatch
+LaserDynamoHatchMAX16384A=MAX 16,384A/t Laser Source Hatch
+LaserDynamoHatchMAX65536A=MAX 65,536A/t Laser Source Hatch
+LaserDynamoHatchMAX262144A=MAX 262,144A/t Laser Source Hatch
+LaserDynamoHatchMAX1048576A=MAX 1,048,576A/t Laser Source Hatch
+LaserDynamoHatchMAX4194304A=MAX 4,194,304A/t Laser Source Hatch
+LaserDynamoHatchMAX16777216A=MAX 16,777,216A/t Laser Source Hatch
+
+WirelessEnergyHatchLV4A=4A LV Wireless Energy Hatch
+WirelessEnergyHatchLV16A=16A LV Wireless Energy Hatch
+WirelessEnergyHatchLV64A=64A LV Wireless Energy Hatch
+
+WirelessEnergyHatchMV4A=4A MV Wireless Energy Hatch
+WirelessEnergyHatchMV16A=16A MV Wireless Energy Hatch
+WirelessEnergyHatchMV64A=64A MV Wireless Energy Hatch
+
+WirelessEnergyHatchHV4A=4A HV Wireless Energy Hatch
+WirelessEnergyHatchHV16A=16A HV Wireless Energy Hatch
+WirelessEnergyHatchHV64A=64A HV Wireless Energy Hatch
+
+WirelessEnergyHatchIV256A=256A IV Wireless Energy Hatch
+WirelessEnergyHatchIV1024A=1024A IV Wireless Energy Hatch
+WirelessEnergyHatchIV4096A=4096A IV Wireless Energy Hatch
+WirelessEnergyHatchIV16384A=16384A IV Wireless Energy Hatch
+WirelessEnergyHatchIV65536A=65536A IV Wireless Energy Hatch
+WirelessEnergyHatchIV262144A=262144A IV Wireless Energy Hatch
+WirelessEnergyHatchIV1048576A=1048576A IV Wireless Energy Hatch
+WirelessEnergyHatchIV4194304A=4194304A IV Wireless Energy Hatch
+WirelessEnergyHatchIV16777216A=16777216A IV Wireless Energy Hatch
+
+WirelessEnergyHatchLuV256A=256A LuV Wireless Energy Hatch
+WirelessEnergyHatchLuV1024A=1024A LuV Wireless Energy Hatch
+WirelessEnergyHatchLuV4096A=4096A LuV Wireless Energy Hatch
+WirelessEnergyHatchLuV16384A=16384A LuV Wireless Energy Hatch
+WirelessEnergyHatchLuV65536A=65536A LuV Wireless Energy Hatch
+WirelessEnergyHatchLuV262144A=262144A LuV Wireless Energy Hatch
+WirelessEnergyHatchLuV1048576A=1048576A LuV Wireless Energy Hatch
+WirelessEnergyHatchLuV4194304A=4194304A LuV Wireless Energy Hatch
+WirelessEnergyHatchLuV16777216A=16777216A LuV Wireless Energy Hatch
+
+WirelessEnergyHatchZPM256A=256A ZPM Wireless Energy Hatch
+WirelessEnergyHatchZPM1024A=1024A ZPM Wireless Energy Hatch
+WirelessEnergyHatchZPM4096A=4096A ZPM Wireless Energy Hatch
+WirelessEnergyHatchZPM16384A=16384A ZPM Wireless Energy Hatch
+WirelessEnergyHatchZPM65536A=65536A ZPM Wireless Energy Hatch
+WirelessEnergyHatchZPM262144A=262144A ZPM Wireless Energy Hatch
+WirelessEnergyHatchZPM1048576A=1048576A ZPM Wireless Energy Hatch
+WirelessEnergyHatchZPM4194304A=4194304A ZPM Wireless Energy Hatch
+WirelessEnergyHatchZPM16777216A=16777216A ZPM Wireless Energy Hatch
+
+WirelessEnergyHatchUV256A=256A UV Wireless Energy Hatch
+WirelessEnergyHatchUV1024A=1024A UV Wireless Energy Hatch
+WirelessEnergyHatchUV4096A=4096A UV Wireless Energy Hatch
+WirelessEnergyHatchUV16384A=16384A UV Wireless Energy Hatch
+WirelessEnergyHatchUV65536A=65536A UV Wireless Energy Hatch
+WirelessEnergyHatchUV262144A=262144A UV Wireless Energy Hatch
+WirelessEnergyHatchUV1048576A=1048576A UV Wireless Energy Hatch
+WirelessEnergyHatchUV4194304A=4194304A UV Wireless Energy Hatch
+WirelessEnergyHatchUV16777216A=16777216A UV Wireless Energy Hatch
+
+WirelessEnergyHatchUHV256A=256A UHV Wireless Energy Hatch
+WirelessEnergyHatchUHV1024A=1024A UHV Wireless Energy Hatch
+WirelessEnergyHatchUHV4096A=4096A UHV Wireless Energy Hatch
+WirelessEnergyHatchUHV16384A=16384A UHV Wireless Energy Hatch
+WirelessEnergyHatchUHV65536A=65536A UHV Wireless Energy Hatch
+WirelessEnergyHatchUHV262144A=262144A UHV Wireless Energy Hatch
+WirelessEnergyHatchUHV1048576A=1048576A UHV Wireless Energy Hatch
+WirelessEnergyHatchUHV4194304A=4194304A UHV Wireless Energy Hatch
+WirelessEnergyHatchUHV16777216A=16777216A UHV Wireless Energy Hatch
+
+WirelessEnergyHatchUEV256A=256A UEV Wireless Energy Hatch
+WirelessEnergyHatchUEV1024A=1024A UEV Wireless Energy Hatch
+WirelessEnergyHatchUEV4096A=4096A UEV Wireless Energy Hatch
+WirelessEnergyHatchUEV16384A=16384A UEV Wireless Energy Hatch
+WirelessEnergyHatchUEV65536A=65536A UEV Wireless Energy Hatch
+WirelessEnergyHatchUEV262144A=262144A UEV Wireless Energy Hatch
+WirelessEnergyHatchUEV1048576A=1048576A UEV Wireless Energy Hatch
+WirelessEnergyHatchUEV4194304A=4194304A UEV Wireless Energy Hatch
+WirelessEnergyHatchUEV16777216A=16777216A UEV Wireless Energy Hatch
+
+WirelessEnergyHatchUIV256A=256A UIV Wireless Energy Hatch
+WirelessEnergyHatchUIV1024A=1024A UIV Wireless Energy Hatch
+WirelessEnergyHatchUIV4096A=4096A UIV Wireless Energy Hatch
+WirelessEnergyHatchUIV16384A=16384A UIV Wireless Energy Hatch
+WirelessEnergyHatchUIV65536A=65536A UIV Wireless Energy Hatch
+WirelessEnergyHatchUIV262144A=262144A UIV Wireless Energy Hatch
+WirelessEnergyHatchUIV1048576A=1048576A UIV Wireless Energy Hatch
+WirelessEnergyHatchUIV4194304A=4194304A UIV Wireless Energy Hatch
+WirelessEnergyHatchUIV16777216A=16777216A UIV Wireless Energy Hatch
+
+WirelessEnergyHatchUMV256A=256A UMV Wireless Energy Hatch
+WirelessEnergyHatchUMV1024A=1024A UMV Wireless Energy Hatch
+WirelessEnergyHatchUMV4096A=4096A UMV Wireless Energy Hatch
+WirelessEnergyHatchUMV16384A=16384A UMV Wireless Energy Hatch
+WirelessEnergyHatchUMV65536A=65536A UMV Wireless Energy Hatch
+WirelessEnergyHatchUMV262144A=262144A UMV Wireless Energy Hatch
+WirelessEnergyHatchUMV1048576A=1048576A UMV Wireless Energy Hatch
+WirelessEnergyHatchUMV4194304A=4194304A UMV Wireless Energy Hatch
+WirelessEnergyHatchUMV16777216A=16777216A UMV Wireless Energy Hatch
+
+WirelessEnergyHatchMAX256A=256A MAX Wireless Energy Hatch
+WirelessEnergyHatchMAX1024A=1024A MAX Wireless Energy Hatch
+WirelessEnergyHatchMAX4096A=4096A MAX Wireless Energy Hatch
+WirelessEnergyHatchMAX16384A=16384A MAX Wireless Energy Hatch
+WirelessEnergyHatchMAX65536A=65536A MAX Wireless Energy Hatch
+WirelessEnergyHatchMAX262144A=262144A MAX Wireless Energy Hatch
+WirelessEnergyHatchMAX1048576A=1048576A MAX Wireless Energy Hatch
+WirelessEnergyHatchMAX4194304A=4194304A MAX Wireless Energy Hatch
+WirelessEnergyHatchMAX16777216A=16777216A MAX Wireless Energy Hatch
+
+LegendaryWirelessEnergyHatch=Legendary Wireless Energy Hatch
+
+LegendaryWirelessDynamoHatch=Legendary Wireless Dynamo Hatch
+Tooltip_WirelessMultiDynamoHatch_00=§7Stores energy globally in a network, up to 2^(2^31) EU.
+Tooltip_WirelessMultiDynamoHatch_01=§7Does not connect to wires. This block accepts EU into the network.
+Tooltip_WirelessMultiDynamoHatch_02=Right-click with screwdriver to toggle laser/cable mode
+
 ExplosionDynamoHatch=Explosion Dynamo Hatch
 Tooltip_ExplosionDynamoHatch_00=Concept God!
+
+Tooltip_WirelessEnergyCover4A_00=§7Stores energy globally in a network, up to 2^(2^31) EU.
+Tooltip_WirelessEnergyCover4A_01=§7Does not connect to wires. This cover withdraws EU from the network.
+Tooltip_WirelessEnergyCover4A_02=Ignores voltage limitations (no explosions).
+Tooltip_WirelessEnergyCover4A_03=Amperage: §e4§7
+Tooltip_WirelessEnergyCover4A_04=Voltage IN: §a%s (§7%s§r§a)
 
 VoidCover=Void Cover
 Tooltip_VoidCover_00=Just like the Void Assembly!
@@ -895,6 +1096,20 @@ Tooltip_IronTurbine_00=Sturdy and Durable
 item.MetaItem.105.name=Bronze Turbine
 Tooltip_BronzeTurbine_00=Antique and Solid
 item.MetaItem.106.name=Void Cover
+item.MetaItem.107.name=4A LV Wireless Energy Cover
+item.MetaItem.108.name=4A MV Wireless Energy Cover
+item.MetaItem.109.name=4A HV Wireless Energy Cover
+item.MetaItem.110.name=4A EV Wireless Energy Cover
+item.MetaItem.111.name=4A IV Wireless Energy Cover
+item.MetaItem.112.name=4A LuV Wireless Energy Cover
+item.MetaItem.113.name=4A ZPM Wireless Energy Cover
+item.MetaItem.114.name=4A UV Wireless Energy Cover
+item.MetaItem.115.name=4A UHV Wireless Energy Cover
+item.MetaItem.116.name=4A UEV Wireless Energy Cover
+item.MetaItem.117.name=4A UIV Wireless Energy Cover
+item.MetaItem.118.name=4A UMV Wireless Energy Cover
+item.MetaItem.119.name=4A UXV Wireless Energy Cover
+item.MetaItem.120.name=4A MAX Wireless Energy Cover
 
 item.SuspiciousStew.name=Suspicious Stew
 

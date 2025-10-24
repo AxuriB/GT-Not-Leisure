@@ -162,7 +162,7 @@ Tooltip_AdvancedSuperDualInputHatchME_01=使用螺丝刀切换，或在GUI配置
 Tooltip_AdvancedSuperDualInputHatchME_02=在GUI配置 "自动拉取" 的最小堆叠数与快速配方检查.
 Tooltip_AdvancedSuperDualInputHatchME_03=警告：快速配方检查可能会很卡. 请谨慎使用.
 Info_AdvancedSuperDualInputHatchME_ExceedIntMax=拉取数量超过Int, 查看Tooltip获取真实数量！
-Info_AdvancedSuperDualInputHatchME_IntMax=最大拉取数量（单位：Int.MAX）
+Info_AdvancedSuperDualInputHatchME_IntMax=最大拉取数量 (单位：Int.MAX）
 Info_AdvancedSuperDualInputHatchME_IntMaxTooltip=设置所能拉取的最大数量，数字越大卡顿越大. 请谨慎使用.
 
 SuperInputBusME=超级存储输入总线(ME)
@@ -191,8 +191,209 @@ Tooltip_AdvancedSuperInputHatchME_01=使用螺丝刀切换，或在GUI配置.
 Tooltip_AdvancedSuperInputHatchME_02=在GUI配置 "自动拉取" 的最小堆叠数与快速配方检查，调整流体槽位刷新时间并启用快速配方检查.
 Tooltip_AdvancedSuperInputHatchME_03=警告：快速配方检查可能会很卡. 请谨慎使用.
 
+EnergyHatchMAX=MAX能源仓
+Tooltip_EnergyHatch_00=为多方块机器提供能源
+Tooltip_EnergyHatch_01=最大输入2安
+
+EnergyHatchLV4A=4安LV能源仓
+EnergyHatchLV16A=16安LV能源仓
+EnergyHatchLV64A=64安LV能源仓
+
+EnergyHatchMV4A=4安MV能源仓
+EnergyHatchMV16A=16安MV能源仓
+EnergyHatchMV64A=64安MV能源仓
+
+EnergyHatchHV4A=4安HV能源仓
+EnergyHatchHV16A=16安HV能源仓
+EnergyHatchHV64A=64安HV能源仓
+
+EnergyHatchMAX4A=4安MAX能源仓
+EnergyHatchMAX16A=16安MAX能源仓
+EnergyHatchMAX64A=64安MAX能源仓
+
+LaserEnergyHatchIV4194304A=IV 4,194,304A/t 激光靶仓
+LaserEnergyHatchIV16777216A=IV 16,777,216A/t 激光靶仓
+
+LaserEnergyHatchLuV4194304A=LuV 4,194,304A/t 激光靶仓
+LaserEnergyHatchLuV16777216A=LuV 16,777,216A/t 激光靶仓
+
+LaserEnergyHatchZPM4194304A=ZPM 4,194,304A/t 激光靶仓
+LaserEnergyHatchZPM16777216A=ZPM 16,777,216A/t 激光靶仓
+
+LaserEnergyHatchUV4194304A=UV 4,194,304A/t 激光靶仓
+LaserEnergyHatchUV16777216A=UV 16,777,216A/t 激光靶仓
+
+LaserEnergyHatchUHV4194304A=UHV 4,194,304A/t 激光靶仓
+LaserEnergyHatchUHV16777216A=UHV 16,777,216A/t 激光靶仓
+
+LaserEnergyHatchUEV4194304A=UEV 4,194,304A/t 激光靶仓
+LaserEnergyHatchUEV16777216A=UEV 16,777,216A/t 激光靶仓
+
+LaserEnergyHatchUIV4194304A=UIV 4,194,304A/t 激光靶仓
+LaserEnergyHatchUIV16777216A=UIV 16,777,216A/t 激光靶仓
+
+LaserEnergyHatchUMV16777216A=UMV 16,777,216A/t 激光靶仓
+
+LaserEnergyHatchMAX256A=MAX 256A/t 激光靶仓
+LaserEnergyHatchMAX1024A=MAX 1,024A/t 激光靶仓
+LaserEnergyHatchMAX4096A=MAX 4,096A/t 激光靶仓
+LaserEnergyHatchMAX16384A=MAX 16,384A/t 激光靶仓
+LaserEnergyHatchMAX65536A=MAX 65,536A/t 激光靶仓
+LaserEnergyHatchMAX262144A=MAX 262,144A/t 激光靶仓
+LaserEnergyHatchMAX1048576A=MAX 1,048,576A/t 激光靶仓
+LaserEnergyHatchMAX4194304A=MAX 4,194,304A/t 激光靶仓
+LaserEnergyHatchMAX16777216A=MAX 16,777,216A/t 激光靶仓
+
+LaserDynamoHatchIV4194304A=IV 4,194,304A/t 激光源仓
+LaserDynamoHatchIV16777216A=IV 16,777,216A/t 激光源仓
+
+LaserDynamoHatchLuV4194304A=LuV 4,194,304A/t 激光源仓
+LaserDynamoHatchLuV16777216A=LuV 16,777,216A/t 激光源仓
+
+LaserDynamoHatchZPM4194304A=ZPM 4,194,304A/t 激光源仓
+LaserDynamoHatchZPM16777216A=ZPM 16,777,216A/t 激光源仓
+
+LaserDynamoHatchUV4194304A=UV 4,194,304A/t 激光源仓
+LaserDynamoHatchUV16777216A=UV 16,777,216A/t 激光源仓
+
+LaserDynamoHatchUHV4194304A=UHV 4,194,304A/t 激光源仓
+LaserDynamoHatchUHV16777216A=UHV 16,777,216A/t 激光源仓
+
+LaserDynamoHatchUEV4194304A=UEV 4,194,304A/t 激光源仓
+LaserDynamoHatchUEV16777216A=UEV 16,777,216A/t 激光源仓
+
+LaserDynamoHatchUIV4194304A=UIV 4,194,304A/t 激光源仓
+LaserDynamoHatchUIV16777216A=UIV 16,777,216A/t 激光源仓
+
+LaserDynamoHatchUMV16777216A=UMV 16,777,216A/t 激光源仓
+
+LaserDynamoHatchMAX256A=MAX 256A/t 激光源仓
+LaserDynamoHatchMAX1024A=MAX 1,024A/t 激光源仓
+LaserDynamoHatchMAX4096A=MAX 4,096A/t 激光源仓
+LaserDynamoHatchMAX16384A=MAX 16,384A/t 激光源仓
+LaserDynamoHatchMAX65536A=MAX 65,536A/t 激光源仓
+LaserDynamoHatchMAX262144A=MAX 262,144A/t 激光源仓
+LaserDynamoHatchMAX1048576A=MAX 1,048,576A/t 激光源仓
+LaserDynamoHatchMAX4194304A=MAX 4,194,304A/t 激光源仓
+LaserDynamoHatchMAX16777216A=MAX 16,777,216A/t 激光源仓
+
+WirelessEnergyHatchLV4A=4安LV无线能源仓
+WirelessEnergyHatchLV16A=16安LV无线能源仓
+WirelessEnergyHatchLV64A=64安LV无线能源仓
+
+WirelessEnergyHatchMV4A=4安MV无线能源仓
+WirelessEnergyHatchMV16A=16安MV无线能源仓
+WirelessEnergyHatchMV64A=64安MV无线能源仓
+
+WirelessEnergyHatchHV4A=4安HV无线能源仓
+WirelessEnergyHatchHV16A=16安HV无线能源仓
+WirelessEnergyHatchHV64A=64安HV无线能源仓
+
+WirelessEnergyHatchIV256A=256安IV无线能源仓
+WirelessEnergyHatchIV1024A=1024安IV无线能源仓
+WirelessEnergyHatchIV4096A=4096安IV无线能源仓
+WirelessEnergyHatchIV16384A=16384安IV无线能源仓
+WirelessEnergyHatchIV65536A=65536安IV无线能源仓
+WirelessEnergyHatchIV262144A=262144安IV无线能源仓
+WirelessEnergyHatchIV1048576A=1048576安IV无线能源仓
+WirelessEnergyHatchIV4194304A=4194304安IV无线能源仓
+WirelessEnergyHatchIV16777216A=16777216安IV无线能源仓
+
+WirelessEnergyHatchLuV256A=256安LuV无线能源仓
+WirelessEnergyHatchLuV1024A=1024安LuV无线能源仓
+WirelessEnergyHatchLuV4096A=4096安LuV无线能源仓
+WirelessEnergyHatchLuV16384A=16384安LuV无线能源仓
+WirelessEnergyHatchLuV65536A=65536安LuV无线能源仓
+WirelessEnergyHatchLuV262144A=262144安LuV无线能源仓
+WirelessEnergyHatchLuV1048576A=1048576安LuV无线能源仓
+WirelessEnergyHatchLuV4194304A=4194304安LuV无线能源仓
+WirelessEnergyHatchLuV16777216A=16777216安LuV无线能源仓
+
+WirelessEnergyHatchZPM256A=256安ZPM无线能源仓
+WirelessEnergyHatchZPM1024A=1024安ZPM无线能源仓
+WirelessEnergyHatchZPM4096A=4096安ZPM无线能源仓
+WirelessEnergyHatchZPM16384A=16384安ZPM无线能源仓
+WirelessEnergyHatchZPM65536A=65536安ZPM无线能源仓
+WirelessEnergyHatchZPM262144A=262144安ZPM无线能源仓
+WirelessEnergyHatchZPM1048576A=1048576安ZPM无线能源仓
+WirelessEnergyHatchZPM4194304A=4194304安ZPM无线能源仓
+WirelessEnergyHatchZPM16777216A=16777216安ZPM无线能源仓
+
+WirelessEnergyHatchUV256A=256安UV无线能源仓
+WirelessEnergyHatchUV1024A=1024安UV无线能源仓
+WirelessEnergyHatchUV4096A=4096安UV无线能源仓
+WirelessEnergyHatchUV16384A=16384安UV无线能源仓
+WirelessEnergyHatchUV65536A=65536安UV无线能源仓
+WirelessEnergyHatchUV262144A=262144安UV无线能源仓
+WirelessEnergyHatchUV1048576A=1048576安UV无线能源仓
+WirelessEnergyHatchUV4194304A=4194304安UV无线能源仓
+WirelessEnergyHatchUV16777216A=16777216安UV无线能源仓
+
+WirelessEnergyHatchUHV256A=256安UHV无线能源仓
+WirelessEnergyHatchUHV1024A=1024安UHV无线能源仓
+WirelessEnergyHatchUHV4096A=4096安UHV无线能源仓
+WirelessEnergyHatchUHV16384A=16384安UHV无线能源仓
+WirelessEnergyHatchUHV65536A=65536安UHV无线能源仓
+WirelessEnergyHatchUHV262144A=262144安UHV无线能源仓
+WirelessEnergyHatchUHV1048576A=1048576安UHV无线能源仓
+WirelessEnergyHatchUHV4194304A=4194304安UHV无线能源仓
+WirelessEnergyHatchUHV16777216A=16777216安UHV无线能源仓
+
+WirelessEnergyHatchUEV256A=256安UEV无线能源仓
+WirelessEnergyHatchUEV1024A=1024安UEV无线能源仓
+WirelessEnergyHatchUEV4096A=4096安UEV无线能源仓
+WirelessEnergyHatchUEV16384A=16384安UEV无线能源仓
+WirelessEnergyHatchUEV65536A=65536安UEV无线能源仓
+WirelessEnergyHatchUEV262144A=262144安UEV无线能源仓
+WirelessEnergyHatchUEV1048576A=1048576安UEV无线能源仓
+WirelessEnergyHatchUEV4194304A=4194304安UEV无线能源仓
+WirelessEnergyHatchUEV16777216A=16777216安UEV无线能源仓
+
+WirelessEnergyHatchUIV256A=256安UIV无线能源仓
+WirelessEnergyHatchUIV1024A=1024安UIV无线能源仓
+WirelessEnergyHatchUIV4096A=4096安UIV无线能源仓
+WirelessEnergyHatchUIV16384A=16384安UIV无线能源仓
+WirelessEnergyHatchUIV65536A=65536安UIV无线能源仓
+WirelessEnergyHatchUIV262144A=262144安UIV无线能源仓
+WirelessEnergyHatchUIV1048576A=1048576安UIV无线能源仓
+WirelessEnergyHatchUIV4194304A=4194304安UIV无线能源仓
+WirelessEnergyHatchUIV16777216A=16777216安UIV无线能源仓
+
+WirelessEnergyHatchUMV256A=256安UMV无线能源仓
+WirelessEnergyHatchUMV1024A=1024安UMV无线能源仓
+WirelessEnergyHatchUMV4096A=4096安UMV无线能源仓
+WirelessEnergyHatchUMV16384A=16384安UMV无线能源仓
+WirelessEnergyHatchUMV65536A=65536安UMV无线能源仓
+WirelessEnergyHatchUMV262144A=262144安UMV无线能源仓
+WirelessEnergyHatchUMV1048576A=1048576安UMV无线能源仓
+WirelessEnergyHatchUMV4194304A=4194304安UMV无线能源仓
+WirelessEnergyHatchUMV16777216A=16777216安UMV无线能源仓
+
+WirelessEnergyHatchMAX256A=256安MAX无线能源仓
+WirelessEnergyHatchMAX1024A=1024安MAX无线能源仓
+WirelessEnergyHatchMAX4096A=4096安MAX无线能源仓
+WirelessEnergyHatchMAX16384A=16384安MAX无线能源仓
+WirelessEnergyHatchMAX65536A=65536安MAX无线能源仓
+WirelessEnergyHatchMAX262144A=262144安MAX无线能源仓
+WirelessEnergyHatchMAX1048576A=1048576安MAX无线能源仓
+WirelessEnergyHatchMAX4194304A=4194304安MAX无线能源仓
+WirelessEnergyHatchMAX16777216A=16777216安MAX无线能源仓
+
+LegendaryWirelessEnergyHatch=传奇无线能源仓
+
+LegendaryWirelessDynamoHatch=传奇无线动力仓
+Tooltip_WirelessMultiDynamoHatch_00=§7将能量存储于全局网络中，上限为2^(2^31)EU.
+Tooltip_WirelessMultiDynamoHatch_01=§7不连接导线，此方块可以为网络接收EU.
+Tooltip_WirelessMultiDynamoHatch_02=使用螺丝刀右键切换激光和线缆模式
+
 ExplosionDynamoHatch=爆炸动力仓
 Tooltip_ExplosionDynamoHatch_00=概念神！
+
+Tooltip_WirelessEnergyCover4A_00=§7将能量存储于全局网络中，上限为2^(2^31)EU.
+Tooltip_WirelessEnergyCover4A_01=§7不连接导线，此覆盖板可以从网络中抽取EU.
+Tooltip_WirelessEnergyCover4A_02=无视电压限制 (不会造成爆炸).
+Tooltip_WirelessEnergyCover4A_03=电流：§e4A§7
+Tooltip_WirelessEnergyCover4A_04=输入电压：§a%s (§7%s§r§a)
 
 VoidCover=虚空覆盖板
 Tooltip_VoidCover_00=如同虚空总成一样！
@@ -895,6 +1096,20 @@ Tooltip_IronTurbine_00=结实耐用
 item.MetaItem.105.name=青铜涡轮
 Tooltip_BronzeTurbine_00=古朴厚重
 item.MetaItem.106.name=虚空覆盖板
+item.MetaItem.107.name=4安 LV无线能源覆盖板
+item.MetaItem.108.name=4安 MV无线能源覆盖板
+item.MetaItem.109.name=4安 HV无线能源覆盖板
+item.MetaItem.110.name=4安 EV无线能源覆盖板
+item.MetaItem.111.name=4安 IV无线能源覆盖板
+item.MetaItem.112.name=4安 LuV无线能源覆盖板
+item.MetaItem.113.name=4安 ZPM无线能源覆盖板
+item.MetaItem.114.name=4安 UV无线能源覆盖板
+item.MetaItem.115.name=4安 UHV无线能源覆盖板
+item.MetaItem.116.name=4安 UEV无线能源覆盖板
+item.MetaItem.117.name=4安 UIV无线能源覆盖板
+item.MetaItem.118.name=4安 UMV无线能源覆盖板
+item.MetaItem.119.name=4安 UXV无线能源覆盖板
+item.MetaItem.120.name=4安 MAX无线能源覆盖板
 
 item.SuspiciousStew.name=迷之炖菜
 
@@ -1191,12 +1406,12 @@ Tooltip_IntegratedOreFactory_Casing_02=防爆玻璃
 Tooltip_IntegratedOreFactory_Casing_03=钨钢管道方块
 Tooltip_IntegratedOreFactory_Casing_04=钨钢框架
 Tooltip_IntegratedOreFactory_Casing_05=钢齿轮箱机械方块
-Tooltip_IntegratedOreFactory_Casing_06=能源仓（底层机械方块）
-Tooltip_IntegratedOreFactory_Casing_07=维护仓（底层机械方块）
-Tooltip_IntegratedOreFactory_Casing_08=输入总线（输入矿石/粉碎矿石）
-Tooltip_IntegratedOreFactory_Casing_09=输入仓（输入润滑油/蒸馏水/化学浸洗剂）
-Tooltip_IntegratedOreFactory_Casing_10=消声仓（输出污染）
-Tooltip_IntegratedOreFactory_Casing_11=输出总线（输出产物）
+Tooltip_IntegratedOreFactory_Casing_06=能源仓(底层机械方块)
+Tooltip_IntegratedOreFactory_Casing_07=维护仓(底层机械方块)
+Tooltip_IntegratedOreFactory_Casing_08=输入总线(输入矿石/粉碎矿石)
+Tooltip_IntegratedOreFactory_Casing_09=输入仓(输入润滑油/蒸馏水/化学浸洗剂)
+Tooltip_IntegratedOreFactory_Casing_10=消声仓(输出污染)
+Tooltip_IntegratedOreFactory_Casing_11=输出总线(输出产物)
 
 NameFuelRefiningComplex=燃料精炼复合体
 FuelRefiningComplexRecipeType=燃料精炼复合体
@@ -1991,8 +2206,8 @@ Tooltip_EdenGarden_06=每株作物消耗2000L水
 Tooltip_EdenGarden_Casing=任意电力压缩机机械方块
 Info_EdenGarden_00=运行时无法输入种子！
 Info_EdenGarden_01=运行模式：%s
-Info_EdenGarden_02=设置模式（输入）
-Info_EdenGarden_03=设置模式（输出）
+Info_EdenGarden_02=设置模式(输入)
+Info_EdenGarden_03=设置模式(输出)
 Info_EdenGarden_04=最大槽位数：§a%s§r
 Info_EdenGarden_05=已用槽位数：%s%s§r
 Info_EdenGarden_06=种子类型过多，无法运行！

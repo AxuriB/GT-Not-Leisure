@@ -34,6 +34,9 @@ import com.science.gtnl.utils.enums.GTNLItemList;
 import com.science.gtnl.utils.enums.ModList;
 
 import baubles.api.BaublesApi;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
 
@@ -46,6 +49,97 @@ public class ItemUtils {
 
     public static final UITexture PICTURE_GTNL_STEAM_LOGO = UITexture
         .fullImage(ModList.ScienceNotLeisure.ID, "gui/picture/steam_logo");
+
+    public static Materials[] TIER = { Materials.LV, Materials.MV, Materials.HV, Materials.EV, Materials.IV,
+        Materials.LuV, Materials.ZPM, Materials.UV, Materials.UHV, Materials.UEV, Materials.UIV, Materials.UMV,
+        Materials.UXV, Materials.MAX };
+
+    public static Materials[] TIER_MATERIAL = { Materials.Steel, // LV
+        Materials.Aluminium, // MV
+        Materials.StainlessSteel, // HV
+        Materials.Titanium, // EV
+        Materials.TungstenSteel, // IV
+        Materials.Iridium, // LuV
+        Materials.NaquadahAlloy, // ZPM
+        Materials.Osmium, // UV
+        Materials.Neutronium, // UHV
+        Materials.Bedrockium, // UEV
+        Materials.BlackPlutonium, // UIV
+        MaterialsUEVplus.SpaceTime, // UMV
+        MaterialsUEVplus.MagMatter, // UXV
+        MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter // MAX
+    };
+
+    public static final ItemList[] ELECTRIC_MOTOR = { ItemList.Electric_Motor_LV, ItemList.Electric_Motor_MV,
+        ItemList.Electric_Motor_HV, ItemList.Electric_Motor_EV, ItemList.Electric_Motor_IV, ItemList.Electric_Motor_LuV,
+        ItemList.Electric_Motor_ZPM, ItemList.Electric_Motor_UV, ItemList.Electric_Motor_UHV,
+        ItemList.Electric_Motor_UEV, ItemList.Electric_Motor_UIV, ItemList.Electric_Motor_UMV,
+        ItemList.Electric_Motor_UXV, ItemList.Electric_Motor_MAX };
+
+    public static final ItemList[] ELECTRIC_PUMP = { ItemList.Electric_Pump_LV, ItemList.Electric_Pump_MV,
+        ItemList.Electric_Pump_HV, ItemList.Electric_Pump_EV, ItemList.Electric_Pump_IV, ItemList.Electric_Pump_LuV,
+        ItemList.Electric_Pump_ZPM, ItemList.Electric_Pump_UV, ItemList.Electric_Pump_UHV, ItemList.Electric_Pump_UEV,
+        ItemList.Electric_Pump_UIV, ItemList.Electric_Pump_UMV, ItemList.Electric_Pump_UXV,
+        ItemList.Electric_Pump_MAX };
+
+    public static final ItemList[] FLUID_REGULATOR = { ItemList.FluidRegulator_LV, ItemList.FluidRegulator_MV,
+        ItemList.FluidRegulator_HV, ItemList.FluidRegulator_EV, ItemList.FluidRegulator_IV, ItemList.FluidRegulator_LuV,
+        ItemList.FluidRegulator_ZPM, ItemList.FluidRegulator_UV, ItemList.FluidRegulator_UHV,
+        ItemList.FluidRegulator_UEV, ItemList.FluidRegulator_UIV, ItemList.FluidRegulator_UMV,
+        ItemList.FluidRegulator_UXV, ItemList.FluidRegulator_MAX };
+
+    public static final ItemList[] CONVEYOR_MODULE = { ItemList.Conveyor_Module_LV, ItemList.Conveyor_Module_MV,
+        ItemList.Conveyor_Module_HV, ItemList.Conveyor_Module_EV, ItemList.Conveyor_Module_IV,
+        ItemList.Conveyor_Module_LuV, ItemList.Conveyor_Module_ZPM, ItemList.Conveyor_Module_UV,
+        ItemList.Conveyor_Module_UHV, ItemList.Conveyor_Module_UEV, ItemList.Conveyor_Module_UIV,
+        ItemList.Conveyor_Module_UMV, ItemList.Conveyor_Module_UXV, ItemList.Conveyor_Module_MAX };
+
+    public static final ItemList[] ELECTRIC_PISTON = { ItemList.Electric_Piston_LV, ItemList.Electric_Piston_MV,
+        ItemList.Electric_Piston_HV, ItemList.Electric_Piston_EV, ItemList.Electric_Piston_IV,
+        ItemList.Electric_Piston_LuV, ItemList.Electric_Piston_ZPM, ItemList.Electric_Piston_UV,
+        ItemList.Electric_Piston_UHV, ItemList.Electric_Piston_UEV, ItemList.Electric_Piston_UIV,
+        ItemList.Electric_Piston_UMV, ItemList.Electric_Piston_UXV, ItemList.Electric_Piston_MAX };
+
+    public static final ItemList[] ROBOT_ARM = { ItemList.Robot_Arm_LV, ItemList.Robot_Arm_MV, ItemList.Robot_Arm_HV,
+        ItemList.Robot_Arm_EV, ItemList.Robot_Arm_IV, ItemList.Robot_Arm_LuV, ItemList.Robot_Arm_ZPM,
+        ItemList.Robot_Arm_UV, ItemList.Robot_Arm_UHV, ItemList.Robot_Arm_UEV, ItemList.Robot_Arm_UIV,
+        ItemList.Robot_Arm_UMV, ItemList.Robot_Arm_UXV, ItemList.Robot_Arm_MAX };
+
+    public static final ItemList[] EMITTER = { ItemList.Emitter_LV, ItemList.Emitter_MV, ItemList.Emitter_HV,
+        ItemList.Emitter_EV, ItemList.Emitter_IV, ItemList.Emitter_LuV, ItemList.Emitter_ZPM, ItemList.Emitter_UV,
+        ItemList.Emitter_UHV, ItemList.Emitter_UEV, ItemList.Emitter_UIV, ItemList.Emitter_UMV, ItemList.Emitter_UXV,
+        ItemList.Emitter_MAX };
+
+    public static final ItemList[] SENSOR = { ItemList.Sensor_LV, ItemList.Sensor_MV, ItemList.Sensor_HV,
+        ItemList.Sensor_EV, ItemList.Sensor_IV, ItemList.Sensor_LuV, ItemList.Sensor_ZPM, ItemList.Sensor_UV,
+        ItemList.Sensor_UHV, ItemList.Sensor_UEV, ItemList.Sensor_UIV, ItemList.Sensor_UMV, ItemList.Sensor_UXV,
+        ItemList.Sensor_MAX };
+
+    public static final ItemList[] FIELD_GENERATOR = { ItemList.Field_Generator_LV, ItemList.Field_Generator_MV,
+        ItemList.Field_Generator_HV, ItemList.Field_Generator_EV, ItemList.Field_Generator_IV,
+        ItemList.Field_Generator_LuV, ItemList.Field_Generator_ZPM, ItemList.Field_Generator_UV,
+        ItemList.Field_Generator_UHV, ItemList.Field_Generator_UEV, ItemList.Field_Generator_UIV,
+        ItemList.Field_Generator_UMV, ItemList.Field_Generator_UXV, ItemList.Field_Generator_MAX };
+
+    public static final ItemList[] HULL = { ItemList.Hull_LV, ItemList.Hull_MV, ItemList.Hull_HV, ItemList.Hull_EV,
+        ItemList.Hull_IV, ItemList.Hull_LuV, ItemList.Hull_ZPM, ItemList.Hull_UV, ItemList.Hull_MAX, ItemList.Hull_UEV,
+        ItemList.Hull_UIV, ItemList.Hull_UMV, ItemList.Hull_UXV, ItemList.Hull_MAXV };
+
+    public static final Materials[] CABLE = { Materials.Tin, // LV
+        Materials.Copper, // MV
+        Materials.Gold, // HV
+        Materials.Aluminium, // EV
+        Materials.Tungsten, // IV
+        Materials.VanadiumGallium, // LuV
+        Materials.Naquadah, // ZPM
+        Materials.NaquadahAlloy, // UV
+        Materials.Bedrockium, // UHV
+        Materials.Draconium, // UEV
+        Materials.NetherStar, // UIV
+        Materials.Quantium, // UMV
+        Materials.BlackPlutonium, // UXV
+        Materials.DraconiumAwakened, // MAX
+    };
 
     public static NBTTagCompound writeItemStackToNBT(ItemStack stack) {
         NBTTagCompound compound = new NBTTagCompound();

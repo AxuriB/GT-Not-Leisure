@@ -24,6 +24,7 @@ import com.science.gtnl.common.machine.basicMachine.SteamAssemblerBronze;
 import com.science.gtnl.common.machine.basicMachine.SteamAssemblerSteel;
 import com.science.gtnl.common.machine.basicMachine.SteamTurbine;
 import com.science.gtnl.common.machine.cover.VoidCover;
+import com.science.gtnl.common.machine.cover.WirelessMultiEnergyCover;
 import com.science.gtnl.common.machine.cover.WirelessSteamCover;
 import com.science.gtnl.common.machine.hatch.CustomFluidHatch;
 import com.science.gtnl.common.machine.hatch.CustomMaintenanceHatch;
@@ -56,6 +57,7 @@ import com.science.gtnl.common.machine.hatch.SuperVoidBus;
 import com.science.gtnl.common.machine.hatch.SuperVoidHatch;
 import com.science.gtnl.common.machine.hatch.TapDynamoHatch;
 import com.science.gtnl.common.machine.hatch.VaultPortHatch;
+import com.science.gtnl.common.machine.hatch.WirelessMultiDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamDynamoHatch;
 import com.science.gtnl.common.machine.hatch.WirelessSteamEnergyHatch;
 import com.science.gtnl.common.machine.multiblock.AdvancedInfiniteDriller;
@@ -236,11 +238,13 @@ import com.science.gtnl.utils.text.AnimatedText;
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
+import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GlassTier;
 import gregtech.common.covers.CoverConveyor;
@@ -249,6 +253,11 @@ import gregtech.common.covers.CoverSteamRegulator;
 import gregtech.common.covers.CoverSteamValve;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
+import tectech.thing.CustomItemList;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
+import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyTunnel;
+import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessMulti;
 
 public class MachineLoader {
 
@@ -2363,6 +2372,1770 @@ public class MachineLoader {
                 10,
                 true));
         addItemTooltip(GTNLItemList.AdvancedSuperDualInputHatchME.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchMAX.set(
+            new MTEHatchEnergy(
+                ENERGY_HATCH_MAX.ID,
+                "EnergyHatchMAX",
+                StatCollector.translateToLocal("EnergyHatchMAX"),
+                14,
+                0,
+                new String[] { StatCollector.translateToLocal("Tooltip_EnergyHatch_00"),
+                    StatCollector.translateToLocal("Tooltip_EnergyHatch_01") }));
+        addItemTooltip(GTNLItemList.EnergyHatchMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchLV4A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_LV_4A.ID,
+                "EnergyHatchLV4A",
+                StatCollector.translateToLocal("EnergyHatchLV4A"),
+                1,
+                4));
+        addItemTooltip(GTNLItemList.EnergyHatchLV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchMV4A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_MV_4A.ID,
+                "EnergyHatchMV4A",
+                StatCollector.translateToLocal("EnergyHatchMV4A"),
+                2,
+                4));
+        addItemTooltip(GTNLItemList.EnergyHatchMV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchHV4A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_HV_4A.ID,
+                "EnergyHatchHV4A",
+                StatCollector.translateToLocal("EnergyHatchHV4A"),
+                3,
+                4));
+        addItemTooltip(GTNLItemList.EnergyHatchHV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchLV16A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_LV_16A.ID,
+                "EnergyHatchLV16A",
+                StatCollector.translateToLocal("EnergyHatchLV16A"),
+                1,
+                16));
+        addItemTooltip(GTNLItemList.EnergyHatchLV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchMV16A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_MV_16A.ID,
+                "EnergyHatchMV16A",
+                StatCollector.translateToLocal("EnergyHatchMV16A"),
+                2,
+                16));
+        addItemTooltip(GTNLItemList.EnergyHatchMV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchHV16A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_HV_16A.ID,
+                "EnergyHatchHV16A",
+                StatCollector.translateToLocal("EnergyHatchHV16A"),
+                3,
+                16));
+        addItemTooltip(GTNLItemList.EnergyHatchHV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchLV64A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_LV_64A.ID,
+                "EnergyHatchLV64A",
+                StatCollector.translateToLocal("EnergyHatchLV64A"),
+                1,
+                64));
+        addItemTooltip(GTNLItemList.EnergyHatchLV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchMV64A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_MV_64A.ID,
+                "EnergyHatchMV64A",
+                StatCollector.translateToLocal("EnergyHatchMV64A"),
+                2,
+                64));
+        addItemTooltip(GTNLItemList.EnergyHatchMV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchHV64A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_HV_64A.ID,
+                "EnergyHatchHV64A",
+                StatCollector.translateToLocal("EnergyHatchHV64A"),
+                3,
+                64));
+        addItemTooltip(GTNLItemList.EnergyHatchHV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchMAX4A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_MAX_4A.ID,
+                "EnergyHatchMAX4A",
+                StatCollector.translateToLocal("EnergyHatchMAX4A"),
+                14,
+                4));
+        addItemTooltip(GTNLItemList.EnergyHatchMAX4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchMAX16A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_MAX_16A.ID,
+                "EnergyHatchMAX16A",
+                StatCollector.translateToLocal("EnergyHatchMAX16A"),
+                14,
+                16));
+        addItemTooltip(GTNLItemList.EnergyHatchMAX16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchMAX64A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_MAX_64A.ID,
+                "EnergyHatchMAX64A",
+                StatCollector.translateToLocal("EnergyHatchMAX64A"),
+                14,
+                64));
+        addItemTooltip(GTNLItemList.EnergyHatchMAX64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLV.set(ItemList.Wireless_Hatch_Energy_LV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchLV4A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LV_4A.ID,
+                "WirelessEnergyHatchLV4A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLV4A"),
+                1,
+                4));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLV16A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LV_16A.ID,
+                "WirelessEnergyHatchLV16A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLV16A"),
+                1,
+                16));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLV64A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LV_64A.ID,
+                "WirelessEnergyHatchLV64A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLV64A"),
+                1,
+                64));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMV.set(ItemList.Wireless_Hatch_Energy_MV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchMV4A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MV_4A.ID,
+                "WirelessEnergyHatchMV4A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMV4A"),
+                2,
+                4));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMV16A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MV_16A.ID,
+                "WirelessEnergyHatchMV16A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMV16A"),
+                2,
+                16));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMV64A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MV_64A.ID,
+                "WirelessEnergyHatchMV64A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMV64A"),
+                2,
+                64));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchHV.set(ItemList.Wireless_Hatch_Energy_HV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchHV4A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_HV_4A.ID,
+                "WirelessEnergyHatchHV4A",
+                StatCollector.translateToLocal("WirelessEnergyHatchHV4A"),
+                3,
+                4));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchHV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchHV16A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_HV_16A.ID,
+                "WirelessEnergyHatchHV16A",
+                StatCollector.translateToLocal("WirelessEnergyHatchHV16A"),
+                3,
+                16));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchHV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchHV64A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_HV_64A.ID,
+                "WirelessEnergyHatchHV64A",
+                StatCollector.translateToLocal("WirelessEnergyHatchHV64A"),
+                3,
+                64));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchHV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchEV.set(ItemList.Wireless_Hatch_Energy_EV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchEV4A.set(CustomItemList.eM_energyWirelessMulti4_EV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchEV16A.set(CustomItemList.eM_energyWirelessMulti16_EV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchEV64A.set(CustomItemList.eM_energyWirelessMulti64_EV.get(1));
+
+        GTNLItemList.LaserEnergyHatchIV256A.set(CustomItemList.eM_energyTunnel1_IV.get(1));
+
+        GTNLItemList.LaserEnergyHatchIV1024A.set(CustomItemList.eM_energyTunnel2_IV.get(1));
+
+        GTNLItemList.LaserEnergyHatchIV4096A.set(CustomItemList.eM_energyTunnel3_IV.get(1));
+
+        GTNLItemList.LaserEnergyHatchIV16384A.set(CustomItemList.eM_energyTunnel4_IV.get(1));
+
+        GTNLItemList.LaserEnergyHatchIV65536A.set(CustomItemList.eM_energyTunnel5_IV.get(1));
+
+        GTNLItemList.LaserEnergyHatchIV262144A.set(CustomItemList.eM_energyTunnel6_IV.get(1));
+
+        GTNLItemList.LaserEnergyHatchIV1048576A.set(CustomItemList.eM_energyTunnel7_IV.get(1));
+
+        GTNLItemList.LaserEnergyHatchIV4194304A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_IV_4194304A.ID,
+                "LaserEnergyHatchIV4194304A",
+                StatCollector.translateToLocal("LaserEnergyHatchIV4194304A"),
+                5,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchIV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchIV16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_IV_16777216A.ID,
+                "LaserEnergyHatchIV16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchIV16777216A"),
+                5,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchIV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchLuV256A.set(CustomItemList.eM_energyTunnel1_LuV.get(1));
+
+        GTNLItemList.LaserEnergyHatchLuV1024A.set(CustomItemList.eM_energyTunnel2_LuV.get(1));
+
+        GTNLItemList.LaserEnergyHatchLuV4096A.set(CustomItemList.eM_energyTunnel3_LuV.get(1));
+
+        GTNLItemList.LaserEnergyHatchLuV16384A.set(CustomItemList.eM_energyTunnel4_LuV.get(1));
+
+        GTNLItemList.LaserEnergyHatchLuV65536A.set(CustomItemList.eM_energyTunnel5_LuV.get(1));
+
+        GTNLItemList.LaserEnergyHatchLuV262144A.set(CustomItemList.eM_energyTunnel6_LuV.get(1));
+
+        GTNLItemList.LaserEnergyHatchLuV1048576A.set(CustomItemList.eM_energyTunnel7_LuV.get(1));
+
+        GTNLItemList.LaserEnergyHatchLuV4194304A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_LUV_4194304A.ID,
+                "LaserEnergyHatchLuV4194304A",
+                StatCollector.translateToLocal("LaserEnergyHatchLuV4194304A"),
+                6,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchLuV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchLuV16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_LUV_16777216A.ID,
+                "LaserEnergyHatchLuV16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchLuV16777216A"),
+                6,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchLuV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchZPM256A.set(CustomItemList.eM_energyTunnel1_ZPM.get(1));
+
+        GTNLItemList.LaserEnergyHatchZPM1024A.set(CustomItemList.eM_energyTunnel2_ZPM.get(1));
+
+        GTNLItemList.LaserEnergyHatchZPM4096A.set(CustomItemList.eM_energyTunnel3_ZPM.get(1));
+
+        GTNLItemList.LaserEnergyHatchZPM16384A.set(CustomItemList.eM_energyTunnel4_ZPM.get(1));
+
+        GTNLItemList.LaserEnergyHatchZPM65536A.set(CustomItemList.eM_energyTunnel5_ZPM.get(1));
+
+        GTNLItemList.LaserEnergyHatchZPM262144A.set(CustomItemList.eM_energyTunnel6_ZPM.get(1));
+
+        GTNLItemList.LaserEnergyHatchZPM1048576A.set(CustomItemList.eM_energyTunnel7_ZPM.get(1));
+
+        GTNLItemList.LaserEnergyHatchZPM4194304A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_ZPM_4194304A.ID,
+                "LaserEnergyHatchZPM4194304A",
+                StatCollector.translateToLocal("LaserEnergyHatchZPM4194304A"),
+                7,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchZPM4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchZPM16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_ZPM_16777216A.ID,
+                "LaserEnergyHatchZPM16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchZPM16777216A"),
+                7,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchZPM16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUV256A.set(CustomItemList.eM_energyTunnel1_UV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUV1024A.set(CustomItemList.eM_energyTunnel2_UV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUV4096A.set(CustomItemList.eM_energyTunnel3_UV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUV16384A.set(CustomItemList.eM_energyTunnel4_UV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUV65536A.set(CustomItemList.eM_energyTunnel5_UV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUV262144A.set(CustomItemList.eM_energyTunnel6_UV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUV1048576A.set(CustomItemList.eM_energyTunnel7_UV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUV4194304A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UV_4194304A.ID,
+                "LaserEnergyHatchUV4194304A",
+                StatCollector.translateToLocal("LaserEnergyHatchUV4194304A"),
+                8,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUV16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UV_16777216A.ID,
+                "LaserEnergyHatchUV16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchUV16777216A"),
+                8,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUHV256A.set(CustomItemList.eM_energyTunnel1_UHV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUHV1024A.set(CustomItemList.eM_energyTunnel2_UHV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUHV4096A.set(CustomItemList.eM_energyTunnel3_UHV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUHV16384A.set(CustomItemList.eM_energyTunnel4_UHV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUHV65536A.set(CustomItemList.eM_energyTunnel5_UHV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUHV262144A.set(CustomItemList.eM_energyTunnel6_UHV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUHV1048576A.set(CustomItemList.eM_energyTunnel7_UHV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUHV4194304A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UHV_4194304A.ID,
+                "LaserEnergyHatchUHV4194304A",
+                StatCollector.translateToLocal("LaserEnergyHatchUHV4194304A"),
+                9,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUHV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUHV16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UHV_16777216A.ID,
+                "LaserEnergyHatchUHV16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchUHV16777216A"),
+                9,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUHV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUEV256A.set(CustomItemList.eM_energyTunnel1_UEV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUEV1024A.set(CustomItemList.eM_energyTunnel2_UEV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUEV4096A.set(CustomItemList.eM_energyTunnel3_UEV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUEV16384A.set(CustomItemList.eM_energyTunnel4_UEV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUEV65536A.set(CustomItemList.eM_energyTunnel5_UEV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUEV262144A.set(CustomItemList.eM_energyTunnel6_UEV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUEV1048576A.set(CustomItemList.eM_energyTunnel7_UEV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUEV4194304A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UEV_4194304A.ID,
+                "LaserEnergyHatchUEV4194304A",
+                StatCollector.translateToLocal("LaserEnergyHatchUEV4194304A"),
+                10,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUEV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUEV16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UEV_16777216A.ID,
+                "LaserEnergyHatchUEV16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchUEV16777216A"),
+                10,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUEV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUIV256A.set(CustomItemList.eM_energyTunnel1_UIV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUIV1024A.set(CustomItemList.eM_energyTunnel2_UIV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUIV4096A.set(CustomItemList.eM_energyTunnel3_UIV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUIV16384A.set(CustomItemList.eM_energyTunnel4_UIV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUIV65536A.set(CustomItemList.eM_energyTunnel5_UIV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUIV262144A.set(CustomItemList.eM_energyTunnel6_UIV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUIV1048576A.set(CustomItemList.eM_energyTunnel7_UIV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUIV4194304A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UIV_4194304A.ID,
+                "LaserEnergyHatchUIV4194304A",
+                StatCollector.translateToLocal("LaserEnergyHatchUIV4194304A"),
+                11,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUIV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUIV16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UIV_16777216A.ID,
+                "LaserEnergyHatchUIV16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchUIV16777216A"),
+                11,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUIV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUMV256A.set(CustomItemList.eM_energyTunnel1_UMV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUMV1024A.set(CustomItemList.eM_energyTunnel2_UMV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUMV4096A.set(CustomItemList.eM_energyTunnel3_UMV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUMV16384A.set(CustomItemList.eM_energyTunnel4_UMV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUMV65536A.set(CustomItemList.eM_energyTunnel5_UMV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUMV262144A.set(CustomItemList.eM_energyTunnel6_UMV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUMV1048576A.set(CustomItemList.eM_energyTunnel7_UMV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUMV4194304A.set(CustomItemList.eM_energyTunnel8_UMV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUMV16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_UMV_16777216A.ID,
+                "LaserEnergyHatchUMV16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchUMV16777216A"),
+                12,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchUMV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchUXV256A.set(CustomItemList.eM_energyTunnel1_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUXV1024A.set(CustomItemList.eM_energyTunnel2_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUXV4096A.set(CustomItemList.eM_energyTunnel3_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUXV16384A.set(CustomItemList.eM_energyTunnel4_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUXV65536A.set(CustomItemList.eM_energyTunnel5_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUXV262144A.set(CustomItemList.eM_energyTunnel6_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUXV1048576A.set(CustomItemList.eM_energyTunnel7_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUXV4194304A.set(CustomItemList.eM_energyTunnel8_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchUXV16777216A.set(CustomItemList.eM_energyTunnel9_UXV.get(1));
+
+        GTNLItemList.LaserEnergyHatchMAX256A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_256A.ID,
+                "LaserEnergyHatchMAX256A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX256A"),
+                14,
+                256));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchMAX1024A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_1024A.ID,
+                "LaserEnergyHatchMAX1024A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX1024A"),
+                14,
+                1024));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchMAX4096A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_4096A.ID,
+                "LaserEnergyHatchMAX4096A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX4096A"),
+                14,
+                4096));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchMAX16384A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_16384A.ID,
+                "LaserEnergyHatchMAX16384A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX16384A"),
+                14,
+                16384));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchMAX65536A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_65536A.ID,
+                "LaserEnergyHatchMAX65536A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX65536A"),
+                14,
+                65536));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchMAX262144A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_262144A.ID,
+                "LaserEnergyHatchMAX262144A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX262144A"),
+                14,
+                262144));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchMAX1048576A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_1048576A.ID,
+                "LaserEnergyHatchMAX1048576A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX1048576A"),
+                14,
+                1048576));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchMAX4194304A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_4194304A.ID,
+                "LaserEnergyHatchMAX4194304A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX4194304A"),
+                14,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserEnergyHatchMAX16777216A.set(
+            new MTEHatchEnergyTunnel(
+                LASER_ENERGY_HATCH_MAX_16777216A.ID,
+                "LaserEnergyHatchMAX16777216A",
+                StatCollector.translateToLocal("LaserEnergyHatchMAX16777216A"),
+                14,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserEnergyHatchMAX16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchIV256A.set(CustomItemList.eM_dynamoTunnel1_IV.get(1));
+
+        GTNLItemList.LaserDynamoHatchIV1024A.set(CustomItemList.eM_dynamoTunnel2_IV.get(1));
+
+        GTNLItemList.LaserDynamoHatchIV4096A.set(CustomItemList.eM_dynamoTunnel3_IV.get(1));
+
+        GTNLItemList.LaserDynamoHatchIV16384A.set(CustomItemList.eM_dynamoTunnel4_IV.get(1));
+
+        GTNLItemList.LaserDynamoHatchIV65536A.set(CustomItemList.eM_dynamoTunnel5_IV.get(1));
+
+        GTNLItemList.LaserDynamoHatchIV262144A.set(CustomItemList.eM_dynamoTunnel6_IV.get(1));
+
+        GTNLItemList.LaserDynamoHatchIV1048576A.set(CustomItemList.eM_dynamoTunnel7_IV.get(1));
+
+        GTNLItemList.LaserDynamoHatchIV4194304A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_IV_4194304A.ID,
+                "LaserDynamoHatchIV4194304A",
+                StatCollector.translateToLocal("LaserDynamoHatchIV4194304A"),
+                5,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchIV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchIV16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_IV_16777216A.ID,
+                "LaserDynamoHatchIV16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchIV16777216A"),
+                5,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchIV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchLuV256A.set(CustomItemList.eM_dynamoTunnel1_LuV.get(1));
+
+        GTNLItemList.LaserDynamoHatchLuV1024A.set(CustomItemList.eM_dynamoTunnel2_LuV.get(1));
+
+        GTNLItemList.LaserDynamoHatchLuV4096A.set(CustomItemList.eM_dynamoTunnel3_LuV.get(1));
+
+        GTNLItemList.LaserDynamoHatchLuV16384A.set(CustomItemList.eM_dynamoTunnel4_LuV.get(1));
+
+        GTNLItemList.LaserDynamoHatchLuV65536A.set(CustomItemList.eM_dynamoTunnel5_LuV.get(1));
+
+        GTNLItemList.LaserDynamoHatchLuV262144A.set(CustomItemList.eM_dynamoTunnel6_LuV.get(1));
+
+        GTNLItemList.LaserDynamoHatchLuV1048576A.set(CustomItemList.eM_dynamoTunnel7_LuV.get(1));
+
+        GTNLItemList.LaserDynamoHatchLuV4194304A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_LUV_4194304A.ID,
+                "LaserDynamoHatchLuV4194304A",
+                StatCollector.translateToLocal("LaserDynamoHatchLuV4194304A"),
+                6,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchLuV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchLuV16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_LUV_16777216A.ID,
+                "LaserDynamoHatchLuV16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchLuV16777216A"),
+                6,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchLuV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchZPM256A.set(CustomItemList.eM_dynamoTunnel1_ZPM.get(1));
+
+        GTNLItemList.LaserDynamoHatchZPM1024A.set(CustomItemList.eM_dynamoTunnel2_ZPM.get(1));
+
+        GTNLItemList.LaserDynamoHatchZPM4096A.set(CustomItemList.eM_dynamoTunnel3_ZPM.get(1));
+
+        GTNLItemList.LaserDynamoHatchZPM16384A.set(CustomItemList.eM_dynamoTunnel4_ZPM.get(1));
+
+        GTNLItemList.LaserDynamoHatchZPM65536A.set(CustomItemList.eM_dynamoTunnel5_ZPM.get(1));
+
+        GTNLItemList.LaserDynamoHatchZPM262144A.set(CustomItemList.eM_dynamoTunnel6_ZPM.get(1));
+
+        GTNLItemList.LaserDynamoHatchZPM1048576A.set(CustomItemList.eM_dynamoTunnel7_ZPM.get(1));
+
+        GTNLItemList.LaserDynamoHatchZPM4194304A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_ZPM_4194304A.ID,
+                "LaserDynamoHatchZPM4194304A",
+                StatCollector.translateToLocal("LaserDynamoHatchZPM4194304A"),
+                7,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchZPM4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchZPM16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_ZPM_16777216A.ID,
+                "LaserDynamoHatchZPM16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchZPM16777216A"),
+                7,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchZPM16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUV256A.set(CustomItemList.eM_dynamoTunnel1_UV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUV1024A.set(CustomItemList.eM_dynamoTunnel2_UV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUV4096A.set(CustomItemList.eM_dynamoTunnel3_UV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUV16384A.set(CustomItemList.eM_dynamoTunnel4_UV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUV65536A.set(CustomItemList.eM_dynamoTunnel5_UV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUV262144A.set(CustomItemList.eM_dynamoTunnel6_UV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUV1048576A.set(CustomItemList.eM_dynamoTunnel7_UV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUV4194304A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UV_4194304A.ID,
+                "LaserDynamoHatchUV4194304A",
+                StatCollector.translateToLocal("LaserDynamoHatchUV4194304A"),
+                8,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUV16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UV_16777216A.ID,
+                "LaserDynamoHatchUV16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchUV16777216A"),
+                8,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUHV256A.set(CustomItemList.eM_dynamoTunnel1_UHV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUHV1024A.set(CustomItemList.eM_dynamoTunnel2_UHV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUHV4096A.set(CustomItemList.eM_dynamoTunnel3_UHV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUHV16384A.set(CustomItemList.eM_dynamoTunnel4_UHV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUHV65536A.set(CustomItemList.eM_dynamoTunnel5_UHV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUHV262144A.set(CustomItemList.eM_dynamoTunnel6_UHV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUHV1048576A.set(CustomItemList.eM_dynamoTunnel7_UHV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUHV4194304A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UHV_4194304A.ID,
+                "LaserDynamoHatchUHV4194304A",
+                StatCollector.translateToLocal("LaserDynamoHatchUHV4194304A"),
+                9,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUHV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUHV16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UHV_16777216A.ID,
+                "LaserDynamoHatchUHV16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchUHV16777216A"),
+                9,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUHV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUEV256A.set(CustomItemList.eM_dynamoTunnel1_UEV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUEV1024A.set(CustomItemList.eM_dynamoTunnel2_UEV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUEV4096A.set(CustomItemList.eM_dynamoTunnel3_UEV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUEV16384A.set(CustomItemList.eM_dynamoTunnel4_UEV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUEV65536A.set(CustomItemList.eM_dynamoTunnel5_UEV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUEV262144A.set(CustomItemList.eM_dynamoTunnel6_UEV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUEV1048576A.set(CustomItemList.eM_dynamoTunnel7_UEV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUEV4194304A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UEV_4194304A.ID,
+                "LaserDynamoHatchUEV4194304A",
+                StatCollector.translateToLocal("LaserDynamoHatchUEV4194304A"),
+                10,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUEV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUEV16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UEV_16777216A.ID,
+                "LaserDynamoHatchUEV16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchUEV16777216A"),
+                10,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUEV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUIV256A.set(CustomItemList.eM_dynamoTunnel1_UIV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUIV1024A.set(CustomItemList.eM_dynamoTunnel2_UIV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUIV4096A.set(CustomItemList.eM_dynamoTunnel3_UIV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUIV16384A.set(CustomItemList.eM_dynamoTunnel4_UIV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUIV65536A.set(CustomItemList.eM_dynamoTunnel5_UIV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUIV262144A.set(CustomItemList.eM_dynamoTunnel6_UIV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUIV1048576A.set(CustomItemList.eM_dynamoTunnel7_UIV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUIV4194304A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UIV_4194304A.ID,
+                "LaserDynamoHatchUIV4194304A",
+                StatCollector.translateToLocal("LaserDynamoHatchUIV4194304A"),
+                11,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUIV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUIV16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UIV_16777216A.ID,
+                "LaserDynamoHatchUIV16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchUIV16777216A"),
+                11,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUIV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUMV256A.set(CustomItemList.eM_dynamoTunnel1_UMV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUMV1024A.set(CustomItemList.eM_dynamoTunnel2_UMV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUMV4096A.set(CustomItemList.eM_dynamoTunnel3_UMV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUMV16384A.set(CustomItemList.eM_dynamoTunnel4_UMV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUMV65536A.set(CustomItemList.eM_dynamoTunnel5_UMV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUMV262144A.set(CustomItemList.eM_dynamoTunnel6_UMV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUMV1048576A.set(CustomItemList.eM_dynamoTunnel7_UMV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUMV4194304A.set(CustomItemList.eM_dynamoTunnel8_UMV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUMV16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_UMV_16777216A.ID,
+                "LaserDynamoHatchUMV16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchUMV16777216A"),
+                12,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchUMV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchUXV256A.set(CustomItemList.eM_dynamoTunnel1_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUXV1024A.set(CustomItemList.eM_dynamoTunnel2_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUXV4096A.set(CustomItemList.eM_dynamoTunnel3_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUXV16384A.set(CustomItemList.eM_dynamoTunnel4_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUXV65536A.set(CustomItemList.eM_dynamoTunnel5_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUXV262144A.set(CustomItemList.eM_dynamoTunnel6_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUXV1048576A.set(CustomItemList.eM_dynamoTunnel7_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUXV4194304A.set(CustomItemList.eM_dynamoTunnel8_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchUXV16777216A.set(CustomItemList.eM_dynamoTunnel9_UXV.get(1));
+
+        GTNLItemList.LaserDynamoHatchMAX256A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_256A.ID,
+                "LaserDynamoHatchMAX256A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX256A"),
+                14,
+                256));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchMAX1024A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_1024A.ID,
+                "LaserDynamoHatchMAX1024A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX1024A"),
+                14,
+                1024));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchMAX4096A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_4096A.ID,
+                "LaserDynamoHatchMAX4096A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX4096A"),
+                14,
+                4096));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchMAX16384A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_16384A.ID,
+                "LaserDynamoHatchMAX16384A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX16384A"),
+                14,
+                16384));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchMAX65536A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_65536A.ID,
+                "LaserDynamoHatchMAX65536A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX65536A"),
+                14,
+                65536));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchMAX262144A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_262144A.ID,
+                "LaserDynamoHatchMAX262144A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX262144A"),
+                14,
+                262144));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchMAX1048576A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_1048576A.ID,
+                "LaserDynamoHatchMAX1048576A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX1048576A"),
+                14,
+                1048576));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchMAX4194304A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_4194304A.ID,
+                "LaserDynamoHatchMAX4194304A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX4194304A"),
+                14,
+                4194304));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LaserDynamoHatchMAX16777216A.set(
+            new MTEHatchDynamoTunnel(
+                LASER_DYNAMO_HATCH_MAX_16777216A.ID,
+                "LaserDynamoHatchMAX16777216A",
+                StatCollector.translateToLocal("LaserDynamoHatchMAX16777216A"),
+                14,
+                16777216));
+        addItemTooltip(GTNLItemList.LaserDynamoHatchMAX16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV.set(ItemList.Wireless_Hatch_Energy_IV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchIV4A.set(CustomItemList.eM_energyWirelessMulti4_IV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchIV16A.set(CustomItemList.eM_energyWirelessMulti16_IV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchIV64A.set(CustomItemList.eM_energyWirelessMulti64_IV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchIV256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_256A.ID,
+                "WirelessEnergyHatchIV256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV256A"),
+                5,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_1024A.ID,
+                "WirelessEnergyHatchIV1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV1024A"),
+                5,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_4096A.ID,
+                "WirelessEnergyHatchIV4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV4096A"),
+                5,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_16384A.ID,
+                "WirelessEnergyHatchIV16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV16384A"),
+                5,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_65536A.ID,
+                "WirelessEnergyHatchIV65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV65536A"),
+                5,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_262144A.ID,
+                "WirelessEnergyHatchIV262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV262144A"),
+                5,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_1048576A.ID,
+                "WirelessEnergyHatchIV1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV1048576A"),
+                5,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_4194304A.ID,
+                "WirelessEnergyHatchIV4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV4194304A"),
+                5,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchIV16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_IV_16777216A.ID,
+                "WirelessEnergyHatchIV16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchIV16777216A"),
+                5,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchIV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV.set(ItemList.Wireless_Hatch_Energy_LuV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchLuV4A.set(CustomItemList.eM_energyWirelessMulti4_LuV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchLuV16A.set(CustomItemList.eM_energyWirelessMulti16_LuV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchLuV64A.set(CustomItemList.eM_energyWirelessMulti64_LuV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchLuV256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_256A.ID,
+                "WirelessEnergyHatchLuV256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV256A"),
+                6,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_1024A.ID,
+                "WirelessEnergyHatchLuV1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV1024A"),
+                6,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_4096A.ID,
+                "WirelessEnergyHatchLuV4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV4096A"),
+                6,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_16384A.ID,
+                "WirelessEnergyHatchLuV16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV16384A"),
+                6,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_65536A.ID,
+                "WirelessEnergyHatchLuV65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV65536A"),
+                6,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_262144A.ID,
+                "WirelessEnergyHatchLuV262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV262144A"),
+                6,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_1048576A.ID,
+                "WirelessEnergyHatchLuV1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV1048576A"),
+                6,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_4194304A.ID,
+                "WirelessEnergyHatchLuV4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV4194304A"),
+                6,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchLuV16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_LUV_16777216A.ID,
+                "WirelessEnergyHatchLuV16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchLuV16777216A"),
+                6,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchLuV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM.set(ItemList.Wireless_Hatch_Energy_ZPM.get(1));
+
+        GTNLItemList.WirelessEnergyHatchZPM4A.set(CustomItemList.eM_energyWirelessMulti4_ZPM.get(1));
+
+        GTNLItemList.WirelessEnergyHatchZPM16A.set(CustomItemList.eM_energyWirelessMulti16_ZPM.get(1));
+
+        GTNLItemList.WirelessEnergyHatchZPM64A.set(CustomItemList.eM_energyWirelessMulti64_ZPM.get(1));
+
+        GTNLItemList.WirelessEnergyHatchZPM256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_256A.ID,
+                "WirelessEnergyHatchZPM256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM256A"),
+                7,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_1024A.ID,
+                "WirelessEnergyHatchZPM1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM1024A"),
+                7,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_4096A.ID,
+                "WirelessEnergyHatchZPM4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM4096A"),
+                7,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_16384A.ID,
+                "WirelessEnergyHatchZPM16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM16384A"),
+                7,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_65536A.ID,
+                "WirelessEnergyHatchZPM65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM65536A"),
+                7,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_262144A.ID,
+                "WirelessEnergyHatchZPM262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM262144A"),
+                7,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_1048576A.ID,
+                "WirelessEnergyHatchZPM1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM1048576A"),
+                7,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_4194304A.ID,
+                "WirelessEnergyHatchZPM4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM4194304A"),
+                7,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchZPM16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_ZPM_16777216A.ID,
+                "WirelessEnergyHatchZPM16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchZPM16777216A"),
+                7,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchZPM16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV.set(ItemList.Wireless_Hatch_Energy_UV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUV4A.set(CustomItemList.eM_energyWirelessMulti4_UV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUV16A.set(CustomItemList.eM_energyWirelessMulti16_UV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUV64A.set(CustomItemList.eM_energyWirelessMulti64_UV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUV256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_256A.ID,
+                "WirelessEnergyHatchUV256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV256A"),
+                8,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_1024A.ID,
+                "WirelessEnergyHatchUV1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV1024A"),
+                8,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_4096A.ID,
+                "WirelessEnergyHatchUV4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV4096A"),
+                8,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_16384A.ID,
+                "WirelessEnergyHatchUV16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV16384A"),
+                8,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_65536A.ID,
+                "WirelessEnergyHatchUV65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV65536A"),
+                8,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_262144A.ID,
+                "WirelessEnergyHatchUV262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV262144A"),
+                8,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_1048576A.ID,
+                "WirelessEnergyHatchUV1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV1048576A"),
+                8,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_4194304A.ID,
+                "WirelessEnergyHatchUV4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV4194304A"),
+                8,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUV16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UV_16777216A.ID,
+                "WirelessEnergyHatchUV16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUV16777216A"),
+                8,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV.set(ItemList.Wireless_Hatch_Energy_UHV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUHV4A.set(CustomItemList.eM_energyWirelessMulti4_UHV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUHV16A.set(CustomItemList.eM_energyWirelessMulti16_UHV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUHV64A.set(CustomItemList.eM_energyWirelessMulti64_UHV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUHV256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_256A.ID,
+                "WirelessEnergyHatchUHV256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV256A"),
+                9,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_1024A.ID,
+                "WirelessEnergyHatchUHV1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV1024A"),
+                9,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_4096A.ID,
+                "WirelessEnergyHatchUHV4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV4096A"),
+                9,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_16384A.ID,
+                "WirelessEnergyHatchUHV16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV16384A"),
+                9,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_65536A.ID,
+                "WirelessEnergyHatchUHV65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV65536A"),
+                9,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_262144A.ID,
+                "WirelessEnergyHatchUHV262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV262144A"),
+                9,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_1048576A.ID,
+                "WirelessEnergyHatchUHV1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV1048576A"),
+                9,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_4194304A.ID,
+                "WirelessEnergyHatchUHV4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV4194304A"),
+                9,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUHV16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UHV_16777216A.ID,
+                "WirelessEnergyHatchUHV16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUHV16777216A"),
+                9,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUHV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV.set(ItemList.Wireless_Hatch_Energy_UEV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUEV4A.set(CustomItemList.eM_energyWirelessMulti4_UEV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUEV16A.set(CustomItemList.eM_energyWirelessMulti16_UEV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUEV64A.set(CustomItemList.eM_energyWirelessMulti64_UEV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUEV256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_256A.ID,
+                "WirelessEnergyHatchUEV256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV256A"),
+                10,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_1024A.ID,
+                "WirelessEnergyHatchUEV1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV1024A"),
+                10,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_4096A.ID,
+                "WirelessEnergyHatchUEV4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV4096A"),
+                10,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_16384A.ID,
+                "WirelessEnergyHatchUEV16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV16384A"),
+                10,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_65536A.ID,
+                "WirelessEnergyHatchUEV65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV65536A"),
+                10,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_262144A.ID,
+                "WirelessEnergyHatchUEV262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV262144A"),
+                10,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_1048576A.ID,
+                "WirelessEnergyHatchUEV1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV1048576A"),
+                10,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_4194304A.ID,
+                "WirelessEnergyHatchUEV4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV4194304A"),
+                10,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUEV16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UEV_16777216A.ID,
+                "WirelessEnergyHatchUEV16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUEV16777216A"),
+                10,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUEV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV.set(ItemList.Wireless_Hatch_Energy_UIV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUIV4A.set(CustomItemList.eM_energyWirelessMulti4_UIV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUIV16A.set(CustomItemList.eM_energyWirelessMulti16_UIV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUIV64A.set(CustomItemList.eM_energyWirelessMulti64_UIV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUIV256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_256A.ID,
+                "WirelessEnergyHatchUIV256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV256A"),
+                11,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_1024A.ID,
+                "WirelessEnergyHatchUIV1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV1024A"),
+                11,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_4096A.ID,
+                "WirelessEnergyHatchUIV4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV4096A"),
+                11,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_16384A.ID,
+                "WirelessEnergyHatchUIV16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV16384A"),
+                11,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_65536A.ID,
+                "WirelessEnergyHatchUIV65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV65536A"),
+                11,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_262144A.ID,
+                "WirelessEnergyHatchUIV262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV262144A"),
+                11,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_1048576A.ID,
+                "WirelessEnergyHatchUIV1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV1048576A"),
+                11,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_4194304A.ID,
+                "WirelessEnergyHatchUIV4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV4194304A"),
+                11,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUIV16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UIV_16777216A.ID,
+                "WirelessEnergyHatchUIV16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUIV16777216A"),
+                11,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUIV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV.set(ItemList.Wireless_Hatch_Energy_UMV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUMV4A.set(CustomItemList.eM_energyWirelessMulti4_UMV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUMV16A.set(CustomItemList.eM_energyWirelessMulti16_UMV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUMV64A.set(CustomItemList.eM_energyWirelessMulti64_UMV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUMV256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_256A.ID,
+                "WirelessEnergyHatchUMV256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV256A"),
+                12,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_1024A.ID,
+                "WirelessEnergyHatchUMV1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV1024A"),
+                12,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_4096A.ID,
+                "WirelessEnergyHatchUMV4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV4096A"),
+                12,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_16384A.ID,
+                "WirelessEnergyHatchUMV16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV16384A"),
+                12,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_65536A.ID,
+                "WirelessEnergyHatchUMV65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV65536A"),
+                12,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_262144A.ID,
+                "WirelessEnergyHatchUMV262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV262144A"),
+                12,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_1048576A.ID,
+                "WirelessEnergyHatchUMV1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV1048576A"),
+                12,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_4194304A.ID,
+                "WirelessEnergyHatchUMV4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV4194304A"),
+                12,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUMV16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_UMV_16777216A.ID,
+                "WirelessEnergyHatchUMV16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchUMV16777216A"),
+                12,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchUMV16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchUXV.set(ItemList.Wireless_Hatch_Energy_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV4A.set(CustomItemList.eM_energyWirelessMulti4_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV16A.set(CustomItemList.eM_energyWirelessMulti16_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV64A.set(CustomItemList.eM_energyWirelessMulti64_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV256A.set(CustomItemList.eM_energyWirelessTunnel1_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV1024A.set(CustomItemList.eM_energyWirelessTunnel2_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV4096A.set(CustomItemList.eM_energyWirelessTunnel3_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV16384A.set(CustomItemList.eM_energyWirelessTunnel4_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV65536A.set(CustomItemList.eM_energyWirelessTunnel5_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV262144A.set(CustomItemList.eM_energyWirelessTunnel6_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV1048576A.set(CustomItemList.eM_energyWirelessTunnel7_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV4194304A.set(CustomItemList.eM_energyWirelessTunnel8_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchUXV16777216A.set(CustomItemList.eM_energyWirelessTunnel9_UXV.get(1));
+
+        GTNLItemList.WirelessEnergyHatchMAX.set(ItemList.Wireless_Hatch_Energy_MAX.get(1));
+
+        GTNLItemList.WirelessEnergyHatchMAX4A.set(CustomItemList.eM_energyWirelessMulti4_MAX.get(1));
+
+        GTNLItemList.WirelessEnergyHatchMAX16A.set(CustomItemList.eM_energyWirelessMulti16_MAX.get(1));
+
+        GTNLItemList.WirelessEnergyHatchMAX64A.set(CustomItemList.eM_energyWirelessMulti64_MAX.get(1));
+
+        GTNLItemList.WirelessEnergyHatchMAX256A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_256A.ID,
+                "WirelessEnergyHatchMAX256A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX256A"),
+                14,
+                256));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX256A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX1024A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_1024A.ID,
+                "WirelessEnergyHatchMAX1024A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX1024A"),
+                14,
+                1024));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX1024A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX4096A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_4096A.ID,
+                "WirelessEnergyHatchMAX4096A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX4096A"),
+                14,
+                4096));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX4096A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX16384A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_16384A.ID,
+                "WirelessEnergyHatchMAX16384A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX16384A"),
+                14,
+                16384));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX16384A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX65536A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_65536A.ID,
+                "WirelessEnergyHatchMAX65536A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX65536A"),
+                14,
+                65536));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX65536A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX262144A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_262144A.ID,
+                "WirelessEnergyHatchMAX262144A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX262144A"),
+                14,
+                262144));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX262144A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX1048576A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_1048576A.ID,
+                "WirelessEnergyHatchMAX1048576A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX1048576A"),
+                14,
+                1048576));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX1048576A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX4194304A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_4194304A.ID,
+                "WirelessEnergyHatchMAX4194304A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX4194304A"),
+                14,
+                4194304));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX4194304A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_16777216A.ID,
+                "WirelessEnergyHatchMAX16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX16777216A"),
+                14,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.WirelessEnergyHatchMAX16777216A.set(
+            new MTEHatchWirelessMulti(
+                WIRELESS_ENERGY_HATCH_MAX_16777216A.ID,
+                "WirelessEnergyHatchMAX16777216A",
+                StatCollector.translateToLocal("WirelessEnergyHatchMAX16777216A"),
+                14,
+                16777216));
+        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LegendaryWirelessEnergyHatch.set(
+            new MTEHatchWirelessMulti(
+                LEGENDARY_WIRELESS_ENERGY_HATCH.ID,
+                "LegendaryWirelessEnergyHatch",
+                StatCollector.translateToLocal("LegendaryWirelessEnergyHatch"),
+                14,
+                Integer.MAX_VALUE));
+        addItemTooltip(GTNLItemList.LegendaryWirelessEnergyHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.LegendaryWirelessDynamoHatch.set(
+            new WirelessMultiDynamoHatch(
+                LEGENDARY_WIRELESS_DYNAMO_HATCH.ID,
+                "LegendaryWirelessDynamoHatch",
+                StatCollector.translateToLocal("LegendaryWirelessDynamoHatch"),
+                14,
+                Integer.MAX_VALUE));
+        addItemTooltip(GTNLItemList.LegendaryWirelessDynamoHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
     }
 
     @Deprecated
@@ -2552,6 +4325,15 @@ public class MachineLoader {
             TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(ITEM_VOID_SIGN)),
             VoidCover::new,
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+
+        for (int i = 0; i < 14; i++) {
+            int tier = i + 1;
+            CoverRegistry.registerCover(
+                GTNLItemList.WIRELESS_ENERGY_COVER_4A[i].get(1),
+                TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAYS_ENERGY_ON_WIRELESS_4A[0])),
+                context -> new WirelessMultiEnergyCover(context, (int) GTValues.V[tier], 4),
+                CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+        }
 
         // CoverRegistry.registerCover(
         // GTNLItemList.SteelTurbine.get(1L),

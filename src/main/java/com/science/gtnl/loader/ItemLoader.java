@@ -49,10 +49,12 @@ import com.science.gtnl.utils.text.AnimatedTooltipHandler;
 
 import appeng.api.storage.StorageChannel;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 
 public class ItemLoader {
@@ -645,6 +647,21 @@ public class ItemLoader {
                     StatCollector.translateToLocal("Tooltip_VoidCover_03") }));
 
         GTNLItemList.ManaElectricProspectorTool.set(ElectricProspectorTool.initItem(0, 25, 9999));
+
+        for (int i = 0; i < 14; i++) {
+            GTNLItemList.WIRELESS_ENERGY_COVER_4A[i].set(
+                MetaItemAdder.initItem(
+                    "4A " + GTValues.VN[i + 1] + " Wireless Energy Cover",
+                    107 + i,
+                    new String[] { StatCollector.translateToLocal("Tooltip_WirelessEnergyCover4A_00"),
+                        StatCollector.translateToLocal("Tooltip_WirelessEnergyCover4A_01"),
+                        StatCollector.translateToLocal("Tooltip_WirelessEnergyCover4A_02"),
+                        StatCollector.translateToLocal("Tooltip_WirelessEnergyCover4A_03"),
+                        StatCollector.translateToLocalFormatted(
+                            "Tooltip_WirelessEnergyCover4A_04",
+                            GTUtility.formatNumbers(GTValues.V[i + 1]),
+                            GTValues.VN[i + 1]) }));
+        }
     }
 
     public static void registry() {
