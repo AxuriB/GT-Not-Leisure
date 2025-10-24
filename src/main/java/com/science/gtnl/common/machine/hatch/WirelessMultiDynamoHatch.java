@@ -6,9 +6,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GREEN;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
 import static gregtech.api.enums.GTValues.*;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -16,11 +13,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTUtility;
+import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDynamoMulti;
 
-public class WirelessMultiDynamoHatch extends MTEHatchWirelessDynamoMulti {
-
-    public boolean laserMode;
+public class WirelessMultiDynamoHatch extends MTEHatchWirelessDynamoMulti implements IConnectsToEnergyTunnel {
 
     public WirelessMultiDynamoHatch(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
         super(aID, aName, aNameRegional, aTier, aAmp);
@@ -37,8 +33,23 @@ public class WirelessMultiDynamoHatch extends MTEHatchWirelessDynamoMulti {
     }
 
     @Override
-    public ConnectionType getConnectionType() {
-        return laserMode ? ConnectionType.LASER : ConnectionType.CABLE;
+    public boolean isInputFacing(ForgeDirection side) {
+        return side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean canConnect(ForgeDirection side) {
+        return side != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public long maxEUInput() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public long maxAmperesIn() {
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -57,30 +68,5 @@ public class WirelessMultiDynamoHatch extends MTEHatchWirelessDynamoMulti {
                 + GTUtility.formatNumbers(maxAmperes * V[mTier])
                 + GRAY
                 + " EU/t" };
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("laserMode", laserMode);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        laserMode = aNBT.getBoolean("laserMode");
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
-        if (getBaseMetaTileEntity().isServerSide()) {
-            laserMode = !laserMode;
-            GTUtility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal(
-                    "Info_WirelessMultiDynamoHatch_LaserMode_" + (laserMode ? "Enabled" : "Disabled")));
-        }
     }
 }

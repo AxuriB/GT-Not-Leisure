@@ -384,7 +384,7 @@ LegendaryWirelessEnergyHatch=Legendary Wireless Energy Hatch
 LegendaryWirelessDynamoHatch=Legendary Wireless Dynamo Hatch
 Tooltip_WirelessMultiDynamoHatch_00=§7Stores energy globally in a network, up to 2^(2^31) EU.
 Tooltip_WirelessMultiDynamoHatch_01=§7Does not connect to wires. This block accepts EU into the network.
-Tooltip_WirelessMultiDynamoHatch_02=Right-click with screwdriver to toggle laser/cable mode
+Tooltip_WirelessMultiDynamoHatch_02=Supports laser and cable connections
 
 ExplosionDynamoHatch=Explosion Dynamo Hatch
 Tooltip_ExplosionDynamoHatch_00=Concept God!

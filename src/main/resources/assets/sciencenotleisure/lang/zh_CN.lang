@@ -384,7 +384,7 @@ LegendaryWirelessEnergyHatch=传奇无线能源仓
 LegendaryWirelessDynamoHatch=传奇无线动力仓
 Tooltip_WirelessMultiDynamoHatch_00=§7将能量存储于全局网络中，上限为2^(2^31)EU.
 Tooltip_WirelessMultiDynamoHatch_01=§7不连接导线，此方块可以为网络接收EU.
-Tooltip_WirelessMultiDynamoHatch_02=使用螺丝刀右键切换激光和线缆模式
+Tooltip_WirelessMultiDynamoHatch_02=支持激光和线缆连接
 
 ExplosionDynamoHatch=爆炸动力仓
 Tooltip_ExplosionDynamoHatch_00=概念神！
