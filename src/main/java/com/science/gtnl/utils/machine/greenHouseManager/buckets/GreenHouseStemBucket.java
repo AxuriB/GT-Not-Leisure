@@ -36,9 +36,9 @@ public class GreenHouseStemBucket extends GreenHouseBucket {
         @Override
         public GreenHouseBucket tryCreateBucket(IGreenHouse greenhouse, ItemStack input) {
             Item item = input.getItem();
-            if (!(item instanceof IPlantable)) return null;
+            if (!(item instanceof IPlantable plantable)) return null;
 
-            Block block = ((IPlantable) item).getPlant(
+            Block block = plantable.getPlant(
                 greenhouse.getBaseMetaTileEntity()
                     .getWorld(),
                 0,

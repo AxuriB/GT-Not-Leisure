@@ -18,6 +18,7 @@ import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.item.items.Stick;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.recipe.bloodMagic.MeteorsRecipes;
+import com.science.gtnl.common.recipe.botania.BotaniaManaInfusionRecipes;
 import com.science.gtnl.common.recipe.gregtech.AlloyBlastSmelterRecipes;
 import com.science.gtnl.common.recipe.gregtech.AlloySmelterRecipes;
 import com.science.gtnl.common.recipe.gregtech.AssemblerRecipes;
@@ -200,7 +201,7 @@ public class RecipeLoader {
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
             new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes(),
-            new ElectrocellGeneratorRecipes(), new RocketAssemblerRecipes() };
+            new ElectrocellGeneratorRecipes(), new RocketAssemblerRecipes(), new BotaniaManaInfusionRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };

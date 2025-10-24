@@ -135,7 +135,7 @@ public class GreenHouseSeedBucket extends GreenHouseBucket {
         // 移除种子，确保平衡
         World world = greenhouse.getBaseMetaTileEntity()
             .getWorld();
-        if (!removeSeedFromDrops(world, newDrops, this.seed, NUMBER_OF_DROPS_TO_SIMULATE * FORTUNE_LEVEL)) return;
+        removeSeedFromDrops(world, newDrops, this.seed, NUMBER_OF_DROPS_TO_SIMULATE * FORTUNE_LEVEL);
 
         // 平均化
         newDrops.entrySet()
@@ -176,7 +176,9 @@ public class GreenHouseSeedBucket extends GreenHouseBucket {
         }
 
         // 否则尝试合成路径
-        return tryConsumeCraftableSeeds(world, drops, safeSeed, -seedCountAfterRemoval);
+        if (tryConsumeCraftableSeeds(world, drops, safeSeed, -seedCountAfterRemoval)) return true;
+        drops.removeItem(safeSeed);
+        return true;
     }
 
     /** 尝试用合成配方消耗掉种子 */
@@ -208,7 +210,14 @@ public class GreenHouseSeedBucket extends GreenHouseBucket {
                         it.remove();
                         needed -= craftableSeeds;
                     } else {
-                        entry.setValue(entry.getValue() - (double) needed / outputsPerCraft);
+                        double newValue = entry.getValue() - (double) needed / outputsPerCraft;
+
+                        if (newValue <= 0) {
+                            it.remove();
+                            return true;
+                        }
+
+                        entry.setValue(newValue);
                         return true;
                     }
 
