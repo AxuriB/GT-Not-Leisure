@@ -4110,15 +4110,6 @@ public class MachineLoader {
                 16777216));
         addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.WirelessEnergyHatchMAX16777216A.set(
-            new MTEHatchWirelessMulti(
-                WIRELESS_ENERGY_HATCH_MAX_16777216A.ID,
-                "WirelessEnergyHatchMAX16777216A",
-                StatCollector.translateToLocal("WirelessEnergyHatchMAX16777216A"),
-                14,
-                16777216));
-        addItemTooltip(GTNLItemList.WirelessEnergyHatchMAX16777216A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
         GTNLItemList.LegendaryWirelessEnergyHatch.set(
             new MTEHatchWirelessMulti(
                 LEGENDARY_WIRELESS_ENERGY_HATCH.ID,
