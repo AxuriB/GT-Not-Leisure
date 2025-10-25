@@ -73,7 +73,7 @@ public class BlockShimmerFluid extends BlockFluidBase {
             return;
         }
 
-        if (time < 100) return;
+        if (time < 20) return;
 
         ItemStack original = itemEntity.getEntityItem();
         List<ItemStack> results = ShimmerRecipes.getConversionResult(original);
@@ -105,7 +105,7 @@ public class BlockShimmerFluid extends BlockFluidBase {
 
         for (int i = 0; i < 40; i++) {
             double offsetX = (world.rand.nextDouble() - 0.5) * 0.5;
-            double offsetY = world.rand.nextDouble() * 0.5 + 0.1;
+            double offsetY = world.rand.nextDouble() * 0.5 + 1;
             double offsetZ = (world.rand.nextDouble() - 0.5) * 0.5;
 
             double motionX = (world.rand.nextDouble() - 0.5) * 0.1;

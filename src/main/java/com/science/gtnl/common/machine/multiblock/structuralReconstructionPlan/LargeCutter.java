@@ -14,7 +14,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -141,18 +140,6 @@ public class LargeCutter extends GTMMultiMachineBase<LargeCutter> implements ISu
     public void setMachineModeIcons() {
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_CUTTING);
         machineModeIcons.add(GTUITextures.OVERLAY_BUTTON_MACHINEMODE_SLICING);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setInteger("mode", machineMode);
-    }
-
-    @Override
-    public void loadNBTData(final NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        machineMode = aNBT.getInteger("mode");
     }
 
     @Override

@@ -119,7 +119,7 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
     public HeatingCoilLevel mCoilLevel = HeatingCoilLevel.None;
     public int mHeatingCapacity = 0;
 
-    public static final Map<ItemStack, Integer> PARALLEL_TIERS = new HashMap<>() {
+    public static Map<ItemStack, Integer> PARALLEL_TIERS = new HashMap<>() {
 
         {
             put(GTNLItemList.LVParallelControllerCore.get(1), 1);
@@ -687,8 +687,8 @@ public abstract class MultiMachineBase<T extends MultiMachineBase<T>> extends MT
         return hatchColors;
     }
 
-    protected boolean depleteInputFromRestrictedHatches(Collection<CustomFluidHatch> aHatches, int aAmount) {
-        for (final CustomFluidHatch tHatch : validMTEList(aHatches)) {
+    public boolean depleteInputFromRestrictedHatches(Collection<CustomFluidHatch> aHatches, int aAmount) {
+        for (CustomFluidHatch tHatch : validMTEList(aHatches)) {
             FluidStack tLiquid = tHatch.getFluid();
             if (tLiquid == null || tLiquid.amount < aAmount) {
                 continue;

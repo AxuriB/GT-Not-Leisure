@@ -281,23 +281,22 @@ public class BlazeBlastFurnace extends MultiMachineBase<BlazeBlastFurnace> imple
     }
 
     @Override
+    public int getMaxTierSkip() {
+        return 0;
+    }
+
+    @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-
         if (this.mStartUpCheck < 0) {
             startRecipeProcessing();
-            if (this.mMaxProgresstime > 0 && this.mProgresstime != 0 || this.getBaseMetaTileEntity()
-                .hasWorkJustBeenEnabled()) {
-                if (aTick % 20 == 0 || this.getBaseMetaTileEntity()
-                    .hasWorkJustBeenEnabled()) {
-                    int baseAmount = (int) (10 * Math.pow(GTUtility.getTier(lEUt), 2)) * mMultiTier;
-                    if (!this.depleteInputFromRestrictedHatches(this.mFluidBlazeInputHatch, baseAmount)) {
-                        this.causeMaintenanceIssue();
-                        this.stopMachine(
-                            ShutDownReasonRegistry.outOfFluid(
-                                Objects.requireNonNull(FluidUtils.getFluidStack("molten.blaze", baseAmount))));
-                        endRecipeProcessing();
-                    }
+            if (this.mMaxProgresstime > 0 && aTick % 20 == 0) {
+                int baseAmount = (int) (10 * Math.pow(GTUtility.getTier(-lEUt), 2)) * mMultiTier;
+                if (!this.depleteInputFromRestrictedHatches(this.mFluidBlazeInputHatch, baseAmount)) {
+                    this.causeMaintenanceIssue();
+                    this.stopMachine(
+                        ShutDownReasonRegistry
+                            .outOfFluid(Objects.requireNonNull(FluidUtils.getFluidStack("molten.blaze", baseAmount))));
                 }
             }
             endRecipeProcessing();

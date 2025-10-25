@@ -156,10 +156,9 @@ public class CellRegulatorRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GregtechItemList.SodiumEthylXanthate.get(32),
                 MaterialUtils.generateMaterialFromGtENUM(Materials.Netherrack)
                     .getMilled(64))
-            .fluidInputs(FluidUtils.getFluidStack(GTPPFluids.PineOil, 1000))
+            .fluidInputs(Materials.NefariousOil.getFluid(2000))
             .fluidOutputs(FluidUtils.getFluidStack(GTPPFluids.NetherrackFlotationFroth, 1000))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)

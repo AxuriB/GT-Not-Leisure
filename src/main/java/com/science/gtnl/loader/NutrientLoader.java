@@ -4,6 +4,7 @@ import com.science.gtnl.utils.enums.GTNLItemList;
 
 import ca.wescook.nutrition.nutrients.Nutrient;
 import ca.wescook.nutrition.nutrients.NutrientList;
+import lombok.Getter;
 
 public class NutrientLoader {
 
@@ -30,6 +31,7 @@ public class NutrientLoader {
         }
     }
 
+    @Getter
     public enum FoodCategory {
 
         DAIRY("dairy"),
@@ -42,10 +44,6 @@ public class NutrientLoader {
 
         FoodCategory(String name) {
             this.name = name;
-        }
-
-        public String getName() {
-            return name;
         }
 
         public static FoodCategory fromName(String name) {

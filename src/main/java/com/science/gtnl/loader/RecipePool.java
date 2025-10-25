@@ -2,10 +2,14 @@ package com.science.gtnl.loader;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.science.gtnl.utils.enums.GTNLItemList;
 import com.science.gtnl.utils.enums.ModList;
@@ -21,6 +25,8 @@ import com.science.gtnl.utils.gui.recipe.RocketAssemblerFrontend;
 import com.science.gtnl.utils.gui.recipe.SpaceMinerFrontend;
 import com.science.gtnl.utils.gui.recipe.SteamGateAssemblerFrontend;
 import com.science.gtnl.utils.gui.recipe.SteamLogoFrontend;
+import com.science.gtnl.utils.recipes.CircuitNanitesDataSpecialValue;
+import com.science.gtnl.utils.recipes.CircuitNanitesRecipeData;
 import com.science.gtnl.utils.recipes.IsaMillTierKey;
 import com.science.gtnl.utils.recipes.NaquadahReactorSpecialValue;
 import com.science.gtnl.utils.recipes.RealArtificialStarSpecialValue;
@@ -376,8 +382,8 @@ public class RecipePool {
         .neiSpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE)
         .build();
 
-    public static RecipeMap<RecipeMapBackend> AdvancedCircuitAssemblyLineRecipes = RecipeMapBuilder
-        .of("gtnl.recipe.AdvancedCircuitAssemblyLineRecipes")
+    public static RecipeMap<RecipeMapBackend> CircuitComponentAssemblyLineRecipes = RecipeMapBuilder
+        .of("gtnl.recipe.CircuitComponentAssemblyLineRecipes")
         .maxIO(12, 1, 12, 0)
         .neiTransferRect(70, 15, 18, 54)
         .neiSpecialInfoFormatter(
@@ -389,7 +395,7 @@ public class RecipePool {
         .addSpecialTexture(70, 11, 72, 40, GGUITextures.PICTURE_COMPONENT_ASSLINE)
         .frontend(ComponentAssemblyLineFrontend::new)
         .neiHandlerInfo(
-            builder -> builder.setDisplayStack(GTNLItemList.AdvancedCircuitAssemblyLine.get(1))
+            builder -> builder.setDisplayStack(GTNLItemList.CircuitComponentAssemblyLine.get(1))
                 .setMaxRecipesPerPage(1))
         .build();
 
@@ -590,6 +596,29 @@ public class RecipePool {
         .useSpecialSlot()
         .neiHandlerInfo(
             builder -> builder.setDisplayStack(GTNLItemList.RocketAssembler.get(1))
+                .setMaxRecipesPerPage(1))
+        .build();
+
+    public static final RecipeMap<RecipeMapBackend> CircuitNanitesDataRecipes = RecipeMapBuilder
+        .of("gtnl.recipe.CircuitNanitesDataRecipes")
+        .maxIO(1, 0, 0, 0)
+        .dontUseProgressBar()
+        .neiRecipeComparator(
+            Comparator
+                .<GTRecipe, CircuitNanitesRecipeData>comparing(
+                    recipe -> recipe
+                        .getMetadataOrDefault(CircuitNanitesDataSpecialValue.INSTANCE, new CircuitNanitesRecipeData()))
+                .thenComparing(GTRecipe::compareTo))
+        .frontend((ui, nei) -> new GTNLLogoFrontend(ui, nei) {
+
+            @Override
+            @Nonnull
+            public List<Pos2d> getItemInputPositions(int itemInputCount) {
+                return Collections.singletonList(new Pos2d(9, 13));
+            }
+        })
+        .neiHandlerInfo(
+            builder -> builder.setDisplayStack(GTNLItemList.CircuitComponentAssemblyLine.get(1))
                 .setMaxRecipesPerPage(1))
         .build();
 }

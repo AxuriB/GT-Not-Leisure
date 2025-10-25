@@ -66,7 +66,7 @@ public class MegaSteamCompressor extends SteamMultiMachineBase<MegaSteamCompress
 
     @Override
     public int getTierRecipes() {
-        return 3;
+        return 4;
     }
 
     @Override

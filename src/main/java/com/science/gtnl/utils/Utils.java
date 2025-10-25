@@ -35,6 +35,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.authlib.GameProfile;
 import com.science.gtnl.ScienceNotLeisure;
+import com.science.gtnl.utils.machine.FluidTankG;
+import com.science.gtnl.utils.machine.ItemStackG;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -337,6 +339,31 @@ public class Utils {
             sb.append("!");
         }
         return sb.toString();
+    }
+
+    public static VargsFunction<ItemStack[], ItemStack[]> filterStack = (s) -> Arrays.stream(s)
+        .flatMap(Arrays::stream)
+        .filter(a -> a != null)
+        .toArray(ItemStack[]::new);
+
+    public interface VargsFunction<T, R> {
+
+        R apply(T... t);
+    }
+
+    public static ItemStack[] flat(ItemStackG[] mStoredItemInternal2) {
+        return Arrays.stream(mStoredItemInternal2)
+            .filter(Objects::nonNull)
+            .flatMap(s -> Arrays.stream(s.flat()))
+            .toArray(ItemStack[]::new);
+
+    }
+
+    public static FluidStack[] flat(FluidTankG[] mStoredItemInternal2) {
+        return Arrays.stream(mStoredItemInternal2)
+            .flatMap(s -> Arrays.stream(s.flat()))
+            .toArray(FluidStack[]::new);
+
     }
 
     public static MovingObjectPosition rayTraceBlock(EntityPlayer player, double reachDistance) {

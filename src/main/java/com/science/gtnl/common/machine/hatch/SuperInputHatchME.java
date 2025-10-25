@@ -118,7 +118,24 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
 
     @Override
     public String[] getDescription() {
-        return getDescriptionArray(autoPullAvailable);
+        List<String> strings = new ArrayList<>(8);
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_00"));
+        strings.add(
+            StatCollector.translateToLocal("Tooltip_SuperInputHatchME_01") + TIER_COLORS[autoPullAvailable ? 10 : 9]
+                + VN[autoPullAvailable ? 10 : 9]);
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_02"));
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_03"));
+
+        if (autoPullAvailable) {
+            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputHatchME_00"));
+            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputHatchME_01"));
+            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputHatchME_02"));
+            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputHatchME_03"));
+        }
+
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_04"));
+        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_05"));
+        return strings.toArray(new String[0]);
     }
 
     @Override
@@ -620,6 +637,7 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
+        tag.setByte("color", this.getColor());
 
         NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {
@@ -888,26 +906,4 @@ public class SuperInputHatchME extends MTEHatchInputME implements IPowerChannelS
                 .setSize(18, 18)
                 .setPos(367, 81));
     }
-
-    public static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(8);
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_00"));
-        strings.add(
-            StatCollector.translateToLocal("Tooltip_SuperInputHatchME_01") + TIER_COLORS[autoPullAvailable ? 10 : 9]
-                + VN[autoPullAvailable ? 10 : 9]);
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_02"));
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_03"));
-
-        if (autoPullAvailable) {
-            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputHatchME_00"));
-            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputHatchME_01"));
-            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputHatchME_02"));
-            strings.add(StatCollector.translateToLocal("Tooltip_AdvancedSuperInputHatchME_03"));
-        }
-
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_04"));
-        strings.add(StatCollector.translateToLocal("Tooltip_SuperInputHatchME_05"));
-        return strings.toArray(new String[0]);
-    }
-
 }

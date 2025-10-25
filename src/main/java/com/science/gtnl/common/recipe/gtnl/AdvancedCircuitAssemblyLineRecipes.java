@@ -13,7 +13,7 @@ import gregtech.api.recipe.RecipeMap;
 
 public class AdvancedCircuitAssemblyLineRecipes implements IRecipePool {
 
-    public RecipeMap<?> ACALR = RecipePool.AdvancedCircuitAssemblyLineRecipes;
+    public RecipeMap<?> ACALR = RecipePool.CircuitComponentAssemblyLineRecipes;
 
     @Override
     public void loadRecipes() {

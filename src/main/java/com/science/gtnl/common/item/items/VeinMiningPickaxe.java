@@ -61,7 +61,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "VeinMiningPickaxe");
         this.setMaxStackSize(1);
-        this.setMaxDamage(Integer.MAX_VALUE);
+        this.setMaxDamage(20000000);
         MinecraftForge.EVENT_BUS.register(this);
         FMLCommonHandler.instance()
             .bus()

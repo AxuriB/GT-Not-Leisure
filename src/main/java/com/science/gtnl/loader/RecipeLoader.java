@@ -19,6 +19,43 @@ import com.science.gtnl.api.IRecipePool;
 import com.science.gtnl.common.item.items.Stick;
 import com.science.gtnl.common.material.MaterialPool;
 import com.science.gtnl.common.recipe.bloodMagic.MeteorsRecipes;
+import com.science.gtnl.common.recipe.botania.BotaniaManaInfusionRecipes;
+import com.science.gtnl.common.recipe.gregtech.AlloyBlastSmelterRecipes;
+import com.science.gtnl.common.recipe.gregtech.AlloySmelterRecipes;
+import com.science.gtnl.common.recipe.gregtech.AssemblerRecipes;
+import com.science.gtnl.common.recipe.gregtech.AssemblingLineRecipes;
+import com.science.gtnl.common.recipe.gregtech.AutoclaveRecipes;
+import com.science.gtnl.common.recipe.gregtech.BacterialVatRecipes;
+import com.science.gtnl.common.recipe.gregtech.BlastFurnaceRecipes;
+import com.science.gtnl.common.recipe.gregtech.CentrifugeRecipes;
+import com.science.gtnl.common.recipe.gregtech.ChemicalBathRecipes;
+import com.science.gtnl.common.recipe.gregtech.ChemicalDehydratorRecipes;
+import com.science.gtnl.common.recipe.gregtech.ChemicalRecipes;
+import com.science.gtnl.common.recipe.gregtech.CompressorRecipes;
+import com.science.gtnl.common.recipe.gregtech.CrackingRecipes;
+import com.science.gtnl.common.recipe.gregtech.CraftingTableRecipes;
+import com.science.gtnl.common.recipe.gregtech.CuttingRecipes;
+import com.science.gtnl.common.recipe.gregtech.DigesterRecipes;
+import com.science.gtnl.common.recipe.gregtech.DissolutionTankRecipes;
+import com.science.gtnl.common.recipe.gregtech.DistillationTowerRecipes;
+import com.science.gtnl.common.recipe.gregtech.DistilleryRecipes;
+import com.science.gtnl.common.recipe.gregtech.DragonEvolutionFusionCraftingRecipes;
+import com.science.gtnl.common.recipe.gregtech.ElectrolyzerRecipes;
+import com.science.gtnl.common.recipe.gregtech.FluidCannerRecipes;
+import com.science.gtnl.common.recipe.gregtech.FluidExtraction;
+import com.science.gtnl.common.recipe.gregtech.FluidExtractorRecipes;
+import com.science.gtnl.common.recipe.gregtech.FusionReactorRecipes;
+import com.science.gtnl.common.recipe.gregtech.LaserEngraverRecipes;
+import com.science.gtnl.common.recipe.gregtech.MixerRecipes;
+import com.science.gtnl.common.recipe.gregtech.PCBFactoryRecipes;
+import com.science.gtnl.common.recipe.gregtech.PlasmaForgeRecipes;
+import com.science.gtnl.common.recipe.gregtech.PreciseAssemblerRecipes;
+import com.science.gtnl.common.recipe.gregtech.SpaceAssemblerRecipes;
+import com.science.gtnl.common.recipe.gregtech.TargetChamberRecipes;
+import com.science.gtnl.common.recipe.gregtech.TranscendentPlasmaMixerRecipes;
+import com.science.gtnl.common.recipe.gregtech.VacuumFreezerRecipes;
+import com.science.gtnl.common.recipe.gregtech.VacuumFurnaceRecipes;
+import com.science.gtnl.common.recipe.gregtech.multiDehydratorRecipes;
 import com.science.gtnl.common.recipe.gregtech.remove.NewAlloyBlastSmelterRecipes;
 import com.science.gtnl.common.recipe.gregtech.remove.NewFormingPressRecipes;
 import com.science.gtnl.common.recipe.gregtech.remove.NewVacuumFurnaceRecipes;
@@ -29,6 +66,7 @@ import com.science.gtnl.common.recipe.gtnl.AlchemicChemistrySetRecipes;
 import com.science.gtnl.common.recipe.gtnl.BloodDemonInjectionRecipes;
 import com.science.gtnl.common.recipe.gtnl.CactusWonderFakeRecipes;
 import com.science.gtnl.common.recipe.gtnl.CellRegulatorRecipes;
+import com.science.gtnl.common.recipe.gtnl.CircuitNanitesDataRecipes;
 import com.science.gtnl.common.recipe.gtnl.DecayHastenerRecipes;
 import com.science.gtnl.common.recipe.gtnl.DesulfurizerRecipes;
 import com.science.gtnl.common.recipe.gtnl.ElectrocellGeneratorRecipes;
@@ -100,7 +138,7 @@ import tectech.thing.CustomItemList;
 
 public class RecipeLoader {
 
-    private static boolean recipesAdded;
+    public static boolean recipesAdded;
 
     public static void loadRecipesServerStart() {
         if (!recipesAdded) {
@@ -111,6 +149,10 @@ public class RecipeLoader {
         }
         loadCircuitRelatedRecipes();
         recipesAdded = true;
+    }
+
+    public static void loadCircuitNanitesData(long worldSeed) {
+        new CircuitNanitesDataRecipes(worldSeed).loadRecipes();
     }
 
     public static void loadNewRemoveRecipes() {
@@ -160,7 +202,8 @@ public class RecipeLoader {
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
             new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes(),
-            new ElectrocellGeneratorRecipes(), new RocketAssemblerRecipes(),new FluidSolidifierRecipes()};
+            new ElectrocellGeneratorRecipes(), new RocketAssemblerRecipes(),new FluidSolidifierRecipes(),
+            new BotaniaManaInfusionRecipes()};
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };

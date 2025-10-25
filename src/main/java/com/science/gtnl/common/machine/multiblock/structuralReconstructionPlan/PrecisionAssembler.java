@@ -243,7 +243,6 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     public void loadNBTData(NBTTagCompound aNBT) {
         mCasingTier = aNBT.getInteger("casingTier");
         mMachineTier = aNBT.getInteger("machineTier");
-        machineMode = aNBT.getInteger("mode");
         super.loadNBTData(aNBT);
     }
 
@@ -251,7 +250,6 @@ public class PrecisionAssembler extends MultiMachineBase<PrecisionAssembler> imp
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setInteger("casingTier", mCasingTier);
         aNBT.setInteger("machineTier", mMachineTier);
-        aNBT.setInteger("mode", machineMode);
         super.saveNBTData(aNBT);
     }
 

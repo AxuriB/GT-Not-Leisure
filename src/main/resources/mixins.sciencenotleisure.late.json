@@ -25,6 +25,7 @@
     "Gregtech.AccessorMetaTileEntity",
     "Gregtech.AccessorProcessingLogic",
     "Gregtech.AccessorMTEHatch",
+    "Gregtech.AccessorRecipeDisplayInfo",
     "Gregtech.MixinMTEVoidMinerBase",
     "Gregtech.MixinBaseMetaTileEntity",
     "Gregtech.MixinGTNEIDefaultHandler",
@@ -35,6 +36,7 @@
     "Gregtech.MixinMTEBetterJukebox",
     "Gregtech.MixinMTEDigitalTankBase",
     "Gregtech.MixinMTETreeFarm",
+    "Gregtech.MixinMTEMultiBlockBase",
     "Gregtech.MixinMTELightningRod",
     "Gregtech.MixinMTEHatchDataAccess",
     "Gregtech.AssLineRemover.MixinGTMod",
@@ -42,6 +44,7 @@
     "Gregtech.AssLineRemover.MixinTTRecipeAdder",
     "InventoryBogoSorter.MixinShortcutHandler",
     "InventoryBogoSorter.MixinSortHandler",
+    "ModularUI.FluidSlotWidgetMixin",
     "NotEnoughItems.MixinGuiContainerManager",
     "NHCoreMod.MixinBacteriaRegistry",
     "ThaumicTinkerer.MixinItemBloodSword"

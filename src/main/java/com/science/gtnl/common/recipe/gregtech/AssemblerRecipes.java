@@ -2561,74 +2561,103 @@ public class AssemblerRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_MAX)
             .addTo(As);
 
-        if (MainConfig.enableDeleteRecipe) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamCompactPipeCasing.get(4),
+                GTNLItemList.BreelPlatedCasing.get(16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
+                GTNLItemList.HydraulicMotor.get(12),
+                GTNLItemList.HydraulicPump.get(18),
+                GTNLItemList.SteelTurbine.get(16))
+            .itemOutputs(GTNLItemList.SteamOilDrillModuleI.get(1))
+            .duration(300)
+            .eut(28)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamOilDrillModuleI.get(1),
+                GTNLItemList.HyperPressureBreelCasing.get(16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 4),
+                GTNLItemList.HydraulicPump.get(6),
+                GTNLItemList.HydraulicRegulator.get(12),
+                GTNLItemList.CompressedSteamTurbine.get(16))
+            .itemOutputs(GTNLItemList.SteamOilDrillModuleII.get(1))
+            .duration(300)
+            .eut(80)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.SteamOilDrillModuleII.get(4),
+                GTNLItemList.HyperPressureBreelCasing.get(16),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
+                GTNLItemList.HydraulicRegulator.get(12),
+                GTNLItemList.HydraulicVaporGenerator.get(6),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.StainlessSteel, 12))
+            .itemOutputs(GTNLItemList.SteamOilDrillModuleIII.get(1))
+            .duration(300)
+            .eut(300)
+            .addTo(As);
+
+        ItemStack[] COIL = { ItemList.LV_Coil.get(1), ItemList.MV_Coil.get(1), ItemList.HV_Coil.get(1),
+            ItemList.EV_Coil.get(1), ItemList.IV_Coil.get(1), ItemList.LuV_Coil.get(1), ItemList.ZPM_Coil.get(1),
+            ItemList.UV_Coil.get(1), ItemList.UHV_Coil.get(1), ItemList.UHV_Coil.get(2), ItemList.UHV_Coil.get(4),
+            ItemList.UHV_Coil.get(8), ItemList.UHV_Coil.get(16), ItemList.UHV_Coil.get(32) };
+
+        ItemStack[] COIL_4A = { ItemList.LV_Coil.get(2), ItemList.MV_Coil.get(2), ItemList.HV_Coil.get(2),
+            ItemList.EV_Coil.get(2), ItemList.IV_Coil.get(2), ItemList.LuV_Coil.get(2), ItemList.ZPM_Coil.get(1),
+            ItemList.UV_Coil.get(2), ItemList.UHV_Coil.get(2), ItemList.UHV_Coil.get(4), ItemList.UHV_Coil.get(8),
+            ItemList.UHV_Coil.get(16), ItemList.UHV_Coil.get(32), ItemList.UHV_Coil.get(64) };
+
+        ItemStack[] CHIP = { GTOreDictUnificator.get(OrePrefixes.spring, Materials.Tin, 1),
+            ItemList.Circuit_Chip_ULPIC.get(1), ItemList.Circuit_Chip_LPIC.get(1), ItemList.Circuit_Chip_PIC.get(1),
+            ItemList.Circuit_Chip_HPIC.get(1), ItemList.Circuit_Chip_UHPIC.get(1), ItemList.Circuit_Chip_QPIC.get(1),
+            ItemList.Circuit_Chip_NPIC.get(1), ItemList.Circuit_Chip_PPIC.get(1), ItemList.Circuit_Chip_PPIC.get(2),
+            ItemList.Circuit_Chip_PPIC.get(4), ItemList.Circuit_Chip_PPIC.get(8), ItemList.Circuit_Chip_PPIC.get(16),
+            ItemList.Circuit_Chip_PPIC.get(32) };
+
+        ItemStack[] INDUCTOR = { ItemList.Circuit_Parts_Coil.get(4), ItemList.Circuit_Parts_Coil.get(8),
+            ItemList.Circuit_Parts_InductorSMD.get(4), ItemList.Circuit_Parts_InductorSMD.get(8),
+            ItemList.Circuit_Parts_InductorSMD.get(16), ItemList.Circuit_Parts_InductorSMD.get(32),
+            ItemList.Circuit_Parts_InductorASMD.get(4), ItemList.Circuit_Parts_InductorASMD.get(8),
+            ItemList.Circuit_Parts_InductorXSMD.get(4), ItemList.Circuit_Parts_InductorXSMD.get(8),
+            ItemList.Circuit_Parts_InductorXSMD.get(16), ItemList.Circuit_Parts_InductorXSMD.get(32),
+            GTNLItemList.BiowareSMDInductor.get(8), GTNLItemList.BiowareSMDInductor.get(16), };
+
+        for (int i = 0; i < 14; i++) {
+            boolean isHighTier = i >= 11;
+
+            OrePrefixes cable01 = isHighTier ? OrePrefixes.wireGt01 : OrePrefixes.cableGt01;
+            OrePrefixes cable04 = isHighTier ? OrePrefixes.wireGt04 : OrePrefixes.cableGt04;
+
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemList.Hull_ZPM.get(1),
-                    ItemList.Machine_HV_LightningRod.get(1),
-                    GregtechItemList.Transformer_HA_LuV_IV.get(2),
-                    GregtechItemList.Hatch_Buffer_Dynamo_IV.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 2),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 4),
-                    ItemList.Energy_LapotronicOrb.get(2))
-                .itemOutputs(ItemList.Machine_EV_LightningRod.get(1))
-                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
-                .duration(300)
-                .eut(TierEU.RECIPE_LuV)
+                    ItemUtils.SENSOR[i].get(1),
+                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.EnderPearl, 4),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, ItemUtils.TIER[i], 1),
+                    COIL[i],
+                    CHIP[i],
+                    GTOreDictUnificator.get(cable01, ItemUtils.CABLE[i], 2),
+                    GTOreDictUnificator.get(cable01, Materials.RedAlloy, 2),
+                    GTOreDictUnificator.get(OrePrefixes.plate, ItemUtils.TIER_MATERIAL[i], 2))
+                .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i].get(1))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+                .duration(200)
+                .eut(GTValues.VP[i])
                 .addTo(As);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemList.Hull_ZPM.get(2),
-                    ItemList.Machine_EV_LightningRod.get(1),
-                    GregtechItemList.Transformer_HA_ZPM_LuV.get(2),
-                    GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(2),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 2),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
-                    ItemList.Energy_LapotronicOrb.get(4))
-                .itemOutputs(ItemList.Machine_IV_LightningRod.get(1))
-                .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
-                .duration(300)
-                .eut(TierEU.RECIPE_ZPM)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamCompactPipeCasing.get(4),
-                    GTNLItemList.BreelPlatedCasing.get(16),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LV, 2),
-                    GTNLItemList.HydraulicMotor.get(12),
-                    GTNLItemList.HydraulicPump.get(18),
-                    GTNLItemList.SteelTurbine.get(16))
-                .itemOutputs(GTNLItemList.SteamOilDrillModuleI.get(1))
-                .duration(300)
-                .eut(28)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamOilDrillModuleI.get(1),
-                    GTNLItemList.HyperPressureBreelCasing.get(16),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 4),
-                    GTNLItemList.HydraulicPump.get(6),
-                    GTNLItemList.HydraulicRegulator.get(12),
-                    GTNLItemList.CompressedSteamTurbine.get(16))
-                .itemOutputs(GTNLItemList.SteamOilDrillModuleII.get(1))
-                .duration(300)
-                .eut(80)
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    GTNLItemList.SteamOilDrillModuleII.get(4),
-                    GTNLItemList.HyperPressureBreelCasing.get(16),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 4),
-                    GTNLItemList.HydraulicRegulator.get(12),
-                    GTNLItemList.HydraulicVaporGenerator.get(6),
-                    GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.StainlessSteel, 12))
-                .itemOutputs(GTNLItemList.SteamOilDrillModuleIII.get(1))
-                .duration(300)
-                .eut(300)
+                    ItemList.WIRELESS_ENERGY_COVERS[i].get(2),
+                    INDUCTOR[i],
+                    GTOreDictUnificator.get(cable04, ItemUtils.CABLE[i], 4),
+                    COIL_4A[i],
+                    GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.BatteryAlloy, 2))
+                .itemOutputs(GTNLItemList.WIRELESS_ENERGY_COVER_4A[i].get(1))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+                .duration(200)
+                .eut(GTValues.VP[i])
                 .addTo(As);
 
             GTValues.RA.stdBuilder()
@@ -2643,5 +2672,92 @@ public class AssemblerRecipes implements IRecipePool {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(As);
         }
+
+        for (int j = 0; j < 10; j++) {
+            for (int i = 0; i < 9; i++) {
+                int quantity;
+                if (i < 4) {
+                    quantity = 1;
+                } else {
+                    quantity = 1 << (i - 1);
+                }
+
+                OrePrefixes prefix = switch (i) {
+                    case 0 -> OrePrefixes.wireGt01;
+                    case 1 -> OrePrefixes.wireGt02;
+                    case 2 -> OrePrefixes.wireGt04;
+                    default -> OrePrefixes.wireGt08;
+                };
+
+                GTValues.RA.stdBuilder()
+                    .itemInputsUnsafe(
+                        ItemUtils.HULL[j + 4].get(1),
+                        GTUtility.copyAmountUnsafe(
+                            (int) Math.pow(2, i),
+                            GTOreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1)),
+                        GTUtility.copyAmountUnsafe((int) Math.pow(2, i), ItemUtils.SENSOR[j + 4].get(1)),
+                        GTUtility.copyAmountUnsafe((int) Math.pow(2, i), ItemUtils.ELECTRIC_PUMP[j + 4].get(1)),
+                        GTUtility
+                            .copyAmountUnsafe(quantity, GTOreDictUnificator.get(prefix, ItemUtils.CABLE[j + 4], 1)),
+                        GTUtility.getIntegratedCircuit(i + 1))
+                    .itemOutputs(GTNLItemList.LASER_ENERGY_HATCH[j][i].get(1))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+                    .duration((long) (50 * Math.pow(2, i)))
+                    .eut(GTValues.VP[j + 5])
+                    .addTo(As);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputsUnsafe(
+                        ItemUtils.HULL[j + 4].get(1),
+                        GTUtility.copyAmountUnsafe(
+                            (int) Math.pow(2, i),
+                            GTOreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1)),
+                        GTUtility.copyAmountUnsafe((int) Math.pow(2, i), ItemUtils.EMITTER[j + 4].get(1)),
+                        GTUtility.copyAmountUnsafe((int) Math.pow(2, i), ItemUtils.ELECTRIC_PUMP[j + 4].get(1)),
+                        GTUtility
+                            .copyAmountUnsafe(quantity, GTOreDictUnificator.get(prefix, ItemUtils.CABLE[j + 4], 1)),
+                        GTUtility.getIntegratedCircuit(i + 1))
+                    .itemOutputs(GTNLItemList.LASER_DYNAMO_HATCH[j][i].get(1))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+                    .duration((long) (50 * Math.pow(2, i)))
+                    .eut(GTValues.VP[j + 5])
+                    .addTo(As);
+            }
+        }
+
+        if (MainConfig.enableDeleteRecipe) loadDeleteRecipe();
     }
+
+    public void loadDeleteRecipe() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_ZPM.get(1),
+                ItemList.Machine_HV_LightningRod.get(1),
+                GregtechItemList.Transformer_HA_LuV_IV.get(2),
+                GregtechItemList.Hatch_Buffer_Dynamo_IV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.VanadiumGallium, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Naquadah, 4),
+                ItemList.Energy_LapotronicOrb.get(2))
+            .itemOutputs(ItemList.Machine_EV_LightningRod.get(1))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
+            .duration(300)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_ZPM.get(2),
+                ItemList.Machine_EV_LightningRod.get(1),
+                GregtechItemList.Transformer_HA_ZPM_LuV.get(2),
+                GregtechItemList.Hatch_Buffer_Dynamo_LuV.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4),
+                ItemList.Energy_LapotronicOrb.get(4))
+            .itemOutputs(ItemList.Machine_IV_LightningRod.get(1))
+            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(1152))
+            .duration(300)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(As);
+    }
+
 }

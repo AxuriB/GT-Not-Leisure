@@ -10,7 +10,7 @@ import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.science.gtnl.ScienceNotLeisure;
-import com.science.gtnl.common.packet.ConfigSyncPacket;
+import com.science.gtnl.common.packet.SyncConfigPacket;
 import com.science.gtnl.config.MainConfig;
 import com.science.gtnl.utils.enums.ModList;
 
@@ -31,7 +31,7 @@ public class CommandReloadConfig extends CommandBase {
         try {
             MainConfig.reloadConfig();
 
-            ConfigSyncPacket msg = new ConfigSyncPacket();
+            SyncConfigPacket msg = new SyncConfigPacket();
             for (EntityPlayerMP player : MinecraftServer.getServer()
                 .getConfigurationManager().playerEntityList) {
                 ScienceNotLeisure.network.sendTo(msg, player);

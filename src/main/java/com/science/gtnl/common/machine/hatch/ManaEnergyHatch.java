@@ -85,13 +85,13 @@ public class ManaEnergyHatch extends MTEHatchEnergy implements IAddUIWidgets {
 
         if (availableSpace <= 0) return;
 
-        long euToConvert = Math.min(storedEU, availableSpace / EU_TO_MANA_RATE);
-        if (euToConvert <= 0) return;
+        long manaToAdd = Math.min(storedEU / EU_TO_MANA_RATE, availableSpace);
+        if (manaToAdd <= 0) return;
 
-        int manaToAdd = (int) (euToConvert * EU_TO_MANA_RATE);
+        long euToConvert = manaToAdd * EU_TO_MANA_RATE;
 
-        aBaseMetaTileEntity.increaseStoredEnergyUnits(euToConvert, true);
-        fill(createFluidStack(manaToAdd), true);
+        aBaseMetaTileEntity.increaseStoredEnergyUnits(-euToConvert, true);
+        fill(createFluidStack((int) manaToAdd), true);
     }
 
     private FluidStack createFluidStack(int amount) {

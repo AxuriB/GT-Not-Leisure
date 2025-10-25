@@ -50,7 +50,7 @@ public class GTNL_ProcessingLogic extends ProcessingLogic {
     public long availableVoltage;
     public long availableAmperage;
     public int maxOverclocks = Integer.MAX_VALUE;
-    public int maxTierSkips = 1;
+    public int maxTierSkips = Integer.MAX_VALUE;
     public boolean protectItems;
     public boolean protectFluids;
     public double overClockTimeReduction = 2.0;

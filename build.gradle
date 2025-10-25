@@ -38,3 +38,9 @@ tasks.named("runServer", JavaExec) {
     }
 }
 
+tasks.named("runServer17", JavaExec) {
+    workingDir = file("${projectDir}/run/server17_280")
+    doFirst {
+        workingDir.mkdirs()
+    }
+}
