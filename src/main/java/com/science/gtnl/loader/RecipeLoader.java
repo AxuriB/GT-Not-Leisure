@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.science.gtnl.common.recipe.gregtech.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -44,6 +43,7 @@ import com.science.gtnl.common.recipe.gregtech.ElectrolyzerRecipes;
 import com.science.gtnl.common.recipe.gregtech.FluidCannerRecipes;
 import com.science.gtnl.common.recipe.gregtech.FluidExtraction;
 import com.science.gtnl.common.recipe.gregtech.FluidExtractorRecipes;
+import com.science.gtnl.common.recipe.gregtech.FluidSolidifierRecipes;
 import com.science.gtnl.common.recipe.gregtech.FusionReactorRecipes;
 import com.science.gtnl.common.recipe.gregtech.LaserEngraverRecipes;
 import com.science.gtnl.common.recipe.gregtech.MixerRecipes;
@@ -202,8 +202,8 @@ public class RecipeLoader {
             new SteamWoodcutterRecipes(), new SteamGateAssemblerRecipes(), new CactusWonderFakeRecipes(),
             new InfernalCokeRecipes(), new SteamFusionReactorRecipes(), new SteamExtractinatorRecipes(),
             new RockBreakerRecipes(), new PrimitiveBrickKilnRecipes(), new TargetChamberRecipes(),
-            new ElectrocellGeneratorRecipes(), new RocketAssemblerRecipes(),new FluidSolidifierRecipes(),
-            new BotaniaManaInfusionRecipes()};
+            new ElectrocellGeneratorRecipes(), new RocketAssemblerRecipes(), new FluidSolidifierRecipes(),
+            new BotaniaManaInfusionRecipes() };
 
         IRecipePool[] recipePoolsServerStart = new IRecipePool[] { new CircuitAssemblerConvertRecipes(),
             new AlloyBlastSmelterRecipes(), new VacuumFurnaceRecipes() };

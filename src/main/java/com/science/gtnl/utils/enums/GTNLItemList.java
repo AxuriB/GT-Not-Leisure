@@ -245,6 +245,21 @@ public enum GTNLItemList implements IItemContainer {
     BronzeTurbine,
     VoidCover,
 
+    LVWirelessEnergyCover,
+    MVWirelessEnergyCover,
+    HVWirelessEnergyCover,
+    EVWirelessEnergyCover,
+    IVWirelessEnergyCover,
+    LuVWirelessEnergyCover,
+    ZPMWirelessEnergyCover,
+    UVWirelessEnergyCover,
+    UHVWirelessEnergyCover,
+    UEVWirelessEnergyCover,
+    UIVWirelessEnergyCover,
+    UMVWirelessEnergyCover,
+    UXVWirelessEnergyCover,
+    MAXWirelessEnergyCover,
+
     LVWirelessEnergyCover4A,
     MVWirelessEnergyCover4A,
     HVWirelessEnergyCover4A,
@@ -554,23 +569,145 @@ public enum GTNLItemList implements IItemContainer {
     FOGExtractorModule,
     RocketAssembler,
 
-    EnergyHatchMAX,
-
+    EnergyHatchLV,
     EnergyHatchLV4A,
-    EnergyHatchMV4A,
-    EnergyHatchHV4A,
-
     EnergyHatchLV16A,
-    EnergyHatchMV16A,
-    EnergyHatchHV16A,
-
     EnergyHatchLV64A,
+
+    EnergyHatchMV,
+    EnergyHatchMV4A,
+    EnergyHatchMV16A,
     EnergyHatchMV64A,
+
+    EnergyHatchHV,
+    EnergyHatchHV4A,
+    EnergyHatchHV16A,
     EnergyHatchHV64A,
 
+    EnergyHatchEV,
+    EnergyHatchEV4A,
+    EnergyHatchEV16A,
+    EnergyHatchEV64A,
+
+    EnergyHatchIV,
+    EnergyHatchIV4A,
+    EnergyHatchIV16A,
+    EnergyHatchIV64A,
+
+    EnergyHatchLuV,
+    EnergyHatchLuV4A,
+    EnergyHatchLuV16A,
+    EnergyHatchLuV64A,
+
+    EnergyHatchZPM,
+    EnergyHatchZPM4A,
+    EnergyHatchZPM16A,
+    EnergyHatchZPM64A,
+
+    EnergyHatchUV,
+    EnergyHatchUV4A,
+    EnergyHatchUV16A,
+    EnergyHatchUV64A,
+
+    EnergyHatchUHV,
+    EnergyHatchUHV4A,
+    EnergyHatchUHV16A,
+    EnergyHatchUHV64A,
+
+    EnergyHatchUEV,
+    EnergyHatchUEV4A,
+    EnergyHatchUEV16A,
+    EnergyHatchUEV64A,
+
+    EnergyHatchUIV,
+    EnergyHatchUIV4A,
+    EnergyHatchUIV16A,
+    EnergyHatchUIV64A,
+
+    EnergyHatchUMV,
+    EnergyHatchUMV4A,
+    EnergyHatchUMV16A,
+    EnergyHatchUMV64A,
+
+    EnergyHatchUXV,
+    EnergyHatchUXV4A,
+    EnergyHatchUXV16A,
+    EnergyHatchUXV64A,
+
+    EnergyHatchMAX,
     EnergyHatchMAX4A,
     EnergyHatchMAX16A,
     EnergyHatchMAX64A,
+
+    DynamoHatchLV,
+    DynamoHatchLV4A,
+    DynamoHatchLV16A,
+    DynamoHatchLV64A,
+
+    DynamoHatchMV,
+    DynamoHatchMV4A,
+    DynamoHatchMV16A,
+    DynamoHatchMV64A,
+
+    DynamoHatchHV,
+    DynamoHatchHV4A,
+    DynamoHatchHV16A,
+    DynamoHatchHV64A,
+
+    DynamoHatchEV,
+    DynamoHatchEV4A,
+    DynamoHatchEV16A,
+    DynamoHatchEV64A,
+
+    DynamoHatchIV,
+    DynamoHatchIV4A,
+    DynamoHatchIV16A,
+    DynamoHatchIV64A,
+
+    DynamoHatchLuV,
+    DynamoHatchLuV4A,
+    DynamoHatchLuV16A,
+    DynamoHatchLuV64A,
+
+    DynamoHatchZPM,
+    DynamoHatchZPM4A,
+    DynamoHatchZPM16A,
+    DynamoHatchZPM64A,
+
+    DynamoHatchUV,
+    DynamoHatchUV4A,
+    DynamoHatchUV16A,
+    DynamoHatchUV64A,
+
+    DynamoHatchUHV,
+    DynamoHatchUHV4A,
+    DynamoHatchUHV16A,
+    DynamoHatchUHV64A,
+
+    DynamoHatchUEV,
+    DynamoHatchUEV4A,
+    DynamoHatchUEV16A,
+    DynamoHatchUEV64A,
+
+    DynamoHatchUIV,
+    DynamoHatchUIV4A,
+    DynamoHatchUIV16A,
+    DynamoHatchUIV64A,
+
+    DynamoHatchUMV,
+    DynamoHatchUMV4A,
+    DynamoHatchUMV16A,
+    DynamoHatchUMV64A,
+
+    DynamoHatchUXV,
+    DynamoHatchUXV4A,
+    DynamoHatchUXV16A,
+    DynamoHatchUXV64A,
+
+    DynamoHatchMAX,
+    DynamoHatchMAX4A,
+    DynamoHatchMAX16A,
+    DynamoHatchMAX64A,
 
     LaserEnergyHatchIV256A,
     LaserEnergyHatchIV1024A,
@@ -1076,6 +1213,72 @@ public enum GTNLItemList implements IItemContainer {
     GasCollectorUMV,
     GasCollectorUXV;
 
+    public static final GTNLItemList[] ENERGY_HATCH_LV = { EnergyHatchLV, EnergyHatchLV4A, EnergyHatchLV16A,
+        EnergyHatchLV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_MV = { EnergyHatchMV, EnergyHatchMV4A, EnergyHatchMV16A,
+        EnergyHatchMV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_HV = { EnergyHatchHV, EnergyHatchHV4A, EnergyHatchHV16A,
+        EnergyHatchHV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_EV = { EnergyHatchEV, EnergyHatchEV4A, EnergyHatchEV16A,
+        EnergyHatchEV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_IV = { EnergyHatchIV, EnergyHatchIV4A, EnergyHatchIV16A,
+        EnergyHatchIV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_LUV = { EnergyHatchLuV, EnergyHatchLuV4A, EnergyHatchLuV16A,
+        EnergyHatchLuV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_ZPM = { EnergyHatchZPM, EnergyHatchZPM4A, EnergyHatchZPM16A,
+        EnergyHatchZPM64A };
+    public static final GTNLItemList[] ENERGY_HATCH_UV = { EnergyHatchUV, EnergyHatchUV4A, EnergyHatchUV16A,
+        EnergyHatchUV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_UHV = { EnergyHatchUHV, EnergyHatchUHV4A, EnergyHatchUHV16A,
+        EnergyHatchUHV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_UEV = { EnergyHatchUEV, EnergyHatchUEV4A, EnergyHatchUEV16A,
+        EnergyHatchUEV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_UIV = { EnergyHatchUIV, EnergyHatchUIV4A, EnergyHatchUIV16A,
+        EnergyHatchUIV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_UMV = { EnergyHatchUMV, EnergyHatchUMV4A, EnergyHatchUMV16A,
+        EnergyHatchUMV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_UXV = { EnergyHatchUXV, EnergyHatchUXV4A, EnergyHatchUXV16A,
+        EnergyHatchUXV64A };
+    public static final GTNLItemList[] ENERGY_HATCH_MAX = { EnergyHatchMAX, EnergyHatchMAX4A, EnergyHatchMAX16A,
+        EnergyHatchMAX64A };
+
+    public static final GTNLItemList[][] ENERGY_HATCH = { ENERGY_HATCH_LV, ENERGY_HATCH_MV, ENERGY_HATCH_HV,
+        ENERGY_HATCH_EV, ENERGY_HATCH_IV, ENERGY_HATCH_LUV, ENERGY_HATCH_ZPM, ENERGY_HATCH_UV, ENERGY_HATCH_UHV,
+        ENERGY_HATCH_UEV, ENERGY_HATCH_UIV, ENERGY_HATCH_UMV, ENERGY_HATCH_UXV, ENERGY_HATCH_MAX };
+
+    public static final GTNLItemList[] DYNAMO_HATCH_LV = { DynamoHatchLV, DynamoHatchLV4A, DynamoHatchLV16A,
+        DynamoHatchLV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_MV = { DynamoHatchMV, DynamoHatchMV4A, DynamoHatchMV16A,
+        DynamoHatchMV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_HV = { DynamoHatchHV, DynamoHatchHV4A, DynamoHatchHV16A,
+        DynamoHatchHV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_EV = { DynamoHatchEV, DynamoHatchEV4A, DynamoHatchEV16A,
+        DynamoHatchEV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_IV = { DynamoHatchIV, DynamoHatchIV4A, DynamoHatchIV16A,
+        DynamoHatchIV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_LUV = { DynamoHatchLuV, DynamoHatchLuV4A, DynamoHatchLuV16A,
+        DynamoHatchLuV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_ZPM = { DynamoHatchZPM, DynamoHatchZPM4A, DynamoHatchZPM16A,
+        DynamoHatchZPM64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_UV = { DynamoHatchUV, DynamoHatchUV4A, DynamoHatchUV16A,
+        DynamoHatchUV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_UHV = { DynamoHatchUHV, DynamoHatchUHV4A, DynamoHatchUHV16A,
+        DynamoHatchUHV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_UEV = { DynamoHatchUEV, DynamoHatchUEV4A, DynamoHatchUEV16A,
+        DynamoHatchUEV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_UIV = { DynamoHatchUIV, DynamoHatchUIV4A, DynamoHatchUIV16A,
+        DynamoHatchUIV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_UMV = { DynamoHatchUMV, DynamoHatchUMV4A, DynamoHatchUMV16A,
+        DynamoHatchUMV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_UXV = { DynamoHatchUXV, DynamoHatchUXV4A, DynamoHatchUXV16A,
+        DynamoHatchUXV64A };
+    public static final GTNLItemList[] DYNAMO_HATCH_MAX = { DynamoHatchMAX, DynamoHatchMAX4A, DynamoHatchMAX16A,
+        DynamoHatchMAX64A };
+
+    public static final GTNLItemList[][] DYNAMO_HATCH = { DYNAMO_HATCH_LV, DYNAMO_HATCH_MV, DYNAMO_HATCH_HV,
+        DYNAMO_HATCH_EV, DYNAMO_HATCH_IV, DYNAMO_HATCH_LUV, DYNAMO_HATCH_ZPM, DYNAMO_HATCH_UV, DYNAMO_HATCH_UHV,
+        DYNAMO_HATCH_UEV, DYNAMO_HATCH_UIV, DYNAMO_HATCH_UMV, DYNAMO_HATCH_UXV, DYNAMO_HATCH_MAX };
+
     public static final GTNLItemList[] LASER_ENERGY_HATCH_IV = { LaserEnergyHatchIV256A, LaserEnergyHatchIV1024A,
         LaserEnergyHatchIV4096A, LaserEnergyHatchIV16384A, LaserEnergyHatchIV65536A, LaserEnergyHatchIV262144A,
         LaserEnergyHatchIV1048576A, LaserEnergyHatchIV4194304A, LaserEnergyHatchIV16777216A };
@@ -1163,6 +1366,12 @@ public enum GTNLItemList implements IItemContainer {
     public static final GTNLItemList[][] LASER_DYNAMO_HATCH = { LASER_DYNAMO_HATCH_IV, LASER_DYNAMO_HATCH_LUV,
         LASER_DYNAMO_HATCH_ZPM, LASER_DYNAMO_HATCH_UV, LASER_DYNAMO_HATCH_UHV, LASER_DYNAMO_HATCH_UEV,
         LASER_DYNAMO_HATCH_UIV, LASER_DYNAMO_HATCH_UMV, LASER_DYNAMO_HATCH_UXV, LASER_DYNAMO_HATCH_MAX };
+
+    public static final GTNLItemList[] WIRELESS_ENERGY_COVER = new GTNLItemList[] { LVWirelessEnergyCover,
+        MVWirelessEnergyCover, HVWirelessEnergyCover, EVWirelessEnergyCover, IVWirelessEnergyCover,
+        LuVWirelessEnergyCover, ZPMWirelessEnergyCover, UVWirelessEnergyCover, UHVWirelessEnergyCover,
+        UEVWirelessEnergyCover, UIVWirelessEnergyCover, UMVWirelessEnergyCover, UXVWirelessEnergyCover,
+        MAXWirelessEnergyCover };
 
     public static final GTNLItemList[] WIRELESS_ENERGY_COVER_4A = new GTNLItemList[] { LVWirelessEnergyCover4A,
         MVWirelessEnergyCover4A, HVWirelessEnergyCover4A, EVWirelessEnergyCover4A, IVWirelessEnergyCover4A,

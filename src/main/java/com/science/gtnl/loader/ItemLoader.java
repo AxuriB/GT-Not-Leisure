@@ -649,6 +649,8 @@ public class ItemLoader {
         GTNLItemList.ManaElectricProspectorTool.set(ElectricProspectorTool.initItem(0, 25, 9999));
 
         for (int i = 0; i < 14; i++) {
+            GTNLItemList.WIRELESS_ENERGY_COVER[i].set(ItemList.WIRELESS_ENERGY_COVERS[i].get(1));
+
             GTNLItemList.WIRELESS_ENERGY_COVER_4A[i].set(
                 MetaItemAdder.initItem(
                     "4A " + GTValues.VN[i + 1] + " Wireless Energy Cover",

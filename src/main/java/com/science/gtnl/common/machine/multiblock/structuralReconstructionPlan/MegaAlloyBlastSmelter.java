@@ -162,6 +162,11 @@ public class MegaAlloyBlastSmelter extends GTMMultiMachineBase<MegaAlloyBlastSme
     }
 
     @Override
+    public boolean checkEnergyHatch() {
+        return true;
+    }
+
+    @Override
     public void setupParameters() {
         super.setupParameters();
         this.mHeatingCapacity = (int) this.getMCoilLevel()

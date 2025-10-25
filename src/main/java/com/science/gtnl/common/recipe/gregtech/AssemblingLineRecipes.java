@@ -1292,5 +1292,26 @@ public class AssemblingLineRecipes implements IRecipePool {
             .eut(TierEU.RECIPE_LuV)
             .duration(30 * SECONDS)
             .addTo(GTRecipeConstants.AssemblyLine);
+
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Hatch_Energy_UXV.get(1),
+            768000,
+            512,
+            51200000,
+            1,
+            new Object[] { ItemList.Hull_MAXV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 4),
+                ItemList.Circuit_Chip_QPIC.get(32), new Object[] { OrePrefixes.circuit.get(Materials.MAX), 2L },
+                ItemList.UHV_Coil.get(64), ItemList.Reactor_Coolant_Sp_6.get(1), ItemList.Reactor_Coolant_Sp_6.get(1),
+                ItemList.Reactor_Coolant_Sp_6.get(1), ItemList.Reactor_Coolant_Sp_6.get(1),
+                ItemList.Reactor_Coolant_Sp_6.get(1), ItemList.Reactor_Coolant_Sp_6.get(1),
+                ItemList.Reactor_Coolant_Sp_6.get(1), ItemList.Reactor_Coolant_Sp_6.get(1),
+                ItemList.Reactor_Coolant_Sp_6.get(1), ItemList.Reactor_Coolant_Sp_6.get(1),
+                ItemList.Electric_Pump_MAX.get(1) },
+            new FluidStack[] { Materials.SuperCoolant.getFluid(128000),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(23040), Materials.UUMatter.getFluid(128000) },
+            GTNLItemList.EnergyHatchMAX.get(1),
+            1000,
+            (int) TierEU.RECIPE_MAX);
     }
 }

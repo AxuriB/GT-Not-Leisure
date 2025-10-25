@@ -4,6 +4,7 @@ import static bartworks.common.loaders.ItemRegistry.bw_realglas;
 import static com.dreammaster.scripts.IScriptLoader.missing;
 import static goodgenerator.loader.Loaders.huiCircuit;
 import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GTRecipeBuilder.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -2600,6 +2601,18 @@ public class AssemblerRecipes implements IRecipePool {
             .eut(300)
             .addTo(As);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_HV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2),
+                ItemList.Pump_HV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Titaniumonabariumdecacoppereikosaoxid, 1),
+                GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.Nichrome, 1))
+            .itemOutputs(GTNLItemList.ElectrocellGenerator.get(1))
+            .duration(40)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
         ItemStack[] COIL = { ItemList.LV_Coil.get(1), ItemList.MV_Coil.get(1), ItemList.HV_Coil.get(1),
             ItemList.EV_Coil.get(1), ItemList.IV_Coil.get(1), ItemList.LuV_Coil.get(1), ItemList.ZPM_Coil.get(1),
             ItemList.UV_Coil.get(1), ItemList.UHV_Coil.get(1), ItemList.UHV_Coil.get(2), ItemList.UHV_Coil.get(4),
@@ -2641,15 +2654,15 @@ public class AssemblerRecipes implements IRecipePool {
                     GTOreDictUnificator.get(cable01, ItemUtils.CABLE[i], 2),
                     GTOreDictUnificator.get(cable01, Materials.RedAlloy, 2),
                     GTOreDictUnificator.get(OrePrefixes.plate, ItemUtils.TIER_MATERIAL[i], 2))
-                .itemOutputs(ItemList.WIRELESS_ENERGY_COVERS[i].get(1))
+                .itemOutputs(GTNLItemList.WIRELESS_ENERGY_COVER[i].get(1))
                 .fluidInputs(Materials.SolderingAlloy.getMolten(144))
                 .duration(200)
-                .eut(GTValues.VP[i])
+                .eut(GTValues.VP[i + 1])
                 .addTo(As);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    ItemList.WIRELESS_ENERGY_COVERS[i].get(2),
+                    GTNLItemList.WIRELESS_ENERGY_COVER[i].get(2),
                     INDUCTOR[i],
                     GTOreDictUnificator.get(cable04, ItemUtils.CABLE[i], 4),
                     COIL_4A[i],
@@ -2657,21 +2670,152 @@ public class AssemblerRecipes implements IRecipePool {
                 .itemOutputs(GTNLItemList.WIRELESS_ENERGY_COVER_4A[i].get(1))
                 .fluidInputs(Materials.SolderingAlloy.getMolten(144))
                 .duration(200)
-                .eut(GTValues.VP[i])
-                .addTo(As);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Casing_HV.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2),
-                    ItemList.Pump_HV.get(1),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Titaniumonabariumdecacoppereikosaoxid, 1),
-                    GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.Nichrome, 1))
-                .itemOutputs(GTNLItemList.SteamOilDrillModuleIII.get(1))
-                .duration(40)
-                .eut(TierEU.RECIPE_LV)
+                .eut(GTValues.VP[i + 1])
                 .addTo(As);
         }
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Energy_LV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2))
+            .itemOutputs(GTNLItemList.EnergyHatchLV4A.get(1))
+            .fluidInputs(Materials.Silver.getMolten(144))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Transformer_LV_ULV.get(1),
+                GTNLItemList.EnergyHatchLV4A.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4))
+            .itemOutputs(GTNLItemList.EnergyHatchLV16A.get(1))
+            .fluidInputs(Materials.Electrum.getMolten(144))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.WetTransformer_LV_ULV.get(1),
+                GTNLItemList.EnergyHatchLV16A.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Tin, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6))
+            .itemOutputs(GTNLItemList.EnergyHatchLV64A.get(1))
+            .fluidInputs(Materials.Tungsten.getMolten(144))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Energy_MV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Copper, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2))
+            .itemOutputs(GTNLItemList.EnergyHatchMV4A.get(1))
+            .fluidInputs(Materials.Silver.getMolten(144))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Transformer_MV_LV.get(1),
+                GTNLItemList.EnergyHatchMV4A.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Copper, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 4))
+            .itemOutputs(GTNLItemList.EnergyHatchMV16A.get(1))
+            .fluidInputs(Materials.Electrum.getMolten(144))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.WetTransformer_MV_LV.get(1),
+                GTNLItemList.EnergyHatchMV16A.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Copper, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 6))
+            .itemOutputs(GTNLItemList.EnergyHatchMV64A.get(1))
+            .fluidInputs(Materials.Tungsten.getMolten(144))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Energy_HV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Gold, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2))
+            .itemOutputs(GTNLItemList.EnergyHatchHV4A.get(1))
+            .fluidInputs(Materials.Silver.getMolten(144))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Transformer_HV_MV.get(1),
+                GTNLItemList.EnergyHatchHV4A.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Gold, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4))
+            .itemOutputs(GTNLItemList.EnergyHatchHV16A.get(1))
+            .fluidInputs(Materials.Electrum.getMolten(144))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.WetTransformer_HV_MV.get(1),
+                GTNLItemList.EnergyHatchHV16A.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.Gold, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 6))
+            .itemOutputs(GTNLItemList.EnergyHatchHV64A.get(1))
+            .fluidInputs(Materials.Tungsten.getMolten(144))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTNLItemList.EnergyHatchMAX.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.DraconiumAwakened, 2),
+                GTOreDictUnificator
+                    .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 2))
+            .itemOutputs(GTNLItemList.EnergyHatchMAX4A.get(1))
+            .fluidInputs(Materials.Silver.getMolten(144))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Transformer_MAX_UXV.get(1),
+                GTNLItemList.EnergyHatchMAX4A.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.DraconiumAwakened, 2),
+                GTOreDictUnificator
+                    .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 4))
+            .itemOutputs(GTNLItemList.EnergyHatchMAX16A.get(1))
+            .fluidInputs(Materials.Electrum.getMolten(144))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(As);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.WetTransformer_MAX_UXV.get(1),
+                GTNLItemList.EnergyHatchMAX16A.get(1),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.DraconiumAwakened, 2),
+                GTOreDictUnificator
+                    .get(OrePrefixes.plate, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 6))
+            .itemOutputs(GTNLItemList.EnergyHatchMAX64A.get(1))
+            .fluidInputs(Materials.Tungsten.getMolten(144))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(As);
 
         for (int j = 0; j < 10; j++) {
             for (int i = 0; i < 9; i++) {

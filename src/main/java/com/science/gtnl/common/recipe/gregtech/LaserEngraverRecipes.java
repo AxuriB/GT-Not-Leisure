@@ -14,6 +14,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import tectech.thing.CustomItemList;
 
 public class LaserEngraverRecipes implements IRecipePool {
 
@@ -91,5 +92,35 @@ public class LaserEngraverRecipes implements IRecipePool {
             250,
             TierEU.RECIPE_IV);
 
+        for (int j = 0; j < 14; j++) {
+            for (int i = 0; i < 13; i++) {
+                if (j < 4 && i >= 4) continue;
+                ItemStack energyDetector = i >= 4 ? CustomItemList.Machine_Multi_Transformer.get(1)
+                    : ItemList.Cover_EnergyDetector.get(1);
+
+                GTNLItemList[][] energyHatch;
+                int hatchIndex;
+                if (j < 4 || i < 4) {
+                    energyHatch = GTNLItemList.ENERGY_HATCH;
+                    hatchIndex = i;
+                } else {
+                    energyHatch = GTNLItemList.LASER_ENERGY_HATCH;
+                    hatchIndex = i - 4;
+                }
+
+                GTNLItemList[] energyCover = i >= 2 ? GTNLItemList.WIRELESS_ENERGY_COVER_4A
+                    : GTNLItemList.WIRELESS_ENERGY_COVER;
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        energyHatch[j >= 4 && i >= 4 ? j - 4 : j][hatchIndex].get(1),
+                        energyCover[j].get((long) Math.min(Math.pow(2, i >= 2 ? i - 2 : i), 4)),
+                        energyDetector)
+                    .itemOutputs(GTNLItemList.WIRELESS_ENERGY_HATCHES[j][i].get(1))
+                    .duration(200)
+                    .eut(GTValues.VP[j + 1])
+                    .addTo(lER);
+            }
+        }
     }
 }

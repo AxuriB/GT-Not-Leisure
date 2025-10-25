@@ -2373,16 +2373,7 @@ public class MachineLoader {
                 true));
         addItemTooltip(GTNLItemList.AdvancedSuperDualInputHatchME.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.EnergyHatchMAX.set(
-            new MTEHatchEnergy(
-                ENERGY_HATCH_MAX.ID,
-                "EnergyHatchMAX",
-                StatCollector.translateToLocal("EnergyHatchMAX"),
-                14,
-                0,
-                new String[] { StatCollector.translateToLocal("Tooltip_EnergyHatch_00"),
-                    StatCollector.translateToLocal("Tooltip_EnergyHatch_01") }));
-        addItemTooltip(GTNLItemList.EnergyHatchMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+        GTNLItemList.EnergyHatchLV.set(ItemList.Hatch_Energy_LV.get(1));
 
         GTNLItemList.EnergyHatchLV4A.set(
             new MTEHatchEnergyMulti(
@@ -2393,24 +2384,6 @@ public class MachineLoader {
                 4));
         addItemTooltip(GTNLItemList.EnergyHatchLV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
-        GTNLItemList.EnergyHatchMV4A.set(
-            new MTEHatchEnergyMulti(
-                ENERGY_HATCH_MV_4A.ID,
-                "EnergyHatchMV4A",
-                StatCollector.translateToLocal("EnergyHatchMV4A"),
-                2,
-                4));
-        addItemTooltip(GTNLItemList.EnergyHatchMV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.EnergyHatchHV4A.set(
-            new MTEHatchEnergyMulti(
-                ENERGY_HATCH_HV_4A.ID,
-                "EnergyHatchHV4A",
-                StatCollector.translateToLocal("EnergyHatchHV4A"),
-                3,
-                4));
-        addItemTooltip(GTNLItemList.EnergyHatchHV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
         GTNLItemList.EnergyHatchLV16A.set(
             new MTEHatchEnergyMulti(
                 ENERGY_HATCH_LV_16A.ID,
@@ -2419,24 +2392,6 @@ public class MachineLoader {
                 1,
                 16));
         addItemTooltip(GTNLItemList.EnergyHatchLV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.EnergyHatchMV16A.set(
-            new MTEHatchEnergyMulti(
-                ENERGY_HATCH_MV_16A.ID,
-                "EnergyHatchMV16A",
-                StatCollector.translateToLocal("EnergyHatchMV16A"),
-                2,
-                16));
-        addItemTooltip(GTNLItemList.EnergyHatchMV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
-
-        GTNLItemList.EnergyHatchHV16A.set(
-            new MTEHatchEnergyMulti(
-                ENERGY_HATCH_HV_16A.ID,
-                "EnergyHatchHV16A",
-                StatCollector.translateToLocal("EnergyHatchHV16A"),
-                3,
-                16));
-        addItemTooltip(GTNLItemList.EnergyHatchHV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.EnergyHatchLV64A.set(
             new MTEHatchEnergyMulti(
@@ -2447,6 +2402,26 @@ public class MachineLoader {
                 64));
         addItemTooltip(GTNLItemList.EnergyHatchLV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
+        GTNLItemList.EnergyHatchMV.set(ItemList.Hatch_Energy_MV.get(1));
+
+        GTNLItemList.EnergyHatchMV4A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_MV_4A.ID,
+                "EnergyHatchMV4A",
+                StatCollector.translateToLocal("EnergyHatchMV4A"),
+                2,
+                4));
+        addItemTooltip(GTNLItemList.EnergyHatchMV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchMV16A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_MV_16A.ID,
+                "EnergyHatchMV16A",
+                StatCollector.translateToLocal("EnergyHatchMV16A"),
+                2,
+                16));
+        addItemTooltip(GTNLItemList.EnergyHatchMV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
         GTNLItemList.EnergyHatchMV64A.set(
             new MTEHatchEnergyMulti(
                 ENERGY_HATCH_MV_64A.ID,
@@ -2456,6 +2431,26 @@ public class MachineLoader {
                 64));
         addItemTooltip(GTNLItemList.EnergyHatchMV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
+        GTNLItemList.EnergyHatchHV.set(ItemList.Hatch_Energy_HV.get(1));
+
+        GTNLItemList.EnergyHatchHV4A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_HV_4A.ID,
+                "EnergyHatchHV4A",
+                StatCollector.translateToLocal("EnergyHatchHV4A"),
+                3,
+                4));
+        addItemTooltip(GTNLItemList.EnergyHatchHV4A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchHV16A.set(
+            new MTEHatchEnergyMulti(
+                ENERGY_HATCH_HV_16A.ID,
+                "EnergyHatchHV16A",
+                StatCollector.translateToLocal("EnergyHatchHV16A"),
+                3,
+                16));
+        addItemTooltip(GTNLItemList.EnergyHatchHV16A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
         GTNLItemList.EnergyHatchHV64A.set(
             new MTEHatchEnergyMulti(
                 ENERGY_HATCH_HV_64A.ID,
@@ -2464,6 +2459,97 @@ public class MachineLoader {
                 3,
                 64));
         addItemTooltip(GTNLItemList.EnergyHatchHV64A.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
+
+        GTNLItemList.EnergyHatchEV.set(ItemList.Hatch_Energy_EV.get(1));
+
+        GTNLItemList.EnergyHatchEV4A.set(CustomItemList.eM_energyMulti4_EV.get(1));
+
+        GTNLItemList.EnergyHatchEV16A.set(CustomItemList.eM_energyMulti16_EV.get(1));
+
+        GTNLItemList.EnergyHatchEV64A.set(CustomItemList.eM_energyMulti64_EV.get(1));
+
+        GTNLItemList.EnergyHatchIV.set(ItemList.Hatch_Energy_IV.get(1));
+
+        GTNLItemList.EnergyHatchIV4A.set(CustomItemList.eM_energyMulti4_IV.get(1));
+
+        GTNLItemList.EnergyHatchIV16A.set(CustomItemList.eM_energyMulti16_IV.get(1));
+
+        GTNLItemList.EnergyHatchIV64A.set(CustomItemList.eM_energyMulti64_IV.get(1));
+
+        GTNLItemList.EnergyHatchLuV.set(ItemList.Hatch_Energy_LuV.get(1));
+
+        GTNLItemList.EnergyHatchLuV4A.set(CustomItemList.eM_energyMulti4_LuV.get(1));
+
+        GTNLItemList.EnergyHatchLuV16A.set(CustomItemList.eM_energyMulti16_LuV.get(1));
+
+        GTNLItemList.EnergyHatchLuV64A.set(CustomItemList.eM_energyMulti64_LuV.get(1));
+
+        GTNLItemList.EnergyHatchZPM.set(ItemList.Hatch_Energy_ZPM.get(1));
+
+        GTNLItemList.EnergyHatchZPM4A.set(CustomItemList.eM_energyMulti4_ZPM.get(1));
+
+        GTNLItemList.EnergyHatchZPM16A.set(CustomItemList.eM_energyMulti16_ZPM.get(1));
+
+        GTNLItemList.EnergyHatchZPM64A.set(CustomItemList.eM_energyMulti64_ZPM.get(1));
+
+        GTNLItemList.EnergyHatchUV.set(ItemList.Hatch_Energy_UV.get(1));
+
+        GTNLItemList.EnergyHatchUV4A.set(CustomItemList.eM_energyMulti4_UV.get(1));
+
+        GTNLItemList.EnergyHatchUV16A.set(CustomItemList.eM_energyMulti16_UV.get(1));
+
+        GTNLItemList.EnergyHatchUV64A.set(CustomItemList.eM_energyMulti64_UV.get(1));
+
+        GTNLItemList.EnergyHatchUHV.set(ItemList.Hatch_Energy_UHV.get(1));
+
+        GTNLItemList.EnergyHatchUHV4A.set(CustomItemList.eM_energyMulti4_UHV.get(1));
+
+        GTNLItemList.EnergyHatchUHV16A.set(CustomItemList.eM_energyMulti16_UHV.get(1));
+
+        GTNLItemList.EnergyHatchUHV64A.set(CustomItemList.eM_energyMulti64_UHV.get(1));
+
+        GTNLItemList.EnergyHatchUEV.set(ItemList.Hatch_Energy_UEV.get(1));
+
+        GTNLItemList.EnergyHatchUEV4A.set(CustomItemList.eM_energyMulti4_UEV.get(1));
+
+        GTNLItemList.EnergyHatchUEV16A.set(CustomItemList.eM_energyMulti16_UEV.get(1));
+
+        GTNLItemList.EnergyHatchUEV64A.set(CustomItemList.eM_energyMulti64_UEV.get(1));
+
+        GTNLItemList.EnergyHatchUIV.set(ItemList.Hatch_Energy_UIV.get(1));
+
+        GTNLItemList.EnergyHatchUIV4A.set(CustomItemList.eM_energyMulti4_UIV.get(1));
+
+        GTNLItemList.EnergyHatchUIV16A.set(CustomItemList.eM_energyMulti16_UIV.get(1));
+
+        GTNLItemList.EnergyHatchUIV64A.set(CustomItemList.eM_energyMulti64_UIV.get(1));
+
+        GTNLItemList.EnergyHatchUMV.set(ItemList.Hatch_Energy_UMV.get(1));
+
+        GTNLItemList.EnergyHatchUMV4A.set(CustomItemList.eM_energyMulti4_UMV.get(1));
+
+        GTNLItemList.EnergyHatchUMV16A.set(CustomItemList.eM_energyMulti16_UMV.get(1));
+
+        GTNLItemList.EnergyHatchUMV64A.set(CustomItemList.eM_energyMulti64_UMV.get(1));
+
+        GTNLItemList.EnergyHatchUXV.set(ItemList.Hatch_Energy_UXV.get(1));
+
+        GTNLItemList.EnergyHatchUXV4A.set(CustomItemList.eM_energyMulti4_UXV.get(1));
+
+        GTNLItemList.EnergyHatchUXV16A.set(CustomItemList.eM_energyMulti16_UXV.get(1));
+
+        GTNLItemList.EnergyHatchUXV64A.set(CustomItemList.eM_energyMulti64_UXV.get(1));
+
+        GTNLItemList.EnergyHatchMAX.set(
+            new MTEHatchEnergy(
+                ENERGY_HATCH_MAX.ID,
+                "EnergyHatchMAX",
+                StatCollector.translateToLocal("EnergyHatchMAX"),
+                14,
+                0,
+                new String[] { StatCollector.translateToLocal("Tooltip_EnergyHatch_00"),
+                    StatCollector.translateToLocal("Tooltip_EnergyHatch_01") }));
+        addItemTooltip(GTNLItemList.EnergyHatchMAX.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.EnergyHatchMAX4A.set(
             new MTEHatchEnergyMulti(
