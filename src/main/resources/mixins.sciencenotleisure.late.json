@@ -30,6 +30,7 @@
     "Gregtech.MixinBaseMetaTileEntity",
     "Gregtech.MixinGTNEIDefaultHandler",
     "Gregtech.MixinGTShapedRecipe",
+    "Gregtech.MixinItemFluidDisplay",
     "Gregtech.MixinGodForgeMath",
     "Gregtech.MixinGTShapelessRecipe",
     "Gregtech.MixinMTEHatchSteamBusOutput",

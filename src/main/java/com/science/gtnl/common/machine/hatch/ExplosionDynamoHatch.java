@@ -1,5 +1,7 @@
 package com.science.gtnl.common.machine.hatch;
 
+import static gregtech.api.enums.GTValues.*;
+
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.interfaces.ITexture;
@@ -30,5 +32,10 @@ public class ExplosionDynamoHatch extends MTEHatchDynamo {
     @Override
     public long maxEUStore() {
         return Long.MAX_VALUE;
+    }
+
+    @Override
+    public long maxEUOutput() {
+        return V[mTier] * 64;
     }
 }

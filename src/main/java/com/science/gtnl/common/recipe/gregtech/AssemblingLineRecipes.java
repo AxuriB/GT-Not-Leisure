@@ -1313,5 +1313,45 @@ public class AssemblingLineRecipes implements IRecipePool {
             GTNLItemList.EnergyHatchMAX.get(1),
             1000,
             (int) TierEU.RECIPE_MAX);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, GTNLItemList.DualInputHatchEV.get(1))
+            .metadata(SCANNING, new Scanning(10 * MINUTES, TierEU.RECIPE_HV))
+            .itemInputs(
+                GTNLItemList.SuperInputBusME.get(1),
+                GTNLItemList.SuperInputHatchME.get(1),
+                ItemList.Super_Chest_EV.get(1),
+                ItemList.Super_Tank_EV.get(1),
+                ItemList.Tool_DataOrb.get(4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 16),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 2, 57),
+                GTModHandler.getModItem(AE2FluidCraft.ID, "fluid_part", 2, 4),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 4, 27),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockInterface", 4))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1152), Materials.Lubricant.getFluid(8000))
+            .itemOutputs(GTNLItemList.SuperDualInputHatchME.get(1))
+            .eut(TierEU.RECIPE_IV)
+            .duration(15 * SECONDS)
+            .addTo(GTRecipeConstants.AssemblyLine);
+
+        GTValues.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, GTNLItemList.SuperDualInputHatchME.get(1))
+            .metadata(SCANNING, new Scanning(30 * MINUTES, TierEU.RECIPE_HV))
+            .itemInputs(
+                GTNLItemList.AdvancedSuperInputBusME.get(1),
+                GTNLItemList.AdvancedSuperInputHatchME.get(1),
+                ItemList.Quantum_Chest_LV.get(1),
+                ItemList.Quantum_Tank_LV.get(1),
+                ItemList.Tool_DataOrb.get(16),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 16),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 2, 59),
+                GTModHandler.getModItem(AE2FluidCraft.ID, "fluid_part", 2, 6),
+                GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 2, 56),
+                GTModHandler.getModItem(AE2FluidCraft.ID, "fluid_interface", 4))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(2304), Materials.Lubricant.getFluid(16000))
+            .itemOutputs(GTNLItemList.AdvancedSuperDualInputHatchME.get(1))
+            .eut(TierEU.RECIPE_LuV)
+            .duration(15 * SECONDS)
+            .addTo(GTRecipeConstants.AssemblyLine);
     }
 }

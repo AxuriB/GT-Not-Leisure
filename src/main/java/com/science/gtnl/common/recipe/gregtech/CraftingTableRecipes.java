@@ -1159,6 +1159,20 @@ public class CraftingTableRecipes implements IRecipePool {
                 ItemList.Casing_HV, 'E', MaterialPool.Stronze.get(OrePrefixes.pipeHuge), 'F',
                 OrePrefixes.cableGt16.get(Materials.Nichrome) });
 
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.OriginalInputHatch.get(1),
+            new Object[] { "ABA", "CDC", "ABA", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L),
+                'B', MaterialsAlloy.TUMBAGA.getPlate(1), 'C',
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 1L), 'D',
+                GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1) });
+
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.OriginalOutputHatch.get(1),
+            new Object[] { "ABA", "CDC", "ABA", 'A', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L),
+                'B', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 1L), 'C',
+                MaterialsAlloy.TUMBAGA.getPlate(1), 'D',
+                GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1) });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),

@@ -53,6 +53,11 @@ public class TapDynamoHatch extends MTEHatchDynamo {
     }
 
     @Override
+    public long maxEUOutput() {
+        return V[mTier] * 16;
+    }
+
+    @Override
     public long maxEUStore() {
         return 512L + V[mTier + 1] * 16L;
     }
@@ -84,7 +89,7 @@ public class TapDynamoHatch extends MTEHatchDynamo {
         }
 
         long storeEU = getEUVar();
-        long addedEU = V[mTier] * 2;
+        long addedEU = V[mTier] * 16;
         setEUVar(Math.min(storeEU + addedEU, maxEUStore()));
 
         clickCount++;

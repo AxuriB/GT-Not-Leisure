@@ -389,6 +389,7 @@ public class SteamManufacturerRecipes implements IRecipePool {
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);
+
         RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Blocks.hopper, 1),
@@ -396,6 +397,30 @@ public class SteamManufacturerRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
                 GTUtility.getIntegratedCircuit(2))
             .itemOutputs(GregtechItemList.Hatch_Output_Bus_Steam.get(1L))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        // Hatches
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
+                MaterialsAlloy.TUMBAGA.getPlate(4),
+                GTUtility.getIntegratedCircuit(1))
+            .itemOutputs(GTNLItemList.OriginalInputHatch.get(1))
+            .duration(2 * SECONDS)
+            .eut(16)
+            .addTo(SMFR);
+
+        RA.stdBuilder()
+            .itemInputs(
+                GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1),
+                MaterialsAlloy.TUMBAGA.getPlate(4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 4),
+                GTUtility.getIntegratedCircuit(2))
+            .itemOutputs(GTNLItemList.OriginalOutputHatch.get(1))
             .duration(2 * SECONDS)
             .eut(16)
             .addTo(SMFR);

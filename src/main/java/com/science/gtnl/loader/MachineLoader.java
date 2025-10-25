@@ -1949,7 +1949,7 @@ public class MachineLoader {
                 EXPLOSION_DYNAMO_HATCH.ID,
                 "ExplosionDynamoHatch",
                 StatCollector.translateToLocal("ExplosionDynamoHatch"),
-                1));
+                5));
         addItemTooltip(GTNLItemList.ExplosionDynamoHatch.get(1), AnimatedText.SCIENCE_NOT_LEISURE);
 
         GTNLItemList.DebugResearchStation.set(

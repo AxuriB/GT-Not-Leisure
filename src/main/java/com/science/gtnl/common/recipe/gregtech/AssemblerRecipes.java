@@ -13,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.dreammaster.block.BlockList;
+import com.dreammaster.gthandler.CustomItemList;
 import com.dreammaster.item.NHItemList;
 import com.reavaritia.ReAvaItemList;
 import com.science.gtnl.api.IRecipePool;
@@ -2636,7 +2638,21 @@ public class AssemblerRecipes implements IRecipePool {
             ItemList.Circuit_Parts_InductorASMD.get(4), ItemList.Circuit_Parts_InductorASMD.get(8),
             ItemList.Circuit_Parts_InductorXSMD.get(4), ItemList.Circuit_Parts_InductorXSMD.get(8),
             ItemList.Circuit_Parts_InductorXSMD.get(16), ItemList.Circuit_Parts_InductorXSMD.get(32),
-            GTNLItemList.BiowareSMDInductor.get(8), GTNLItemList.BiowareSMDInductor.get(16), };
+            GTNLItemList.BiowareSMDInductor.get(8), GTNLItemList.BiowareSMDInductor.get(16) };
+
+        ItemStack[] SUPER_CHEST = { ItemList.Super_Chest_LV.get(1), ItemList.Super_Chest_MV.get(1),
+            ItemList.Super_Chest_HV.get(1), ItemList.Super_Chest_EV.get(1), ItemList.Super_Chest_IV.get(1),
+            ItemList.Quantum_Chest_LV.get(1), ItemList.Quantum_Chest_MV.get(1), ItemList.Quantum_Chest_HV.get(1),
+            ItemList.Quantum_Chest_EV.get(1), ItemList.Quantum_Chest_IV.get(1), ItemList.Quantum_Chest_IV.get(2),
+            ItemList.Quantum_Chest_IV.get(4), ItemList.Quantum_Chest_IV.get(8), ItemList.Quantum_Chest_IV.get(16) };
+
+        ItemStack[] OUTPUT_BUS = { ItemList.Hatch_Output_Bus_LV.get(1), ItemList.Hatch_Output_Bus_MV.get(1),
+            ItemList.Hatch_Output_Bus_HV.get(1), ItemList.Hatch_Output_Bus_EV.get(1),
+            ItemList.Hatch_Output_Bus_IV.get(1), GregtechItemList.Hatch_SuperBus_Output_LV.get(1),
+            GregtechItemList.Hatch_SuperBus_Output_MV.get(1), GregtechItemList.Hatch_SuperBus_Output_HV.get(1),
+            GregtechItemList.Hatch_SuperBus_Output_EV.get(1), GregtechItemList.Hatch_SuperBus_Output_IV.get(1),
+            GregtechItemList.Hatch_SuperBus_Output_LuV.get(1), GregtechItemList.Hatch_SuperBus_Output_ZPM.get(1),
+            GregtechItemList.Hatch_SuperBus_Output_UV.get(1), GregtechItemList.Hatch_SuperBus_Output_MAX.get(1), };
 
         for (int i = 0; i < 14; i++) {
             boolean isHighTier = i >= 11;
@@ -2672,7 +2688,30 @@ public class AssemblerRecipes implements IRecipePool {
                 .duration(200)
                 .eut(GTValues.VP[i + 1])
                 .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(OUTPUT_BUS[i], SUPER_CHEST[i])
+                .itemOutputs(GTNLItemList.HUMONGOUS_OUTPUT_BUS[i].get(1))
+                .fluidInputs(Materials.SolderingAlloy.getMolten(144))
+                .duration(100)
+                .eut(GTValues.VP[i])
+                .addTo(As);
         }
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Dynamo_IV.get(1),
+                GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 32, 0, missing),
+                GTModHandler.getModItem(IndustrialCraft2.ID, "reactorReflectorThick", 1, 1, missing),
+                BlockList.TungstensteelPlatedReinforcedStone.getIS(2),
+                CustomItemList.ReinforcedTungstenSteelIronPlate.get(2),
+                GTOreDictUnificator.get(OrePrefixes.wireGt08, Materials.Tungsten, 2),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 4))
+            .itemOutputs(GTNLItemList.ExplosionDynamoHatch.get(1))
+            .fluidInputs(Materials.SolderingAlloy.getMolten(1296))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(As);
 
         GTValues.RA.stdBuilder()
             .itemInputs(

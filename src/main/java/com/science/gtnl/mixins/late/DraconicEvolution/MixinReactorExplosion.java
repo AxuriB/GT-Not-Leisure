@@ -61,7 +61,7 @@ public abstract class MixinReactorExplosion {
 
                             if (distance <= 10.0) {
                                 double efficiency = Math.max(0.0, 1.0 - 0.05 * distance);
-                                long addedEU = (long) (this.power * 10000 * 2048 * efficiency);
+                                long addedEU = (long) (this.power * 10000 * 20480 * efficiency);
 
                                 long stored = machine.getEUVar();
                                 long maxEU = machine.maxEUStore();

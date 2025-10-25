@@ -1213,6 +1213,11 @@ public enum GTNLItemList implements IItemContainer {
     GasCollectorUMV,
     GasCollectorUXV;
 
+    public static final GTNLItemList[] HUMONGOUS_OUTPUT_BUS = { HumongousOutputBusLV, HumongousOutputBusMV,
+        HumongousOutputBusHV, HumongousOutputBusEV, HumongousOutputBusIV, HumongousOutputBusLuV, HumongousOutputBusZPM,
+        HumongousOutputBusUV, HumongousOutputBusUHV, HumongousOutputBusUEV, HumongousOutputBusUIV,
+        HumongousOutputBusUMV, HumongousOutputBusUXV, HumongousOutputBusMAX };
+
     public static final GTNLItemList[] ENERGY_HATCH_LV = { EnergyHatchLV, EnergyHatchLV4A, EnergyHatchLV16A,
         EnergyHatchLV64A };
     public static final GTNLItemList[] ENERGY_HATCH_MV = { EnergyHatchMV, EnergyHatchMV4A, EnergyHatchMV16A,

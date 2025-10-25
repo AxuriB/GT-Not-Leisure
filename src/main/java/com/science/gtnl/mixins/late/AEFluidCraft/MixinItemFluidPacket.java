@@ -76,7 +76,6 @@ public abstract class MixinItemFluidPacket implements IFluidContainerItem {
                     .removeTag("FluidStack");
                 if (container.getTagCompound()
                     .hasNoTags()) container.setTagCompound(null);
-                container = null;
             } else {
                 container.getTagCompound()
                     .setTag("FluidStack", existing.writeToNBT(new NBTTagCompound()));

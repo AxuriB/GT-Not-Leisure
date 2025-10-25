@@ -56,7 +56,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
     public boolean isEnable;
 
     public VeinMiningPickaxe() {
-        super(EnumHelper.addToolMaterial("VEIN", 15, Integer.MAX_VALUE, 15, 3, 10));
+        super(EnumHelper.addToolMaterial("VEIN", 15, 20000000, 15, 3, 10));
         this.setUnlocalizedName("VeinMiningPickaxe");
         this.setCreativeTab(GTNLCreativeTabs.GTNotLeisureItem);
         this.setTextureName(RESOURCE_ROOT_ID + ":" + "VeinMiningPickaxe");
@@ -144,7 +144,7 @@ public class VeinMiningPickaxe extends ItemPickaxe implements SubtitleDisplay {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTabs, List<ItemStack> aList) {
         ItemStack stack = new ItemStack(ItemLoader.veinMiningPickaxe, 1);
-        setToolMaxDamage(stack, Integer.MAX_VALUE);
+        setToolMaxDamage(stack, 20000000);
         aList.add(stack);
     }
 
