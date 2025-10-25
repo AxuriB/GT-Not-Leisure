@@ -38,16 +38,44 @@ public class ElectrocellGeneratorRecipes implements IRecipePool {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Carbon, 3),
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 4))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Galena, 3))
-            .fluidInputs(Materials.SulfuricAcid.getFluid(6000))
-            .fluidOutputs(Materials.Hydrogen.getGas(6000))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Carbon, 2),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 2))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Galena, 2))
+            .fluidInputs(Materials.SulfuricAcid.getFluid(2000))
+            .fluidOutputs(Materials.Hydrogen.getGas(4000))
             .outputChances(7500)
             .eut(0)
             .specialValue(110)
-            .metadata(GENERATOR_EUT, 6144L)
+            .metadata(GENERATOR_EUT, 2048L)
             .duration(430)
+            .addTo(EGR);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumBisulfate, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumSulfide, 4))
+            .fluidInputs(Materials.Sodium.getFluid(4000))
+            .fluidOutputs(Materials.Hydrogen.getGas(4000))
+            .outputChances(10000)
+            .eut(0)
+            .specialValue(100)
+            .metadata(GENERATOR_EUT, 4096L)
+            .duration(600)
+            .addTo(EGR);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 3),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumBisulfate, 4))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.SodiumSulfide, 4))
+            .fluidInputs(Materials.Sodium.getFluid(4000))
+            .fluidOutputs(Materials.Hydrogen.getGas(4000))
+            .outputChances(10000)
+            .eut(0)
+            .specialValue(100)
+            .metadata(GENERATOR_EUT, 4096L)
+            .duration(600)
             .addTo(EGR);
     }
 }

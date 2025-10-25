@@ -2630,6 +2630,18 @@ public class AssemblerRecipes implements IRecipePool {
                 .duration(300)
                 .eut(300)
                 .addTo(As);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Casing_HV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 2),
+                    ItemList.Pump_HV.get(1),
+                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Titaniumonabariumdecacoppereikosaoxid, 1),
+                    GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.Nichrome, 1))
+                .itemOutputs(GTNLItemList.SteamOilDrillModuleIII.get(1))
+                .duration(40)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(As);
         }
     }
 }

@@ -1152,6 +1152,13 @@ public class CraftingTableRecipes implements IRecipePool {
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Gold, 1L), 'C',
                 new ItemStack(Items.golden_apple, 1, 1) });
 
+        GTModHandler.addCraftingRecipe(
+            GTNLItemList.ElectrocellGenerator.get(1),
+            new Object[] { "ABA", "CDC", "EFE", 'A', OrePrefixes.circuit.get(Materials.EV), 'B',
+                OrePrefixes.wireGt16.get(Materials.Titaniumonabariumdecacoppereikosaoxid), 'C', ItemList.Pump_HV, 'D',
+                ItemList.Casing_HV, 'E', MaterialPool.Stronze.get(OrePrefixes.pipeHuge), 'F',
+                OrePrefixes.cableGt16.get(Materials.Nichrome) });
+
         if (MainConfig.enableSomethingRecipe) {
             GTModHandler.addCraftingRecipe(
                 tectech.thing.CustomItemList.hatch_CreativeMaintenance.get(1),

@@ -71,7 +71,7 @@ public class MainConfig {
     public static boolean enableDeleteRecipe = true;
     public static boolean enableShowDelRecipeTitle = true;
     public static boolean enableSomethingRecipe = true;
-    public static boolean enableAssemblingLineRecipesTimeChange = true;
+    public static boolean enableAssemblingLineRecipesTimeChange = false;
     public static boolean enableChamberRecipesBuff = true;
 
     // Tickrate
